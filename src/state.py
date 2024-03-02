@@ -143,8 +143,8 @@ def update_model() -> None:
         config.model = model_path
         save_config()
 
-    if model.load(model_path):
-        add_model(model_path)
+    add_model(model_path)
+    model.load(model_path)
 
 
 def update_top_k() -> None:
@@ -174,10 +174,9 @@ def update_top_p() -> None:
 
 
 def add_model(model_path: str) -> None:
-    if model_path not in config.models:
-        config.models.insert(0, model_path)
-        config.models = list(set(config.models))
-        save_models()
+    config.models = [item for item in config.models if item != model_path]
+    config.models.insert(0, model_path)
+    save_models()
 
 
 def do_reset_config() -> None:

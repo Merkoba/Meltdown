@@ -138,7 +138,7 @@ class Widgets:
         self.model_menu.delete(0, tk.END)
 
         for model in config.models:
-            def proc() -> None:
+            def proc(model: str = model) -> None:
                 self.set_model(model)
 
             self.model_menu.add_command(label=model, command=proc)
