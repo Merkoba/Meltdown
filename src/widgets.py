@@ -7,6 +7,43 @@ from framedata import FrameData
 import tkinter as tk
 from typing import Any
 from tkinter import filedialog
+from typing import Optional, Any
+
+class ToolTip:
+    def __init__(self, widget: tk.Widget, text: str) -> None:
+        self.widget = widget
+        self.text = widgetutils.clean_string(text)
+        self.tooltip: Optional[tk.Toplevel] = None
+        self.widget.bind("<Enter>", self.schedule_tooltip)
+        self.widget.bind("<Leave>", self.hide_tooltip)
+        self.id = ""
+
+    def schedule_tooltip(self, event: Any = None) -> None:
+        self.id = self.widget.after(500, self.show_tooltip)  # 500ms delay
+
+    def show_tooltip(self) -> None:
+        box = self.widget.bbox()
+
+        if not box:
+            return
+
+        x, y, _, _ = box
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 25
+        self.tooltip = tk.Toplevel(self.widget)
+        self.tooltip.wm_overrideredirect(True)
+        self.tooltip.wm_geometry(f"+{x}+{y}")
+        label = tk.Label(self.tooltip, text=self.text, background="white",
+                         wraplength=250, justify=tk.LEFT)
+        label.pack()
+
+    def hide_tooltip(self, event: Any = None) -> None:
+        if self.tooltip:
+            self.tooltip.destroy()
+            self.tooltip = None
+        if self.id:
+            self.widget.after_cancel(self.id)
+            self.id = ""
 
 
 class Widgets:
@@ -17,31 +54,72 @@ class Widgets:
         # Model
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
+
         widgetutils.make_label(d, "Model")
         self.model = widgetutils.make_input(d, sticky="ew")
-        widgetutils.make_button(d, "Browse", lambda: self.browse_model())
-        widgetutils.make_button(d, "Menu", lambda: self.show_main_menu())
+        ToolTip(self.model, "Path to a model file. This should be a file that works with \
+                llama.cpp, like gguf files for instance. Right click to see recently used models")
+
+        browse_button = widgetutils.make_button(d, "Browse", lambda: self.browse_model())
+        ToolTip(browse_button, "Pick a model file from your file system")
+
+        main_menu_button = widgetutils.make_button(d, "Menu", lambda: self.show_main_menu())
+        ToolTip(main_menu_button, "Open the main menu")
 
         # Settings
         d = get_d()
+
         widgetutils.make_label(d, "Name 1")
         self.name_1 = widgetutils.make_input(d)
+        ToolTip(self.name_1, "The name of the user (you)")
+
         widgetutils.make_label(d, "Name 2")
         self.name_2 = widgetutils.make_input(d)
+        ToolTip(self.name_2, "The name of the assistant (ai)")
+
         widgetutils.make_label(d, "Tokens")
         self.max_tokens = widgetutils.make_input(d)
+        ToolTip(self.max_tokens, "Maximum number of tokens to generate. \
+                Higher values will result in longer output, but will \
+                also take longer to compute")
+
         widgetutils.make_label(d, "Temp")
         self.temperature = widgetutils.make_input(d)
+        ToolTip(self.temperature, "The temperature parameter is used to control \
+                the randomness of the output. A higher temperature (~1) results in more randomness \
+                and diversity in the generated text, as the model is more likely to \
+                explore a wider range of possible tokens. Conversely, a lower temperature \
+                (<1) produces more focused and deterministic output, emphasizing the \
+                most probable tokens")
 
         # System
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
+
         widgetutils.make_label(d, "System")
         self.system = widgetutils.make_input(d, sticky="ew")
+        ToolTip(self.system, "This sets the system message that instructs \
+                the AI how to respond, or how to act in general. \
+                You could use this to make the AI take on a specific persona or role")
+
         widgetutils.make_label(d, "Top K")
         self.top_k = widgetutils.make_input(d)
+        ToolTip(self.top_k, "The top-k parameter limits the model's \
+                predictions to the top k most probable tokens at each step \
+                of generation. By setting a value for k, you are instructing \
+                the model to consider only the k most likely tokens. \
+                This can help in fine-tuning the generated output and \
+                ensuring it adheres to specific patterns or constraints")
+
         widgetutils.make_label(d, "Top P")
         self.top_p = widgetutils.make_input(d)
+        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls \
+                the cumulative probability of the generated tokens. \
+                The model generates tokens until the cumulative probability \
+                exceeds the chosen threshold (p). This approach allows for \
+                more dynamic control over the length of the generated text \
+                and encourages diversity in the output by including less \
+                probable tokens when necessary")
 
         # Output
         d = get_d()
@@ -54,10 +132,15 @@ class Widgets:
         d.frame.grid_columnconfigure(1, weight=1)
         widgetutils.make_label(d, "Prompt")
         self.input = widgetutils.make_input(d, sticky="ew")
+
         widgetutils.make_label(d, "Context")
         values = [0, 1, 5, 10, 100]
         self.context = widgetutils.make_select(d, values)
         self.context.configure(width=5)
+        ToolTip(self.context, "The number of previous messages to include as the context.\
+                The computation will take longer with more context. \
+                0 means context is not used at all")
+
         widgetutils.make_button(d, "Submit", lambda: self.submit())
 
         self.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
@@ -109,7 +192,7 @@ class Widgets:
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
         self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
 
-        def on_key(event):
+        def on_key(event: Any) -> None:
             if event.widget == self.output:
                 if event.char:
                     # Focus the input and insert char

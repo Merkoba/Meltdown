@@ -6,6 +6,7 @@ from framedata import FrameData
 import pyperclip  # type: ignore
 
 # Standard
+import re
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
@@ -160,3 +161,6 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
 
 def show_message(text: str) -> None:
     messagebox.showinfo("Information", text)
+
+def clean_string(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
