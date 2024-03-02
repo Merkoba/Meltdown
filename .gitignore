@@ -1,0 +1,5 @@
+venv/*
+output/*
+*.pyc
+__pycache__/
+.mypy_cache/
