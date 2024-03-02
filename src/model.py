@@ -10,7 +10,7 @@ from llama_cpp import Llama  # type: ignore
 import threading
 from pathlib import Path
 import atexit
-from typing import List, Any
+from typing import List, Dict
 
 
 class Model:
@@ -19,7 +19,7 @@ class Model:
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()
         self.thread = threading.Thread()
-        self.context: List[Any] = []
+        self.context_list: List[Dict[str, str]] = []
         self.loaded_model = ""
         atexit.register(self.check_thread)
 
@@ -52,9 +52,13 @@ class Model:
             return False
 
         self.loaded_model = model
+        self.context_list = []
         msg, now = timeutils.check_time("Model loaded.", now)
         widgets.print(msg)
         return True
+
+    def reset_context(self) -> None:
+        self.context_list = []
 
     def check_thread(self) -> None:
         if self.thread and self.thread.is_alive():
@@ -83,17 +87,25 @@ class Model:
         widgets.prompt(1)
         widgets.insert(prompt)
 
-        messages = [
-            {"role": "system", "content": config.system},
-            {
-                "role": "user",
-                "content": prompt,
-            },
-        ]
+        if config.context > 0:
+            context_dict = {"user": prompt}
+        else:
+            context_dict = None
+
+        messages = [{"role": "system", "content": config.system}]
+
+        if self.context_list:
+            for item in self.context_list:
+                for key in item:
+                    messages.append({"role": key, "content": item[key]})
+
+        messages.append({"role": "user", "content": prompt})
+        print(messages)
 
         added_name = False
         token_printed = False
         last_token = " "
+        tokens = []
 
         output = self.model.create_chat_completion(
             messages=messages,
@@ -130,9 +142,20 @@ class Model:
                     token = token.lstrip()
                     token_printed = True
 
+                tokens.append(token)
                 widgets.insert(token)
 
+        if context_dict:
+            context_dict["assistant"] = "".join(tokens).strip()
+            self.add_context(context_dict)
+
         self.lock.release()
+
+    def add_context(self, context_dict: Dict[str, str]) -> None:
+        self.context_list.append(context_dict)
+
+        if len(self.context_list) > config.context:
+            self.context_list.pop(0)
 
 
 model = Model()

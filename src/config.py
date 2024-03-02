@@ -28,7 +28,7 @@ class Config:
         self.frame_padx = 0
         self.frame_pady = 0
         self.input_width = 11
-        self.select_width = 13
+        self.select_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
         self.font_button = ("sans", 10)

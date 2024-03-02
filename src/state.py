@@ -108,7 +108,7 @@ def update_max_tokens() -> None:
     except BaseException:
         return
 
-    if max_tokens and (max_tokens != config.max_tokens):
+    if max_tokens != config.max_tokens:
         config.max_tokens = max_tokens
         save_config()
 
@@ -121,7 +121,7 @@ def update_temperature() -> None:
     except BaseException:
         return
 
-    if temperature and (temperature != config.temperature):
+    if temperature != config.temperature:
         config.temperature = temperature
         save_config()
 
@@ -157,7 +157,7 @@ def update_top_k() -> None:
     except BaseException:
         return
 
-    if top_k and (top_k != config.top_k):
+    if top_k != config.top_k:
         config.top_k = top_k
         save_config()
 
@@ -170,12 +170,13 @@ def update_top_p() -> None:
     except BaseException:
         return
 
-    if top_p and (top_p != config.top_p):
+    if top_p != config.top_p:
         config.top_p = top_p
         save_config()
 
 
 def update_context() -> None:
+    from model import model
     context_str = widgets.context.get()
 
     try:
@@ -183,8 +184,9 @@ def update_context() -> None:
     except BaseException:
         return
 
-    if context and (context != config.context):
+    if context != config.context:
         config.context = context
+        model.reset_context()
         save_config()
 
 
