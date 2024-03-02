@@ -3,6 +3,7 @@ from pathlib import Path
 import tkinter as tk
 from typing import List
 
+
 class Config:
     def __init__(self) -> None:
         self.program = "meltdown"
@@ -23,7 +24,7 @@ class Config:
         self.name_2 = "😎 Melt"
         self.max_tokens = 180
         self.temperature = 0.8
-        self.system = "You are a gentleman and a scholar who is a bit unhinged"
+        self.system = "Respond as gentleman and a scholar who is a bit unhinged"
         self.model_loaded = False
         self.background_color = "#212121"
         self.foreground_color = "white"

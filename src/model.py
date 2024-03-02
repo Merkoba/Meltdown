@@ -13,6 +13,7 @@ from pathlib import Path
 import atexit
 from typing import List, Any
 
+
 class Model:
     def __init__(self) -> None:
         self.mode = None
