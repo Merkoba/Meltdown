@@ -8,7 +8,7 @@ def get_time() -> float:
 
 
 def seconds_string(name: str, start: float, end: float) -> str:
-    num = round(start - end, 3)
+    num = round(start - end, 2)
     return f"{name} in {num} seconds"
 
 

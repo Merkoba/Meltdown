@@ -100,7 +100,6 @@ class Model:
                     messages.append({"role": key, "content": item[key]})
 
         messages.append({"role": "user", "content": prompt})
-        print(messages)
 
         added_name = False
         token_printed = False

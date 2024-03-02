@@ -55,7 +55,7 @@ class Widgets:
         widgetutils.make_label(d, "Prompt")
         self.input = widgetutils.make_input(d, sticky="ew")
         widgetutils.make_label(d, "Context")
-        values = [0, 10, 100]
+        values = [0, 1, 5, 10, 100]
         self.context = widgetutils.make_select(d, values)
         self.context.configure(width=5)
         widgetutils.make_button(d, "Submit", lambda: self.submit())
