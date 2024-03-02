@@ -1,0 +1,152 @@
+# Modules
+from config import config
+from widgets import widgets
+import actions
+
+# Standard
+from pathlib import Path
+import json
+
+
+def load_config_file():
+    if not config.config_path.exists():
+        config.config_path.parent.mkdir(parents=True, exist_ok=True)
+        config.config_path.touch(exist_ok=True)
+
+    with open(config.config_path, "r") as file:
+        try:
+            conf = json.load(file)
+        except BaseException:
+            conf = {}
+
+        for key in config.saved_configs:
+            setattr(config, key, conf.get(key, getattr(config, key)))
+
+
+def load_models_file():
+    if not config.models_path.exists():
+        config.models_path.parent.mkdir(parents=True, exist_ok=True)
+        config.models_path.touch(exist_ok=True)
+
+    with open(config.models_path, "r") as file:
+        try:
+            models = json.load(file)
+        except BaseException:
+            models = []
+
+            if config.model:
+                models.append(config.model)
+
+        config.models = models
+
+
+def save_config() -> None:
+    conf = {}
+
+    for key in config.saved_configs:
+        conf[key] = getattr(config, key)
+
+    with open(config.config_path, "w") as file:
+        json.dump(conf, file, indent=4)
+
+    actions.output("Config saved.")
+
+
+def save_models() -> None:
+    with open(config.models_path, "w") as file:
+        json.dump(config.models, file, indent=4)
+
+    actions.output("Models saved.")
+
+
+def update_name_1() -> None:
+    name_1 = widgets.name_1.get()
+
+    if name_1 and (name_1 != config.name_1):
+        config.name_1 = name_1
+        save_config()
+
+
+def update_name_2() -> None:
+    name_2 = widgets.name_2.get()
+
+    if name_2 and (name_2 != config.name_2):
+        config.name_2 = name_2
+        save_config()
+
+
+def update_max_tokens() -> None:
+    max_tokens = widgets.max_tokens.get()
+
+    try:
+        max_tokens = int(max_tokens)
+    except BaseException:
+        return
+
+    if max_tokens and (max_tokens != config.max_tokens):
+        config.max_tokens = max_tokens
+        save_config()
+
+
+def update_temperature() -> None:
+    temperature = widgets.temperature.get()
+
+    try:
+        temperature = float(temperature)
+    except BaseException:
+        return
+
+    if temperature and (temperature != config.temperature):
+        config.temperature = temperature
+        save_config()
+
+
+def update_system() -> None:
+    system = widgets.system.get()
+
+    if system and (system != config.system):
+        config.system = system
+        save_config()
+
+
+def update_model() -> None:
+    from model import model
+    model_path = widgets.model.get()
+
+    if model_path and (model_path != config.model):
+        if model.load(model_path):
+            config.model = model_path
+            save_config()
+            add_model(model_path)
+
+
+def update_top_k() -> None:
+    top_k = widgets.top_k.get()
+
+    try:
+        top_k = int(top_k)
+    except BaseException:
+        return
+
+    if top_k and (top_k != config.top_k):
+        config.top_k = top_k
+        save_config()
+
+
+def update_top_p() -> None:
+    top_p = widgets.top_p.get()
+
+    try:
+        top_p = float(top_p)
+    except BaseException:
+        return
+
+    if top_p and (top_p != config.top_p):
+        config.top_p = top_p
+        save_config()
+
+
+def add_model(model_path: str) -> None:
+    if model_path not in config.models:
+        config.models.append(model_path)
+        save_models()

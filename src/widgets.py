@@ -7,6 +7,25 @@ import tkinter as tk
 from typing import Any, Union, Tuple, Callable
 
 
+class Widgets:
+    def __init__(self, **kwargs) -> None:
+        self.name_1: tk.Entry = kwargs.get("name_1")
+        self.name_2: tk.Entry = kwargs.get("name_2")
+        self.max_tokens: tk.Entry = kwargs.get("max_tokens")
+        self.temperature: tk.Entry = kwargs.get("temperature")
+        self.system: tk.Entry = kwargs.get("system")
+        self.model: tk.Entry = kwargs.get("model")
+        self.top_k: tk.Entry = kwargs.get("top_k")
+        self.top_p: tk.Entry = kwargs.get("top_p")
+        self.output: tk.Text = kwargs.get("output")
+        self.input: tk.Entry = kwargs.get("input")
+        self.output_menu: tk.Menu = kwargs.get("output_menu")
+        self.model_menu: tk.Menu = kwargs.get("model_menu")
+
+
+widgets = Widgets()
+
+
 def do_grid(d: FrameData, widget: tk.Widget, sticky) -> None:
     widget.grid(row=0, column=d.col, padx=config.padx, pady=config.pady, sticky=sticky)
 

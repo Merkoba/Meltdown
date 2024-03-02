@@ -1,8 +1,10 @@
 # Modules
 from config import config
-import widgets
+import widgets as w
+from widgets import widgets
 import tkinter as tk
 from tkinter import filedialog
+import state
 
 # Libraries
 import pyperclip
@@ -29,7 +31,7 @@ def output(text: str, linebreak=True) -> None:
         right = "\n"
 
     text = left + text + right
-    widgets.insert_text(config.output_text, text, True)
+    w.insert_text(widgets.output, text, True)
     to_bottom()
 
 
@@ -37,26 +39,26 @@ def insert(text: str) -> None:
     if not exists():
         return
 
-    widgets.insert_text(config.output_text, text, True)
+    w.insert_text(widgets.output, text, True)
     to_bottom()
 
 
 def to_bottom() -> None:
-    config.output_text.yview_moveto(1.0)
+    widgets.output.yview_moveto(1.0)
 
 
 def output_length() -> int:
-    return len(config.output_text.get("1.0", "end-1c"))
+    return len(widgets.output.get("1.0", "end-1c"))
 
 
 def last_character() -> str:
-    text = config.output_text.get("1.0", "end-1c")
+    text = widgets.output.get("1.0", "end-1c")
     return text[-1] if text else None
 
 
 def submit() -> None:
     from model import model
-    text = config.input_text.get()
+    text = widgets.input.get()
 
     if text:
         clear_input()
@@ -64,13 +66,13 @@ def submit() -> None:
 
 
 def clear_output() -> None:
-    config.output_text.config(state="normal")
-    config.output_text.delete(1.0, "end")
-    config.output_text.config(state="disabled")
+    widgets.output.config(state="normal")
+    widgets.output.delete(1.0, "end")
+    widgets.output.config(state="disabled")
 
 
 def clear_input():
-    config.input_text.delete(0, "end")
+    widgets.input.delete(0, "end")
 
 
 def prompt(num: int) -> None:
@@ -80,19 +82,19 @@ def prompt(num: int) -> None:
 
 
 def show_output_menu(event) -> None:
-    config.output_menu.post(event.x_root, event.y_root)
+    widgets.output_menu.post(event.x_root, event.y_root)
 
 
 def hide_output_menu() -> None:
-    config.output_menu.unpost()
+    widgets.output_menu.unpost()
 
 
 def select_all() -> None:
-    config.output_text.tag_add("sel", "1.0", "end")
+    widgets.output.tag_add("sel", "1.0", "end")
 
 
 def copy_all() -> None:
-    text = config.output_text.get("1.0", "end-1c").strip()
+    text = widgets.output.get("1.0", "end-1c").strip()
     pyperclip.copy(text)
 
 
@@ -100,19 +102,19 @@ def show_model_menu(event) -> None:
     if not config.models:
         return
 
-    config.model_menu.delete(0, tk.END)
+    widgets.model_menu.delete(0, tk.END)
 
     for model in config.models:
-        config.model_menu.add_command(label=model, command=lambda m=model: set_model(m))
+        widgets.model_menu.add_command(label=model, command=lambda m=model: set_model(m))
 
     if event:
-        config.model_menu.post(event.x_root, event.y_root)
+        widgets.model_menu.post(event.x_root, event.y_root)
     else:
-        show_menu_at_center(config.model_menu)
+        show_menu_at_center(widgets.model_menu)
 
 
 def hide_model_menu() -> None:
-    config.model_menu.unpost()
+    widgets.model_menu.unpost()
 
 
 def hide_menus() -> None:
@@ -121,8 +123,8 @@ def hide_menus() -> None:
 
 
 def set_model(model: str) -> None:
-    widgets.set_text(config.model_text, model)
-    config.update_model()
+    w.set_text(widgets.model, model)
+    state.update_model()
 
 
 def show_menu_at_center(menu: tk.Menu) -> None:
@@ -144,8 +146,8 @@ def show_menu_at_center(menu: tk.Menu) -> None:
 
 def browse_model() -> None:
     file = filedialog.askopenfilename()
-    widgets.set_text(config.model_text, file)
-    config.update_model()
+    w.set_text(widgets.model, file)
+    state.update_model()
 
 
 def update() -> None:
@@ -159,4 +161,4 @@ def intro() -> None:
 
 
 def show_model() -> None:
-    widgets.set_text(config.model_text, config.model)
+    w.set_text(widgets.model, config.model)

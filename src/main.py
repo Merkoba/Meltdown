@@ -2,18 +2,20 @@
 from config import config
 from model import model
 import frames
-import action
+import actions
+import state
 
 
 def main() -> None:
-    config.prepare(__file__)
+    state.load_config_file()
+    state.load_models_file()
     frames.frame_model()
     frames.frame_settings()
     frames.frame_system()
     frames.frame_output()
     frames.frame_input()
     frames.setup()
-    action.intro()
+    actions.intro()
     config.app.mainloop()
     model.check_thread()
 

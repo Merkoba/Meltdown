@@ -1,7 +1,7 @@
 # Modules
 from config import config
 import timeutils
-import action
+import actions
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
@@ -28,13 +28,13 @@ class Model:
         model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            action.output("Model not found.")
+            actions.output("Model not found.")
             return False
 
         self.check_thread()
         now = timeutils.now()
-        action.output("Loading model...")
-        action.update()
+        actions.output("Loading model...")
+        actions.update()
 
         try:
             self.model = Llama(
@@ -42,11 +42,11 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            action.output("Model failed to load.")
+            actions.output("Model failed to load.")
             return False
 
         msg, now = timeutils.check_time("Model loaded.", now)
-        action.output(msg)
+        actions.output(msg)
         config.model_loaded = True
         return True
 
@@ -55,7 +55,7 @@ class Model:
             self.stop_thread.set()
             self.thread.join()
             self.stop_thread.clear()
-            action.output("* Interrupted *")
+            actions.output("* Interrupted *")
 
     def stream(self, prompt: str) -> None:
         if not config.model_loaded:
@@ -68,14 +68,14 @@ class Model:
 
     def do_stream(self, prompt: str) -> None:
         self.lock.acquire()
-        action.show_model()
+        actions.show_model()
         prompt = prompt.strip()
 
         if not prompt:
             return
 
-        action.prompt(1)
-        action.insert(prompt)
+        actions.prompt(1)
+        actions.insert(prompt)
 
         messages = [
             {"role": "system", "content": config.system},
@@ -106,7 +106,7 @@ class Model:
 
             if "content" in delta:
                 if not added_name:
-                    action.prompt(2)
+                    actions.prompt(2)
                     added_name = True
 
                 token = delta["content"]
@@ -124,7 +124,7 @@ class Model:
                     token = token.lstrip()
                     token_printed = True
 
-                action.insert(token)
+                actions.insert(token)
 
         self.lock.release()
 
