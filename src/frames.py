@@ -17,7 +17,6 @@ def frame_model() -> None:
     d.frame.grid_columnconfigure(1, weight=1)
     widgets.make_label(d, "Model")
     config.model_text = widgets.make_input(d, sticky="ew")
-    widgets.make_button(d, "Load", lambda: action.load_model())
 
 
 def frame_settings() -> None:
@@ -76,5 +75,6 @@ def setup() -> None:
     config.max_tokens_text.bind("<FocusOut>", lambda e: config.update_max_tokens())
     config.temperature_text.bind("<FocusOut>", lambda e: config.update_temperature())
     config.system_text.bind("<FocusOut>", lambda e: config.update_system())
+    config.model_text.bind("<FocusOut>", lambda e: config.update_model())
     config.input_text.bind("<Return>", lambda e: action.submit())
     config.input_text.focus_set()

@@ -14,7 +14,7 @@ def main() -> None:
     frames.frame_output()
     frames.frame_input()
     frames.setup()
-    # model.load()
+    model.load(config.model)
     print(timeutils.check_time("Started", now)[0])
     config.app.mainloop()
 

@@ -22,12 +22,6 @@ def submit() -> None:
         model.stream(text)
 
 
-def load_model():
-    from model import model
-    config.model = config.model_text.get()
-    model.load()
-
-
 def clear_output() -> None:
     config.output_text.config(state="normal")
     config.output_text.delete(1.0, "end")

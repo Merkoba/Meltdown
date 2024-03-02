@@ -132,11 +132,13 @@ class Config:
             self.save_config()
 
     def update_model(self) -> None:
-        model = self.model_text.get()
+        from model import model
+        model_path = self.model_text.get()
 
-        if model and (model != self.model):
-            self.model = model
-            self.save_config()
+        if model_path and (model_path != self.model):
+            if model.load(model_path):
+                self.model = model_path
+                self.save_config()
 
 
 config = Config()

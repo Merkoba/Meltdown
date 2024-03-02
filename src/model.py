@@ -16,13 +16,14 @@ class Model:
         self.mode = None
         self.stream_date = 0.0
 
-    def load(self) -> bool:
-        if not config.model:
+    def load(self, model: str) -> bool:
+        if not model:
             return False
 
-        model_path = Path(config.model)
+        model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
+            action.output("Model not found")
             return False
 
         now = timeutils.now()
@@ -39,7 +40,6 @@ class Model:
         msg, now = timeutils.check_time("Model loaded", now)
         action.output(msg)
         config.model_loaded = True
-        config.update_model()
         return True
 
     def stream(self, prompt: str) -> None:
