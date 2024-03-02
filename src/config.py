@@ -17,10 +17,7 @@ class Config:
         self.font_size = 14
         self.font_size_button = 10
         self.font_family = "sans"
-        self.text_width = 60
-        self.select_width = 110
-        self.bigger_width = 110
-        self.path_width = 150
+        self.input_width = 11
         self.dialog_color = "#252933"
         self.font = None
         self.font_button = None
@@ -41,6 +38,8 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
+        self.top_k = 40,
+        self.top_p = 0.95
         self.config_file = f"~/.config/{self.program}/config.json"
         self.saved_configs = [
             "model",
@@ -49,6 +48,8 @@ class Config:
             "max_tokens",
             "temperature",
             "system",
+            "top_k",
+            "top_p",
         ]
 
     def prepare(self, main_file: str) -> None:
@@ -139,6 +140,30 @@ class Config:
             if model.load(model_path):
                 self.model = model_path
                 self.save_config()
+
+    def update_top_k(self) -> None:
+        top_k = self.top_k_text.get()
+
+        try:
+            top_k = int(top_k)
+        except BaseException:
+            return
+
+        if top_k and (top_k != self.top_k):
+            self.top_k = top_k
+            self.save_config()
+
+    def update_top_p(self) -> None:
+        top_p = self.top_p_text.get()
+
+        try:
+            top_p = float(top_p)
+        except BaseException:
+            return
+
+        if top_p and (top_p != self.top_p):
+            self.top_p = top_p
+            self.save_config()
 
 
 config = Config()
