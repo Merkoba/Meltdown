@@ -4,11 +4,10 @@ from widgets import widgets
 import actions
 
 # Standard
-from pathlib import Path
 import json
 
 
-def load_config_file():
+def load_config_file() -> None:
     if not config.config_path.exists():
         config.config_path.parent.mkdir(parents=True, exist_ok=True)
         config.config_path.touch(exist_ok=True)
@@ -23,7 +22,7 @@ def load_config_file():
             setattr(config, key, conf.get(key, getattr(config, key)))
 
 
-def load_models_file():
+def load_models_file() -> None:
     if not config.models_path.exists():
         config.models_path.parent.mkdir(parents=True, exist_ok=True)
         config.models_path.touch(exist_ok=True)
@@ -49,14 +48,14 @@ def save_config() -> None:
     with open(config.config_path, "w") as file:
         json.dump(conf, file, indent=4)
 
-    actions.output("Config saved.")
+    widgets.print("Config saved.")
 
 
 def save_models() -> None:
     with open(config.models_path, "w") as file:
         json.dump(config.models, file, indent=4)
 
-    actions.output("Models saved.")
+    widgets.print("Models saved.")
 
 
 def update_name_1() -> None:
@@ -76,10 +75,10 @@ def update_name_2() -> None:
 
 
 def update_max_tokens() -> None:
-    max_tokens = widgets.max_tokens.get()
+    max_tokens_str = widgets.max_tokens.get()
 
     try:
-        max_tokens = int(max_tokens)
+        max_tokens = int(max_tokens_str)
     except BaseException:
         return
 
@@ -89,10 +88,10 @@ def update_max_tokens() -> None:
 
 
 def update_temperature() -> None:
-    temperature = widgets.temperature.get()
+    temperature_str = widgets.temperature.get()
 
     try:
-        temperature = float(temperature)
+        temperature = float(temperature_str)
     except BaseException:
         return
 
@@ -121,10 +120,10 @@ def update_model() -> None:
 
 
 def update_top_k() -> None:
-    top_k = widgets.top_k.get()
+    top_k_str = widgets.top_k.get()
 
     try:
-        top_k = int(top_k)
+        top_k = int(top_k_str)
     except BaseException:
         return
 
@@ -134,10 +133,10 @@ def update_top_k() -> None:
 
 
 def update_top_p() -> None:
-    top_p = widgets.top_p.get()
+    top_p_str = widgets.top_p.get()
 
     try:
-        top_p = float(top_p)
+        top_p = float(top_p_str)
     except BaseException:
         return
 

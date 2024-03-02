@@ -1,5 +1,6 @@
 # Modules
 from config import config
+from widgets import widgets
 import timeutils
 import actions
 
@@ -10,15 +11,15 @@ from llama_cpp import Llama  # type: ignore
 import threading
 from pathlib import Path
 import atexit
-
+from typing import List, Any
 
 class Model:
     def __init__(self) -> None:
         self.mode = None
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()
-        self.thread = None
-        self.context = []
+        self.thread = threading.Thread()
+        self.context: List[Any] = []
         atexit.register(self.check_thread)
 
     def load(self, model: str) -> bool:
@@ -28,13 +29,13 @@ class Model:
         model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            actions.output("Model not found.")
+            widgets.print("Model not found.")
             return False
 
         self.check_thread()
         now = timeutils.now()
-        actions.output("Loading model...")
-        actions.update()
+        widgets.print("Loading model...")
+        widgets.update()
 
         try:
             self.model = Llama(
@@ -42,11 +43,11 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            actions.output("Model failed to load.")
+            widgets.print("Model failed to load.")
             return False
 
         msg, now = timeutils.check_time("Model loaded.", now)
-        actions.output(msg)
+        widgets.print(msg)
         config.model_loaded = True
         return True
 
@@ -55,7 +56,7 @@ class Model:
             self.stop_thread.set()
             self.thread.join()
             self.stop_thread.clear()
-            actions.output("* Interrupted *")
+            widgets.print("* Interrupted *")
 
     def stream(self, prompt: str) -> None:
         if not config.model_loaded:
@@ -68,14 +69,14 @@ class Model:
 
     def do_stream(self, prompt: str) -> None:
         self.lock.acquire()
-        actions.show_model()
+        widgets.show_model()
         prompt = prompt.strip()
 
         if not prompt:
             return
 
-        actions.prompt(1)
-        actions.insert(prompt)
+        widgets.prompt(1)
+        widgets.insert(prompt)
 
         messages = [
             {"role": "system", "content": config.system},
@@ -89,7 +90,7 @@ class Model:
         token_printed = False
         last_token = " "
 
-        output = self.model.create_chat_completion(  # type: ignore
+        output = self.model.create_chat_completion(
             messages=messages,
             max_tokens=config.max_tokens,
             temperature=config.temperature,
@@ -106,7 +107,7 @@ class Model:
 
             if "content" in delta:
                 if not added_name:
-                    actions.prompt(2)
+                    widgets.prompt(2)
                     added_name = True
 
                 token = delta["content"]
@@ -124,7 +125,7 @@ class Model:
                     token = token.lstrip()
                     token_printed = True
 
-                actions.insert(token)
+                widgets.insert(token)
 
         self.lock.release()
 

@@ -12,7 +12,7 @@ def seconds_string(name: str, start: float, end: float) -> str:
     return f"{name} in {num} seconds"
 
 
-def check_time(name: str, last_time) -> Tuple[str, float]:
+def check_time(name: str, last_time: float) -> Tuple[str, float]:
     now = get_time()
     seconds_str = seconds_string(name, now, last_time)
     return seconds_str, now

@@ -1,7 +1,7 @@
 # Standard
 from pathlib import Path
 import tkinter as tk
-
+from typing import List
 
 class Config:
     def __init__(self) -> None:
@@ -39,7 +39,7 @@ class Config:
         self.models_file = f"~/.config/{self.program}/models.json"
         self.config_path = Path(self.config_file).expanduser().resolve()
         self.models_path = Path(self.models_file).expanduser().resolve()
-        self.models = []
+        self.models: List[str] = []
 
         self.saved_configs = [
             "model",
