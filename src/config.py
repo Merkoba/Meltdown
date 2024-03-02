@@ -30,7 +30,6 @@ class Config:
         self.font = ("sans", 14)
         self.font_button = ("sans", 10)
         self.frame_number = 0
-        self.model_loaded = False
         self.background_color = "#212121"
         self.foreground_color = "white"
         self.button_background = "#446CA1"

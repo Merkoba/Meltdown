@@ -136,11 +136,15 @@ def update_model() -> None:
     from model import model
     model_path = widgets.model.get()
 
-    if model_path and (model_path != config.model):
-        if model.load(model_path):
-            config.model = model_path
-            save_config()
-            add_model(model_path)
+    if not model_path:
+        return
+
+    if model_path != config.model:
+        config.model = model_path
+        save_config()
+
+    if model.load(model_path):
+        add_model(model_path)
 
 
 def update_top_k() -> None:
@@ -171,7 +175,8 @@ def update_top_p() -> None:
 
 def add_model(model_path: str) -> None:
     if model_path not in config.models:
-        config.models.append(model_path)
+        config.models.insert(0, model_path)
+        config.models = list(set(config.models))
         save_models()
 
 

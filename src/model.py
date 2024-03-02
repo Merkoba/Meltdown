@@ -20,6 +20,7 @@ class Model:
         self.stop_thread = threading.Event()
         self.thread = threading.Thread()
         self.context: List[Any] = []
+        self.loaded_model = ""
         atexit.register(self.check_thread)
 
     def load(self, model: str) -> bool:
@@ -30,6 +31,10 @@ class Model:
 
         if (not model_path.exists()) or (not model_path.is_file()):
             widgets.print("Model not found.")
+            return False
+
+        if model == self.loaded_model:
+            widgets.print("Model already loaded.")
             return False
 
         self.check_thread()
@@ -46,9 +51,9 @@ class Model:
             widgets.print("Model failed to load.")
             return False
 
+        self.loaded_model = model
         msg, now = timeutils.check_time("Model loaded.", now)
         widgets.print(msg)
-        config.model_loaded = True
         return True
 
     def check_thread(self) -> None:
@@ -59,7 +64,7 @@ class Model:
             widgets.print("* Interrupted *")
 
     def stream(self, prompt: str) -> None:
-        if not config.model_loaded:
+        if not self.loaded_model:
             if not self.load(config.model):
                 return
 

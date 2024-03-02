@@ -33,7 +33,7 @@ def make_text(d: FrameData, sticky: str = "w", state: Literal["normal", "disable
     return widget
 
 
-def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, sticky: str = "w") -> tk.Entry:
+def make_input(d: FrameData, value: str = "", width: Optional[int] = None, sticky: str = "w") -> tk.Entry:
     w = width if width else config.input_width
     widget = tk.Entry(d.frame, font=config.font, width=w)
     widget.configure(background=config.input_background, foreground=config.input_foreground)
