@@ -9,6 +9,7 @@ from llama_cpp import Llama  # type: ignore
 # Standard
 import threading
 from pathlib import Path
+import atexit
 
 
 class Model:
@@ -17,6 +18,7 @@ class Model:
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()
         self.thread = None
+        atexit.register(self.check_thread)
 
     def load(self, model: str) -> bool:
         if not model:

@@ -8,7 +8,17 @@ from tkinter import filedialog
 import pyperclip
 
 
+def exists() -> bool:
+    try:
+        return config.app.winfo_exists()
+    except tk.TclError:
+        return False
+
+
 def output(text: str, linebreak=True) -> None:
+    if not exists():
+        return
+
     left = ""
     right = ""
 
@@ -24,6 +34,9 @@ def output(text: str, linebreak=True) -> None:
 
 
 def insert(text: str) -> None:
+    if not exists():
+        return
+
     widgets.insert_text(config.output_text, text, True)
     to_bottom()
 
