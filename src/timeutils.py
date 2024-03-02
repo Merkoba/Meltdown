@@ -20,3 +20,7 @@ def check_time(name: str, last_time: float) -> Tuple[str, float]:
 
 def now() -> float:
     return time.time()
+
+
+def now_int() -> int:
+    return int(time.time())

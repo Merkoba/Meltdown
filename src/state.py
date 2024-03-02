@@ -2,6 +2,7 @@
 from config import config
 from config import ConfigDefaults
 from widgets import widgets
+import timeutils
 
 # Standard
 import json
@@ -17,6 +18,7 @@ saved_configs = [
     "system",
     "top_k",
     "top_p",
+    "context",
 ]
 
 
@@ -173,6 +175,19 @@ def update_top_p() -> None:
         save_config()
 
 
+def update_context() -> None:
+    context_str = widgets.context.get()
+
+    try:
+        context = int(context_str)
+    except BaseException:
+        return
+
+    if context and (context != config.context):
+        config.context = context
+        save_config()
+
+
 def add_model(model_path: str) -> None:
     config.models = [item for item in config.models if item != model_path]
     config.models.insert(0, model_path)
@@ -219,3 +234,17 @@ def get_models_dir() -> Optional[str]:
 def models_info() -> None:
     import widgetutils
     widgetutils.show_message("The models you load are saved here automatically.")
+
+
+def save_log() -> None:
+    import widgetutils
+    log = widgetutils.get_text(widgets.output)
+
+    if log:
+        config.logs_path.mkdir(parents=True, exist_ok=True)
+        file_name = str(timeutils.now_int()) + ".txt"
+
+        with open(Path(config.logs_path, file_name), "w") as file:
+            file.write(log)
+
+        widgets.print(f"Log saved as {file_name}")

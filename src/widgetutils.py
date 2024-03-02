@@ -7,8 +7,9 @@ import pyperclip  # type: ignore
 
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from tkinter import messagebox
-from typing import Any, Union, Callable, Literal, Optional
+from typing import Any, Union, Callable, Literal, Optional, List
 
 
 def do_grid(d: FrameData, widget: tk.Widget, sticky: str) -> None:
@@ -64,6 +65,15 @@ def make_label(d: FrameData, text: str, sticky: str = "w") -> tk.Label:
     return widget
 
 
+def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = "w") -> ttk.Combobox:
+    v = values if values else ["empty"]
+    widget = ttk.Combobox(d.frame, values=v, state="readonly",
+                          font=config.font, style="TCombobox", width=config.select_width)
+    do_grid(d, widget, sticky)
+    d.col += 1
+    return widget
+
+
 def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
     widget.configure(state="normal")
     widget.insert(tk.END, str(text))
@@ -79,6 +89,10 @@ def set_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], dis
 
     if disable:
         widget.configure(state="disabled")
+
+
+def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
+    widget.set(str(value))
 
 
 def show_menu_at_center(menu: tk.Menu) -> None:
@@ -116,6 +130,10 @@ def text_length(widget: Union[tk.Text]) -> int:
 
 def select_all(widget: tk.Text) -> None:
     widget.tag_add("sel", "1.0", "end")
+
+
+def get_text(widget: tk.Text) -> str:
+    return widget.get("1.0", "end-1c").strip()
 
 
 def copy_all(widget: tk.Text) -> None:

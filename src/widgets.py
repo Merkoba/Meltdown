@@ -54,6 +54,9 @@ class Widgets:
         d.frame.grid_columnconfigure(1, weight=1)
         widgetutils.make_label(d, "Prompt")
         self.input = widgetutils.make_input(d, sticky="ew")
+        widgetutils.make_label(d, "Context")
+        values = ["No Context", "10 Messages", "100 Messages"]
+        self.context = widgetutils.make_select(d, values)
         widgetutils.make_button(d, "Submit", lambda: self.submit())
 
         self.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
@@ -68,6 +71,7 @@ class Widgets:
         widgetutils.set_text(self.system, config.system)
         widgetutils.set_text(self.top_k, config.top_k)
         widgetutils.set_text(self.top_p, config.top_p)
+        widgetutils.set_select(self.context, config.context)
 
     def setup(self) -> None:
         import state
@@ -83,6 +87,7 @@ class Widgets:
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
         self.output_menu.add_separator()
         self.output_menu.add_command(label="Reset", command=lambda: state.reset_config())
+        self.output_menu.add_command(label="Save Log", command=lambda: state.save_log())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.output.bind("<Button-1>", lambda e: self.hide_menus())
@@ -98,6 +103,7 @@ class Widgets:
         self.model.bind("<FocusOut>", lambda e: state.update_model())
         self.top_k.bind("<FocusOut>", lambda e: state.update_top_k())
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
+        self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
 
         self.input.focus_set()
 
