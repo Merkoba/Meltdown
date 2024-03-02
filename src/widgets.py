@@ -109,6 +109,15 @@ class Widgets:
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
         self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
 
+        def on_key(event):
+            if event.widget == self.output:
+                if event.char:
+                    # Focus the input and insert char
+                    self.input.focus_set()
+                    self.input.insert(tk.END, event.char)
+
+        config.app.bind("<KeyPress>", on_key)
+
         self.input.focus_set()
 
     def print(self, text: str, linebreak: bool = True) -> None:
