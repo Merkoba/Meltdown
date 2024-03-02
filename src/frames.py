@@ -22,7 +22,7 @@ def frame_model() -> None:
 
 def frame_settings() -> None:
     d = get_d()
-    width = 10
+    width = 11
     widgets.make_label(d, "Name 1")
     config.name_1_text = widgets.make_input(d, width=width)
     widgets.make_label(d, "Name 2")
@@ -31,10 +31,6 @@ def frame_settings() -> None:
     config.max_tokens_text = widgets.make_input(d, width=width)
     widgets.make_label(d, "Temp")
     config.temperature_text = widgets.make_input(d, width=width)
-    config.name_1_text.bind("<FocusOut>", lambda e: action.update_name_1())
-    config.name_2_text.bind("<FocusOut>", lambda e: action.update_name_2())
-    config.max_tokens_text.bind("<FocusOut>", lambda e: action.update_max_tokens())
-    config.temperature_text.bind("<FocusOut>", lambda e: action.update_temperature())
 
 
 def frame_system() -> None:
@@ -56,7 +52,6 @@ def frame_input() -> None:
     d.frame.grid_columnconfigure(0, weight=1)
     config.input_text = widgets.make_input(d, sticky="ew")
     widgets.make_button(d, "Submit", lambda: action.submit())
-    config.input_text.bind("<Return>", lambda e: action.submit())
 
 
 def fill() -> None:
@@ -76,4 +71,10 @@ def setup() -> None:
     config.output_menu.add_command(label="Copy All", command=lambda: action.copy_all())
     config.output_text.bind("<Button-3>", lambda e: action.show_output_menu(e))
     config.output_text.bind("<Button-1>", lambda e: action.hide_output_menu())
+    config.name_1_text.bind("<FocusOut>", lambda e: config.update_name_1())
+    config.name_2_text.bind("<FocusOut>", lambda e: config.update_name_2())
+    config.max_tokens_text.bind("<FocusOut>", lambda e: config.update_max_tokens())
+    config.temperature_text.bind("<FocusOut>", lambda e: config.update_temperature())
+    config.system_text.bind("<FocusOut>", lambda e: config.update_system())
+    config.input_text.bind("<Return>", lambda e: action.submit())
     config.input_text.focus_set()

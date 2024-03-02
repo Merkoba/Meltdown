@@ -5,6 +5,7 @@ import widgets
 # Libraries
 import pyperclip
 
+
 def output(text: str, linebreak=True) -> None:
     if linebreak:
         text = text + "\n"
@@ -41,44 +42,6 @@ def prompt(num: int) -> None:
     name = getattr(config, f"name_{num}")
     prompt = f"{name}: "
     output(prompt, False)
-
-
-def update_name_1() -> None:
-    name_1 = config.name_1_text.get()
-
-    if name_1:
-        config.name_1 = config.name_1_text.get()
-
-
-def update_name_2() -> None:
-    name_2 = config.name_2_text.get()
-
-    if name_2:
-        config.name_2 = config.name_2_text.get()
-
-
-def update_max_tokens() -> None:
-    max_tokens = config.max_tokens_text.get()
-
-    try:
-        max_tokens = int(max_tokens)
-    except BaseException:
-        return
-
-    if max_tokens:
-        config.max_tokens = config.max_tokens_text.get()
-
-
-def update_temperature() -> None:
-    temperature = config.temperature_text.get()
-
-    try:
-        temperature = float(temperature)
-    except BaseException:
-        return
-
-    if temperature:
-        config.temperature = config.temperature_text.get()
 
 
 def show_output_menu(event) -> None:

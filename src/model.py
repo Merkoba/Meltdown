@@ -27,14 +27,19 @@ class Model:
 
         now = timeutils.now()
 
-        self.model = Llama(
-            model_path=str(model_path),
-            verbose=False,
-        )
+        try:
+            self.model = Llama(
+                model_path=str(model_path),
+                verbose=False,
+            )
+        except BaseException as e:
+            action.output("Model failed to load")
+            return False
 
         msg, now = timeutils.check_time("Model loaded", now)
         action.output(msg)
         config.model_loaded = True
+        config.update_model()
         return True
 
     def stream(self, prompt: str) -> None:
