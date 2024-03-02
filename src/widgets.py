@@ -2,10 +2,8 @@
 from config import config
 from framedata import FrameData
 
-# Libraries
-import tkinter as tk
-
 # Standard
+import tkinter as tk
 from typing import Any, Union, Tuple, Callable
 
 
@@ -17,21 +15,25 @@ def make_frame() -> tk.Frame:
     frame = tk.Frame(config.app)
     frame.grid(row=config.frame_number, column=0, padx=config.frame_padx,
                pady=config.frame_pady, sticky="nsew")
+    frame.configure(background=config.background_color)
     config.frame_number += 1
     return frame
 
 
 def make_text(d: FrameData, sticky: str = "w", state="normal") -> tk.Text:
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
+    widget.configure(background=config.text_background, foreground=config.text_foreground)
+    widget.configure(bd=0, highlightthickness=0)
     do_grid(d, widget, sticky)
     d.col += 1
     return widget
 
 
-def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, sticky: str = "w",
-               placeholder: str = "") -> tk.Entry:
+def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, sticky: str = "w") -> tk.Entry:
     w = width if width else config.text_width
     widget = tk.Entry(d.frame, font=config.font, width=w)
+    widget.configure(background=config.input_background, foreground=config.input_foreground)
+    widget.configure(bd=0, highlightthickness=0)
     do_grid(d, widget, sticky)
 
     if value:
@@ -41,12 +43,10 @@ def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, st
     return widget
 
 
-def make_button(d: FrameData, text: str, command: Callable[..., Any], color: str = "grey",
-                text_color: Union[str, None] = None, hover_color: Union[Tuple[str, str], None] = None,
-                sticky: str = "w") -> tk.Button:
-    widget = tk.Button(d.frame, text=text, command=command, font=config.font,
-                       fg=color, text_color=text_color, hover_color=hover_color, )
-
+def make_button(d: FrameData, text: str, command: Callable[..., Any], sticky: str = "w") -> tk.Button:
+    widget = tk.Button(d.frame, text=text, command=command, font=config.font_button)
+    widget.configure(background=config.button_background, foreground=config.button_foreground)
+    widget.configure(bd=0, highlightthickness=0)
     do_grid(d, widget, sticky)
     d.col += 1
     return widget
@@ -54,6 +54,7 @@ def make_button(d: FrameData, text: str, command: Callable[..., Any], color: str
 
 def make_label(d: FrameData, text: str, sticky: str = "w") -> tk.Label:
     widget = tk.Label(d.frame, text=f"{text}:", font=config.font)
+    widget.configure(background=config.background_color, foreground=config.foreground_color)
     do_grid(d, widget, sticky)
     d.col += 1
     return widget

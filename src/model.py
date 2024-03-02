@@ -7,7 +7,7 @@ import action
 from llama_cpp import Llama  # type: ignore
 
 # Standard
-import asyncio
+import threading
 from pathlib import Path
 
 
@@ -38,6 +38,9 @@ class Model:
         return True
 
     def stream(self, prompt: str) -> None:
+        threading.Thread(target=self.do_stream, args=(prompt,)).start()
+
+    def do_stream(self, prompt: str) -> None:
         if not config.model_loaded:
             action.output("Model is not loaded")
             return
@@ -98,5 +101,6 @@ class Model:
                     token_printed = True
 
                 action.output(token, False)
+
 
 model = Model()

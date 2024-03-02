@@ -1,8 +1,9 @@
 # Modules
 from config import config
 import widgets
-import threading
 
+# Libraries
+import pyperclip
 
 def output(text: str, linebreak=True) -> None:
     if linebreak:
@@ -17,7 +18,7 @@ def submit() -> None:
 
     if text:
         clear_input()
-        threading.Thread(target=model.stream, args=(text,)).start()
+        model.stream(text)
 
 
 def load_model():
@@ -78,3 +79,20 @@ def update_temperature() -> None:
 
     if temperature:
         config.temperature = config.temperature_text.get()
+
+
+def show_output_menu(event) -> None:
+    config.output_menu.post(event.x_root, event.y_root)
+
+
+def hide_output_menu() -> None:
+    config.output_menu.unpost()
+
+
+def select_all() -> None:
+    config.output_text.tag_add("sel", "1.0", "end")
+
+
+def copy_all() -> None:
+    text = config.output_text.get("1.0", "end-1c").strip()
+    pyperclip.copy(text)

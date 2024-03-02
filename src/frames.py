@@ -4,6 +4,9 @@ import widgets
 from framedata import FrameData
 import action
 
+# Standard
+import tkinter as tk
+
 
 def get_d() -> FrameData:
     return FrameData(widgets.make_frame(), 0)
@@ -13,22 +16,21 @@ def frame_model() -> None:
     d = get_d()
     d.frame.grid_columnconfigure(1, weight=1)
     widgets.make_label(d, "Model")
-    config.model_text = widgets.make_input(d, sticky="ew", placeholder="Enter path to a model")
+    config.model_text = widgets.make_input(d, sticky="ew")
     widgets.make_button(d, "Load", lambda: action.load_model())
-    widgets.make_button(d, "Clear", lambda: action.clear_output())
 
 
 def frame_settings() -> None:
     d = get_d()
     width = 10
     widgets.make_label(d, "Name 1")
-    config.name_1_text = widgets.make_input(d, placeholder="Name 1", width=width)
+    config.name_1_text = widgets.make_input(d, width=width)
     widgets.make_label(d, "Name 2")
-    config.name_2_text = widgets.make_input(d, placeholder="Name 2", width=width)
+    config.name_2_text = widgets.make_input(d, width=width)
     widgets.make_label(d, "Tokens")
-    config.max_tokens_text = widgets.make_input(d, placeholder="Tokens", width=width)
+    config.max_tokens_text = widgets.make_input(d, width=width)
     widgets.make_label(d, "Temp")
-    config.temperature_text = widgets.make_input(d, placeholder="Temperature", width=width)
+    config.temperature_text = widgets.make_input(d, width=width)
     config.name_1_text.bind("<FocusOut>", lambda e: action.update_name_1())
     config.name_2_text.bind("<FocusOut>", lambda e: action.update_name_2())
     config.max_tokens_text.bind("<FocusOut>", lambda e: action.update_max_tokens())
@@ -39,8 +41,7 @@ def frame_system() -> None:
     d = get_d()
     d.frame.grid_columnconfigure(1, weight=1)
     widgets.make_label(d, "Instuctions")
-    config.system_text = widgets.make_input(d, sticky="ew",
-                                            placeholder="Add instructions to tell the bot how to act")
+    config.system_text = widgets.make_input(d, sticky="ew")
 
 
 def frame_output() -> None:
@@ -48,13 +49,12 @@ def frame_output() -> None:
     d.frame.grid_columnconfigure(0, weight=1)
     d.frame.grid_rowconfigure(0, weight=0)
     config.output_text = widgets.make_text(d, state="disabled", sticky="nsew")
-    config.output_text.config(bg="grey", fg="white", highlightthickness=0, bd=0)
 
 
 def frame_input() -> None:
     d = get_d()
     d.frame.grid_columnconfigure(0, weight=1)
-    config.input_text = widgets.make_input(d, sticky="ew", placeholder="Ask something to x")
+    config.input_text = widgets.make_input(d, sticky="ew")
     widgets.make_button(d, "Submit", lambda: action.submit())
     config.input_text.bind("<Return>", lambda e: action.submit())
 
@@ -70,4 +70,10 @@ def fill() -> None:
 
 def setup() -> None:
     fill()
+    config.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
+    config.output_menu.add_command(label="Clear", command=lambda: action.clear_output())
+    config.output_menu.add_command(label="Select All", command=lambda: action.select_all())
+    config.output_menu.add_command(label="Copy All", command=lambda: action.copy_all())
+    config.output_text.bind("<Button-3>", lambda e: action.show_output_menu(e))
+    config.output_text.bind("<Button-1>", lambda e: action.hide_output_menu())
     config.input_text.focus_set()
