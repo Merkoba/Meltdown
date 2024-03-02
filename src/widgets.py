@@ -33,7 +33,7 @@ def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, st
     w = width if width else config.text_width
     widget = tk.Entry(d.frame, font=config.font, width=w)
     widget.configure(background=config.input_background, foreground=config.input_foreground)
-    widget.configure(bd=0, highlightthickness=0)
+    widget.configure(bd=0, highlightthickness=0, insertbackground="white")
     do_grid(d, widget, sticky)
 
     if value:

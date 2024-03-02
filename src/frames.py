@@ -48,7 +48,8 @@ def frame_output() -> None:
 
 def frame_input() -> None:
     d = get_d()
-    d.frame.grid_columnconfigure(0, weight=1)
+    d.frame.grid_columnconfigure(1, weight=1)
+    widgets.make_label(d, "Prompt")
     config.input_text = widgets.make_input(d, sticky="ew")
     widgets.make_button(d, "Submit", lambda: action.submit())
 
