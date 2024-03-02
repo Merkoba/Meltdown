@@ -14,7 +14,7 @@ class ConfigDefaults:
     top_k = 40
     top_p = 0.95
     model = ""
-    context = 10
+    context = 0
 
 
 class Config:

@@ -20,7 +20,7 @@ class Widgets:
         widgetutils.make_label(d, "Model")
         self.model = widgetutils.make_input(d, sticky="ew")
         widgetutils.make_button(d, "Browse", lambda: self.browse_model())
-        widgetutils.make_button(d, "Recent", lambda: self.show_model_menu(None))
+        widgetutils.make_button(d, "Menu", lambda: self.show_main_menu())
 
         # Settings
         d = get_d()
@@ -62,6 +62,7 @@ class Widgets:
 
         self.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
         self.model_menu = tk.Menu(config.app, tearoff=0, font=config.font)
+        self.main_menu = tk.Menu(config.app, tearoff=0, font=config.font)
 
     def fill(self) -> None:
         widgetutils.set_text(self.model, config.model)
@@ -87,8 +88,12 @@ class Widgets:
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
         self.output_menu.add_separator()
+        self.output_menu.add_command(label="Save", command=lambda: state.save_log())
         self.output_menu.add_command(label="Reset", command=lambda: state.reset_config())
-        self.output_menu.add_command(label="Save Log", command=lambda: state.save_log())
+
+        self.main_menu.add_command(label="Recent Models", command=lambda: self.show_model_menu(None))
+        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.output.bind("<Button-1>", lambda e: self.hide_menus())
@@ -167,6 +172,7 @@ class Widgets:
     def hide_menus(self) -> None:
         self.hide_output_menu()
         self.hide_model_menu()
+        self.hide_main_menu()
 
     def browse_model(self) -> None:
         import state
@@ -208,6 +214,12 @@ class Widgets:
 
     def update(self) -> None:
         config.app.update_idletasks()
+
+    def show_main_menu(self) -> None:
+        widgetutils.show_menu_at_center(self.main_menu)
+
+    def hide_main_menu(self) -> None:
+        self.main_menu.unpost()
 
 
 widgets: Widgets = Widgets()
