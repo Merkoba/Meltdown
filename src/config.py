@@ -2,13 +2,12 @@
 from pathlib import Path
 import tkinter as tk
 import json
-from typing import List, Union, Dict, Tuple, Any
 
 
 class Config:
     def __init__(self) -> None:
         self.program = "meltdown"
-        self.app: Union[tk.Frame, None] = None
+        self.app = None
         self.width = 960
         self.height = 730
         self.padx = 5
@@ -121,7 +120,7 @@ class Config:
         with open(self.config_path, "w") as file:
             json.dump(conf, file, indent=4)
 
-        action.output("Config saved")
+        action.output("Config saved.")
 
     def save_models(self) -> None:
         import action
@@ -129,7 +128,7 @@ class Config:
         with open(self.models_path, "w") as file:
             json.dump(self.models, file, indent=4)
 
-        action.output("Models saved")
+        action.output("Models saved.")
 
     def update_name_1(self) -> None:
         name_1 = self.name_1_text.get()

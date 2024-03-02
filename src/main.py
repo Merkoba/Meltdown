@@ -2,6 +2,7 @@
 from config import config
 from model import model
 import frames
+import action
 
 
 def main() -> None:
@@ -12,6 +13,7 @@ def main() -> None:
     frames.frame_output()
     frames.frame_input()
     frames.setup()
+    action.intro()
     config.app.mainloop()
     model.check_thread()
 

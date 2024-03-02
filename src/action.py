@@ -150,3 +150,13 @@ def browse_model() -> None:
 
 def update() -> None:
     config.app.update_idletasks()
+
+
+def intro() -> None:
+    output("Welcome to Meltdown")
+    output("Type a prompt and press Enter to continue")
+    output("The specified model with load automatically")
+
+
+def show_model() -> None:
+    widgets.set_text(config.model_text, config.model)

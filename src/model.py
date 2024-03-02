@@ -18,6 +18,7 @@ class Model:
         self.lock = threading.Lock()
         self.stop_thread = threading.Event()
         self.thread = None
+        self.context = []
         atexit.register(self.check_thread)
 
     def load(self, model: str) -> bool:
@@ -27,9 +28,10 @@ class Model:
         model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            action.output("Model not found")
+            action.output("Model not found.")
             return False
 
+        self.check_thread()
         now = timeutils.now()
         action.output("Loading model...")
         action.update()
@@ -40,10 +42,10 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            action.output("Model failed to load")
+            action.output("Model failed to load.")
             return False
 
-        msg, now = timeutils.check_time("Model loaded", now)
+        msg, now = timeutils.check_time("Model loaded.", now)
         action.output(msg)
         config.model_loaded = True
         return True
@@ -66,6 +68,7 @@ class Model:
 
     def do_stream(self, prompt: str) -> None:
         self.lock.acquire()
+        action.show_model()
         prompt = prompt.strip()
 
         if not prompt:
