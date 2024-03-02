@@ -2,7 +2,6 @@
 from config import config
 from widgets import widgets
 import timeutils
-import actions
 
 # Libraries
 from llama_cpp import Llama  # type: ignore

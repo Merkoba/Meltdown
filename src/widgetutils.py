@@ -7,7 +7,8 @@ import pyperclip  # type: ignore
 
 # Standard
 import tkinter as tk
-from typing import Any, Union, Callable, Literal
+from tkinter import messagebox
+from typing import Any, Union, Callable, Literal, Optional
 
 
 def do_grid(d: FrameData, widget: tk.Widget, sticky: str) -> None:
@@ -128,3 +129,12 @@ def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
 
 def to_bottom(widget: tk.Text) -> None:
     widget.yview_moveto(1.0)
+
+
+def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
+    result = messagebox.askquestion("Confirmation", text)
+
+    if result == "yes":
+        cmd_ok()
+    elif cmd_cancel:
+        cmd_cancel()

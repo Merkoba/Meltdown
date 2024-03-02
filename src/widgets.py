@@ -60,15 +60,14 @@ class Widgets:
         self.model_menu = tk.Menu(config.app, tearoff=0, font=config.font)
 
     def fill(self) -> None:
-        widgetutils.insert_text(self.model, config.model)
-        widgetutils.insert_text(self.name_1, config.name_1)
-        widgetutils.insert_text(self.name_2, config.name_2)
-        widgetutils.insert_text(self.max_tokens, config.max_tokens)
-        widgetutils.insert_text(self.temperature, config.temperature)
-        widgetutils.insert_text(self.system, config.system)
-        widgetutils.insert_text(self.top_k,
-                                config.top_k)
-        widgetutils.insert_text(self.top_p, config.top_p)
+        widgetutils.set_text(self.model, config.model)
+        widgetutils.set_text(self.name_1, config.name_1)
+        widgetutils.set_text(self.name_2, config.name_2)
+        widgetutils.set_text(self.max_tokens, config.max_tokens)
+        widgetutils.set_text(self.temperature, config.temperature)
+        widgetutils.set_text(self.system, config.system)
+        widgetutils.set_text(self.top_k, config.top_k)
+        widgetutils.set_text(self.top_p, config.top_p)
 
     def setup(self) -> None:
         import state
@@ -82,6 +81,10 @@ class Widgets:
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        self.output_menu.add_separator()
+        self.output_menu.add_command(label="Reset", command=lambda: state.reset_config())
+
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.output.bind("<Button-1>", lambda e: self.hide_menus())
         self.output.bind("<Button-1>", lambda e: self.hide_menus())

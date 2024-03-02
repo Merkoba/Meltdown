@@ -1,10 +1,21 @@
 # Modules
 from config import config
+from config import ConfigDefaults
 from widgets import widgets
-import actions
 
 # Standard
 import json
+
+saved_configs = [
+    "model",
+    "name_1",
+    "name_2",
+    "max_tokens",
+    "temperature",
+    "system",
+    "top_k",
+    "top_p",
+]
 
 
 def load_config_file() -> None:
@@ -18,7 +29,7 @@ def load_config_file() -> None:
         except BaseException:
             conf = {}
 
-        for key in config.saved_configs:
+        for key in saved_configs:
             setattr(config, key, conf.get(key, getattr(config, key)))
 
 
@@ -38,17 +49,28 @@ def load_models_file() -> None:
 
         config.models = models
 
+    check_models()
 
-def save_config() -> None:
+
+def check_models(save: bool = True) -> None:
+    if (not config.model) and config.models:
+        config.model = config.models[0]
+
+        if save:
+            save_config(False)
+
+
+def save_config(announce: bool = True) -> None:
     conf = {}
 
-    for key in config.saved_configs:
+    for key in saved_configs:
         conf[key] = getattr(config, key)
 
     with open(config.config_path, "w") as file:
         json.dump(conf, file, indent=4)
 
-    widgets.print("Config saved.")
+    if announce:
+        widgets.print("Config saved.")
 
 
 def save_models() -> None:
@@ -149,3 +171,17 @@ def add_model(model_path: str) -> None:
     if model_path not in config.models:
         config.models.append(model_path)
         save_models()
+
+
+def do_reset_config() -> None:
+    for key in saved_configs:
+        setattr(config, key, getattr(ConfigDefaults, key))
+
+    check_models(False)
+    save_config()
+    widgets.fill()
+
+
+def reset_config() -> None:
+    import widgetutils
+    widgetutils.show_confirm("Reset config?", do_reset_config, None)
