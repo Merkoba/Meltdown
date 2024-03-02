@@ -87,13 +87,11 @@ class Widgets:
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
-        self.output_menu.add_separator()
-        self.output_menu.add_command(label="Save", command=lambda: state.save_log())
-        self.output_menu.add_command(label="Reset", command=lambda: state.reset_config())
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_model_menu(None))
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
+        self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.output.bind("<Button-1>", lambda e: self.hide_menus())
