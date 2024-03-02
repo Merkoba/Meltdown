@@ -9,6 +9,7 @@ from typing import Any
 from tkinter import filedialog
 from typing import Optional, Any
 
+
 class ToolTip:
     def __init__(self, widget: tk.Widget, text: str) -> None:
         self.widget = widget
@@ -69,13 +70,13 @@ class Widgets:
         # Settings
         d = get_d()
 
-        widgetutils.make_label(d, "Name 1")
-        self.name_1 = widgetutils.make_input(d)
-        ToolTip(self.name_1, "The name of the user (you)")
+        widgetutils.make_label(d, "User")
+        self.name_user = widgetutils.make_input(d)
+        ToolTip(self.name_user, "The name of the user (you)")
 
-        widgetutils.make_label(d, "Name 2")
-        self.name_2 = widgetutils.make_input(d)
-        ToolTip(self.name_2, "The name of the assistant (ai)")
+        widgetutils.make_label(d, "AI")
+        self.name_ai = widgetutils.make_input(d)
+        ToolTip(self.name_ai, "The name of the assistant (AI)")
 
         widgetutils.make_label(d, "Tokens")
         self.max_tokens = widgetutils.make_input(d)
@@ -149,8 +150,8 @@ class Widgets:
 
     def fill(self) -> None:
         widgetutils.set_text(self.model, config.model)
-        widgetutils.set_text(self.name_1, config.name_1)
-        widgetutils.set_text(self.name_2, config.name_2)
+        widgetutils.set_text(self.name_user, config.name_user)
+        widgetutils.set_text(self.name_ai, config.name_ai)
         widgetutils.set_text(self.max_tokens, config.max_tokens)
         widgetutils.set_text(self.temperature, config.temperature)
         widgetutils.set_text(self.system, config.system)
@@ -182,8 +183,8 @@ class Widgets:
 
         self.input.bind("<Return>", lambda e: self.submit())
 
-        self.name_1.bind("<FocusOut>", lambda e: state.update_name_1())
-        self.name_2.bind("<FocusOut>", lambda e: state.update_name_2())
+        self.name_user.bind("<FocusOut>", lambda e: state.update_name_user())
+        self.name_ai.bind("<FocusOut>", lambda e: state.update_name_ai())
         self.max_tokens.bind("<FocusOut>", lambda e: state.update_max_tokens())
         self.temperature.bind("<FocusOut>", lambda e: state.update_temperature())
         self.system.bind("<FocusOut>", lambda e: state.update_system())
@@ -284,8 +285,8 @@ class Widgets:
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
 
-    def prompt(self, num: int) -> None:
-        name = getattr(config, f"name_{num}")
+    def prompt(self, who: str) -> None:
+        name = getattr(config, f"name_{who}")
         prompt = f"{name}: "
         self.print(prompt, False)
 

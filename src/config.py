@@ -6,8 +6,8 @@ from typing import List
 
 
 class ConfigDefaults:
-    name_1 = "👽 You"
-    name_2 = "😎 Melt"
+    name_user = "👽 You"
+    name_ai = "😎 Melt"
     max_tokens = 180
     temperature = 0.8
     system = "Respond as gentleman and a scholar who is a bit unhinged"
@@ -50,8 +50,8 @@ class Config:
         self.models: List[str] = []
 
         self.model = ConfigDefaults.model
-        self.name_1 = ConfigDefaults.name_1
-        self.name_2 = ConfigDefaults.name_2
+        self.name_user = ConfigDefaults.name_user
+        self.name_ai = ConfigDefaults.name_ai
         self.max_tokens = ConfigDefaults.max_tokens
         self.temperature = ConfigDefaults.temperature
         self.system = ConfigDefaults.system

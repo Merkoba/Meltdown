@@ -84,7 +84,7 @@ class Model:
         if not prompt:
             return
 
-        widgets.prompt(1)
+        widgets.prompt("user")
         widgets.insert(prompt)
 
         if config.context > 0:
@@ -123,7 +123,7 @@ class Model:
 
             if "content" in delta:
                 if not added_name:
-                    widgets.prompt(2)
+                    widgets.prompt("ai")
                     added_name = True
 
                 token = delta["content"]

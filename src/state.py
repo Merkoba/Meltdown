@@ -11,8 +11,8 @@ from pathlib import Path
 
 saved_configs = [
     "model",
-    "name_1",
-    "name_2",
+    "name_user",
+    "name_ai",
     "max_tokens",
     "temperature",
     "system",
@@ -84,19 +84,19 @@ def save_models() -> None:
     widgets.print("Models saved.")
 
 
-def update_name_1() -> None:
-    name_1 = widgets.name_1.get()
+def update_name_user() -> None:
+    name_user = widgets.name_user.get()
 
-    if name_1 and (name_1 != config.name_1):
-        config.name_1 = name_1
+    if name_user and (name_user != config.name_user):
+        config.name_user = name_user
         save_config()
 
 
-def update_name_2() -> None:
-    name_2 = widgets.name_2.get()
+def update_name_ai() -> None:
+    name_ai = widgets.name_ai.get()
 
-    if name_2 and (name_2 != config.name_2):
-        config.name_2 = name_2
+    if name_ai and (name_ai != config.name_ai):
+        config.name_ai = name_ai
         save_config()
 
 
