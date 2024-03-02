@@ -38,7 +38,7 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
-        self.top_k = 40,
+        self.top_k = 40
         self.top_p = 0.95
         self.config_file = f"~/.config/{self.program}/config.json"
         self.models_file = f"~/.config/{self.program}/models.json"

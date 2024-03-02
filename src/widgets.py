@@ -43,8 +43,9 @@ def make_input(d: FrameData, value: str = "", width: Union[int, None] = None, st
     return widget
 
 
-def make_button(d: FrameData, text: str, command: Callable[..., Any], sticky: str = "w") -> tk.Button:
-    widget = tk.Button(d.frame, text=text, command=command, font=config.font_button)
+def make_button(d: FrameData, text: str, command: Union[Callable[..., Any], None] = None, sticky: str = "w") -> tk.Button:
+    cmd = command if command else None
+    widget = tk.Button(d.frame, text=text, command=cmd, font=config.font_button)
     widget.configure(background=config.button_background, foreground=config.button_foreground)
     widget.configure(bd=0, highlightthickness=0)
     do_grid(d, widget, sticky)

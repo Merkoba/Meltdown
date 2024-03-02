@@ -77,6 +77,8 @@ class Model:
             max_tokens=config.max_tokens,
             temperature=config.temperature,
             stream=True,
+            top_k=config.top_k,
+            top_p=config.top_p,
         )
 
         for chunk in output:

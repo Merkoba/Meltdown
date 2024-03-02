@@ -65,7 +65,10 @@ def show_model_menu(event) -> None:
     for model in config.models:
         config.model_menu.add_command(label=model, command=lambda m=model: set_model(m))
 
-    config.model_menu.post(event.x_root, event.y_root)
+    if event:
+        config.model_menu.post(event.x_root, event.y_root)
+    else:
+        show_menu_at_center(config.model_menu)
 
 
 def hide_model_menu() -> None:
@@ -80,3 +83,20 @@ def hide_menus() -> None:
 def set_model(model: str) -> None:
     widgets.set_text(config.model_text, model)
     config.update_model()
+
+
+def show_menu_at_center(menu: tk.Menu) -> None:
+    config.app.update_idletasks()
+    menu.update_idletasks()
+    window_width = config.app.winfo_width()
+    window_height = config.app.winfo_height()
+    window_x = config.app.winfo_rootx()
+    window_y = config.app.winfo_rooty()
+
+    menu_width = menu.winfo_reqwidth()
+    menu_height = menu.winfo_reqheight()
+
+    x = window_x + (window_width - menu_width) // 2
+    y = window_y + (window_height - menu_height) // 2
+
+    menu.post(x, y)

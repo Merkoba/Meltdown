@@ -17,6 +17,7 @@ def frame_model() -> None:
     d.frame.grid_columnconfigure(1, weight=1)
     widgets.make_label(d, "Model")
     config.model_text = widgets.make_input(d, sticky="ew")
+    widgets.make_button(d, "Recent", lambda: action.show_model_menu(None))
 
 
 def frame_settings() -> None:
