@@ -81,7 +81,6 @@ class Widgets:
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
-        self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
         self.output_menu.add_separator()
         self.output_menu.add_command(label="Reset", command=lambda: state.reset_config())
 
@@ -134,8 +133,7 @@ class Widgets:
         self.output_menu.unpost()
 
     def show_model_menu(self, event: Any) -> None:
-        if not config.models:
-            return
+        import state
 
         self.model_menu.delete(0, tk.END)
 
@@ -144,6 +142,12 @@ class Widgets:
                 self.set_model(model)
 
             self.model_menu.add_command(label=model, command=proc)
+
+        if len(config.models):
+            self.model_menu.add_separator()
+            self.model_menu.add_command(label="Reset", command=lambda: state.reset_models())
+        else:
+            self.model_menu.add_command(label="Empty", command=lambda: state.models_info())
 
         if event:
             self.model_menu.post(event.x_root, event.y_root)
@@ -159,7 +163,7 @@ class Widgets:
 
     def browse_model(self) -> None:
         import state
-        file = filedialog.askopenfilename()
+        file = filedialog.askopenfilename(initialdir=state.get_models_dir())
         widgetutils.set_text(self.model, file)
         state.update_model()
 

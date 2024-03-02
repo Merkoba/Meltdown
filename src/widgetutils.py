@@ -138,3 +138,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
         cmd_ok()
     elif cmd_cancel:
         cmd_cancel()
+
+
+def show_message(text: str) -> None:
+    messagebox.showinfo("Information", text)

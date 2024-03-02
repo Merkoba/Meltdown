@@ -5,6 +5,8 @@ from widgets import widgets
 
 # Standard
 import json
+from typing import Optional
+from pathlib import Path
 
 saved_configs = [
     "model",
@@ -185,3 +187,31 @@ def do_reset_config() -> None:
 def reset_config() -> None:
     import widgetutils
     widgetutils.show_confirm("Reset config?", do_reset_config, None)
+
+
+def do_reset_models() -> None:
+    config.models = []
+    save_models()
+    widgets.fill()
+
+
+def reset_models() -> None:
+    import widgetutils
+    widgetutils.show_confirm("Reset models?", do_reset_models, None)
+
+
+def get_models_dir() -> Optional[str]:
+    models = [config.model] + config.models
+
+    for model in models:
+        path = Path(model)
+
+        if path.exists() and path.is_file():
+            return str(path.parent)
+
+    return None
+
+
+def models_info() -> None:
+    import widgetutils
+    widgetutils.show_message("The models you load are saved here automatically.")
