@@ -66,3 +66,12 @@ def insert_text(widget: tk.Text, text: str, disable: bool = False) -> None:
 
     if disable:
         widget.configure(state="disabled")
+
+
+def set_text(widget: tk.Text, text: str, disable: bool = False) -> None:
+    widget.configure(state="normal")
+    widget.delete(0, tk.END)
+    widget.insert(0, text)
+
+    if disable:
+        widget.configure(state="disabled")

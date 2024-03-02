@@ -1,6 +1,7 @@
 # Modules
 from config import config
 import widgets
+import tkinter as tk
 
 # Libraries
 import pyperclip
@@ -53,3 +54,29 @@ def select_all() -> None:
 def copy_all() -> None:
     text = config.output_text.get("1.0", "end-1c").strip()
     pyperclip.copy(text)
+
+
+def show_model_menu(event) -> None:
+    if not config.models:
+        return
+
+    config.model_menu.delete(0, tk.END)
+
+    for model in config.models:
+        config.model_menu.add_command(label=model, command=lambda m=model: set_model(m))
+
+    config.model_menu.post(event.x_root, event.y_root)
+
+
+def hide_model_menu() -> None:
+    config.model_menu.unpost()
+
+
+def hide_menus() -> None:
+    hide_output_menu()
+    hide_model_menu()
+
+
+def set_model(model: str) -> None:
+    widgets.set_text(config.model_text, model)
+    config.update_model()

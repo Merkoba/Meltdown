@@ -41,6 +41,7 @@ class Config:
         self.top_k = 40,
         self.top_p = 0.95
         self.config_file = f"~/.config/{self.program}/config.json"
+        self.models_file = f"~/.config/{self.program}/models.json"
         self.saved_configs = [
             "model",
             "name_1",
@@ -61,7 +62,10 @@ class Config:
         self.font = (self.font_family, self.font_size)
         self.font_button = (self.font_family, self.font_size_button)
         self.config_path = Path(self.config_file).expanduser().resolve()
+        self.load_config_file()
+        self.load_models_file()
 
+    def load_config_file(self):
         if not self.config_path.exists():
             self.config_path.parent.mkdir(parents=True, exist_ok=True)
             self.config_path.touch(exist_ok=True)
@@ -75,6 +79,24 @@ class Config:
             for key in self.saved_configs:
                 setattr(self, key, conf.get(key, getattr(self, key)))
 
+    def load_models_file(self):
+        self.models_path = Path(self.models_file).expanduser().resolve()
+
+        if not self.models_path.exists():
+            self.models_path.parent.mkdir(parents=True, exist_ok=True)
+            self.models_path.touch(exist_ok=True)
+
+        with open(self.models_path, "r") as file:
+            try:
+                models = json.load(file)
+            except BaseException:
+                models = []
+
+                if self.model:
+                    models.append(self.model)
+
+            self.models = models
+
     def save_config(self) -> None:
         import action
         conf = {}
@@ -86,6 +108,14 @@ class Config:
             json.dump(conf, file, indent=4)
 
         action.output("Config saved")
+
+    def save_models(self) -> None:
+        import action
+
+        with open(self.models_path, "w") as file:
+            json.dump(self.models, file, indent=4)
+
+        action.output("Models saved")
 
     def update_name_1(self) -> None:
         name_1 = self.name_1_text.get()
@@ -140,6 +170,7 @@ class Config:
             if model.load(model_path):
                 self.model = model_path
                 self.save_config()
+                self.add_model(model_path)
 
     def update_top_k(self) -> None:
         top_k = self.top_k_text.get()
@@ -164,6 +195,11 @@ class Config:
         if top_p and (top_p != self.top_p):
             self.top_p = top_p
             self.save_config()
+
+    def add_model(self, model_path: str) -> None:
+        if model_path not in self.models:
+            self.models.append(model_path)
+            self.save_models()
 
 
 config = Config()

@@ -70,12 +70,20 @@ def fill() -> None:
 
 def setup() -> None:
     fill()
+
+    config.model_menu = tk.Menu(config.app, tearoff=0, font=config.font)
+    config.model_text.bind("<Button-3>", lambda e: action.show_model_menu(e))
+    config.model_text.bind("<Button-1>", lambda e: action.hide_menus())
+    config.model_text.bind("<Button-1>", lambda e: action.hide_menus())
+
     config.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
     config.output_menu.add_command(label="Clear", command=lambda: action.clear_output())
     config.output_menu.add_command(label="Select All", command=lambda: action.select_all())
     config.output_menu.add_command(label="Copy All", command=lambda: action.copy_all())
     config.output_text.bind("<Button-3>", lambda e: action.show_output_menu(e))
-    config.output_text.bind("<Button-1>", lambda e: action.hide_output_menu())
+    config.output_text.bind("<Button-1>", lambda e: action.hide_menus())
+    config.output_text.bind("<Button-1>", lambda e: action.hide_menus())
+
     config.input_text.bind("<Return>", lambda e: action.submit())
 
     config.name_1_text.bind("<FocusOut>", lambda e: config.update_name_1())
