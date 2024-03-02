@@ -17,6 +17,7 @@ def main() -> None:
     model.load(config.model)
     print(timeutils.check_time("Started", now)[0])
     config.app.mainloop()
+    model.check_thread()
 
 
 if __name__ == "__main__":

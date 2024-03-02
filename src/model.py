@@ -14,7 +14,9 @@ from pathlib import Path
 class Model:
     def __init__(self) -> None:
         self.mode = None
-        self.stream_date = 0.0
+        self.lock = threading.Lock()
+        self.stop_thread = threading.Event()
+        self.thread = None
 
     def load(self, model: str) -> bool:
         if not model:
@@ -42,21 +44,31 @@ class Model:
         config.model_loaded = True
         return True
 
+    def check_thread(self) -> None:
+        if self.thread and self.thread.is_alive():
+            self.stop_thread.set()
+            self.thread.join()
+            self.stop_thread.clear()
+            action.output("* Interrupted *")
+
     def stream(self, prompt: str) -> None:
-        threading.Thread(target=self.do_stream, args=(prompt,)).start()
+        self.check_thread()
+        self.thread = threading.Thread(target=self.do_stream, args=(prompt,))
+        self.thread.start()
 
     def do_stream(self, prompt: str) -> None:
         if not config.model_loaded:
             action.output("Model is not loaded")
             return
 
+        self.lock.acquire()
         prompt = prompt.strip()
 
         if not prompt:
             return
 
         action.prompt(1)
-        action.output(prompt)
+        action.insert(prompt)
 
         messages = [
             {"role": "system", "content": config.system},
@@ -69,8 +81,6 @@ class Model:
         added_name = False
         token_printed = False
         last_token = " "
-        date = timeutils.now()
-        self.stream_date = date
 
         output = self.model.create_chat_completion(  # type: ignore
             messages=messages,
@@ -82,7 +92,7 @@ class Model:
         )
 
         for chunk in output:
-            if date != self.stream_date:
+            if self.stop_thread.is_set():
                 break
 
             delta = chunk["choices"][0]["delta"]
@@ -107,7 +117,9 @@ class Model:
                     token = token.lstrip()
                     token_printed = True
 
-                action.output(token, False)
+                action.insert(token)
+
+        self.lock.release()
 
 
 model = Model()

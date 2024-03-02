@@ -2,16 +2,43 @@
 from config import config
 import widgets
 import tkinter as tk
+from tkinter import filedialog
 
 # Libraries
 import pyperclip
 
 
 def output(text: str, linebreak=True) -> None:
-    if linebreak:
-        text = text + "\n"
+    left = ""
+    right = ""
 
+    if output_length() and (last_character() != "\n"):
+        left = "\n"
+
+    if linebreak:
+        right = "\n"
+
+    text = left + text + right
     widgets.insert_text(config.output_text, text, True)
+    to_bottom()
+
+
+def insert(text: str) -> None:
+    widgets.insert_text(config.output_text, text, True)
+    to_bottom()
+
+
+def to_bottom() -> None:
+    config.output_text.yview_moveto(1.0)
+
+
+def output_length() -> int:
+    return len(config.output_text.get("1.0", "end-1c"))
+
+
+def last_character() -> str:
+    text = config.output_text.get("1.0", "end-1c")
+    return text[-1] if text else None
 
 
 def submit() -> None:
@@ -100,3 +127,9 @@ def show_menu_at_center(menu: tk.Menu) -> None:
     y = window_y + (window_height - menu_height) // 2
 
     menu.post(x, y)
+
+
+def browse_model() -> None:
+    file = filedialog.askopenfilename()
+    widgets.set_text(config.model_text, file)
+    config.update_model()
