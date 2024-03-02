@@ -2,11 +2,11 @@
 from config import config
 import widgetutils
 from framedata import FrameData
-from tkinter import filedialog
 
 # Standard
 import tkinter as tk
-from typing import Any, Callable, Union
+from typing import Any
+from tkinter import filedialog
 
 
 class Widgets:
@@ -124,21 +124,23 @@ class Widgets:
         widgetutils.insert_text(self.output, text, True)
         widgetutils.to_bottom(self.output)
 
-    def show_output_menu(self, event: tk.Event) -> None:
+    def show_output_menu(self, event: Any) -> None:
         self.output_menu.post(event.x_root, event.y_root)
 
     def hide_output_menu(self) -> None:
         self.output_menu.unpost()
 
-    def show_model_menu(self, event: Union[tk.Event, None]) -> None:
+    def show_model_menu(self, event: Any) -> None:
         if not config.models:
             return
 
         self.model_menu.delete(0, tk.END)
 
         for model in config.models:
-            cmd: Callable[[], None] = lambda m=model: self.set_model(m)
-            self.model_menu.add_command(label=model, command=cmd)
+            def proc() -> None:
+                self.set_model(model)
+
+            self.model_menu.add_command(label=model, command=proc)
 
         if event:
             self.model_menu.post(event.x_root, event.y_root)
