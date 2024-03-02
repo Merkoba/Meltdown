@@ -31,6 +31,8 @@ class Model:
             return False
 
         now = timeutils.now()
+        action.output("Loading model...")
+        action.update()
 
         try:
             self.model = Llama(
@@ -54,15 +56,15 @@ class Model:
             action.output("* Interrupted *")
 
     def stream(self, prompt: str) -> None:
+        if not config.model_loaded:
+            if not self.load(config.model):
+                return
+
         self.check_thread()
         self.thread = threading.Thread(target=self.do_stream, args=(prompt,))
         self.thread.start()
 
     def do_stream(self, prompt: str) -> None:
-        if not config.model_loaded:
-            action.output("Model is not loaded")
-            return
-
         self.lock.acquire()
         prompt = prompt.strip()
 

@@ -2,12 +2,13 @@
 from pathlib import Path
 import tkinter as tk
 import json
+from typing import List, Union, Dict, Tuple, Any
 
 
 class Config:
-    def __init__(self):
+    def __init__(self) -> None:
         self.program = "meltdown"
-        self.app: tk.Frame = None
+        self.app: Union[tk.Frame, None] = None
         self.width = 960
         self.height = 730
         self.padx = 5
@@ -42,6 +43,19 @@ class Config:
         self.top_p = 0.95
         self.config_file = f"~/.config/{self.program}/config.json"
         self.models_file = f"~/.config/{self.program}/models.json"
+        self.output_text = None
+        self.input_text = None
+        self.model_text = None
+        self.name_1_text = None
+        self.name_2_text = None
+        self.max_tokens_text = None
+        self.temperature_text = None
+        self.system_text = None
+        self.top_k_text = None
+        self.top_p_text = None
+        self.models = []
+        self.config_path = None
+        self.models_path = None
         self.saved_configs = [
             "model",
             "name_1",

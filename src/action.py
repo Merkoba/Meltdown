@@ -126,7 +126,7 @@ def set_model(model: str) -> None:
 
 
 def show_menu_at_center(menu: tk.Menu) -> None:
-    config.app.update_idletasks()
+    update()
     menu.update_idletasks()
     window_width = config.app.winfo_width()
     window_height = config.app.winfo_height()
@@ -146,3 +146,7 @@ def browse_model() -> None:
     file = filedialog.askopenfilename()
     widgets.set_text(config.model_text, file)
     config.update_model()
+
+
+def update() -> None:
+    config.app.update_idletasks()
