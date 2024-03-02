@@ -46,7 +46,7 @@ def frame_system() -> None:
 def frame_output() -> None:
     d = get_d()
     d.frame.grid_columnconfigure(0, weight=1)
-    d.frame.grid_rowconfigure(0, weight=0)
+    d.frame.grid_rowconfigure(0, weight=1)
     config.output_text = widgets.make_text(d, state="disabled", sticky="nsew")
 
 
