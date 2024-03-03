@@ -207,7 +207,8 @@ def do_reset_config() -> None:
 
 def reset_config() -> None:
     import widgetutils
-    widgetutils.show_confirm("Reset config?", do_reset_config, None)
+    widgetutils.show_confirm("Reset config? This will remove your custom configs"
+                             " and refresh the widgets.", do_reset_config, None)
 
 
 def do_reset_models() -> None:
@@ -218,7 +219,8 @@ def do_reset_models() -> None:
 
 def reset_models() -> None:
     import widgetutils
-    widgetutils.show_confirm("Reset models?", do_reset_models, None)
+    widgetutils.show_confirm("Reset models? This will empty the list"
+                             " of recent models.", do_reset_models, None)
 
 
 def get_models_dir() -> Optional[str]:

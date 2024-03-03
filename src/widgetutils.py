@@ -151,6 +151,7 @@ def to_bottom(widget: tk.Text) -> None:
 
 
 def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
+    text = clean_string(text)
     result = messagebox.askquestion("Confirmation", text)
 
     if result == "yes":
@@ -160,6 +161,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
 
 
 def show_message(text: str) -> None:
+    text = clean_string(text)
     messagebox.showinfo("Information", text)
 
 

@@ -64,8 +64,8 @@ class Widgets:
 
         widgetutils.make_label(d, "Model")
         self.model = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.model, "Path to a model file. This should be a file that works with \
-                llama.cpp, like gguf files for instance. Right click to see recently used models")
+        ToolTip(self.model, "Path to a model file. This should be a file that works with"
+                " llama.cpp, like gguf files for instance. Right click to see recently used models.")
 
         browse_button = widgetutils.make_button(d, "Browse", lambda: self.browse_model())
         ToolTip(browse_button, "Pick a model file from your file system")
@@ -86,18 +86,18 @@ class Widgets:
 
         widgetutils.make_label(d, "Tokens")
         self.max_tokens = widgetutils.make_input(d)
-        ToolTip(self.max_tokens, "Maximum number of tokens to generate. \
-                Higher values will result in longer output, but will \
-                also take longer to compute")
+        ToolTip(self.max_tokens, "Maximum number of tokens to generate."
+                " Higher values will result in longer output, but will"
+                " also take longer to compute.")
 
         widgetutils.make_label(d, "Temp")
         self.temperature = widgetutils.make_input(d)
-        ToolTip(self.temperature, "The temperature parameter is used to control \
-                the randomness of the output. A higher temperature (~1) results in more randomness \
-                and diversity in the generated text, as the model is more likely to \
-                explore a wider range of possible tokens. Conversely, a lower temperature \
-                (<1) produces more focused and deterministic output, emphasizing the \
-                most probable tokens")
+        ToolTip(self.temperature, "The temperature parameter is used to control"
+                " the randomness of the output. A higher temperature (~1) results in more randomness"
+                " and diversity in the generated text, as the model is more likely to"
+                " explore a wider range of possible tokens. Conversely, a lower temperature"
+                " (<1) produces more focused and deterministic output, emphasizing the"
+                " most probable tokens.")
 
         # System
         d = get_d()
@@ -105,9 +105,9 @@ class Widgets:
 
         widgetutils.make_label(d, "System")
         self.system = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.system, "This sets the system message that instructs \
-                the AI how to respond, or how to act in general. \
-                You could use this to make the AI take on a specific persona or role")
+        ToolTip(self.system, "This sets the system message that instructs"
+                " the AI how to respond, or how to act in general."
+                " You could use this to make the AI take on a specific persona or role.")
 
         widgetutils.make_label(d, "Top K")
         self.top_k = widgetutils.make_input(d)
@@ -116,17 +116,17 @@ class Widgets:
                 of generation. By setting a value for k, you are instructing \
                 the model to consider only the k most likely tokens. \
                 This can help in fine-tuning the generated output and \
-                ensuring it adheres to specific patterns or constraints")
+                ensuring it adheres to specific patterns or constraints.")
 
         widgetutils.make_label(d, "Top P")
         self.top_p = widgetutils.make_input(d)
-        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls \
-                the cumulative probability of the generated tokens. \
-                The model generates tokens until the cumulative probability \
-                exceeds the chosen threshold (p). This approach allows for \
-                more dynamic control over the length of the generated text \
-                and encourages diversity in the output by including less \
-                probable tokens when necessary")
+        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
+                " the cumulative probability of the generated tokens."
+                " The model generates tokens until the cumulative probability"
+                " exceeds the chosen threshold (p). This approach allows for"
+                " more dynamic control over the length of the generated text"
+                " and encourages diversity in the output by including less"
+                " probable tokens when necessary.")
 
         # Output
         d = get_d()
@@ -144,9 +144,9 @@ class Widgets:
         values = [0, 1, 5, 10, 100]
         self.context = widgetutils.make_select(d, values)
         self.context.configure(width=5)
-        ToolTip(self.context, "The number of previous messages to include as the context.\
-                The computation will take longer with more context. \
-                0 means context is not used at all")
+        ToolTip(self.context, "The number of previous messages to include as the context."
+                " The computation will take longer with more context."
+                " 0 means context is not used at all.")
 
         widgetutils.make_button(d, "Submit", lambda: self.submit())
 
@@ -252,10 +252,7 @@ class Widgets:
 
             self.model_menu.add_command(label=model, command=proc)
 
-        if len(config.models):
-            self.model_menu.add_separator()
-            self.model_menu.add_command(label="Reset", command=lambda: state.reset_models())
-        else:
+        if config.models:
             self.model_menu.add_command(label="Empty", command=lambda: state.models_info())
 
         if event:
