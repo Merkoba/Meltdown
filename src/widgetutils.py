@@ -15,6 +15,7 @@ from typing import Any, Union, Callable, Literal, Optional, List
 
 def do_grid(d: FrameData, widget: tk.Widget, sticky: str) -> None:
     widget.grid(row=0, column=d.col, padx=config.padx, pady=config.pady, sticky=sticky)
+    d.col += 1
 
 
 def make_frame() -> tk.Frame:
@@ -31,7 +32,6 @@ def make_text(d: FrameData, sticky: str = "w", state: Literal["normal", "disable
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=0, highlightthickness=0)
     do_grid(d, widget, sticky)
-    d.col += 1
     return widget
 
 
@@ -45,16 +45,18 @@ def make_input(d: FrameData, value: str = "", width: Optional[int] = None, stick
     if value:
         widget.insert(0, value)
 
-    d.col += 1
     return widget
 
 
-def make_button(d: FrameData, text: str, command: Callable[..., Any], sticky: str = "w") -> tk.Button:
-    widget = tk.Button(d.frame, text=text, command=command, font=config.font_button)
+def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] = None, sticky: str = "w") -> tk.Button:
+    widget = tk.Button(d.frame, text=text, font=config.font_button)
     widget.configure(background=config.button_background, foreground=config.button_foreground)
     widget.configure(bd=0, highlightthickness=0)
+
+    if command:
+        widget.configure(command=command)
+
     do_grid(d, widget, sticky)
-    d.col += 1
     return widget
 
 
@@ -62,7 +64,6 @@ def make_label(d: FrameData, text: str, sticky: str = "w") -> tk.Label:
     widget = tk.Label(d.frame, text=f"{text}:", font=config.font)
     widget.configure(background=config.background_color, foreground=config.foreground_color)
     do_grid(d, widget, sticky)
-    d.col += 1
     return widget
 
 
@@ -71,7 +72,6 @@ def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = 
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
                           font=config.font, style="TCombobox", width=config.select_width)
     do_grid(d, widget, sticky)
-    d.col += 1
     return widget
 
 

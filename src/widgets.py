@@ -71,11 +71,11 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance. Right click to see recently used models.")
 
-        browse_button = widgetutils.make_button(d, "Browse", lambda: self.browse_model())
-        ToolTip(browse_button, "Pick a model file from your file system")
+        self.model_menu_button = widgetutils.make_button(d, "Models")
+        ToolTip(self.model_menu_button, "Pick a model file from your file system")
 
-        main_menu_button = widgetutils.make_button(d, "Menu", lambda: self.show_main_menu())
-        ToolTip(main_menu_button, "Open the main menu")
+        self.main_menu_button = widgetutils.make_button(d, "Menu")
+        ToolTip(self.main_menu_button, "Open the main menu")
 
         # Settings
         d = get_d()
@@ -156,6 +156,7 @@ class Widgets:
 
         self.output_menu = widgetutils.make_menu()
         self.model_menu = widgetutils.make_menu()
+        self.recent_models_menu = widgetutils.make_menu()
         self.main_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
 
@@ -176,19 +177,24 @@ class Widgets:
 
         self.fill()
 
-        self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
-
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
 
-        self.main_menu.add_command(label="Recent Models", command=lambda: self.show_model_menu(None))
+        self.model_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
+        self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
+        self.model_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
+
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
-        self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
+        self.main_menu.add_command(label="Exit", command=lambda: self.exit())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
+        self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
+        self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
+
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
+        self.input.bind("<Button-1>", lambda e: self.hide_menu())
 
         self.input.bind("<Return>", lambda e: self.submit())
 
@@ -201,6 +207,8 @@ class Widgets:
         self.top_k.bind("<FocusOut>", lambda e: state.update_top_k())
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
         self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
+        self.output.tag_config("name_user", foreground="#87CEEB")
+        self.output.tag_config("name_ai", foreground="#98FB98")
 
         def on_key(event: Any) -> None:
             if event.widget == self.output:
@@ -240,24 +248,22 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def show_output_menu(self, event: Any) -> None:
-        self.hide_menu()
         self.open_menu(self.output_menu, event)
 
-    def show_model_menu(self, event: Any) -> None:
+    def show_recent_models(self) -> None:
         import state
-        self.hide_menu()
-        self.model_menu.delete(0, tk.END)
+        self.recent_models_menu.delete(0, tk.END)
 
         for model in config.models:
             def proc(model: str = model) -> None:
                 self.set_model(model)
 
-            self.model_menu.add_command(label=model, command=proc)
+            self.recent_models_menu.add_command(label=model, command=proc)
 
         if not config.models:
-            self.model_menu.add_command(label="Empty", command=lambda: state.models_info())
+            self.recent_models_menu.add_command(label="Empty", command=lambda: state.models_info())
 
-        self.open_menu(self.model_menu, event)
+        self.open_menu(self.recent_models_menu)
 
     def open_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
@@ -277,8 +283,10 @@ class Widgets:
     def browse_model(self) -> None:
         import state
         file = filedialog.askopenfilename(initialdir=state.get_models_dir())
-        widgetutils.set_text(self.model, file)
-        state.update_model()
+
+        if file:
+            widgetutils.set_text(self.model, file)
+            state.update_model()
 
     def submit(self) -> None:
         from model import model
@@ -298,6 +306,9 @@ class Widgets:
         name = getattr(config, f"name_{who}")
         prompt = f"{name}: "
         self.print(prompt, False)
+        start_index = self.output.index(f"end - {len(prompt)}c")
+        end_index = self.output.index("end - 3c")
+        self.output.tag_add(f"name_{who}", start_index, end_index)
 
     def set_model(self, model: str) -> None:
         import state
@@ -314,8 +325,11 @@ class Widgets:
     def update(self) -> None:
         config.app.update_idletasks()
 
-    def show_main_menu(self) -> None:
-        self.open_menu(self.main_menu)
+    def show_main_menu(self, event: Any) -> None:
+        self.open_menu(self.main_menu, event)
+
+    def show_model_menu(self, event: Any) -> None:
+        self.open_menu(self.model_menu, event)
 
     def add_reset_menus(self) -> None:
         import state
@@ -335,6 +349,9 @@ class Widgets:
 
         for key in config.saved_configs:
             add_menu(key)
+
+    def exit(self) -> None:
+        config.app.quit()
 
 
 widgets: Widgets = Widgets()
