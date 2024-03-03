@@ -60,9 +60,9 @@ class Config:
         self.context = ConfigDefaults.context
 
         self.intro = [
-            "Welcome to Meltdown",
-            "Type a prompt and press Enter to continue",
-            "The specified model will load automatically",
+            "Welcome to Meltdown.",
+            "Type a prompt and press Enter to continue.",
+            "The specified model will load automatically.",
         ]
 
         self.app.geometry(f"{self.width}x{self.height}")
