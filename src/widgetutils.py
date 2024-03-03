@@ -89,8 +89,13 @@ def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], 
 
 def set_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
     widget.configure(state="normal")
-    widget.delete(0, tk.END)
-    widget.insert(0, str(text))
+
+    if isinstance(widget, tk.Entry):
+        widget.delete(0, tk.END)
+        widget.insert(0, str(text))
+    elif isinstance(widget, tk.Text):
+        widget.delete('1.0', tk.END)
+        widget.insert('1.0', str(text))
 
     if disable:
         widget.configure(state="disabled")

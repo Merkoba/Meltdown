@@ -8,7 +8,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple
+from typing import Optional, Any, Tuple, List
 from functools import partial
 
 
@@ -209,6 +209,8 @@ class Widgets:
         self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
+        self.input_history: List[str] = []
+        self.input_history_index = 0
 
         def on_key(event: Any) -> None:
             if event.widget == self.output:
@@ -216,11 +218,37 @@ class Widgets:
                     # Focus the input and insert char
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
+            elif event.widget == self.input:
+                if event.keysym == "Up":
+                    self.input_history_up()
+                elif event.keysym == "Down":
+                    self.input_history_down()
 
         config.app.bind("<KeyPress>", on_key)
 
         self.input.focus_set()
         self.add_reset_menus()
+
+    def add_to_input_history(self, text: str) -> None:
+        self.input_history.append(text)
+
+        if len(self.input_history) > 100:
+            self.input_history.pop(0)
+
+    def input_history_up(self) -> None:
+        if self.input_history_index < len(self.input_history):
+            self.input_history_index += 1
+            self.input.delete(0, tk.END)
+            self.input.insert(0, self.input_history[-self.input_history_index])
+
+    def input_history_down(self) -> None:
+        if self.input_history_index > 1:
+            self.input_history_index -= 1
+            self.input.delete(0, tk.END)
+            self.input.insert(0, self.input_history[-self.input_history_index])
+        elif self.input_history_index == 1:
+            self.input_history_index = 0
+            self.input.delete(0, tk.END)
 
     def print(self, text: str, linebreak: bool = True) -> None:
         if not widgetutils.exists():
@@ -293,11 +321,15 @@ class Widgets:
         text = self.input.get()
 
         if text:
+            self.add_to_input_history(text)
             self.clear_input()
             model.stream(text)
 
     def clear_output(self) -> None:
-        widgetutils.clear_text(self.output, True)
+        def clear() -> None:
+            widgetutils.clear_text(self.output, True)
+
+        widgetutils.show_confirm("Clear all output text?", clear, None)
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
