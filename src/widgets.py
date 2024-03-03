@@ -9,6 +9,7 @@ from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
 from typing import Optional, Any, Tuple
+from functools import partial
 
 
 class ToolTip:
@@ -165,9 +166,9 @@ class Widgets:
     def fill_widget(self, key: str, value: Any) -> None:
         widget = getattr(self, key)
 
-        if isinstance(widget, tk.Entry):
+        if type(widget) == tk.Entry or type(widget) == tk.Text:
             widgetutils.set_text(widget, value)
-        elif isinstance(widget, ttk.Combobox):
+        elif type(widget) == ttk.Combobox:
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
@@ -258,7 +259,7 @@ class Widgets:
 
         self.open_menu(self.model_menu, event)
 
-    def open_menu(self, menu: tk.Menu, event: Optional[Any]) -> None:
+    def open_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
 
         if event:
@@ -314,27 +315,26 @@ class Widgets:
         config.app.update_idletasks()
 
     def show_main_menu(self) -> None:
-        widgetutils.show_menu_at_center(self.main_menu)
+        self.open_menu(self.main_menu)
 
     def add_reset_menus(self) -> None:
         import state
 
-        for key in config.saved_configs:
+        def add_menu(key: str) -> None:
             widget = getattr(self, key)
             menu = widgetutils.make_menu()
 
-            def show(event: Any, menu: tk.Menu = menu) -> None:
-                self.open_menu(menu, event)
-
-            def reset(key=key) -> None:
-                state.reset_one_config(key)
-
-            menu.add_command(label="Reset", command=lambda: reset())
+            reset_func = partial(state.reset_one_config, key=key)
+            menu.add_command(label=f"Reset", command=reset_func)
 
             if key != "model":
-                widget.bind("<Button-3>", lambda e: show(e))
+                show_func = partial(self.open_menu, menu=menu)
+                widget.bind("<Button-3>", lambda e: show_func(event=e))
 
             widget.bind("<Button-1>", lambda e: self.hide_menu())
+
+        for key in config.saved_configs:
+            add_menu(key)
 
 
 widgets: Widgets = Widgets()

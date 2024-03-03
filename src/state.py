@@ -199,12 +199,12 @@ def reset_config() -> None:
                              " and refresh the widgets.", reset, None)
 
 
-def reset_one_config(key) -> None:
+def reset_one_config(key: str) -> None:
     import widgetutils
 
-    def reset(key=key) -> None:
+    def reset(key: str = key) -> None:
         setattr(config, key, getattr(ConfigDefaults, key))
-        widgets.fill_widget(key, config.value)
+        widgets.fill_widget(key, getattr(config, key))
         save_config()
 
     widgetutils.show_confirm(f"Reset {key}?", reset, None)
