@@ -65,6 +65,18 @@ class Config:
             "The specified model will load automatically.",
         ]
 
+        self.saved_configs = [
+            "model",
+            "name_user",
+            "name_ai",
+            "max_tokens",
+            "temperature",
+            "system",
+            "top_k",
+            "top_p",
+            "context",
+        ]
+
         self.app.geometry(f"{self.width}x{self.height}")
         self.app.grid_columnconfigure(0, weight=1)
         self.app.grid_rowconfigure(3, weight=1)

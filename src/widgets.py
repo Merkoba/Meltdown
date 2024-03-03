@@ -24,6 +24,9 @@ class ToolTip:
         self.id = self.widget.after(500, self.show_tooltip)  # 500ms delay
 
     def show_tooltip(self) -> None:
+        if widgets.menu_open:
+            return
+
         box: Optional[Tuple[int, int, int, int]] = None
 
         if isinstance(self.widget, ttk.Combobox):
@@ -150,20 +153,22 @@ class Widgets:
 
         widgetutils.make_button(d, "Submit", lambda: self.submit())
 
-        self.output_menu = tk.Menu(config.app, tearoff=0, font=config.font)
-        self.model_menu = tk.Menu(config.app, tearoff=0, font=config.font)
-        self.main_menu = tk.Menu(config.app, tearoff=0, font=config.font)
+        self.output_menu = widgetutils.make_menu()
+        self.model_menu = widgetutils.make_menu()
+        self.main_menu = widgetutils.make_menu()
+        self.menu_open: Optional[tk.Menu] = None
 
     def fill(self) -> None:
-        widgetutils.set_text(self.model, config.model)
-        widgetutils.set_text(self.name_user, config.name_user)
-        widgetutils.set_text(self.name_ai, config.name_ai)
-        widgetutils.set_text(self.max_tokens, config.max_tokens)
-        widgetutils.set_text(self.temperature, config.temperature)
-        widgetutils.set_text(self.system, config.system)
-        widgetutils.set_text(self.top_k, config.top_k)
-        widgetutils.set_text(self.top_p, config.top_p)
-        widgetutils.set_select(self.context, config.context)
+        for key in config.saved_configs:
+            self.fill_widget(key, getattr(config, key))
+
+    def fill_widget(self, key: str, value: Any) -> None:
+        widget = getattr(self, key)
+
+        if isinstance(widget, tk.Entry):
+            widgetutils.set_text(widget, value)
+        elif isinstance(widget, ttk.Combobox):
+            widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
         import state
@@ -171,8 +176,6 @@ class Widgets:
         self.fill()
 
         self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
-        self.model.bind("<Button-1>", lambda e: self.hide_menus())
-        self.model.bind("<Button-1>", lambda e: self.hide_menus())
 
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
@@ -184,8 +187,7 @@ class Widgets:
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
-        self.output.bind("<Button-1>", lambda e: self.hide_menus())
-        self.output.bind("<Button-1>", lambda e: self.hide_menus())
+        self.output.bind("<Button-1>", lambda e: self.hide_menu())
 
         self.input.bind("<Return>", lambda e: self.submit())
 
@@ -209,6 +211,7 @@ class Widgets:
         config.app.bind("<KeyPress>", on_key)
 
         self.input.focus_set()
+        self.add_reset_menus()
 
     def print(self, text: str, linebreak: bool = True) -> None:
         if not widgetutils.exists():
@@ -236,14 +239,12 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def show_output_menu(self, event: Any) -> None:
-        self.output_menu.post(event.x_root, event.y_root)
-
-    def hide_output_menu(self) -> None:
-        self.output_menu.unpost()
+        self.hide_menu()
+        self.open_menu(self.output_menu, event)
 
     def show_model_menu(self, event: Any) -> None:
         import state
-
+        self.hide_menu()
         self.model_menu.delete(0, tk.END)
 
         for model in config.models:
@@ -252,21 +253,25 @@ class Widgets:
 
             self.model_menu.add_command(label=model, command=proc)
 
-        if config.models:
+        if not config.models:
             self.model_menu.add_command(label="Empty", command=lambda: state.models_info())
 
+        self.open_menu(self.model_menu, event)
+
+    def open_menu(self, menu: tk.Menu, event: Optional[Any]) -> None:
+        self.hide_menu()
+
         if event:
-            self.model_menu.post(event.x_root, event.y_root)
+            menu.post(event.x_root, event.y_root)
         else:
-            widgetutils.show_menu_at_center(self.model_menu)
+            widgetutils.show_menu_at_center(menu)
 
-    def hide_model_menu(self) -> None:
-        self.model_menu.unpost()
+        self.menu_open = menu
 
-    def hide_menus(self) -> None:
-        self.hide_output_menu()
-        self.hide_model_menu()
-        self.hide_main_menu()
+    def hide_menu(self) -> None:
+        if self.menu_open:
+            self.menu_open.unpost()
+            self.menu_open = None
 
     def browse_model(self) -> None:
         import state
@@ -311,8 +316,25 @@ class Widgets:
     def show_main_menu(self) -> None:
         widgetutils.show_menu_at_center(self.main_menu)
 
-    def hide_main_menu(self) -> None:
-        self.main_menu.unpost()
+    def add_reset_menus(self) -> None:
+        import state
+
+        for key in config.saved_configs:
+            widget = getattr(self, key)
+            menu = widgetutils.make_menu()
+
+            def show(event: Any, menu: tk.Menu = menu) -> None:
+                self.open_menu(menu, event)
+
+            def reset(key=key) -> None:
+                state.reset_one_config(key)
+
+            menu.add_command(label="Reset", command=lambda: reset())
+
+            if key != "model":
+                widget.bind("<Button-3>", lambda e: show(e))
+
+            widget.bind("<Button-1>", lambda e: self.hide_menu())
 
 
 widgets: Widgets = Widgets()

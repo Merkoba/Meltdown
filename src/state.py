@@ -9,18 +9,6 @@ import json
 from typing import Optional
 from pathlib import Path
 
-saved_configs = [
-    "model",
-    "name_user",
-    "name_ai",
-    "max_tokens",
-    "temperature",
-    "system",
-    "top_k",
-    "top_p",
-    "context",
-]
-
 
 def load_config_file() -> None:
     if not config.config_path.exists():
@@ -33,7 +21,7 @@ def load_config_file() -> None:
         except BaseException:
             conf = {}
 
-        for key in saved_configs:
+        for key in config.saved_configs:
             setattr(config, key, conf.get(key, getattr(config, key)))
 
 
@@ -67,7 +55,7 @@ def check_models(save: bool = True) -> None:
 def save_config(announce: bool = True) -> None:
     conf = {}
 
-    for key in saved_configs:
+    for key in config.saved_configs:
         conf[key] = getattr(config, key)
 
     with open(config.config_path, "w") as file:
@@ -196,31 +184,42 @@ def add_model(model_path: str) -> None:
     save_models()
 
 
-def do_reset_config() -> None:
-    for key in saved_configs:
-        setattr(config, key, getattr(ConfigDefaults, key))
-
-    check_models(False)
-    save_config()
-    widgets.fill()
-
-
 def reset_config() -> None:
     import widgetutils
+
+    def reset() -> None:
+        for key in config.saved_configs:
+            setattr(config, key, getattr(ConfigDefaults, key))
+
+        check_models(False)
+        widgets.fill()
+        save_config()
+
     widgetutils.show_confirm("Reset config? This will remove your custom configs"
-                             " and refresh the widgets.", do_reset_config, None)
+                             " and refresh the widgets.", reset, None)
 
 
-def do_reset_models() -> None:
-    config.models = []
-    save_models()
-    widgets.fill()
+def reset_one_config(key) -> None:
+    import widgetutils
+
+    def reset(key=key) -> None:
+        setattr(config, key, getattr(ConfigDefaults, key))
+        widgets.fill_widget(key, config.value)
+        save_config()
+
+    widgetutils.show_confirm(f"Reset {key}?", reset, None)
 
 
 def reset_models() -> None:
     import widgetutils
+
+    def reset() -> None:
+        config.models = []
+        widgets.fill()
+        save_models()
+
     widgetutils.show_confirm("Reset models? This will empty the list"
-                             " of recent models.", do_reset_models, None)
+                             " of recent models.", reset, None)
 
 
 def get_models_dir() -> Optional[str]:
@@ -246,6 +245,10 @@ def save_log() -> None:
 
     if log:
         clean_log = "\n".join(log.split("\n")[len(config.intro):])
+
+        if not clean_log:
+            return
+
         full_log = timeutils.date() + "\n\n" + clean_log
         config.logs_path.mkdir(parents=True, exist_ok=True)
         file_name = str(timeutils.now_int()) + ".txt"
