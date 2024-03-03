@@ -5,9 +5,10 @@ from framedata import FrameData
 
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any
+from typing import Optional, Any, Tuple
 
 
 class ToolTip:
@@ -23,7 +24,12 @@ class ToolTip:
         self.id = self.widget.after(500, self.show_tooltip)  # 500ms delay
 
     def show_tooltip(self) -> None:
-        box = self.widget.bbox()
+        box: Optional[Tuple[int, int, int, int]] = None
+
+        if isinstance(self.widget, ttk.Combobox):
+            box = self.widget.bbox("insert")
+        else:
+            box = self.widget.bbox()
 
         if not box:
             return
@@ -296,9 +302,8 @@ class Widgets:
         state.update_model()
 
     def intro(self) -> None:
-        self.print("Welcome to Meltdown")
-        self.print("Type a prompt and press Enter to continue")
-        self.print("The specified model will load automatically")
+        for line in config.intro:
+            self.print(line)
 
     def show_model(self) -> None:
         widgetutils.set_text(self.model, config.model)

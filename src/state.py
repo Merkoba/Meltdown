@@ -243,10 +243,12 @@ def save_log() -> None:
     log = widgetutils.get_text(widgets.output)
 
     if log:
+        clean_log = "\n".join(log.split("\n")[len(config.intro):])
+        full_log = timeutils.date() + "\n\n" + clean_log
         config.logs_path.mkdir(parents=True, exist_ok=True)
         file_name = str(timeutils.now_int()) + ".txt"
 
         with open(Path(config.logs_path, file_name), "w") as file:
-            file.write(log)
+            file.write(full_log)
 
         widgets.print(f"Log saved as {file_name}")

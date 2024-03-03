@@ -1,6 +1,7 @@
 # Standard
 import time
 from typing import Tuple
+from datetime import datetime
 
 
 def get_time() -> float:
@@ -24,3 +25,8 @@ def now() -> float:
 
 def now_int() -> int:
     return int(time.time())
+
+
+def date() -> str:
+    now = datetime.now()
+    return now.strftime("%Y-%m-%d %H:%M:%S")
