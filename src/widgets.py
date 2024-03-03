@@ -336,7 +336,7 @@ class Widgets:
 
     def prompt(self, who: str) -> None:
         name = getattr(config, f"name_{who}")
-        prompt = f"{name}: "
+        prompt = f"\n{name}: "
         self.print(prompt, False)
         start_index = self.output.index(f"end - {len(prompt)}c")
         end_index = self.output.index("end - 3c")
