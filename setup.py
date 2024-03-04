@@ -11,7 +11,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "meltdown = src.main:main",
+            "meltdown = main:main",
         ],
     },
 )
