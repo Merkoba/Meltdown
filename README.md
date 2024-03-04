@@ -4,6 +4,8 @@
 
 ![](https://i.imgur.com/wFolNJH.jpg)
 
+---
+
 You will first need to have [llama.cpp](https://github.com/ggerganov/llama.cpp) compiled and installed.
 
 ---
