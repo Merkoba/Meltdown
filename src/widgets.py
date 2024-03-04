@@ -157,10 +157,10 @@ class Widgets:
         clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_input())
         ToolTip(clear_button, "Clear the input field")
 
-        input_history_up_button = widgetutils.make_button(d, "Prev", lambda: self.input_history_up())
+        input_history_up_button = widgetutils.make_button(d, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
 
-        input_history_up_down = widgetutils.make_button(d, "Next", lambda: self.input_history_down())
+        input_history_up_down = widgetutils.make_button(d, "Next >", lambda: self.input_history_down())
         ToolTip(input_history_up_down, "Next item in the input history")
 
         submit_button = widgetutils.make_button(d, "Submit", lambda: self.submit())
