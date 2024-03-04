@@ -77,7 +77,9 @@ def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = 
 
 
 def make_menu() -> tk.Menu:
-    return tk.Menu(app.root, tearoff=0, font=config.font)
+    widget = tk.Menu(app.root, tearoff=0, font=config.font, \
+                   bg="#3D4555", fg="white", activebackground="#33393B", activeforeground="white")
+    return widget
 
 
 def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
