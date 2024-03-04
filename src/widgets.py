@@ -300,16 +300,19 @@ class Widgets:
         if not config.models:
             self.recent_models_menu.add_command(label="Empty", command=lambda: state.models_info())
 
-        self.open_menu(self.recent_models_menu)
+        self.open_menu(self.recent_models_menu, self.last_menu_event)
 
     def open_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
 
         if event:
-            menu.post(event.x_root, event.y_root)
+            menu_width = menu.winfo_reqwidth()
+            x = event.x_root - menu_width if event.x_root - menu_width > 0 else event.x_root
+            menu.post(x, event.y_root)
         else:
             widgetutils.show_menu_at_center(menu)
 
+        self.last_menu_event = event
         self.menu_open = menu
 
     def hide_menu(self) -> None:
