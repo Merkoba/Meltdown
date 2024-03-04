@@ -143,6 +143,7 @@ class Model:
             context_dict["assistant"] = "".join(tokens).strip()
             self.add_context(context_dict)
 
+        widgets.deactivate_stop()
         self.lock.release()
 
     def add_context(self, context_dict: Dict[str, str]) -> None:
