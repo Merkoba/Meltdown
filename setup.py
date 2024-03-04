@@ -10,7 +10,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "meltdown = main:main",
+            "meltdown = main",
         ],
     },
 )
