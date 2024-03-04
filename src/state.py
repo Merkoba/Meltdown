@@ -101,7 +101,6 @@ def add_input(text: str) -> None:
     if len(config.inputs) > 100:
         config.inputs.pop()
 
-    print(config.inputs)
     save_inputs()
 
 

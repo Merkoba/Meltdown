@@ -171,7 +171,7 @@ class Widgets:
         self.recent_models_menu = widgetutils.make_menu()
         self.main_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
-        self.stop_button_disabled = False
+        self.stop_enabled = True
 
     def fill(self) -> None:
         for key in config.saved_configs:
@@ -239,7 +239,7 @@ class Widgets:
 
         app.root.bind("<KeyPress>", on_key)
 
-        self.deactivate_stop()
+        self.disable_stop()
         self.input.focus_set()
         self.add_reset_menus()
 
@@ -393,17 +393,17 @@ class Widgets:
         for key in config.saved_configs:
             add_menu(key)
 
-    def deactivate_stop(self) -> None:
-        if self.stop_button_disabled and app.exists():
-            self.stop_button.configure(background=config.stop_background_disabled)
-            self.stop_button.config(state="disabled")
-            self.stop_button_disabled = False
-
-    def activate_stop(self) -> None:
-        if (not self.stop_button_disabled) and app.exists():
+    def enable_stop(self) -> None:
+        if (not self.stop_enabled) and app.exists():
             self.stop_button.configure(background=config.stop_background)
             self.stop_button.config(state="normal")
-            self.stop_button_disabled = True
+            self.stop_enabled = True
+
+    def disable_stop(self) -> None:
+        if self.stop_enabled and app.exists():
+            self.stop_button.configure(background=config.stop_background_disabled)
+            self.stop_button.config(state="disabled")
+            self.stop_enabled = False
 
 
 widgets: Widgets = Widgets()

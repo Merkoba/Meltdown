@@ -79,7 +79,7 @@ class Model:
 
         widgets.prompt("user")
         widgets.insert(prompt)
-        widgets.activate_stop()
+        widgets.enable_stop()
 
         if config.context > 0:
             context_dict = {"user": prompt}
@@ -143,7 +143,7 @@ class Model:
             context_dict["assistant"] = "".join(tokens).strip()
             self.add_context(context_dict)
 
-        widgets.deactivate_stop()
+        widgets.disable_stop()
         self.lock.release()
 
     def add_context(self, context_dict: Dict[str, str]) -> None:
@@ -153,7 +153,7 @@ class Model:
             self.context_list.pop(0)
 
     def stop_stream(self) -> None:
-        widgets.deactivate_stop()
+        widgets.disable_stop()
 
         if self.thread and self.thread.is_alive():
             self.stop_thread.set()
