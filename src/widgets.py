@@ -11,8 +11,6 @@ from typing import Any
 from tkinter import filedialog
 from typing import Optional, Any, Tuple
 from functools import partial
-import threading
-import time
 
 
 class ToolTip:

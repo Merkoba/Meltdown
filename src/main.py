@@ -1,5 +1,4 @@
 # Modules
-from config import config
 from app import app
 from widgets import widgets
 from model import model
