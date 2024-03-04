@@ -66,8 +66,6 @@ def save_models() -> None:
     with open(config.models_path, "w") as file:
         json.dump(config.models, file, indent=4)
 
-    widgets.print("Models saved.")
-
 
 def update_name_user() -> None:
     name_user = widgets.name_user.get()
