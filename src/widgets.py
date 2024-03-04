@@ -9,7 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple, List
+from typing import Optional, Any, Tuple
 from functools import partial
 
 
@@ -249,12 +249,12 @@ class Widgets:
 
     def input_history_down(self) -> None:
         if config.inputs:
-            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
+            self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
             self.apply_input_history()
 
     def input_history_up(self) -> None:
         if config.inputs:
-            self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
+            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
             self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
