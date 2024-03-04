@@ -49,10 +49,10 @@ def check_models(save: bool = True) -> None:
         config.model = config.models[0]
 
         if save:
-            save_config(False)
+            save_config()
 
 
-def save_config(announce: bool = True) -> None:
+def save_config() -> None:
     conf = {}
 
     for key in config.saved_configs:
@@ -60,9 +60,6 @@ def save_config(announce: bool = True) -> None:
 
     with open(config.config_path, "w") as file:
         json.dump(conf, file, indent=4)
-
-    if announce:
-        widgets.print("Config saved.")
 
 
 def save_models() -> None:
