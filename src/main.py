@@ -12,7 +12,7 @@ def main() -> None:
     state.load_inputs_file()
     widgets.setup()
     widgets.intro()
-    app.root.mainloop()
+    app.run()
     model.stop_stream()
 
 

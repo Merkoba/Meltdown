@@ -21,6 +21,7 @@ class Model:
         self.thread = threading.Thread()
         self.context_list: List[Dict[str, str]] = []
         self.loaded_model = ""
+        self.streaming = False
         atexit.register(self.stop_stream)
 
     def load(self, model: str) -> bool:
@@ -65,8 +66,13 @@ class Model:
             if not self.load(config.model):
                 return
 
+        def wrapper(prompt: str) -> None:
+            self.streaming = True
+            self.do_stream(prompt)
+            self.streaming = False
+
         self.stop_stream()
-        self.thread = threading.Thread(target=self.do_stream, args=(prompt,))
+        self.thread = threading.Thread(target=wrapper, args=(prompt,))
         self.thread.start()
 
     def do_stream(self, prompt: str) -> None:
@@ -143,7 +149,6 @@ class Model:
             context_dict["assistant"] = "".join(tokens).strip()
             self.add_context(context_dict)
 
-        widgets.disable_stop()
         self.lock.release()
 
     def add_context(self, context_dict: Dict[str, str]) -> None:
@@ -153,8 +158,6 @@ class Model:
             self.context_list.pop(0)
 
     def stop_stream(self) -> None:
-        widgets.disable_stop()
-
         if self.thread and self.thread.is_alive():
             self.stop_thread.set()
             self.thread.join()

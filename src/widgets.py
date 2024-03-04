@@ -11,6 +11,8 @@ from typing import Any
 from tkinter import filedialog
 from typing import Optional, Any, Tuple
 from functools import partial
+import threading
+import time
 
 
 class ToolTip:
@@ -239,9 +241,9 @@ class Widgets:
 
         app.root.bind("<KeyPress>", on_key)
 
-        self.disable_stop()
         self.input.focus_set()
         self.add_reset_menus()
+        self.start_checks()
 
     def apply_input_history(self) -> None:
         text = config.inputs[self.input_history_index]
@@ -404,6 +406,18 @@ class Widgets:
             self.stop_button.configure(background=config.stop_background_disabled)
             self.stop_button.config(state="disabled")
             self.stop_enabled = False
+
+    def check_stop(self) -> None:
+        from model import model
+
+        if model.streaming:
+            self.enable_stop()
+        else:
+            self.disable_stop()
+
+    def start_checks(self) -> None:
+        self.check_stop()
+        app.root.after(100, self.start_checks)
 
 
 widgets: Widgets = Widgets()

@@ -26,6 +26,9 @@ class App:
         style.configure("TCombobox.Listbox", padding=0)
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
+    def run(self) -> None:
+        self.root.mainloop()
+
     def exit(self) -> None:
         self.root.quit()
 
