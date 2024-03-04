@@ -6,7 +6,7 @@ from typing import List
 class ConfigDefaults:
     name_user = "👽 You"
     name_ai = "😎 Melt"
-    max_tokens = 180
+    max_tokens = 200
     temperature = 0.8
     system = "Respond as gentleman and a scholar who is a bit unhinged"
     top_k = 40

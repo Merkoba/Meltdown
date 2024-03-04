@@ -151,6 +151,9 @@ class Widgets:
         widgetutils.make_label(d, "Prompt")
         self.input = widgetutils.make_input(d, sticky="ew")
 
+        clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_input())
+        ToolTip(clear_button, "Clear the input field")
+
         input_history_up_button = widgetutils.make_button(d, "Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
 
@@ -241,20 +244,20 @@ class Widgets:
         if len(self.input_history) > 100:
             self.input_history.pop(0)
 
-    def input_history_up(self) -> None:
-        if self.input_history_index < len(self.input_history):
-            self.input_history_index += 1
-            self.input.delete(0, tk.END)
-            self.input.insert(0, self.input_history[-self.input_history_index])
+    def apply_input_history(self) -> None:
+        text = self.input_history[self.input_history_index]
+        self.input.delete(0, tk.END)
+        self.input.insert(0, text)
 
     def input_history_down(self) -> None:
-        if self.input_history_index > 1:
-            self.input_history_index -= 1
-            self.input.delete(0, tk.END)
-            self.input.insert(0, self.input_history[-self.input_history_index])
-        elif self.input_history_index == 1:
-            self.input_history_index = 0
-            self.input.delete(0, tk.END)
+        if self.input_history:
+            self.input_history_index = (self.input_history_index + 1) % len(self.input_history)
+            self.apply_input_history()
+
+    def input_history_up(self) -> None:
+        if self.input_history:
+            self.input_history_index = (self.input_history_index - 1) % len(self.input_history)
+            self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
         if not widgetutils.exists():
@@ -329,6 +332,7 @@ class Widgets:
         if text:
             self.add_to_input_history(text)
             self.clear_input()
+            print(text)
             model.stream(text)
 
     def clear_output(self) -> None:
