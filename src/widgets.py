@@ -334,7 +334,6 @@ class Widgets:
         if text:
             self.add_to_input_history(text)
             self.clear_input()
-            print(text)
             model.stream(text)
 
     def clear_output(self) -> None:
