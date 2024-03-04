@@ -4,16 +4,22 @@
 
 ![](https://i.imgur.com/wFolNJH.jpg)
 
-To install use a virtual env and `requirements.txt`.
+You will need [llama.cpp](https://github.com/ggerganov/llama.cpp) installed.
 
-You can use `scripts/venv.sh` to automate this.
+---
 
-To run it manually use `run.sh`.
-
-You might be able to install it with `pipx`:
+You might be able to install with `pipx`:
 
 ```sh
 pipx install git+https://github.com/madprops/meltdown
 ```
 
 Which should provide the `meltdown` command.
+
+---
+
+To install manually use a virtual env and `requirements.txt`.
+
+You can use `scripts/venv.sh` to automate this.
+
+To run it use `run.sh`.
