@@ -6,11 +6,12 @@ with open("requirements.txt") as f:
 setup(
     name="Meltdown",
     version="1.0.0",
-    packages=find_packages(),
+    packages=find_packages(where="src"),
+    package_dir={"": "."}
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "meltdown = main:main",
+            "meltdown = src.main:main",
         ],
     },
 )
