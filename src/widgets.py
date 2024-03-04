@@ -212,7 +212,6 @@ class Widgets:
         self.max_tokens.bind("<FocusOut>", lambda e: state.update_max_tokens())
         self.temperature.bind("<FocusOut>", lambda e: state.update_temperature())
         self.system.bind("<FocusOut>", lambda e: state.update_system())
-        self.model.bind("<FocusOut>", lambda e: state.update_model())
         self.top_k.bind("<FocusOut>", lambda e: state.update_top_k())
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
         self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
