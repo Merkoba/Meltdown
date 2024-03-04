@@ -157,5 +157,8 @@ class Model:
         if len(self.context_list) > config.context:
             self.context_list.pop(0)
 
+    def stop(self) -> None:
+        self.check_thread()
+
 
 model = Model()

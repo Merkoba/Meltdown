@@ -176,6 +176,10 @@ def update_context() -> None:
 def add_model(model_path: str) -> None:
     config.models = [item for item in config.models if item != model_path]
     config.models.insert(0, model_path)
+
+    if len(config.models) > 100:
+        config.models.pop()
+
     save_models()
 
 

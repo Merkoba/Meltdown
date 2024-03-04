@@ -72,6 +72,9 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
+        self.stop_button = widgetutils.make_button(d, "Stop")
+        ToolTip(self.stop_button, "Stop generating the current response")
+
         self.model_menu_button = widgetutils.make_button(d, "Models")
         ToolTip(self.model_menu_button, "Pick a model file from your file system")
 
@@ -183,6 +186,7 @@ class Widgets:
 
     def setup(self) -> None:
         import state
+        from model import model
 
         self.fill()
 
@@ -201,6 +205,7 @@ class Widgets:
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
+        self.stop_button.bind("<Button-1>", lambda e: model.stop())
 
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
