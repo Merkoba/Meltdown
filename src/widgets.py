@@ -205,7 +205,7 @@ class Widgets:
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
-        self.stop_button.bind("<Button-1>", lambda e: model.stop())
+        self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
 
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())

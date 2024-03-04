@@ -12,7 +12,7 @@ def main() -> None:
     widgets.setup()
     widgets.intro()
     app.root.mainloop()
-    model.check_thread()
+    model.stop_stream()
 
 
 if __name__ == "__main__":

@@ -21,7 +21,7 @@ class Model:
         self.thread = threading.Thread()
         self.context_list: List[Dict[str, str]] = []
         self.loaded_model = ""
-        atexit.register(self.check_thread)
+        atexit.register(self.stop_stream)
 
     def load(self, model: str) -> bool:
         if not model:
@@ -37,7 +37,7 @@ class Model:
             widgets.print("Model already loaded.")
             return False
 
-        self.check_thread()
+        self.stop_stream()
         now = timeutils.now()
         widgets.print("Loading model...")
         widgets.update()
@@ -60,19 +60,12 @@ class Model:
     def reset_context(self) -> None:
         self.context_list = []
 
-    def check_thread(self) -> None:
-        if self.thread and self.thread.is_alive():
-            self.stop_thread.set()
-            self.thread.join()
-            self.stop_thread.clear()
-            widgets.print("\n* Interrupted *")
-
     def stream(self, prompt: str) -> None:
         if not self.loaded_model:
             if not self.load(config.model):
                 return
 
-        self.check_thread()
+        self.stop_stream()
         self.thread = threading.Thread(target=self.do_stream, args=(prompt,))
         self.thread.start()
 
@@ -157,8 +150,12 @@ class Model:
         if len(self.context_list) > config.context:
             self.context_list.pop(0)
 
-    def stop(self) -> None:
-        self.check_thread()
+    def stop_stream(self) -> None:
+        if self.thread and self.thread.is_alive():
+            self.stop_thread.set()
+            self.thread.join()
+            self.stop_thread.clear()
+            widgets.print("\n* Interrupted *")
 
 
 model = Model()
