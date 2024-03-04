@@ -134,7 +134,7 @@ class Widgets:
                 " You could use this to make the AI take on a specific persona or role.")
 
         widgetutils.make_label(d, "Context")
-        self.context = widgetutils.make_input(d)
+        self.context = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")

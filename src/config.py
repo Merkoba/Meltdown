@@ -17,6 +17,7 @@ class ConfigDefaults:
 
 class Config:
     def __init__(self) -> None:
+        self.title = "Meltdown"
         self.program = "meltdown"
         self.width = 1000
         self.height = 730
