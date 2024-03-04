@@ -1,8 +1,8 @@
 # Modules
-from meltdown.app import app
-from meltdown.widgets import widgets
-from meltdown.model import model
-from meltdown import state
+from .app import app
+from .widgets import widgets
+from .model import model
+from . import state
 
 
 def main() -> None:
