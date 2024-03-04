@@ -9,6 +9,7 @@ import state
 def main() -> None:
     state.load_config_file()
     state.load_models_file()
+    state.load_inputs_file()
     widgets.setup()
     widgets.intro()
     app.root.mainloop()

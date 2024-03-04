@@ -10,6 +10,11 @@ from typing import Optional, Any
 from pathlib import Path
 
 
+def save_file(path: Path, obj: Any) -> None:
+    with open(path, "w") as file:
+        json.dump(obj, file, indent=4)
+
+
 def load_config_file() -> None:
     if not config.config_path.exists():
         config.config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -44,6 +49,20 @@ def load_models_file() -> None:
     check_models()
 
 
+def load_inputs_file() -> None:
+    if not config.inputs_path.exists():
+        config.inputs_path.parent.mkdir(parents=True, exist_ok=True)
+        config.inputs_path.touch(exist_ok=True)
+
+    with open(config.inputs_path, "r") as file:
+        try:
+            inputs = json.load(file)
+        except BaseException:
+            inputs = []
+
+        config.inputs = inputs
+
+
 def check_models(save: bool = True) -> None:
     if (not config.model) and config.models:
         config.model = config.models[0]
@@ -61,8 +80,33 @@ def save_config() -> None:
     save_file(config.config_path, conf)
 
 
+def add_model(model_path: str) -> None:
+    config.models = [item for item in config.models if item != model_path]
+    config.models.insert(0, model_path)
+
+    if len(config.models) > 100:
+        config.models.pop()
+
+    save_models()
+
+
 def save_models() -> None:
     save_file(config.models_path, config.models)
+
+
+def add_input(text: str) -> None:
+    config.inputs = [item for item in config.inputs if item != text]
+    config.inputs.insert(0, text)
+
+    if len(config.inputs) > 100:
+        config.inputs.pop()
+
+    print(config.inputs)
+    save_inputs()
+
+
+def save_inputs() -> None:
+    save_file(config.inputs_path, config.inputs)
 
 
 def update_name_user() -> None:
@@ -171,16 +215,6 @@ def update_context() -> None:
         save_config()
 
 
-def add_model(model_path: str) -> None:
-    config.models = [item for item in config.models if item != model_path]
-    config.models.insert(0, model_path)
-
-    if len(config.models) > 100:
-        config.models.pop()
-
-    save_models()
-
-
 def reset_config() -> None:
     import widgetutils
 
@@ -249,22 +283,3 @@ def save_log() -> None:
             file.write(full_log)
 
         widgets.print(f"\n>> Log saved as {file_name}")
-
-
-def add_input(text: str) -> None:
-    config.inputs = [item for item in config.inputs if item != text]
-    config.inputs.insert(0, text)
-
-    if len(config.inputs) > 100:
-        config.inputs.pop()
-
-    save_inputs()
-
-
-def save_inputs() -> None:
-    save_file(config.inputs_path, config.inputs)
-
-
-def save_file(path: Path, obj: Any) -> None:
-    with open(path, "w") as file:
-        json.dump(obj, file, indent=4)
