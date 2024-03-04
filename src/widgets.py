@@ -70,7 +70,7 @@ class Widgets:
         widgetutils.make_label(d, "Model")
         self.model = widgetutils.make_input(d, sticky="ew")
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
-                " llama.cpp, like gguf files for instance. Right click to see recently used models.")
+                " llama.cpp, like gguf files for instance.")
 
         self.model_menu_button = widgetutils.make_button(d, "Models")
         ToolTip(self.model_menu_button, "Pick a model file from your file system")
