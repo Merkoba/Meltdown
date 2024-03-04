@@ -1,7 +1,5 @@
 # Standard
 from pathlib import Path
-import tkinter as tk
-from tkinter import ttk
 from typing import List
 
 
@@ -20,14 +18,14 @@ class ConfigDefaults:
 class Config:
     def __init__(self) -> None:
         self.program = "meltdown"
-        self.app = tk.Tk()
-        self.width = 960
+        self.width = 1000
         self.height = 730
         self.padx = 5
         self.pady = 8
         self.frame_padx = 0
         self.frame_pady = 0
         self.input_width = 11
+        self.input_width_small = 6
         self.select_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
@@ -76,18 +74,6 @@ class Config:
             "top_p",
             "context",
         ]
-
-        self.app.geometry(f"{self.width}x{self.height}")
-        self.app.grid_columnconfigure(0, weight=1)
-        self.app.grid_rowconfigure(3, weight=1)
-
-        style = ttk.Style()
-        style.configure("TCombobox", foreground="white")
-        style.map("TCombobox", fieldbackground=[("readonly", self.button_background)], fieldforeground=[("readonly", "white")])
-        style.map("TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
-        style.configure("TCombobox", borderwidth=0)
-        style.configure("TCombobox.Listbox", padding=0)
-        self.app.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
 
 config = Config()

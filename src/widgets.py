@@ -2,6 +2,7 @@
 from config import config
 import widgetutils
 from framedata import FrameData
+from app import app
 
 # Standard
 import tkinter as tk
@@ -89,19 +90,38 @@ class Widgets:
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
         widgetutils.make_label(d, "Tokens")
-        self.max_tokens = widgetutils.make_input(d)
+        self.max_tokens = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
         widgetutils.make_label(d, "Temp")
-        self.temperature = widgetutils.make_input(d)
+        self.temperature = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.temperature, "The temperature parameter is used to control"
                 " the randomness of the output. A higher temperature (~1) results in more randomness"
                 " and diversity in the generated text, as the model is more likely to"
                 " explore a wider range of possible tokens. Conversely, a lower temperature"
                 " (<1) produces more focused and deterministic output, emphasizing the"
                 " most probable tokens.")
+
+        widgetutils.make_label(d, "Top K")
+        self.top_k = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.top_k, "The top-k parameter limits the model's \
+                predictions to the top k most probable tokens at each step \
+                of generation. By setting a value for k, you are instructing \
+                the model to consider only the k most likely tokens. \
+                This can help in fine-tuning the generated output and \
+                ensuring it adheres to specific patterns or constraints.")
+
+        widgetutils.make_label(d, "Top P")
+        self.top_p = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
+                " the cumulative probability of the generated tokens."
+                " The model generates tokens until the cumulative probability"
+                " exceeds the chosen threshold (p). This approach allows for"
+                " more dynamic control over the length of the generated text"
+                " and encourages diversity in the output by including less"
+                " probable tokens when necessary.")
 
         # System
         d = get_d()
@@ -113,24 +133,11 @@ class Widgets:
                 " the AI how to respond, or how to act in general."
                 " You could use this to make the AI take on a specific persona or role.")
 
-        widgetutils.make_label(d, "Top K")
-        self.top_k = widgetutils.make_input(d)
-        ToolTip(self.top_k, "The top-k parameter limits the model's \
-                predictions to the top k most probable tokens at each step \
-                of generation. By setting a value for k, you are instructing \
-                the model to consider only the k most likely tokens. \
-                This can help in fine-tuning the generated output and \
-                ensuring it adheres to specific patterns or constraints.")
-
-        widgetutils.make_label(d, "Top P")
-        self.top_p = widgetutils.make_input(d)
-        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
-                " the cumulative probability of the generated tokens."
-                " The model generates tokens until the cumulative probability"
-                " exceeds the chosen threshold (p). This approach allows for"
-                " more dynamic control over the length of the generated text"
-                " and encourages diversity in the output by including less"
-                " probable tokens when necessary.")
+        widgetutils.make_label(d, "Context")
+        self.context = widgetutils.make_input(d)
+        ToolTip(self.context, "The number of previous messages to include as the context."
+                " The computation will take longer with more context."
+                " 0 means context is not used at all.")
 
         # Output
         d = get_d()
@@ -144,15 +151,14 @@ class Widgets:
         widgetutils.make_label(d, "Prompt")
         self.input = widgetutils.make_input(d, sticky="ew")
 
-        widgetutils.make_label(d, "Context")
-        values = [0, 1, 5, 10, 100]
-        self.context = widgetutils.make_select(d, values)
-        self.context.configure(width=5)
-        ToolTip(self.context, "The number of previous messages to include as the context."
-                " The computation will take longer with more context."
-                " 0 means context is not used at all.")
+        input_history_up_button = widgetutils.make_button(d, "Prev", lambda: self.input_history_up())
+        ToolTip(input_history_up_button, "Previous item in the input history")
 
-        widgetutils.make_button(d, "Submit", lambda: self.submit())
+        input_history_up_down = widgetutils.make_button(d, "Next", lambda: self.input_history_down())
+        ToolTip(input_history_up_down, "Next item in the input history")
+
+        submit_button = widgetutils.make_button(d, "Submit", lambda: self.submit())
+        ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.output_menu = widgetutils.make_menu()
         self.model_menu = widgetutils.make_menu()
@@ -187,7 +193,7 @@ class Widgets:
 
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
-        self.main_menu.add_command(label="Exit", command=lambda: self.exit())
+        self.main_menu.add_command(label="Exit", command=lambda: app.exit())
 
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
@@ -224,7 +230,7 @@ class Widgets:
                 elif event.keysym == "Down":
                     self.input_history_down()
 
-        config.app.bind("<KeyPress>", on_key)
+        app.root.bind("<KeyPress>", on_key)
 
         self.input.focus_set()
         self.add_reset_menus()
@@ -355,7 +361,7 @@ class Widgets:
         widgetutils.set_text(self.model, config.model)
 
     def update(self) -> None:
-        config.app.update_idletasks()
+        app.root.update_idletasks()
 
     def show_main_menu(self, event: Any) -> None:
         self.open_menu(self.main_menu, event)
@@ -381,9 +387,6 @@ class Widgets:
 
         for key in config.saved_configs:
             add_menu(key)
-
-    def exit(self) -> None:
-        config.app.quit()
 
 
 widgets: Widgets = Widgets()

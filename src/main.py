@@ -1,5 +1,6 @@
 # Modules
 from config import config
+from app import app
 from widgets import widgets
 from model import model
 import state
@@ -10,7 +11,7 @@ def main() -> None:
     state.load_models_file()
     widgets.setup()
     widgets.intro()
-    config.app.mainloop()
+    app.root.mainloop()
     model.check_thread()
 
 

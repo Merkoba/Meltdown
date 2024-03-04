@@ -1,5 +1,6 @@
 # Modules
 from config import config
+from app import app
 from framedata import FrameData
 
 # Libraries
@@ -19,7 +20,7 @@ def do_grid(d: FrameData, widget: tk.Widget, sticky: str) -> None:
 
 
 def make_frame() -> tk.Frame:
-    frame = tk.Frame(config.app)
+    frame = tk.Frame(app.root)
     frame.grid(row=config.frame_number, column=0, padx=config.frame_padx,
                pady=config.frame_pady, sticky="nsew")
     frame.configure(background=config.background_color)
@@ -76,7 +77,7 @@ def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = 
 
 
 def make_menu() -> tk.Menu:
-    return tk.Menu(config.app, tearoff=0, font=config.font)
+    return tk.Menu(app.root, tearoff=0, font=config.font)
 
 
 def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
@@ -106,12 +107,12 @@ def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
 
 
 def show_menu_at_center(menu: tk.Menu) -> None:
-    config.app.update_idletasks()
+    app.root.update_idletasks()
     menu.update_idletasks()
-    window_width = config.app.winfo_width()
-    window_height = config.app.winfo_height()
-    window_x = config.app.winfo_rootx()
-    window_y = config.app.winfo_rooty()
+    window_width = app.root.winfo_width()
+    window_height = app.root.winfo_height()
+    window_x = app.root.winfo_rootx()
+    window_y = app.root.winfo_rooty()
 
     menu_width = menu.winfo_reqwidth()
     menu_height = menu.winfo_reqheight()
@@ -124,7 +125,7 @@ def show_menu_at_center(menu: tk.Menu) -> None:
 
 def exists() -> bool:
     try:
-        return config.app.winfo_exists()
+        return app.root.winfo_exists()
     except tk.TclError:
         return False
 
