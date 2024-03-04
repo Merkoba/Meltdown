@@ -7,7 +7,6 @@ setup(
     name="Meltdown",
     version="1.0.0",
     packages=find_packages(),
-    package_dir={"": "src"},
     install_requires=requirements,
     entry_points={
         "console_scripts": [
