@@ -125,13 +125,6 @@ def show_menu_at_center(menu: tk.Menu) -> None:
     menu.post(x, y)
 
 
-def exists() -> bool:
-    try:
-        return app.root.winfo_exists()
-    except tk.TclError:
-        return False
-
-
 def last_character(widget: Union[tk.Text]) -> str:
     text = widget.get("1.0", "end-1c")
     return text[-1] if text else ""

@@ -29,5 +29,11 @@ class App:
     def exit(self) -> None:
         self.root.quit()
 
+    def exists(self) -> bool:
+        try:
+            return app.root.winfo_exists()
+        except tk.TclError:
+            return False
+
 
 app = App()

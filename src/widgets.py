@@ -265,7 +265,7 @@ class Widgets:
             self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
-        if not widgetutils.exists():
+        if not app.exists():
             return
 
         left = ""
@@ -283,7 +283,7 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def insert(self, text: str) -> None:
-        if not widgetutils.exists():
+        if not app.exists():
             return
 
         widgetutils.insert_text(self.output, text, True)
@@ -400,12 +400,14 @@ class Widgets:
             add_menu(key)
 
     def deactivate_stop(self) -> None:
-        self.stop_button.configure(background=config.stop_background_disabled)
-        self.stop_button.config(state="disabled")
+        if app.exists():
+            self.stop_button.configure(background=config.stop_background_disabled)
+            self.stop_button.config(state="disabled")
 
     def activate_stop(self) -> None:
-        self.stop_button.configure(background=config.stop_background)
-        self.stop_button.config(state="normal")
+        if app.exists():
+            self.stop_button.configure(background=config.stop_background)
+            self.stop_button.config(state="normal")
 
 
 widgets: Widgets = Widgets()
