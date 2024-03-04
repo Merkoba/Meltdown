@@ -65,7 +65,7 @@ class Model:
             self.stop_thread.set()
             self.thread.join()
             self.stop_thread.clear()
-            widgets.print("* Interrupted *")
+            widgets.print("\n* Interrupted *")
 
     def stream(self, prompt: str) -> None:
         if not self.loaded_model:
