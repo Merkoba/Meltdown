@@ -197,14 +197,9 @@ def reset_config() -> None:
 
 
 def reset_one_config(key: str) -> None:
-    import widgetutils
-
-    def reset(key: str = key) -> None:
-        setattr(config, key, getattr(ConfigDefaults, key))
-        widgets.fill_widget(key, getattr(config, key))
-        save_config()
-
-    widgetutils.show_confirm(f"Reset {key}?", reset, None)
+    setattr(config, key, getattr(ConfigDefaults, key))
+    widgets.fill_widget(key, getattr(config, key))
+    save_config()
 
 
 def reset_models() -> None:

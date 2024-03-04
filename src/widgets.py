@@ -214,7 +214,7 @@ class Widgets:
         self.system.bind("<FocusOut>", lambda e: state.update_system())
         self.top_k.bind("<FocusOut>", lambda e: state.update_top_k())
         self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
-        self.context.bind("<<ComboboxSelected>>", lambda e: state.update_context())
+        self.context.bind("<FocusOut>", lambda e: state.update_context())
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
         self.input_history: List[str] = []
