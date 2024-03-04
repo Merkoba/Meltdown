@@ -1,7 +1,7 @@
 # Modules
-from config import config
-from widgets import widgets
-import timeutils
+from .config import config
+from .widgets import widgets
+from . import timeutils
 
 # Libraries
 from llama_cpp import Llama  # type: ignore

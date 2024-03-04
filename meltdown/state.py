@@ -1,8 +1,8 @@
 # Modules
-from config import config
-from config import ConfigDefaults
-from widgets import widgets
-import timeutils
+from .config import config
+from .config import ConfigDefaults
+from .widgets import widgets
+from . import timeutils
 
 # Standard
 import json
@@ -159,7 +159,7 @@ def update_system() -> None:
 
 
 def update_model() -> None:
-    from model import model
+    from .model import model
     model_path = widgets.model.get()
 
     if not model_path:
@@ -200,7 +200,7 @@ def update_top_p() -> None:
 
 
 def update_context() -> None:
-    from model import model
+    from .model import model
     context_str = widgets.context.get()
 
     try:
@@ -215,7 +215,7 @@ def update_context() -> None:
 
 
 def reset_config() -> None:
-    import widgetutils
+    from . import widgetutils
 
     def reset() -> None:
         for key in config.saved_configs:
@@ -236,7 +236,7 @@ def reset_one_config(key: str) -> None:
 
 
 def reset_models() -> None:
-    import widgetutils
+    from . import widgetutils
 
     def reset() -> None:
         config.models = []
@@ -260,12 +260,12 @@ def get_models_dir() -> Optional[str]:
 
 
 def models_info() -> None:
-    import widgetutils
+    from . import widgetutils
     widgetutils.show_message("The models you load are saved here automatically.")
 
 
 def save_log() -> None:
-    import widgetutils
+    from . import widgetutils
     log = widgetutils.get_text(widgets.output)
 
     if log:

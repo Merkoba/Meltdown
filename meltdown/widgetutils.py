@@ -1,7 +1,7 @@
 # Modules
-from config import config
-from app import app
-from framedata import FrameData
+from .config import config
+from .app import app
+from .framedata import FrameData
 
 # Libraries
 import pyperclip  # type: ignore

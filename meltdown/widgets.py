@@ -1,8 +1,8 @@
 # Modules
-from config import config
-import widgetutils
-from framedata import FrameData
-from app import app
+from .config import config
+from . import widgetutils
+from .framedata import FrameData
+from .app import app
 
 # Standard
 import tkinter as tk
@@ -186,8 +186,8 @@ class Widgets:
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
-        import state
-        from model import model
+        from . import state
+        from .model import model
 
         self.fill()
 
@@ -286,7 +286,7 @@ class Widgets:
         self.show_menu(self.output_menu, event)
 
     def show_recent_models(self) -> None:
-        import state
+        from . import state
         self.recent_models_menu.delete(0, tk.END)
 
         for model in config.models:
@@ -319,7 +319,7 @@ class Widgets:
             self.menu_open = None
 
     def browse_model(self) -> None:
-        import state
+        from . import state
         file = filedialog.askopenfilename(initialdir=state.get_models_dir())
 
         if file:
@@ -327,8 +327,8 @@ class Widgets:
             state.update_model()
 
     def submit(self) -> None:
-        from model import model
-        import state
+        from .model import model
+        from . import state
         text = self.input.get()
 
         if text:
@@ -354,7 +354,7 @@ class Widgets:
         self.output.tag_add(f"name_{who}", start_index, end_index)
 
     def set_model(self, model: str) -> None:
-        import state
+        from . import state
         widgetutils.set_text(self.model, model)
         state.update_model()
 
@@ -375,7 +375,7 @@ class Widgets:
         self.show_menu(self.model_menu, event)
 
     def add_reset_menus(self) -> None:
-        import state
+        from . import state
 
         def add_menu(key: str) -> None:
             widget = getattr(self, key)
@@ -408,7 +408,7 @@ class Widgets:
             self.stop_enabled = False
 
     def check_stop(self) -> None:
-        from model import model
+        from .model import model
 
         if model.streaming:
             self.enable_stop()
