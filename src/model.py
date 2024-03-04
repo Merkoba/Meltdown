@@ -79,6 +79,7 @@ class Model:
 
         widgets.prompt("user")
         widgets.insert(prompt)
+        widgets.activate_stop()
 
         if config.context > 0:
             context_dict = {"user": prompt}
@@ -151,6 +152,8 @@ class Model:
             self.context_list.pop(0)
 
     def stop_stream(self) -> None:
+        widgets.deactivate_stop()
+
         if self.thread and self.thread.is_alive():
             self.stop_thread.set()
             self.thread.join()

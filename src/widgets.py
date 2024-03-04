@@ -239,6 +239,7 @@ class Widgets:
 
         app.root.bind("<KeyPress>", on_key)
 
+        self.deactivate_stop()
         self.input.focus_set()
         self.add_reset_menus()
 
@@ -397,6 +398,14 @@ class Widgets:
 
         for key in config.saved_configs:
             add_menu(key)
+
+    def deactivate_stop(self) -> None:
+        self.stop_button.configure(background=config.stop_background_disabled)
+        self.stop_button.config(state="disabled")
+
+    def activate_stop(self) -> None:
+        self.stop_button.configure(background=config.stop_background)
+        self.stop_button.config(state="normal")
 
 
 widgets: Widgets = Widgets()
