@@ -283,7 +283,7 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def show_output_menu(self, event: Any) -> None:
-        self.open_menu(self.output_menu, event)
+        self.show_menu(self.output_menu, event)
 
     def show_recent_models(self) -> None:
         import state
@@ -298,9 +298,9 @@ class Widgets:
         if not config.models:
             self.recent_models_menu.add_command(label="Empty", command=lambda: state.models_info())
 
-        self.open_menu(self.recent_models_menu, self.last_menu_event)
+        self.show_menu(self.recent_models_menu, self.last_menu_event)
 
-    def open_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
+    def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
 
         if event:
@@ -369,10 +369,10 @@ class Widgets:
         app.root.update_idletasks()
 
     def show_main_menu(self, event: Any) -> None:
-        self.open_menu(self.main_menu, event)
+        self.show_menu(self.main_menu, event)
 
     def show_model_menu(self, event: Any) -> None:
-        self.open_menu(self.model_menu, event)
+        self.show_menu(self.model_menu, event)
 
     def add_reset_menus(self) -> None:
         import state
@@ -385,8 +385,10 @@ class Widgets:
             menu.add_command(label=f"Reset", command=reset_func)
 
             if key != "model":
-                show_func = partial(self.open_menu, menu=menu)
+                show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
+            else:
+                widget.bind("<Button-3>", lambda e: self.hide_menu())
 
             widget.bind("<Button-1>", lambda e: self.hide_menu())
 
