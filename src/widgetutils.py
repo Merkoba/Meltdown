@@ -77,8 +77,8 @@ def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = 
 
 
 def make_menu() -> tk.Menu:
-    widget = tk.Menu(app.root, tearoff=0, font=config.font, \
-                   bg="#3D4555", fg="white", activebackground="#33393B", activeforeground="white")
+    widget = tk.Menu(app.root, tearoff=0, font=config.font,
+                     bg="#3D4555", fg="white", activebackground="#33393B", activeforeground="white")
     return widget
 
 
