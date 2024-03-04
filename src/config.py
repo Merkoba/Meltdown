@@ -8,7 +8,7 @@ class ConfigDefaults:
     name_ai = "😎 Melt"
     max_tokens = 250
     temperature = 0.8
-    system = "Respond as gentleman and a scholar who is a bit unhinged"
+    system = "Respond as a gentleman and a scholar who is a bit unhinged"
     top_k = 40
     top_p = 0.95
     model = ""
