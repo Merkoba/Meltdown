@@ -6,7 +6,7 @@ import timeutils
 
 # Standard
 import json
-from typing import Optional
+from typing import Optional, Any
 from pathlib import Path
 
 
@@ -58,13 +58,11 @@ def save_config() -> None:
     for key in config.saved_configs:
         conf[key] = getattr(config, key)
 
-    with open(config.config_path, "w") as file:
-        json.dump(conf, file, indent=4)
+    save_file(config.config_path, conf)
 
 
 def save_models() -> None:
-    with open(config.models_path, "w") as file:
-        json.dump(config.models, file, indent=4)
+    save_file(config.models_path, config.models)
 
 
 def update_name_user() -> None:
@@ -251,3 +249,22 @@ def save_log() -> None:
             file.write(full_log)
 
         widgets.print(f"\n>> Log saved as {file_name}")
+
+
+def add_input(text: str) -> None:
+    config.inputs = [item for item in config.inputs if item != text]
+    config.inputs.insert(0, text)
+
+    if len(config.inputs) > 100:
+        config.inputs.pop()
+
+    save_inputs()
+
+
+def save_inputs() -> None:
+    save_file(config.inputs_path, config.inputs)
+
+
+def save_file(path: Path, obj: Any) -> None:
+    with open(path, "w") as file:
+        json.dump(obj, file, indent=4)

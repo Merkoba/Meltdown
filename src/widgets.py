@@ -171,6 +171,7 @@ class Widgets:
         self.recent_models_menu = widgetutils.make_menu()
         self.main_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
+        self.stop_button_disabled = False
 
     def fill(self) -> None:
         for key in config.saved_configs:
@@ -222,7 +223,6 @@ class Widgets:
         self.context.bind("<FocusOut>", lambda e: state.update_context())
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
-        self.input_history: List[str] = []
         self.input_history_index = 0
 
         def on_key(event: Any) -> None:
@@ -243,25 +243,18 @@ class Widgets:
         self.input.focus_set()
         self.add_reset_menus()
 
-    def add_to_input_history(self, text: str) -> None:
-        self.input_history.append(text)
-
-        if len(self.input_history) > 100:
-            self.input_history.pop(0)
-
     def apply_input_history(self) -> None:
-        text = self.input_history[self.input_history_index]
-        self.input.delete(0, tk.END)
-        self.input.insert(0, text)
+        text = config.inputs[self.input_history_index]
+        widgetutils.set_text(self.input, text)
 
     def input_history_down(self) -> None:
-        if self.input_history:
-            self.input_history_index = (self.input_history_index + 1) % len(self.input_history)
+        if config.inputs:
+            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
             self.apply_input_history()
 
     def input_history_up(self) -> None:
-        if self.input_history:
-            self.input_history_index = (self.input_history_index - 1) % len(self.input_history)
+        if config.inputs:
+            self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
             self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
@@ -335,11 +328,12 @@ class Widgets:
 
     def submit(self) -> None:
         from model import model
+        import state
         text = self.input.get()
 
         if text:
-            self.add_to_input_history(text)
             self.clear_input()
+            state.add_input(text)
             model.stream(text)
 
     def clear_output(self) -> None:
@@ -400,14 +394,16 @@ class Widgets:
             add_menu(key)
 
     def deactivate_stop(self) -> None:
-        if app.exists():
+        if self.stop_button_disabled and app.exists():
             self.stop_button.configure(background=config.stop_background_disabled)
             self.stop_button.config(state="disabled")
+            self.stop_button_disabled = False
 
     def activate_stop(self) -> None:
-        if app.exists():
+        if (not self.stop_button_disabled) and app.exists():
             self.stop_button.configure(background=config.stop_background)
             self.stop_button.config(state="normal")
+            self.stop_button_disabled = True
 
 
 widgets: Widgets = Widgets()
