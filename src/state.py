@@ -248,4 +248,4 @@ def save_log() -> None:
         with open(Path(config.logs_path, file_name), "w") as file:
             file.write(full_log)
 
-        widgets.print(f"Log saved as {file_name}")
+        widgets.print(f"\n>> Log saved as {file_name}")
