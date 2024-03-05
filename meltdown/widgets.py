@@ -226,9 +226,7 @@ class Widgets:
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
 
-        self.input_menu.add_command(label="Paste Text", command=lambda: self.paste_text())
-        self.input_menu.add_command(label="Recent Inputs", command=lambda: self.show_recent_inputs())
-        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
+        self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
         self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
@@ -448,9 +446,6 @@ class Widgets:
 
     def show_output_menu(self, event: Any) -> None:
         self.show_menu(self.output_menu, event)
-
-    def show_input_menu(self, event: Any) -> None:
-        self.show_menu(self.input_menu, event)
 
     def add_reset_menus(self) -> None:
         from . import state
