@@ -141,7 +141,9 @@ class Widgets:
 
         widgetutils.make_label(d, "Seed")
         self.seed = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.seed, "The seed to use for sampling")
+        ToolTip(self.seed, "The seed to use for sampling."
+                " The same seed should generate the same or similar results."
+                " -1 means no seed is used.")
 
         widgetutils.make_label(d, "Context")
         self.context = widgetutils.make_input(d, width=config.input_width_small)
@@ -156,8 +158,8 @@ class Widgets:
         values.extend(fmts)
         self.format = widgetutils.make_select(d, values=values)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
-                "Auto is supposed to work with newer models that include the format in the metadata."
-                "Check llama-cpp-python to find all the available formats.")
+                " Auto is supposed to work with newer models that include the format in the metadata."
+                " Check llama-cpp-python to find all the available formats.")
 
         # Output
         d = get_d()
