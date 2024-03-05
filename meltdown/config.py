@@ -51,6 +51,7 @@ class Config:
         self.default_model: str = ""
         self.default_context: int = 0
         self.default_seed: int = -1
+        self.default_format: str = "auto"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -62,6 +63,7 @@ class Config:
         self.top_p = self.default_top_p
         self.context = self.default_context
         self.seed = self.default_seed
+        self.format = self.default_format
 
         self.intro = [
             "Welcome to Meltdown.",

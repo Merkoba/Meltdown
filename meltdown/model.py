@@ -44,8 +44,16 @@ class Model:
         widgets.update()
 
         try:
+            if config.format == "auto":
+                fmt = None
+            else:
+                fmt = config.format
+
+            fmt = config.format if config.format != "auto" else None
+
             self.model = Llama(
                 model_path=str(model_path),
+                chat_format=fmt,
                 verbose=False,
             )
         except BaseException as e:

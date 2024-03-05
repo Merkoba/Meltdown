@@ -4,6 +4,9 @@ from . import widgetutils
 from .framedata import FrameData
 from .app import app
 
+# Libraries
+from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
@@ -146,6 +149,16 @@ class Widgets:
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
+        widgetutils.make_label(d, "Format")
+        values = ["auto"]
+        fmts = [item for item in formats._chat_handlers]
+        fmts.sort()
+        values.extend(fmts)
+        self.format = widgetutils.make_select(d, values=values)
+        ToolTip(self.format, "That will format the prompt according to how model expects it."
+                "Auto is supposed to work with newer models that include the format in the metadata."
+                "Check llama-cpp-python to find all the available formats.")
+
         # Output
         d = get_d()
         d.frame.grid_columnconfigure(0, weight=1)
@@ -219,7 +232,13 @@ class Widgets:
 
         def bind(key: str) -> None:
             widget = getattr(self, key)
-            widget.bind("<FocusOut>", lambda e: state.update_config(key))
+
+            if type(widget) == tk.Entry or type(widget) == tk.Text:
+                on = "<FocusOut>"
+            elif type(widget) == ttk.Combobox:
+                on = "<<ComboboxSelected>>"
+
+            widget.bind(on, lambda e: state.update_config(key))
 
         bind("name_user")
         bind("name_ai")
@@ -230,6 +249,7 @@ class Widgets:
         bind("seed")
         bind("top_k")
         bind("top_p")
+        bind("format")
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
