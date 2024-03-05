@@ -112,12 +112,12 @@ class Widgets:
 
         widgetutils.make_label(d, "Top K")
         self.top_k = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.top_k, "The top-k parameter limits the model's \
-                predictions to the top k most probable tokens at each step \
-                of generation. By setting a value for k, you are instructing \
-                the model to consider only the k most likely tokens. \
-                This can help in fine-tuning the generated output and \
-                ensuring it adheres to specific patterns or constraints.")
+        ToolTip(self.top_k, "The top-k parameter limits the model's"
+                " predictions to the top k most probable tokens at each step"
+                " of generation. By setting a value for k, you are instructing"
+                " the model to consider only the k most likely tokens."
+                " This can help in fine-tuning the generated output and"
+                " ensuring it adheres to specific patterns or constraints.")
 
         widgetutils.make_label(d, "Top P")
         self.top_p = widgetutils.make_input(d, width=config.input_width_small)
