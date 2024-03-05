@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 from pathlib import Path
 import shutil
 
+
 def _post_install():
     try:
         _copy_icon_file()
@@ -9,10 +10,12 @@ def _post_install():
     except Exception as e:
         print(f"Error during post install: {e}")
 
+
 def _copy_icon_file():
     source = Path("meltdown/icon.png").expanduser().resolve()
     destination = Path("~/.local/share/icons/meltdown.png").expanduser().resolve()
     shutil.copy2(source, destination)
+
 
 def _create_desktop_file():
     content = f"""[Desktop Entry]
@@ -29,6 +32,7 @@ Categories=Utility;
 
     with open(file_path, 'w') as f:
         f.write(content)
+
 
 with open("requirements.txt") as f:
     requirements = f.read().splitlines()
