@@ -352,7 +352,7 @@ class Widgets:
             def proc(item: str = item) -> None:
                 command(item)
 
-            menu.add_command(label=item[:100], command=proc)
+            menu.add_command(label=item[:80], command=proc)
 
         if not items:
             menu.add_command(label="Empty", command=lambda: self.menu_info(key))
