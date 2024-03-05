@@ -185,9 +185,9 @@ class Widgets:
 
         self.main_menu = widgetutils.make_menu()
         self.model_menu = widgetutils.make_menu()
-        self.recent_models_menu = widgetutils.make_menu()
         self.output_menu = widgetutils.make_menu()
-        self.input_menu = widgetutils.make_menu()
+        self.recent_models_menu = widgetutils.make_menu()
+        self.recent_systems_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_enabled = True
@@ -210,22 +210,25 @@ class Widgets:
 
         self.fill()
 
-        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
+        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_list("models"))
+        self.main_menu.add_command(label="Reset Systems", command=lambda: state.reset_list("systems"))
+        self.main_menu.add_command(label="Reset Inputs", command=lambda: state.reset_list("inputs"))
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
         self.model_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
         self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
-        self.model_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
-        self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
 
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
 
+        self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
+        self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
         self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
@@ -341,7 +344,6 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def show_menu_items(self, key: str, command: Callable[..., Any], event: Optional[Any] = None) -> None:
-        from . import state
         menu = getattr(self, f"recent_{key}_menu")
         menu.delete(0, tk.END)
         items = getattr(config, key)[:10]
@@ -352,7 +354,7 @@ class Widgets:
 
             menu.add_command(label=item[:100], command=proc)
 
-        if not config.inputs:
+        if not items:
             menu.add_command(label="Empty", command=lambda: self.menu_info(key))
 
         if not event:
@@ -365,6 +367,9 @@ class Widgets:
 
     def show_recent_inputs(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("inputs", lambda s: self.set_input(s), event)
+
+    def show_recent_systems(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("systems", lambda s: self.set_system(s), event)
 
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
@@ -399,7 +404,6 @@ class Widgets:
 
         if text:
             self.clear_input()
-            state.add_input(text)
             model.stream(text)
 
     def clear_output(self) -> None:
@@ -457,7 +461,7 @@ class Widgets:
             reset_func = partial(state.reset_one_config, key=key)
             menu.add_command(label=f"Reset", command=reset_func)
 
-            if key != "model":
+            if key not in ["model", "system"]:
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
 
@@ -493,17 +497,18 @@ class Widgets:
     def menu_info(self, key: str) -> None:
         from . import widgetutils
 
-        if key == "model":
+        if key == "models":
             widgetutils.show_message("The models you load are saved here automatically.")
-        elif key == "input":
+        elif key == "inputs":
             widgetutils.show_message("The inputs you use are saved here automatically.")
+        elif key == "systems":
+            widgetutils.show_message("The systems you use are saved here automatically.")
 
     def set_input(self, text: str) -> None:
         widgetutils.set_text(self.input, text)
 
-    def paste_text(self) -> None:
-        text = app.root.clipboard_get()
-        self.set_input(text)
+    def set_system(self, system: str) -> None:
+        widgetutils.set_text(self.system, system)
 
 
 widgets: Widgets = Widgets()

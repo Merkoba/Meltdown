@@ -30,16 +30,22 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
+
         self.config_file = f"~/.config/{self.program}/config.json"
         self.models_file = f"~/.config/{self.program}/models.json"
         self.inputs_file = f"~/.config/{self.program}/inputs.json"
+        self.systems_file = f"~/.config/{self.program}/systems.json"
         self.logs_dir = f"~/.config/{self.program}/logs/"
+
         self.config_path = Path(self.config_file).expanduser().resolve()
         self.models_path = Path(self.models_file).expanduser().resolve()
         self.inputs_path = Path(self.inputs_file).expanduser().resolve()
+        self.systems_path = Path(self.systems_file).expanduser().resolve()
         self.logs_path = Path(self.logs_dir).expanduser().resolve()
+
         self.models: List[str] = []
         self.inputs: List[str] = []
+        self.systems: List[str] = []
 
         self.default_name_user: str = "👽 You"
         self.default_name_ai: str = "😎 Melt"

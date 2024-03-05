@@ -2,6 +2,7 @@
 from .config import config
 from .widgets import widgets
 from . import timeutils
+from . import state
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
@@ -105,6 +106,10 @@ class Model:
         token_printed = False
         last_token = " "
         tokens = []
+
+        state.add_model(config.model)
+        state.add_system(config.system)
+        state.add_input(prompt)
 
         output = self.model.create_chat_completion(
             stream=True,

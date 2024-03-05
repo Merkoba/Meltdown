@@ -48,6 +48,14 @@ def load_models_file() -> None:
     check_models()
 
 
+def check_models(save: bool = True) -> None:
+    if (not config.model) and config.models:
+        config.model = config.models[0]
+
+        if save:
+            save_config()
+
+
 def load_inputs_file() -> None:
     if not config.inputs_path.exists():
         config.inputs_path.parent.mkdir(parents=True, exist_ok=True)
@@ -62,12 +70,21 @@ def load_inputs_file() -> None:
         config.inputs = inputs
 
 
-def check_models(save: bool = True) -> None:
-    if (not config.model) and config.models:
-        config.model = config.models[0]
+def load_systems_file() -> None:
+    if not config.systems_path.exists():
+        config.systems_path.parent.mkdir(parents=True, exist_ok=True)
+        config.systems_path.touch(exist_ok=True)
 
-        if save:
-            save_config()
+    with open(config.systems_path, "r") as file:
+        try:
+            systems = json.load(file)
+        except BaseException:
+            systems = []
+
+            if config.model:
+                systems.append(config.model)
+
+        config.systems = systems
 
 
 def save_config() -> None:
@@ -80,31 +97,28 @@ def save_config() -> None:
 
 
 def add_model(model_path: str) -> None:
-    config.models = [item for item in config.models if item != model_path]
-    config.models.insert(0, model_path)
-
-    if len(config.models) > 100:
-        config.models.pop()
-
-    save_models()
-
-
-def save_models() -> None:
-    save_file(config.models_path, config.models)
+    add_to_list("models", model_path)
 
 
 def add_input(text: str) -> None:
-    config.inputs = [item for item in config.inputs if item != text]
-    config.inputs.insert(0, text)
-
-    if len(config.inputs) > 100:
-        config.inputs.pop()
-
-    save_inputs()
+    add_to_list("inputs", text)
 
 
-def save_inputs() -> None:
-    save_file(config.inputs_path, config.inputs)
+def add_system(text: str) -> None:
+    add_to_list("systems", text)
+
+
+def add_to_list(key: str, text: str) -> None:
+    items = getattr(config, key)
+    new_items = [item for item in items if item != text]
+    new_items.insert(0, text)
+
+    if len(new_items) > 100:
+        items.pop()
+
+    setattr(config, key, new_items)
+    path = getattr(config, key + "_path")
+    save_file(path, new_items)
 
 
 def update_config(key: str) -> bool:
@@ -134,7 +148,6 @@ def update_config(key: str) -> bool:
         setattr(config, key, value)
 
         if key == "model":
-            add_model(config.model)
             model.load(config.model)
         elif key == "context":
             model.reset_context()
@@ -157,8 +170,8 @@ def reset_config() -> None:
 
         check_models(False)
         widgets.fill()
-        save_config()
         model.load(config.model)
+        save_config()
 
     widgetutils.show_confirm("Reset config? This will remove your custom configs"
                              " and refresh the widgets.", reset, None)
@@ -173,22 +186,26 @@ def reset_one_config(key: str) -> None:
 
     setattr(config, key, default)
     widgets.fill_widget(key, getattr(config, key))
-    save_config()
 
     if key == "format":
         model.load(config.model)
+    elif key == "model":
+        check_models(False)
+        model.load(config.model)
+
+    save_config()
 
 
-def reset_models() -> None:
+def reset_list(key: str) -> None:
     from . import widgetutils
 
     def reset() -> None:
-        config.models = []
+        setattr(config, key, [])
         widgets.fill()
-        save_models()
+        path = getattr(config, key + "_path")
+        save_file(path, [])
 
-    widgetutils.show_confirm("Reset models? This will empty the list"
-                             " of recent models.", reset, None)
+    widgetutils.show_confirm(f"Reset this? This will empty the {key}.", reset, None)
 
 
 def get_models_dir() -> Optional[str]:
