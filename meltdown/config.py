@@ -30,6 +30,7 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
+        self.max_list_items = 12
 
         self.config_file = f"~/.config/{self.program}/config.json"
         self.models_file = f"~/.config/{self.program}/models.json"

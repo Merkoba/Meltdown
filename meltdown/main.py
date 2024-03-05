@@ -6,9 +6,7 @@ from . import state
 
 
 def main() -> None:
-    state.load_config_file()
-    state.load_models_file()
-    state.load_inputs_file()
+    state.load_files()
     widgets.setup()
     widgets.intro()
     app.run()

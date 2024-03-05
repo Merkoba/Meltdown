@@ -265,7 +265,7 @@ class Widgets:
 
         def on_key(event: Any) -> None:
             if event.widget == self.output:
-                if event.char:
+                if event.char.strip():
                     # Focus the input and insert char
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
@@ -346,7 +346,7 @@ class Widgets:
     def show_menu_items(self, key: str, command: Callable[..., Any], event: Optional[Any] = None) -> None:
         menu = getattr(self, f"recent_{key}_menu")
         menu.delete(0, tk.END)
-        items = getattr(config, key)[:10]
+        items = getattr(config, key)[:config.max_list_items]
 
         for item in items:
             def proc(item: str = item) -> None:

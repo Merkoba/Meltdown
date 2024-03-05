@@ -14,6 +14,13 @@ def save_file(path: Path, obj: Any) -> None:
         json.dump(obj, file, indent=4)
 
 
+def load_files() -> None:
+    load_config_file()
+    load_models_file()
+    load_inputs_file()
+    load_systems_file()
+
+
 def load_config_file() -> None:
     if not config.config_path.exists():
         config.config_path.parent.mkdir(parents=True, exist_ok=True)
@@ -30,61 +37,34 @@ def load_config_file() -> None:
 
 
 def load_models_file() -> None:
-    if not config.models_path.exists():
-        config.models_path.parent.mkdir(parents=True, exist_ok=True)
-        config.models_path.touch(exist_ok=True)
-
-    with open(config.models_path, "r") as file:
-        try:
-            models = json.load(file)
-        except BaseException:
-            models = []
-
-            if config.model:
-                models.append(config.model)
-
-        config.models = models
-
+    load_list_file(config.models_path, "model", "models")
     check_models()
 
 
-def check_models(save: bool = True) -> None:
-    if (not config.model) and config.models:
-        config.model = config.models[0]
-
-        if save:
-            save_config()
-
-
 def load_inputs_file() -> None:
-    if not config.inputs_path.exists():
-        config.inputs_path.parent.mkdir(parents=True, exist_ok=True)
-        config.inputs_path.touch(exist_ok=True)
-
-    with open(config.inputs_path, "r") as file:
-        try:
-            inputs = json.load(file)
-        except BaseException:
-            inputs = []
-
-        config.inputs = inputs
+    load_list_file(config.inputs_path, "input", "inputs")
 
 
 def load_systems_file() -> None:
-    if not config.systems_path.exists():
-        config.systems_path.parent.mkdir(parents=True, exist_ok=True)
-        config.systems_path.touch(exist_ok=True)
+    load_list_file(config.systems_path, "system", "systems")
 
-    with open(config.systems_path, "r") as file:
+
+def load_list_file(path: Path, key: str, list_key: str) -> None:
+    if not path.exists():
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.touch(exist_ok=True)
+
+    with open(path, "r") as file:
         try:
-            systems = json.load(file)
+            items = json.load(file)
         except BaseException:
-            systems = []
+            items = []
+            item = getattr(config, key)
 
-            if config.model:
-                systems.append(config.model)
+            if item:
+                items.append(item)
 
-        config.systems = systems
+        setattr(config, list_key, items)
 
 
 def save_config() -> None:
@@ -94,6 +74,14 @@ def save_config() -> None:
         conf[key] = getattr(config, key)
 
     save_file(config.config_path, conf)
+
+
+def check_models(save: bool = True) -> None:
+    if (not config.model) and config.models:
+        config.model = config.models[0]
+
+        if save:
+            save_config()
 
 
 def add_model(model_path: str) -> None:
@@ -113,7 +101,7 @@ def add_to_list(key: str, text: str) -> None:
     new_items = [item for item in items if item != text]
     new_items.insert(0, text)
 
-    if len(new_items) > 100:
+    if len(new_items) > config.max_list_items:
         items.pop()
 
     setattr(config, key, new_items)

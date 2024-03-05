@@ -16,7 +16,6 @@ class App:
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(3, weight=1)
         icon_path = Path(self.here, "icon.png")
-        print(icon_path)
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
 
         style = ttk.Style()
