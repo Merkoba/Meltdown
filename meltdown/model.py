@@ -92,8 +92,7 @@ class Model:
         else:
             context_dict = None
 
-        system = f"Please answer in {config.max_tokens} words or less. " + config.system
-        messages = [{"role": "system", "content": system}]
+        messages = [{"role": "system", "content": config.system}]
 
         if self.context_list:
             for item in self.context_list:
