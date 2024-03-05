@@ -192,11 +192,6 @@ def get_models_dir() -> Optional[str]:
     return None
 
 
-def models_info() -> None:
-    from . import widgetutils
-    widgetutils.show_message("The models you load are saved here automatically.")
-
-
 def save_log() -> None:
     from . import widgetutils
     log = widgetutils.get_text(widgets.output)

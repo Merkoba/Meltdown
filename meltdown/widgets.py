@@ -12,7 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple
+from typing import Optional, Any, Tuple, Callable
 from functools import partial
 
 
@@ -168,7 +168,7 @@ class Widgets:
         # Input
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
-        widgetutils.make_label(d, "Prompt")
+        widgetutils.make_label(d, "Input")
         self.input = widgetutils.make_input(d, sticky="ew")
 
         clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_input())
@@ -183,10 +183,12 @@ class Widgets:
         submit_button = widgetutils.make_button(d, "Submit", lambda: self.submit())
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
-        self.output_menu = widgetutils.make_menu()
+        self.main_menu = widgetutils.make_menu()
         self.model_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
-        self.main_menu = widgetutils.make_menu()
+        self.output_menu = widgetutils.make_menu()
+        self.input_menu = widgetutils.make_menu()
+        self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_enabled = True
 
@@ -208,26 +210,29 @@ class Widgets:
 
         self.fill()
 
-        self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
-        self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
-        self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
+        self.main_menu.add_command(label="Exit", command=lambda: app.exit())
+        self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
         self.model_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
         self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
         self.model_menu.add_command(label="Reset Models", command=lambda: state.reset_models())
-
-        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
-        self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
-        self.main_menu.add_command(label="Exit", command=lambda: app.exit())
-
-        self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
-        self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
-        self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
+        self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
 
+        self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
+        self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
+        self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
+
+        self.input_menu.add_command(label="Paste Text", command=lambda: self.paste_text())
+        self.input_menu.add_command(label="Recent Inputs", command=lambda: self.show_recent_inputs())
+        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
+
+        self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
-
         self.input.bind("<Return>", lambda e: self.submit())
 
         def bind(key: str) -> None:
@@ -277,7 +282,7 @@ class Widgets:
 
     def apply_input_history(self) -> None:
         text = config.inputs[self.input_history_index]
-        widgetutils.set_text(self.input, text)
+        self.set_input(text)
 
     def input_history_up(self) -> None:
         if not self.input.get():
@@ -337,23 +342,31 @@ class Widgets:
         widgetutils.insert_text(self.output, text, True)
         widgetutils.to_bottom(self.output)
 
-    def show_output_menu(self, event: Any) -> None:
-        self.show_menu(self.output_menu, event)
-
-    def show_recent_models(self) -> None:
+    def show_menu_items(self, key: str, command: Callable[..., Any], event: Optional[Any] = None) -> None:
         from . import state
-        self.recent_models_menu.delete(0, tk.END)
+        menu = getattr(self, f"recent_{key}_menu")
+        menu.delete(0, tk.END)
+        items = getattr(config, key)[:10]
 
-        for model in config.models:
-            def proc(model: str = model) -> None:
-                self.set_model(model)
+        for item in items:
+            def proc(item: str = item) -> None:
+                command(item)
 
-            self.recent_models_menu.add_command(label=model, command=proc)
+            menu.add_command(label=item[:100], command=proc)
 
-        if not config.models:
-            self.recent_models_menu.add_command(label="Empty", command=lambda: state.models_info())
+        if not config.inputs:
+            menu.add_command(label="Empty", command=lambda: self.menu_info(key))
 
-        self.show_menu(self.recent_models_menu, self.last_menu_event)
+        if not event:
+            event = self.last_menu_event
+
+        self.show_menu(menu, event)
+
+    def show_recent_models(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("models", lambda m: self.set_model(m), event)
+
+    def show_recent_inputs(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("inputs", lambda s: self.set_input(s), event)
 
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
@@ -433,6 +446,12 @@ class Widgets:
     def show_model_menu(self, event: Any) -> None:
         self.show_menu(self.model_menu, event)
 
+    def show_output_menu(self, event: Any) -> None:
+        self.show_menu(self.output_menu, event)
+
+    def show_input_menu(self, event: Any) -> None:
+        self.show_menu(self.input_menu, event)
+
     def add_reset_menus(self) -> None:
         from . import state
 
@@ -446,8 +465,6 @@ class Widgets:
             if key != "model":
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
-            else:
-                widget.bind("<Button-3>", lambda e: self.hide_menu())
 
             widget.bind("<Button-1>", lambda e: self.hide_menu())
 
@@ -477,6 +494,21 @@ class Widgets:
     def start_checks(self) -> None:
         self.check_stop()
         app.root.after(100, self.start_checks)
+
+    def menu_info(self, key: str) -> None:
+        from . import widgetutils
+
+        if key == "model":
+            widgetutils.show_message("The models you load are saved here automatically.")
+        elif key == "input":
+            widgetutils.show_message("The inputs you use are saved here automatically.")
+
+    def set_input(self, text: str) -> None:
+        widgetutils.set_text(self.input, text)
+
+    def paste_text(self) -> None:
+        text = app.root.clipboard_get()
+        self.set_input(text)
 
 
 widgets: Widgets = Widgets()
