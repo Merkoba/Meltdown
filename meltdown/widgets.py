@@ -265,7 +265,7 @@ class Widgets:
 
         def on_key(event: Any) -> None:
             if event.widget == self.output:
-                if event.char.strip():
+                if len(event.keysym.strip()) == 1:
                     # Focus the input and insert char
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
