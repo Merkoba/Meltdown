@@ -208,7 +208,7 @@ def save_log() -> None:
     log = widgetutils.get_text(widgets.output)
 
     if log:
-        clean_log = "\n".join(log.split("\n")[len(config.intro):])
+        clean_log = "\n".join(log.split("\n")[len(config.intro):]).strip()
 
         if not clean_log:
             return
