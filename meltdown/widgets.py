@@ -254,7 +254,8 @@ class Widgets:
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
-        self.input_history_index = 0
+        self.input_history_index: int
+        self.reset_history_index()
 
         def on_key(event: Any) -> None:
             if event.widget == self.output:
@@ -280,16 +281,36 @@ class Widgets:
 
     def input_history_up(self) -> None:
         if not self.input.get():
-            self.input_history_index = 0
+            self.reset_history_index()
 
-        if config.inputs:
-            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
-            self.apply_input_history()
+        if not config.inputs:
+            return
+
+        if self.input_history_index == -1:
+            self.input_history_index = 0
+        else:
+            if self.input_history_index == len(config.inputs) - 1:
+                self.clear_input()
+                return
+            else:
+                self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
+
+        self.apply_input_history()
 
     def input_history_down(self) -> None:
-        if config.inputs:
-            self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
-            self.apply_input_history()
+        if not config.inputs:
+            return
+
+        if self.input_history_index == -1:
+            self.input_history_index = len(config.inputs) - 1
+        else:
+            if self.input_history_index == 0:
+                self.clear_input()
+                return
+            else:
+                self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
+
+        self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
         if not app.exists():
@@ -378,7 +399,10 @@ class Widgets:
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
-        self.input_history_index = 0
+        self.reset_history_index()
+
+    def reset_history_index(self) -> None:
+        self.input_history_index = -1
 
     def prompt(self, who: str) -> None:
         name = getattr(config, f"name_{who}")
