@@ -178,7 +178,7 @@ class Widgets:
         self.stop_enabled = True
 
     def fill(self) -> None:
-        for key in config.saved_configs:
+        for key in config.defaults():
             self.fill_widget(key, getattr(config, key))
 
     def fill_widget(self, key: str, value: Any) -> None:
@@ -406,7 +406,7 @@ class Widgets:
 
             widget.bind("<Button-1>", lambda e: self.hide_menu())
 
-        for key in config.saved_configs:
+        for key in config.defaults():
             add_menu(key)
 
     def enable_stop(self) -> None:

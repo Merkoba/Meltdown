@@ -1,19 +1,6 @@
 # Standard
 from pathlib import Path
-from typing import List
-
-
-class ConfigDefaults:
-    name_user: str = "👽 You"
-    name_ai: str = "😎 Melt"
-    max_tokens: int = 250
-    temperature: float = 0.8
-    system: str = "Respond as a gentleman and a scholar who is a bit unhinged"
-    top_k: int = 40
-    top_p: float = 0.95
-    model: str = ""
-    context: int = 0
-    seed: int = -1
+from typing import List, Any, Dict
 
 
 class Config:
@@ -21,7 +8,7 @@ class Config:
         self.title = "Meltdown"
         self.program = "meltdown"
         self.width = 1000
-        self.height = 730
+        self.height = 800
         self.padx = 5
         self.pady = 8
         self.frame_padx = 0
@@ -54,16 +41,27 @@ class Config:
         self.models: List[str] = []
         self.inputs: List[str] = []
 
-        self.model = ConfigDefaults.model
-        self.name_user = ConfigDefaults.name_user
-        self.name_ai = ConfigDefaults.name_ai
-        self.max_tokens = ConfigDefaults.max_tokens
-        self.temperature = ConfigDefaults.temperature
-        self.system = ConfigDefaults.system
-        self.top_k = ConfigDefaults.top_k
-        self.top_p = ConfigDefaults.top_p
-        self.context = ConfigDefaults.context
-        self.seed = ConfigDefaults.seed
+        self.default_name_user: str = "👽 You"
+        self.default_name_ai: str = "😎 Melt"
+        self.default_max_tokens: int = 250
+        self.default_temperature: float = 0.8
+        self.default_system: str = "Respond as a gentleman and a scholar who is a bit unhinged"
+        self.default_top_k: int = 40
+        self.default_top_p: float = 0.95
+        self.default_model: str = ""
+        self.default_context: int = 0
+        self.default_seed: int = -1
+
+        self.model = self.default_model
+        self.name_user = self.default_name_user
+        self.name_ai = self.default_name_ai
+        self.max_tokens = self.default_max_tokens
+        self.temperature = self.default_temperature
+        self.system = self.default_system
+        self.top_k = self.default_top_k
+        self.top_p = self.default_top_p
+        self.context = self.default_context
+        self.seed = self.default_seed
 
         self.intro = [
             "Welcome to Meltdown.",
@@ -71,18 +69,19 @@ class Config:
             "The specified model will load automatically.",
         ]
 
-        self.saved_configs = [
-            "model",
-            "name_user",
-            "name_ai",
-            "max_tokens",
-            "temperature",
-            "system",
-            "top_k",
-            "top_p",
-            "context",
-            "seed",
-        ]
+    def defaults(self) -> Dict[str, Any]:
+        items: Dict[str, Any] = {}
+
+        for key in dir(self):
+            if key.startswith("default_"):
+                name = key.replace("default_", "")
+                value = getattr(self, key)
+                items[name] = value
+
+        return items
+
+    def get_default(self, key: str) -> Any:
+        return getattr(self, f"default_{key}")
 
 
 config = Config()

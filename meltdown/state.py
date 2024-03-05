@@ -1,12 +1,11 @@
 # Modules
 from .config import config
-from .config import ConfigDefaults
 from .widgets import widgets
 from . import timeutils
 
 # Standard
 import json
-from typing import Optional, Any, Callable
+from typing import Optional, Any
 from pathlib import Path
 
 
@@ -26,7 +25,7 @@ def load_config_file() -> None:
         except BaseException:
             conf = {}
 
-        for key in config.saved_configs:
+        for key in config.defaults():
             setattr(config, key, conf.get(key, getattr(config, key)))
 
 
@@ -74,7 +73,7 @@ def check_models(save: bool = True) -> None:
 def save_config() -> None:
     conf = {}
 
-    for key in config.saved_configs:
+    for key in config.defaults():
         conf[key] = getattr(config, key)
 
     save_file(config.config_path, conf)
@@ -110,7 +109,7 @@ def save_inputs() -> None:
 
 def update_config(key: str) -> bool:
     from .model import model
-    vtype = getattr(ConfigDefaults, key).__class__
+    vtype = config.get_default(key).__class__
     widget = getattr(widgets, key)
     valuestr = widget.get()
 
@@ -150,8 +149,8 @@ def reset_config() -> None:
     from . import widgetutils
 
     def reset() -> None:
-        for key in config.saved_configs:
-            setattr(config, key, getattr(ConfigDefaults, key))
+        for key in config.defaults():
+            setattr(config, key, config.get_default(key))
 
         check_models(False)
         widgets.fill()
@@ -162,7 +161,7 @@ def reset_config() -> None:
 
 
 def reset_one_config(key: str) -> None:
-    setattr(config, key, getattr(ConfigDefaults, key))
+    setattr(config, key, config.get_default(key))
     widgets.fill_widget(key, getattr(config, key))
     save_config()
 
