@@ -108,12 +108,13 @@ class Model:
         tokens = []
 
         output = self.model.create_chat_completion(
+            stream=True,
             messages=messages,
             max_tokens=config.max_tokens,
             temperature=config.temperature,
-            stream=True,
             top_k=config.top_k,
             top_p=config.top_p,
+            seed=config.seed,
         )
 
         for chunk in output:

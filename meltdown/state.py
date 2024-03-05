@@ -6,7 +6,7 @@ from . import timeutils
 
 # Standard
 import json
-from typing import Optional, Any
+from typing import Optional, Any, Callable
 from pathlib import Path
 
 
@@ -108,110 +108,42 @@ def save_inputs() -> None:
     save_file(config.inputs_path, config.inputs)
 
 
-def update_name_user() -> None:
-    name_user = widgets.name_user.get()
-
-    if name_user and (name_user != config.name_user):
-        config.name_user = name_user
-        save_config()
-
-
-def update_name_ai() -> None:
-    name_ai = widgets.name_ai.get()
-
-    if name_ai and (name_ai != config.name_ai):
-        config.name_ai = name_ai
-        save_config()
-
-
-def update_max_tokens() -> None:
-    max_tokens_str = widgets.max_tokens.get()
-
-    try:
-        max_tokens = int(max_tokens_str)
-    except BaseException:
-        return
-
-    if max_tokens != config.max_tokens:
-        config.max_tokens = max_tokens
-        save_config()
-
-
-def update_temperature() -> None:
-    temperature_str = widgets.temperature.get()
-
-    try:
-        temperature = float(temperature_str)
-    except BaseException:
-        return
-
-    if temperature != config.temperature:
-        config.temperature = temperature
-        save_config()
-
-
-def update_system() -> None:
-    system = widgets.system.get()
-
-    if system and (system != config.system):
-        config.system = system
-        save_config()
-
-
-def update_model() -> None:
+def update_config(key: str) -> bool:
     from .model import model
-    model_path = widgets.model.get()
+    vtype = getattr(ConfigDefaults, key).__class__
+    widget = getattr(widgets, key)
+    valuestr = widget.get()
 
-    if not model_path:
-        return
+    if vtype == str:
+        value = valuestr
+    elif vtype == int:
+        try:
+            value = int(valuestr)
+        except BaseException as e:
+            print(e)
+            return False
+    elif vtype == float:
+        try:
+            value = float(valuestr)
+        except BaseException as e:
+            print(e)
+            return False
 
-    if model_path != config.model:
-        config.model = model_path
+    current = getattr(config, key)
+
+    if value != current:
+        setattr(config, key, value)
+
+        if key == "model":
+            add_model(config.model)
+            model.load(config.model)
+        elif key == "context":
+            model.reset_context()
+
         save_config()
+        return True
 
-    add_model(model_path)
-    model.load(model_path)
-
-
-def update_top_k() -> None:
-    top_k_str = widgets.top_k.get()
-
-    try:
-        top_k = int(top_k_str)
-    except BaseException:
-        return
-
-    if top_k != config.top_k:
-        config.top_k = top_k
-        save_config()
-
-
-def update_top_p() -> None:
-    top_p_str = widgets.top_p.get()
-
-    try:
-        top_p = float(top_p_str)
-    except BaseException:
-        return
-
-    if top_p != config.top_p:
-        config.top_p = top_p
-        save_config()
-
-
-def update_context() -> None:
-    from .model import model
-    context_str = widgets.context.get()
-
-    try:
-        context = int(context_str)
-    except BaseException:
-        return
-
-    if context != config.context:
-        config.context = context
-        model.reset_context()
-        save_config()
+    return False
 
 
 def reset_config() -> None:

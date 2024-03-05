@@ -136,6 +136,10 @@ class Widgets:
                 " the AI how to respond, or how to act in general."
                 " You could use this to make the AI take on a specific persona or role.")
 
+        widgetutils.make_label(d, "Seed")
+        self.seed = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.seed, "The seed to use for sampling")
+
         widgetutils.make_label(d, "Context")
         self.context = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
@@ -213,14 +217,20 @@ class Widgets:
 
         self.input.bind("<Return>", lambda e: self.submit())
 
-        self.name_user.bind("<FocusOut>", lambda e: state.update_name_user())
-        self.name_ai.bind("<FocusOut>", lambda e: state.update_name_ai())
-        self.max_tokens.bind("<FocusOut>", lambda e: state.update_max_tokens())
-        self.temperature.bind("<FocusOut>", lambda e: state.update_temperature())
-        self.system.bind("<FocusOut>", lambda e: state.update_system())
-        self.top_k.bind("<FocusOut>", lambda e: state.update_top_k())
-        self.top_p.bind("<FocusOut>", lambda e: state.update_top_p())
-        self.context.bind("<FocusOut>", lambda e: state.update_context())
+        def bind(key: str) -> None:
+            widget = getattr(self, key)
+            widget.bind("<FocusOut>", lambda e: state.update_config(key))
+
+        bind("name_user")
+        bind("name_ai")
+        bind("context")
+        bind("system")
+        bind("max_tokens")
+        bind("temperature")
+        bind("seed")
+        bind("top_k")
+        bind("top_p")
+
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
         self.input_history_index = 0
@@ -247,14 +257,17 @@ class Widgets:
         text = config.inputs[self.input_history_index]
         widgetutils.set_text(self.input, text)
 
+    def input_history_up(self) -> None:
+        if not self.input.get():
+            self.input_history_index = 0
+
+        if config.inputs:
+            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
+            self.apply_input_history()
+
     def input_history_down(self) -> None:
         if config.inputs:
             self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
-            self.apply_input_history()
-
-    def input_history_up(self) -> None:
-        if config.inputs:
-            self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
             self.apply_input_history()
 
     def print(self, text: str, linebreak: bool = True) -> None:
@@ -324,7 +337,7 @@ class Widgets:
 
         if file:
             widgetutils.set_text(self.model, file)
-            state.update_model()
+            state.update_config("model")
 
     def submit(self) -> None:
         from .model import model
@@ -344,6 +357,7 @@ class Widgets:
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
+        self.input_history_index = 0
 
     def prompt(self, who: str) -> None:
         name = getattr(config, f"name_{who}")
@@ -356,7 +370,7 @@ class Widgets:
     def set_model(self, model: str) -> None:
         from . import state
         widgetutils.set_text(self.model, model)
-        state.update_model()
+        state.update_config("model")
 
     def intro(self) -> None:
         for line in config.intro:

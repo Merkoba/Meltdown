@@ -4,15 +4,16 @@ from typing import List
 
 
 class ConfigDefaults:
-    name_user = "👽 You"
-    name_ai = "😎 Melt"
-    max_tokens = 250
-    temperature = 0.8
-    system = "Respond as a gentleman and a scholar who is a bit unhinged"
-    top_k = 40
-    top_p = 0.95
-    model = ""
-    context = 0
+    name_user: str = "👽 You"
+    name_ai: str = "😎 Melt"
+    max_tokens: int = 250
+    temperature: float = 0.8
+    system: str = "Respond as a gentleman and a scholar who is a bit unhinged"
+    top_k: int = 40
+    top_p: float = 0.95
+    model: str = ""
+    context: int = 0
+    seed: int = -1
 
 
 class Config:
@@ -62,6 +63,7 @@ class Config:
         self.top_k = ConfigDefaults.top_k
         self.top_p = ConfigDefaults.top_p
         self.context = ConfigDefaults.context
+        self.seed = ConfigDefaults.seed
 
         self.intro = [
             "Welcome to Meltdown.",
@@ -79,6 +81,7 @@ class Config:
             "top_k",
             "top_p",
             "context",
+            "seed",
         ]
 
 
