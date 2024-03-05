@@ -149,6 +149,7 @@ def update_config(key: str) -> bool:
 
 def reset_config() -> None:
     from . import widgetutils
+    from .model import model
 
     def reset() -> None:
         for key in config.defaults():
@@ -157,15 +158,25 @@ def reset_config() -> None:
         check_models(False)
         widgets.fill()
         save_config()
+        model.load(config.model)
 
     widgetutils.show_confirm("Reset config? This will remove your custom configs"
                              " and refresh the widgets.", reset, None)
 
 
 def reset_one_config(key: str) -> None:
-    setattr(config, key, config.get_default(key))
+    from .model import model
+    default = config.get_default(key)
+
+    if getattr(config, key) == default:
+        return
+
+    setattr(config, key, default)
     widgets.fill_widget(key, getattr(config, key))
     save_config()
+
+    if key == "format":
+        model.load(config.model)
 
 
 def reset_models() -> None:
