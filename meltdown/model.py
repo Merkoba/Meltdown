@@ -38,12 +38,7 @@ class Model:
         now = timeutils.now()
 
         try:
-            if config.format == "auto":
-                fmt = None
-            else:
-                fmt = config.format
-
-            fmt = config.format if config.format != "auto" else None
+            fmt = config.format if (config.format != "auto") else None
 
             widgets.print("\n🫠 Loading model...")
             widgets.update()
