@@ -136,11 +136,11 @@ def update_config(key: str) -> bool:
         setattr(config, key, value)
 
         if key == "model":
-            model.load(config.model)
+            on_model_change()
         elif key == "context":
-            model.reset_context()
+            on_context_change()
         elif key == "format":
-            model.load(config.model)
+            on_format_change()
 
         save_config()
         return True
@@ -175,11 +175,12 @@ def reset_one_config(key: str) -> None:
     setattr(config, key, default)
     widgets.fill_widget(key, getattr(config, key))
 
-    if key == "format":
-        model.load(config.model)
-    elif key == "model":
-        check_models(False)
-        model.load(config.model)
+    if key == "model":
+        on_model_change()
+    elif key == "context":
+        on_context_change()
+    elif key == "format":
+        on_format_change()
 
     save_config()
 
@@ -226,3 +227,19 @@ def save_log() -> None:
             file.write(full_log)
 
         widgets.print(f"\n>> Log saved as {file_name}")
+
+
+def on_model_change() -> None:
+    from .model import model
+    check_models(False)
+    model.load(config.model)
+
+
+def on_context_change() -> None:
+    from .model import model
+    model.reset_context()
+
+
+def on_format_change() -> None:
+    from .model import model
+    model.load(config.model)

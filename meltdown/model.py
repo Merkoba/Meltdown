@@ -54,7 +54,7 @@ class Model:
             return False
 
         self.loaded_model = model
-        self.context_list = []
+        self.reset_context()
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)
         return True
