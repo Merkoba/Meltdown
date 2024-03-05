@@ -165,7 +165,7 @@ class Model:
     def stop_stream(self) -> None:
         if self.thread and self.thread.is_alive():
             self.stop_thread.set()
-            self.thread.join()
+            self.thread.join(timeout=3)
             self.stop_thread.clear()
             widgets.print("\n* Interrupted *")
 

@@ -411,6 +411,7 @@ class Widgets:
     def clear_output(self) -> None:
         def clear() -> None:
             widgetutils.clear_text(self.output, True)
+            self.show_intro()
 
         widgetutils.show_confirm("Clear all output text?", clear, None)
 
@@ -434,7 +435,7 @@ class Widgets:
         widgetutils.set_text(self.model, model)
         state.update_config("model")
 
-    def intro(self) -> None:
+    def show_intro(self) -> None:
         for line in config.intro:
             self.print(line)
 

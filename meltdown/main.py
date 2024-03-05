@@ -8,7 +8,7 @@ from . import state
 def main() -> None:
     state.load_files()
     widgets.setup()
-    widgets.intro()
+    widgets.show_intro()
     app.run()
     model.stop_stream()
 
