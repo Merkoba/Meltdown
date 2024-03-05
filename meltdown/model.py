@@ -34,14 +34,8 @@ class Model:
             widgets.print("Model not found.")
             return False
 
-        if model == self.loaded_model:
-            widgets.print("Model already loaded.")
-            return False
-
         self.stop_stream()
         now = timeutils.now()
-        widgets.print("Loading model...")
-        widgets.update()
 
         try:
             if config.format == "auto":
@@ -50,6 +44,9 @@ class Model:
                 fmt = config.format
 
             fmt = config.format if config.format != "auto" else None
+
+            widgets.print("\n🫠 Loading model...")
+            widgets.update()
 
             self.model = Llama(
                 model_path=str(model_path),
@@ -62,7 +59,7 @@ class Model:
 
         self.loaded_model = model
         self.context_list = []
-        msg, now = timeutils.check_time("Model loaded.", now)
+        msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)
         return True
 

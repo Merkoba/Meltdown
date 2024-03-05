@@ -138,6 +138,8 @@ def update_config(key: str) -> bool:
             model.load(config.model)
         elif key == "context":
             model.reset_context()
+        elif key == "format":
+            model.load(config.model)
 
         save_config()
         return True

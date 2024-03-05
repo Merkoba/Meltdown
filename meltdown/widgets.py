@@ -250,6 +250,7 @@ class Widgets:
         bind("top_k")
         bind("top_p")
         bind("format")
+        bind("model")
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
