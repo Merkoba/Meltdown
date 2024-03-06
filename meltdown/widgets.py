@@ -95,12 +95,6 @@ class Widgets:
         self.name_ai = widgetutils.make_input(d)
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
-        widgetutils.make_label(d, "Tokens")
-        self.max_tokens = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.max_tokens, "Maximum number of tokens to generate."
-                " Higher values will result in longer output, but will"
-                " also take longer to compute.")
-
         widgetutils.make_label(d, "Temp")
         self.temperature = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.temperature, "The temperature parameter is used to control"
@@ -132,24 +126,36 @@ class Widgets:
         # System
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
+        d.frame.grid_columnconfigure(3, weight=1)
 
         widgetutils.make_label(d, "System")
         self.system = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.system, "This sets the system message that instructs"
-                " the AI how to respond, or how to act in general."
-                " You could use this to make the AI take on a specific persona or role.")
+        ToolTip(self.system, "This sets the system prompt")
 
-        widgetutils.make_label(d, "Seed")
-        self.seed = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.seed, "The seed to use for sampling."
-                " The same seed should generate the same or similar results."
-                " -1 means no seed is used.")
+        widgetutils.make_label(d, "Prepend")
+        self.prepend = widgetutils.make_input(d, sticky="ew")
+        ToolTip(self.prepend, "Prepend this before every user prompt")
+
+        # Tuning
+        d = get_d()
+
+        widgetutils.make_label(d, "Tokens")
+        self.max_tokens = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.max_tokens, "Maximum number of tokens to generate."
+                " Higher values will result in longer output, but will"
+                " also take longer to compute.")
 
         widgetutils.make_label(d, "Context")
         self.context = widgetutils.make_input(d, width=config.input_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
+
+        widgetutils.make_label(d, "Seed")
+        self.seed = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.seed, "The seed to use for sampling."
+                " The same seed should generate the same or similar results."
+                " -1 means no seed is used.")
 
         widgetutils.make_label(d, "Format")
         values = ["auto"]
@@ -261,6 +267,7 @@ class Widgets:
         bind("top_p")
         bind("format")
         bind("model")
+        bind("prepend")
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
@@ -425,8 +432,9 @@ class Widgets:
         self.input_history_index = -1
 
     def prompt(self, who: str) -> None:
+        avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
-        prompt = f"\n{name}: "
+        prompt = f"\n{avatar} {name}: "
         self.print(prompt, False)
         start_index = self.output.index(f"end - {len(prompt)}c")
         end_index = self.output.index("end - 3c")
@@ -510,7 +518,7 @@ class Widgets:
             widgetutils.show_message("The systems you use are saved here automatically.")
 
     def set_input(self, text: str) -> None:
-        widgetutils.set_text(self.input, text)
+        widgetutils.set_text(self.input, text, move=True)
 
     def set_system(self, system: str) -> None:
         widgetutils.set_text(self.system, system)

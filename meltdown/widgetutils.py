@@ -90,13 +90,16 @@ def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], 
         widget.configure(state="disabled")
 
 
-def set_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
+def set_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float],
+             disable: bool = False, move: bool = False) -> None:
     widget.configure(state="normal")
 
     if isinstance(widget, tk.Entry):
         widget.delete(0, tk.END)
         widget.insert(0, str(text))
-        widget.xview_moveto(1.0)
+
+        if move:
+            widget.xview_moveto(1.0)
     elif isinstance(widget, tk.Text):
         widget.delete("1.0", tk.END)
         widget.insert("1.0", str(text))

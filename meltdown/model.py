@@ -100,7 +100,15 @@ class Model:
                 for key in item:
                     messages.append({"role": key, "content": item[key]})
 
-        messages.append({"role": "user", "content": prompt})
+        content = prompt
+
+        if config.prepend:
+            content = f"{config.prepend}. {content}"
+
+        content = content.replace("@name_user", config.name_user)
+        content = content.replace("@name_ai", config.name_ai)
+
+        messages.append({"role": "user", "content": content})
 
         added_name = False
         token_printed = False

@@ -97,6 +97,9 @@ def add_system(text: str) -> None:
 
 
 def add_to_list(key: str, text: str) -> None:
+    if not text:
+        return
+
     items = getattr(config, key)
     new_items = [item for item in items if item != text]
     new_items.insert(0, text)
