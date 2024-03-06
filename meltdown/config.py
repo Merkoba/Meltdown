@@ -34,7 +34,6 @@ class Config:
         self.max_list_items = 12
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
-        self.input = ""
 
         self.config_file = f"~/.config/{self.program}/config.json"
         self.configs_dir = f"~/.config/{self.program}/configs/"

@@ -123,10 +123,12 @@ def load_list_file(path: Path, key: str, list_key: str) -> None:
             items = json.load(file)
         except BaseException:
             items = []
-            item = getattr(config, key)
 
-            if item:
-                items.append(item)
+            if hasattr(config, key):
+                item = getattr(config, key)
+
+                if item:
+                    items.append(item)
 
         setattr(config, list_key, items)
 
