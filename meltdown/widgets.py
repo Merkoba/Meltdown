@@ -184,13 +184,13 @@ class Widgets:
         ToolTip(self.clear_button, "Clear the output and reset context")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
-        ToolTip(self.top_button, "Clear the output and reset context")
+        ToolTip(self.top_button, "Go to the top of the output")
 
         self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
-        ToolTip(self.bottom_button, "Clear the output and reset context")
+        ToolTip(self.bottom_button, "Go to the bottom of the output")
 
         self.copy_button = widgetutils.make_button(d, "Copy", lambda: self.output_copy(), sticky="ew")
-        ToolTip(self.copy_button, "Clear the output and reset context")
+        ToolTip(self.copy_button, "Copy the text of the output")
 
         # Output
         d = get_d()
@@ -228,7 +228,6 @@ class Widgets:
 
         self.main_menu = widgetutils.make_menu()
         self.model_menu = widgetutils.make_menu()
-        self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
         self.recent_prepends_menu = widgetutils.make_menu()
@@ -270,14 +269,6 @@ class Widgets:
         self.model_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
         self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
-
-        # self.output_menu.add_command(label="To Top", command=lambda: widgetutils.to_top(self.output))
-        # self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
-        # self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
-        # self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
-        # self.output_menu.add_command(label="To Bottom", command=lambda: widgetutils.to_bottom(self.output))
-
-        # self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
@@ -518,9 +509,6 @@ class Widgets:
 
     def show_model_menu(self, event: Any) -> None:
         self.show_menu(self.model_menu, event)
-
-    def show_output_menu(self, event: Any) -> None:
-        self.show_menu(self.output_menu, event)
 
     def add_reset_menus(self) -> None:
         from . import state
