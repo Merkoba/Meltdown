@@ -134,36 +134,39 @@ class Model:
             seed=config.seed,
         )
 
-        for chunk in output:
-            if self.stop_thread.is_set():
-                break
+        try:
+            for chunk in output:
+                if self.stop_thread.is_set():
+                    break
 
-            delta = chunk["choices"][0]["delta"]
+                delta = chunk["choices"][0]["delta"]
 
-            if "content" in delta:
-                if not added_name:
-                    widgets.prompt("ai")
-                    added_name = True
+                if "content" in delta:
+                    if not added_name:
+                        widgets.prompt("ai")
+                        added_name = True
 
-                token = delta["content"]
+                    token = delta["content"]
 
-                if token == "\n":
+                    if token == "\n":
+                        if not token_printed:
+                            continue
+                    elif token == " ":
+                        if last_token == " ":
+                            continue
+
+                    last_token = token
+
                     if not token_printed:
-                        continue
-                elif token == " ":
-                    if last_token == " ":
-                        continue
+                        token = token.lstrip()
+                        token_printed = True
 
-                last_token = token
+                    tokens.append(token)
+                    widgets.insert(token)
+        except BaseException as e:
+            print("Stream Error:", e)
 
-                if not token_printed:
-                    token = token.lstrip()
-                    token_printed = True
-
-                tokens.append(token)
-                widgets.insert(token)
-
-        if context_dict:
+        if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()
             self.add_context(context_dict)
 
