@@ -8,7 +8,7 @@ class Config:
         self.title = "Meltdown"
         self.program = "meltdown"
         self.width = 810
-        self.height = 777
+        self.height = 740
         self.padx = 5
         self.pady = 8
         self.frame_padx = 0
@@ -30,7 +30,7 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
-        self.max_list_items = 12
+        self.max_list_items = 10
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
 
@@ -52,18 +52,18 @@ class Config:
         self.inputs: List[str] = []
         self.systems: List[str] = []
 
-        self.default_name_user: str = "You"
+        self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
         self.default_max_tokens: int = 250
         self.default_temperature: float = 0.8
-        self.default_system: str = "You are a real human being and a real hero"
+        self.default_system: str = "Respond to messages in a clear and concise manner"
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
         self.default_context: int = 0
         self.default_seed: int = 420
         self.default_format: str = "auto"
-        self.default_prepend: str = "Respond as a bold robot called @name_ai"
+        self.default_prepend: str = "Respond as a bold robot called @name_ai. Refer to me as @name_user"
 
         self.model = self.default_model
         self.name_user = self.default_name_user

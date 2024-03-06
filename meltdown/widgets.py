@@ -359,10 +359,12 @@ class Widgets:
         widgetutils.insert_text(self.output, text, True)
         widgetutils.to_bottom(self.output)
 
-    def show_menu_items(self, key: str, command: Callable[..., Any], event: Optional[Any] = None) -> None:
-        menu = getattr(self, f"recent_{key}_menu")
+    def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
+                        event: Optional[Any] = None) -> None:
+        from . import state
+        menu = getattr(self, f"recent_{key_list}_menu")
         menu.delete(0, tk.END)
-        items = getattr(config, key)[:config.max_list_items]
+        items = getattr(config, key_list)[:config.max_list_items]
 
         for item in items:
             def proc(item: str = item) -> None:
@@ -370,8 +372,9 @@ class Widgets:
 
             menu.add_command(label=item[:80], command=proc)
 
-        if not items:
-            menu.add_command(label="Empty", command=lambda: self.menu_info(key))
+        if config.get_default(key_config):
+            name = key_config.capitalize()
+            menu.add_command(label=f"Reset {name}", command=lambda: state.reset_one_config(key_config))
 
         if not event:
             event = self.last_menu_event
@@ -379,16 +382,16 @@ class Widgets:
         self.show_menu(menu, event)
 
     def show_recent_models(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("models", lambda m: self.set_model(m), event)
+        self.show_menu_items("model", "models", lambda m: self.set_model(m), event)
 
     def show_recent_inputs(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("inputs", lambda s: self.set_input(s), event)
+        self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
 
     def show_recent_systems(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("systems", lambda s: self.set_system(s), event)
+        self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
 
     def show_recent_prepends(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("prepends", lambda s: self.set_prepend(s), event)
+        self.show_menu_items("prepend", "prepends", lambda s: self.set_prepend(s), event)
 
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
@@ -515,24 +518,20 @@ class Widgets:
         self.check_stop()
         app.root.after(100, self.start_checks)
 
-    def menu_info(self, key: str) -> None:
-        from . import widgetutils
-
-        if key == "models":
-            widgetutils.show_message("The models you load are saved here automatically.")
-        elif key == "inputs":
-            widgetutils.show_message("The inputs you use are saved here automatically.")
-        elif key == "systems":
-            widgetutils.show_message("The systems you use are saved here automatically.")
-
     def set_input(self, text: str) -> None:
+        from . import state
         widgetutils.set_text(self.input, text, move=True)
+        state.update_config("input")
 
     def set_system(self, text: str) -> None:
+        from . import state
         widgetutils.set_text(self.system, text)
+        state.update_config("system")
 
     def set_prepend(self, text: str) -> None:
+        from . import state
         widgetutils.set_text(self.prepend, text)
+        state.update_config("prepend")
 
 
 widgets: Widgets = Widgets()

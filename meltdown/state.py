@@ -178,7 +178,6 @@ def reset_config() -> None:
 
 
 def reset_one_config(key: str) -> None:
-    from .model import model
     default = config.get_default(key)
 
     if getattr(config, key) == default:
