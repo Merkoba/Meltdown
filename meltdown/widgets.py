@@ -91,7 +91,6 @@ class Widgets:
 
         # Settings
         d = get_d()
-        d.frame.grid_columnconfigure(7, weight=1)
 
         widgetutils.make_label(d, "User")
         self.name_user = widgetutils.make_input(d)
