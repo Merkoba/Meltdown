@@ -6,7 +6,7 @@
 
 ---
 
-You might be able to install meltdown with `pipx`:
+You might be able to install it with `pipx`:
 
 ```sh
 pipx install git+https://github.com/madprops/meltdown
