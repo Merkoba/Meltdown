@@ -203,7 +203,7 @@ def show_message(text: str) -> None:
     def ok() -> None:
         dialog.destroy()
 
-    dialog, button_frame = make_dialog("Confirm", text)
+    dialog, button_frame = make_dialog("Information", text)
     make_dialog_button(button_frame, "Ok", ok, "left")
     show_dialog(dialog)
 
