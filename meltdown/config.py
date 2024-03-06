@@ -23,6 +23,7 @@ class Config:
         self.background_color = "#212121"
         self.foreground_color = "white"
         self.button_background = "#446CA1"
+        self.button_background_hover = "#387ADF"
         self.stop_background = "#3F9687"
         self.stop_background_disabled = "#2B303B"
         self.button_foreground = "white"

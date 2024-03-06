@@ -52,6 +52,7 @@ def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] =
     widget = tk.Button(d.frame, text=text, font=config.font_button)
     widget.configure(background=config.button_background, foreground=config.button_foreground)
     widget.configure(bd=0, highlightthickness=0, disabledforeground="white")
+    widget.configure(activebackground=config.button_background_hover, activeforeground="white")
 
     if command:
         widget.configure(command=command)
@@ -173,6 +174,14 @@ def show_dialog(dialog: tk.Toplevel) -> None:
     dialog.wait_window()
 
 
+def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any], side: Literal["left", "right"]) -> None:
+    button = tk.Button(parent, text=text, command=command, font=config.font)
+    button.configure(background=config.button_background, foreground=config.button_foreground)
+    button.configure(bd=0, highlightthickness=0, disabledforeground="white")
+    button.configure(activebackground=config.button_background_hover, activeforeground="white")
+    button.pack(side=side, padx=6, pady=6)
+
+
 def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
     def ok() -> None:
         cmd_ok()
@@ -185,8 +194,8 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
         dialog.destroy()
 
     dialog, button_frame = make_dialog("Confirm", text)
-    tk.Button(button_frame, text="Yes", command=ok, font=config.font).pack(side="left", padx=6, pady=6)
-    tk.Button(button_frame, text="No", command=cancel, font=config.font).pack(side="right", padx=6, pady=6)
+    make_dialog_button(button_frame, "Ok", ok, "left")
+    make_dialog_button(button_frame, "Cancel", cancel, "right")
     show_dialog(dialog)
 
 
@@ -195,7 +204,7 @@ def show_message(text: str) -> None:
         dialog.destroy()
 
     dialog, button_frame = make_dialog("Confirm", text)
-    tk.Button(button_frame, text="Ok", command=ok, font=config.font).pack(side="left", padx=6, pady=6)
+    make_dialog_button(button_frame, "Ok", ok, "left")
     show_dialog(dialog)
 
 
