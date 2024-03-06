@@ -7,8 +7,8 @@ class Config:
     def __init__(self) -> None:
         self.title = "Meltdown"
         self.program = "meltdown"
-        self.width = 810
-        self.height = 740
+        self.width = 777
+        self.height = 744
         self.padx = 5
         self.pady = 8
         self.frame_padx = 0

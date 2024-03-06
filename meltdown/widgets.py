@@ -110,7 +110,7 @@ class Widgets:
         fmts.sort()
         values.extend(fmts)
         self.format = widgetutils.make_select(d, values=values)
-        self.format.configure(width=18)
+        self.format.configure(width=15)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
