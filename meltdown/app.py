@@ -38,5 +38,9 @@ class App:
         except tk.TclError:
             return False
 
+    def show_about(self) -> None:
+        from . import widgetutils
+        widgetutils.show_message("Meltdown v1.0.0")
+
 
 app = App()

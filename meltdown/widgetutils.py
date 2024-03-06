@@ -10,8 +10,7 @@ import pyperclip  # type: ignore
 import re
 import tkinter as tk
 from tkinter import ttk
-from tkinter import messagebox
-from typing import Any, Union, Callable, Literal, Optional, List
+from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 
 
 def do_grid(d: FrameData, widget: tk.Widget, sticky: str) -> None:
@@ -155,19 +154,49 @@ def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
     set_text(widget, "", disable)
 
 
-def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
-    text = clean_string(text)
-    result = messagebox.askquestion("Confirmation", text)
+def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame]:
+    dialog = tk.Toplevel(app.root)
+    dialog.title(title)
+    tk.Label(dialog, text=text, font=config.font, wraplength=450).pack(padx=6)
+    button_frame = tk.Frame(dialog)
+    button_frame.pack()
+    return dialog, button_frame
 
-    if result == "yes":
+
+def show_dialog(dialog: tk.Toplevel) -> None:
+    dialog.transient(app.root)
+    dialog.grab_set()
+    dialog.update()
+    x = app.root.winfo_rootx() + (app.root.winfo_width() // 2) - (dialog.winfo_width() // 2)
+    y = app.root.winfo_rooty() + (app.root.winfo_height() // 2) - (dialog.winfo_height() // 2)
+    dialog.geometry("+%d+%d" % (x, y))
+    dialog.wait_window()
+
+
+def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
+    def ok() -> None:
         cmd_ok()
-    elif cmd_cancel:
-        cmd_cancel()
+        dialog.destroy()
+
+    def cancel() -> None:
+        if cmd_cancel:
+            cmd_cancel()
+
+        dialog.destroy()
+
+    dialog, button_frame = make_dialog("Confirm", text)
+    tk.Button(button_frame, text="Yes", command=ok, font=config.font).pack(side="left", padx=6, pady=6)
+    tk.Button(button_frame, text="No", command=cancel, font=config.font).pack(side="right", padx=6, pady=6)
+    show_dialog(dialog)
 
 
 def show_message(text: str) -> None:
-    text = clean_string(text)
-    messagebox.showinfo("Information", text)
+    def ok() -> None:
+        dialog.destroy()
+
+    dialog, button_frame = make_dialog("Confirm", text)
+    tk.Button(button_frame, text="Ok", command=ok, font=config.font).pack(side="left", padx=6, pady=6)
+    show_dialog(dialog)
 
 
 def clean_string(text: str) -> str:

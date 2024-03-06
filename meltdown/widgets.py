@@ -263,6 +263,7 @@ class Widgets:
         self.main_menu.add_command(label="Reset Prepends", command=lambda: state.reset_list("prepends"))
         self.main_menu.add_command(label="Reset Appends", command=lambda: state.reset_list("appends"))
         self.main_menu.add_command(label="Reset Inputs", command=lambda: state.reset_list("inputs"))
+        self.main_menu.add_command(label="About", command=lambda: app.show_about())
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
