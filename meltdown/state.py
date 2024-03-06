@@ -233,7 +233,7 @@ def reset_config() -> None:
         save_config()
 
     widgetutils.show_confirm("Reset config? This will remove your custom configs"
-                             " and refresh the widgets.", reset, None)
+                             " and refresh the widgets", reset, None)
 
 
 def reset_one_config(key: str) -> None:
@@ -264,7 +264,7 @@ def reset_list(key: str) -> None:
         path = getattr(config, key + "_path")
         save_file(path, [])
 
-    widgetutils.show_confirm(f"Reset this? This will empty the {key}.", reset, None)
+    widgetutils.show_confirm(f"Reset this? This will empty the {key}", reset, None)
 
 
 def get_models_dir() -> Optional[str]:

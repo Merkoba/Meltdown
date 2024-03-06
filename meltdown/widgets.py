@@ -409,8 +409,10 @@ class Widgets:
             menu.add_command(label=item[:80], command=proc)
 
         if config.get_default(key_config):
-            name = key_config.capitalize()
-            menu.add_command(label=f"Reset {name}", command=lambda: state.reset_one_config(key_config))
+            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key_config))
+        else:
+            widget = getattr(self, key_config)
+            menu.add_command(label="Clear", command=lambda: widgetutils.clear_text(widget))
 
         if not event:
             event = self.last_menu_event
@@ -475,7 +477,7 @@ class Widgets:
             self.show_intro()
             model.reset_context()
 
-        widgetutils.show_confirm("Clear output text? This will also reset the context.", clear, None)
+        widgetutils.show_confirm("Clear output text? This will also reset the context", clear, None)
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
