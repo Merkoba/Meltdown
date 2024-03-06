@@ -30,7 +30,7 @@ class Config:
         self.input_foreground = "white"
         self.text_background = "#2B303B"
         self.text_foreground = "white"
-        self.max_list_items = 10
+        self.max_list_items = 12
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
 
