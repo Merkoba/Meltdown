@@ -5,8 +5,9 @@ from . import timeutils
 
 # Standard
 import json
-from typing import Optional, Any
+from typing import Optional, Any, IO
 from pathlib import Path
+from tkinter import filedialog
 
 
 def save_file(path: Path, obj: Any) -> None:
@@ -27,13 +28,66 @@ def load_config_file() -> None:
         config.config_path.touch(exist_ok=True)
 
     with open(config.config_path, "r") as file:
-        try:
-            conf = json.load(file)
-        except BaseException:
-            conf = {}
+        apply_config(file)
 
-        for key in config.defaults():
-            setattr(config, key, conf.get(key, getattr(config, key)))
+
+def get_config_string() -> str:
+    conf = {}
+
+    for key in config.defaults():
+        conf[key] = getattr(config, key)
+
+    return json.dumps(conf)
+
+
+def save_config_state() -> None:
+    if not config.configs_path.exists():
+        config.configs_path.mkdir(parents=True, exist_ok=True)
+
+    file_path = filedialog.asksaveasfilename(
+        initialdir=config.configs_path,
+        defaultextension=".json",
+        filetypes=[("Config Files", "*.json")],
+    )
+
+    if not file_path:
+        return
+
+    conf = get_config_string()
+
+    with open(file_path, "w") as file:
+        file.write(conf)
+
+
+def load_config_state() -> None:
+    if not config.configs_path.exists():
+        config.configs_path.mkdir(parents=True, exist_ok=True)
+
+    file_path = filedialog.askopenfilename(
+        initialdir=config.configs_path,
+    )
+
+    if not file_path:
+        return
+
+    path = Path(file_path)
+
+    if (not path.exists()) or (not path.is_file()):
+        return
+
+    with open(path, "r") as file:
+        apply_config(file)
+        widgets.fill()
+
+
+def apply_config(file: IO[str]) -> None:
+    try:
+        conf = json.load(file)
+    except BaseException:
+        conf = {}
+
+    for key in config.defaults():
+        setattr(config, key, conf.get(key, getattr(config, key)))
 
 
 def load_models_file() -> None:
