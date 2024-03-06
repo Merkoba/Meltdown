@@ -224,9 +224,11 @@ class Widgets:
         self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
 
+        self.output_menu.add_command(label="To Top", command=lambda: widgetutils.to_top(self.output))
         self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        self.output_menu.add_command(label="To Bottom", command=lambda: widgetutils.to_bottom(self.output))
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))

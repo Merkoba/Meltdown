@@ -152,10 +152,6 @@ def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
     set_text(widget, "", disable)
 
 
-def to_bottom(widget: tk.Text) -> None:
-    widget.yview_moveto(1.0)
-
-
 def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
     text = clean_string(text)
     result = messagebox.askquestion("Confirmation", text)
@@ -173,3 +169,11 @@ def show_message(text: str) -> None:
 
 def clean_string(text: str) -> str:
     return re.sub(r"\s+", " ", text).strip()
+
+
+def to_top(widget: tk.Text) -> None:
+    widget.yview_moveto(0.0)
+
+
+def to_bottom(widget: tk.Text) -> None:
+    widget.yview_moveto(1.0)
