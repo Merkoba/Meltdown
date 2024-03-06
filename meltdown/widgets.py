@@ -17,6 +17,8 @@ from functools import partial
 
 
 class ToolTip:
+    current_tooltip: Optional["ToolTip"] = None
+
     def __init__(self, widget: tk.Widget, text: str) -> None:
         self.widget = widget
         self.text = widgetutils.clean_string(text)
@@ -26,7 +28,11 @@ class ToolTip:
         self.id = ""
 
     def schedule_tooltip(self, event: Any = None) -> None:
-        self.id = self.widget.after(500, self.show_tooltip)  # 500ms delay
+        if ToolTip.current_tooltip is not None:
+            ToolTip.current_tooltip.hide_tooltip()
+
+        self.id = self.widget.after(500, self.show_tooltip)
+        ToolTip.current_tooltip = self
 
     def show_tooltip(self) -> None:
         if widgets.menu_open:
@@ -59,6 +65,8 @@ class ToolTip:
         if self.id:
             self.widget.after_cancel(self.id)
             self.id = ""
+
+        ToolTip.current_tooltip = None
 
 
 class Widgets:
