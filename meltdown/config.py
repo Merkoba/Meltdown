@@ -54,7 +54,7 @@ class Config:
         self.default_name_ai: str = "Melt"
         self.default_max_tokens: int = 250
         self.default_temperature: float = 0.8
-        self.default_system: str = "Your name is @name_ai and you can refer to me as @name_user"
+        self.default_system: str = "Your name is @name_ai and you refer to me as @name_user"
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""

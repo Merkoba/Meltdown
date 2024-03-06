@@ -507,7 +507,6 @@ class Widgets:
         app.root.after(100, self.start_checks)
 
     def set_input(self, text: str) -> None:
-        from . import state
         widgetutils.set_text(self.input, text, move=True)
 
     def set_system(self, text: str) -> None:

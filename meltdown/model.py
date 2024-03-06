@@ -98,7 +98,8 @@ class Model:
         else:
             context_dict = None
 
-        messages = [{"role": "system", "content": config.system}]
+        system = replace_content(config.system)
+        messages = [{"role": "system", "content": system}]
 
         if self.context_list:
             for item in self.context_list:
