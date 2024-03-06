@@ -271,11 +271,12 @@ class Widgets:
         self.reset_history_index()
 
         def on_key(event: Any) -> None:
-            if event.widget == self.output:
+            # Focus the input and insert char
+            if (type(event.widget) == tk.Text) or (type(event.widget) == ttk.Combobox):
                 if len(event.keysym.strip()) == 1:
-                    # Focus the input and insert char
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
+            # Input history Up or Down
             elif event.widget == self.input:
                 if event.keysym == "Up":
                     self.input_history_up()
