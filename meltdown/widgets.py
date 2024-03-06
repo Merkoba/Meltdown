@@ -177,6 +177,16 @@ class Widgets:
         d.frame.grid_rowconfigure(0, weight=1)
         self.output = widgetutils.make_text(d, state="disabled", sticky="nsew")
 
+        # Addons
+        d = get_d()
+        d.frame.grid_columnconfigure(1, weight=1)
+        d.frame.grid_columnconfigure(3, weight=1)
+        widgetutils.make_label(d, "Prepend")
+        self.prepend = widgetutils.make_input(d, sticky="ew")
+
+        widgetutils.make_label(d, "Append")
+        self.append = widgetutils.make_input(d, sticky="ew")
+
         # Input
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
@@ -200,6 +210,8 @@ class Widgets:
         self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
+        self.recent_prepends_menu = widgetutils.make_menu()
+        self.recent_appends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_enabled = True
@@ -228,6 +240,8 @@ class Widgets:
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_list("models"))
         self.main_menu.add_command(label="Reset Systems", command=lambda: state.reset_list("systems"))
+        self.main_menu.add_command(label="Reset Prepends", command=lambda: state.reset_list("prepends"))
+        self.main_menu.add_command(label="Reset Appends", command=lambda: state.reset_list("appends"))
         self.main_menu.add_command(label="Reset Inputs", command=lambda: state.reset_list("inputs"))
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
@@ -245,6 +259,8 @@ class Widgets:
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
+        self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
+        self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
         self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
@@ -274,6 +290,8 @@ class Widgets:
         bind("top_p")
         bind("format")
         bind("model")
+        bind("prepend")
+        bind("append")
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
@@ -386,11 +404,17 @@ class Widgets:
     def show_recent_models(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("model", "models", lambda m: self.set_model(m), event)
 
-    def show_recent_inputs(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
-
     def show_recent_systems(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
+
+    def show_recent_prepends(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("prepend", "prepends", lambda s: self.set_prepend(s), event)
+
+    def show_recent_appends(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
+
+    def show_recent_inputs(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
 
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
@@ -484,7 +508,7 @@ class Widgets:
             reset_func = partial(state.reset_one_config, key=key)
             menu.add_command(label=f"Reset", command=reset_func)
 
-            if key not in ["model", "system"]:
+            if key not in ["model", "system", "prepend", "append"]:
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
 
@@ -524,6 +548,16 @@ class Widgets:
         from . import state
         widgetutils.set_text(self.system, text)
         state.update_config("system")
+
+    def set_prepend(self, text: str) -> None:
+        from . import state
+        widgetutils.set_text(self.prepend, text)
+        state.update_config("prepend")
+
+    def set_append(self, text: str) -> None:
+        from . import state
+        widgetutils.set_text(self.append, text)
+        state.update_config("append")
 
 
 widgets: Widgets = Widgets()

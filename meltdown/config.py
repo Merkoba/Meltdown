@@ -39,6 +39,8 @@ class Config:
         self.models_file = f"~/.config/{self.program}/models.json"
         self.inputs_file = f"~/.config/{self.program}/inputs.json"
         self.systems_file = f"~/.config/{self.program}/systems.json"
+        self.prepends_file = f"~/.config/{self.program}/prepends.json"
+        self.appends_file = f"~/.config/{self.program}/appends.json"
         self.logs_dir = f"~/.config/{self.program}/logs/"
 
         self.config_path = Path(self.config_file).expanduser().resolve()
@@ -46,6 +48,8 @@ class Config:
         self.models_path = Path(self.models_file).expanduser().resolve()
         self.inputs_path = Path(self.inputs_file).expanduser().resolve()
         self.systems_path = Path(self.systems_file).expanduser().resolve()
+        self.prepends_path = Path(self.prepends_file).expanduser().resolve()
+        self.appends_path = Path(self.appends_file).expanduser().resolve()
         self.logs_path = Path(self.logs_dir).expanduser().resolve()
 
         self.models: List[str] = []
@@ -63,6 +67,8 @@ class Config:
         self.default_context: int = 0
         self.default_seed: int = -1
         self.default_format: str = "auto"
+        self.default_prepend = ""
+        self.default_append = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -75,6 +81,8 @@ class Config:
         self.context = self.default_context
         self.seed = self.default_seed
         self.format = self.default_format
+        self.prepend = self.default_prepend
+        self.append = self.default_append
 
         self.intro = [
             "Welcome to Meltdown.",

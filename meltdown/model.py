@@ -93,6 +93,14 @@ class Model:
         widgets.insert(prompt)
         widgets.enable_stop()
 
+        if config.prepend:
+            prompt = config.prepend + ". " + prompt
+
+        if config.append:
+            prompt = prompt + ". " + config.append
+
+        print("Prompt:", prompt)
+
         if config.context > 0:
             context_dict = {"user": prompt}
         else:
@@ -122,6 +130,8 @@ class Model:
 
         state.add_model(config.model)
         state.add_system(config.system)
+        state.add_prepends(config.prepend)
+        state.add_appends(config.append)
         state.add_input(prompt)
 
         output = self.model.create_chat_completion(
