@@ -113,7 +113,6 @@ def add_to_list(key: str, text: str) -> None:
 
 
 def update_config(key: str) -> bool:
-    from .model import model
     vtype = config.get_default(key).__class__
     widget = getattr(widgets, key)
     valuestr = widget.get()

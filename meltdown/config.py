@@ -1,6 +1,6 @@
 # Standard
 from pathlib import Path
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Optional
 
 
 class Config:
@@ -91,8 +91,13 @@ class Config:
 
         return items
 
-    def get_default(self, key: str) -> Any:
-        return getattr(self, f"default_{key}")
+    def get_default(self, key: str) -> Optional[Any]:
+        name = f"default_{key}"
+
+        if hasattr(self, name):
+            return getattr(self, name)
+        else:
+            return None
 
 
 config = Config()
