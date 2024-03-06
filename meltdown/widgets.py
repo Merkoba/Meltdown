@@ -582,11 +582,17 @@ class Widgets:
         widgetutils.to_bottom(self.output)
 
     def output_copy(self) -> None:
-        widgetutils.copy_all(self.output)
+        text = self.get_output()
+        widgetutils.copy(text)
 
     def stop(self) -> None:
         from .model import model
         model.stop_stream()
+
+    def get_output(self) -> str:
+        text = widgetutils.get_text(widgets.output)
+        text = "\n".join(text.split("\n")[len(config.intro):]).strip()
+        return text
 
 
 widgets: Widgets = Widgets()

@@ -146,8 +146,7 @@ def get_text(widget: tk.Text) -> str:
     return widget.get("1.0", "end-1c").strip()
 
 
-def copy_all(widget: tk.Text) -> None:
-    text = widget.get("1.0", "end-1c").strip()
+def copy(text: str) -> None:
     pyperclip.copy(text)
 
 

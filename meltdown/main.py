@@ -9,7 +9,12 @@ def main() -> None:
     state.load_files()
     widgets.setup()
     widgets.show_intro()
-    app.run()
+
+    try:
+        app.run()
+    except KeyboardInterrupt:
+        pass
+
     model.stop_stream()
 
 

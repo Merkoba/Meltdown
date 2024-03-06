@@ -268,21 +268,15 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    from . import widgetutils
-    log = widgetutils.get_text(widgets.output)
+    log = widgets.get_output()
 
     if log:
-        clean_log = "\n".join(log.split("\n")[len(config.intro):]).strip()
-
-        if not clean_log:
-            return
-
-        full_log = timeutils.date() + "\n\n" + clean_log
+        log = timeutils.date() + "\n\n" + log
         config.logs_path.mkdir(parents=True, exist_ok=True)
         file_name = str(timeutils.now_int()) + ".txt"
 
         with open(Path(config.logs_path, file_name), "w") as file:
-            file.write(full_log)
+            file.write(log)
 
         widgets.print(f"\n>> Log saved as {file_name}")
 
