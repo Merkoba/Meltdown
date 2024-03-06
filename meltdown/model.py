@@ -111,10 +111,6 @@ class Model:
                     messages.append({"role": key, "content": content})
 
         content = prompt
-
-        if config.prepend:
-            content = f"{config.prepend}. {content}"
-
         content = replace_content(content)
         messages.append({"role": "user", "content": content})
 
@@ -125,7 +121,6 @@ class Model:
 
         state.add_model(config.model)
         state.add_system(config.system)
-        state.add_prepend(config.prepend)
         state.add_input(prompt)
 
         output = self.model.create_chat_completion(

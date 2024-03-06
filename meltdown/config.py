@@ -38,14 +38,12 @@ class Config:
         self.models_file = f"~/.config/{self.program}/models.json"
         self.inputs_file = f"~/.config/{self.program}/inputs.json"
         self.systems_file = f"~/.config/{self.program}/systems.json"
-        self.prepends_file = f"~/.config/{self.program}/prepends.json"
         self.logs_dir = f"~/.config/{self.program}/logs/"
 
         self.config_path = Path(self.config_file).expanduser().resolve()
         self.models_path = Path(self.models_file).expanduser().resolve()
         self.inputs_path = Path(self.inputs_file).expanduser().resolve()
         self.systems_path = Path(self.systems_file).expanduser().resolve()
-        self.prepends_path = Path(self.prepends_file).expanduser().resolve()
         self.logs_path = Path(self.logs_dir).expanduser().resolve()
 
         self.models: List[str] = []
@@ -56,14 +54,13 @@ class Config:
         self.default_name_ai: str = "Melt"
         self.default_max_tokens: int = 250
         self.default_temperature: float = 0.8
-        self.default_system: str = "Respond to messages in a clear and concise manner"
+        self.default_system: str = "Your name is @name_ai and you can refer to me as @name_user"
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
         self.default_context: int = 0
         self.default_seed: int = 420
         self.default_format: str = "auto"
-        self.default_prepend: str = "Respond as a bold robot called @name_ai. Refer to me as @name_user"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -76,7 +73,6 @@ class Config:
         self.context = self.default_context
         self.seed = self.default_seed
         self.format = self.default_format
-        self.prepend = self.default_prepend
 
         self.intro = [
             "Welcome to Meltdown.",

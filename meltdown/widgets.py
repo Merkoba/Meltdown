@@ -104,39 +104,24 @@ class Widgets:
                 " (<1) produces more focused and deterministic output, emphasizing the"
                 " most probable tokens.")
 
-        widgetutils.make_label(d, "Top K")
-        self.top_k = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.top_k, "The top-k parameter limits the model's"
-                " predictions to the top k most probable tokens at each step"
-                " of generation. By setting a value for k, you are instructing"
-                " the model to consider only the k most likely tokens."
-                " This can help in fine-tuning the generated output and"
-                " ensuring it adheres to specific patterns or constraints.")
-
-        widgetutils.make_label(d, "Top P")
-        self.top_p = widgetutils.make_input(d, width=config.input_width_small)
-        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
-                " the cumulative probability of the generated tokens."
-                " The model generates tokens until the cumulative probability"
-                " exceeds the chosen threshold (p). This approach allows for"
-                " more dynamic control over the length of the generated text"
-                " and encourages diversity in the output by including less"
-                " probable tokens when necessary.")
+        widgetutils.make_label(d, "Format")
+        values = ["auto"]
+        fmts = [item for item in formats._chat_handlers]
+        fmts.sort()
+        values.extend(fmts)
+        self.format = widgetutils.make_select(d, values=values)
+        self.format.configure(width=18)
+        ToolTip(self.format, "That will format the prompt according to how model expects it."
+                " Auto is supposed to work with newer models that include the format in the metadata."
+                " Check llama-cpp-python to find all the available formats.")
 
         # System
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
-        d.frame.grid_columnconfigure(3, weight=1)
 
         widgetutils.make_label(d, "System")
         self.system = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.system, "This sets the system prompt")
-
-        widgetutils.make_label(d, "Prepend")
-        self.prepend = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.prepend, "Prepend this before every user prompt."
-                " You can use this to give the AI a personality."
-                " You can use keyowords like @name_user and @name_ai")
+        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
 
         # Tuning
         d = get_d()
@@ -159,16 +144,24 @@ class Widgets:
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
-        widgetutils.make_label(d, "Format")
-        values = ["auto"]
-        fmts = [item for item in formats._chat_handlers]
-        fmts.sort()
-        values.extend(fmts)
-        self.format = widgetutils.make_select(d, values=values)
-        self.format.configure(width=19)
-        ToolTip(self.format, "That will format the prompt according to how model expects it."
-                " Auto is supposed to work with newer models that include the format in the metadata."
-                " Check llama-cpp-python to find all the available formats.")
+        widgetutils.make_label(d, "Top K")
+        self.top_k = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.top_k, "The top-k parameter limits the model's"
+                " predictions to the top k most probable tokens at each step"
+                " of generation. By setting a value for k, you are instructing"
+                " the model to consider only the k most likely tokens."
+                " This can help in fine-tuning the generated output and"
+                " ensuring it adheres to specific patterns or constraints.")
+
+        widgetutils.make_label(d, "Top P")
+        self.top_p = widgetutils.make_input(d, width=config.input_width_small)
+        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
+                " the cumulative probability of the generated tokens."
+                " The model generates tokens until the cumulative probability"
+                " exceeds the chosen threshold (p). This approach allows for"
+                " more dynamic control over the length of the generated text"
+                " and encourages diversity in the output by including less"
+                " probable tokens when necessary.")
 
         # Output
         d = get_d()
@@ -199,7 +192,6 @@ class Widgets:
         self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
-        self.recent_prepends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_enabled = True
@@ -243,7 +235,6 @@ class Widgets:
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
-        self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
         self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
@@ -273,7 +264,6 @@ class Widgets:
         bind("top_p")
         bind("format")
         bind("model")
-        bind("prepend")
 
         self.output.tag_config("name_user", foreground="#87CEEB")
         self.output.tag_config("name_ai", foreground="#98FB98")
@@ -391,9 +381,6 @@ class Widgets:
     def show_recent_systems(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
 
-    def show_recent_prepends(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("prepend", "prepends", lambda s: self.set_prepend(s), event)
-
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
 
@@ -486,7 +473,7 @@ class Widgets:
             reset_func = partial(state.reset_one_config, key=key)
             menu.add_command(label=f"Reset", command=reset_func)
 
-            if key not in ["model", "system", "prepend"]:
+            if key not in ["model", "system"]:
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
 
@@ -528,11 +515,6 @@ class Widgets:
         from . import state
         widgetutils.set_text(self.system, text)
         state.update_config("system")
-
-    def set_prepend(self, text: str) -> None:
-        from . import state
-        widgetutils.set_text(self.prepend, text)
-        state.update_config("prepend")
 
 
 widgets: Widgets = Widgets()
