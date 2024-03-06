@@ -509,7 +509,6 @@ class Widgets:
     def set_input(self, text: str) -> None:
         from . import state
         widgetutils.set_text(self.input, text, move=True)
-        state.update_config("input")
 
     def set_system(self, text: str) -> None:
         from . import state
