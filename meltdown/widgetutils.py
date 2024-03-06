@@ -158,7 +158,7 @@ def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
 def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame]:
     dialog = tk.Toplevel(app.root)
     dialog.title(title)
-    tk.Label(dialog, text=text, font=config.font, wraplength=450).pack(padx=6)
+    tk.Label(dialog, text=text, font=config.font, wraplength=500).pack(padx=6)
     button_frame = tk.Frame(dialog)
     button_frame.pack()
     return dialog, button_frame
