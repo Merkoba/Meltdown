@@ -184,14 +184,14 @@ def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any],
 
 def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
     def ok() -> None:
-        cmd_ok()
         dialog.destroy()
+        cmd_ok()
 
     def cancel() -> None:
+        dialog.destroy()
+
         if cmd_cancel:
             cmd_cancel()
-
-        dialog.destroy()
 
     dialog, button_frame = make_dialog("Confirm", text)
     make_dialog_button(button_frame, "Ok", ok, "left")
