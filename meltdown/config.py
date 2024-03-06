@@ -8,7 +8,7 @@ class Config:
         self.title = "Meltdown"
         self.program = "meltdown"
         self.width = 810
-        self.height = 800
+        self.height = 777
         self.padx = 5
         self.pady = 8
         self.frame_padx = 0
@@ -38,12 +38,14 @@ class Config:
         self.models_file = f"~/.config/{self.program}/models.json"
         self.inputs_file = f"~/.config/{self.program}/inputs.json"
         self.systems_file = f"~/.config/{self.program}/systems.json"
+        self.prepends_file = f"~/.config/{self.program}/prepends.json"
         self.logs_dir = f"~/.config/{self.program}/logs/"
 
         self.config_path = Path(self.config_file).expanduser().resolve()
         self.models_path = Path(self.models_file).expanduser().resolve()
         self.inputs_path = Path(self.inputs_file).expanduser().resolve()
         self.systems_path = Path(self.systems_file).expanduser().resolve()
+        self.prepends_path = Path(self.prepends_file).expanduser().resolve()
         self.logs_path = Path(self.logs_dir).expanduser().resolve()
 
         self.models: List[str] = []

@@ -19,6 +19,7 @@ def load_files() -> None:
     load_models_file()
     load_inputs_file()
     load_systems_file()
+    load_prepends_file()
 
 
 def load_config_file() -> None:
@@ -47,6 +48,10 @@ def load_inputs_file() -> None:
 
 def load_systems_file() -> None:
     load_list_file(config.systems_path, "system", "systems")
+
+
+def load_prepends_file() -> None:
+    load_list_file(config.prepends_path, "prepend", "prepends")
 
 
 def load_list_file(path: Path, key: str, list_key: str) -> None:
@@ -94,6 +99,10 @@ def add_input(text: str) -> None:
 
 def add_system(text: str) -> None:
     add_to_list("systems", text)
+
+
+def add_prepend(text: str) -> None:
+    add_to_list("prepends", text)
 
 
 def add_to_list(key: str, text: str) -> None:

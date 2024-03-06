@@ -199,6 +199,7 @@ class Widgets:
         self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
+        self.recent_prepends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_enabled = True
@@ -242,6 +243,7 @@ class Widgets:
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
+        self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
         self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
@@ -385,6 +387,9 @@ class Widgets:
     def show_recent_systems(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("systems", lambda s: self.set_system(s), event)
 
+    def show_recent_prepends(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("prepends", lambda s: self.set_prepend(s), event)
+
     def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
         self.hide_menu()
 
@@ -477,7 +482,7 @@ class Widgets:
             reset_func = partial(state.reset_one_config, key=key)
             menu.add_command(label=f"Reset", command=reset_func)
 
-            if key not in ["model", "system"]:
+            if key not in ["model", "system", "prepend"]:
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
 
@@ -523,8 +528,11 @@ class Widgets:
     def set_input(self, text: str) -> None:
         widgetutils.set_text(self.input, text, move=True)
 
-    def set_system(self, system: str) -> None:
-        widgetutils.set_text(self.system, system)
+    def set_system(self, text: str) -> None:
+        widgetutils.set_text(self.system, text)
+
+    def set_prepend(self, text: str) -> None:
+        widgetutils.set_text(self.prepend, text)
 
 
 widgets: Widgets = Widgets()

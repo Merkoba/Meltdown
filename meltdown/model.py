@@ -125,6 +125,7 @@ class Model:
 
         state.add_model(config.model)
         state.add_system(config.system)
+        state.add_prepend(config.prepend)
         state.add_input(prompt)
 
         output = self.model.create_chat_completion(
