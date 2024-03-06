@@ -223,12 +223,12 @@ class Widgets:
         self.fill()
 
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
+        self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
+        self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_command(label="Reset Models", command=lambda: state.reset_list("models"))
         self.main_menu.add_command(label="Reset Systems", command=lambda: state.reset_list("systems"))
         self.main_menu.add_command(label="Reset Inputs", command=lambda: state.reset_list("inputs"))
-        self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
-        self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
