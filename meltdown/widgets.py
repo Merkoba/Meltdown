@@ -250,6 +250,7 @@ class Widgets:
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Return>", lambda e: self.submit())
+        self.input.bind("<Escape>", lambda e: model.stop_stream())
 
         def bind(key: str) -> None:
             widget = getattr(self, key)
