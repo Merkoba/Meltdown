@@ -134,7 +134,9 @@ class Widgets:
 
         widgetutils.make_label(d, "Prepend")
         self.prepend = widgetutils.make_input(d, sticky="ew")
-        ToolTip(self.prepend, "Prepend this before every user prompt")
+        ToolTip(self.prepend, "Prepend this before every user prompt."
+                " You can use this to give the AI a personality."
+                " You can use keyowords like @name_user and @name_ai")
 
         # Tuning
         d = get_d()
@@ -163,6 +165,7 @@ class Widgets:
         fmts.sort()
         values.extend(fmts)
         self.format = widgetutils.make_select(d, values=values)
+        self.format.configure(width=19)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")

@@ -84,6 +84,11 @@ class Model:
         if not prompt:
             return
 
+        def replace_content(content: str) -> str:
+            content = content.replace("@name_user", config.name_user)
+            content = content.replace("@name_ai", config.name_ai)
+            return content
+
         widgets.prompt("user")
         widgets.insert(prompt)
         widgets.enable_stop()
@@ -98,16 +103,19 @@ class Model:
         if self.context_list:
             for item in self.context_list:
                 for key in item:
-                    messages.append({"role": key, "content": item[key]})
+                    content = item[key]
+
+                    if key == "user":
+                        content = replace_content(content)
+
+                    messages.append({"role": key, "content": content})
 
         content = prompt
 
         if config.prepend:
             content = f"{config.prepend}. {content}"
 
-        content = content.replace("@name_user", config.name_user)
-        content = content.replace("@name_ai", config.name_ai)
-
+        content = replace_content(content)
         messages.append({"role": "user", "content": content})
 
         added_name = False

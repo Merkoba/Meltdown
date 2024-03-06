@@ -7,7 +7,7 @@ class Config:
     def __init__(self) -> None:
         self.title = "Meltdown"
         self.program = "meltdown"
-        self.width = 830
+        self.width = 810
         self.height = 800
         self.padx = 5
         self.pady = 8
@@ -15,7 +15,7 @@ class Config:
         self.frame_pady = 0
         self.input_width = 10
         self.input_width_small = 6
-        self.select_width = 13
+        self.select_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
         self.font_button = ("sans", 10)
