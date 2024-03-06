@@ -83,9 +83,6 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
-        self.stop_button = widgetutils.make_button(d, "Stop")
-        ToolTip(self.stop_button, "Stop generating the current response")
-
         self.model_menu_button = widgetutils.make_button(d, "Models")
         ToolTip(self.model_menu_button, "Pick a model file from your file system")
 
@@ -94,6 +91,7 @@ class Widgets:
 
         # Settings
         d = get_d()
+        d.frame.grid_columnconfigure(7, weight=1)
 
         widgetutils.make_label(d, "User")
         self.name_user = widgetutils.make_input(d)
@@ -117,7 +115,7 @@ class Widgets:
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
         values.extend(fmts)
-        self.format = widgetutils.make_select(d, values=values)
+        self.format = widgetutils.make_select(d, values=values, sticky="ew")
         self.format.configure(width=15)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
@@ -170,6 +168,29 @@ class Widgets:
                 " more dynamic control over the length of the generated text"
                 " and encourages diversity in the output by including less"
                 " probable tokens when necessary.")
+
+        # Buttons
+        d = get_d()
+        d.frame.grid_columnconfigure(0, weight=1)
+        d.frame.grid_columnconfigure(1, weight=1)
+        d.frame.grid_columnconfigure(2, weight=1)
+        d.frame.grid_columnconfigure(3, weight=1)
+        d.frame.grid_columnconfigure(4, weight=1)
+
+        self.stop_button = widgetutils.make_button(d, "Stop", lambda: self.stop(), sticky="ew")
+        ToolTip(self.stop_button, "Stop generating the current response")
+
+        self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
+        ToolTip(self.clear_button, "Clear the output and reset context")
+
+        self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
+        ToolTip(self.top_button, "Clear the output and reset context")
+
+        self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
+        ToolTip(self.bottom_button, "Clear the output and reset context")
+
+        self.copy_button = widgetutils.make_button(d, "Copy", lambda: self.output_copy(), sticky="ew")
+        ToolTip(self.copy_button, "Clear the output and reset context")
 
         # Output
         d = get_d()
@@ -250,12 +271,13 @@ class Widgets:
         self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
         self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
 
-        self.output_menu.add_command(label="To Top", command=lambda: widgetutils.to_top(self.output))
-        self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
-        self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
-        self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
-        self.output_menu.add_command(label="To Bottom", command=lambda: widgetutils.to_bottom(self.output))
-        self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
+        # self.output_menu.add_command(label="To Top", command=lambda: widgetutils.to_top(self.output))
+        # self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
+        # self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
+        # self.output_menu.add_command(label="Copy All", command=lambda: widgetutils.copy_all(self.output))
+        # self.output_menu.add_command(label="To Bottom", command=lambda: widgetutils.to_bottom(self.output))
+
+        # self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
@@ -263,11 +285,10 @@ class Widgets:
         self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
-        self.stop_button.bind("<Button-1>", lambda e: model.stop_stream())
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Return>", lambda e: self.submit())
-        self.input.bind("<Escape>", lambda e: model.stop_stream())
+        self.input.bind("<Escape>", lambda e: self.stop())
 
         def bind(key: str) -> None:
             widget = getattr(self, key)
@@ -452,9 +473,12 @@ class Widgets:
             model.stream(text)
 
     def clear_output(self) -> None:
+        from .model import model
+
         def clear() -> None:
             widgetutils.clear_text(self.output, True)
             self.show_intro()
+            model.reset_context()
 
         widgetutils.show_confirm("Clear all output text?", clear, None)
 
@@ -558,6 +582,19 @@ class Widgets:
         from . import state
         widgetutils.set_text(self.append, text)
         state.update_config("append")
+
+    def output_top(self) -> None:
+        widgetutils.to_top(self.output)
+
+    def output_bottom(self) -> None:
+        widgetutils.to_bottom(self.output)
+
+    def output_copy(self) -> None:
+        widgetutils.copy_all(self.output)
+
+    def stop(self) -> None:
+        from .model import model
+        model.stop_stream()
 
 
 widgets: Widgets = Widgets()
