@@ -93,16 +93,18 @@ class Model:
         widgets.insert(prompt)
         widgets.enable_stop()
 
+        full_prompt = prompt
+
         if config.prepend:
-            prompt = config.prepend + ". " + prompt
+            full_prompt = config.prepend + ". " + full_prompt
 
         if config.append:
-            prompt = prompt + ". " + config.append
+            full_prompt = full_prompt + ". " + config.append
 
-        print("Prompt:", prompt)
+        print("Prompt:", full_prompt)
 
         if config.context > 0:
-            context_dict = {"user": prompt}
+            context_dict = {"user": full_prompt}
         else:
             context_dict = None
 
@@ -119,7 +121,7 @@ class Model:
 
                     messages.append({"role": key, "content": content})
 
-        content = prompt
+        content = full_prompt
         content = replace_content(content)
         messages.append({"role": "user", "content": content})
 
