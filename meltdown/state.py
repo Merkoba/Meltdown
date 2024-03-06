@@ -232,8 +232,8 @@ def reset_config() -> None:
         model.load(config.model)
         save_config()
 
-    widgetutils.show_confirm("Reset config?\nThis will remove your custom configs"
-                             " and refresh the widgets", reset, None)
+    widgetutils.show_confirm("This will remove your custom configs"
+                             "\nand refresh the widgets", reset, None)
 
 
 def reset_one_config(key: str) -> None:
@@ -253,18 +253,6 @@ def reset_one_config(key: str) -> None:
         on_format_change()
 
     save_config()
-
-
-def reset_list(key: str) -> None:
-    from . import widgetutils
-
-    def reset() -> None:
-        setattr(config, key, [])
-        widgets.fill()
-        path = getattr(config, key + "_path")
-        save_file(path, [])
-
-    widgetutils.show_confirm(f"This will empty the recent {key}", reset, None)
 
 
 def get_models_dir() -> Optional[str]:
