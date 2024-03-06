@@ -474,7 +474,7 @@ class Widgets:
             self.show_intro()
             model.reset_context()
 
-        widgetutils.show_confirm("Clear all output text?", clear, None)
+        widgetutils.show_confirm("Clear output text? This will also reset the context.", clear, None)
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
