@@ -79,6 +79,7 @@ class Model:
             self.model = Llama(
                 model_path=str(model),
                 chat_format=fmt,
+                n_ctx=2048,
                 verbose=False,
             )
         except BaseException as e:
