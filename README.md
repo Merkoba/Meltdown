@@ -14,7 +14,7 @@ All the available configurations are what you can see in the screenshot.
 
 All fields have context menus to perform some actions.
 
-Recent text inputs get saved and you can access them with the context menu.
+Recent text inputs get saved and you can access them with the context menus.
 
 Cycle through input history to avoid typing things again.
 
