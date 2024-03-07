@@ -266,6 +266,7 @@ class Widgets:
         self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_command(label="Resize", command=lambda: app.resize())
         self.main_menu.add_command(label="About", command=lambda: app.show_about())
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))

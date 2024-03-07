@@ -12,7 +12,7 @@ class App:
         self.root = tk.Tk()
         self.here = Path(__file__).parent.expanduser().resolve()
         self.root.title(config.title)
-        self.root.geometry(f"{config.width}x{config.height}")
+        self.resize()
         self.root.grid_columnconfigure(0, weight=1)
         icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
@@ -41,7 +41,10 @@ class App:
 
     def show_about(self) -> None:
         from . import widgetutils
-        widgetutils.show_message("Meltdown v1.0.0")
+        widgetutils.show_message(f"{config.title} v{config.version}")
+
+    def resize(self):
+        self.root.geometry(f"{config.width}x{config.height}")
 
 
 app = App()
