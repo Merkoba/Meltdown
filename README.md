@@ -6,6 +6,28 @@
 
 ---
 
+## Features
+
+Load models from your file system (Only tested with gguf for now).
+
+All the available configurations are what you can see in the screenshot.
+
+All fields have context menus to perform some actions.
+
+Recent text inputs get saved and you can access them with the context menu.
+
+Cycle through input history to avoid typing things again.
+
+Save logs of the conversations.
+
+Config changes get remembered.
+
+Save and load config files.
+
+Prepend and append to text automatically to your prompt.
+
+---
+
 You might be able to install it with `pipx`:
 
 ```sh
