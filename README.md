@@ -30,6 +30,8 @@ Prepend and append text automatically to your prompts.
 
 Show system CPU and RAM usage.
 
+Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
+
 ---
 
 ## Installation
