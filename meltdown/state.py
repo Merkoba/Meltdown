@@ -229,9 +229,8 @@ def reset_config() -> None:
         for key in config.defaults():
             setattr(config, key, config.get_default(key))
 
-        check_models(False)
+        on_model_change()
         widgets.fill()
-        model.load()
         save_config()
 
     widgetutils.show_confirm("This will remove your custom configs"
