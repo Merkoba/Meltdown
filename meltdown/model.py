@@ -67,6 +67,13 @@ class Model:
     def reset_context(self) -> None:
         self.context_list = []
 
+    def stop_stream(self) -> None:
+        if self.thread and self.thread.is_alive():
+            self.stop_thread.set()
+            self.thread.join(timeout=3)
+            self.stop_thread.clear()
+            widgets.print("\n* Interrupted *")
+
     def stream(self, prompt: str) -> None:
         if not self.model:
             if not self.load(config.model):
@@ -197,13 +204,6 @@ class Model:
 
         if len(self.context_list) > config.context:
             self.context_list.pop(0)
-
-    def stop_stream(self) -> None:
-        if self.thread and self.thread.is_alive():
-            self.stop_thread.set()
-            self.thread.join(timeout=3)
-            self.stop_thread.clear()
-            widgets.print("\n* Interrupted *")
 
 
 model = Model()
