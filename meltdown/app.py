@@ -24,8 +24,8 @@ class App:
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
-        self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
         style.configure("Normal.TCombobox", padding=[6, 0, 0, 0])
+        self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
         style.configure("Normal.TButton", background=config.button_background)
         style.configure("Normal.TButton", foreground=config.button_foreground)
