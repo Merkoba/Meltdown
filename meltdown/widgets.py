@@ -194,9 +194,6 @@ class Widgets:
         self.stop_button = widgetutils.make_button(d, "Stop", lambda: self.stop(), sticky="ew")
         ToolTip(self.stop_button, "Stop generating the current response")
 
-        self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
-        ToolTip(self.clear_button, "Clear the output and reset context")
-
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
         ToolTip(self.top_button, "Go to the top of the output")
 
@@ -230,9 +227,6 @@ class Widgets:
         d.frame.grid_columnconfigure(1, weight=1)
         widgetutils.make_label(d, "Input")
         self.input = widgetutils.make_input(d, sticky="ew")
-
-        clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_input())
-        ToolTip(clear_button, "Clear the input field")
 
         input_history_up_button = widgetutils.make_button(d, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
