@@ -49,7 +49,7 @@ def make_input(d: FrameData, value: str = "", width: Optional[int] = None, stick
 
 
 def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] = None, sticky: str = "w") -> ttk.Button:
-    widget = ttk.Button(d.frame, text=text, style="TButton")
+    widget = ttk.Button(d.frame, text=text, style="Normal.TButton")
 
     if command:
         widget.configure(command=command)
@@ -68,7 +68,7 @@ def make_label(d: FrameData, text: str, sticky: str = "w") -> tk.Label:
 def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = "w") -> ttk.Combobox:
     v = values if values else ["empty"]
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
-                          font=config.font, style="TCombobox", width=config.select_width)
+                          font=config.font, style="Normal.TCombobox", width=config.select_width)
     do_grid(d, widget, sticky)
     return widget
 
@@ -176,10 +176,7 @@ def show_dialog(dialog: tk.Toplevel) -> None:
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any], side: Literal["left", "right"]) -> None:
-    button = tk.Button(parent, text=text, command=command, font=config.font)
-    button.configure(background=config.button_background, foreground=config.button_foreground)
-    button.configure(bd=0, highlightthickness=0, disabledforeground="white")
-    button.configure(activebackground=config.button_background_hover, activeforeground="white")
+    button = ttk.Button(parent, text=text, style="Normal.TButton", command=command)
     button.pack(side=side, padx=6, pady=8)
 
 

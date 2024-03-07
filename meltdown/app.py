@@ -19,18 +19,18 @@ class App:
 
         style = ttk.Style()
 
-        style.configure("TCombobox", foreground="white")
-        style.map("TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])
-        style.map("TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
-        style.configure("TCombobox", borderwidth=0)
-        style.configure("TCombobox.Listbox", padding=0)
+        style.configure("Normal.TCombobox", foreground="white")
+        style.map("Normal.TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])
+        style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
+        style.configure("Normal.TCombobox", borderwidth=0)
+        style.configure("Normal.TCombobox.Listbox", padding=0)
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
-        style.configure("TButton", background=config.button_background)
-        style.configure("TButton", foreground=config.button_foreground)
-        style.configure("TButton", borderwidth=0)
-        style.configure("TButton", padding=[0, 0, 0, 0])
-        style.configure("TButton", font=config.font_button)
+        style.configure("Normal.TButton", background=config.button_background)
+        style.configure("Normal.TButton", foreground=config.button_foreground)
+        style.configure("Normal.TButton", borderwidth=0)
+        style.configure("Normal.TButton", padding=[0, 0, 0, 0])
+        style.configure("Normal.TButton", font=config.font_button)
 
         style.configure("Green.TButton", background=config.green_background)
         style.configure("Green.TButton", foreground=config.button_foreground)
@@ -47,7 +47,7 @@ class App:
                   foreground=[("disabled", config.button_foreground)],
                   )
 
-        style.map("TButton",
+        style.map("Normal.TButton",
                   background=[("active", config.button_background_hover)]
                   )
 

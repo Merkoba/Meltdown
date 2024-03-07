@@ -89,9 +89,6 @@ class Widgets:
         self.unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
         ToolTip(self.unload_button, "Unload the model")
 
-        self.model_menu_button = widgetutils.make_button(d, "Models")
-        ToolTip(self.model_menu_button, "Pick a model file from your file system")
-
         self.main_menu_button = widgetutils.make_button(d, "Menu")
         ToolTip(self.main_menu_button, "Open the main menu")
 
@@ -235,7 +232,6 @@ class Widgets:
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.main_menu = widgetutils.make_menu()
-        self.model_menu = widgetutils.make_menu()
         self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
@@ -247,7 +243,6 @@ class Widgets:
         self.load_button_enabled = True
         self.unload_button_enabled = True
         self.format_select_enabled = True
-        self.model_menu_button_enabled = True
 
     def fill(self) -> None:
         for key in config.defaults():
@@ -266,18 +261,20 @@ class Widgets:
 
         self.fill()
 
+        self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
+        self.main_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
+        self.main_menu.add_separator()
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
+        self.main_menu.add_separator()
         self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_separator()
         self.main_menu.add_command(label="Resize", command=lambda: app.resize())
         self.main_menu.add_command(label="About", command=lambda: app.show_about())
+        self.main_menu.add_separator()
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
-
-        self.model_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
-        self.model_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
-        self.model_menu_button.bind("<Button-1>", lambda e: self.show_model_menu(e))
 
         self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
         self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
@@ -542,14 +539,6 @@ class Widgets:
     def show_main_menu(self, event: Any) -> None:
         self.show_menu(self.main_menu, event)
 
-    def show_model_menu(self, event: Any) -> None:
-        from .model import model
-
-        if model.model_loading:
-            return
-
-        self.show_menu(self.model_menu, event)
-
     def show_output_menu(self, event: Any) -> None:
         self.show_menu(self.output_menu, event)
 
@@ -584,7 +573,7 @@ class Widgets:
 
     def enable_load_button(self) -> None:
         if (not self.load_button_enabled) and app.exists():
-            self.load_button.configure(style="TButton")
+            self.load_button.configure(style="Normal.TButton")
             self.enable_widget(self.load_button)
             self.load_button_enabled = True
 
@@ -596,7 +585,7 @@ class Widgets:
 
     def enable_unload_button(self) -> None:
         if (not self.unload_button_enabled) and app.exists():
-            self.unload_button.configure(style="TButton")
+            self.unload_button.configure(style="Normal.TButton")
             self.enable_widget(self.unload_button)
             self.unload_button_enabled = True
 
@@ -608,7 +597,7 @@ class Widgets:
 
     def enable_format_select(self) -> None:
         if (not self.format_select_enabled) and app.exists():
-            self.format.configure(style="TCombobox")
+            self.format.configure(style="Normal.TCombobox")
             self.enable_widget(self.format)
             self.format_select_enabled = True
 
@@ -617,18 +606,6 @@ class Widgets:
             self.format.configure(style="Disabled.TCombobox")
             self.disable_widget(self.format)
             self.format_select_enabled = False
-
-    def enable_model_menu_button(self) -> None:
-        if (not self.model_menu_button_enabled) and app.exists():
-            self.model_menu_button.configure(style="TButton")
-            self.enable_widget(self.model_menu_button)
-            self.model_menu_button_enabled = True
-
-    def disable_model_menu_button(self) -> None:
-        if self.model_menu_button_enabled and app.exists():
-            self.model_menu_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.model_menu_button)
-            self.model_menu_button_enabled = False
 
     def enable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["!disabled"])
@@ -648,12 +625,10 @@ class Widgets:
             self.disable_load_button()
             self.disable_unload_button()
             self.disable_format_select()
-            self.disable_model_menu_button()
         else:
             self.enable_load_button()
             self.enable_unload_button()
             self.enable_format_select()
-            self.enable_model_menu_button()
 
     def start_checks(self) -> None:
         self.check_stop()
