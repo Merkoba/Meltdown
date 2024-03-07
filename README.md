@@ -10,6 +10,8 @@
 
 Load models from your file system (Only tested with gguf for now).
 
+Stream response tokens as they appear.
+
 All the available configurations are what you can see in the screenshot.
 
 All fields have context menus to perform some actions.
