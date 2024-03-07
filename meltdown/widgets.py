@@ -118,7 +118,7 @@ class Widgets:
         fmts.sort()
         values.extend(fmts)
         self.format = widgetutils.make_select(d, values=values, sticky="ew")
-        self.format.configure(width=15)
+        self.format.configure(width=16)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
@@ -193,6 +193,9 @@ class Widgets:
 
         self.stop_button = widgetutils.make_button(d, "Stop", lambda: self.stop(), sticky="ew")
         ToolTip(self.stop_button, "Stop generating the current response")
+
+        self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
+        ToolTip(self.clear_button, "Clear the output and reset context")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
         ToolTip(self.top_button, "Go to the top of the output")
