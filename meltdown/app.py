@@ -18,12 +18,31 @@ class App:
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
 
         style = ttk.Style()
+
         style.configure("TCombobox", foreground="white")
         style.map("TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])
         style.map("TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("TCombobox", borderwidth=0)
         style.configure("TCombobox.Listbox", padding=0)
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
+
+        style.configure("TButton", background=config.button_background)
+        style.configure("TButton", foreground=config.button_foreground)
+        style.configure("Green.TButton", background=config.green_background)
+        style.configure("Green.TButton", foreground=config.button_foreground)
+
+        style.map("Disabled.TButton",
+                  background=[("disabled", config.background_disabled), ("active", config.background_disabled)],
+                  foreground=[("disabled", config.button_foreground)],
+                  )
+
+        style.map("TButton",
+                  background=[("active", config.button_background_hover)]
+                  )
+
+        style.map("Green.TButton",
+                  background=[("active", config.green_button_background_hover)]
+                  )
 
     def run(self) -> None:
         self.root.mainloop()

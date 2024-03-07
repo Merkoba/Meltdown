@@ -83,11 +83,11 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
-        self.model_load_button = widgetutils.make_button(d, "Load", lambda: self.load())
-        ToolTip(self.model_load_button, "Load the model")
+        self.load_button = widgetutils.make_button(d, "Load", lambda: self.load())
+        ToolTip(self.load_button, "Load the model")
 
-        self.model_unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
-        ToolTip(self.model_unload_button, "Unload the model")
+        self.unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
+        ToolTip(self.unload_button, "Unload the model")
 
         self.model_menu_button = widgetutils.make_button(d, "Models")
         ToolTip(self.model_menu_button, "Pick a model file from your file system")
@@ -243,7 +243,10 @@ class Widgets:
         self.recent_appends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
-        self.stop_enabled = True
+        self.stop_button_enabled = True
+        self.load_button_enabled = True
+        self.unload_button_enabled = True
+        self.format_select_enabled = True
 
     def fill(self) -> None:
         for key in config.defaults():
@@ -556,25 +559,76 @@ class Widgets:
         for key in config.defaults():
             add_menu(key)
 
-    def enable_stop(self) -> None:
-        if (not self.stop_enabled) and app.exists():
-            self.stop_button.configure(background=config.stop_background)
-            self.stop_button.config(state="normal")
-            self.stop_enabled = True
+    def enable_stop_button(self) -> None:
+        if (not self.stop_button_enabled) and app.exists():
+            self.stop_button.configure(style="Green.TButton")
+            self.enable_widget(self.stop_button)
+            self.stop_button_enabled = True
 
-    def disable_stop(self) -> None:
-        if self.stop_enabled and app.exists():
-            self.stop_button.configure(background=config.stop_background_disabled)
-            self.stop_button.config(state="disabled")
-            self.stop_enabled = False
+    def disable_stop_button(self) -> None:
+        if self.stop_button_enabled and app.exists():
+            self.stop_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.stop_button)
+            self.stop_button_enabled = False
+
+    def enable_load_button(self) -> None:
+        if (not self.load_button_enabled) and app.exists():
+            self.load_button.configure(style="TButton")
+            self.enable_widget(self.load_button)
+            self.load_button_enabled = True
+
+    def disable_load_button(self) -> None:
+        if self.load_button_enabled and app.exists():
+            self.load_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.load_button)
+            self.load_button_enabled = False
+
+    def enable_unload_button(self) -> None:
+        if (not self.unload_button_enabled) and app.exists():
+            self.unload_button.configure(style="TButton")
+            self.enable_widget(self.unload_button)
+            self.unload_button_enabled = True
+
+    def disable_unload_button(self) -> None:
+        if self.unload_button_enabled and app.exists():
+            self.unload_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.unload_button)
+            self.unload_button_enabled = False
+
+    def enable_format_select(self) -> None:
+        if (not self.format_select_enabled) and app.exists():
+            self.format.configure(style="TCombobox")
+            self.enable_widget(self.format)
+            self.format_select_enabled = True
+
+    def disable_format_select(self) -> None:
+        if self.format_select_enabled and app.exists():
+            self.format.configure(style="Disabled.TCombobox")
+            self.disable_widget(self.format)
+            self.format_select_enabled = False
+
+    def enable_widget(self, widget: ttk.Widget) -> None:
+        widget.state(["!disabled"])
+
+    def disable_widget(self, widget: ttk.Widget) -> None:
+        widget.state(["disabled"])
 
     def check_stop(self) -> None:
         from .model import model
 
         if model.streaming:
-            self.enable_stop()
+            self.enable_stop_button()
         else:
-            self.disable_stop()
+            self.disable_stop_button()
+
+        if model.model_loading:
+            self.disable_load_button()
+            self.disable_unload_button()
+            self.disable_format_select()
+        else:
+            self.enable_load_button()
+            self.enable_unload_button()
+            self.enable_format_select()
 
     def start_checks(self) -> None:
         self.check_stop()

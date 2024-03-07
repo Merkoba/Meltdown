@@ -151,7 +151,7 @@ class Model:
 
         widgets.prompt("user")
         widgets.insert(prompt)
-        widgets.enable_stop()
+        widgets.enable_stop_button()
 
         full_prompt = prompt
 

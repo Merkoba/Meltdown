@@ -48,11 +48,8 @@ def make_input(d: FrameData, value: str = "", width: Optional[int] = None, stick
     return widget
 
 
-def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] = None, sticky: str = "w") -> tk.Button:
-    widget = tk.Button(d.frame, text=text, font=config.font_button)
-    widget.configure(background=config.button_background, foreground=config.button_foreground)
-    widget.configure(bd=0, highlightthickness=0, disabledforeground="white")
-    widget.configure(activebackground=config.button_background_hover, activeforeground="white")
+def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] = None, sticky: str = "w") -> ttk.Button:
+    widget = ttk.Button(d.frame, text=text, style="TButton")
 
     if command:
         widget.configure(command=command)
