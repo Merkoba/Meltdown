@@ -4,6 +4,8 @@
 
 ![](https://i.imgur.com/MLcuCh3.jpg)
 
+![](https://i.imgur.com/QOxzDEE.jpg)
+
 ---
 
 You might be able to install it with `pipx`:
