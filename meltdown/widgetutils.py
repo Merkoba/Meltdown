@@ -72,7 +72,7 @@ def make_label(d: FrameData, text: str, sticky: str = "w") -> tk.Label:
 def make_select(d: FrameData, values: Optional[List[Any]] = None, sticky: str = "w") -> ttk.Combobox:
     v = values if values else ["empty"]
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
-                          font=config.font, style="Normal.TCombobox", width=config.select_width)
+                          font=config.font_select, style="Normal.TCombobox", width=config.select_width)
     do_grid(d, widget, sticky)
     return widget
 

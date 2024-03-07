@@ -19,13 +19,17 @@ class App:
 
         style = ttk.Style()
 
+        # padding=[left, top, right, bottom])
         style.configure("Normal.TCombobox", foreground="white")
         style.map("Normal.TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
-        style.configure("Normal.TCombobox", padding=[6, 0, 0, 0])
+        style.configure("Normal.TCombobox", padding=[6, 2, 0, 2])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
+
+        style.configure("Disabled.TCombobox", padding=[6, 2, 0, 2])
+        style.configure("Disabled.TCombobox", borderwidth=0)
 
         style.configure("Normal.TButton", background=config.button_background)
         style.configure("Normal.TButton", foreground=config.button_foreground)
