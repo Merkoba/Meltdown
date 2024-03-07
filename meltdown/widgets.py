@@ -457,7 +457,6 @@ class Widgets:
 
     def submit(self) -> None:
         from .model import model
-        from . import state
         text = self.input.get()
 
         if text:

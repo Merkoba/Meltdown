@@ -286,7 +286,7 @@ def save_log() -> None:
 def on_model_change() -> None:
     from .model import model
     check_models(False)
-    model.load(config.model)
+    model.unload()
 
 
 def on_context_change() -> None:

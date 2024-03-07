@@ -11,7 +11,7 @@ from llama_cpp import Llama  # type: ignore
 import threading
 from pathlib import Path
 import atexit
-from typing import List, Dict
+from typing import List, Dict, Optional
 
 
 class Model:
@@ -21,9 +21,14 @@ class Model:
         self.stop_thread = threading.Event()
         self.thread = threading.Thread()
         self.context_list: List[Dict[str, str]] = []
-        self.loaded_model = ""
         self.streaming = False
+        self.model: Optional[Llama] = None
         atexit.register(self.stop_stream)
+
+    def unload(self) -> None:
+        self.stop_stream()
+        self.model = None
+        self.reset_context()
 
     def load(self, model: str) -> bool:
         if not model:
@@ -35,7 +40,7 @@ class Model:
             widgets.print("Model not found.")
             return False
 
-        self.stop_stream()
+        self.unload()
         now = timeutils.now()
 
         try:
@@ -53,7 +58,6 @@ class Model:
             widgets.print("Model failed to load.")
             return False
 
-        self.loaded_model = model
         self.reset_context()
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)
@@ -63,7 +67,7 @@ class Model:
         self.context_list = []
 
     def stream(self, prompt: str) -> None:
-        if not self.loaded_model:
+        if not self.model:
             if not self.load(config.model):
                 return
 
