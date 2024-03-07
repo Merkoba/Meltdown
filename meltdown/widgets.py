@@ -271,7 +271,7 @@ class Widgets:
         self.fill()
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
-        self.main_menu.add_command(label="Browse Models", command=lambda: self.browse_model())
+        self.main_menu.add_command(label="Browse Models", command=lambda: self.browse_models())
         self.main_menu.add_separator()
         self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
         self.main_menu.add_separator()
@@ -480,8 +480,13 @@ class Widgets:
             self.menu_open.unpost()
             self.menu_open = None
 
-    def browse_model(self) -> None:
+    def browse_models(self) -> None:
         from . import state
+        from .model import model
+
+        if model.model_loading:
+            return
+
         file = filedialog.askopenfilename(initialdir=state.get_models_dir())
 
         if file:
