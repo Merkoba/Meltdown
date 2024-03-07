@@ -43,7 +43,7 @@ class App:
         from . import widgetutils
         widgetutils.show_message(f"{config.title} v{config.version}")
 
-    def resize(self):
+    def resize(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
 
 
