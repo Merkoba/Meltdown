@@ -405,21 +405,25 @@ class Widgets:
         menu = getattr(self, f"recent_{key_list}_menu")
         menu.delete(0, tk.END)
         items = getattr(config, key_list)[:config.max_list_items]
+        widget = getattr(self, key_config)
+
+        menu.add_command(label="Copy", command=lambda: widgetutils.copy(widget.get()))
+        menu.add_command(label="Paste", command=lambda: widgetutils.paste(widget))
+        menu.add_command(label="Clear", command=lambda: widgetutils.clear_text(widget))
+
+        if config.get_default(key_config):
+            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key_config))
+
+        menu.add_command(label='--- Recent ---', state='disabled')
+
+        if not event:
+            event = self.last_menu_event
 
         for item in items:
             def proc(item: str = item) -> None:
                 command(item)
 
             menu.add_command(label=item[:80], command=proc)
-
-        if config.get_default(key_config):
-            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key_config))
-        else:
-            widget = getattr(self, key_config)
-            menu.add_command(label="Clear", command=lambda: widgetutils.clear_text(widget))
-
-        if not event:
-            event = self.last_menu_event
 
         self.show_menu(menu, event)
 

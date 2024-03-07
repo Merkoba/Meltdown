@@ -150,6 +150,11 @@ def copy(text: str) -> None:
     pyperclip.copy(text)
 
 
+def paste(widget: tk.Entry) -> None:
+    text = pyperclip.paste()
+    set_text(widget, text)
+
+
 def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
     set_text(widget, "", disable)
 
