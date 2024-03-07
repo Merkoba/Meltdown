@@ -14,7 +14,6 @@ class App:
         self.root.title(config.title)
         self.root.geometry(f"{config.width}x{config.height}")
         self.root.grid_columnconfigure(0, weight=1)
-        self.root.grid_rowconfigure(5, weight=1)
         icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
 

@@ -198,7 +198,10 @@ class Widgets:
         ToolTip(self.copy_button, "Copy the text of the output")
 
         # Output
+        app.root.grid_rowconfigure(config.frame_number, weight=1)
+
         d = get_d()
+
         d.frame.grid_columnconfigure(0, weight=1)
         d.frame.grid_rowconfigure(0, weight=1)
         self.output = widgetutils.make_text(d, state="disabled", sticky="nsew")
@@ -256,7 +259,6 @@ class Widgets:
 
     def setup(self) -> None:
         from . import state
-        from .model import model
 
         self.fill()
 
