@@ -48,8 +48,12 @@ def make_input(d: FrameData, value: str = "", width: Optional[int] = None, stick
     return widget
 
 
+def get_button(parent: tk.Frame, text: str) -> ttk.Button:
+    return ttk.Button(parent, text=text, style="Normal.TButton", takefocus=False)
+
+
 def make_button(d: FrameData, text: str, command: Optional[Callable[..., Any]] = None, sticky: str = "w") -> ttk.Button:
-    widget = ttk.Button(d.frame, text=text, style="Normal.TButton")
+    widget = get_button(d.frame, text)
 
     if command:
         widget.configure(command=command)
@@ -176,7 +180,8 @@ def show_dialog(dialog: tk.Toplevel) -> None:
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any], side: Literal["left", "right"]) -> None:
-    button = ttk.Button(parent, text=text, style="Normal.TButton", command=command)
+    button = get_button(parent, text)
+    button.configure(command=command)
     button.pack(side=side, padx=6, pady=8)
 
 
