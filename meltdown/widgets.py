@@ -604,10 +604,18 @@ class Widgets:
 
     def load(self) -> None:
         from .model import model
+
+        if model.model_loading:
+            return
+
         model.load()
 
     def unload(self) -> None:
         from .model import model
+
+        if model.model_loading:
+            return
+
         model.unload()
 
 
