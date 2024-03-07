@@ -79,6 +79,7 @@ class Widgets:
         # Model
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
+        self.model_frame = d.frame
 
         widgetutils.make_label(d, "Model")
         self.model = widgetutils.make_entry(d, sticky="ew")
@@ -94,8 +95,9 @@ class Widgets:
         self.main_menu_button = widgetutils.make_button(d, "Menu", right_padding=rpadding)
         ToolTip(self.main_menu_button, "Open the main menu")
 
-        # Settings
+        # Details
         d = get_d()
+        self.details_frame = d.frame
 
         widgetutils.make_label(d, "User")
         self.name_user = widgetutils.make_entry(d)
@@ -128,6 +130,7 @@ class Widgets:
         # System
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
+        self.system_frame = d.frame
 
         widgetutils.make_label(d, "System")
         self.system = widgetutils.make_entry(d, sticky="ew")
@@ -147,6 +150,7 @@ class Widgets:
 
         # Tuning
         d = get_d()
+        self.tuning_frame = d.frame
 
         widgetutils.make_label(d, "Tokens")
         self.max_tokens = widgetutils.make_entry(d, width=config.input_width_small)
@@ -222,6 +226,8 @@ class Widgets:
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
         d.frame.grid_columnconfigure(3, weight=1)
+        self.addons_frame = d.frame
+
         widgetutils.make_label(d, "Prepend")
         self.prepend = widgetutils.make_entry(d, sticky="ew")
 
@@ -282,6 +288,7 @@ class Widgets:
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_separator()
+        self.main_menu.add_command(label="Compact", command=lambda: app.compact())
         self.main_menu.add_command(label="Resize", command=lambda: app.resize())
         self.main_menu.add_command(label="About", command=lambda: app.show_about())
         self.main_menu.add_separator()

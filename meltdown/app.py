@@ -81,5 +81,19 @@ class App:
     def resize(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
 
+    def compact(self) -> None:
+        from .widgets import widgets
+
+        if widgets.details_frame.winfo_viewable():
+            widgets.details_frame.grid_remove()
+            widgets.system_frame.grid_remove()
+            widgets.tuning_frame.grid_remove()
+            widgets.addons_frame.grid_remove()
+        else:
+            widgets.details_frame.grid()
+            widgets.system_frame.grid()
+            widgets.tuning_frame.grid()
+            widgets.addons_frame.grid()
+
 
 app = App()
