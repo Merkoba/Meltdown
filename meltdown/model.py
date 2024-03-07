@@ -28,12 +28,15 @@ class Model:
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
 
-    def unload(self) -> None:
+    def unload(self, announce: bool = False) -> None:
         self.stop_stream()
 
         if self.model:
             self.model = None
-            widgets.print("\n👻 Model unloaded")
+
+            if announce:
+                widgets.print("\n👻 Model unloaded")
+
             self.reset_context()
 
     def load(self, prompt: str = "") -> None:

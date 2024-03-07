@@ -533,10 +533,14 @@ class Widgets:
         end_index = self.output.index("end - 3c")
         self.output.tag_add(f"name_{who}", start_index, end_index)
 
-    def set_model(self, model: str) -> None:
+    def set_model(self, m: str) -> None:
         from . import state
-        widgetutils.set_text(self.model, model)
-        state.update_config("model")
+        from .model import model
+
+        widgetutils.set_text(self.model, m)
+
+        if state.update_config("model"):
+            model.load()
 
     def show_intro(self) -> None:
         for line in config.intro:
@@ -697,7 +701,7 @@ class Widgets:
         if model.model_loading:
             return
 
-        model.unload()
+        model.unload(True)
 
     def copy(self, key: str) -> None:
         from . import state
