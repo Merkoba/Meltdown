@@ -504,7 +504,12 @@ class Widgets:
     def prompt(self, who: str) -> None:
         avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
-        prompt = f"\n{avatar} {name}: "
+
+        if name:
+            prompt = f"\n{avatar} {name} : "
+        else:
+            prompt = f"\n{avatar} : "
+
         self.print(prompt, False)
         start_index = self.output.index(f"end - {len(prompt)}c")
         end_index = self.output.index("end - 3c")
