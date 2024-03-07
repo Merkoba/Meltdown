@@ -28,11 +28,13 @@ def make_frame() -> tk.Frame:
     return frame
 
 
-def make_text(d: FrameData, sticky: str = "w", state: Literal["normal", "disabled"] = "normal") -> tk.Text:
+def make_text(d: FrameData, sticky: str = "w",
+              state: Literal["normal", "disabled"] = "normal",
+              right_padding: Optional[int] = None) -> tk.Text:
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=0, highlightthickness=0)
-    do_grid(d, widget, sticky)
+    do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 
 

@@ -216,7 +216,7 @@ class Widgets:
 
         d.frame.grid_columnconfigure(0, weight=1)
         d.frame.grid_rowconfigure(0, weight=1)
-        self.output = widgetutils.make_text(d, state="disabled", sticky="nsew")
+        self.output = widgetutils.make_text(d, state="disabled", sticky="nsew", right_padding=rpadding)
 
         # Addons
         d = get_d()
