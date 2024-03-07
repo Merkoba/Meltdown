@@ -3,12 +3,14 @@ from .app import app
 from .widgets import widgets
 from .model import model
 from . import state
+from . import system
 
 
 def main() -> None:
     state.load_files()
     widgets.setup()
     widgets.show_intro()
+    system.start()
 
     try:
         app.run()

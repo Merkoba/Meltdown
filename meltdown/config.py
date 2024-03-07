@@ -23,6 +23,8 @@ class Config:
         self.frame_number = 0
         self.background_color = "#212121"
         self.foreground_color = "white"
+        self.red_color = "#FF6B6B"
+        self.green_color = "#44B3A1"
         self.button_background = "#446CA1"
         self.button_background_hover = "#387ADF"
         self.green_button_background_hover = "#944E63"
@@ -36,6 +38,8 @@ class Config:
         self.max_list_items = 12
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
+        self.system_delay = 3
+        self.system_threshold = 50
 
         self.config_file = f"~/.config/{self.program}/config.json"
         self.configs_dir = f"~/.config/{self.program}/configs/"

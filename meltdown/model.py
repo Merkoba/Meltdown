@@ -10,7 +10,6 @@ from llama_cpp import Llama  # type: ignore
 # Standard
 import threading
 from pathlib import Path
-import atexit
 from typing import List, Dict, Optional
 
 
@@ -28,7 +27,6 @@ class Model:
         self.stop_load_thread = threading.Event()
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
-        atexit.register(self.stop_stream)
 
     def unload(self) -> None:
         self.stop_stream()

@@ -1,0 +1,43 @@
+# Modules
+from .config import config
+from .widgets import widgets
+
+# Standard
+import threading
+import time
+
+# Libraries
+import psutil  # type: ignore
+
+
+def padnum(num: int) -> str:
+    return str(num).zfill(3)
+
+
+def get_info() -> None:
+    cpu = psutil.cpu_percent(interval=1)
+    ram = psutil.virtual_memory().percent
+    widgets.cpu.set(padnum(int(cpu)) + "%")
+    widgets.ram.set(padnum(int(ram)) + "%")
+
+    if cpu >= config.system_threshold:
+        widgets.cpu_label.configure(foreground=config.red_color)
+    else:
+        widgets.cpu_label.configure(foreground=config.green_color)
+
+    if ram >= config.system_threshold:
+        widgets.ram_label.configure(foreground=config.red_color)
+    else:
+        widgets.ram_label.configure(foreground=config.green_color)
+
+
+def check() -> None:
+    while True:
+        get_info()
+        time.sleep(config.system_delay)
+
+
+def start() -> None:
+    thread = threading.Thread(target=check, args=())
+    thread.daemon = True
+    thread.start()

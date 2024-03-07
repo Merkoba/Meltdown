@@ -1,2 +1,3 @@
 llama_cpp_python ~= 0.2.55
 pyperclip ~= 1.8.2
+psutil ~= 5.9.8

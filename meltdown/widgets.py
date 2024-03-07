@@ -131,6 +131,18 @@ class Widgets:
         self.system = widgetutils.make_input(d, sticky="ew")
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
 
+        widgetutils.make_label(d, "CPU")
+        self.cpu = tk.StringVar()
+        self.cpu_label = widgetutils.make_label(d, "")
+        self.cpu_label.configure(textvariable=self.cpu)
+        self.cpu.set("000%")
+
+        widgetutils.make_label(d, "RAM")
+        self.ram = tk.StringVar()
+        self.ram_label = widgetutils.make_label(d, "")
+        self.ram_label.configure(textvariable=self.ram)
+        self.ram.set("000%")
+
         # Tuning
         d = get_d()
 
