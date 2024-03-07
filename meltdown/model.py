@@ -27,6 +27,7 @@ class Model:
         self.model_loading = False
         self.stop_load_thread = threading.Event()
         self.load_thread = threading.Thread()
+        self.stream_date = 0.0
         atexit.register(self.stop_stream)
 
     def unload(self) -> None:
@@ -91,15 +92,15 @@ class Model:
     def reset_context(self) -> None:
         self.context_list = []
 
+    def is_loading(self) -> bool:
+        return self.model_loading or self.stream_loading
+
     def stop_stream(self) -> None:
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
             self.stop_stream_thread.clear()
             widgets.print("\n* Interrupted *")
-
-    def is_loading(self) -> bool:
-        return self.model_loading or self.stream_loading
 
     def stream(self, prompt: str) -> None:
         if self.is_loading():
@@ -186,6 +187,9 @@ class Model:
         state.add_appends(config.append)
         state.add_input(prompt)
 
+        now = timeutils.now()
+        self.stream_date = now
+
         try:
             output = self.model.create_chat_completion(
                 stream=True,
@@ -202,6 +206,12 @@ class Model:
             return
 
         self.stream_loading = False
+
+        if self.stream_date != now:
+            return
+
+        if self.stop_stream_thread.is_set():
+            return
 
         try:
             for chunk in output:
@@ -233,7 +243,7 @@ class Model:
                     tokens.append(token)
                     widgets.insert(token)
         except BaseException as e:
-            print("Stream Error:", e)
+            print("Stream Read Error:", e)
 
         if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()

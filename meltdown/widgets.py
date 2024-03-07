@@ -460,6 +460,9 @@ class Widgets:
         text = self.input.get()
 
         if text:
+            if model.model_loading:
+                return
+
             self.clear_input()
             model.stream(text)
 

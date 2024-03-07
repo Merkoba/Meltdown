@@ -15,7 +15,10 @@ def main() -> None:
     except KeyboardInterrupt:
         pass
 
-    model.stop_stream()
+    try:
+        model.stop_stream()
+    except KeyboardInterrupt:
+        pass
 
 
 if __name__ == "__main__":
