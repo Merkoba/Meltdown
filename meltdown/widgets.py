@@ -515,6 +515,9 @@ class Widgets:
             self.show_intro()
             model.reset_context()
 
+        if not self.get_output():
+            return
+
         widgetutils.show_confirm("Clear output text?\nThis will also reset the context", clear, None)
 
     def clear_input(self) -> None:
@@ -710,8 +713,14 @@ class Widgets:
 
     def copy(self, key: str) -> None:
         from . import state
+
+        text = self.get_output()
+
+        if not text:
+            return
+
         widget = getattr(self, key)
-        widgetutils.copy(widget.get())
+        widgetutils.copy(text)
         state.update_config(key)
 
     def paste(self, key: str) -> None:
