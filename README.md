@@ -26,6 +26,8 @@ Save and load config files.
 
 Prepend and append to text automatically to your prompt.
 
+Show system CPU and RAM usage.
+
 ---
 
 You might be able to install it with `pipx`:
