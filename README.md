@@ -58,10 +58,8 @@ To run it use `run.sh` in the root dir.
 
 You will need some models to play with.
 
-Here's some small ones you can use:
+Here's a small ones you can use:
 
-https://huggingface.co/TheBloke/Pirouette-7B-GGUF
-
-https://huggingface.co/TheBloke/phi-2-GGUF
+https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
 
 You can find more in that site.
