@@ -502,6 +502,7 @@ class Widgets:
         if file:
             widgetutils.set_text(self.model, file)
             state.update_config("model")
+            model.load()
 
     def submit(self) -> None:
         from .model import model
