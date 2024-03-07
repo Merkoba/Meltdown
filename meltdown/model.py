@@ -141,8 +141,12 @@ class Model:
             return
 
         def replace_content(content: str) -> str:
-            content = content.replace("@name_user", config.name_user)
-            content = content.replace("@name_ai", config.name_ai)
+            if config.name_user:
+                content = content.replace("@name_user", config.name_user)
+
+            if config.name_ai:
+                content = content.replace("@name_ai", config.name_ai)
+
             return content
 
         widgets.prompt("user")

@@ -197,13 +197,13 @@ def update_config(key: str) -> bool:
         try:
             value = int(valuestr)
         except BaseException as e:
-            print(e)
+            widgets.fill_widget(key, config.get_default(key))
             return False
     elif vtype == float:
         try:
             value = float(valuestr)
         except BaseException as e:
-            print(e)
+            widgets.fill_widget(key, config.get_default(key))
             return False
 
     current = getattr(config, key)

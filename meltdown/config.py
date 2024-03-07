@@ -92,6 +92,15 @@ class Config:
             "The specified model will load automatically.",
         ]
 
+        self.clearables = [
+            "system",
+            "prepend",
+            "append",
+            "input",
+            "name_user",
+            "name_ai",
+        ]
+
     def defaults(self) -> Dict[str, Any]:
         items: Dict[str, Any] = {}
 

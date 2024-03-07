@@ -334,7 +334,7 @@ class Widgets:
         app.root.bind("<KeyPress>", on_key)
 
         self.input.focus_set()
-        self.add_reset_menus()
+        self.add_generic_menus()
         self.start_checks()
 
     def apply_input_history(self) -> None:
@@ -399,21 +399,26 @@ class Widgets:
         widgetutils.insert_text(self.output, text, True)
         widgetutils.to_bottom(self.output)
 
+    def add_common_commands(self, menu: tk.Menu, key: str) -> None:
+        from . import state
+        widget = getattr(self, key)
+
+        if (type(widget) == tk.Entry) or (type(widget) == tk.Text):
+            menu.add_command(label="Copy", command=lambda: self.copy(key))
+            menu.add_command(label="Paste", command=lambda: self.paste(key))
+
+            if key in config.clearables:
+                menu.add_command(label="Clear", command=lambda: self.clear(key))
+
+        if config.get_default(key):
+            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key))
+
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None) -> None:
-        from . import state
         menu = getattr(self, f"recent_{key_list}_menu")
         menu.delete(0, tk.END)
         items = getattr(config, key_list)[:config.max_list_items]
-        widget = getattr(self, key_config)
-
-        menu.add_command(label="Copy", command=lambda: self.copy(key_config))
-        menu.add_command(label="Paste", command=lambda: self.paste(key_config))
-        menu.add_command(label="Clear", command=lambda: self.clear(key_config))
-
-        if config.get_default(key_config):
-            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key_config))
-
+        self.add_common_commands(menu, key_config)
         menu.add_command(label='--- Recent ---', state='disabled')
 
         if not event:
@@ -529,15 +534,13 @@ class Widgets:
     def show_output_menu(self, event: Any) -> None:
         self.show_menu(self.output_menu, event)
 
-    def add_reset_menus(self) -> None:
+    def add_generic_menus(self) -> None:
         from . import state
 
         def add_menu(key: str) -> None:
             widget = getattr(self, key)
             menu = widgetutils.make_menu()
-
-            reset_func = partial(state.reset_one_config, key=key)
-            menu.add_command(label=f"Reset", command=reset_func)
+            self.add_common_commands(menu, key)
 
             if key not in ["model", "system", "prepend", "append"]:
                 show_func = partial(self.show_menu, menu=menu)
