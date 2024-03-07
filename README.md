@@ -26,7 +26,7 @@ Config changes get remembered.
 
 Save and load config files.
 
-Prepend and append text automatically to your prompt.
+Prepend and append text automatically to your prompts.
 
 Show system CPU and RAM usage.
 
