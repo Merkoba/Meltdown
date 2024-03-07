@@ -18,11 +18,15 @@ class Model:
     def __init__(self) -> None:
         self.mode = None
         self.lock = threading.Lock()
-        self.stop_thread = threading.Event()
-        self.thread = threading.Thread()
+        self.stop_stream_thread = threading.Event()
+        self.stream_thread = threading.Thread()
         self.context_list: List[Dict[str, str]] = []
         self.streaming = False
+        self.stream_loading = False
         self.model: Optional[Llama] = None
+        self.model_loading = False
+        self.stop_load_thread = threading.Event()
+        self.load_thread = threading.Thread()
         atexit.register(self.stop_stream)
 
     def unload(self) -> None:
@@ -30,17 +34,34 @@ class Model:
         self.model = None
         self.reset_context()
 
-    def load(self, model: str) -> bool:
+    def load(self, model: str, prompt: str = "") -> None:
         if not model:
-            return False
+            return
+
+        if self.is_loading():
+            print("(Load) Slow down!")
+            return
 
         model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
             widgets.print("Error: Model not found. Check the path.")
-            return False
+            return
+
+        def wrapper(model: str) -> None:
+            self.do_load(model)
+
+            if prompt:
+                self.stream(prompt)
 
         self.unload()
+        self.load_thread = threading.Thread(target=wrapper, args=(model,))
+        self.load_thread.start()
+
+    def do_load(self, model: str) -> None:
+        self.lock.acquire()
+        self.model_loading = True
+
         now = timeutils.now()
 
         try:
@@ -50,34 +71,44 @@ class Model:
             widgets.update()
 
             self.model = Llama(
-                model_path=str(model_path),
+                model_path=str(model),
                 chat_format=fmt,
                 verbose=False,
             )
         except BaseException as e:
             widgets.print("Error: Model failed to load.")
+            self.model_loading = False
             print(e)
-            return False
+            return
 
+        self.model_loading = False
         self.reset_context()
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)
-        return True
+        self.lock.release()
+        return
 
     def reset_context(self) -> None:
         self.context_list = []
 
     def stop_stream(self) -> None:
-        if self.thread and self.thread.is_alive():
-            self.stop_thread.set()
-            self.thread.join(timeout=3)
-            self.stop_thread.clear()
+        if self.stream_thread and self.stream_thread.is_alive():
+            self.stop_stream_thread.set()
+            self.stream_thread.join(timeout=3)
+            self.stop_stream_thread.clear()
             widgets.print("\n* Interrupted *")
 
+    def is_loading(self) -> bool:
+        return self.model_loading or self.stream_loading
+
     def stream(self, prompt: str) -> None:
+        if self.is_loading():
+            print("(Stream) Slow down!")
+            return
+
         if not self.model:
-            if not self.load(config.model):
-                return
+            self.load(config.model, prompt)
+            return
 
         def wrapper(prompt: str) -> None:
             self.streaming = True
@@ -85,18 +116,22 @@ class Model:
             self.streaming = False
 
         self.stop_stream()
-        self.thread = threading.Thread(target=wrapper, args=(prompt,))
-        self.thread.start()
+        self.stream_thread = threading.Thread(target=wrapper, args=(prompt,))
+        self.stream_thread.start()
 
     def do_stream(self, prompt: str) -> None:
         self.lock.acquire()
+        self.stream_loading = True
+
         widgets.show_model()
         prompt = prompt.strip()
 
         if not self.model:
+            print("Model not loaded")
             return
 
         if not prompt:
+            print("Empty prompt")
             return
 
         def replace_content(content: str) -> str:
@@ -151,19 +186,26 @@ class Model:
         state.add_appends(config.append)
         state.add_input(prompt)
 
-        output = self.model.create_chat_completion(
-            stream=True,
-            messages=messages,
-            max_tokens=config.max_tokens,
-            temperature=config.temperature,
-            top_k=config.top_k,
-            top_p=config.top_p,
-            seed=config.seed,
-        )
+        try:
+            output = self.model.create_chat_completion(
+                stream=True,
+                messages=messages,
+                max_tokens=config.max_tokens,
+                temperature=config.temperature,
+                top_k=config.top_k,
+                top_p=config.top_p,
+                seed=config.seed,
+            )
+        except BaseException as e:
+            print("Stream Error:", e)
+            self.stream_loading = False
+            return
+
+        self.stream_loading = False
 
         try:
             for chunk in output:
-                if self.stop_thread.is_set():
+                if self.stop_stream_thread.is_set():
                     break
 
                 delta = chunk["choices"][0]["delta"]
