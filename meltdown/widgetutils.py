@@ -178,7 +178,7 @@ def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any],
     button.configure(background=config.button_background, foreground=config.button_foreground)
     button.configure(bd=0, highlightthickness=0, disabledforeground="white")
     button.configure(activebackground=config.button_background_hover, activeforeground="white")
-    button.pack(side=side, padx=6, pady=6)
+    button.pack(side=side, padx=6, pady=8)
 
 
 def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
