@@ -32,6 +32,8 @@ Show system CPU and RAM usage.
 
 ---
 
+## Installation
+
 You might be able to install it with `pipx`:
 
 ```sh
@@ -49,6 +51,8 @@ You can use `scripts/venv.sh` to automate this.
 To run it use `run.sh` in the root dir.
 
 ---
+
+## Models
 
 You will need some models to play with.
 
