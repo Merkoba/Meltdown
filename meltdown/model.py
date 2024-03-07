@@ -37,7 +37,7 @@ class Model:
         model_path = Path(model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            widgets.print("Model not found.")
+            widgets.print("Error: Model not found. Check the path.")
             return False
 
         self.unload()
@@ -55,7 +55,8 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            widgets.print("Model failed to load.")
+            widgets.print("Error: Model failed to load.")
+            print(e)
             return False
 
         self.reset_context()
@@ -84,6 +85,9 @@ class Model:
         self.lock.acquire()
         widgets.show_model()
         prompt = prompt.strip()
+
+        if not self.model:
+            return
 
         if not prompt:
             return
