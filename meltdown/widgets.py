@@ -407,9 +407,9 @@ class Widgets:
         items = getattr(config, key_list)[:config.max_list_items]
         widget = getattr(self, key_config)
 
-        menu.add_command(label="Copy", command=lambda: widgetutils.copy(widget.get()))
-        menu.add_command(label="Paste", command=lambda: widgetutils.paste(widget))
-        menu.add_command(label="Clear", command=lambda: widgetutils.clear_text(widget))
+        menu.add_command(label="Copy", command=lambda: self.copy(key_config))
+        menu.add_command(label="Paste", command=lambda: self.paste(key_config))
+        menu.add_command(label="Clear", command=lambda: self.clear(key_config))
 
         if config.get_default(key_config):
             menu.add_command(label="Reset", command=lambda: state.reset_one_config(key_config))
@@ -624,6 +624,24 @@ class Widgets:
             return
 
         model.unload()
+
+    def copy(self, key: str) -> None:
+        from . import state
+        widget = getattr(self, key)
+        widgetutils.copy(widget.get())
+        state.update_config(key)
+
+    def paste(self, key: str) -> None:
+        from . import state
+        widget = getattr(self, key)
+        widgetutils.paste(widget)
+        state.update_config(key)
+
+    def clear(self, key: str) -> None:
+        from . import state
+        widget = getattr(self, key)
+        widgetutils.clear_text(widget)
+        state.update_config(key)
 
 
 widgets: Widgets = Widgets()
