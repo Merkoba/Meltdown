@@ -35,6 +35,8 @@ class App:
     def exists(self) -> bool:
         try:
             return app.root.winfo_exists()
+        except RuntimeError:
+            return False
         except tk.TclError:
             return False
 

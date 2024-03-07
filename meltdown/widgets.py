@@ -83,6 +83,12 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
+        self.model_load_button = widgetutils.make_button(d, "Load", lambda: self.load())
+        ToolTip(self.model_load_button, "Load the model")
+
+        self.model_unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
+        ToolTip(self.model_unload_button, "Unload the model")
+
         self.model_menu_button = widgetutils.make_button(d, "Models")
         ToolTip(self.model_menu_button, "Pick a model file from your file system")
 
@@ -595,6 +601,14 @@ class Widgets:
         text = widgetutils.get_text(widgets.output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
+
+    def load(self) -> None:
+        from .model import model
+        model.load()
+
+    def unload(self) -> None:
+        from .model import model
+        model.unload()
 
 
 widgets: Widgets = Widgets()

@@ -231,7 +231,7 @@ def reset_config() -> None:
 
         check_models(False)
         widgets.fill()
-        model.load(config.model)
+        model.load()
         save_config()
 
     widgetutils.show_confirm("This will remove your custom configs"
@@ -296,4 +296,4 @@ def on_context_change() -> None:
 
 def on_format_change() -> None:
     from .model import model
-    model.load(config.model)
+    model.load()

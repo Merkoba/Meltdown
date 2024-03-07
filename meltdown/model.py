@@ -32,31 +32,34 @@ class Model:
 
     def unload(self) -> None:
         self.stop_stream()
-        self.model = None
-        self.reset_context()
 
-    def load(self, model: str, prompt: str = "") -> None:
-        if not model:
+        if self.model:
+            self.model = None
+            widgets.print("\n👻 Model unloaded")
+            self.reset_context()
+
+    def load(self, prompt: str = "") -> None:
+        if not config.model:
             return
 
         if self.is_loading():
             print("(Load) Slow down!")
             return
 
-        model_path = Path(model)
+        model_path = Path(config.model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
             widgets.print("Error: Model not found. Check the path.")
             return
 
-        def wrapper(model: str) -> None:
-            self.do_load(model)
+        def wrapper() -> None:
+            self.do_load(config.model)
 
             if prompt:
                 self.stream(prompt)
 
         self.unload()
-        self.load_thread = threading.Thread(target=wrapper, args=(model,))
+        self.load_thread = threading.Thread(target=wrapper, args=())
         self.load_thread.start()
 
     def do_load(self, model: str) -> None:
@@ -67,8 +70,8 @@ class Model:
 
         try:
             fmt = config.format if (config.format != "auto") else None
-
-            widgets.print("\n🫠 Loading model...")
+            name = Path(model).name
+            widgets.print(f"\n🫠 Loading {name}")
             widgets.update()
 
             self.model = Llama(
@@ -108,7 +111,7 @@ class Model:
             return
 
         if not self.model:
-            self.load(config.model, prompt)
+            self.load(prompt)
             return
 
         def wrapper(prompt: str) -> None:
