@@ -74,12 +74,14 @@ class Widgets:
         def get_d() -> FrameData:
             return FrameData(widgetutils.make_frame(), 0)
 
+        rpadding = 11
+
         # Model
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
 
         widgetutils.make_label(d, "Model")
-        self.model = widgetutils.make_input(d, sticky="ew")
+        self.model = widgetutils.make_entry(d, sticky="ew")
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
@@ -89,22 +91,22 @@ class Widgets:
         self.unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
         ToolTip(self.unload_button, "Unload the model")
 
-        self.main_menu_button = widgetutils.make_button(d, "Menu")
+        self.main_menu_button = widgetutils.make_button(d, "Menu", right_padding=rpadding)
         ToolTip(self.main_menu_button, "Open the main menu")
 
         # Settings
         d = get_d()
 
         widgetutils.make_label(d, "User")
-        self.name_user = widgetutils.make_input(d)
+        self.name_user = widgetutils.make_entry(d)
         ToolTip(self.name_user, "The name of the user (you)")
 
         widgetutils.make_label(d, "AI")
-        self.name_ai = widgetutils.make_input(d)
+        self.name_ai = widgetutils.make_entry(d)
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
         widgetutils.make_label(d, "Temp")
-        self.temperature = widgetutils.make_input(d, width=config.input_width_small)
+        self.temperature = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.temperature, "The temperature parameter is used to control"
                 " the randomness of the output. A higher temperature (~1) results in more randomness"
                 " and diversity in the generated text, as the model is more likely to"
@@ -117,7 +119,7 @@ class Widgets:
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
         values.extend(fmts)
-        self.format = widgetutils.make_select(d, values=values, sticky="ew")
+        self.format = widgetutils.make_combobox(d, values=values, sticky="ew")
         self.format.configure(width=16)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
@@ -128,18 +130,18 @@ class Widgets:
         d.frame.grid_columnconfigure(1, weight=1)
 
         widgetutils.make_label(d, "System")
-        self.system = widgetutils.make_input(d, sticky="ew")
+        self.system = widgetutils.make_entry(d, sticky="ew")
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
 
         widgetutils.make_label(d, "CPU")
         self.cpu = tk.StringVar()
-        self.cpu_label = widgetutils.make_label(d, "")
+        self.cpu_label = widgetutils.make_label(d, "", right_padding=rpadding)
         self.cpu_label.configure(textvariable=self.cpu)
         self.cpu.set("000%")
 
         widgetutils.make_label(d, "RAM")
         self.ram = tk.StringVar()
-        self.ram_label = widgetutils.make_label(d, "")
+        self.ram_label = widgetutils.make_label(d, "", right_padding=rpadding)
         self.ram_label.configure(textvariable=self.ram)
         self.ram.set("000%")
 
@@ -147,25 +149,25 @@ class Widgets:
         d = get_d()
 
         widgetutils.make_label(d, "Tokens")
-        self.max_tokens = widgetutils.make_input(d, width=config.input_width_small)
+        self.max_tokens = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
         widgetutils.make_label(d, "Context")
-        self.context = widgetutils.make_input(d, width=config.input_width_small)
+        self.context = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
         widgetutils.make_label(d, "Seed")
-        self.seed = widgetutils.make_input(d, width=config.input_width_small)
+        self.seed = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
         widgetutils.make_label(d, "Top K")
-        self.top_k = widgetutils.make_input(d, width=config.input_width_small)
+        self.top_k = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
                 " predictions to the top k most probable tokens at each step"
                 " of generation. By setting a value for k, you are instructing"
@@ -174,7 +176,7 @@ class Widgets:
                 " ensuring it adheres to specific patterns or constraints.")
 
         widgetutils.make_label(d, "Top P")
-        self.top_p = widgetutils.make_input(d, width=config.input_width_small)
+        self.top_p = widgetutils.make_entry(d, width=config.input_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
                 " the cumulative probability of the generated tokens."
                 " The model generates tokens until the cumulative probability"
@@ -203,7 +205,8 @@ class Widgets:
         self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
         ToolTip(self.bottom_button, "Go to the bottom of the output")
 
-        self.copy_button = widgetutils.make_button(d, "Copy", lambda: self.output_copy(), sticky="ew")
+        self.copy_button = widgetutils.make_button(d, "Copy",
+                                                   lambda: self.output_copy(), sticky="ew", right_padding=rpadding)
         ToolTip(self.copy_button, "Copy the text of the output")
 
         # Output
@@ -220,16 +223,16 @@ class Widgets:
         d.frame.grid_columnconfigure(1, weight=1)
         d.frame.grid_columnconfigure(3, weight=1)
         widgetutils.make_label(d, "Prepend")
-        self.prepend = widgetutils.make_input(d, sticky="ew")
+        self.prepend = widgetutils.make_entry(d, sticky="ew")
 
         widgetutils.make_label(d, "Append")
-        self.append = widgetutils.make_input(d, sticky="ew")
+        self.append = widgetutils.make_entry(d, sticky="ew", right_padding=rpadding)
 
         # Input
         d = get_d()
         d.frame.grid_columnconfigure(1, weight=1)
         widgetutils.make_label(d, "Input")
-        self.input = widgetutils.make_input(d, sticky="ew")
+        self.input = widgetutils.make_entry(d, sticky="ew")
 
         input_history_up_button = widgetutils.make_button(d, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
@@ -237,7 +240,7 @@ class Widgets:
         input_history_up_down = widgetutils.make_button(d, "Next >", lambda: self.input_history_down())
         ToolTip(input_history_up_down, "Next item in the input history")
 
-        submit_button = widgetutils.make_button(d, "Submit", lambda: self.submit())
+        submit_button = widgetutils.make_button(d, "Submit", lambda: self.submit(), right_padding=rpadding)
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.main_menu = widgetutils.make_menu()
