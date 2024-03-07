@@ -19,7 +19,7 @@ class Config:
         self.select_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
-        self.font_button = ("sans", 10)
+        self.font_button = ("sans", 13)
         self.frame_number = 0
         self.background_color = "#212121"
         self.foreground_color = "white"

@@ -28,8 +28,19 @@ class App:
 
         style.configure("TButton", background=config.button_background)
         style.configure("TButton", foreground=config.button_foreground)
+        style.configure("TButton", borderwidth=0)
+        style.configure("TButton", padding=[0, 0, 0, 0])
+        style.configure("TButton", font=config.font_button)
+
         style.configure("Green.TButton", background=config.green_background)
         style.configure("Green.TButton", foreground=config.button_foreground)
+        style.configure("Green.TButton", borderwidth=0)
+        style.configure("Green.TButton", padding=[0, 0, 0, 0])
+        style.configure("Green.TButton", font=config.font_button)
+
+        style.configure("Disabled.TButton", borderwidth=0)
+        style.configure("Disabled.TButton", padding=[0, 0, 0, 0])
+        style.configure("Disabled.TButton", font=config.font_button)
 
         style.map("Disabled.TButton",
                   background=[("disabled", config.background_disabled), ("active", config.background_disabled)],
