@@ -73,7 +73,7 @@ class Config:
         self.default_top_p: float = 0.95
         self.default_model: str = ""
         self.default_context: int = 1
-        self.default_seed: int = -1
+        self.default_seed: int = 326
         self.default_format: str = "auto"
         self.default_prepend = ""
         self.default_append = ""
