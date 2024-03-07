@@ -2,8 +2,6 @@
 
 <img src="media/image.jpg" width="380">
 
-![](https://i.imgur.com/MLcuCh3.jpg)
-
 ![](https://i.imgur.com/QOxzDEE.jpg)
 
 ---
