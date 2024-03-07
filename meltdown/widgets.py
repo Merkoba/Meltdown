@@ -247,6 +247,7 @@ class Widgets:
         self.load_button_enabled = True
         self.unload_button_enabled = True
         self.format_select_enabled = True
+        self.model_menu_button_enabled = True
 
     def fill(self) -> None:
         for key in config.defaults():
@@ -436,6 +437,11 @@ class Widgets:
         self.show_menu(menu, event)
 
     def show_recent_models(self, event: Optional[Any] = None) -> None:
+        from .model import model
+
+        if model.model_loading:
+            return
+
         self.show_menu_items("model", "models", lambda m: self.set_model(m), event)
 
     def show_recent_systems(self, event: Optional[Any] = None) -> None:
@@ -537,6 +543,11 @@ class Widgets:
         self.show_menu(self.main_menu, event)
 
     def show_model_menu(self, event: Any) -> None:
+        from .model import model
+
+        if model.model_loading:
+            return
+
         self.show_menu(self.model_menu, event)
 
     def show_output_menu(self, event: Any) -> None:
@@ -607,6 +618,18 @@ class Widgets:
             self.disable_widget(self.format)
             self.format_select_enabled = False
 
+    def enable_model_menu_button(self) -> None:
+        if (not self.model_menu_button_enabled) and app.exists():
+            self.model_menu_button.configure(style="TButton")
+            self.enable_widget(self.model_menu_button)
+            self.model_menu_button_enabled = True
+
+    def disable_model_menu_button(self) -> None:
+        if self.model_menu_button_enabled and app.exists():
+            self.model_menu_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.model_menu_button)
+            self.model_menu_button_enabled = False
+
     def enable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["!disabled"])
 
@@ -625,10 +648,12 @@ class Widgets:
             self.disable_load_button()
             self.disable_unload_button()
             self.disable_format_select()
+            self.disable_model_menu_button()
         else:
             self.enable_load_button()
             self.enable_unload_button()
             self.enable_format_select()
+            self.enable_model_menu_button()
 
     def start_checks(self) -> None:
         self.check_stop()
