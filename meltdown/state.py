@@ -223,7 +223,6 @@ def update_config(key: str) -> bool:
 
 def reset_config() -> None:
     from . import widgetutils
-    from .model import model
 
     def reset() -> None:
         for key in config.defaults():
