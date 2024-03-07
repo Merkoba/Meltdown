@@ -276,11 +276,13 @@ def save_log() -> None:
         log = timeutils.date() + "\n\n" + log
         config.logs_path.mkdir(parents=True, exist_ok=True)
         file_name = str(timeutils.now_int()) + ".txt"
+        logpath = Path(config.logs_path, file_name)
 
-        with open(Path(config.logs_path, file_name), "w") as file:
+        with open(logpath, "w") as file:
             file.write(log)
 
         widgets.print(f"\n>> Log saved as {file_name}")
+        print(f"Log saved at {logpath}")
 
 
 def on_model_change() -> None:

@@ -16,7 +16,7 @@ def main() -> None:
         pass
 
     try:
-        model.stop_stream()
+        model.unload()
     except KeyboardInterrupt:
         pass
 

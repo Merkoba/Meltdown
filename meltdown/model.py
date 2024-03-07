@@ -60,6 +60,7 @@ class Model:
 
         self.unload()
         self.load_thread = threading.Thread(target=wrapper, args=())
+        self.load_thread.daemon = True
         self.load_thread.start()
 
     def do_load(self, model: str) -> None:
@@ -121,6 +122,7 @@ class Model:
 
         self.stop_stream()
         self.stream_thread = threading.Thread(target=wrapper, args=(prompt,))
+        self.stream_thread.daemon = True
         self.stream_thread.start()
 
     def do_stream(self, prompt: str) -> None:
