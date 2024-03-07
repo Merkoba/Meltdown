@@ -184,6 +184,9 @@ def add_to_list(key: str, text: str) -> None:
 
 
 def update_config(key: str) -> bool:
+    if not hasattr(config, key):
+        return False
+
     vtype = config.get_default(key).__class__
     widget = getattr(widgets, key)
     valuestr = widget.get()
