@@ -15,17 +15,18 @@ def padnum(num: int) -> str:
 
 
 def get_info() -> None:
-    cpu = psutil.cpu_percent(interval=1)
-    ram = psutil.virtual_memory().percent
-    widgets.cpu.set(padnum(int(cpu)) + "%")
-    widgets.ram.set(padnum(int(ram)) + "%")
+    cpu = int(psutil.cpu_percent(interval=1))
+    ram = int(psutil.virtual_memory().percent)
 
-    if cpu >= config.system_threshold:
+    widgets.cpu.set(padnum(cpu) + "%")
+    widgets.ram.set(padnum(ram) + "%")
+
+    if cpu > config.system_threshold:
         widgets.cpu_label.configure(foreground=config.red_color)
     else:
         widgets.cpu_label.configure(foreground=config.green_color)
 
-    if ram >= config.system_threshold:
+    if ram > config.system_threshold:
         widgets.ram_label.configure(foreground=config.red_color)
     else:
         widgets.ram_label.configure(foreground=config.green_color)
