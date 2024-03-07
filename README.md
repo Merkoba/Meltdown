@@ -58,7 +58,7 @@ To run it use `run.sh` in the root dir.
 
 You will need some models to play with.
 
-Here's a small ones you can use:
+Here's a small one you can use:
 
 https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
 
