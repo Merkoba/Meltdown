@@ -26,7 +26,6 @@ class Model:
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
-        self.stop_load_thread = threading.Event()
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
 
