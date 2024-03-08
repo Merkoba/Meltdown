@@ -4,17 +4,13 @@ from typing import Tuple
 from datetime import datetime
 
 
-def get_time() -> float:
-    return time.time()
-
-
 def seconds_string(name: str, start: float, end: float) -> str:
     num = round(start - end, 2)
     return f"{name} in {num} seconds"
 
 
 def check_time(name: str, last_time: float) -> Tuple[str, float]:
-    now = get_time()
+    now = now()
     seconds_str = seconds_string(name, now, last_time)
     return seconds_str, now
 
@@ -30,3 +26,7 @@ def now_int() -> int:
 def date() -> str:
     now = datetime.now()
     return now.strftime("%Y-%m-%d %H:%M:%S")
+
+
+def sleep(seconds: float) -> None:
+    time.sleep(seconds)

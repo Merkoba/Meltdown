@@ -1,10 +1,10 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from . import timeutils
 
 # Standard
 import threading
-import time
 
 # Libraries
 import psutil  # type: ignore
@@ -37,7 +37,7 @@ def check() -> None:
         if not config.compact:
             get_info()
 
-        time.sleep(config.system_delay)
+        timeutils.sleep(config.system_delay)
 
 
 def start() -> None:
