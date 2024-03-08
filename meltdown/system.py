@@ -34,7 +34,9 @@ def get_info() -> None:
 
 def check() -> None:
     while True:
-        get_info()
+        if not config.compact:
+            get_info()
+
         time.sleep(config.system_delay)
 
 
