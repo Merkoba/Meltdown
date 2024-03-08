@@ -21,7 +21,7 @@ def get_info() -> None:
     temps = psutil.sensors_temperatures()
     temp: Optional[int] = None
 
-    if "k10tiemp" in temps:
+    if "k10temp" in temps:
         ktemps = temps["k10temp"]
 
         for ktemp in ktemps:
