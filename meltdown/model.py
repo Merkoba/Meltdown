@@ -24,6 +24,8 @@ class Model:
         self.stream_loading = False
         self.model: Optional[Llama] = None
         self.model_loading = False
+        self.loaded_model = ""
+        self.loaded_format = ""
         self.stop_load_thread = threading.Event()
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
@@ -33,6 +35,8 @@ class Model:
 
         if self.model:
             self.model = None
+            self.loaded_model = ""
+            self.loaded_format = ""
 
             if announce:
                 widgets.print("\n👻 Model unloaded")
@@ -69,9 +73,10 @@ class Model:
         self.model_loading = True
 
         now = timeutils.now()
+        cformat = config.format
 
         try:
-            fmt = config.format if (config.format != "auto") else None
+            fmt = config.format if (cformat != "auto") else None
             name = Path(model).name
             widgets.print(f"\n🫠 Loading {name}")
             widgets.update()
@@ -89,6 +94,8 @@ class Model:
             return
 
         self.model_loading = False
+        self.loaded_model = model
+        self.loaded_format = cformat
         self.reset_context()
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)

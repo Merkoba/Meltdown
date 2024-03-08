@@ -226,13 +226,18 @@ def update_config(key: str) -> bool:
 
 def reset_config() -> None:
     from . import widgetutils
+    from .model import model
 
     def reset() -> None:
         for key in config.defaults():
-            setattr(config, key, config.get_default(key))
+            default = config.get_default(key)
 
-        on_model_change()
+            if default:
+                setattr(config, key, default)
+
+        on_context_change()
         widgets.fill()
+        model.load()
         save_config()
 
     widgetutils.show_confirm("This will remove your custom configs"
@@ -289,7 +294,9 @@ def save_log() -> None:
 def on_model_change() -> None:
     from .model import model
     check_models(False)
-    model.unload()
+
+    if model.loaded_model != config.model:
+        model.unload()
 
 
 def on_context_change() -> None:
@@ -299,4 +306,6 @@ def on_context_change() -> None:
 
 def on_format_change() -> None:
     from .model import model
-    model.load()
+
+    if model.loaded_format != config.format:
+        model.load()
