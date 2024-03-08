@@ -344,6 +344,7 @@ class Widgets:
 
         self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.tab_changed(e))
         self.notebook.bind("<Button-2>", lambda e: self.close_tab(e))
+        self.notebook.bind("<Double-Button-1>", lambda e: self.make_tab())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
