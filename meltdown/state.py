@@ -210,6 +210,7 @@ def update_config(key: str) -> bool:
 
     if value != current:
         setattr(config, key, value)
+        save_config()
 
         if key == "model":
             on_model_change()
@@ -218,7 +219,6 @@ def update_config(key: str) -> bool:
         elif key == "format":
             on_format_change()
 
-        save_config()
         return True
 
     return False
@@ -237,8 +237,8 @@ def reset_config() -> None:
 
         on_context_change()
         widgets.fill()
-        model.load()
         save_config()
+        model.load()
 
     widgetutils.show_confirm("This will remove your custom configs"
                              "\nand refresh the widgets", reset, None)
@@ -252,6 +252,7 @@ def reset_one_config(key: str) -> None:
 
     setattr(config, key, default)
     widgets.fill_widget(key, getattr(config, key))
+    save_config()
 
     if key == "model":
         on_model_change()
@@ -259,8 +260,6 @@ def reset_one_config(key: str) -> None:
         on_context_change()
     elif key == "format":
         on_format_change()
-
-    save_config()
 
 
 def get_models_dir() -> Optional[str]:
