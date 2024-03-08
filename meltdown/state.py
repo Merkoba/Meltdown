@@ -222,8 +222,6 @@ def set_config(key: str, value: Any) -> None:
 
     if key == "model":
         on_model_change()
-    elif key == "context":
-        on_context_change()
     elif key == "format":
         on_format_change()
 
@@ -241,7 +239,6 @@ def reset_config() -> None:
 
         on_model_change(False)
         on_format_change(False)
-        on_context_change()
         widgets.fill()
         save_config()
         model.load()
@@ -295,11 +292,6 @@ def on_model_change(unload: bool = True) -> None:
     if model.loaded_model != config.model:
         if unload:
             model.unload()
-
-
-def on_context_change() -> None:
-    from .model import model
-    model.limit_context()
 
 
 def on_format_change(load: bool = True) -> None:

@@ -13,13 +13,31 @@ from pathlib import Path
 from typing import List, Dict, Optional
 
 
+class ContextList:
+    def __init__(self) -> None:
+        self.items: List[Dict[str, str]] = []
+
+    def add(self, context_dict: Dict[str, str]) -> None:
+        self.items.append(context_dict)
+        self.limit()
+
+    def limit(self) -> None:
+        if config.context:
+            self.items = self.items[-config.context:]
+        else:
+            self.reset()
+
+    def reset(self) -> None:
+        self.items = []
+
+
 class Model:
     def __init__(self) -> None:
         self.mode = None
         self.lock = threading.Lock()
         self.stop_stream_thread = threading.Event()
         self.stream_thread = threading.Thread()
-        self.context_list: List[Dict[str, str]] = []
+        self.contexts: Dict[str, ContextList] = {}
         self.streaming = False
         self.stream_loading = False
         self.model: Optional[Llama] = None
@@ -39,8 +57,6 @@ class Model:
 
             if announce:
                 widgets.print("\n👻 Model unloaded")
-
-            self.reset_context()
 
     def load(self, prompt: str = "", output_id: str = "") -> None:
         if not config.model:
@@ -98,14 +114,10 @@ class Model:
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = cformat
-        self.reset_context()
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.print(msg)
         self.lock.release()
         return
-
-    def reset_context(self) -> None:
-        self.context_list = []
 
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading
@@ -172,6 +184,12 @@ class Model:
         if config.append:
             full_prompt = full_prompt + ". " + config.append
 
+        context_list = self.contexts.get(output_id)
+
+        if not context_list:
+            context_list = ContextList()
+            self.contexts[output_id] = context_list
+
         if config.context > 0:
             context_dict = {"user": full_prompt}
         else:
@@ -180,8 +198,8 @@ class Model:
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
-        if self.context_list:
-            for item in self.context_list:
+        if context_list.items:
+            for item in context_list.items:
                 for key in item:
                     content = item[key]
 
@@ -276,19 +294,9 @@ class Model:
 
         if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()
-            self.add_context(context_dict)
+            context_list.add(context_dict)
 
         self.lock.release()
-
-    def add_context(self, context_dict: Dict[str, str]) -> None:
-        self.context_list.append(context_dict)
-        self.limit_context()
-
-    def limit_context(self) -> None:
-        if config.context:
-            self.context_list = self.context_list[-config.context:]
-        else:
-            self.reset_context()
 
 
 model = Model()

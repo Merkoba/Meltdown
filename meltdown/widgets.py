@@ -376,7 +376,8 @@ class Widgets:
 
         def on_key(event: Any) -> None:
             # Focus the input and insert char
-            if (type(event.widget) == tk.Text) or (type(event.widget) == ttk.Combobox):
+            if (type(event.widget) == tk.Text) or \
+                    (type(event.widget) == ttk.Combobox) or (type(event.widget) == ttk.Notebook):
                 if len(event.keysym.strip()) == 1:
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
@@ -564,18 +565,12 @@ class Widgets:
             model.stream(text, self.current_output)
 
     def clear_output(self) -> None:
-        from .model import model
-
-        def clear() -> None:
-            output = self.get_current_output()
-            widgetutils.clear_text(output, True)
-            self.show_intro()
-            model.reset_context()
-
         if not self.get_output():
             return
 
-        widgetutils.show_confirm("Clear output text?\nThis will also reset the context", clear, None)
+        output = self.get_current_output()
+        widgetutils.clear_text(output, True)
+        self.show_intro()
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
