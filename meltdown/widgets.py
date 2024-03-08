@@ -851,7 +851,6 @@ class Widgets:
         self.current_output = tab_id
 
     def tab_changed(self, event: Any) -> None:
-        self.stop()
         self.update_output()
 
     def get_current_output(self) -> tk.Text:
