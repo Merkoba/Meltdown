@@ -25,6 +25,7 @@ class ToolTip:
         self.tooltip: Optional[tk.Toplevel] = None
         self.widget.bind("<Enter>", self.schedule_tooltip)
         self.widget.bind("<Leave>", self.hide_tooltip)
+        self.widget.bind("<Button-1>", self.hide_tooltip)
         self.id = ""
 
     def schedule_tooltip(self, event: Any = None) -> None:
