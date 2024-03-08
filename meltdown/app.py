@@ -90,7 +90,6 @@ class App:
 
     def resize(self) -> None:
         from .widgets import widgets
-
         self.unmaximize()
         self.root.after(100, lambda: self.set_geometry())
         self.root.after(200, lambda: widgets.output_bottom())
