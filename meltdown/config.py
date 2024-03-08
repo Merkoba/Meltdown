@@ -8,7 +8,7 @@ class Config:
         self.title = "Meltdown"
         self.program = "meltdown"
         self.version = "1.2.0"
-        self.width = 770
+        self.width = 788
         self.height = 744
         self.padx = 5
         self.pady = 8

@@ -40,11 +40,9 @@ def make_text(d: FrameData, sticky: str = "w",
 
 def make_entry(d: FrameData, value: str = "",
                width: Optional[int] = None, sticky: str = "w",
-               right_padding: Optional[int] = None) -> tk.Entry:
+               right_padding: Optional[int] = None) -> ttk.Entry:
     w = width if width else config.input_width
-    widget = tk.Entry(d.frame, font=config.font, width=w)
-    widget.configure(background=config.input_background, foreground=config.input_foreground)
-    widget.configure(bd=0, highlightthickness=0, insertbackground="white")
+    widget = ttk.Entry(d.frame, font=config.font, width=w, style="Normal.TEntry")
     do_grid(d, widget, sticky, right_padding=right_padding)
 
     if value:
@@ -77,11 +75,12 @@ def make_label(d: FrameData, text: str, sticky: str = "w",
     return widget
 
 
-def make_combobox(d: FrameData, values: Optional[List[Any]] = None, sticky: str = "w") -> ttk.Combobox:
+def make_combobox(d: FrameData, values: Optional[List[Any]] = None,
+                  sticky: str = "w", right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
                           font=config.font_select, style="Normal.TCombobox", width=config.select_width)
-    do_grid(d, widget, sticky)
+    do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 
 
@@ -91,7 +90,7 @@ def make_menu() -> tk.Menu:
     return widget
 
 
-def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
+def insert_text(widget: Union[tk.Text, ttk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
     widget.configure(state="normal")
     widget.insert(tk.END, str(text))
 
@@ -99,11 +98,11 @@ def insert_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float], 
         widget.configure(state="disabled")
 
 
-def set_text(widget: Union[tk.Text, tk.Entry], text: Union[str, int, float],
+def set_text(widget: Union[tk.Text, ttk.Entry], text: Union[str, int, float],
              disable: bool = False, move: bool = False) -> None:
     widget.configure(state="normal")
 
-    if isinstance(widget, tk.Entry):
+    if isinstance(widget, ttk.Entry):
         widget.delete(0, tk.END)
         widget.insert(0, str(text))
 
@@ -159,12 +158,12 @@ def copy(text: str) -> None:
     pyperclip.copy(text)
 
 
-def paste(widget: tk.Entry) -> None:
+def paste(widget: ttk.Entry) -> None:
     text = pyperclip.paste()
     set_text(widget, text)
 
 
-def clear_text(widget: Union[tk.Text, tk.Entry], disable: bool = False) -> None:
+def clear_text(widget: Union[tk.Text, ttk.Entry], disable: bool = False) -> None:
     set_text(widget, "", disable)
 
 

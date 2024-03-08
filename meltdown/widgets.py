@@ -43,6 +43,8 @@ class ToolTip:
 
         if isinstance(self.widget, ttk.Combobox):
             box = self.widget.bbox("insert")
+        elif isinstance(self.widget, ttk.Entry):
+            box = self.widget.bbox(0)
         else:
             box = self.widget.bbox()
 
@@ -75,7 +77,7 @@ class Widgets:
         def get_d() -> FrameData:
             return FrameData(widgetutils.make_frame(), 0)
 
-        rpadding = 11
+        rpadding = 10
 
         # Model
         d = get_d()
@@ -118,12 +120,12 @@ class Widgets:
                 " most probable tokens.")
 
         widgetutils.make_label(d, "Format")
+        d.frame.grid_columnconfigure(d.col, weight=1)
         values = ["auto"]
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
         values.extend(fmts)
-        self.format = widgetutils.make_combobox(d, values=values, sticky="ew")
-        self.format.configure(width=16)
+        self.format = widgetutils.make_combobox(d, values=values, sticky="ew", right_padding=rpadding)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
@@ -287,7 +289,7 @@ class Widgets:
         if not widget:
             return
 
-        if type(widget) == tk.Entry or type(widget) == tk.Text:
+        if type(widget) == ttk.Entry or type(widget) == tk.Text:
             widgetutils.set_text(widget, value)
         elif type(widget) == ttk.Combobox:
             widgetutils.set_select(widget, value)
@@ -333,7 +335,7 @@ class Widgets:
             if not widget:
                 return
 
-            if type(widget) == tk.Entry or type(widget) == tk.Text:
+            if type(widget) == ttk.Entry or type(widget) == tk.Text:
                 on = "<FocusOut>"
             elif type(widget) == ttk.Combobox:
                 on = "<<ComboboxSelected>>"
@@ -447,7 +449,7 @@ class Widgets:
         if not widget:
             return
 
-        if (type(widget) == tk.Entry) or (type(widget) == tk.Text):
+        if (type(widget) == ttk.Entry) or (type(widget) == tk.Text):
             menu.add_command(label="Copy", command=lambda: self.copy(key))
             menu.add_command(label="Paste", command=lambda: self.paste(key))
 
@@ -766,7 +768,7 @@ class Widgets:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or (type(widget) != tk.Entry):
+        if (not widget) or (type(widget) != ttk.Entry):
             return
 
         widgetutils.paste(widget)
@@ -776,7 +778,7 @@ class Widgets:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or ((type(widget) != tk.Entry)
+        if (not widget) or ((type(widget) != ttk.Entry)
                             and (type(widget) != tk.Text)):
             return
 
@@ -785,7 +787,7 @@ class Widgets:
 
     def esckey(self) -> None:
         widget = self.get_widget("input")
-        assert isinstance(widget, tk.Entry)
+        assert isinstance(widget, ttk.Entry)
 
         if widget.get():
             self.clear_input()

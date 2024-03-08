@@ -60,6 +60,12 @@ class App:
                   background=[("active", config.green_button_background_hover)]
                   )
 
+        style.configure("Normal.TEntry", fieldbackground=config.input_background)
+        style.configure("Normal.TEntry", foreground=config.input_foreground)
+        style.configure("Normal.TEntry", borderwidth=0)
+        style.configure("Normal.TEntry", padding=[6, 1, 0, 1])
+        style.configure("Normal.TEntry", insertcolor="white")
+
     def setup(self) -> None:
         if config.compact:
             self.enable_compact()
