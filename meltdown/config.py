@@ -66,7 +66,7 @@ class Config:
 
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
-        self.default_max_tokens: int = 300
+        self.default_max_tokens: int = 500
         self.default_temperature: float = 0.8
         self.default_system: str = "Your name is @name_ai and you are talking to @name_user"
         self.default_top_k: int = 40
