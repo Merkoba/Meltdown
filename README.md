@@ -2,7 +2,7 @@
 
 <img src="media/image.jpg" width="380">
 
-![](https://i.imgur.com/C5PmoZd.jpg)
+![](https://i.imgur.com/Gjj3sqh.jpg)
 
 ---
 
