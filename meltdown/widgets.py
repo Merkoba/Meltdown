@@ -318,7 +318,7 @@ class Widgets:
         self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Return>", lambda e: self.submit())
-        self.input.bind("<Escape>", lambda e: self.stop())
+        self.input.bind("<Escape>", lambda e: self.esckey())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -775,6 +775,15 @@ class Widgets:
 
         widgetutils.clear_text(widget)
         state.update_config(key)
+
+    def esckey(self) -> None:
+        widget = self.get_widget("input")
+        assert isinstance(widget, tk.Entry)
+
+        if widget.get():
+            self.clear_input()
+        else:
+            self.stop()
 
 
 widgets: Widgets = Widgets()
