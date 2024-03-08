@@ -281,7 +281,6 @@ class Model:
     def add_context(self, context_dict: Dict[str, str]) -> None:
         self.context_list.append(context_dict)
         self.limit_context()
-        print("\n\nContext:", self.context_list)
 
     def limit_context(self) -> None:
         if config.context:
