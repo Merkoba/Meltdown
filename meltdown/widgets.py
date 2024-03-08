@@ -12,8 +12,11 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple, Callable
+from typing import Optional, Any, Tuple, Callable, Dict
 from functools import partial
+
+
+rpadding = 8
 
 
 class ToolTip:
@@ -83,7 +86,9 @@ class Widgets:
         def setrow(d: FrameData) -> None:
             d.frame.grid_rowconfigure(d.col, weight=1)
 
-        rpadding = 8
+        self.outputs: Dict[str, tk.Text] = {}
+        self.current_output = "none"
+        self.tab_number = 1
 
         # Model
         d = get_d()
@@ -212,8 +217,12 @@ class Widgets:
         ToolTip(self.stop_button, "Stop generating the current response")
 
         setcol(d)
-        self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
-        ToolTip(self.clear_button, "Clear all the output text and reset context")
+        self.clear_button = widgetutils.make_button(d, "New", lambda: self.make_tab(), sticky="ew")
+        ToolTip(self.clear_button, "Add a new tab")
+
+        setcol(d)
+        self.clear_button = widgetutils.make_button(d, "Close", lambda: self.close_tab(), sticky="ew")
+        ToolTip(self.clear_button, "Close the current tab")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
         ToolTip(self.top_button, "Scroll to the top of the output")
@@ -231,11 +240,10 @@ class Widgets:
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
 
         d = get_d()
-        # d.frame.configure(background=config.text_background)
 
         setcol(d)
         setrow(d)
-        self.output = widgetutils.make_text(d, state="disabled", sticky="nsew", right_padding=rpadding)
+        self.notebook = widgetutils.make_notebook(d, sticky="nsew")
 
         # Addons
         d = get_d()
@@ -303,6 +311,7 @@ class Widgets:
     def setup(self) -> None:
         from . import state
 
+        self.make_tab()
         self.fill()
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
@@ -321,8 +330,7 @@ class Widgets:
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
-        self.output_menu.add_command(label="Select All", command=lambda: widgetutils.select_all(self.output))
-        self.output.bind("<Button-3>", lambda e: self.show_output_menu(e))
+        self.output_menu.add_command(label="Select All", command=lambda: self.select_all())
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
@@ -330,10 +338,11 @@ class Widgets:
         self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
-        self.output.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
+
+        self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.tab_changed(e))
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -362,8 +371,6 @@ class Widgets:
         bind("prepend")
         bind("append")
 
-        self.output.tag_config("name_user", foreground="#87CEEB")
-        self.output.tag_config("name_ai", foreground="#98FB98")
         self.input_history_index: int
         self.reset_history_index()
 
@@ -430,23 +437,26 @@ class Widgets:
         left = ""
         right = ""
 
-        if widgetutils.text_length(self.output) and \
-                (widgetutils.last_character(self.output) != "\n"):
+        output = self.get_current_output()
+
+        if widgetutils.text_length(output) and \
+                (widgetutils.last_character(output) != "\n"):
             left = "\n"
 
         if linebreak:
             right = "\n"
 
         text = left + text + right
-        widgetutils.insert_text(self.output, text, True)
-        widgetutils.to_bottom(self.output)
+        widgetutils.insert_text(output, text, True)
+        widgetutils.to_bottom(output)
 
     def insert(self, text: str) -> None:
         if not app.exists():
             return
 
-        widgetutils.insert_text(self.output, text, True)
-        widgetutils.to_bottom(self.output)
+        output = self.get_current_output()
+        widgetutils.insert_text(output, text, True)
+        widgetutils.to_bottom(output)
 
     def add_common_commands(self, menu: tk.Menu, key: str) -> None:
         from . import state
@@ -551,7 +561,8 @@ class Widgets:
         from .model import model
 
         def clear() -> None:
-            widgetutils.clear_text(self.output, True)
+            output = self.get_current_output()
+            widgetutils.clear_text(output, True)
             self.show_intro()
             model.reset_context()
 
@@ -577,9 +588,10 @@ class Widgets:
             prompt = f"\n{avatar} : "
 
         self.print(prompt, False)
-        start_index = self.output.index(f"end - {len(prompt)}c")
-        end_index = self.output.index("end - 3c")
-        self.output.tag_add(f"name_{who}", start_index, end_index)
+        output = self.get_current_output()
+        start_index = output.index(f"end - {len(prompt)}c")
+        end_index = output.index("end - 3c")
+        output.tag_add(f"name_{who}", start_index, end_index)
 
     def set_model(self, m: str) -> None:
         from . import state
@@ -721,10 +733,12 @@ class Widgets:
         state.update_config("append")
 
     def output_top(self) -> None:
-        widgetutils.to_top(self.output)
+        output = self.get_current_output()
+        widgetutils.to_top(output)
 
     def output_bottom(self) -> None:
-        widgetutils.to_bottom(self.output)
+        output = self.get_current_output()
+        widgetutils.to_bottom(output)
 
     def output_copy(self) -> None:
         text = self.get_output()
@@ -735,7 +749,8 @@ class Widgets:
         model.stop_stream()
 
     def get_output(self) -> str:
-        text = widgetutils.get_text(widgets.output)
+        output = self.get_current_output()
+        text = widgetutils.get_text(output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
 
@@ -799,6 +814,47 @@ class Widgets:
             self.clear_input()
         else:
             self.stop()
+
+    def make_tab(self) -> None:
+        d_tab = FrameData(widgetutils.make_frame(self.notebook), 0)
+        self.notebook.add(d_tab.frame, text=f"Output {self.tab_number}")
+        output = widgetutils.make_text(d_tab, state="disabled", sticky="nsew")
+        output.bind("<Button-3>", lambda e: self.show_output_menu(e))
+        output.bind("<Button-1>", lambda e: self.hide_menu())
+        output.tag_config("name_user", foreground="#87CEEB")
+        output.tag_config("name_ai", foreground="#98FB98")
+        d_tab.frame.grid_rowconfigure(0, weight=1)
+        d_tab.frame.grid_columnconfigure(0, weight=1)
+        tab_id = self.notebook.tabs()[-1]  # type: ignore
+        self.outputs[tab_id] = output
+        self.select_tab(tab_id)
+        self.tab_number += 1
+
+    def close_tab(self) -> None:
+        if len(self.notebook.tabs()) > 1:  # type: ignore
+            self.notebook.forget(self.notebook.select())
+            self.update_output()
+        else:
+            self.clear_output()
+
+    def select_tab(self, tab_id: str) -> None:
+        self.notebook.select(tab_id)
+        self.current_output = tab_id
+
+    def update_output(self) -> None:
+        tab_id = self.notebook.select()
+        self.current_output = tab_id
+
+    def tab_changed(self, event: Any) -> None:
+        self.stop()
+        self.update_output()
+
+    def get_current_output(self) -> tk.Text:
+        return self.outputs[self.current_output]
+
+    def select_all(self) -> None:
+        output = self.get_current_output()
+        widgetutils.select_all(output)
 
 
 widgets: Widgets = Widgets()

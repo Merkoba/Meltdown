@@ -22,11 +22,15 @@ def do_grid(d: FrameData, widget: tk.Widget, sticky: str, right_padding: Optiona
     d.col += 1
 
 
-def make_frame() -> tk.Frame:
+def make_frame(parent: Optional[ttk.Notebook] = None) -> tk.Frame:
     global frame_number
-    frame = tk.Frame(app.root)
+
+    p = app.root if not parent else parent
+    frame = tk.Frame(p)
+
     frame.grid(row=frame_number, column=0, padx=config.frame_padx,
                pady=config.frame_pady, sticky="nsew")
+
     frame.configure(background=config.background_color)
     frame_number += 1
     return frame
@@ -38,6 +42,13 @@ def make_text(d: FrameData, sticky: str = "w",
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
+    do_grid(d, widget, sticky, right_padding=right_padding)
+    return widget
+
+
+def make_notebook(d: FrameData, sticky: str = "w",
+                  right_padding: Optional[int] = None) -> ttk.Notebook:
+    widget = ttk.Notebook(d.frame, style="Normal.TNotebook", takefocus=False)
     do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 
@@ -83,7 +94,7 @@ def make_combobox(d: FrameData, values: Optional[List[Any]] = None,
                   sticky: str = "w", right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
-                          font=config.font_select, style="Normal.TCombobox", width=config.combobox_width)
+                          font=config.font_combobox, style="Normal.TCombobox", width=config.combobox_width)
     do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 

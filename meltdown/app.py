@@ -66,6 +66,29 @@ class App:
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor="white")
 
+        style.configure("Normal.TNotebook", borderwidth=0)
+        style.configure("Normal.TNotebook", background=config.entry_background)
+        style.configure("Normal.TNotebook.Tab", padding=[4, 4])
+        style.configure("Normal.TNotebook.Tab", font=config.font_tab)
+
+        style.map("Normal.TNotebook.Tab", background=[
+            ("selected", "#494D62"),
+            ("!selected", "#2B303B"),
+        ])
+
+        style.map("Normal.TNotebook.Tab", foreground=[
+            ("selected", "white"),
+            ("!selected", "white"),
+        ])
+
+        style.layout("Normal.TNotebook.Tab", [
+            ("Notebook.tab", {"sticky": "nswe", "children": [
+                ("Notebook.padding", {"side": "top", "sticky": "nswe", "children": [
+                    ("Notebook.label", {"side": "top", "sticky": ""})
+                ]})
+            ],
+            })])
+
     def setup(self) -> None:
         if config.compact:
             self.enable_compact()

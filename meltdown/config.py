@@ -20,7 +20,8 @@ class Config:
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
         self.font_button = ("sans", 13)
-        self.font_select = ("sans", 13)
+        self.font_combobox = ("sans", 13)
+        self.font_tab = ("sans", 11)
         self.background_color = "#212121"
         self.foreground_color = "white"
         self.red_color = "#FF6B6B"
