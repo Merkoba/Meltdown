@@ -149,6 +149,12 @@ class Widgets:
         self.ram_label.configure(textvariable=self.ram)
         self.ram.set("000%")
 
+        widgetutils.make_label(d, "TMP")
+        self.temp = tk.StringVar()
+        self.temp_label = widgetutils.make_label(d, "", right_padding=rpadding)
+        self.temp_label.configure(textvariable=self.temp)
+        self.temp.set("000°C")
+
         # Tuning
         d = get_d()
         self.tuning_frame = d.frame
