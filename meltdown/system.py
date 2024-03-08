@@ -25,6 +25,7 @@ def get_info() -> None:
         ktemps = temps["k10temp"]
 
         for ktemp in ktemps:
+            # This one works with AMD Ryzen
             if ktemp.label == "Tctl":
                 temp = int(ktemp.current)
                 break
