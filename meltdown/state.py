@@ -294,7 +294,7 @@ def on_model_change() -> None:
 
 def on_context_change() -> None:
     from .model import model
-    model.reset_context()
+    model.limit_context()
 
 
 def on_format_change() -> None:
