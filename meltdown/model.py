@@ -42,7 +42,7 @@ class Model:
 
             self.reset_context()
 
-    def load(self, prompt: str = "") -> None:
+    def load(self, prompt: str = "", output_id: str = "") -> None:
         if not config.model:
             return
 
@@ -52,15 +52,18 @@ class Model:
 
         model_path = Path(config.model)
 
+        if not output_id:
+            output_id = widgets.current_output
+
         if (not model_path.exists()) or (not model_path.is_file()):
-            widgets.print("Error: Model not found. Check the path.")
+            widgets.print("Error: Model not found. Check the path.", output_id=output_id)
             return
 
         def wrapper() -> None:
             self.do_load(config.model)
 
             if prompt:
-                self.stream(prompt)
+                self.stream(prompt, output_id)
 
         self.unload()
         self.load_thread = threading.Thread(target=wrapper, args=())
@@ -114,26 +117,26 @@ class Model:
             self.stop_stream_thread.clear()
             widgets.print("\n* Interrupted *")
 
-    def stream(self, prompt: str) -> None:
+    def stream(self, prompt: str, output_id: str) -> None:
         if self.is_loading():
             print("(Stream) Slow down!")
             return
 
         if not self.model:
-            self.load(prompt)
+            self.load(prompt, output_id)
             return
 
-        def wrapper(prompt: str) -> None:
+        def wrapper(prompt: str, output_id: str) -> None:
             self.streaming = True
-            self.do_stream(prompt)
+            self.do_stream(prompt, output_id)
             self.streaming = False
 
         self.stop_stream()
-        self.stream_thread = threading.Thread(target=wrapper, args=(prompt,))
+        self.stream_thread = threading.Thread(target=wrapper, args=(prompt, output_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
 
-    def do_stream(self, prompt: str) -> None:
+    def do_stream(self, prompt: str, output_id: str) -> None:
         self.lock.acquire()
         self.stream_loading = True
 
@@ -157,8 +160,8 @@ class Model:
 
             return content
 
-        widgets.prompt("user")
-        widgets.insert(prompt)
+        widgets.prompt("user", output_id=output_id)
+        widgets.insert(prompt, output_id=output_id)
         widgets.enable_stop_button()
 
         full_prompt = prompt
@@ -248,7 +251,7 @@ class Model:
 
                 if "content" in delta:
                     if not added_name:
-                        widgets.prompt("ai")
+                        widgets.prompt("ai", output_id=output_id)
                         added_name = True
 
                     token = delta["content"]
@@ -267,7 +270,7 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    widgets.insert(token)
+                    widgets.insert(token, output_id=output_id)
         except BaseException as e:
             print("Stream Read Error:", e)
 

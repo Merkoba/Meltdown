@@ -430,14 +430,17 @@ class Widgets:
 
         self.apply_input_history()
 
-    def print(self, text: str, linebreak: bool = True) -> None:
+    def print(self, text: str, linebreak: bool = True, output_id: str = "") -> None:
         if not app.exists():
             return
 
         left = ""
         right = ""
 
-        output = self.get_current_output()
+        if not output_id:
+            output_id = self.current_output
+
+        output = self.outputs[output_id]
 
         if widgetutils.text_length(output) and \
                 (widgetutils.last_character(output) != "\n"):
@@ -450,11 +453,14 @@ class Widgets:
         widgetutils.insert_text(output, text, True)
         widgetutils.to_bottom(output)
 
-    def insert(self, text: str) -> None:
+    def insert(self, text: str, output_id: str = "") -> None:
         if not app.exists():
             return
 
-        output = self.get_current_output()
+        if not output_id:
+            output_id = self.current_output
+
+        output = self.outputs[output_id]
         widgetutils.insert_text(output, text, True)
         widgetutils.to_bottom(output)
 
@@ -555,7 +561,7 @@ class Widgets:
                 return
 
             self.clear_input()
-            model.stream(text)
+            model.stream(text, self.current_output)
 
     def clear_output(self) -> None:
         from .model import model
@@ -578,7 +584,7 @@ class Widgets:
     def reset_history_index(self) -> None:
         self.input_history_index = -1
 
-    def prompt(self, who: str) -> None:
+    def prompt(self, who: str, output_id: str = "") -> None:
         avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
 
@@ -588,7 +594,11 @@ class Widgets:
             prompt = f"\n{avatar} : "
 
         self.print(prompt, False)
-        output = self.get_current_output()
+
+        if not output_id:
+            output_id = self.current_output
+
+        output = self.outputs[output_id]
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
         output.tag_add(f"name_{who}", start_index, end_index)
