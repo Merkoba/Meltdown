@@ -846,7 +846,6 @@ class Widgets:
         if tab_id == "":
             tab_id = self.notebook.select()
 
-        print(tab_id)
         if len(self.notebook.tabs()) > 1:  # type: ignore
             self.notebook.forget(tab_id)
             self.update_output()
