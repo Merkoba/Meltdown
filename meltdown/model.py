@@ -181,15 +181,16 @@ class Model:
 
                     messages.append({"role": key, "content": content})
 
-        print("-----")
-        print("prompt:", full_prompt)
-        print("messages:", len(messages))
-        print("context:", config.context)
-        print("max_tokens:", config.max_tokens)
-        print("temperature:", config.temperature)
-        print("top_k:", config.top_k)
-        print("top_p:", config.top_p)
-        print("seed:", config.seed)
+        if config.printlogs:
+            print("-----")
+            print("prompt:", full_prompt)
+            print("messages:", len(messages))
+            print("context:", config.context)
+            print("max_tokens:", config.max_tokens)
+            print("temperature:", config.temperature)
+            print("top_k:", config.top_k)
+            print("top_p:", config.top_p)
+            print("seed:", config.seed)
 
         content = full_prompt
         content = replace_content(content)

@@ -41,6 +41,7 @@ class Config:
         self.avatar_ai = "😎"
         self.system_delay = 3
         self.system_threshold = 50
+        self.printlogs = False
 
         self.config_file = f"~/.config/{self.program}/config.json"
         self.configs_dir = f"~/.config/{self.program}/configs/"
