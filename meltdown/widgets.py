@@ -77,14 +77,20 @@ class Widgets:
         def get_d() -> FrameData:
             return FrameData(widgetutils.make_frame(), 0)
 
+        def setcol(d: FrameData) -> None:
+            d.frame.grid_columnconfigure(d.col, weight=1)
+
+        def setrow(d: FrameData) -> None:
+            d.frame.grid_rowconfigure(d.col, weight=1)
+
         rpadding = 10
 
         # Model
         d = get_d()
-        d.frame.grid_columnconfigure(1, weight=1)
         self.model_frame = d.frame
 
         widgetutils.make_label(d, "Model")
+        setcol(d)
         self.model = widgetutils.make_entry(d, sticky="ew")
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
@@ -120,7 +126,7 @@ class Widgets:
                 " most probable tokens.")
 
         widgetutils.make_label(d, "Format")
-        d.frame.grid_columnconfigure(d.col, weight=1)
+        setcol(d)
         values = ["auto"]
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
@@ -132,10 +138,10 @@ class Widgets:
 
         # System
         d = get_d()
-        d.frame.grid_columnconfigure(1, weight=1)
         self.system_frame = d.frame
 
         widgetutils.make_label(d, "System")
+        setcol(d)
         self.system = widgetutils.make_entry(d, sticky="ew")
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
 
@@ -200,24 +206,23 @@ class Widgets:
 
         # Buttons
         d = get_d()
-        d.frame.grid_columnconfigure(0, weight=1)
-        d.frame.grid_columnconfigure(1, weight=1)
-        d.frame.grid_columnconfigure(2, weight=1)
-        d.frame.grid_columnconfigure(3, weight=1)
-        d.frame.grid_columnconfigure(4, weight=1)
 
+        setcol(d)
         self.stop_button = widgetutils.make_button(d, "Stop", lambda: self.stop(), sticky="ew")
         ToolTip(self.stop_button, "Stop generating the current response")
 
+        setcol(d)
         self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
         ToolTip(self.clear_button, "Clear all the output text and reset context")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
         ToolTip(self.top_button, "Scroll to the top of the output")
 
+        setcol(d)
         self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
+        setcol(d)
         self.copy_button = widgetutils.make_button(d, "Copy",
                                                    lambda: self.output_copy(), sticky="ew", right_padding=rpadding)
         ToolTip(self.copy_button, "Copy all the text of the output")
@@ -227,26 +232,26 @@ class Widgets:
 
         d = get_d()
 
-        d.frame.grid_columnconfigure(0, weight=1)
-        d.frame.grid_rowconfigure(0, weight=1)
+        setcol(d)
+        setrow(d)
         self.output = widgetutils.make_text(d, state="disabled", sticky="nsew", right_padding=rpadding)
 
         # Addons
         d = get_d()
-        d.frame.grid_columnconfigure(1, weight=1)
-        d.frame.grid_columnconfigure(3, weight=1)
         self.addons_frame = d.frame
 
         widgetutils.make_label(d, "Prepend")
+        setcol(d)
         self.prepend = widgetutils.make_entry(d, sticky="ew")
 
         widgetutils.make_label(d, "Append")
+        setcol(d)
         self.append = widgetutils.make_entry(d, sticky="ew", right_padding=rpadding)
 
         # Input
         d = get_d()
-        d.frame.grid_columnconfigure(1, weight=1)
         widgetutils.make_label(d, "Input")
+        setcol(d)
         self.input = widgetutils.make_entry(d, sticky="ew")
 
         input_history_up_button = widgetutils.make_button(d, "< Prev", lambda: self.input_history_up())
