@@ -202,17 +202,17 @@ class Widgets:
         ToolTip(self.stop_button, "Stop generating the current response")
 
         self.clear_button = widgetutils.make_button(d, "Clear", lambda: self.clear_output(), sticky="ew")
-        ToolTip(self.clear_button, "Clear the output and reset context")
+        ToolTip(self.clear_button, "Clear all the output text and reset context")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
-        ToolTip(self.top_button, "Go to the top of the output")
+        ToolTip(self.top_button, "Scroll to the top of the output")
 
         self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
-        ToolTip(self.bottom_button, "Go to the bottom of the output")
+        ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         self.copy_button = widgetutils.make_button(d, "Copy",
                                                    lambda: self.output_copy(), sticky="ew", right_padding=rpadding)
-        ToolTip(self.copy_button, "Copy the text of the output")
+        ToolTip(self.copy_button, "Copy all the text of the output")
 
         # Output
         app.root.grid_rowconfigure(config.frame_number, weight=1)
