@@ -12,7 +12,7 @@ class App:
         self.root = tk.Tk()
         self.here = Path(__file__).parent.expanduser().resolve()
         self.root.title(config.title)
-        self.resize()
+        self.set_geometry()
         self.root.grid_columnconfigure(0, weight=1)
         icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
@@ -82,8 +82,15 @@ class App:
         from . import widgetutils
         widgetutils.show_message(f"{config.title} v{config.version}")
 
-    def resize(self) -> None:
+    def unmaximize(self) -> None:
+        self.root.attributes("-zoomed", False)
+
+    def set_geometry(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
+
+    def resize(self) -> None:
+        self.unmaximize()
+        self.root.after(100, lambda: self.set_geometry())
 
     def toggle_compact(self) -> None:
         from . import state
