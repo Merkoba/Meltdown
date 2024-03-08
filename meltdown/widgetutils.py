@@ -16,9 +16,16 @@ from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 frame_number = 0
 
 
-def do_grid(d: FrameData, widget: tk.Widget, sticky: str, right_padding: Optional[int] = None) -> None:
-    padx = (config.padx, right_padding if right_padding else config.padx)
-    widget.grid(row=0, column=d.col, padx=padx, pady=config.pady, sticky=sticky)
+def do_grid(d: FrameData, widget: tk.Widget,
+            sticky: str, right_padding: Optional[int] = None,
+            padx: Optional[int] = None, pady: Optional[int] = None) -> None:
+    if padx is not None:
+        px = (padx, padx)
+    else:
+        px = (config.padx, right_padding if right_padding else config.padx)
+
+    py = pady if pady else config.pady
+    widget.grid(row=0, column=d.col, padx=px, pady=py, sticky=sticky)
     d.col += 1
 
 
@@ -42,7 +49,7 @@ def make_text(d: FrameData, sticky: str = "w",
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    do_grid(d, widget, sticky, right_padding=right_padding, padx=0, pady=0)
     return widget
 
 
