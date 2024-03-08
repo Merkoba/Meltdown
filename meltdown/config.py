@@ -7,7 +7,7 @@ class Config:
     def __init__(self) -> None:
         self.title = "Meltdown"
         self.program = "meltdown"
-        self.version = "1.1.0"
+        self.version = "1.2.0"
         self.width = 770
         self.height = 744
         self.padx = 5
