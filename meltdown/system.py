@@ -21,12 +21,12 @@ def get_info() -> None:
     widgets.cpu.set(padnum(cpu) + "%")
     widgets.ram.set(padnum(ram) + "%")
 
-    if cpu > config.system_threshold:
+    if cpu >= config.system_threshold:
         widgets.cpu_label.configure(foreground=config.red_color)
     else:
         widgets.cpu_label.configure(foreground=config.green_color)
 
-    if ram > config.system_threshold:
+    if ram >= config.system_threshold:
         widgets.ram_label.configure(foreground=config.red_color)
     else:
         widgets.ram_label.configure(foreground=config.green_color)

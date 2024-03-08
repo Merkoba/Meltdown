@@ -40,7 +40,7 @@ class Config:
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
         self.system_delay = 3
-        self.system_threshold = 50
+        self.system_threshold = 70
         self.printlogs = False
 
         self.config_file = f"~/.config/{self.program}/config.json"
