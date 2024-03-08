@@ -228,7 +228,7 @@ class Widgets:
         ToolTip(self.copy_button, "Copy all the text of the output")
 
         # Output
-        app.root.grid_rowconfigure(config.frame_number, weight=1)
+        app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
 
         d = get_d()
 

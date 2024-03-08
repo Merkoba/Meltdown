@@ -13,6 +13,9 @@ from tkinter import ttk
 from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 
 
+frame_number = 0
+
+
 def do_grid(d: FrameData, widget: tk.Widget, sticky: str, right_padding: Optional[int] = None) -> None:
     padx = (config.padx, right_padding if right_padding else config.padx)
     widget.grid(row=0, column=d.col, padx=padx, pady=config.pady, sticky=sticky)
@@ -20,11 +23,12 @@ def do_grid(d: FrameData, widget: tk.Widget, sticky: str, right_padding: Optiona
 
 
 def make_frame() -> tk.Frame:
+    global frame_number
     frame = tk.Frame(app.root)
-    frame.grid(row=config.frame_number, column=0, padx=config.frame_padx,
+    frame.grid(row=frame_number, column=0, padx=config.frame_padx,
                pady=config.frame_pady, sticky="nsew")
     frame.configure(background=config.background_color)
-    config.frame_number += 1
+    frame_number += 1
     return frame
 
 
