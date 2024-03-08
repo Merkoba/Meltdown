@@ -209,19 +209,23 @@ def update_config(key: str) -> bool:
     current = getattr(config, key)
 
     if value != current:
+        set_config(key, value)
         setattr(config, key, value)
-        save_config()
-
-        if key == "model":
-            on_model_change()
-        elif key == "context":
-            on_context_change()
-        elif key == "format":
-            on_format_change()
-
         return True
 
     return False
+
+
+def set_config(key: str, value: Any) -> None:
+    setattr(config, key, value)
+    save_config()
+
+    if key == "model":
+        on_model_change()
+    elif key == "context":
+        on_context_change()
+    elif key == "format":
+        on_format_change()
 
 
 def reset_config() -> None:
@@ -252,16 +256,8 @@ def reset_one_config(key: str) -> None:
     if getattr(config, key) == default:
         return
 
-    setattr(config, key, default)
+    set_config(key, default)
     widgets.fill_widget(key, getattr(config, key))
-    save_config()
-
-    if key == "model":
-        on_model_change()
-    elif key == "context":
-        on_context_change()
-    elif key == "format":
-        on_format_change()
 
 
 def get_models_dir() -> Optional[str]:

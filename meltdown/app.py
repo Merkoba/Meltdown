@@ -60,6 +60,10 @@ class App:
                   background=[("active", config.green_button_background_hover)]
                   )
 
+    def setup(self) -> None:
+        if config.compact:
+            self.enable_compact()
+
     def run(self) -> None:
         self.root.mainloop()
 
@@ -81,19 +85,29 @@ class App:
     def resize(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
 
-    def compact(self) -> None:
-        from .widgets import widgets
+    def toggle_compact(self) -> None:
+        from . import state
 
-        if widgets.details_frame.winfo_viewable():
-            widgets.details_frame.grid_remove()
-            widgets.system_frame.grid_remove()
-            widgets.tuning_frame.grid_remove()
-            widgets.addons_frame.grid_remove()
+        if config.compact:
+            self.disable_compact()
         else:
-            widgets.details_frame.grid()
-            widgets.system_frame.grid()
-            widgets.tuning_frame.grid()
-            widgets.addons_frame.grid()
+            self.enable_compact()
+
+        state.set_config("compact", not config.compact)
+
+    def enable_compact(self) -> None:
+        from .widgets import widgets
+        widgets.details_frame.grid_remove()
+        widgets.system_frame.grid_remove()
+        widgets.tuning_frame.grid_remove()
+        widgets.addons_frame.grid_remove()
+
+    def disable_compact(self) -> None:
+        from .widgets import widgets
+        widgets.details_frame.grid()
+        widgets.system_frame.grid()
+        widgets.tuning_frame.grid()
+        widgets.addons_frame.grid()
 
 
 app = App()

@@ -262,12 +262,23 @@ class Widgets:
         self.unload_button_enabled = True
         self.format_select_enabled = True
 
+    def get_widget(self, key: str) -> Optional[tk.Widget]:
+        if hasattr(self, key):
+            widget = getattr(self, key)
+            assert isinstance(widget, tk.Widget)
+            return widget
+        else:
+            return None
+
     def fill(self) -> None:
         for key in config.defaults():
             self.fill_widget(key, getattr(config, key))
 
     def fill_widget(self, key: str, value: Any) -> None:
-        widget = getattr(self, key)
+        widget = self.get_widget(key)
+
+        if not widget:
+            return
 
         if type(widget) == tk.Entry or type(widget) == tk.Text:
             widgetutils.set_text(widget, value)
@@ -288,7 +299,7 @@ class Widgets:
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
         self.main_menu.add_separator()
-        self.main_menu.add_command(label="Compact", command=lambda: app.compact())
+        self.main_menu.add_command(label="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add_command(label="Resize", command=lambda: app.resize())
         self.main_menu.add_command(label="About", command=lambda: app.show_about())
         self.main_menu.add_separator()
@@ -310,7 +321,10 @@ class Widgets:
         self.input.bind("<Escape>", lambda e: self.stop())
 
         def bind(key: str) -> None:
-            widget = getattr(self, key)
+            widget = self.get_widget(key)
+
+            if not widget:
+                return
 
             if type(widget) == tk.Entry or type(widget) == tk.Text:
                 on = "<FocusOut>"
@@ -421,7 +435,10 @@ class Widgets:
 
     def add_common_commands(self, menu: tk.Menu, key: str) -> None:
         from . import state
-        widget = getattr(self, key)
+        widget = self.get_widget(key)
+
+        if not widget:
+            return
 
         if (type(widget) == tk.Entry) or (type(widget) == tk.Text):
             menu.add_command(label="Copy", command=lambda: self.copy(key))
@@ -578,7 +595,11 @@ class Widgets:
         from . import state
 
         def add_menu(key: str) -> None:
-            widget = getattr(self, key)
+            widget = self.get_widget(key)
+
+            if not widget:
+                return
+
             menu = widgetutils.make_menu()
             self.add_common_commands(menu, key)
 
@@ -721,25 +742,37 @@ class Widgets:
 
     def copy(self, key: str) -> None:
         from . import state
-
         text = self.get_output()
 
         if not text:
             return
 
-        widget = getattr(self, key)
+        widget = self.get_widget(key)
+
+        if not widget:
+            return
+
         widgetutils.copy(text)
         state.update_config(key)
 
     def paste(self, key: str) -> None:
         from . import state
-        widget = getattr(self, key)
+        widget = self.get_widget(key)
+
+        if (not widget) or (type(widget) != tk.Entry):
+            return
+
         widgetutils.paste(widget)
         state.update_config(key)
 
     def clear(self, key: str) -> None:
         from . import state
-        widget = getattr(self, key)
+        widget = self.get_widget(key)
+
+        if (not widget) or ((type(widget) != tk.Entry)
+                            and (type(widget) != tk.Text)):
+            return
+
         widgetutils.clear_text(widget)
         state.update_config(key)
 

@@ -11,6 +11,7 @@ def main() -> None:
     widgets.setup()
     widgets.show_intro()
     system.start()
+    app.setup()
 
     try:
         app.run()

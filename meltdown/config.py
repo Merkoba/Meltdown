@@ -76,8 +76,9 @@ class Config:
         self.default_context: int = 1
         self.default_seed: int = 326
         self.default_format: str = "auto"
-        self.default_prepend = ""
-        self.default_append = ""
+        self.default_prepend: str = ""
+        self.default_append: str = ""
+        self.default_compact: bool = False
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -92,6 +93,7 @@ class Config:
         self.format = self.default_format
         self.prepend = self.default_prepend
         self.append = self.default_append
+        self.compact = self.default_compact
 
         self.intro = [
             "Welcome to Meltdown.",
