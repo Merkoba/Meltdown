@@ -343,6 +343,7 @@ class Widgets:
         self.input.bind("<Escape>", lambda e: self.esckey())
 
         self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.tab_changed(e))
+        self.notebook.bind("<Button-2>", lambda e: self.close_tab(e))
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -835,9 +836,19 @@ class Widgets:
         self.select_tab(tab_id)
         self.tab_number += 1
 
-    def close_tab(self) -> None:
+    def close_tab(self, event: Optional[Any] = None) -> None:
+        tab_id = ""
+
+        if event:
+            tab_id = self.notebook.tk.call(self.notebook._w,  # type: ignore
+                                           "identify", "tab", event.x, event.y)
+
+        if tab_id == "":
+            tab_id = self.notebook.select()
+
+        print(tab_id)
         if len(self.notebook.tabs()) > 1:  # type: ignore
-            self.notebook.forget(self.notebook.select())
+            self.notebook.forget(tab_id)
             self.update_output()
         else:
             self.clear_output()

@@ -68,7 +68,7 @@ class App:
 
         style.configure("Normal.TNotebook", borderwidth=0)
         style.configure("Normal.TNotebook", background=config.entry_background)
-        style.configure("Normal.TNotebook.Tab", padding=[4, 4])
+        style.configure("Normal.TNotebook.Tab", padding=[10, 4])
         style.configure("Normal.TNotebook.Tab", font=config.font_tab)
 
         style.map("Normal.TNotebook.Tab", background=[
