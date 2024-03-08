@@ -37,7 +37,7 @@ def make_text(d: FrameData, sticky: str = "w",
               right_padding: Optional[int] = None) -> tk.Text:
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
-    widget.configure(bd=0, highlightthickness=0)
+    widget.configure(bd=3, highlightthickness=0, relief="flat")
     do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 

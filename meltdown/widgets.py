@@ -83,7 +83,7 @@ class Widgets:
         def setrow(d: FrameData) -> None:
             d.frame.grid_rowconfigure(d.col, weight=1)
 
-        rpadding = 10
+        rpadding = 8
 
         # Model
         d = get_d()
@@ -231,6 +231,7 @@ class Widgets:
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
 
         d = get_d()
+        # d.frame.configure(background=config.text_background)
 
         setcol(d)
         setrow(d)
