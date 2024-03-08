@@ -89,8 +89,11 @@ class App:
         self.root.geometry(f"{config.width}x{config.height}")
 
     def resize(self) -> None:
+        from .widgets import widgets
+
         self.unmaximize()
         self.root.after(100, lambda: self.set_geometry())
+        self.root.after(200, lambda: widgets.output_bottom())
 
     def toggle_compact(self) -> None:
         from . import state
