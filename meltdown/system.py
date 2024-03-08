@@ -21,7 +21,7 @@ def get_info() -> None:
     temps = psutil.sensors_temperatures()
     temp: Optional[int] = None
 
-    if "k10temp" in temps:
+    if "k10tiemp" in temps:
         ktemps = temps["k10temp"]
 
         for ktemp in ktemps:
@@ -36,7 +36,7 @@ def get_info() -> None:
     if temp:
         widgets.temp.set(padnum(temp) + "°C")
     else:
-        widgets.temp.set("???°C")
+        widgets.temp.set("N/A")
 
     if cpu >= config.system_threshold:
         widgets.cpu_label.configure(foreground=config.red_color)
