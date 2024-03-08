@@ -25,10 +25,10 @@ class App:
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
-        style.configure("Normal.TCombobox", padding=[6, 2, 0, 2])
+        style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
-        style.configure("Disabled.TCombobox", padding=[6, 2, 0, 2])
+        style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
         style.configure("Normal.TButton", background=config.button_background)
@@ -60,10 +60,10 @@ class App:
                   background=[("active", config.green_button_background_hover)]
                   )
 
-        style.configure("Normal.TEntry", fieldbackground=config.input_background)
-        style.configure("Normal.TEntry", foreground=config.input_foreground)
+        style.configure("Normal.TEntry", fieldbackground=config.entry_background)
+        style.configure("Normal.TEntry", foreground=config.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=0)
-        style.configure("Normal.TEntry", padding=[6, 1, 0, 1])
+        style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor="white")
 
     def setup(self) -> None:

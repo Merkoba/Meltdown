@@ -45,7 +45,7 @@ def make_text(d: FrameData, sticky: str = "w",
 def make_entry(d: FrameData, value: str = "",
                width: Optional[int] = None, sticky: str = "w",
                right_padding: Optional[int] = None) -> ttk.Entry:
-    w = width if width else config.input_width
+    w = width if width else config.entry_width
     widget = ttk.Entry(d.frame, font=config.font, width=w, style="Normal.TEntry")
     do_grid(d, widget, sticky, right_padding=right_padding)
 
@@ -83,7 +83,7 @@ def make_combobox(d: FrameData, values: Optional[List[Any]] = None,
                   sticky: str = "w", right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
     widget = ttk.Combobox(d.frame, values=v, state="readonly",
-                          font=config.font_select, style="Normal.TCombobox", width=config.select_width)
+                          font=config.font_select, style="Normal.TCombobox", width=config.combobox_width)
     do_grid(d, widget, sticky, right_padding=right_padding)
     return widget
 

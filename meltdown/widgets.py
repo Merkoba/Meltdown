@@ -117,7 +117,7 @@ class Widgets:
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
         widgetutils.make_label(d, "Temp")
-        self.temperature = widgetutils.make_entry(d, width=config.input_width_small)
+        self.temperature = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.temperature, "The temperature parameter is used to control"
                 " the randomness of the output. A higher temperature (~1) results in more randomness"
                 " and diversity in the generated text, as the model is more likely to"
@@ -168,25 +168,25 @@ class Widgets:
         self.tuning_frame = d.frame
 
         widgetutils.make_label(d, "Tokens")
-        self.max_tokens = widgetutils.make_entry(d, width=config.input_width_small)
+        self.max_tokens = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
         widgetutils.make_label(d, "Context")
-        self.context = widgetutils.make_entry(d, width=config.input_width_small)
+        self.context = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
         widgetutils.make_label(d, "Seed")
-        self.seed = widgetutils.make_entry(d, width=config.input_width_small)
+        self.seed = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
         widgetutils.make_label(d, "Top K")
-        self.top_k = widgetutils.make_entry(d, width=config.input_width_small)
+        self.top_k = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
                 " predictions to the top k most probable tokens at each step"
                 " of generation. By setting a value for k, you are instructing"
@@ -195,7 +195,7 @@ class Widgets:
                 " ensuring it adheres to specific patterns or constraints.")
 
         widgetutils.make_label(d, "Top P")
-        self.top_p = widgetutils.make_entry(d, width=config.input_width_small)
+        self.top_p = widgetutils.make_entry(d, width=config.entry_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
                 " the cumulative probability of the generated tokens."
                 " The model generates tokens until the cumulative probability"
