@@ -235,6 +235,8 @@ def reset_config() -> None:
             if default:
                 setattr(config, key, default)
 
+        on_model_change(False)
+        on_format_change(False)
         on_context_change()
         widgets.fill()
         save_config()
@@ -290,12 +292,13 @@ def save_log() -> None:
         print(f"Log saved at {logpath}")
 
 
-def on_model_change() -> None:
+def on_model_change(unload: bool = True) -> None:
     from .model import model
     check_models(False)
 
     if model.loaded_model != config.model:
-        model.unload()
+        if unload:
+            model.unload()
 
 
 def on_context_change() -> None:
@@ -303,8 +306,9 @@ def on_context_change() -> None:
     model.limit_context()
 
 
-def on_format_change() -> None:
+def on_format_change(load: bool = True) -> None:
     from .model import model
 
     if model.loaded_format != config.format:
-        model.load()
+        if load:
+            model.load()
