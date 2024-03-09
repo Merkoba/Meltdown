@@ -568,11 +568,31 @@ class Widgets:
         text = self.input.get()
 
         if text:
+            self.clear_input()
+
+            if self.check_command(text):
+                return
+
             if model.model_loading:
                 return
 
-            self.clear_input()
             model.stream(text, self.current_output)
+
+    def check_command(self, text: str) -> bool:
+        if not text.startswith("/"):
+            return False
+
+        if text == "/clear":
+            self.clear_output()
+            return True
+        elif text == "/config":
+            config.show_config()
+            return True
+        elif text == "/exit" or text == "/quit":
+            app.exit()
+            return True
+
+        return False
 
     def clear_output(self) -> None:
         from .model import model

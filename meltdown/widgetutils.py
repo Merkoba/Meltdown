@@ -64,7 +64,7 @@ def make_text(d: FrameData, sticky: str = "w",
     widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
-    do_grid(d, widget, sticky, right_padding=right_padding, padx=0, pady=0)
+    do_grid(d, widget, sticky, right_padding=right_padding, padx=0, pady=1)
     return widget
 
 
@@ -248,6 +248,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
             cmd_cancel()
 
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
+    dialog.bind("<Return>", lambda e: ok())
     make_dialog_button(button_frame, "Ok", ok, "left")
     make_dialog_button(button_frame, "Cancel", cancel, "right")
     show_dialog(dialog)

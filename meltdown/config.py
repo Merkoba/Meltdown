@@ -129,5 +129,17 @@ class Config:
         else:
             return None
 
+    def show_config(self) -> None:
+        from .widgets import widgets
+        widgets.print("")
+
+        for key in self.defaults():
+            value = getattr(self, key)
+
+            if value == "":
+                value = "[Empty]"
+
+            widgets.print(f"{key}: {value}")
+
 
 config = Config()
