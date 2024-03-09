@@ -198,10 +198,10 @@ def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]
     button_frame = tk.Frame(dialog)
     button_frame.pack()
 
-    def hide_dialog(event: Any) -> None:
+    def hide_dialog() -> None:
         dialog.destroy()
 
-    dialog.bind("<Escape>", hide_dialog)
+    dialog.bind("<Escape>", lambda e: hide_dialog())
     return dialog, top_frame, button_frame
 
 
@@ -243,6 +243,7 @@ def show_message(text: str) -> None:
         dialog.destroy()
 
     dialog, top_frame, button_frame = make_dialog("Information", text)
+    dialog.bind("<Return>", lambda e: ok())
     make_dialog_button(button_frame, "Ok", ok, "left")
     show_dialog(dialog)
 
