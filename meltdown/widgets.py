@@ -339,7 +339,7 @@ class Widgets:
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
 
-        self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.tab_changed(e))
+        self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
         self.notebook.bind("<Button-1>", lambda e: self.notebook_click(e))
         self.notebook.bind("<Button-2>", lambda e: self.notebook_middle_click(e))
         self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
@@ -881,7 +881,7 @@ class Widgets:
     def update_tab_index(self) -> None:
         self.drag_start_index = self.notebook.index(self.notebook.select())  # type: ignore
 
-    def tab_changed(self, event: Any) -> None:
+    def on_tab_change(self, event: Any) -> None:
         self.update_output()
 
     def get_current_output(self) -> tk.Text:
