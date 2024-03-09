@@ -352,6 +352,7 @@ class Widgets:
         self.notebook.bind("<B1-Motion>", self.on_tab_drag)
 
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
+        self.tab_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
 
         def bind(key: str) -> None:
@@ -1007,6 +1008,9 @@ class Widgets:
         return width
 
     def close_all_tabs(self) -> None:
+        if len(self.tabs()) == 1:
+            return
+
         def action() -> None:
             for tab in self.tabs():
                 self.close_tab(tab_id=tab)
