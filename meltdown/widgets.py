@@ -279,6 +279,7 @@ class Widgets:
         self.recent_prepends_menu = widgetutils.make_menu()
         self.recent_appends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
+        self.tab_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
@@ -343,8 +344,13 @@ class Widgets:
         self.input.bind("<Escape>", lambda e: self.esckey())
 
         self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.tab_changed(e))
-        self.notebook.bind("<Button-2>", lambda e: self.close_tab(e))
-        self.notebook.bind("<Double-Button-1>", lambda e: self.make_tab())
+        self.notebook.bind("<Button-1>", lambda e: self.notebook_click(e))
+        self.notebook.bind("<Button-2>", lambda e: self.notebook_middle_click(e))
+        self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
+        self.notebook.bind("<Double-Button-1>", lambda e: self.notebook_double_click(e))
+
+        self.tab_menu.add_command(label="Rename", command=lambda: app.resize())
+        self.tab_menu.add_command(label="Close", command=lambda: app.toggle_compact())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -609,9 +615,9 @@ class Widgets:
         if state.update_config("model"):
             model.load()
 
-    def show_intro(self) -> None:
+    def show_intro(self, output_id: str = "") -> None:
         for line in config.intro:
-            self.print(line)
+            self.print(line, output_id=output_id)
 
     def show_model(self) -> None:
         widgetutils.set_text(self.model, config.model)
@@ -836,16 +842,27 @@ class Widgets:
         self.outputs[tab_id] = output
         self.select_tab(tab_id)
         self.tab_number += 1
+        self.show_intro(tab_id)
+
+    def tab_on_coords(self, x: int, y: int) -> str:
+        index = self.notebook.tk.call(self.notebook._w, "identify", "tab", x, y)  # type: ignore
+
+        if type(index) == int:
+            return self.notebook.tabs()[index] or ""  # type: ignore
+        else:
+            return ""
 
     def close_tab(self, event: Optional[Any] = None) -> None:
         tab_id = ""
 
         if event:
-            tab_id = self.notebook.tk.call(self.notebook._w,  # type: ignore
-                                           "identify", "tab", event.x, event.y)
+            tab_id = self.tab_on_coords(event.x, event.y)
 
-        if tab_id == "":
+        if not tab_id:
             tab_id = self.notebook.select()
+
+        if tab_id is None:
+            return
 
         if len(self.notebook.tabs()) > 1:  # type: ignore
             self.notebook.forget(tab_id)
@@ -870,6 +887,27 @@ class Widgets:
     def select_all(self) -> None:
         output = self.get_current_output()
         widgetutils.select_all(output)
+
+    def notebook_click(self, event: Any) -> None:
+        self.hide_menu()
+
+    def notebook_right_click(self, event: Any) -> None:
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if tab_id:
+            self.show_menu(self.tab_menu, event)
+
+    def notebook_middle_click(self, event: Any) -> None:
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if tab_id:
+            self.close_tab(event)
+
+    def notebook_double_click(self, event: Any) -> None:
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if not tab_id:
+            self.make_tab()
 
 
 widgets: Widgets = Widgets()
