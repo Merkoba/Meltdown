@@ -298,5 +298,11 @@ class Model:
 
         self.lock.release()
 
+    def clear_context(self, output_id: str) -> None:
+        context_list = self.contexts.get(output_id)
+
+        if context_list:
+            context_list.reset()
+
 
 model = Model()

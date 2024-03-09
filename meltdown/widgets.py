@@ -577,11 +577,14 @@ class Widgets:
             model.stream(text, self.current_output)
 
     def clear_output(self) -> None:
+        from .model import model
+
         if not self.get_output():
             return
 
         output = self.get_current_output()
         widgetutils.clear_text(output, True)
+        model.clear_context(self.current_output)
         self.show_intro()
 
     def clear_input(self) -> None:
