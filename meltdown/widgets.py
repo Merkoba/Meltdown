@@ -349,6 +349,10 @@ class Widgets:
         self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
         self.notebook.bind("<Double-Button-1>", lambda e: self.notebook_double_click(e))
 
+        self.drag_start_index = 0
+        self.notebook.bind("<Button-1>", self.on_tab_start_drag)
+        self.notebook.bind("<B1-Motion>", self.on_tab_drag)
+
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
 
@@ -918,6 +922,41 @@ class Widgets:
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
+
+    def on_tab_start_drag(self, event: Any) -> None:
+        self.drag_start_index = self.notebook.index("@%d,%d" % (event.x, event.y))  # type: ignore
+
+    def on_tab_drag(self, event: Any) -> None:
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if not tab_id:
+            return
+
+        index = self.notebook.index(tab_id)  # type: ignore
+        width = self.get_tab_width(index)
+
+        if index < self.drag_start_index:
+            x = 0
+        else:
+            x = width - event.x
+
+        if abs(x) > width:
+            x = index if x < 0 else index + 1
+        elif abs(x) < width:
+            x = 0
+        else:
+            return
+
+        self.notebook.insert(x, self.drag_start_index)
+        self.drag_start_index = self.notebook.index(self.notebook.select())  # type: ignore
+
+    def get_tab_width(self, index: int) -> int:
+        tab_text = self.notebook.tab(index, "text")
+        label = tk.Label(self.notebook, text=tab_text)
+        label.pack()
+        width = label.winfo_reqwidth()
+        label.pack_forget()
+        return width
 
 
 widgets: Widgets = Widgets()
