@@ -66,6 +66,12 @@ class App:
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor="white")
 
+        style.configure("Input.TEntry", fieldbackground="white")
+        style.configure("Input.TEntry", foreground="black")
+        style.configure("Input.TEntry", borderwidth=1)
+        style.configure("Input.TEntry", padding=[4, 0, 0, 0])
+        style.configure("Input.TEntry", insertcolor="black")
+
         style.configure("Normal.TNotebook", borderwidth=0)
         style.configure("Normal.TNotebook", background=config.entry_background)
         style.configure("Normal.TNotebook.Tab", padding=[10, 4])

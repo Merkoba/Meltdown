@@ -189,13 +189,15 @@ def clear_text(widget: Union[tk.Text, ttk.Entry], disable: bool = False) -> None
     set_text(widget, "", disable)
 
 
-def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame]:
+def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
     dialog = tk.Toplevel(app.root)
     dialog.title(title)
     tk.Label(dialog, text=text, font=config.font, wraplength=500).pack(padx=6)
+    top_frame = tk.Frame(dialog)
+    top_frame.pack()
     button_frame = tk.Frame(dialog)
     button_frame.pack()
-    return dialog, button_frame
+    return dialog, top_frame, button_frame
 
 
 def show_dialog(dialog: tk.Toplevel) -> None:
@@ -214,7 +216,7 @@ def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any],
     button.pack(side=side, padx=6, pady=8)
 
 
-def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]]) -> None:
+def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
     def ok() -> None:
         dialog.destroy()
         cmd_ok()
@@ -225,7 +227,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
         if cmd_cancel:
             cmd_cancel()
 
-    dialog, button_frame = make_dialog("Confirm", text)
+    dialog, top_frame, button_frame = make_dialog("Confirm", text)
     make_dialog_button(button_frame, "Ok", ok, "left")
     make_dialog_button(button_frame, "Cancel", cancel, "right")
     show_dialog(dialog)
@@ -235,8 +237,30 @@ def show_message(text: str) -> None:
     def ok() -> None:
         dialog.destroy()
 
-    dialog, button_frame = make_dialog("Information", text)
+    dialog, top_frame, button_frame = make_dialog("Information", text)
     make_dialog_button(button_frame, "Ok", ok, "left")
+    show_dialog(dialog)
+
+
+def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+    def ok() -> None:
+        text = entry.get()
+        dialog.destroy()
+        cmd_ok(text)
+
+    def cancel() -> None:
+        dialog.destroy()
+
+        if cmd_cancel:
+            cmd_cancel()
+
+    dialog, top_frame, button_frame = make_dialog("Input", text)
+    entry = ttk.Entry(top_frame, font=config.font, width=18, style="Input.TEntry")
+    entry.bind("<Return>", lambda e: ok())
+    entry.pack(padx=6, pady=6)
+    make_dialog_button(button_frame, "Ok", ok, "left")
+    make_dialog_button(button_frame, "Cancel", cancel, "right")
+    entry.focus()
     show_dialog(dialog)
 
 

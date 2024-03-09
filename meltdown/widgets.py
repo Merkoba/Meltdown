@@ -349,8 +349,8 @@ class Widgets:
         self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
         self.notebook.bind("<Double-Button-1>", lambda e: self.notebook_double_click(e))
 
-        self.tab_menu.add_command(label="Rename", command=lambda: app.resize())
-        self.tab_menu.add_command(label="Close", command=lambda: app.toggle_compact())
+        self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
+        self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -852,16 +852,14 @@ class Widgets:
         else:
             return ""
 
-    def close_tab(self, event: Optional[Any] = None) -> None:
-        tab_id = ""
-
-        if event:
+    def close_tab(self, event: Optional[Any] = None, tab_id: str = "") -> None:
+        if (not tab_id) and event:
             tab_id = self.tab_on_coords(event.x, event.y)
 
         if not tab_id:
             tab_id = self.notebook.select()
 
-        if tab_id is None:
+        if not tab_id:
             return
 
         if len(self.notebook.tabs()) > 1:  # type: ignore
@@ -895,6 +893,7 @@ class Widgets:
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if tab_id:
+            self.tab_menu_id = tab_id
             self.show_menu(self.tab_menu, event)
 
     def notebook_middle_click(self, event: Any) -> None:
@@ -908,6 +907,17 @@ class Widgets:
 
         if not tab_id:
             self.make_tab()
+
+    def tab_menu_rename(self) -> None:
+        tab_id = self.tab_menu_id
+        widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
+
+    def rename_tab(self, tab_id: str, name: str) -> None:
+        if name:
+            self.notebook.tab(tab_id, text=name)
+
+    def tab_menu_close(self) -> None:
+        self.close_tab(tab_id=self.tab_menu_id)
 
 
 widgets: Widgets = Widgets()
