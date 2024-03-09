@@ -197,6 +197,11 @@ def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]
     top_frame.pack()
     button_frame = tk.Frame(dialog)
     button_frame.pack()
+
+    def hide_dialog(event: Any) -> None:
+        dialog.destroy()
+
+    dialog.bind("<Escape>", hide_dialog)
     return dialog, top_frame, button_frame
 
 
@@ -255,7 +260,7 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
             cmd_cancel()
 
     dialog, top_frame, button_frame = make_dialog("Input", text)
-    entry = ttk.Entry(top_frame, font=config.font, width=18, style="Input.TEntry")
+    entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
     make_dialog_button(button_frame, "Ok", ok, "left")
