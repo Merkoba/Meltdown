@@ -880,6 +880,9 @@ class Widgets:
         tab_id = self.notebook.select()
         self.current_output = tab_id
 
+    def update_tab_index(self) -> None:
+        self.drag_start_index = self.notebook.index(self.notebook.select())  # type: ignore
+
     def tab_changed(self, event: Any) -> None:
         self.update_output()
 
@@ -925,6 +928,7 @@ class Widgets:
 
     def on_tab_start_drag(self, event: Any) -> None:
         self.drag_start_index = self.notebook.index("@%d,%d" % (event.x, event.y))  # type: ignore
+        self.drag_start_x = event.x
 
     def on_tab_drag(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -932,23 +936,37 @@ class Widgets:
         if not tab_id:
             return
 
-        index = self.notebook.index(tab_id)  # type: ignore
-        width = self.get_tab_width(index)
-
-        if index < self.drag_start_index:
-            x = 0
-        else:
-            x = width - event.x
-
-        if abs(x) > width:
-            x = index if x < 0 else index + 1
-        elif abs(x) < width:
-            x = 0
+        if abs(self.drag_start_x - event.x) > 3:
+            if event.x > self.drag_start_x:
+                direction = "right"
+            elif event.x < self.drag_start_x:
+                direction = "left"
         else:
             return
 
+        if direction == "left":
+            if self.drag_start_index == 0:
+                return
+
+        index = self.notebook.index(tab_id)  # type: ignore
+        width = self.get_tab_width(index)
+
+        if direction == "left":
+            x = 0
+        elif direction == "right":
+            x = width - event.x
+
+        if direction == "left":
+            x = index
+        elif direction == "right":
+            if abs(x) > width:
+                x = index if x < 0 else index + 1
+            else:
+                x = index
+
         self.notebook.insert(x, self.drag_start_index)
-        self.drag_start_index = self.notebook.index(self.notebook.select())  # type: ignore
+        self.update_tab_index()
+        self.drag_start_x = event.x
 
     def get_tab_width(self, index: int) -> int:
         tab_text = self.notebook.tab(index, "text")
