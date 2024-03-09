@@ -2,6 +2,7 @@
 from .config import config
 from .widgets import widgets
 from . import timeutils
+from .app import app
 
 # Standard
 import json
@@ -234,12 +235,13 @@ def reset_config() -> None:
         for key in config.defaults():
             default = config.get_default(key)
 
-            if default:
+            if default is not None:
                 setattr(config, key, default)
 
         on_model_change(False)
         on_format_change(False)
         widgets.fill()
+        app.check_compact()
         save_config()
         model.load()
 

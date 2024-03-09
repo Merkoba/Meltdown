@@ -96,8 +96,7 @@ class App:
             })])
 
     def setup(self) -> None:
-        if config.compact:
-            self.enable_compact()
+        self.check_compact()
 
     def run(self) -> None:
         self.root.mainloop()
@@ -152,6 +151,12 @@ class App:
         widgets.system_frame.grid()
         widgets.tuning_frame.grid()
         widgets.addons_frame.grid()
+
+    def check_compact(self) -> None:
+        if config.compact:
+            self.enable_compact()
+        else:
+            self.disable_compact()
 
 
 app = App()
