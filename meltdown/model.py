@@ -56,7 +56,7 @@ class Model:
             self.loaded_format = ""
 
             if announce:
-                widgets.print("\n👻 Model unloaded")
+                widgets.display.print("\n👻 Model unloaded")
 
     def load(self, prompt: str = "", output_id: str = "") -> None:
         if not config.model:
@@ -69,10 +69,10 @@ class Model:
         model_path = Path(config.model)
 
         if not output_id:
-            output_id = widgets.current_output
+            output_id = widgets.display.current_output
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            widgets.print("Error: Model not found. Check the path.", output_id=output_id)
+            widgets.display.print("Error: Model not found. Check the path.", output_id=output_id)
             return
 
         def wrapper() -> None:
@@ -96,7 +96,7 @@ class Model:
         try:
             fmt = config.format if (cformat != "auto") else None
             name = Path(model).name
-            widgets.print(f"\n🫠 Loading {name}")
+            widgets.display.print(f"\n🫠 Loading {name}")
             widgets.update()
 
             self.model = Llama(
@@ -106,7 +106,7 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            widgets.print("Error: Model failed to load.")
+            widgets.display.print("Error: Model failed to load.")
             self.model_loading = False
             print(e)
             return
@@ -115,7 +115,7 @@ class Model:
         self.loaded_model = model
         self.loaded_format = cformat
         msg, now = timeutils.check_time("Model loaded", now)
-        widgets.print(msg)
+        widgets.display.print(msg)
         self.lock.release()
         return
 
@@ -127,7 +127,7 @@ class Model:
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
             self.stop_stream_thread.clear()
-            widgets.print("\n* Interrupted *")
+            widgets.display.print("\n* Interrupted *")
 
     def stream(self, prompt: str, output_id: str) -> None:
         if self.is_loading():
@@ -173,7 +173,7 @@ class Model:
             return content
 
         widgets.prompt("user", output_id=output_id)
-        widgets.insert(prompt, output_id=output_id)
+        widgets.display.insert(prompt, output_id=output_id)
         widgets.enable_stop_button()
 
         full_prompt = prompt
@@ -288,7 +288,7 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    widgets.insert(token, output_id=output_id)
+                    widgets.display.insert(token, output_id=output_id)
         except BaseException as e:
             print("Stream Read Error:", e)
 

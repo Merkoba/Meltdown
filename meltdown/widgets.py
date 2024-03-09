@@ -3,6 +3,7 @@ from .config import config
 from . import widgetutils
 from .framedata import FrameData
 from .app import app
+from .display import Display
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -12,18 +13,11 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple, Callable, Dict, List
+from typing import Optional, Any, Tuple, Callable
 from functools import partial
 
 
 rpadding = 11
-
-
-class Output:
-    def __init__(self, id: str, widget: tk.Text) -> None:
-        self.id = id
-        self.widget = widget
-        self.auto_scroll = True
 
 
 class ToolTip:
@@ -92,10 +86,6 @@ class Widgets:
 
         def setrow(d: FrameData) -> None:
             d.frame.grid_rowconfigure(d.col, weight=1)
-
-        self.outputs: Dict[str, Output] = {}
-        self.current_output = "none"
-        self.tab_number = 1
 
         # Model
         d = get_d()
@@ -221,23 +211,23 @@ class Widgets:
         ToolTip(self.stop_button, "Stop generating the current response")
 
         setcol(d)
-        self.new_button = widgetutils.make_button(d, "New", lambda: self.make_tab(), sticky="ew")
+        self.new_button = widgetutils.make_button(d, "New", lambda: self.display.make_tab(), sticky="ew")
         ToolTip(self.new_button, "Add a new tab")
 
         setcol(d)
-        self.close_button = widgetutils.make_button(d, "Close", lambda: self.close_tab(), sticky="ew")
+        self.close_button = widgetutils.make_button(d, "Close", lambda: self.display.close_tab(), sticky="ew")
         ToolTip(self.close_button, "Close the current tab")
 
-        self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
+        self.top_button = widgetutils.make_button(d, "Top", lambda: self.display.output_top(), sticky="ew")
         ToolTip(self.top_button, "Scroll to the top of the output")
 
         setcol(d)
-        self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.output_bottom(), sticky="ew")
+        self.bottom_button = widgetutils.make_button(d, "Bottom", lambda: self.display.output_bottom(), sticky="ew")
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         setcol(d)
         self.copy_button = widgetutils.make_button(d, "Copy",
-                                                   lambda: self.output_copy(), sticky="ew", right_padding=rpadding)
+                                                   lambda: self.display.output_copy(), sticky="ew", right_padding=rpadding)
         ToolTip(self.copy_button, "Copy all the text of the output")
 
         # Output
@@ -247,7 +237,8 @@ class Widgets:
 
         setcol(d)
         setrow(d)
-        self.notebook = widgetutils.make_notebook(d, sticky="nsew", right_padding=rpadding)
+        notebook = widgetutils.make_notebook(d, sticky="nsew", right_padding=rpadding)
+        self.display = Display(notebook)
 
         # Addons
         d = get_d()
@@ -277,13 +268,11 @@ class Widgets:
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.main_menu = widgetutils.make_menu()
-        self.output_menu = widgetutils.make_menu()
         self.recent_models_menu = widgetutils.make_menu()
         self.recent_systems_menu = widgetutils.make_menu()
         self.recent_prepends_menu = widgetutils.make_menu()
         self.recent_appends_menu = widgetutils.make_menu()
         self.recent_inputs_menu = widgetutils.make_menu()
-        self.tab_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
@@ -315,7 +304,7 @@ class Widgets:
     def setup(self) -> None:
         from . import state
 
-        self.make_tab()
+        self.display.make_tab()
         self.fill()
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
@@ -334,8 +323,6 @@ class Widgets:
         self.main_menu.add_command(label="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
 
-        self.output_menu.add_command(label="Select All", command=lambda: self.select_all())
-
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
@@ -346,21 +333,7 @@ class Widgets:
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
 
-        self.notebook.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
-        self.notebook.bind("<Button-1>", lambda e: self.notebook_click(e))
-        self.notebook.bind("<Button-2>", lambda e: self.notebook_middle_click(e))
-        self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
-        self.notebook.bind("<Double-Button-1>", lambda e: self.notebook_double_click(e))
-
-        self.close_button.bind("<ButtonRelease-2>", lambda e: self.close_all_tabs())
-
-        self.drag_start_index = 0
-        self.notebook.bind("<Button-1>", self.on_tab_start_drag)
-        self.notebook.bind("<B1-Motion>", self.on_tab_drag)
-
-        self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
-        self.tab_menu.add_command(label="Clear", command=lambda: self.tab_menu_clear())
-        self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
+        self.close_button.bind("<ButtonRelease-2>", lambda e: self.display.close_all_tabs())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
@@ -448,42 +421,6 @@ class Widgets:
                 self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
 
         self.apply_input_history()
-
-    def print(self, text: str, linebreak: bool = True, output_id: str = "") -> None:
-        if not app.exists():
-            return
-
-        left = ""
-        right = ""
-
-        if not output_id:
-            output_id = self.current_output
-
-        output = self.get_output(output_id)
-
-        if widgetutils.text_length(output) and \
-                (widgetutils.last_character(output) != "\n"):
-            left = "\n"
-
-        if linebreak:
-            right = "\n"
-
-        text = left + text + right
-        widgetutils.insert_text(output, text, True)
-        widgetutils.to_bottom(output)
-
-    def insert(self, text: str, output_id: str = "") -> None:
-        if not app.exists():
-            return
-
-        if not output_id:
-            output_id = self.current_output
-
-        output = self.get_output_by_id(output_id)
-        widgetutils.insert_text(output.widget, text, True)
-
-        if output.auto_scroll:
-            widgetutils.to_bottom(output.widget)
 
     def add_common_commands(self, menu: tk.Menu, key: str) -> None:
         from . import state
@@ -586,14 +523,14 @@ class Widgets:
             if model.model_loading:
                 return
 
-            model.stream(text, self.current_output)
+            model.stream(text, self.display.current_output)
 
     def check_command(self, text: str) -> bool:
         if not text.startswith("/"):
             return False
 
         if text == "/clear":
-            self.clear_output()
+            self.display.clear_output()
             return True
         elif text == "/config":
             config.show_config()
@@ -603,21 +540,6 @@ class Widgets:
             return True
 
         return False
-
-    def clear_output(self, output_id: str = "") -> None:
-        from .model import model
-
-        if not output_id:
-            output_id = self.current_output
-
-        output = self.get_output(output_id)
-
-        if not self.get_output_text(output_id):
-            return
-
-        widgetutils.clear_text(output, True)
-        model.clear_context(self.current_output)
-        self.show_intro(output_id)
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
@@ -635,12 +557,12 @@ class Widgets:
         else:
             prompt = f"\n{avatar} : "
 
-        self.print(prompt, False)
+        self.display.print(prompt, False)
 
         if not output_id:
-            output_id = self.current_output
+            output_id = self.display.current_output
 
-        output = self.get_output(output_id)
+        output = self.display.get_output(output_id)
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
         output.tag_add(f"name_{who}", start_index, end_index)
@@ -656,7 +578,7 @@ class Widgets:
 
     def show_intro(self, output_id: str = "") -> None:
         for line in config.intro:
-            self.print(line, output_id=output_id)
+            self.display.print(line, output_id=output_id)
 
     def show_model(self) -> None:
         widgetutils.set_text(self.model, config.model)
@@ -666,9 +588,6 @@ class Widgets:
 
     def show_main_menu(self, event: Any) -> None:
         self.show_menu(self.main_menu, event)
-
-    def show_output_menu(self, event: Any) -> None:
-        self.show_menu(self.output_menu, event)
 
     def add_generic_menus(self) -> None:
         from . import state
@@ -753,7 +672,7 @@ class Widgets:
             self.enable_load_button()
             self.enable_format_select()
 
-        if len(self.tabs()) == 1:
+        if len(self.display.tab_ids()) == 1:
             self.close_button.configure(text="Clear")
         else:
             self.close_button.configure(text="Close")
@@ -780,30 +699,9 @@ class Widgets:
         widgetutils.set_text(self.append, text)
         state.update_config("append")
 
-    def output_top(self) -> None:
-        output = self.get_current_output()
-        widgetutils.to_top(output)
-
-    def output_bottom(self) -> None:
-        output = self.get_current_output()
-        widgetutils.to_bottom(output)
-
-    def output_copy(self) -> None:
-        text = self.get_output_text()
-        widgetutils.copy(text)
-
     def stop(self) -> None:
         from .model import model
         model.stop_stream()
-
-    def get_output_text(self, output_id: str = "") -> str:
-        if not output_id:
-            output_id = self.current_output
-
-        output = self.get_output(output_id)
-        text = widgetutils.get_text(output)
-        text = "\n".join(text.split("\n")[len(config.intro):]).strip()
-        return text
 
     def load(self) -> None:
         from .model import model
@@ -831,18 +729,14 @@ class Widgets:
 
     def copy(self, key: str) -> None:
         from . import state
-        text = self.get_output_text()
-
-        if not text:
-            return
-
         widget = self.get_widget(key)
 
         if not widget:
             return
 
-        widgetutils.copy(text)
-        state.update_config(key)
+        if type(widget) == ttk.Entry:
+            widgetutils.copy(widget.get())
+            state.update_config(key)
 
     def paste(self, key: str) -> None:
         from . import state
@@ -873,190 +767,6 @@ class Widgets:
             self.clear_input()
         else:
             self.stop()
-
-    def make_tab(self) -> None:
-        d_tab = FrameData(widgetutils.make_frame(self.notebook), 0)
-        self.notebook.add(d_tab.frame, text=f"Output {self.tab_number}")
-        widget = widgetutils.make_text(d_tab, state="disabled", sticky="nsew")
-        tab_id = self.tabs()[-1]
-        widget.bind("<Button-3>", lambda e: self.show_output_menu(e))
-        widget.bind("<Button-1>", lambda e: self.hide_menu())
-        widget.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
-        widget.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
-        widget.tag_config("name_user", foreground="#87CEEB")
-        widget.tag_config("name_ai", foreground="#98FB98")
-        d_tab.frame.grid_rowconfigure(0, weight=1)
-        d_tab.frame.grid_columnconfigure(0, weight=1)
-        output = Output(tab_id, widget)
-        self.outputs[tab_id] = output
-        self.select_tab(tab_id)
-        self.tab_number += 1
-        self.show_intro(tab_id)
-
-    def tab_on_coords(self, x: int, y: int) -> str:
-        index = self.notebook.tk.call(self.notebook._w, "identify", "tab", x, y)  # type: ignore
-
-        if type(index) == int:
-            return self.tabs()[index] or ""
-        else:
-            return ""
-
-    def close_tab(self, event: Optional[Any] = None, tab_id: str = "") -> None:
-        if (not tab_id) and event:
-            tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            tab_id = self.notebook.select()
-
-        if not tab_id:
-            return
-
-        if len(self.tabs()) > 1:
-            self.notebook.forget(tab_id)
-            self.update_output()
-        else:
-            self.clear_output()
-
-    def select_tab(self, tab_id: str) -> None:
-        self.notebook.select(tab_id)
-        self.current_output = tab_id
-
-    def update_output(self) -> None:
-        tab_id = self.notebook.select()
-        self.current_output = tab_id
-
-    def update_tab_index(self) -> None:
-        self.drag_start_index = self.notebook.index(self.notebook.select())  # type: ignore
-
-    def on_tab_change(self, event: Any) -> None:
-        self.update_output()
-
-    def get_current_output(self) -> tk.Text:
-        return self.get_output(self.current_output)
-
-    def get_output_by_id(self, id: str) -> Output:
-        return self.outputs[id]
-
-    def get_output(self, id: str) -> tk.Text:
-        return self.outputs[id].widget
-
-    def select_all(self) -> None:
-        output = self.get_current_output()
-        widgetutils.select_all(output)
-
-    def notebook_click(self, event: Any) -> None:
-        self.hide_menu()
-
-    def notebook_right_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if tab_id:
-            self.tab_menu_id = tab_id
-            self.show_menu(self.tab_menu, event)
-
-    def notebook_middle_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if tab_id:
-            self.close_tab(event)
-
-    def notebook_double_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            self.make_tab()
-
-    def tab_menu_rename(self) -> None:
-        tab_id = self.tab_menu_id
-        widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
-
-    def tab_menu_clear(self) -> None:
-        tab_id = self.tab_menu_id
-        self.clear_output(tab_id)
-
-    def rename_tab(self, tab_id: str, name: str) -> None:
-        if name:
-            self.notebook.tab(tab_id, text=name)
-
-    def tab_menu_close(self) -> None:
-        self.close_tab(tab_id=self.tab_menu_id)
-
-    def on_tab_start_drag(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            return
-
-        self.drag_start_index = self.notebook.index(tab_id)  # type: ignore
-        self.drag_start_x = event.x
-
-    def on_tab_drag(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            return
-
-        if abs(self.drag_start_x - event.x) > 3:
-            if event.x > self.drag_start_x:
-                direction = "right"
-            elif event.x < self.drag_start_x:
-                direction = "left"
-        else:
-            return
-
-        if direction == "left":
-            if self.drag_start_index == 0:
-                return
-
-        index = self.notebook.index(tab_id)  # type: ignore
-        width = self.get_tab_width(index)
-
-        if direction == "left":
-            x = 0
-        elif direction == "right":
-            x = width - event.x
-
-        if direction == "left":
-            x = index
-        elif direction == "right":
-            if abs(x) > width:
-                x = index if x < 0 else index + 1
-            else:
-                x = index
-
-        self.notebook.insert(x, self.drag_start_index)
-        self.update_tab_index()
-        self.drag_start_x = event.x
-
-    def get_tab_width(self, index: int) -> int:
-        tab_text = self.notebook.tab(index, "text")
-        label = tk.Label(self.notebook, text=tab_text)
-        label.pack()
-        width = label.winfo_reqwidth()
-        label.pack_forget()
-        return width
-
-    def close_all_tabs(self) -> None:
-        if len(self.tabs()) == 1:
-            return
-
-        def action() -> None:
-            for tab in self.tabs():
-                self.close_tab(tab_id=tab)
-
-        widgetutils.show_confirm("Close all tabs?", lambda: action())
-
-    def tabs(self) -> List[str]:
-        return self.notebook.tabs()  # type: ignore
-
-    def on_output_scroll(self, tab_id: str, direction: str) -> None:
-        output = self.get_output_by_id(tab_id)
-
-        if direction == "up":
-            output.auto_scroll = False
-        elif direction == "down":
-            if output.widget.yview()[1] >= 1.0:
-                output.auto_scroll = True
 
 
 widgets: Widgets = Widgets()

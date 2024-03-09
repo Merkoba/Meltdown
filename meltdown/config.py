@@ -131,7 +131,7 @@ class Config:
 
     def show_config(self) -> None:
         from .widgets import widgets
-        widgets.print("")
+        widgets.display.print("")
 
         for key in self.defaults():
             value = getattr(self, key)
@@ -139,7 +139,7 @@ class Config:
             if value == "":
                 value = "[Empty]"
 
-            widgets.print(f"{key}: {value}")
+            widgets.display.print(f"{key}: {value}")
 
 
 config = Config()

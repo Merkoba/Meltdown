@@ -272,7 +272,7 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    log = widgets.get_output_text()
+    log = widgets.display.get_output_text()
 
     if log:
         log = timeutils.date() + "\n\n" + log
@@ -283,7 +283,7 @@ def save_log() -> None:
         with open(logpath, "w") as file:
             file.write(log)
 
-        widgets.print(f"\n>> Log saved as {file_name}")
+        widgets.display.print(f"\n>> Log saved as {file_name}")
         print(f"Log saved at {logpath}")
 
 

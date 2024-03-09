@@ -128,7 +128,7 @@ class App:
         from .widgets import widgets
         self.unmaximize()
         self.root.after(100, lambda: self.set_geometry())
-        self.root.after(200, lambda: widgets.output_bottom())
+        self.root.after(200, lambda: widgets.display.output_bottom())
 
     def toggle_compact(self) -> None:
         from . import state
