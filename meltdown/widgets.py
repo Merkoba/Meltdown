@@ -927,7 +927,12 @@ class Widgets:
         self.close_tab(tab_id=self.tab_menu_id)
 
     def on_tab_start_drag(self, event: Any) -> None:
-        self.drag_start_index = self.notebook.index("@%d,%d" % (event.x, event.y))  # type: ignore
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if not tab_id:
+            return
+
+        self.drag_start_index = self.notebook.index(tab_id)  # type: ignore
         self.drag_start_x = event.x
 
     def on_tab_drag(self, event: Any) -> None:
