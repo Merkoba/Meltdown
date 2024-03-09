@@ -16,7 +16,7 @@ from typing import Optional, Any, Tuple, Callable, Dict
 from functools import partial
 
 
-rpadding = 12
+rpadding = 11
 
 
 class ToolTip:

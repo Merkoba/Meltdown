@@ -8,14 +8,14 @@ class Config:
         self.title = "Meltdown"
         self.program = "meltdown"
         self.version = "1.4.0"
-        self.width = 840
+        self.width = 784
         self.height = 752
         self.padx = 10
         self.pady = 10
         self.frame_padx = 0
         self.frame_pady = 0
         self.entry_width = 10
-        self.entry_width_small = 7
+        self.entry_width_small = 6
         self.combobox_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
