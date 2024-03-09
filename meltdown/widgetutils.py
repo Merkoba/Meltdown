@@ -1,7 +1,6 @@
 # Modules
 from .config import config
 from .app import app
-from .framedata import FrameData
 
 # Libraries
 import pyperclip  # type: ignore
@@ -16,8 +15,8 @@ from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 frame_number = 0
 
 
-def do_grid(d: FrameData, widget: tk.Widget,
-            sticky: str, right_padding: Optional[int] = None,
+def do_pack(widget: tk.Widget,
+            fill: Optional[str] = None, right_padding: Optional[int] = None,
             bottom_padding: Optional[int] = None,
             padx: Optional[int] = None, pady: Optional[int] = None) -> None:
     if padx is not None:
@@ -32,8 +31,22 @@ def do_grid(d: FrameData, widget: tk.Widget,
         pady_bottom = bottom_padding if bottom_padding else 0
         py = (config.pady, pady_bottom)
 
-    widget.grid(row=0, column=d.col, padx=px, pady=py, sticky=sticky)
-    d.col += 1
+    expand = True if fill else False
+    fillmode: Literal["none", "x", "y", "both"]
+
+    if fill:
+        if fill == "both":
+            fillmode = tk.BOTH
+        elif fill == "x":
+            fillmode = tk.X
+        elif fill == "y":
+            fillmode = tk.Y
+        elif fill == "none":
+            fillmode = tk.NONE
+    else:
+        fillmode = tk.NONE
+
+    widget.pack(side="left", padx=px, pady=py, fill=fillmode, expand=expand)
 
 
 def make_frame(parent: Optional[ttk.Notebook] = None,
@@ -58,29 +71,29 @@ def make_frame(parent: Optional[ttk.Notebook] = None,
     return frame
 
 
-def make_text(d: FrameData, sticky: str = "w",
+def make_text(parent: tk.Frame, fill: Optional[str] = None,
               state: Literal["normal", "disabled"] = "normal",
               right_padding: Optional[int] = None) -> tk.Text:
-    widget = tk.Text(d.frame, font=config.font, wrap="word", state=state)
+    widget = tk.Text(parent, font=config.font, wrap="word", state=state)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
-    do_grid(d, widget, sticky, right_padding=right_padding, padx=0, pady=1)
+    do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
     return widget
 
 
-def make_notebook(d: FrameData, sticky: str = "w",
+def make_notebook(parent: tk.Frame, fill: Optional[str] = None,
                   right_padding: Optional[int] = None) -> ttk.Notebook:
-    widget = ttk.Notebook(d.frame, style="Normal.TNotebook", takefocus=False)
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    widget = ttk.Notebook(parent, style="Normal.TNotebook", takefocus=False)
+    do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
 
-def make_entry(d: FrameData, value: str = "",
-               width: Optional[int] = None, sticky: str = "w",
+def make_entry(parent: tk.Frame, value: str = "",
+               width: Optional[int] = None, fill: Optional[str] = None,
                right_padding: Optional[int] = None) -> ttk.Entry:
     w = width if width else config.entry_width
-    widget = ttk.Entry(d.frame, font=config.font, width=w, style="Normal.TEntry")
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    widget = ttk.Entry(parent, font=config.font, width=w, style="Normal.TEntry")
+    do_pack(widget, fill=fill, right_padding=right_padding)
 
     if value:
         widget.insert(0, value)
@@ -92,32 +105,32 @@ def get_button(parent: tk.Frame, text: str) -> ttk.Button:
     return ttk.Button(parent, text=text, style="Normal.TButton", takefocus=False)
 
 
-def make_button(d: FrameData, text: str,
+def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None,
-                sticky: str = "w", right_padding: Optional[int] = None) -> ttk.Button:
-    widget = get_button(d.frame, text)
+                fill: Optional[str] = None, right_padding: Optional[int] = None) -> ttk.Button:
+    widget = get_button(parent, text)
 
     if command:
         widget.configure(command=command)
 
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
 
-def make_label(d: FrameData, text: str, sticky: str = "w",
+def make_label(parent: tk.Frame, text: str, fill: Optional[str] = None,
                right_padding: Optional[int] = None) -> tk.Label:
-    widget = tk.Label(d.frame, text=f"{text}:", font=config.font)
+    widget = tk.Label(parent, text=f"{text}:", font=config.font)
     widget.configure(background=config.background_color, foreground=config.foreground_color)
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
 
-def make_combobox(d: FrameData, values: Optional[List[Any]] = None,
-                  sticky: str = "w", right_padding: Optional[int] = None) -> ttk.Combobox:
+def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
+                  fill: Optional[str] = None, right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
-    widget = ttk.Combobox(d.frame, values=v, state="readonly",
+    widget = ttk.Combobox(parent, values=v, state="readonly",
                           font=config.font_combobox, style="Normal.TCombobox", width=config.combobox_width)
-    do_grid(d, widget, sticky, right_padding=right_padding)
+    do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
 

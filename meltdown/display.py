@@ -1,5 +1,4 @@
 # Modules
-from .framedata import FrameData
 from .config import config
 from .app import app
 from . import widgetutils
@@ -41,9 +40,9 @@ class Display:
 
     def make_tab(self) -> None:
         from .widgets import widgets
-        d_tab = FrameData(widgetutils.make_frame(self.root), 0)
-        self.root.add(d_tab.frame, text=f"Output {self.tab_number}")
-        output = widgetutils.make_text(d_tab, state="disabled", sticky="nsew")
+        frame = widgetutils.make_frame(self.root)
+        self.root.add(frame, text=f"Output {self.tab_number}")
+        output = widgetutils.make_text(frame, state="disabled", fill="both")
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         output.bind("<Button-1>", lambda e: widgets.hide_menu())
@@ -51,8 +50,8 @@ class Display:
         output.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
         output.tag_config("name_user", foreground="#87CEEB")
         output.tag_config("name_ai", foreground="#98FB98")
-        d_tab.frame.grid_rowconfigure(0, weight=1)
-        d_tab.frame.grid_columnconfigure(0, weight=1)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
         tab = Tab(tab_id, output)
         self.tabs[tab_id] = tab
         self.select_tab(tab_id)
