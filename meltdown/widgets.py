@@ -12,7 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple, Callable, Dict
+from typing import Optional, Any, Tuple, Callable, Dict, List
 from functools import partial
 
 
@@ -739,9 +739,14 @@ class Widgets:
             self.enable_load_button()
             self.enable_format_select()
 
+        if len(self.tabs()) == 1:
+            self.close_button.configure(text="Clear")
+        else:
+            self.close_button.configure(text="Close")
+
     def start_checks(self) -> None:
         self.do_checks()
-        app.root.after(100, self.start_checks)
+        app.root.after(200, self.start_checks)
 
     def set_input(self, text: str) -> None:
         widgetutils.set_text(self.input, text, move=True)
@@ -862,7 +867,7 @@ class Widgets:
         output.tag_config("name_ai", foreground="#98FB98")
         d_tab.frame.grid_rowconfigure(0, weight=1)
         d_tab.frame.grid_columnconfigure(0, weight=1)
-        tab_id = self.notebook.tabs()[-1]  # type: ignore
+        tab_id = self.tabs()[-1]
         self.outputs[tab_id] = output
         self.select_tab(tab_id)
         self.tab_number += 1
@@ -872,7 +877,7 @@ class Widgets:
         index = self.notebook.tk.call(self.notebook._w, "identify", "tab", x, y)  # type: ignore
 
         if type(index) == int:
-            return self.notebook.tabs()[index] or ""  # type: ignore
+            return self.tabs()[index] or ""
         else:
             return ""
 
@@ -886,7 +891,7 @@ class Widgets:
         if not tab_id:
             return
 
-        if len(self.notebook.tabs()) > 1:  # type: ignore
+        if len(self.tabs()) > 1:
             self.notebook.forget(tab_id)
             self.update_output()
         else:
@@ -1003,12 +1008,13 @@ class Widgets:
 
     def close_all_tabs(self) -> None:
         def action() -> None:
-            tabs = self.notebook.tabs()  # type: ignore
-
-            for tab in tabs:
+            for tab in self.tabs():
                 self.close_tab(tab_id=tab)
 
         widgetutils.show_confirm("Close all tabs?", lambda: action())
+
+    def tabs(self) -> List[str]:
+        return self.notebook.tabs()  # type: ignore
 
 
 widgets: Widgets = Widgets()
