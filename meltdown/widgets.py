@@ -100,11 +100,8 @@ class Widgets:
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
-        self.load_button = widgetutils.make_button(d, "Load", lambda: self.load())
+        self.load_button = widgetutils.make_button(d, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load the model")
-
-        self.unload_button = widgetutils.make_button(d, "Unload", lambda: self.unload())
-        ToolTip(self.unload_button, "Unload the model")
 
         self.main_menu_button = widgetutils.make_button(d, "Menu", right_padding=rpadding)
         ToolTip(self.main_menu_button, "Open the main menu")
@@ -283,7 +280,6 @@ class Widgets:
         self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
-        self.unload_button_enabled = True
         self.format_select_enabled = True
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
@@ -683,18 +679,6 @@ class Widgets:
             self.disable_widget(self.load_button)
             self.load_button_enabled = False
 
-    def enable_unload_button(self) -> None:
-        if (not self.unload_button_enabled) and app.exists():
-            self.unload_button.configure(style="Normal.TButton")
-            self.enable_widget(self.unload_button)
-            self.unload_button_enabled = True
-
-    def disable_unload_button(self) -> None:
-        if self.unload_button_enabled and app.exists():
-            self.unload_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.unload_button)
-            self.unload_button_enabled = False
-
     def enable_format_select(self) -> None:
         if (not self.format_select_enabled) and app.exists():
             self.format.configure(style="Normal.TCombobox")
@@ -713,7 +697,7 @@ class Widgets:
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
 
-    def check_stop(self) -> None:
+    def do_checks(self) -> None:
         from .model import model
 
         if model.streaming:
@@ -721,17 +705,20 @@ class Widgets:
         else:
             self.disable_stop_button()
 
+        if model.loaded_model:
+            self.load_button.configure(text="Unload")
+        else:
+            self.load_button.configure(text="Load")
+
         if model.model_loading:
             self.disable_load_button()
-            self.disable_unload_button()
             self.disable_format_select()
         else:
             self.enable_load_button()
-            self.enable_unload_button()
             self.enable_format_select()
 
     def start_checks(self) -> None:
-        self.check_stop()
+        self.do_checks()
         app.root.after(100, self.start_checks)
 
     def set_input(self, text: str) -> None:
@@ -789,6 +776,14 @@ class Widgets:
             return
 
         model.unload(True)
+
+    def load_or_unload(self) -> None:
+        from .model import model
+
+        if model.loaded_format:
+            self.unload()
+        else:
+            self.load()
 
     def copy(self, key: str) -> None:
         from . import state
