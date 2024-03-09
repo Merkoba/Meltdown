@@ -352,7 +352,7 @@ class Widgets:
         self.notebook.bind("<B1-Motion>", self.on_tab_drag)
 
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
-        self.tab_menu.add_command(label="Clear", command=lambda: self.clear_output())
+        self.tab_menu.add_command(label="Clear", command=lambda: self.tab_menu_clear())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
 
         def bind(key: str) -> None:
@@ -595,16 +595,20 @@ class Widgets:
 
         return False
 
-    def clear_output(self) -> None:
+    def clear_output(self, output_id: str = "") -> None:
         from .model import model
 
-        if not self.get_output():
+        if not output_id:
+            output_id = self.current_output
+
+        output = self.outputs[output_id]
+
+        if not self.get_output(output_id):
             return
 
-        output = self.get_current_output()
         widgetutils.clear_text(output, True)
         model.clear_context(self.current_output)
-        self.show_intro()
+        self.show_intro(output_id)
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
@@ -783,8 +787,11 @@ class Widgets:
         from .model import model
         model.stop_stream()
 
-    def get_output(self) -> str:
-        output = self.get_current_output()
+    def get_output(self, output_id: str = "") -> str:
+        if not output_id:
+            output_id = self.current_output
+
+        output = self.outputs[output_id]
         text = widgetutils.get_text(output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
@@ -944,6 +951,10 @@ class Widgets:
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
         widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
+
+    def tab_menu_clear(self) -> None:
+        tab_id = self.tab_menu_id
+        self.clear_output(tab_id)
 
     def rename_tab(self, tab_id: str, name: str) -> None:
         if name:
