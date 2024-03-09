@@ -19,6 +19,13 @@ from functools import partial
 rpadding = 11
 
 
+class Output:
+    def __init__(self, id: str, widget: tk.Text) -> None:
+        self.id = id
+        self.widget = widget
+        self.auto_scroll = True
+
+
 class ToolTip:
     current_tooltip: Optional["ToolTip"] = None
 
@@ -86,7 +93,7 @@ class Widgets:
         def setrow(d: FrameData) -> None:
             d.frame.grid_rowconfigure(d.col, weight=1)
 
-        self.outputs: Dict[str, tk.Text] = {}
+        self.outputs: Dict[str, Output] = {}
         self.current_output = "none"
         self.tab_number = 1
 
@@ -452,7 +459,7 @@ class Widgets:
         if not output_id:
             output_id = self.current_output
 
-        output = self.outputs[output_id]
+        output = self.get_output(output_id)
 
         if widgetutils.text_length(output) and \
                 (widgetutils.last_character(output) != "\n"):
@@ -472,9 +479,11 @@ class Widgets:
         if not output_id:
             output_id = self.current_output
 
-        output = self.outputs[output_id]
-        widgetutils.insert_text(output, text, True)
-        widgetutils.to_bottom(output)
+        output = self.get_output_by_id(output_id)
+        widgetutils.insert_text(output.widget, text, True)
+
+        if output.auto_scroll:
+            widgetutils.to_bottom(output.widget)
 
     def add_common_commands(self, menu: tk.Menu, key: str) -> None:
         from . import state
@@ -601,9 +610,9 @@ class Widgets:
         if not output_id:
             output_id = self.current_output
 
-        output = self.outputs[output_id]
+        output = self.get_output(output_id)
 
-        if not self.get_output(output_id):
+        if not self.get_output_text(output_id):
             return
 
         widgetutils.clear_text(output, True)
@@ -631,7 +640,7 @@ class Widgets:
         if not output_id:
             output_id = self.current_output
 
-        output = self.outputs[output_id]
+        output = self.get_output(output_id)
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
         output.tag_add(f"name_{who}", start_index, end_index)
@@ -780,18 +789,18 @@ class Widgets:
         widgetutils.to_bottom(output)
 
     def output_copy(self) -> None:
-        text = self.get_output()
+        text = self.get_output_text()
         widgetutils.copy(text)
 
     def stop(self) -> None:
         from .model import model
         model.stop_stream()
 
-    def get_output(self, output_id: str = "") -> str:
+    def get_output_text(self, output_id: str = "") -> str:
         if not output_id:
             output_id = self.current_output
 
-        output = self.outputs[output_id]
+        output = self.get_output(output_id)
         text = widgetutils.get_text(output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
@@ -822,7 +831,7 @@ class Widgets:
 
     def copy(self, key: str) -> None:
         from . import state
-        text = self.get_output()
+        text = self.get_output_text()
 
         if not text:
             return
@@ -868,14 +877,17 @@ class Widgets:
     def make_tab(self) -> None:
         d_tab = FrameData(widgetutils.make_frame(self.notebook), 0)
         self.notebook.add(d_tab.frame, text=f"Output {self.tab_number}")
-        output = widgetutils.make_text(d_tab, state="disabled", sticky="nsew")
-        output.bind("<Button-3>", lambda e: self.show_output_menu(e))
-        output.bind("<Button-1>", lambda e: self.hide_menu())
-        output.tag_config("name_user", foreground="#87CEEB")
-        output.tag_config("name_ai", foreground="#98FB98")
+        widget = widgetutils.make_text(d_tab, state="disabled", sticky="nsew")
+        tab_id = self.tabs()[-1]
+        widget.bind("<Button-3>", lambda e: self.show_output_menu(e))
+        widget.bind("<Button-1>", lambda e: self.hide_menu())
+        widget.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
+        widget.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
+        widget.tag_config("name_user", foreground="#87CEEB")
+        widget.tag_config("name_ai", foreground="#98FB98")
         d_tab.frame.grid_rowconfigure(0, weight=1)
         d_tab.frame.grid_columnconfigure(0, weight=1)
-        tab_id = self.tabs()[-1]
+        output = Output(tab_id, widget)
         self.outputs[tab_id] = output
         self.select_tab(tab_id)
         self.tab_number += 1
@@ -920,7 +932,13 @@ class Widgets:
         self.update_output()
 
     def get_current_output(self) -> tk.Text:
-        return self.outputs[self.current_output]
+        return self.get_output(self.current_output)
+
+    def get_output_by_id(self, id: str) -> Output:
+        return self.outputs[id]
+
+    def get_output(self, id: str) -> tk.Text:
+        return self.outputs[id].widget
 
     def select_all(self) -> None:
         output = self.get_current_output()
@@ -1030,6 +1048,15 @@ class Widgets:
 
     def tabs(self) -> List[str]:
         return self.notebook.tabs()  # type: ignore
+
+    def on_output_scroll(self, tab_id: str, direction: str) -> None:
+        output = self.get_output_by_id(tab_id)
+
+        if direction == "up":
+            output.auto_scroll = False
+        elif direction == "down":
+            if output.widget.yview()[1] >= 1.0:
+                output.auto_scroll = True
 
 
 widgets: Widgets = Widgets()

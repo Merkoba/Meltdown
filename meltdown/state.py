@@ -272,7 +272,7 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    log = widgets.get_output()
+    log = widgets.get_output_text()
 
     if log:
         log = timeutils.date() + "\n\n" + log
