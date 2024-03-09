@@ -9,7 +9,7 @@ from pathlib import Path
 
 class App:
     def __init__(self) -> None:
-        self.root = tk.Tk()
+        self.root = tk.Tk(className=config.program)
         self.here = Path(__file__).parent.expanduser().resolve()
         self.root.title(config.title)
         self.set_geometry()
