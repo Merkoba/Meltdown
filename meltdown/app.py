@@ -19,6 +19,8 @@ class App:
 
         style = ttk.Style()
 
+        self.root.configure(background=config.background_color)
+
         # padding=[left, top, right, bottom])
         style.configure("Normal.TCombobox", foreground="white")
         style.map("Normal.TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])

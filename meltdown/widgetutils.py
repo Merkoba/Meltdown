@@ -18,25 +18,40 @@ frame_number = 0
 
 def do_grid(d: FrameData, widget: tk.Widget,
             sticky: str, right_padding: Optional[int] = None,
+            bottom_padding: Optional[int] = None,
             padx: Optional[int] = None, pady: Optional[int] = None) -> None:
     if padx is not None:
         px = (padx, padx)
     else:
-        px = (config.padx, right_padding if right_padding else config.padx)
+        padx_right = right_padding if right_padding else 0
+        px = (config.padx, padx_right)
 
-    py = pady if pady else config.pady
+    if pady is not None:
+        py = (pady, pady)
+    else:
+        pady_bottom = bottom_padding if bottom_padding else 0
+        py = (config.pady, pady_bottom)
+
     widget.grid(row=0, column=d.col, padx=px, pady=py, sticky=sticky)
     d.col += 1
 
 
-def make_frame(parent: Optional[ttk.Notebook] = None) -> tk.Frame:
+def make_frame(parent: Optional[ttk.Notebook] = None,
+               bottom_padding: Optional[int] = None) -> tk.Frame:
     global frame_number
 
     p = app.root if not parent else parent
     frame = tk.Frame(p)
 
-    frame.grid(row=frame_number, column=0, padx=config.frame_padx,
-               pady=config.frame_pady, sticky="nsew")
+    padx = (config.frame_padx, config.frame_padx)
+
+    if bottom_padding is not None:
+        pady = (config.frame_pady, bottom_padding)
+    else:
+        pady = (config.frame_pady, 0)
+
+    frame.grid(row=frame_number, column=0, padx=padx,
+               pady=pady, sticky="nsew")
 
     frame.configure(background=config.background_color)
     frame_number += 1

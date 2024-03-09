@@ -77,8 +77,8 @@ class ToolTip:
 
 class Widgets:
     def __init__(self) -> None:
-        def get_d() -> FrameData:
-            return FrameData(widgetutils.make_frame(), 0)
+        def get_d(bottom_padding: Optional[int] = None) -> FrameData:
+            return FrameData(widgetutils.make_frame(bottom_padding=bottom_padding), 0)
 
         def setcol(d: FrameData) -> None:
             d.frame.grid_columnconfigure(d.col, weight=1)
@@ -214,12 +214,12 @@ class Widgets:
         ToolTip(self.stop_button, "Stop generating the current response")
 
         setcol(d)
-        self.clear_button = widgetutils.make_button(d, "New", lambda: self.make_tab(), sticky="ew")
-        ToolTip(self.clear_button, "Add a new tab")
+        self.new_button = widgetutils.make_button(d, "New", lambda: self.make_tab(), sticky="ew")
+        ToolTip(self.new_button, "Add a new tab")
 
         setcol(d)
-        self.clear_button = widgetutils.make_button(d, "Close", lambda: self.close_tab(), sticky="ew")
-        ToolTip(self.clear_button, "Close the current tab")
+        self.close_button = widgetutils.make_button(d, "Close", lambda: self.close_tab(), sticky="ew")
+        ToolTip(self.close_button, "Close the current tab")
 
         self.top_button = widgetutils.make_button(d, "Top", lambda: self.output_top(), sticky="ew")
         ToolTip(self.top_button, "Scroll to the top of the output")
@@ -240,7 +240,7 @@ class Widgets:
 
         setcol(d)
         setrow(d)
-        self.notebook = widgetutils.make_notebook(d, sticky="nsew")
+        self.notebook = widgetutils.make_notebook(d, sticky="nsew", right_padding=rpadding)
 
         # Addons
         d = get_d()
@@ -255,7 +255,7 @@ class Widgets:
         self.append = widgetutils.make_entry(d, sticky="ew", right_padding=rpadding)
 
         # Input
-        d = get_d()
+        d = get_d(bottom_padding=10)
         widgetutils.make_label(d, "Input")
         setcol(d)
         self.input = widgetutils.make_entry(d, sticky="ew")
@@ -344,6 +344,8 @@ class Widgets:
         self.notebook.bind("<Button-2>", lambda e: self.notebook_middle_click(e))
         self.notebook.bind("<Button-3>", lambda e: self.notebook_right_click(e))
         self.notebook.bind("<Double-Button-1>", lambda e: self.notebook_double_click(e))
+
+        self.close_button.bind("<ButtonRelease-2>", lambda e: self.close_all_tabs())
 
         self.drag_start_index = 0
         self.notebook.bind("<Button-1>", self.on_tab_start_drag)
@@ -978,6 +980,15 @@ class Widgets:
         width = label.winfo_reqwidth()
         label.pack_forget()
         return width
+
+    def close_all_tabs(self) -> None:
+        def action() -> None:
+            tabs = self.notebook.tabs()  # type: ignore
+
+            for tab in tabs:
+                self.close_tab(tab_id=tab)
+
+        widgetutils.show_confirm("Close all tabs?", lambda: action())
 
 
 widgets: Widgets = Widgets()
