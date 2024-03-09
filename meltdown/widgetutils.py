@@ -262,8 +262,8 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
 
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
     dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Ok", ok, "left")
-    make_dialog_button(button_frame, "Cancel", cancel, "right")
+    make_dialog_button(button_frame, "Ok", ok, "right")
+    make_dialog_button(button_frame, "Cancel", cancel, "left")
     show_dialog(dialog)
 
 

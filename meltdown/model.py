@@ -248,7 +248,6 @@ class Model:
                 seed=config.seed,
             )
         except BaseException as e:
-            print("Stream Error:", e)
             self.stream_loading = False
             return
 
@@ -289,8 +288,8 @@ class Model:
 
                     tokens.append(token)
                     widgets.display.insert(token, output_id=output_id)
-        except BaseException as e:
-            print("Stream Read Error:", e)
+        except BaseException:
+            pass
 
         if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()

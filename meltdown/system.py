@@ -58,7 +58,10 @@ def get_info() -> None:
 def check() -> None:
     while True:
         if not config.compact:
-            get_info()
+            try:
+                get_info()
+            except BaseException:
+                pass
 
         timeutils.sleep(config.system_delay)
 

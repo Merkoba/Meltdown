@@ -205,10 +205,10 @@ class Widgets:
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill="x")
         ToolTip(self.close_button, "Close the current tab")
 
-        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill="x")
+        self.top_button = widgetutils.make_button(frame, "↑ Top", lambda: self.display.output_top(), fill="x")
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill="x")
+        self.bottom_button = widgetutils.make_button(frame, "↓ Bottom", lambda: self.display.output_bottom(), fill="x")
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         self.copy_button = widgetutils.make_button(frame, "Copy",
