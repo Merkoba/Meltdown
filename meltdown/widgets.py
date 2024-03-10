@@ -14,7 +14,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
-from typing import Optional, Any, Tuple, Callable
+from typing import Optional, Any, Callable
 from functools import partial
 
 
