@@ -40,6 +40,32 @@ class Widgets:
         self.main_menu_button = widgetutils.make_button(frame, "Menu", right_padding=rpadding)
         ToolTip(self.main_menu_button, "Open the main menu")
 
+        # System
+        frame = get_frame()
+        self.system_frame = frame
+
+        widgetutils.make_label(frame, "System")
+        self.system = widgetutils.make_entry(frame, fill="x")
+        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
+
+        widgetutils.make_label(frame, "CPU")
+        self.cpu = tk.StringVar()
+        self.cpu_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.cpu_label.configure(textvariable=self.cpu)
+        self.cpu.set("000%")
+
+        widgetutils.make_label(frame, "RAM")
+        self.ram = tk.StringVar()
+        self.ram_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.ram_label.configure(textvariable=self.ram)
+        self.ram.set("000%")
+
+        widgetutils.make_label(frame, "TMP")
+        self.temp = tk.StringVar()
+        self.temp_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.temp_label.configure(textvariable=self.temp)
+        self.temp.set("000°C")
+
         # Details
         frame = get_frame()
         self.details_frame = frame
@@ -66,36 +92,10 @@ class Widgets:
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
         values.extend(fmts)
-        self.format = widgetutils.make_combobox(frame, values=values, fill="x", right_padding=rpadding)
+        self.format = widgetutils.make_combobox(frame, values=values, width=17, right_padding=rpadding)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
-
-        # System
-        frame = get_frame()
-        self.system_frame = frame
-
-        widgetutils.make_label(frame, "System")
-        self.system = widgetutils.make_entry(frame, fill="x")
-        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
-
-        widgetutils.make_label(frame, "CPU")
-        self.cpu = tk.StringVar()
-        self.cpu_label = widgetutils.make_label(frame, "", right_padding=rpadding)
-        self.cpu_label.configure(textvariable=self.cpu)
-        self.cpu.set("000%")
-
-        widgetutils.make_label(frame, "RAM")
-        self.ram = tk.StringVar()
-        self.ram_label = widgetutils.make_label(frame, "", right_padding=rpadding)
-        self.ram_label.configure(textvariable=self.ram)
-        self.ram.set("000%")
-
-        widgetutils.make_label(frame, "TMP")
-        self.temp = tk.StringVar()
-        self.temp_label = widgetutils.make_label(frame, "", right_padding=rpadding)
-        self.temp_label.configure(textvariable=self.temp)
-        self.temp.set("000°C")
 
         # Tuning
         frame = get_frame()

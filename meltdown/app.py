@@ -23,7 +23,7 @@ class App:
 
         # padding=[left, top, right, bottom])
         style.configure("Normal.TCombobox", foreground="white")
-        style.map("Normal.TCombobox", fieldbackground=[("readonly", config.button_background)], fieldforeground=[("readonly", "white")])
+        style.map("Normal.TCombobox", fieldbackground=[("readonly", config.combobox_background)], fieldforeground=[("readonly", "white")])
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)

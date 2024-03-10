@@ -125,10 +125,12 @@ def make_label(parent: tk.Frame, text: str, fill: Optional[str] = None,
 
 
 def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
-                  fill: Optional[str] = None, right_padding: Optional[int] = None) -> ttk.Combobox:
+                  fill: Optional[str] = None, width: Optional[int] = None,
+                  right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
+    w = width if width else config.combobox_width
     widget = ttk.Combobox(parent, values=v, state="readonly",
-                          font=config.font_combobox, style="Normal.TCombobox", width=config.combobox_width)
+                          font=config.font_combobox, style="Normal.TCombobox", width=w)
     do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
