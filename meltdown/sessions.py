@@ -95,13 +95,16 @@ class Sessions:
             except BaseException:
                 items = []
 
-        if items:
-            for item in items:
-                session = Session(item["id"], item["name"])
-                session.items = item["items"]
-                self.items[session.id] = session
-                widgets.display.make_tab(session.name, session.id)
-                session.print()
+        try:
+            if items:
+                for item in items:
+                    session = Session(item["id"], item["name"])
+                    session.items = item["items"]
+                    self.items[session.id] = session
+                    widgets.display.make_tab(session.name, session.id)
+                    session.print()
+        except BaseException:
+            pass
 
     def to_json(self) -> str:
         sessions_list = [session.to_dict() for session in sessions.items.values()]
