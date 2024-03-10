@@ -148,8 +148,12 @@ class Widgets:
         self.new_button = widgetutils.make_button(frame, "New", lambda: self.display.make_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.new_button, "Add a new tab")
 
+        self.clear_button = widgetutils.make_button(frame, "Clear",
+                                                    lambda: self.display.clear_output(), fill=Fill.HORIZONTAL)
+        ToolTip(self.clear_button, "Clear the output of the current tab")
+
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
-        ToolTip(self.close_button, "Close or clear the current tab. Middle click to close all tabs")
+        ToolTip(self.close_button, "Close the current tab. Middle click to close all tabs.")
 
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
@@ -157,13 +161,9 @@ class Widgets:
         self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL)
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
-        self.copy_button = widgetutils.make_button(frame, "Copy",
-                                                   lambda: self.display.output_copy(), fill=Fill.HORIZONTAL)
-        ToolTip(self.copy_button, "Copy all the text of the output")
-
-        self.copy_button = widgetutils.make_button(frame, "Log",
-                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=right_padding)
-        ToolTip(self.copy_button, "Save the output to a log file")
+        self.log_button = widgetutils.make_button(frame, "Log",
+                                                  lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=right_padding)
+        ToolTip(self.log_button, "Save the output to a log file")
 
         # Output
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
@@ -297,7 +297,7 @@ class Widgets:
             # Focus the input and insert char
             if (type(event.widget) == tk.Text) or \
                     (type(event.widget) == ttk.Combobox) or (type(event.widget) == ttk.Notebook):
-                if len(event.keysym.strip()) == 1:
+                if (len(event.keysym.strip()) == 1) or (event.keysym == "slash"):
                     self.input.focus_set()
                     self.input.insert(tk.END, event.char)
             # Input history Up or Down
@@ -599,11 +599,6 @@ class Widgets:
             self.load_button.configure(text="Unload")
         else:
             self.load_button.configure(text="Load")
-
-        if len(self.display.tab_ids()) == 1:
-            self.close_button.configure(text="Clear")
-        else:
-            self.close_button.configure(text="Close")
 
     def start_checks(self) -> None:
         self.do_checks()

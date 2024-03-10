@@ -34,8 +34,8 @@ class Display:
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add_command(label="Clear", command=lambda: self.tab_menu_clear())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
-        self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
-        self.output_menu.add_command(label="Select All", command=lambda: self.select_all())
+        self.output_menu.add_command(label="Copy All", command=lambda: self.copy_output())
+        self.output_menu.add_command(label="Select All", command=lambda: self.select_output())
         self.current_tab = "none"
         self.drag_start_index = 0
         self.tab_number = 1
@@ -79,7 +79,6 @@ class Display:
             return
 
         if len(self.tab_ids()) <= 1:
-            self.clear_output()
             return
 
         def action() -> None:
@@ -250,7 +249,7 @@ class Display:
         tab.auto_scroll = True
         widgetutils.to_bottom(tab.output)
 
-    def output_copy(self) -> None:
+    def copy_output(self) -> None:
         text = self.get_output_text()
         widgetutils.copy(text)
 
@@ -282,7 +281,7 @@ class Display:
 
         widgetutils.show_confirm("Clear output?", lambda: action())
 
-    def select_all(self) -> None:
+    def select_output(self) -> None:
         output = self.get_current_output()
         widgetutils.select_all(output)
 
