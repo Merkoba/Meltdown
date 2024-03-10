@@ -6,7 +6,6 @@ from .app import app
 import pyperclip  # type: ignore
 
 # Standard
-import re
 import tkinter as tk
 from tkinter import ttk
 from typing import Any, Union, Callable, Literal, Optional, List, Tuple
@@ -298,10 +297,6 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     make_dialog_button(button_frame, "Cancel", cancel, "right")
     entry.focus()
     show_dialog(dialog)
-
-
-def clean_string(text: str) -> str:
-    return re.sub(r"\s+", " ", text).strip()
 
 
 def to_top(widget: tk.Text) -> None:
