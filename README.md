@@ -32,6 +32,10 @@ Show system CPU and RAM usage.
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 
+Multiple tabs, each with their own context.
+
+Sessions are remembered, can also be saved and lodaded from files.
+
 ---
 
 ## Installation
