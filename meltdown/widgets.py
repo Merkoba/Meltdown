@@ -90,7 +90,7 @@ class Widgets:
                 " llama.cpp, like gguf files for instance.")
 
         self.load_button = widgetutils.make_button(frame, "Load", lambda: self.load_or_unload())
-        ToolTip(self.load_button, "Load the model")
+        ToolTip(self.load_button, "Load or unload the model")
 
         self.main_menu_button = widgetutils.make_button(frame, "Menu", right_padding=rpadding)
         ToolTip(self.main_menu_button, "Open the main menu")
@@ -203,7 +203,7 @@ class Widgets:
         ToolTip(self.new_button, "Add a new tab")
 
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill="x")
-        ToolTip(self.close_button, "Close the current tab")
+        ToolTip(self.close_button, "Close or clear the current tab")
 
         self.top_button = widgetutils.make_button(frame, "↑ Top", lambda: self.display.output_top(), fill="x")
         ToolTip(self.top_button, "Scroll to the top of the output")
