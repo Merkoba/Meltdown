@@ -259,7 +259,9 @@ class Widgets:
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
+        self.prepend.bind("<Return>", lambda e: self.submit())
         self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
+        self.append.bind("<Return>", lambda e: self.submit())
         self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
