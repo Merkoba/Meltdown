@@ -144,6 +144,7 @@ class Session:
 
         widgets.display.close_all_tabs(True)
         self.load_items(path)
+        self.save()
 
     def to_json(self) -> str:
         sessions_list = [document.to_dict() for document in session.items.values()]
