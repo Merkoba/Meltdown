@@ -116,7 +116,13 @@ class App:
 
     def show_about(self) -> None:
         from . import widgetutils
-        widgetutils.show_message(f"{config.title} v{config.version}")
+        lines = [
+            f"{config.title} v{config.version}",
+            "Interface for llama.cpp",
+            f"Developer: {config.author}",
+            f"License: {config.license}",
+        ]
+        widgetutils.show_message("\n".join(lines))
 
     def unmaximize(self) -> None:
         self.root.attributes("-zoomed", False)
