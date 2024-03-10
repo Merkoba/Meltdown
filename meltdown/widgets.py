@@ -640,17 +640,17 @@ class Widgets:
         else:
             self.disable_stop_button()
 
-        if model.loaded_model:
-            self.load_button.configure(text="Unload")
-        else:
-            self.load_button.configure(text="Load")
-
         if model.model_loading:
             self.disable_load_button()
             self.disable_format_select()
         else:
             self.enable_load_button()
             self.enable_format_select()
+
+        if model.loaded_model:
+            self.load_button.configure(text="Unload")
+        else:
+            self.load_button.configure(text="Load")
 
         if len(self.display.tab_ids()) == 1:
             self.close_button.configure(text="Clear")

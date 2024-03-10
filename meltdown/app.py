@@ -146,6 +146,7 @@ class App:
         widgets.system_frame.grid_remove()
         widgets.tuning_frame.grid_remove()
         widgets.addons_frame.grid_remove()
+        self.after_compact()
 
     def disable_compact(self) -> None:
         from .widgets import widgets
@@ -153,6 +154,11 @@ class App:
         widgets.system_frame.grid()
         widgets.tuning_frame.grid()
         widgets.addons_frame.grid()
+        self.after_compact()
+
+    def after_compact(self) -> None:
+        from .widgets import widgets
+        self.root.after(100, lambda: widgets.display.output_bottom())
 
     def check_compact(self) -> None:
         if config.compact:
