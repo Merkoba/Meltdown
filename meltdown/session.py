@@ -142,7 +142,7 @@ class Session:
         if (not path.exists()) or (not path.is_file()):
             return
 
-        widgets.display.close_all_tabs(True)
+        widgets.display.close_all_tabs(force=True, create_empty=False)
         self.load_items(path)
         self.save()
 

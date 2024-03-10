@@ -226,10 +226,13 @@ class Display:
         label.pack_forget()
         return width
 
-    def close_all_tabs(self, force: bool = False) -> None:
+    def close_all_tabs(self, force: bool = False, create_empty: bool = True) -> None:
         def action() -> None:
             for tab_id in self.tab_ids():
                 self.close_tab(tab_id=tab_id, force=True)
+
+            if create_empty:
+                self.make_tab()
 
         if force:
             action()
