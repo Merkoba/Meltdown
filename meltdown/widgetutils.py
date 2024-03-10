@@ -230,6 +230,7 @@ def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]
         dialog.destroy()
 
     dialog.bind("<Escape>", lambda e: hide_dialog())
+    dialog.overrideredirect(True)
     return dialog, top_frame, button_frame
 
 
