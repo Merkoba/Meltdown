@@ -234,7 +234,9 @@ class Widgets:
     def setup(self) -> None:
         from . import state
 
-        self.display.make_tab()
+        if self.display.num_tabs() == 0:
+            self.display.make_tab()
+
         self.fill()
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
@@ -440,10 +442,12 @@ class Widgets:
 
     def submit(self) -> None:
         from .model import model
+        from . import state
         text = self.input.get()
 
         if text:
             self.clear_input()
+            state.add_input(text)
 
             if self.check_command(text):
                 return
@@ -466,6 +470,10 @@ class Widgets:
         elif text == "/exit" or text == "/quit":
             app.exit()
             return True
+        elif text == "/sessions":
+            from .sessions import sessions
+            self.display.print(sessions.to_json())
+            return True
 
         return False
 
@@ -476,7 +484,7 @@ class Widgets:
     def reset_history_index(self) -> None:
         self.input_history_index = -1
 
-    def prompt(self, who: str, output_id: str = "") -> None:
+    def prompt(self, who: str, tab_id: str = "") -> None:
         avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
 
@@ -487,10 +495,10 @@ class Widgets:
 
         self.display.print(prompt, False)
 
-        if not output_id:
-            output_id = self.display.current_tab
+        if not tab_id:
+            tab_id = self.display.current_tab
 
-        output = self.display.get_output(output_id)
+        output = self.display.get_output(tab_id)
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
         output.tag_add(f"name_{who}", start_index, end_index)
@@ -504,9 +512,9 @@ class Widgets:
         if state.update_config("model"):
             model.load()
 
-    def show_intro(self, output_id: str = "") -> None:
+    def show_intro(self, tab_id: str = "") -> None:
         for line in config.intro:
-            self.display.print(line, output_id=output_id)
+            self.display.print(line, tab_id=tab_id)
 
     def show_model(self) -> None:
         widgetutils.set_text(self.model, config.model)

@@ -12,8 +12,9 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, id: str, output: tk.Text) -> None:
-        self.id = id
+    def __init__(self, session_id: str, tab_id: str, output: tk.Text) -> None:
+        self.session_id = session_id
+        self.tab_id = tab_id
         self.output = output
         self.auto_scroll = True
 
@@ -39,11 +40,16 @@ class Display:
         self.drag_start_index = 0
         self.tab_number = 1
 
-    def make_tab(self) -> None:
+    def make_tab(self, name: Optional[str] = None, session_id: Optional[str] = None) -> None:
         from .widgets import widgets
+        from . import timeutils
         frame = widgetutils.make_frame(self.root)
         self.root.add(frame, text=f"Output {self.tab_number}")
         output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
+
+        if not session_id:
+            session_id = str(timeutils.now())
+
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         output.bind("<Button-1>", lambda e: widgets.hide_menu())
@@ -53,11 +59,14 @@ class Display:
         output.tag_config("name_ai", foreground="#98FB98")
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
-        tab = Tab(tab_id, output)
+        tab = Tab(session_id, tab_id, output)
         self.tabs[tab_id] = tab
         self.select_tab(tab_id)
         self.tab_number += 1
         widgets.show_intro(tab_id)
+
+        if name:
+            self.rename_tab(tab_id, name)
 
     def tab_on_coords(self, x: int, y: int) -> str:
         index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
@@ -77,13 +86,13 @@ class Display:
         if not tab_id:
             return
 
-        if len(self.tab_ids()) <= 1:
+        if self.num_tabs() <= 1:
             return
 
         def action() -> None:
-            if len(self.tab_ids()) > 1:
-                self.root.forget(tab_id)
-                self.update_output()
+            self.root.forget(tab_id)
+            self.update_output()
+            self.remove_tab(tab_id)
 
         if force:
             action()
@@ -112,6 +121,13 @@ class Display:
 
     def get_tab(self, id: str) -> Tab:
         return self.tabs[id]
+
+    def get_tab_by_session_id(self, session_id: str) -> Optional[Tab]:
+        for tab in self.tabs.values():
+            if tab.session_id == session_id:
+                return tab
+
+        return None
 
     def get_output(self, id: str) -> tk.Text:
         return self.tabs[id].output
@@ -145,8 +161,12 @@ class Display:
         widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
 
     def rename_tab(self, tab_id: str, name: str) -> None:
+        from .sessions import sessions
+
         if name:
+            tab = self.get_tab(tab_id)
             self.root.tab(tab_id, text=name)
+            sessions.change_name(tab.session_id, name)
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
@@ -207,7 +227,7 @@ class Display:
         return width
 
     def close_all_tabs(self) -> None:
-        if len(self.tab_ids()) == 1:
+        if self.num_tabs() == 1:
             return
 
         def action() -> None:
@@ -248,31 +268,33 @@ class Display:
         text = self.get_output_text()
         widgetutils.copy(text)
 
-    def get_output_text(self, output_id: str = "") -> str:
-        if not output_id:
-            output_id = self.current_tab
+    def get_output_text(self, tab_id: str = "") -> str:
+        if not tab_id:
+            tab_id = self.current_tab
 
-        output = self.get_output(output_id)
+        output = self.get_output(tab_id)
         text = widgetutils.get_text(output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
 
-    def clear_output(self, output_id: str = "") -> None:
+    def clear_output(self, tab_id: str = "") -> None:
         from .widgets import widgets
         from .model import model
 
-        if not output_id:
-            output_id = self.current_tab
+        if not tab_id:
+            tab_id = self.current_tab
 
-        output = self.get_output(output_id)
+        output = self.get_output(tab_id)
 
-        if not self.get_output_text(output_id):
+        if not self.get_output_text(tab_id):
             return
 
         def action() -> None:
+            from .sessions import sessions
+            tab = self.get_tab(tab_id)
             widgetutils.clear_text(output, True)
-            model.clear_context(self.current_tab)
-            widgets.show_intro(output_id)
+            sessions.clear(tab.session_id)
+            widgets.show_intro(tab_id)
 
         widgetutils.show_confirm("Clear output?", lambda: action())
 
@@ -280,17 +302,17 @@ class Display:
         output = self.get_current_output()
         widgetutils.select_all(output)
 
-    def print(self, text: str, linebreak: bool = True, output_id: str = "") -> None:
+    def print(self, text: str, linebreak: bool = True, tab_id: str = "") -> None:
         if not app.exists():
             return
 
         left = ""
         right = ""
 
-        if not output_id:
-            output_id = self.current_tab
+        if not tab_id:
+            tab_id = self.current_tab
 
-        output = self.get_output(output_id)
+        output = self.get_output(tab_id)
 
         if widgetutils.text_length(output) and \
                 (widgetutils.last_character(output) != "\n"):
@@ -303,14 +325,14 @@ class Display:
         widgetutils.insert_text(output, text, True)
         widgetutils.to_bottom(output)
 
-    def insert(self, text: str, output_id: str = "") -> None:
+    def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
             return
 
-        if not output_id:
-            output_id = self.current_tab
+        if not tab_id:
+            tab_id = self.current_tab
 
-        tab = self.get_tab(output_id)
+        tab = self.get_tab(tab_id)
         widgetutils.insert_text(tab.output, text, True)
 
         if tab.auto_scroll:
@@ -319,3 +341,15 @@ class Display:
     def save_log(self) -> None:
         from . import state
         state.save_log()
+
+    def get_tab_name(self, tab_id: str) -> str:
+        return self.root.tab(tab_id, "text")  # type: ignore
+
+    def num_tabs(self) -> int:
+        return len(self.tab_ids())
+
+    def remove_tab(self, tab_id: str) -> None:
+        from .sessions import sessions
+        tab = self.get_tab(tab_id)
+        sessions.remove(tab.session_id)
+        del self.tabs[tab_id]

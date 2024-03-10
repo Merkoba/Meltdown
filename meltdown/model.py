@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from .sessions import sessions
 from . import timeutils
 from . import state
 
@@ -10,25 +11,7 @@ from llama_cpp import Llama  # type: ignore
 # Standard
 import threading
 from pathlib import Path
-from typing import List, Dict, Optional
-
-
-class ContextList:
-    def __init__(self) -> None:
-        self.items: List[Dict[str, str]] = []
-
-    def add(self, context_dict: Dict[str, str]) -> None:
-        self.items.append(context_dict)
-        self.limit()
-
-    def limit(self) -> None:
-        if config.context:
-            self.items = self.items[-config.context:]
-        else:
-            self.reset()
-
-    def reset(self) -> None:
-        self.items = []
+from typing import Optional
 
 
 class Model:
@@ -37,7 +20,6 @@ class Model:
         self.lock = threading.Lock()
         self.stop_stream_thread = threading.Event()
         self.stream_thread = threading.Thread()
-        self.contexts: Dict[str, ContextList] = {}
         self.streaming = False
         self.stream_loading = False
         self.model: Optional[Llama] = None
@@ -58,7 +40,7 @@ class Model:
             if announce:
                 widgets.display.print("\n👻 Model unloaded")
 
-    def load(self, prompt: str = "", output_id: str = "") -> None:
+    def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
             return
 
@@ -68,18 +50,18 @@ class Model:
 
         model_path = Path(config.model)
 
-        if not output_id:
-            output_id = widgets.display.current_tab
+        if not tab_id:
+            tab_id = widgets.display.current_tab
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            widgets.display.print("Error: Model not found. Check the path.", output_id=output_id)
+            widgets.display.print("Error: Model not found. Check the path.", tab_id=tab_id)
             return
 
         def wrapper() -> None:
             self.do_load(config.model)
 
             if prompt:
-                self.stream(prompt, output_id)
+                self.stream(prompt, tab_id)
 
         self.unload()
         self.load_thread = threading.Thread(target=wrapper, args=())
@@ -129,26 +111,26 @@ class Model:
             self.stop_stream_thread.clear()
             widgets.display.print("\n* Interrupted *")
 
-    def stream(self, prompt: str, output_id: str) -> None:
+    def stream(self, prompt: str, tab_id: str) -> None:
         if self.is_loading():
             print("(Stream) Slow down!")
             return
 
         if not self.model:
-            self.load(prompt, output_id)
+            self.load(prompt, tab_id)
             return
 
-        def wrapper(prompt: str, output_id: str) -> None:
+        def wrapper(prompt: str, tab_id: str) -> None:
             self.streaming = True
-            self.do_stream(prompt, output_id)
+            self.do_stream(prompt, tab_id)
             self.streaming = False
 
         self.stop_stream()
-        self.stream_thread = threading.Thread(target=wrapper, args=(prompt, output_id))
+        self.stream_thread = threading.Thread(target=wrapper, args=(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
 
-    def do_stream(self, prompt: str, output_id: str) -> None:
+    def do_stream(self, prompt: str, tab_id: str) -> None:
         self.lock.acquire()
         self.stream_loading = True
 
@@ -172,10 +154,9 @@ class Model:
 
             return content
 
-        widgets.prompt("user", output_id=output_id)
-        widgets.display.insert(prompt, output_id=output_id)
+        widgets.prompt("user", tab_id=tab_id)
+        widgets.display.insert(prompt, tab_id=tab_id)
         widgets.enable_stop_button()
-
         full_prompt = prompt
 
         if config.prepend:
@@ -184,11 +165,11 @@ class Model:
         if config.append:
             full_prompt = full_prompt + ". " + config.append
 
-        context_list = self.contexts.get(output_id)
+        tab = widgets.display.get_tab(tab_id)
+        session = sessions.items.get(tab.session_id)
 
-        if not context_list:
-            context_list = ContextList()
-            self.contexts[output_id] = context_list
+        if not session:
+            session = sessions.add(tab_id)
 
         if config.context > 0:
             context_dict = {"user": full_prompt}
@@ -198,8 +179,8 @@ class Model:
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
-        if context_list.items:
-            for item in context_list.items:
+        if session.items:
+            for item in session.items:
                 for key in item:
                     content = item[key]
 
@@ -232,7 +213,6 @@ class Model:
         state.add_system(config.system)
         state.add_prepends(config.prepend)
         state.add_appends(config.append)
-        state.add_input(prompt)
 
         now = timeutils.now()
         self.stream_date = now
@@ -268,7 +248,7 @@ class Model:
 
                 if "content" in delta:
                     if not added_name:
-                        widgets.prompt("ai", output_id=output_id)
+                        widgets.prompt("ai", tab_id=tab_id)
                         added_name = True
 
                     token = delta["content"]
@@ -287,21 +267,15 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    widgets.display.insert(token, output_id=output_id)
+                    widgets.display.insert(token, tab_id=tab_id)
         except BaseException:
             pass
 
         if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()
-            context_list.add(context_dict)
+            session.add(context_dict)
 
         self.lock.release()
-
-    def clear_context(self, output_id: str) -> None:
-        context_list = self.contexts.get(output_id)
-
-        if context_list:
-            context_list.reset()
 
 
 model = Model()
