@@ -348,6 +348,9 @@ class Display:
     def get_tab_name(self, tab_id: str) -> str:
         return self.root.tab(tab_id, "text")  # type: ignore
 
+    def get_current_tab_name(self) -> str:
+        return self.get_tab_name(self.current_tab)
+
     def num_tabs(self) -> int:
         return len(self.tab_ids())
 

@@ -272,19 +272,42 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    log = widgets.display.get_output_text()
+    text = widgets.display.get_output_text()
 
-    if log:
-        log = timeutils.date() + "\n\n" + log
-        config.logs_path.mkdir(parents=True, exist_ok=True)
-        file_name = str(timeutils.now_int()) + ".txt"
-        logpath = Path(config.logs_path, file_name)
+    if not text:
+        return
 
-        with open(logpath, "w") as file:
-            file.write(log)
+    lines = text.splitlines()
+    new_lines = []
 
-        widgets.display.print(f"\n>> Log saved as {file_name}")
-        print(f"Log saved at {logpath}")
+    for line in lines:
+        if line.startswith(">> Log saved as"):
+            continue
+
+        new_lines.append(line)
+
+    text = "\n".join(new_lines)
+    text = timeutils.date() + "\n\n" + text
+    name = widgets.display.get_current_tab_name().lower()
+    name = name.replace(" ", "_")
+    config.logs_path.mkdir(parents=True, exist_ok=True)
+    file_name = name + ".txt"
+    file_path = Path(config.logs_path, file_name)
+    num = 1
+
+    while file_path.exists():
+        file_name = f"{name}_{num}.txt"
+        file_path = Path(config.logs_path, file_name)
+        num += 1
+
+        if num > 999:
+            break
+
+    with open(file_path, "w") as file:
+        file.write(text)
+
+    widgets.display.print(f"\n>> Log saved as {file_name}")
+    print(f"Log saved at {file_path}")
 
 
 def on_model_change(unload: bool = True) -> None:
