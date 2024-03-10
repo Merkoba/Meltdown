@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .app import app
+from .enums import Fill, FillLiteral
 
 # Libraries
 import pyperclip  # type: ignore
@@ -15,7 +16,7 @@ frame_number = 0
 
 
 def do_pack(widget: tk.Widget,
-            fill: Optional[str] = None, right_padding: Optional[int] = None,
+            fill: Optional[Fill] = None, right_padding: Optional[int] = None,
             bottom_padding: Optional[int] = None,
             padx: Optional[int] = None, pady: Optional[int] = None) -> None:
     if padx is not None:
@@ -31,21 +32,8 @@ def do_pack(widget: tk.Widget,
         py = (config.pady, pady_bottom)
 
     expand = True if fill else False
-    fillmode: Literal["none", "x", "y", "both"]
-
-    if fill:
-        if fill == "both":
-            fillmode = tk.BOTH
-        elif fill == "x":
-            fillmode = tk.X
-        elif fill == "y":
-            fillmode = tk.Y
-        elif fill == "none":
-            fillmode = tk.NONE
-    else:
-        fillmode = tk.NONE
-
-    widget.pack(side="left", padx=px, pady=py, fill=fillmode, expand=expand)
+    fillmode: FillLiteral = fill if fill else Fill.NONE
+    widget.pack(side="left", padx=px, pady=py, fill=fillmode.value, expand=expand)
 
 
 def make_frame(parent: Optional[ttk.Notebook] = None,
@@ -70,7 +58,7 @@ def make_frame(parent: Optional[ttk.Notebook] = None,
     return frame
 
 
-def make_text(parent: tk.Frame, fill: Optional[str] = None,
+def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
               state: Literal["normal", "disabled"] = "normal",
               right_padding: Optional[int] = None) -> tk.Text:
     widget = tk.Text(parent, font=config.font, wrap="word", state=state)
@@ -80,7 +68,7 @@ def make_text(parent: tk.Frame, fill: Optional[str] = None,
     return widget
 
 
-def make_notebook(parent: tk.Frame, fill: Optional[str] = None,
+def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
                   right_padding: Optional[int] = None) -> ttk.Notebook:
     widget = ttk.Notebook(parent, style="Normal.TNotebook", takefocus=False)
     do_pack(widget, fill=fill, right_padding=right_padding)
@@ -88,7 +76,7 @@ def make_notebook(parent: tk.Frame, fill: Optional[str] = None,
 
 
 def make_entry(parent: tk.Frame, value: str = "",
-               width: Optional[int] = None, fill: Optional[str] = None,
+               width: Optional[int] = None, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> ttk.Entry:
     w = width if width else config.entry_width
     widget = ttk.Entry(parent, font=config.font, width=w, style="Normal.TEntry")
@@ -106,7 +94,7 @@ def get_button(parent: tk.Frame, text: str) -> ttk.Button:
 
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None,
-                fill: Optional[str] = None, right_padding: Optional[int] = None) -> ttk.Button:
+                fill: Optional[Fill] = None, right_padding: Optional[int] = None) -> ttk.Button:
     widget = get_button(parent, text)
 
     if command:
@@ -116,7 +104,7 @@ def make_button(parent: tk.Frame, text: str,
     return widget
 
 
-def make_label(parent: tk.Frame, text: str, fill: Optional[str] = None,
+def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> tk.Label:
     widget = tk.Label(parent, text=f"{text}:", font=config.font)
     widget.configure(background=config.background_color, foreground=config.foreground_color)
@@ -125,7 +113,7 @@ def make_label(parent: tk.Frame, text: str, fill: Optional[str] = None,
 
 
 def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
-                  fill: Optional[str] = None, width: Optional[int] = None,
+                  fill: Optional[Fill] = None, width: Optional[int] = None,
                   right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
     w = width if width else config.combobox_width

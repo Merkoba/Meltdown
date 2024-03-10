@@ -4,6 +4,7 @@ from . import widgetutils
 from .app import app
 from .display import Display
 from .tooltips import ToolTip
+from .enums import Fill
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -30,7 +31,7 @@ class Widgets:
         self.model_frame = frame
 
         widgetutils.make_label(frame, "Model")
-        self.model = widgetutils.make_entry(frame, fill="x")
+        self.model = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
                 " llama.cpp, like gguf files for instance.")
 
@@ -45,7 +46,7 @@ class Widgets:
         self.system_frame = frame
 
         widgetutils.make_label(frame, "System")
-        self.system = widgetutils.make_entry(frame, fill="x")
+        self.system = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
 
         widgetutils.make_label(frame, "CPU")
@@ -141,27 +142,27 @@ class Widgets:
         # Buttons
         frame = get_frame()
 
-        self.stop_button = widgetutils.make_button(frame, "Stop", lambda: self.stop(), fill="x")
+        self.stop_button = widgetutils.make_button(frame, "Stop", lambda: self.stop(), fill=Fill.HORIZONTAL)
         ToolTip(self.stop_button, "Stop generating the current response")
 
-        self.new_button = widgetutils.make_button(frame, "New", lambda: self.display.make_tab(), fill="x")
+        self.new_button = widgetutils.make_button(frame, "New", lambda: self.display.make_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.new_button, "Add a new tab")
 
-        self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill="x")
+        self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.close_button, "Close or clear the current tab")
 
-        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill="x")
+        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill="x")
+        self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL)
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         self.copy_button = widgetutils.make_button(frame, "Copy",
-                                                   lambda: self.display.output_copy(), fill="x")
+                                                   lambda: self.display.output_copy(), fill=Fill.HORIZONTAL)
         ToolTip(self.copy_button, "Copy all the text of the output")
 
         self.copy_button = widgetutils.make_button(frame, "Log",
-                                                   lambda: self.display.save_log(), fill="x", right_padding=rpadding)
+                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=rpadding)
         ToolTip(self.copy_button, "Save the output to a log file")
 
         # Output
@@ -169,7 +170,7 @@ class Widgets:
 
         frame = get_frame()
 
-        notebook = widgetutils.make_notebook(frame, fill="both", right_padding=rpadding)
+        notebook = widgetutils.make_notebook(frame, fill=Fill.BOTH, right_padding=rpadding)
         self.display = Display(notebook)
 
         # Addons
@@ -177,15 +178,15 @@ class Widgets:
         self.addons_frame = frame
 
         widgetutils.make_label(frame, "Prepend")
-        self.prepend = widgetutils.make_entry(frame, fill="x")
+        self.prepend = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
 
         widgetutils.make_label(frame, "Append")
-        self.append = widgetutils.make_entry(frame, fill="x", right_padding=rpadding)
+        self.append = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
 
         # Input
         frame = get_frame(bottom_padding=10)
         widgetutils.make_label(frame, "Input")
-        self.input = widgetutils.make_entry(frame, fill="x")
+        self.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
 
         input_history_up_button = widgetutils.make_button(frame, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")

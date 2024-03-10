@@ -2,6 +2,7 @@
 from .config import config
 from .app import app
 from . import widgetutils
+from .enums import Fill
 
 # Standard
 import tkinter as tk
@@ -43,7 +44,7 @@ class Display:
         from .widgets import widgets
         frame = widgetutils.make_frame(self.root)
         self.root.add(frame, text=f"Output {self.tab_number}")
-        output = widgetutils.make_text(frame, state="disabled", fill="both")
+        output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         output.bind("<Button-1>", lambda e: widgets.hide_menu())
