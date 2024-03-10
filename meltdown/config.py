@@ -53,7 +53,8 @@ class Config:
         self.systems_file = f"~/.config/{self.program}/systems.json"
         self.prepends_file = f"~/.config/{self.program}/prepends.json"
         self.appends_file = f"~/.config/{self.program}/appends.json"
-        self.sessions_file = f"~/.config/{self.program}/sessions.json"
+        self.session_file = f"~/.config/{self.program}/session.json"
+        self.sessions_dir = f"~/.config/{self.program}/sessions/"
         self.logs_dir = f"~/.config/{self.program}/logs/"
 
         self.config_path = Path(self.config_file).expanduser().resolve()
@@ -64,7 +65,8 @@ class Config:
         self.prepends_path = Path(self.prepends_file).expanduser().resolve()
         self.appends_path = Path(self.appends_file).expanduser().resolve()
         self.logs_path = Path(self.logs_dir).expanduser().resolve()
-        self.sessions_path = Path(self.sessions_file).expanduser().resolve()
+        self.session_path = Path(self.session_file).expanduser().resolve()
+        self.sessions_path = Path(self.sessions_dir).expanduser().resolve()
 
         self.models: List[str] = []
         self.inputs: List[str] = []

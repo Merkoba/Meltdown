@@ -233,6 +233,7 @@ class Widgets:
 
     def setup(self) -> None:
         from . import state
+        from .session import session
 
         if self.display.num_tabs() == 0:
             self.display.make_tab()
@@ -245,6 +246,9 @@ class Widgets:
         self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
         self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.add_separator()
+        self.main_menu.add_command(label="Save Session", command=lambda: session.save_state())
+        self.main_menu.add_command(label="Load Session", command=lambda: session.load_state())
         self.main_menu.add_separator()
         self.main_menu.add_command(label="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add_command(label="Resize", command=lambda: app.resize())
@@ -470,9 +474,9 @@ class Widgets:
         elif text == "/exit" or text == "/quit":
             app.exit()
             return True
-        elif text == "/sessions":
-            from .sessions import sessions
-            self.display.print(sessions.to_json())
+        elif text == "/session":
+            from .session import session
+            self.display.print(session.to_json())
             return True
 
         return False

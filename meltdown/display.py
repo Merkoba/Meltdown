@@ -14,8 +14,8 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, session_id: str, tab_id: str, output: tk.Text) -> None:
-        self.session_id = session_id
+    def __init__(self, document_id: str, tab_id: str, output: tk.Text) -> None:
+        self.document_id = document_id
         self.tab_id = tab_id
         self.output = output
         self.auto_scroll = True
@@ -42,7 +42,7 @@ class Display:
         self.drag_start_index = 0
         self.tab_number = 1
 
-    def make_tab(self, name: Optional[str] = None, session_id: Optional[str] = None) -> None:
+    def make_tab(self, name: Optional[str] = None, document_id: Optional[str] = None) -> None:
         from .widgets import widgets
         from . import timeutils
         frame = widgetutils.make_frame(self.root)
@@ -53,8 +53,8 @@ class Display:
         self.root.add(frame, text=name)
         output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
 
-        if not session_id:
-            session_id = str(timeutils.now())
+        if not document_id:
+            document_id = str(timeutils.now())
 
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
@@ -65,7 +65,7 @@ class Display:
         output.tag_config("name_ai", foreground="#98FB98")
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
-        tab = Tab(session_id, tab_id, output)
+        tab = Tab(document_id, tab_id, output)
         self.tabs[tab_id] = tab
         self.select_tab(tab_id)
         self.tab_number += 1
@@ -87,9 +87,6 @@ class Display:
             tab_id = self.root.select()
 
         if not tab_id:
-            return
-
-        if self.num_tabs() <= 1:
             return
 
         def action() -> None:
@@ -125,9 +122,9 @@ class Display:
     def get_tab(self, id: str) -> Tab:
         return self.tabs[id]
 
-    def get_tab_by_session_id(self, session_id: str) -> Optional[Tab]:
+    def get_tab_by_document_id(self, document_id: str) -> Optional[Tab]:
         for tab in self.tabs.values():
-            if tab.session_id == session_id:
+            if tab.document_id == document_id:
                 return tab
 
         return None
@@ -164,12 +161,12 @@ class Display:
         widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
 
     def rename_tab(self, tab_id: str, name: str) -> None:
-        from .sessions import sessions
+        from .session import session
 
         if name:
             tab = self.get_tab(tab_id)
             self.root.tab(tab_id, text=name)
-            sessions.change_name(tab.session_id, name)
+            session.change_name(tab.document_id, name)
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
@@ -229,15 +226,15 @@ class Display:
         label.pack_forget()
         return width
 
-    def close_all_tabs(self) -> None:
-        if self.num_tabs() == 1:
-            return
-
+    def close_all_tabs(self, force: bool = False) -> None:
         def action() -> None:
             for tab_id in self.tab_ids():
                 self.close_tab(tab_id=tab_id, force=True)
 
-        widgetutils.show_confirm("Close all tabs?", lambda: action())
+        if force:
+            action()
+        else:
+            widgetutils.show_confirm("Close all tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
         return self.root.tabs()  # type: ignore
@@ -282,7 +279,6 @@ class Display:
 
     def clear_output(self, tab_id: str = "") -> None:
         from .widgets import widgets
-        from .model import model
 
         if not tab_id:
             tab_id = self.current_tab
@@ -293,10 +289,10 @@ class Display:
             return
 
         def action() -> None:
-            from .sessions import sessions
+            from .session import session
             tab = self.get_tab(tab_id)
             widgetutils.clear_text(output, True)
-            sessions.clear(tab.session_id)
+            session.clear(tab.document_id)
             widgets.show_intro(tab_id)
 
         widgetutils.show_confirm("Clear output?", lambda: action())
@@ -355,9 +351,9 @@ class Display:
         return len(self.tab_ids())
 
     def remove_tab(self, tab_id: str) -> None:
-        from .sessions import sessions
+        from .session import session
         tab = self.get_tab(tab_id)
-        sessions.remove(tab.session_id)
+        session.remove(tab.document_id)
         del self.tabs[tab_id]
 
     def random_tab_name(self) -> str:

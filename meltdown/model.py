@@ -1,7 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
-from .sessions import sessions
+from .session import session
 from . import timeutils
 from . import state
 
@@ -166,10 +166,10 @@ class Model:
             full_prompt = full_prompt + ". " + config.append
 
         tab = widgets.display.get_tab(tab_id)
-        session = sessions.items.get(tab.session_id)
+        document = session.items.get(tab.document_id)
 
-        if not session:
-            session = sessions.add(tab_id)
+        if not document:
+            document = session.add(tab_id)
 
         if config.context > 0:
             context_dict = {"user": full_prompt}
@@ -179,8 +179,8 @@ class Model:
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
-        if session.items:
-            for item in session.items:
+        if document.items:
+            for item in document.items:
                 for key in item:
                     content = item[key]
 
@@ -273,7 +273,7 @@ class Model:
 
         if context_dict and tokens:
             context_dict["assistant"] = "".join(tokens).strip()
-            session.add(context_dict)
+            document.add(context_dict)
 
         self.lock.release()
 

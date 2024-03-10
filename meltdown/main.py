@@ -2,14 +2,14 @@
 from .app import app
 from .widgets import widgets
 from .model import model
-from .sessions import sessions
+from .session import session
 from . import state
 from . import system
 
 
 def main() -> None:
     state.load_files()
-    sessions.load()
+    session.load()
     widgets.setup()
     system.start()
     app.setup()
