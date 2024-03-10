@@ -34,7 +34,7 @@ Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, et
 
 Multiple tabs, each with their own context.
 
-Sessions are remembered, can also be saved and lodaded from files.
+Sessions are remembered, can also be saved and loaded from files.
 
 ---
 
