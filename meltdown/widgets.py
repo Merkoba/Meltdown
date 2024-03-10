@@ -18,7 +18,7 @@ from typing import Optional, Any, Tuple, Callable
 from functools import partial
 
 
-rpadding = 11
+right_padding = 11
 
 
 class Widgets:
@@ -38,7 +38,7 @@ class Widgets:
         self.load_button = widgetutils.make_button(frame, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load or unload the model")
 
-        self.main_menu_button = widgetutils.make_button(frame, "Menu", right_padding=rpadding)
+        self.main_menu_button = widgetutils.make_button(frame, "Menu", right_padding=right_padding)
         ToolTip(self.main_menu_button, "Open the main menu")
 
         # System
@@ -51,19 +51,19 @@ class Widgets:
 
         widgetutils.make_label(frame, "CPU")
         self.cpu = tk.StringVar()
-        self.cpu_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.cpu_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.cpu_label.configure(textvariable=self.cpu)
         self.cpu.set("000%")
 
         widgetutils.make_label(frame, "RAM")
         self.ram = tk.StringVar()
-        self.ram_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.ram_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.ram_label.configure(textvariable=self.ram)
         self.ram.set("000%")
 
         widgetutils.make_label(frame, "TMP")
         self.temp = tk.StringVar()
-        self.temp_label = widgetutils.make_label(frame, "", right_padding=rpadding)
+        self.temp_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.temp_label.configure(textvariable=self.temp)
         self.temp.set("000°C")
 
@@ -93,7 +93,7 @@ class Widgets:
         fmts = [item for item in formats._chat_handlers]
         fmts.sort()
         values.extend(fmts)
-        self.format = widgetutils.make_combobox(frame, values=values, width=17, right_padding=rpadding)
+        self.format = widgetutils.make_combobox(frame, values=values, width=17, right_padding=right_padding)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
@@ -162,7 +162,7 @@ class Widgets:
         ToolTip(self.copy_button, "Copy all the text of the output")
 
         self.copy_button = widgetutils.make_button(frame, "Log",
-                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=rpadding)
+                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=right_padding)
         ToolTip(self.copy_button, "Save the output to a log file")
 
         # Output
@@ -170,7 +170,7 @@ class Widgets:
 
         frame = get_frame()
 
-        notebook = widgetutils.make_notebook(frame, fill=Fill.BOTH, right_padding=rpadding)
+        notebook = widgetutils.make_notebook(frame, fill=Fill.BOTH, right_padding=right_padding)
         self.display = Display(notebook)
 
         # Addons
@@ -181,7 +181,7 @@ class Widgets:
         self.prepend = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
 
         widgetutils.make_label(frame, "Append")
-        self.append = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
+        self.append = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL, right_padding=right_padding)
 
         # Input
         frame = get_frame(bottom_padding=10)
@@ -194,7 +194,7 @@ class Widgets:
         input_history_up_down = widgetutils.make_button(frame, "Next >", lambda: self.input_history_down())
         ToolTip(input_history_up_down, "Next item in the input history")
 
-        submit_button = widgetutils.make_button(frame, "Submit", lambda: self.submit(), right_padding=rpadding)
+        submit_button = widgetutils.make_button(frame, "Submit", lambda: self.submit(), right_padding=right_padding)
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.main_menu = widgetutils.make_menu()
