@@ -150,15 +150,19 @@ class Widgets:
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill="x")
         ToolTip(self.close_button, "Close or clear the current tab")
 
-        self.top_button = widgetutils.make_button(frame, "↑ Top", lambda: self.display.output_top(), fill="x")
+        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill="x")
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.bottom_button = widgetutils.make_button(frame, "↓ Bottom", lambda: self.display.output_bottom(), fill="x")
+        self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill="x")
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         self.copy_button = widgetutils.make_button(frame, "Copy",
-                                                   lambda: self.display.output_copy(), fill="x", right_padding=rpadding)
+                                                   lambda: self.display.output_copy(), fill="x")
         ToolTip(self.copy_button, "Copy all the text of the output")
+
+        self.copy_button = widgetutils.make_button(frame, "Log",
+                                                   lambda: self.display.save_log(), fill="x", right_padding=rpadding)
+        ToolTip(self.copy_button, "Save the output to a log file")
 
         # Output
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
@@ -234,8 +238,6 @@ class Widgets:
 
         self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
         self.main_menu.add_command(label="Browse Models", command=lambda: self.browse_models())
-        self.main_menu.add_separator()
-        self.main_menu.add_command(label="Save Log", command=lambda: state.save_log())
         self.main_menu.add_separator()
         self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())

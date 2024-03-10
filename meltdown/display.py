@@ -308,3 +308,7 @@ class Display:
 
         if tab.auto_scroll:
             widgetutils.to_bottom(tab.output)
+
+    def save_log(self) -> None:
+        from . import state
+        state.save_log()
