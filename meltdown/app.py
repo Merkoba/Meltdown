@@ -30,6 +30,7 @@ class App:
         style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
+        style.map("Disabled.TCombobox", fieldbackground=[("readonly", config.combobox_background)], fieldforeground=[("readonly", "white")])
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
