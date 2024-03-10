@@ -5,6 +5,8 @@ from . import widgetutils
 from .enums import Fill
 
 # Standard
+import random
+import string
 import tkinter as tk
 from tkinter import ttk
 from typing import List, Dict, Any
@@ -44,7 +46,11 @@ class Display:
         from .widgets import widgets
         from . import timeutils
         frame = widgetutils.make_frame(self.root)
-        self.root.add(frame, text=f"Output {self.tab_number}")
+
+        if not name:
+            name = self.random_tab_name()
+
+        self.root.add(frame, text=name)
         output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
 
         if not session_id:
@@ -64,9 +70,6 @@ class Display:
         self.select_tab(tab_id)
         self.tab_number += 1
         widgets.show_intro(tab_id)
-
-        if name:
-            self.rename_tab(tab_id, name)
 
     def tab_on_coords(self, x: int, y: int) -> str:
         index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
@@ -353,3 +356,16 @@ class Display:
         tab = self.get_tab(tab_id)
         sessions.remove(tab.session_id)
         del self.tabs[tab_id]
+
+    def random_tab_name(self) -> str:
+        vowels = "aeiou"
+        consonants = "".join(set(string.ascii_lowercase) - set(vowels))
+
+        def con() -> str:
+            return random.choice(consonants)
+
+        def vow() -> str:
+            return random.choice(vowels)
+
+        name = con() + vow() + con() + vow() + con() + vow()
+        return name.capitalize()
