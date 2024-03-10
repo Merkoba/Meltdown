@@ -149,7 +149,7 @@ class Widgets:
         ToolTip(self.new_button, "Add a new tab")
 
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
-        ToolTip(self.close_button, "Close or clear the current tab")
+        ToolTip(self.close_button, "Close or clear the current tab. Middle click to close all tabs")
 
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")

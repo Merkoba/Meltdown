@@ -68,7 +68,7 @@ class Display:
         else:
             return ""
 
-    def close_tab(self, event: Optional[Any] = None, tab_id: str = "") -> None:
+    def close_tab(self, event: Optional[Any] = None, tab_id: str = "", force: bool = False) -> None:
         if (not tab_id) and event:
             tab_id = self.tab_on_coords(event.x, event.y)
 
@@ -78,11 +78,19 @@ class Display:
         if not tab_id:
             return
 
-        if len(self.tab_ids()) > 1:
-            self.root.forget(tab_id)
-            self.update_output()
-        else:
+        if len(self.tab_ids()) <= 1:
             self.clear_output()
+            return
+
+        def action() -> None:
+            if len(self.tab_ids()) > 1:
+                self.root.forget(tab_id)
+                self.update_output()
+
+        if force:
+            action()
+        else:
+            widgetutils.show_confirm("Close tab?", lambda: action())
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
@@ -210,7 +218,7 @@ class Display:
 
         def action() -> None:
             for tab_id in self.tab_ids():
-                self.close_tab(tab_id=tab_id)
+                self.close_tab(tab_id=tab_id, force=True)
 
         widgetutils.show_confirm("Close all tabs?", lambda: action())
 
@@ -267,9 +275,12 @@ class Display:
         if not self.get_output_text(output_id):
             return
 
-        widgetutils.clear_text(output, True)
-        model.clear_context(self.current_tab)
-        widgets.show_intro(output_id)
+        def action() -> None:
+            widgetutils.clear_text(output, True)
+            model.clear_context(self.current_tab)
+            widgets.show_intro(output_id)
+
+        widgetutils.show_confirm("Clear output?", lambda: action())
 
     def select_all(self) -> None:
         output = self.get_current_output()
