@@ -84,11 +84,11 @@ class Display:
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
-        self.current_output = tab_id
+        self.current_tab = tab_id
 
     def update_output(self) -> None:
         tab_id = self.root.select()
-        self.current_output = tab_id
+        self.current_tab = tab_id
 
     def update_tab_index(self) -> None:
         self.drag_start_index = self.root.index(self.root.select())  # type: ignore
@@ -96,8 +96,11 @@ class Display:
     def on_tab_change(self, event: Any) -> None:
         self.update_output()
 
+    def get_current_tab(self) -> Tab:
+        return self.get_tab(self.current_tab)
+
     def get_current_output(self) -> tk.Text:
-        return self.get_output(self.current_output)
+        return self.get_output(self.current_tab)
 
     def get_tab(self, id: str) -> Tab:
         return self.tabs[id]
@@ -233,8 +236,9 @@ class Display:
         widgetutils.to_top(output)
 
     def output_bottom(self) -> None:
-        output = self.get_current_output()
-        widgetutils.to_bottom(output)
+        tab = self.get_current_tab()
+        tab.auto_scroll = True
+        widgetutils.to_bottom(tab.output)
 
     def output_copy(self) -> None:
         text = self.get_output_text()
@@ -242,7 +246,7 @@ class Display:
 
     def get_output_text(self, output_id: str = "") -> str:
         if not output_id:
-            output_id = self.current_output
+            output_id = self.current_tab
 
         output = self.get_output(output_id)
         text = widgetutils.get_text(output)
@@ -254,7 +258,7 @@ class Display:
         from .model import model
 
         if not output_id:
-            output_id = self.current_output
+            output_id = self.current_tab
 
         output = self.get_output(output_id)
 
@@ -262,7 +266,7 @@ class Display:
             return
 
         widgetutils.clear_text(output, True)
-        model.clear_context(self.current_output)
+        model.clear_context(self.current_tab)
         widgets.show_intro(output_id)
 
     def select_all(self) -> None:
@@ -277,7 +281,7 @@ class Display:
         right = ""
 
         if not output_id:
-            output_id = self.current_output
+            output_id = self.current_tab
 
         output = self.get_output(output_id)
 
@@ -297,7 +301,7 @@ class Display:
             return
 
         if not output_id:
-            output_id = self.current_output
+            output_id = self.current_tab
 
         tab = self.get_tab(output_id)
         widgetutils.insert_text(tab.output, text, True)

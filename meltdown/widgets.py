@@ -503,7 +503,7 @@ class Widgets:
             if model.model_loading:
                 return
 
-            model.stream(text, self.display.current_output)
+            model.stream(text, self.display.current_tab)
 
     def check_command(self, text: str) -> bool:
         if not text.startswith("/"):
@@ -540,7 +540,7 @@ class Widgets:
         self.display.print(prompt, False)
 
         if not output_id:
-            output_id = self.display.current_output
+            output_id = self.display.current_tab
 
         output = self.display.get_output(output_id)
         start_index = output.index(f"end - {len(prompt)}c")

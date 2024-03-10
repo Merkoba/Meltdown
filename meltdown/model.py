@@ -69,7 +69,7 @@ class Model:
         model_path = Path(config.model)
 
         if not output_id:
-            output_id = widgets.display.current_output
+            output_id = widgets.display.current_tab
 
         if (not model_path.exists()) or (not model_path.is_file()):
             widgets.display.print("Error: Model not found. Check the path.", output_id=output_id)
