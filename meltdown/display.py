@@ -33,6 +33,7 @@ class Display:
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add_command(label="Clear", command=lambda: self.tab_menu_clear())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
+        self.output_menu.add_command(label="Clear", command=lambda: self.clear_output())
         self.output_menu.add_command(label="Select All", command=lambda: self.select_all())
         self.current_tab = "none"
         self.drag_start_index = 0
