@@ -32,7 +32,6 @@ class Display:
         self.output_menu = widgetutils.make_menu()
         self.tab_menu = widgetutils.make_menu()
         self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
-        self.tab_menu.add_command(label="Clear", command=lambda: self.tab_menu_clear())
         self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
         self.output_menu.add_command(label="Copy All", command=lambda: self.copy_output())
         self.output_menu.add_command(label="Select All", command=lambda: self.select_output())
@@ -144,10 +143,6 @@ class Display:
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
         widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
-
-    def tab_menu_clear(self) -> None:
-        tab_id = self.tab_menu_id
-        self.clear_output(tab_id)
 
     def rename_tab(self, tab_id: str, name: str) -> None:
         if name:
