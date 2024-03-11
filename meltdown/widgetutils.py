@@ -207,11 +207,6 @@ def clear_text(widget: Union[tk.Text, ttk.Entry], disable: bool = False) -> None
     set_text(widget, "", disable)
 
 
-def hide_dialog(dialog: tk.Toplevel) -> None:
-    dialog.destroy()
-    app.root.focus_set()
-
-
 def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
     dialog = tk.Toplevel(app.root)
     dialog.title(title)
@@ -232,6 +227,11 @@ def show_dialog(dialog: tk.Toplevel) -> None:
     y = app.root.winfo_rooty() + (app.root.winfo_height() // 2) - (dialog.winfo_height() // 2)
     dialog.geometry("+%d+%d" % (x, y))
     dialog.wait_window()
+
+
+def hide_dialog(dialog: tk.Toplevel) -> None:
+    dialog.destroy()
+    app.root.focus_set()
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:
