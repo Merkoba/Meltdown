@@ -509,11 +509,10 @@ class Widgets:
         else:
             prompt = f"\n{avatar} : "
 
-        self.display.print(prompt, False)
-
         if not tab_id:
             tab_id = self.display.current_tab
 
+        self.display.print(prompt, False, tab_id=tab_id)
         output = self.display.get_output(tab_id)
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
