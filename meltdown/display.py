@@ -26,7 +26,7 @@ class Display:
         self.root = widget
         self.tabs: Dict[str, Tab] = {}
         self.root.bind("<Button-1>", lambda e: self.click(e))
-        self.root.bind("<Button-2>", lambda e: self.middle_click(e))
+        self.root.bind("<ButtonRelease-2>", lambda e: self.middle_click(e))
         self.root.bind("<Button-3>", lambda e: self.right_click(e))
         self.root.bind("<Double-Button-1>", lambda e: self.double_click(e))
         self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
