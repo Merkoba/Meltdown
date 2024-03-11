@@ -13,6 +13,7 @@ from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 
 
 frame_number = 0
+dialog_delay = 100
 
 
 def do_pack(widget: tk.Widget,
@@ -243,17 +244,17 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any],
                  cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
     def ok() -> None:
         dialog.destroy()
-        cmd_ok()
+        app.root.after(dialog_delay, lambda: cmd_ok())
 
     def cancel() -> None:
         dialog.destroy()
 
         if cmd_cancel:
-            cmd_cancel()
+            app.root.after(dialog_delay, lambda: cmd_cancel())
 
     def generic(func: Callable[..., Any]) -> None:
         dialog.destroy()
-        func()
+        app.root.after(dialog_delay, lambda: func())
 
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
     dialog.bind("<Return>", lambda e: ok())
@@ -281,13 +282,13 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     def ok() -> None:
         text = entry.get()
         dialog.destroy()
-        cmd_ok(text)
+        app.root.after(dialog_delay, lambda: cmd_ok(text))
 
     def cancel() -> None:
         dialog.destroy()
 
         if cmd_cancel:
-            cmd_cancel()
+            app.root.after(dialog_delay, lambda: cmd_cancel())
 
     dialog, top_frame, button_frame = make_dialog("Input", text)
     entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
