@@ -207,6 +207,11 @@ def clear_text(widget: Union[tk.Text, ttk.Entry], disable: bool = False) -> None
     set_text(widget, "", disable)
 
 
+def hide_dialog(dialog: tk.Toplevel) -> None:
+    dialog.destroy()
+    app.root.focus_set()
+
+
 def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
     dialog = tk.Toplevel(app.root)
     dialog.title(title)
@@ -215,11 +220,7 @@ def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]
     top_frame.pack()
     button_frame = tk.Frame(dialog)
     button_frame.pack()
-
-    def hide_dialog() -> None:
-        dialog.destroy()
-
-    dialog.bind("<Escape>", lambda e: hide_dialog())
+    dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
     return dialog, top_frame, button_frame
 
 
@@ -243,17 +244,17 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any],
                  cmd_cancel: Optional[Callable[..., Any]] = None,
                  cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
     def ok() -> None:
-        dialog.destroy()
+        hide_dialog(dialog)
         app.root.after(dialog_delay, lambda: cmd_ok())
 
     def cancel() -> None:
-        dialog.destroy()
+        hide_dialog(dialog)
 
         if cmd_cancel:
             app.root.after(dialog_delay, lambda: cmd_cancel())
 
     def generic(func: Callable[..., Any]) -> None:
-        dialog.destroy()
+        hide_dialog(dialog)
         app.root.after(dialog_delay, lambda: func())
 
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
@@ -270,7 +271,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any],
 
 def show_message(text: str) -> None:
     def ok() -> None:
-        dialog.destroy()
+        hide_dialog(dialog)
 
     dialog, top_frame, button_frame = make_dialog("Information", text)
     dialog.bind("<Return>", lambda e: ok())
@@ -281,11 +282,11 @@ def show_message(text: str) -> None:
 def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
     def ok() -> None:
         text = entry.get()
-        dialog.destroy()
+        hide_dialog(dialog)
         app.root.after(dialog_delay, lambda: cmd_ok(text))
 
     def cancel() -> None:
-        dialog.destroy()
+        hide_dialog(dialog)
 
         if cmd_cancel:
             app.root.after(dialog_delay, lambda: cmd_cancel())

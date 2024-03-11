@@ -200,11 +200,11 @@ class Widgets:
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
         self.main_menu = widgetutils.make_menu()
-        self.recent_models_menu = widgetutils.make_menu()
-        self.recent_systems_menu = widgetutils.make_menu()
-        self.recent_prepends_menu = widgetutils.make_menu()
-        self.recent_appends_menu = widgetutils.make_menu()
-        self.recent_inputs_menu = widgetutils.make_menu()
+        self.models_menu = widgetutils.make_menu()
+        self.systems_menu = widgetutils.make_menu()
+        self.prepends_menu = widgetutils.make_menu()
+        self.appends_menu = widgetutils.make_menu()
+        self.inputs_menu = widgetutils.make_menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
@@ -297,6 +297,13 @@ class Widgets:
         bind("prepend")
         bind("append")
 
+        self.prepare_menu(self.main_menu)
+        self.prepare_menu(self.models_menu)
+        self.prepare_menu(self.systems_menu)
+        self.prepare_menu(self.prepends_menu)
+        self.prepare_menu(self.appends_menu)
+        self.prepare_menu(self.inputs_menu)
+
         self.input_history_index: int
         self.reset_history_index()
 
@@ -379,7 +386,7 @@ class Widgets:
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None) -> None:
-        menu = getattr(self, f"recent_{key_list}_menu")
+        menu = getattr(self, f"{key_list}_menu")
         menu.delete(0, tk.END)
         items = getattr(config, key_list)[:config.max_list_items]
         self.add_common_commands(menu, key_config)
@@ -706,6 +713,13 @@ class Widgets:
             self.clear_input()
         else:
             self.stop()
+
+    def prepare_menu(self, menu: tk.Menu) -> None:
+        def action() -> None:
+            if self.menu_open == menu:
+                self.menu_open = None
+
+        menu.bind("<Unmap>", lambda e: action())
 
 
 widgets: Widgets = Widgets()
