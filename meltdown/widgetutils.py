@@ -211,19 +211,18 @@ def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]
     button_frame.pack()
     dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
     dialog.withdraw()
-    x = app.root.winfo_rootx() + (app.root.winfo_width() // 2) - (dialog.winfo_width() // 2)
-    y = app.root.winfo_rooty() + (app.root.winfo_height() // 2) - (dialog.winfo_height() // 2)
-    dialog.geometry("+%d+%d" % (x, y))
     return dialog, top_frame, button_frame
 
 
 def show_dialog(dialog: tk.Toplevel) -> None:
     def show() -> None:
-        dialog.update_idletasks()
         dialog.deiconify()
         dialog.transient(app.root)
         dialog.grab_set()
         dialog.update()
+        x = app.root.winfo_rootx() + (app.root.winfo_width() // 2) - (dialog.winfo_width() // 2)
+        y = app.root.winfo_rooty() + (app.root.winfo_height() // 2) - (dialog.winfo_height() // 2)
+        dialog.geometry("+%d+%d" % (x, y))
         dialog.wait_window()
 
     app.root.after(dialog_delay, show)
