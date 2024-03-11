@@ -4,6 +4,7 @@ from .app import app
 from . import widgetutils
 from .enums import Fill
 from .menus import Menu
+from . import dialogs
 
 # Standard
 import random
@@ -107,7 +108,7 @@ class Display:
             if show_close_all and (self.num_tabs() > 1):
                 cmd_list.append(("Close All", lambda: self.close_all_tabs()))
 
-            widgetutils.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)
+            dialogs.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
@@ -168,7 +169,7 @@ class Display:
 
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
-        widgetutils.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
+        dialogs.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
 
     def rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
@@ -244,7 +245,7 @@ class Display:
         if force:
             action()
         else:
-            widgetutils.show_confirm("Close all tabs?", lambda: action())
+            dialogs.show_confirm("Close all tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
         return self.root.tabs()  # type: ignore
@@ -304,7 +305,7 @@ class Display:
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
 
-        widgetutils.show_confirm("Clear output?", lambda: action())
+        dialogs.show_confirm("Clear output?", lambda: action())
 
     def select_output(self) -> None:
         output = self.get_current_output()

@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from . import dialogs
 from . import timeutils
 from .app import app
 
@@ -245,8 +246,8 @@ def reset_config() -> None:
         save_config()
         model.unload(True)
 
-    widgetutils.show_confirm("This will remove your custom configs"
-                             "\nand refresh the widgets", reset, None)
+    dialogs.show_confirm("This will remove your custom configs"
+                         "\nand refresh the widgets", reset, None)
 
 
 def reset_one_config(key: str) -> None:
