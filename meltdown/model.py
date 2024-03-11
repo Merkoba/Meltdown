@@ -152,6 +152,7 @@ class Model:
             if config.name_ai:
                 content = content.replace("@name_ai", config.name_ai)
 
+            content = content.replace("@date", timeutils.today())
             return content
 
         widgets.prompt("user", tab_id=tab_id)

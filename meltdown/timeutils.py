@@ -30,3 +30,16 @@ def date() -> str:
 
 def sleep(seconds: float) -> None:
     time.sleep(seconds)
+
+
+def today() -> str:
+    def add_suffix(day: int) -> str:
+        if 10 <= day % 100 <= 20:
+            suffix = "th"
+        else:
+            suffix = {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
+        return f"{day}{suffix}"
+
+    current_time = datetime.now()
+    suffix = add_suffix(current_time.day)
+    return current_time.strftime("%A {0} of %B %Y").format(suffix)

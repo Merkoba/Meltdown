@@ -47,7 +47,7 @@ class Widgets:
 
         widgetutils.make_label(frame, "System")
         self.system = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
-        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user and @name_ai")
+        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date")
 
         widgetutils.make_label(frame, "CPU")
         self.cpu = tk.StringVar()
