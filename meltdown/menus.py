@@ -50,12 +50,13 @@ class Menu:
         self.menu.lift()
 
         def make_item(item: MenuItem) -> None:
-            frame = tk.Frame(self.menu, background="white")
 
             if item.separator:
-                separator = ttk.Separator(frame, orient="horizontal")
-                separator.pack()
+                separator = ttk.Separator(self.menu, orient="horizontal")
+                separator.pack(expand=True, fill="x", padx=6, pady=2)
             else:
+                frame = tk.Frame(self.menu, background="white")
+
                 if item.disabled:
                     foreground = "#3D4555"
                     hover_background = "white"
@@ -64,7 +65,7 @@ class Menu:
                     hover_background = "lightgray"
 
                 label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
-                                 wraplength=500, justify=tk.LEFT, anchor="w", font=config.font)
+                                 wraplength=600, justify=tk.LEFT, anchor="w", font=config.font)
 
                 def cmd() -> None:
                     if item.command:
@@ -85,7 +86,7 @@ class Menu:
                 frame.bind("<Leave>", lambda e: on_leave())
                 label.pack(expand=True, fill="x", padx=6, pady=2)
 
-            frame.pack(fill="x", expand=True)
+                frame.pack(fill="x", expand=True)
 
         for item in self.items:
             make_item(item)
