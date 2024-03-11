@@ -64,7 +64,7 @@ class Menu:
                     hover_background = "lightgray"
 
                 label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
-                                 wraplength=250, justify=tk.LEFT, anchor="w", font=config.font)
+                                 wraplength=500, justify=tk.LEFT, anchor="w", font=config.font)
 
                 def cmd() -> None:
                     if item.command:
