@@ -265,7 +265,6 @@ class Widgets:
         self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
         self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
 
-        self.input.bind("<Button-1>", lambda e: self.hide_menu())
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
 
@@ -535,8 +534,6 @@ class Widgets:
         self.show_menu(self.main_menu, event)
 
     def add_generic_menus(self) -> None:
-        from . import state
-
         def add_menu(key: str) -> None:
             widget = self.get_widget(key)
 
@@ -546,7 +543,7 @@ class Widgets:
             menu = widgetutils.make_menu()
             self.add_common_commands(menu, key)
 
-            if key not in ["model", "system", "prepend", "append"]:
+            if key not in ["model", "system", "prepend", "append", "input"]:
                 show_func = partial(self.show_menu, menu=menu)
                 widget.bind("<Button-3>", lambda e: show_func(event=e))
 
@@ -554,6 +551,7 @@ class Widgets:
 
         for key in config.defaults():
             add_menu(key)
+            add_menu("input")
 
     def enable_stop_button(self) -> None:
         if (not self.stop_button_enabled) and app.exists():
