@@ -251,8 +251,8 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
 
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
     dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Ok", ok, "right")
     make_dialog_button(button_frame, "Cancel", cancel, "left")
+    make_dialog_button(button_frame, "Ok", ok, "right")
     show_dialog(dialog)
 
 
@@ -282,8 +282,8 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
-    make_dialog_button(button_frame, "Ok", ok, "left")
-    make_dialog_button(button_frame, "Cancel", cancel, "right")
+    make_dialog_button(button_frame, "Cancel", cancel, "left")
+    make_dialog_button(button_frame, "Ok", ok, "right")
     entry.focus()
     show_dialog(dialog)
 
