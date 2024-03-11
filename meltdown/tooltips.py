@@ -32,7 +32,7 @@ class ToolTip:
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
-        self.id = self.widget.after(500, lambda: self.show_tooltip())
+        self.id = self.widget.after(400, lambda: self.show_tooltip())
         ToolTip.current_tooltip = self
 
     def show_tooltip(self) -> None:
@@ -44,6 +44,7 @@ class ToolTip:
 
         self.tooltip = tk.Toplevel(self.widget)
         self.tooltip.wm_overrideredirect(True)
+        self.tooltip.withdraw()
         label = tk.Label(self.tooltip, text=self.text, background="white",
                          wraplength=250, justify=tk.LEFT)
         label.pack()
@@ -73,6 +74,12 @@ class ToolTip:
             y = event.y_root - tooltip_height - 20
 
         self.tooltip.wm_geometry(f"+{x}+{y}")
+
+        def show() -> None:
+            if self.tooltip:
+                self.tooltip.deiconify()
+
+        app.root.after(100, lambda: show())
 
     def hide_tooltip(self, event: Any = None) -> None:
         if self.tooltip:
