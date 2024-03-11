@@ -153,7 +153,7 @@ class Widgets:
         ToolTip(self.clear_button, "Clear the output of the current tab and reset its context")
 
         self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
-        ToolTip(self.close_button, "Close the current tab. Middle click to close all tabs.")
+        ToolTip(self.close_button, "Close the current tab")
 
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
@@ -267,8 +267,6 @@ class Widgets:
 
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
-
-        self.close_button.bind("<ButtonRelease-2>", lambda e: self.display.close_all_tabs())
 
         def bind(key: str) -> None:
             widget = self.get_widget(key)
