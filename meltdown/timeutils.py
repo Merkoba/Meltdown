@@ -38,7 +38,7 @@ def today() -> str:
             suffix = "th"
         else:
             suffix = {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
-        return f"{day}{suffix}"
+        return day + suffix
 
     current_time = datetime.now()
     suffix = add_suffix(current_time.day)
