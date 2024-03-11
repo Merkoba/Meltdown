@@ -110,8 +110,7 @@ class Menu:
                 frame.bind("<<B1-Leave>>", lambda e: on_leave())
                 label.bind("<<B1-Leave>>", lambda e: on_leave())
                 frame.bind("<Leave>", lambda e: on_leave())
-                label.pack(expand=True, fill="x", padx=6, pady=2)
-
+                label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
         for item in self.items:
