@@ -79,7 +79,8 @@ class Display:
         else:
             return ""
 
-    def close_tab(self, event: Optional[Any] = None, tab_id: str = "", force: bool = False) -> None:
+    def close_tab(self, event: Optional[Any] = None, tab_id: str = "",
+                  force: bool = False, make_empty: bool = True) -> None:
         if (not tab_id) and event:
             tab_id = self.tab_on_coords(event.x, event.y)
 
@@ -93,6 +94,10 @@ class Display:
             self.root.forget(tab_id)
             self.update_output()
             self.remove_tab(tab_id)
+
+            if self.num_tabs() == 0:
+                if make_empty:
+                    self.make_tab()
 
         if force:
             action()
@@ -232,13 +237,10 @@ class Display:
         label.pack_forget()
         return width
 
-    def close_all_tabs(self, force: bool = False, create_empty: bool = True) -> None:
+    def close_all_tabs(self, force: bool = False, make_empty: bool = True) -> None:
         def action() -> None:
             for tab_id in self.tab_ids():
-                self.close_tab(tab_id=tab_id, force=True)
-
-            if create_empty:
-                self.make_tab()
+                self.close_tab(tab_id=tab_id, force=True, make_empty=make_empty)
 
         if force:
             action()
