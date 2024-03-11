@@ -14,7 +14,7 @@ dialog_delay = 100
 
 def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
     dialog = tk.Toplevel(app.root)
-    container = tk.Frame(dialog, padx=10, pady=6)
+    container = tk.Frame(dialog, padx=10, pady=4)
     container.pack()
     dialog.title(title)
     tk.Label(container, text=text, font=config.font, wraplength=500).pack(padx=6)
