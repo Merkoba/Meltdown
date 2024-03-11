@@ -23,14 +23,14 @@ class ToolTip:
         self.widget.bind("<Button-1>", self.hide_tooltip)
         self.id = ""
 
-    def schedule_tooltip(self, event: Any = None) -> None:
+    def schedule_tooltip(self, event: Any) -> None:
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
-        self.id = self.widget.after(500, self.show_tooltip)
+        self.id = self.widget.after(500, lambda: self.show_tooltip(event))
         ToolTip.current_tooltip = self
 
-    def show_tooltip(self) -> None:
+    def show_tooltip(self, event: Any) -> None:
         from .widgets import widgets
 
         if widgets.menu_open:
@@ -48,15 +48,18 @@ class ToolTip:
         if not box:
             return
 
-        x, y, _, _ = box
-        x += self.widget.winfo_rootx() + 25
-        y += self.widget.winfo_rooty() + 25
         self.tooltip = tk.Toplevel(self.widget)
         self.tooltip.wm_overrideredirect(True)
-        self.tooltip.wm_geometry(f"+{x}+{y}")
         label = tk.Label(self.tooltip, text=self.text, background="white",
                          wraplength=250, justify=tk.LEFT)
         label.pack()
+
+        self.tooltip.update_idletasks()
+        width = self.tooltip.winfo_reqwidth()
+        x, y, _, _ = box
+        y += self.widget.winfo_rooty() + 25
+        x = event.x_root - width if event.x_root - width > 0 else event.x_root
+        self.tooltip.wm_geometry(f"+{x}+{y}")
 
     def hide_tooltip(self, event: Any = None) -> None:
         if self.tooltip:
