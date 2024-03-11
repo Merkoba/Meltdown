@@ -100,6 +100,9 @@ class Session:
             except BaseException:
                 items = []
 
+        if not items:
+            return
+
         for item in items:
             try:
                 session = Document(item["id"], item["name"])

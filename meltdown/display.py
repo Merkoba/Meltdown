@@ -97,7 +97,11 @@ class Display:
         if force:
             action()
         else:
-            widgetutils.show_confirm("Close tab?", lambda: action())
+            cmd_list = [
+                ("Close All", lambda: self.close_all_tabs()),
+            ]
+
+            widgetutils.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)

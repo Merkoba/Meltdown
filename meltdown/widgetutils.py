@@ -232,13 +232,15 @@ def show_dialog(dialog: tk.Toplevel) -> None:
     dialog.wait_window()
 
 
-def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any], side: Literal["left", "right"]) -> None:
+def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:
     button = get_button(parent, text)
     button.configure(command=command)
-    button.pack(side=side, padx=6, pady=8)
+    button.pack(side=tk.LEFT, padx=6, pady=8)
 
 
-def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+def show_confirm(text: str, cmd_ok: Callable[..., Any],
+                 cmd_cancel: Optional[Callable[..., Any]] = None,
+                 cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
     def ok() -> None:
         dialog.destroy()
         cmd_ok()
@@ -249,10 +251,19 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Cal
         if cmd_cancel:
             cmd_cancel()
 
+    def generic(func: Callable[..., Any]) -> None:
+        dialog.destroy()
+        func()
+
     dialog, top_frame, button_frame = make_dialog("Confirm", text)
     dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Cancel", cancel, "left")
-    make_dialog_button(button_frame, "Ok", ok, "right")
+    make_dialog_button(button_frame, "Cancel", cancel)
+
+    if cmd_list:
+        for cmd in cmd_list:
+            make_dialog_button(button_frame, cmd[0], lambda: generic(cmd[1]))
+
+    make_dialog_button(button_frame, "Ok", ok)
     show_dialog(dialog)
 
 
@@ -262,7 +273,7 @@ def show_message(text: str) -> None:
 
     dialog, top_frame, button_frame = make_dialog("Information", text)
     dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Ok", ok, "left")
+    make_dialog_button(button_frame, "Ok", ok)
     show_dialog(dialog)
 
 
@@ -282,8 +293,8 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
-    make_dialog_button(button_frame, "Cancel", cancel, "left")
-    make_dialog_button(button_frame, "Ok", ok, "right")
+    make_dialog_button(button_frame, "Cancel", cancel)
+    make_dialog_button(button_frame, "Ok", ok)
     entry.focus()
     show_dialog(dialog)
 
