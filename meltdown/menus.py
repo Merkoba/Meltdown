@@ -10,7 +10,7 @@ from typing import List, Callable, Any, Optional
 
 class MenuItem:
     def __init__(self, text: str,
-                 command: Callable[..., Any],
+                 command: Optional[Callable[..., Any]] = None,
                  separator: bool = False, disabled: bool = False):
         self.text = text
         self.command = command
@@ -30,7 +30,7 @@ class Menu:
         if Menu.current_menu:
             Menu.current_menu.hide()
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.menu: Optional[tk.Toplevel] = None
         self.items: List[MenuItem] = []
 
@@ -50,9 +50,11 @@ class Menu:
         self.menu.lift()
 
         def make_item(item: MenuItem) -> None:
+            frame = tk.Frame(self.menu, background="white")
+
             if item.separator:
-                separator = ttk.Separator(self.menu, orient="horizontal")
-                separator.pack(fill="x")
+                separator = ttk.Separator(frame, orient="horizontal")
+                separator.pack()
             else:
                 if item.disabled:
                     foreground = "#3D4555"
@@ -61,24 +63,29 @@ class Menu:
                     foreground = "black"
                     hover_background = "lightgray"
 
-                label = tk.Label(self.menu, text=item.text, background="white", foreground=foreground,
-                                wraplength=250, justify=tk.LEFT, anchor="w", font=config.font)
+                label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
+                                 wraplength=250, justify=tk.LEFT, anchor="w", font=config.font)
 
                 def cmd() -> None:
                     if item.command:
                         self.hide()
                         item.command()
 
-                def on_enter():
+                def on_enter() -> None:
+                    frame["background"] = hover_background
                     label["background"] = hover_background
 
-                def on_leave():
+                def on_leave() -> None:
+                    frame["background"] = "white"
                     label["background"] = "white"
 
+                frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
-                label.bind("<Enter>", lambda e: on_enter())
-                label.bind("<Leave>", lambda e: on_leave())
-                label.pack(fill="x", expand=True, padx=6, pady=0)
+                frame.bind("<Enter>", lambda e: on_enter())
+                frame.bind("<Leave>", lambda e: on_leave())
+                label.pack(expand=True, fill="x", padx=6, pady=2)
+
+            frame.pack(fill="x", expand=True)
 
         for item in self.items:
             make_item(item)
@@ -114,13 +121,16 @@ class Menu:
 
         self.menu.geometry("+%d+%d" % (x, y))
 
-    def show(self, event: Any):
+    def show(self, event: Any) -> None:
+        Menu.hide_all()
+
         def do_show() -> None:
-            self.menu.update_idletasks()
-            self.menu.deiconify()
-            self.menu.transient(app.root)
-            self.menu.update()
-            self.menu.wait_window()
+            if self.menu:
+                self.menu.update_idletasks()
+                self.menu.deiconify()
+                self.menu.transient(app.root)
+                self.menu.update()
+                self.menu.wait_window()
 
         if not self.items:
             return

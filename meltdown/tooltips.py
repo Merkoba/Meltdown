@@ -1,11 +1,11 @@
 # Modules
 from .app import app
+from .menus import Menu
 
 # Standard
 import re
 import tkinter as tk
-from tkinter import ttk
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 
 def clean_string(text: str) -> str:
@@ -36,10 +36,9 @@ class ToolTip:
         ToolTip.current_tooltip = self
 
     def show_tooltip(self) -> None:
-        from .widgets import widgets
         event = self.current_event
 
-        if widgets.menu_open:
+        if Menu.current_menu:
             return
 
         self.tooltip = tk.Toplevel(self.widget)

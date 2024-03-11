@@ -205,7 +205,6 @@ class Widgets:
         self.prepends_menu = Menu()
         self.appends_menu = Menu()
         self.inputs_menu = Menu()
-        self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
         self.format_select_enabled = True
@@ -360,7 +359,7 @@ class Widgets:
 
         self.apply_input_history()
 
-    def add_common_commands(self, menu: tk.Menu, key: str) -> None:
+    def add_common_commands(self, menu: Menu, key: str) -> None:
         from . import state
         widget = self.get_widget(key)
 
@@ -384,9 +383,6 @@ class Widgets:
         items = getattr(config, key_list)[:config.max_list_items]
         self.add_common_commands(menu, key_config)
         menu.add(text="--- Recent ---", disabled=True)
-
-        if not event:
-            event = self.last_menu_event
 
         for item in items:
             def proc(item: str = item) -> None:
