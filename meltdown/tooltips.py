@@ -42,18 +42,6 @@ class ToolTip:
         if widgets.menu_open:
             return
 
-        box: Optional[Tuple[int, int, int, int]] = None
-
-        if isinstance(self.widget, ttk.Combobox):
-            box = self.widget.bbox("insert")
-        elif isinstance(self.widget, ttk.Entry):
-            box = self.widget.bbox(0)
-        else:
-            box = self.widget.bbox()
-
-        if not box:
-            return
-
         self.tooltip = tk.Toplevel(self.widget)
         self.tooltip.wm_overrideredirect(True)
         label = tk.Label(self.tooltip, text=self.text, background="white",
@@ -61,19 +49,28 @@ class ToolTip:
         label.pack()
 
         self.tooltip.update_idletasks()
-        x, y, _, _ = box
-        y += event.y_root + 20
-        width = self.tooltip.winfo_reqwidth()
         window_width = app.root.winfo_width()
+        window_height = app.root.winfo_height()
+        tooltip_width = self.tooltip.winfo_reqwidth()
+        tooltip_height = self.tooltip.winfo_reqheight()
         window_x = app.root.winfo_x()
+        window_y = app.root.winfo_y()
         left_edge = window_x
         right_edge = window_x + window_width
-        x = event.x_root - (width // 2)
+        top_edge = window_y
+        bottom_edge = window_y + window_height
+        x = event.x_root - (tooltip_width // 2)
+        y = event.y_root + 20
 
         if x < left_edge:
             x = left_edge
-        elif x + width > right_edge:
-            x = right_edge - width
+        elif x + tooltip_width > right_edge:
+            x = right_edge - tooltip_width
+
+        if y < top_edge:
+            y = top_edge
+        elif y + tooltip_height > bottom_edge:
+            y = event.y_root - tooltip_height - 20
 
         self.tooltip.wm_geometry(f"+{x}+{y}")
 
