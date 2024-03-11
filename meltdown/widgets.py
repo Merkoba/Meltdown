@@ -420,6 +420,7 @@ class Widgets:
         self.hide_menu()
 
         if event:
+            menu.update_idletasks()
             menu_width = menu.winfo_reqwidth()
             x = event.x_root - menu_width if event.x_root - menu_width > 0 else event.x_root
             menu.post(x, event.y_root)
