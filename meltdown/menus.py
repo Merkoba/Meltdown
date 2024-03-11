@@ -20,6 +20,8 @@ class MenuItem:
 
 class Menu:
     current_menu: Optional["Menu"] = None
+    current_widget: Optional[tk.Widget] = None
+    current_command: Optional[Callable[..., Any]] = None
 
     @staticmethod
     def setup() -> None:
@@ -49,8 +51,15 @@ class Menu:
         self.menu.withdraw()
         self.menu.lift()
 
-        def make_item(item: MenuItem) -> None:
+        Menu.current_widget = None
+        Menu.current_command = None
 
+        def cmd() -> None:
+            if Menu.current_command:
+                self.hide()
+                Menu.current_command()
+
+        def make_item(item: MenuItem) -> None:
             if item.separator:
                 separator = ttk.Separator(self.menu, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
@@ -67,22 +76,39 @@ class Menu:
                 label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font)
 
-                def cmd() -> None:
-                    if item.command:
-                        self.hide()
-                        item.command()
-
                 def on_enter() -> None:
                     frame["background"] = hover_background
                     label["background"] = hover_background
+                    Menu.current_command = item.command
 
                 def on_leave() -> None:
                     frame["background"] = "white"
                     label["background"] = "white"
 
+                def on_motion(event: Any) -> None:
+                    widget = event.widget.winfo_containing(event.x_root, event.y_root)
+
+                    if not widget:
+                        return
+
+                    if Menu.current_widget != widget:
+                        if Menu.current_widget:
+                            Menu.current_widget.event_generate("<<B1-Leave>>")
+
+                        Menu.current_widget = widget
+
+                        if Menu.current_widget:
+                            Menu.current_widget.event_generate("<<B1-Enter>>")
+
                 frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
                 frame.bind("<Enter>", lambda e: on_enter())
+                frame.bind("<B1-Motion>", lambda e: on_motion(e))
+                label.bind("<B1-Motion>", lambda e: on_motion(e))
+                frame.bind("<<B1-Enter>>", lambda e: on_enter())
+                label.bind("<<B1-Enter>>", lambda e: on_enter())
+                frame.bind("<<B1-Leave>>", lambda e: on_leave())
+                label.bind("<<B1-Leave>>", lambda e: on_leave())
                 frame.bind("<Leave>", lambda e: on_leave())
                 label.pack(expand=True, fill="x", padx=6, pady=2)
 
