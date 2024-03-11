@@ -14,11 +14,13 @@ dialog_delay = 100
 
 def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
     dialog = tk.Toplevel(app.root)
+    container = tk.Frame(dialog, padx=10, pady=6)
+    container.pack()
     dialog.title(title)
-    tk.Label(dialog, text=text, font=config.font, wraplength=500).pack(padx=6)
-    top_frame = tk.Frame(dialog)
+    tk.Label(container, text=text, font=config.font, wraplength=500).pack(padx=6)
+    top_frame = tk.Frame(container)
     top_frame.pack()
-    button_frame = tk.Frame(dialog)
+    button_frame = tk.Frame(container)
     button_frame.pack()
     dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
     dialog.withdraw()
