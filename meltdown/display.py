@@ -3,6 +3,7 @@ from .config import config
 from .app import app
 from . import widgetutils
 from .enums import Fill
+from .menus import Menu
 
 # Standard
 import random
@@ -32,12 +33,12 @@ class Display:
         self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
         self.root.bind("<Button-1>", self.on_tab_start_drag)
         self.root.bind("<B1-Motion>", self.on_tab_drag)
-        self.output_menu = widgetutils.make_menu()
-        self.tab_menu = widgetutils.make_menu()
-        self.tab_menu.add_command(label="Rename", command=lambda: self.tab_menu_rename())
-        self.tab_menu.add_command(label="Close", command=lambda: self.tab_menu_close())
-        self.output_menu.add_command(label="Copy All", command=lambda: self.copy_output())
-        self.output_menu.add_command(label="Select All", command=lambda: self.select_output())
+        self.output_menu = Menu()
+        self.tab_menu = Menu()
+        self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
+        self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
+        self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
+        self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.current_tab = "none"
         self.drag_start_index = 0
         self.tab_number = 1
@@ -58,7 +59,6 @@ class Display:
 
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
-        output.bind("<Button-1>", lambda e: widgets.hide_menu())
         output.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
         output.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
         output.tag_config("name_user", foreground="#87CEEB")
@@ -145,16 +145,14 @@ class Display:
         return self.tabs[id].output
 
     def click(self, event: Any) -> None:
-        from .widgets import widgets
-        widgets.hide_menu()
+        pass
 
     def right_click(self, event: Any) -> None:
-        from .widgets import widgets
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if tab_id:
             self.tab_menu_id = tab_id
-            widgets.show_menu(self.tab_menu, event)
+            self.tab_menu.show(event)
 
     def middle_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -264,8 +262,7 @@ class Display:
                 tab.auto_scroll = True
 
     def show_output_menu(self, event: Any) -> None:
-        from .widgets import widgets
-        widgets.show_menu(self.output_menu, event)
+        self.output_menu.show(event)
 
     def output_top(self) -> None:
         output = self.get_current_output()

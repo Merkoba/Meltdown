@@ -5,6 +5,7 @@ from .app import app
 from .display import Display
 from .tooltips import ToolTip
 from .enums import Fill
+from .menus import Menu
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -15,7 +16,6 @@ from tkinter import ttk
 from typing import Any
 from tkinter import filedialog
 from typing import Optional, Any, Callable
-from functools import partial
 
 
 right_padding = 11
@@ -199,12 +199,12 @@ class Widgets:
         submit_button = widgetutils.make_button(frame, "Submit", lambda: self.submit(), right_padding=right_padding)
         ToolTip(submit_button, "Use the input as the prompt for the AI")
 
-        self.main_menu = widgetutils.make_menu()
-        self.models_menu = widgetutils.make_menu()
-        self.systems_menu = widgetutils.make_menu()
-        self.prepends_menu = widgetutils.make_menu()
-        self.appends_menu = widgetutils.make_menu()
-        self.inputs_menu = widgetutils.make_menu()
+        self.main_menu = Menu()
+        self.models_menu = Menu()
+        self.systems_menu = Menu()
+        self.prepends_menu = Menu()
+        self.appends_menu = Menu()
+        self.inputs_menu = Menu()
         self.menu_open: Optional[tk.Menu] = None
         self.stop_button_enabled = True
         self.load_button_enabled = True
@@ -242,22 +242,22 @@ class Widgets:
 
         self.fill()
 
-        self.main_menu.add_command(label="Recent Models", command=lambda: self.show_recent_models())
-        self.main_menu.add_command(label="Browse Models", command=lambda: self.browse_models())
-        self.main_menu.add_separator()
-        self.main_menu.add_command(label="Save Config", command=lambda: state.save_config_state())
-        self.main_menu.add_command(label="Load Config", command=lambda: state.load_config_state())
-        self.main_menu.add_command(label="Reset Config", command=lambda: state.reset_config())
-        self.main_menu.add_separator()
-        self.main_menu.add_command(label="Save Session", command=lambda: session.save_state())
-        self.main_menu.add_command(label="Load Session", command=lambda: session.load_state())
-        self.main_menu.add_separator()
-        self.main_menu.add_command(label="Compact", command=lambda: app.toggle_compact())
-        self.main_menu.add_command(label="Resize", command=lambda: app.resize())
-        self.main_menu.add_command(label="About", command=lambda: app.show_about())
-        self.main_menu.add_separator()
-        self.main_menu.add_command(label="Exit", command=lambda: app.exit())
-        self.main_menu_button.bind("<Button-1>", lambda e: self.show_main_menu(e))
+        self.main_menu.add(text="Recent Models", command=lambda: self.show_recent_models())
+        self.main_menu.add(text="Browse Models", command=lambda: self.browse_models())
+        self.main_menu.separator()
+        self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
+        self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
+        self.main_menu.add(text="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.separator()
+        self.main_menu.add(text="Save Session", command=lambda: session.save_state())
+        self.main_menu.add(text="Load Session", command=lambda: session.load_state())
+        self.main_menu.separator()
+        self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
+        self.main_menu.add(text="Resize", command=lambda: app.resize())
+        self.main_menu.add(text="About", command=lambda: app.show_about())
+        self.main_menu.separator()
+        self.main_menu.add(text="Exit", command=lambda: app.exit())
+        self.main_menu_button.bind("<ButtonRelease-1>", lambda e: self.show_main_menu(e))
 
         self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
         self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
@@ -296,13 +296,6 @@ class Widgets:
         bind("model")
         bind("prepend")
         bind("append")
-
-        self.prepare_menu(self.main_menu)
-        self.prepare_menu(self.models_menu)
-        self.prepare_menu(self.systems_menu)
-        self.prepare_menu(self.prepends_menu)
-        self.prepare_menu(self.appends_menu)
-        self.prepare_menu(self.inputs_menu)
 
         self.input_history_index: int
         self.reset_history_index()
@@ -375,22 +368,22 @@ class Widgets:
             return
 
         if (type(widget) == ttk.Entry) or (type(widget) == tk.Text):
-            menu.add_command(label="Copy", command=lambda: self.copy(key))
-            menu.add_command(label="Paste", command=lambda: self.paste(key))
+            menu.add(text="Copy", command=lambda: self.copy(key))
+            menu.add(text="Paste", command=lambda: self.paste(key))
 
             if key in config.clearables:
-                menu.add_command(label="Clear", command=lambda: self.clear(key))
+                menu.add(text="Clear", command=lambda: self.clear(key))
 
         if config.get_default(key):
-            menu.add_command(label="Reset", command=lambda: state.reset_one_config(key))
+            menu.add(text="Reset", command=lambda: state.reset_one_config(key))
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None) -> None:
         menu = getattr(self, f"{key_list}_menu")
-        menu.delete(0, tk.END)
+        menu.clear()
         items = getattr(config, key_list)[:config.max_list_items]
         self.add_common_commands(menu, key_config)
-        menu.add_command(label='--- Recent ---', state='disabled')
+        menu.add(text="--- Recent ---", disabled=True)
 
         if not event:
             event = self.last_menu_event
@@ -399,9 +392,9 @@ class Widgets:
             def proc(item: str = item) -> None:
                 command(item)
 
-            menu.add_command(label=item[:80], command=proc)
+            menu.add(text=item[:80], command=proc)
 
-        self.show_menu(menu, event)
+        menu.show(event)
 
     def show_recent_models(self, event: Optional[Any] = None) -> None:
         from .model import model
@@ -422,25 +415,6 @@ class Widgets:
 
     def show_recent_inputs(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
-
-    def show_menu(self, menu: tk.Menu, event: Optional[Any] = None) -> None:
-        self.hide_menu()
-
-        if event:
-            menu.update_idletasks()
-            width = menu.winfo_reqwidth()
-            x = event.x_root - width if event.x_root - width > 0 else event.x_root
-            menu.post(x, event.y_root)
-        else:
-            widgetutils.show_menu_at_center(menu)
-
-        self.last_menu_event = event
-        self.menu_open = menu
-
-    def hide_menu(self) -> None:
-        if self.menu_open:
-            self.menu_open.unpost()
-            self.menu_open = None
 
     def browse_models(self) -> None:
         from . import state
@@ -538,7 +512,7 @@ class Widgets:
         app.root.update_idletasks()
 
     def show_main_menu(self, event: Any) -> None:
-        self.show_menu(self.main_menu, event)
+        self.main_menu.show(event)
 
     def add_generic_menus(self) -> None:
         def add_menu(key: str) -> None:
@@ -547,14 +521,11 @@ class Widgets:
             if not widget:
                 return
 
-            menu = widgetutils.make_menu()
+            menu = Menu()
             self.add_common_commands(menu, key)
 
             if key not in ["model", "system", "prepend", "append", "input"]:
-                show_func = partial(self.show_menu, menu=menu)
-                widget.bind("<Button-3>", lambda e: show_func(event=e))
-
-            widget.bind("<Button-1>", lambda e: self.hide_menu())
+                widget.bind("<Button-3>", lambda e: menu.show(e))
 
         for key in config.defaults():
             add_menu(key)
@@ -712,13 +683,6 @@ class Widgets:
             self.clear_input()
         else:
             self.stop()
-
-    def prepare_menu(self, menu: tk.Menu) -> None:
-        def action() -> None:
-            if self.menu_open == menu:
-                self.menu_open = None
-
-        menu.bind("<Unmap>", lambda e: action())
 
 
 widgets: Widgets = Widgets()

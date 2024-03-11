@@ -77,6 +77,7 @@ class ToolTip:
 
         def show() -> None:
             if self.tooltip:
+                self.tooltip.update_idletasks()
                 self.tooltip.deiconify()
 
         app.root.after(100, lambda: show())
