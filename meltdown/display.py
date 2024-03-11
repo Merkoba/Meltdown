@@ -80,7 +80,7 @@ class Display:
             return ""
 
     def close_tab(self, event: Optional[Any] = None, tab_id: str = "",
-                  force: bool = False, make_empty: bool = True, show_close_all: bool = True) -> None:
+                  force: bool = False, make_empty: bool = True, show_close_all: bool = False) -> None:
         if (not tab_id) and event:
             tab_id = self.tab_on_coords(event.x, event.y)
 
@@ -160,7 +160,7 @@ class Display:
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if tab_id:
-            self.close_tab(event, show_close_all=False)
+            self.close_tab(event)
 
     def double_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -181,7 +181,7 @@ class Display:
             session.change_name(tab.document_id, name)
 
     def tab_menu_close(self) -> None:
-        self.close_tab(tab_id=self.tab_menu_id, show_close_all=False)
+        self.close_tab(tab_id=self.tab_menu_id)
 
     def on_tab_start_drag(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)

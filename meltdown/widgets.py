@@ -152,7 +152,9 @@ class Widgets:
                                                     lambda: self.display.clear_output(), fill=Fill.HORIZONTAL)
         ToolTip(self.clear_button, "Clear the output of the current tab and reset its context")
 
-        self.close_button = widgetutils.make_button(frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
+        self.close_button = widgetutils.make_button(
+            frame, "Close", lambda: self.display.close_tab(
+                show_close_all=True), fill=Fill.HORIZONTAL)
         ToolTip(self.close_button, "Close the current tab")
 
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
