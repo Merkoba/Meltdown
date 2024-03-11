@@ -306,7 +306,7 @@ class Widgets:
             if (type(event.widget) == tk.Text) or \
                     (type(event.widget) == ttk.Combobox) or (type(event.widget) == ttk.Notebook):
                 if (len(event.keysym.strip()) == 1) or (event.keysym == "slash"):
-                    self.input.focus_set()
+                    self.focus_input()
                     self.input.insert(tk.END, event.char)
             # Input history Up or Down
             elif event.widget == self.input:
@@ -317,9 +317,12 @@ class Widgets:
 
         app.root.bind("<KeyPress>", on_key)
 
-        self.input.focus_set()
+        self.focus_input()
         self.add_generic_menus()
         self.start_checks()
+
+    def focus_input(self) -> None:
+        self.input.focus_set()
 
     def apply_input_history(self) -> None:
         text = config.inputs[self.input_history_index]

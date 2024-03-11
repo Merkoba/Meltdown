@@ -111,7 +111,9 @@ class Display:
         self.drag_start_index = self.root.index(self.root.select())  # type: ignore
 
     def on_tab_change(self, event: Any) -> None:
+        from .widgets import widgets
         self.update_output()
+        widgets.focus_input()
 
     def get_current_tab(self) -> Tab:
         return self.get_tab(self.current_tab)
