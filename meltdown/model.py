@@ -155,11 +155,17 @@ class Model:
             content = content.replace("@date", timeutils.today())
             return content
 
+        def check_dot(text: str) -> str:
+            if text.endswith(".") or text.endswith("!") or text.endswith("?"):
+                return text + " "
+            else:
+                return text + ". "
+
         if config.prepend:
-            prompt = config.prepend + ". " + prompt
+            prompt = check_dot(config.prepend) + prompt
 
         if config.append:
-            prompt = prompt + ". " + config.append
+            prompt = check_dot(prompt) + config.append
 
         widgets.prompt("user", tab_id=tab_id)
         widgets.display.insert(prompt, tab_id=tab_id)
