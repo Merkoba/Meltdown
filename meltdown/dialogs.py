@@ -9,9 +9,6 @@ import tkinter as tk
 from tkinter import ttk
 
 
-dialog_delay = 100
-
-
 def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
     dialog = tk.Frame(app.root)
     dialog.lift()
@@ -28,21 +25,18 @@ def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
 
 
 def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
-    def show() -> None:
-        dialog.update_idletasks()
-        window_width = app.root.winfo_width()
-        window_height = app.root.winfo_height()
-        dialog_width = dialog.winfo_reqwidth()
-        dialog_height = dialog.winfo_reqheight()
-        x = (window_width - dialog_width) // 2
-        y = (window_height - dialog_height) // 2
-        dialog.place(x=x, y=y)
-        dialog.focus_set()
+    dialog.update_idletasks()
+    window_width = app.root.winfo_width()
+    window_height = app.root.winfo_height()
+    dialog_width = dialog.winfo_reqwidth()
+    dialog_height = dialog.winfo_reqheight()
+    x = (window_width - dialog_width) // 2
+    y = (window_height - dialog_height) // 2
+    dialog.place(x=x, y=y)
+    dialog.focus_set()
 
-        if widget:
-            widget.focus_set()
-
-    app.root.after(dialog_delay, show)
+    if widget:
+        widget.focus_set()
 
 
 def hide_dialog(dialog: tk.Frame) -> None:
@@ -61,17 +55,17 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any],
                  cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
     def ok() -> None:
         hide_dialog(dialog)
-        app.root.after(dialog_delay, lambda: cmd_ok())
+        cmd_ok()
 
     def cancel() -> None:
         hide_dialog(dialog)
 
         if cmd_cancel:
-            app.root.after(dialog_delay, lambda: cmd_cancel())
+            cmd_cancel()
 
     def generic(func: Callable[..., Any]) -> None:
         hide_dialog(dialog)
-        app.root.after(dialog_delay, lambda: func())
+        func()
 
     dialog, top_frame, button_frame = make_dialog(text)
     dialog.bind("<Return>", lambda e: ok())
@@ -99,13 +93,13 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     def ok() -> None:
         text = entry.get()
         hide_dialog(dialog)
-        app.root.after(dialog_delay, lambda: cmd_ok(text))
+        cmd_ok(text)
 
     def cancel() -> None:
         hide_dialog(dialog)
 
         if cmd_cancel:
-            app.root.after(dialog_delay, lambda: cmd_cancel())
+            cmd_cancel()
 
     dialog, top_frame, button_frame = make_dialog(text)
     entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
