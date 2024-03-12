@@ -135,20 +135,20 @@ class Display:
         if tab:
             document = session.get_document(tab.document_id)
 
-            if not document.loaded:
+            if document and (not document.loaded):
                 document.print()
                 document.loaded = True
 
         widgets.focus_input()
 
-    def get_current_tab(self) -> Tab:
+    def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
 
-    def get_current_output(self) -> tk.Text:
+    def get_current_output(self) -> Optional[tk.Text]:
         return self.get_output(self.current_tab)
 
-    def get_tab(self, id: str) -> Tab:
-        return self.tabs[id]
+    def get_tab(self, id: str) -> Optional[Tab]:
+        return self.tabs.get(id)
 
     def get_tab_by_document_id(self, document_id: str) -> Optional[Tab]:
         for tab in self.tabs.values():
@@ -157,8 +157,13 @@ class Display:
 
         return None
 
-    def get_output(self, id: str) -> tk.Text:
-        return self.tabs[id].output
+    def get_output(self, id: str) -> Optional[tk.Text]:
+        tab = self.get_tab(id)
+
+        if tab:
+            return tab.output
+        else:
+            return None
 
     def click(self, event: Any) -> None:
         pass
@@ -191,6 +196,10 @@ class Display:
 
         if name:
             tab = self.get_tab(tab_id)
+
+            if not tab:
+                return
+
             self.root.tab(tab_id, text=name)
             session.change_name(tab.document_id, name)
 
@@ -271,6 +280,9 @@ class Display:
     def on_output_scroll(self, tab_id: str, direction: str) -> None:
         tab = self.get_tab(tab_id)
 
+        if not tab:
+            return
+
         if direction == "up":
             tab.auto_scroll = False
         elif direction == "down":
@@ -282,12 +294,19 @@ class Display:
 
     def output_top(self) -> None:
         output = self.get_current_output()
-        widgetutils.to_top(output)
+
+        if output:
+            widgetutils.to_top(output)
 
     def output_bottom(self) -> None:
         tab = self.get_current_tab()
+
+        if not tab:
+            return
+
         tab.auto_scroll = True
         widgetutils.to_bottom(tab.output)
+        self.output_scroll()
 
     def copy_output(self) -> None:
         text = self.get_output_text()
@@ -298,6 +317,10 @@ class Display:
             tab_id = self.current_tab
 
         output = self.get_output(tab_id)
+
+        if not output:
+            return ""
+
         text = widgetutils.get_text(output)
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
@@ -310,12 +333,19 @@ class Display:
 
         output = self.get_output(tab_id)
 
+        if not output:
+            return
+
         if not self.get_output_text(tab_id):
             return
 
         def action() -> None:
             from .session import session
             tab = self.get_tab(tab_id)
+
+            if (not tab) or (not output):
+                return
+
             widgetutils.clear_text(output, True)
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
@@ -324,7 +354,9 @@ class Display:
 
     def select_output(self) -> None:
         output = self.get_current_output()
-        widgetutils.select_all(output)
+
+        if output:
+            widgetutils.select_all(output)
 
     def print(self, text: str, linebreak: bool = True, tab_id: str = "") -> None:
         if not app.exists():
@@ -337,6 +369,9 @@ class Display:
             tab_id = self.current_tab
 
         output = self.get_output(tab_id)
+
+        if not output:
+            return
 
         if widgetutils.text_length(output) and \
                 (widgetutils.last_character(output) != "\n"):
@@ -357,6 +392,10 @@ class Display:
             tab_id = self.current_tab
 
         tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
         widgetutils.insert_text(tab.output, text, True)
 
         if tab.auto_scroll:
@@ -378,6 +417,10 @@ class Display:
     def remove_tab(self, tab_id: str) -> None:
         from .session import session
         tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
         session.remove(tab.document_id)
         del self.tabs[tab_id]
 
@@ -393,3 +436,17 @@ class Display:
 
         name = con() + vow() + con() + vow() + con() + vow()
         return name.capitalize()
+
+    def output_scroll(self) -> None:
+        from .widgets import widgets
+        output = self.get_current_output()
+
+        if not output:
+            return
+
+        percentage = int(output.yview()[1] * 100)
+
+        if percentage == 100:
+            widgets.disable_bottom_button()
+        else:
+            widgets.enable_bottom_button()

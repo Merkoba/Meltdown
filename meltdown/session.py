@@ -5,7 +5,7 @@ from . import timeutils
 
 # Standard
 import json
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from tkinter import filedialog
 from pathlib import Path
 
@@ -68,7 +68,7 @@ class Session:
             del self.items[document_id]
             self.save()
 
-    def get_document(self, document_id: str) -> Document:
+    def get_document(self, document_id: str) -> Optional[Document]:
         return self.items[document_id]
 
     def change_name(self, document_id: str, name: str) -> None:

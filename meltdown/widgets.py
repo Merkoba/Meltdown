@@ -160,9 +160,6 @@ class Widgets:
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.bottom_button = widgetutils.make_button(frame, "Bottom", lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL)
-        ToolTip(self.bottom_button, "Scroll to the bottom of the output")
-
         self.log_button = widgetutils.make_button(frame, "Log",
                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=right_padding)
         ToolTip(self.log_button, "Save the output to a log file")
@@ -174,6 +171,12 @@ class Widgets:
 
         notebook = widgetutils.make_notebook(frame, fill=Fill.BOTH, right_padding=right_padding)
         self.display = Display(notebook)
+
+        # Bottom
+        frame = get_frame()
+
+        self.bottom_button = widgetutils.make_button(frame, "Go To Bottom", lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL)
+        ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         # Addons
         frame = get_frame()
@@ -208,6 +211,7 @@ class Widgets:
         self.stop_button_enabled = True
         self.load_button_enabled = True
         self.format_select_enabled = True
+        self.bottom_button_enabled = True
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -320,6 +324,7 @@ class Widgets:
 
         self.focus_input()
         self.add_generic_menus()
+        self.disable_bottom_button()
         self.start_checks()
 
     def focus_input(self) -> None:
@@ -435,6 +440,7 @@ class Widgets:
         text = self.input.get()
 
         if text:
+            self.display.output_bottom()
             self.clear_input()
             state.add_input(text)
 
@@ -487,6 +493,10 @@ class Widgets:
 
         self.display.print(prompt, False, tab_id=tab_id)
         output = self.display.get_output(tab_id)
+
+        if not output:
+            return
+
         start_index = output.index(f"end - {len(prompt)}c")
         end_index = output.index("end - 3c")
         output.tag_add(f"name_{who}", start_index, end_index)
@@ -566,6 +576,18 @@ class Widgets:
             self.disable_widget(self.format)
             self.format_select_enabled = False
 
+    def enable_bottom_button(self) -> None:
+        if (not self.bottom_button_enabled) and app.exists():
+            self.bottom_button.configure(style="Normal.TButton")
+            self.enable_widget(self.bottom_button)
+            self.bottom_button_enabled = True
+
+    def disable_bottom_button(self) -> None:
+        if self.bottom_button_enabled and app.exists():
+            self.bottom_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.bottom_button)
+            self.bottom_button_enabled = False
+
     def enable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["!disabled"])
 
@@ -591,6 +613,8 @@ class Widgets:
             self.load_button.configure(text="Unload")
         else:
             self.load_button.configure(text="Load")
+
+        self.display.output_scroll()
 
     def start_checks(self) -> None:
         self.do_checks()
