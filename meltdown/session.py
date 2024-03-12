@@ -95,7 +95,14 @@ class Session:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.touch(exist_ok=True)
 
-        self.load_items(path)
+        try:
+            self.load_items(path)
+        except BaseException as e:
+            self.reset()
+
+    def reset(self) -> None:
+        self.items = {}
+        widgets.display.close_all_tabs(force=True)
 
     def load_items(self, path: Path) -> None:
         with open(path, "r") as file:
@@ -108,13 +115,10 @@ class Session:
             return
 
         for item in items:
-            try:
-                document = Document(item["id"], item["name"])
-                document.items = item["items"]
-                self.items[document.id] = document
-                widgets.display.make_tab(document.name, document.id, select_tab=False)
-            except BaseException as e:
-                session.items = []
+            document = Document(item["id"], item["name"])
+            document.items = item["items"]
+            self.items[document.id] = document
+            widgets.display.make_tab(document.name, document.id, select_tab=False)
 
     def save_state(self) -> None:
         if not config.sessions_path.exists():
@@ -149,11 +153,15 @@ class Session:
             return
 
         widgets.display.close_all_tabs(force=True, make_empty=False)
-        self.load_items(path)
-        self.save()
+
+        try:
+            self.load_items(path)
+            self.save()
+        except BaseException as e:
+            self.reset()
 
     def to_json(self) -> str:
-        sessions_list = [document.to_dict() for document in session.items.values() if document.items]
+        sessions_list = [document.to_dict() for document in self.items.values() if document.items]
         return json.dumps(sessions_list, indent=4)
 
 
