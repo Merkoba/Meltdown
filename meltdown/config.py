@@ -39,7 +39,7 @@ class Config:
         self.text_background = "#2B303B"
         self.combobox_background = "#2B303B"
         self.text_foreground = "white"
-        self.max_list_items = 12
+        self.max_list_items = 10
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
         self.system_delay = 3
