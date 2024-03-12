@@ -185,7 +185,7 @@ class Model:
                         content = replace_content(content)
 
                     messages.append({"role": key, "content": content})
-        print(messages)
+
         if config.printlogs:
             print("-----")
             print("prompt:", full_prompt)
