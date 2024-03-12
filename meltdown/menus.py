@@ -52,7 +52,7 @@ class Menu:
         def cmd() -> None:
             if Menu.current_command:
                 self.hide()
-                Menu.current_command()
+                app.root.after(10, lambda: Menu.current_command())
 
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)
