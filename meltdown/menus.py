@@ -29,7 +29,7 @@ class Menu:
             Menu.current_menu.hide()
 
     def __init__(self) -> None:
-        self.menu: Optional[tk.Frame] = None
+        self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
 
     def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
@@ -42,8 +42,9 @@ class Menu:
         self.items = []
 
     def make(self, event: Any) -> None:
-        self.menu = tk.Frame(bg="white")
-        self.menu.lift()
+        self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
+        self.container = tk.Frame(self.root, bg="white", borderwidth=0)
+        self.root.create_window((0, 0), window=self.container, anchor="nw")
 
         Menu.current_widget = None
         Menu.current_command = None
@@ -71,13 +72,38 @@ class Menu:
                 if Menu.current_widget:
                     Menu.current_widget.event_generate("<<Custom-Enter>>")
 
+        def on_mousewheel(event: Any) -> None:
+            if not self.container:
+                return
+
+            y_top = self.container.winfo_y()
+            y_bottom = y_top + self.container.winfo_height()
+            height = self.root.winfo_height()
+            distance = height - y_bottom
+
+            if event.num == 4:
+                if y_top >= 0:
+                    return
+
+                self.root.yview_scroll(-1, "units")  # Scroll up
+            elif event.num == 5:
+                if distance >= 0:
+                    return
+
+                self.root.yview_scroll(1, "units")  # Scroll down
+
+        self.container.bind("<Button-4>", on_mousewheel)
+        self.container.bind("<Button-5>", on_mousewheel)
+
         def make_item(item: MenuItem) -> None:
             if item.separator:
-                separator = ttk.Separator(self.menu, orient="horizontal")
+                separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
                 separator.bind("<Motion>", lambda e: on_motion(e))
+                separator.bind("<Button-4>", on_mousewheel)
+                separator.bind("<Button-5>", on_mousewheel)
             else:
-                frame = tk.Frame(self.menu, background="white")
+                frame = tk.Frame(self.container, background="white", borderwidth=0)
 
                 if item.disabled:
                     foreground = "#3D4555"
@@ -87,7 +113,7 @@ class Menu:
                     hover_background = "lightgray"
 
                 label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
-                                 wraplength=600, justify=tk.LEFT, anchor="w", font=config.font)
+                                 wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0)
 
                 def on_enter() -> None:
                     frame["background"] = hover_background
@@ -106,19 +132,25 @@ class Menu:
                 label.bind("<<Custom-Enter>>", lambda e: on_enter())
                 frame.bind("<<Custom-Leave>>", lambda e: on_leave())
                 label.bind("<<Custom-Leave>>", lambda e: on_leave())
+                label.bind("<Button-4>", on_mousewheel)
+                label.bind("<Button-5>", on_mousewheel)
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
         for item in self.items:
             make_item(item)
 
-        self.menu.bind("<FocusOut>", lambda e: self.hide())
+        self.root.bind("<FocusOut>", lambda e: self.hide())
 
-        self.menu.update_idletasks()
+        self.root.update_idletasks()
+        self.container.update_idletasks()
+        self.root.config(width=self.container.winfo_reqwidth())
+        h = min(500, self.container.winfo_reqheight())
+        self.root.config(height=h)
         window_width = app.root.winfo_width()
         window_height = app.root.winfo_height()
-        menu_width = self.menu.winfo_reqwidth()
-        menu_height = self.menu.winfo_reqheight()
+        menu_width = self.root.winfo_reqwidth()
+        menu_height = self.root.winfo_reqheight()
         x = event.x_root - app.root.winfo_rootx()
         y = event.y_root - app.root.winfo_rooty()
 
@@ -132,7 +164,7 @@ class Menu:
         elif y + menu_height > window_height:
             y = window_height - menu_height
 
-        self.menu.place(x=x, y=y)
+        self.root.place(x=x, y=y)
 
     def show(self, event: Any) -> None:
         Menu.hide_all()
@@ -142,13 +174,13 @@ class Menu:
 
         self.make(event)
 
-        if self.menu:
-            self.menu.update_idletasks()
-            self.menu.focus_set()
+        if self.root:
+            self.root.update_idletasks()
+            self.root.focus_set()
             Menu.current_menu = self
 
     def hide(self) -> None:
-        if self.menu:
-            self.menu.place_forget()
-            self.menu.destroy()
+        if self.root:
+            self.root.place_forget()
+            self.root.destroy()
             Menu.current_menu = None
