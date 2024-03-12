@@ -27,7 +27,7 @@ def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
     return dialog, top_frame, button_frame
 
 
-def show_dialog(dialog: tk.Frame) -> None:
+def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
     def show() -> None:
         dialog.update_idletasks()
         window_width = app.root.winfo_width()
@@ -38,6 +38,9 @@ def show_dialog(dialog: tk.Frame) -> None:
         y = (window_height - dialog_height) // 2
         dialog.place(x=x, y=y)
         dialog.focus_set()
+
+        if widget:
+            widget.focus_set()
 
     app.root.after(dialog_delay, show)
 
@@ -110,5 +113,4 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
     entry.pack(padx=6, pady=6)
     make_dialog_button(button_frame, "Cancel", cancel)
     make_dialog_button(button_frame, "Ok", ok)
-    entry.focus()
-    show_dialog(dialog)
+    show_dialog(dialog, entry)
