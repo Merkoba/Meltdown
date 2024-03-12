@@ -45,7 +45,7 @@ class Config:
         self.system_delay = 3
         self.system_threshold = 70
         self.printlogs = False
-        self.max_log = 100
+        self.max_log = 3
 
         self.config_file = f"~/.config/{self.program}/config.json"
         self.configs_dir = f"~/.config/{self.program}/configs/"

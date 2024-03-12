@@ -21,10 +21,7 @@ class Document:
         session.save()
 
     def limit(self) -> None:
-        if config.context:
-            self.items = self.items[-config.context:]
-        else:
-            self.clear()
+        self.items = self.items[-config.max_log:]
 
     def clear(self) -> None:
         self.items = []

@@ -172,16 +172,12 @@ class Model:
         if not document:
             document = session.add(tab_id)
 
-        if config.context > 0:
-            context_dict = {"user": full_prompt}
-        else:
-            context_dict = None
-
+        log_dict = {"user": full_prompt}
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
         if document.items:
-            for item in document.items:
+            for item in document.items[-config.context:]:
                 for key in item:
                     content = item[key]
 
@@ -189,7 +185,7 @@ class Model:
                         content = replace_content(content)
 
                     messages.append({"role": key, "content": content})
-
+        print(messages)
         if config.printlogs:
             print("-----")
             print("prompt:", full_prompt)
@@ -272,9 +268,9 @@ class Model:
         except BaseException:
             pass
 
-        if context_dict and tokens:
-            context_dict["assistant"] = "".join(tokens).strip()
-            document.add(context_dict)
+        if tokens:
+            log_dict["assistant"] = "".join(tokens).strip()
+            document.add(log_dict)
 
         self.lock.release()
 
