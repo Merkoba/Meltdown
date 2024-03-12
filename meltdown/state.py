@@ -8,9 +8,10 @@ from .app import app
 # Standard
 import os
 import json
-from typing import Optional, Any, IO
+from typing import Optional, Any, IO, List
 from pathlib import Path
 from tkinter import filedialog
+import subprocess
 
 
 def save_file(path: Path, obj: Any) -> None:
@@ -332,16 +333,21 @@ def on_format_change(load: bool = True) -> None:
 
 def open_logs_dir() -> None:
     path = config.logs_path
+    path.mkdir(parents=True, exist_ok=True)
     os_name = os.name.lower()
+
+    def run(cmd: List[str]) -> None:
+        subprocess.Popen(cmd, start_new_session=True,
+                         stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     if os_name == "posix":
         # Linux
-        os.system(f"xdg-open {path}")
+        run([f"xdg-open", str(path)])
     elif os_name == "nt":
         # Windows
-        os.system(f"start {path}")
+        run([f"start", str(path)])
     elif os_name == "darwin":
         # macOS
-        os.system(f"open {path}")
+        run([f"open", str(path)])
     else:
-        print(f"Unsupported operating system: {os_name}")
+        print(f"Unrecognized OS: {os_name}")
