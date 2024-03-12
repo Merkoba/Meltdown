@@ -10,14 +10,17 @@ from tkinter import ttk
 
 
 def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
-    dialog = tk.Frame(app.root)
+    background = "white"
+    foreground = "black"
+
+    dialog = tk.Frame(app.root, bg=background)
     dialog.lift()
-    container = tk.Frame(dialog, padx=10, pady=4)
+    container = tk.Frame(dialog, padx=10, pady=4, bg=background)
     container.pack()
-    tk.Label(container, text=text, font=config.font, wraplength=500).pack(padx=6)
+    tk.Label(container, text=text, font=config.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
     top_frame = tk.Frame(container)
     top_frame.pack()
-    button_frame = tk.Frame(container)
+    button_frame = tk.Frame(container, bg=background)
     button_frame.pack()
     dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
     dialog.bind("<FocusOut>", lambda e: hide_dialog(dialog))
