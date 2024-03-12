@@ -444,9 +444,7 @@ class Display:
         if not output:
             return
 
-        percentage = int(output.yview()[1] * 100)
-
-        if percentage == 100:
+        if output.yview()[1] == 1.0:
             widgets.disable_bottom_button()
         else:
             widgets.enable_bottom_button()
