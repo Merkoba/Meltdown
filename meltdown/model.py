@@ -172,7 +172,7 @@ class Model:
         if not document:
             document = session.add(tab_id)
 
-        log_dict = {"user": full_prompt}
+        log_dict = {"user": prompt}
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
