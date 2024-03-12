@@ -297,6 +297,7 @@ class Display:
 
         if output:
             widgetutils.to_top(output)
+            self.output_scroll()
 
     def output_bottom(self) -> None:
         tab = self.get_current_tab()
@@ -444,7 +445,14 @@ class Display:
         if not output:
             return
 
-        if output.yview()[1] == 1.0:
+        yview = output.yview
+
+        if yview()[1] == 1.0:
             widgets.disable_bottom_button()
         else:
             widgets.enable_bottom_button()
+
+        if yview()[0] == 0:
+            widgets.disable_top_button()
+        else:
+            widgets.enable_top_button()

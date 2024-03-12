@@ -157,12 +157,13 @@ class Widgets:
                 show_close_all=True), fill=Fill.HORIZONTAL)
         ToolTip(self.close_button, "Close the current tab")
 
-        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(), fill=Fill.HORIZONTAL)
-        ToolTip(self.top_button, "Scroll to the top of the output")
-
         self.log_button = widgetutils.make_button(frame, "Log",
-                                                  lambda: self.display.save_log(), fill=Fill.HORIZONTAL, right_padding=right_padding)
+                                                  lambda: self.display.save_log(), fill=Fill.HORIZONTAL)
         ToolTip(self.log_button, "Save the output to a log file")
+
+        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(),
+                                                  fill=Fill.HORIZONTAL, right_padding=right_padding)
+        ToolTip(self.top_button, "Scroll to the top of the output")
 
         # Output
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
@@ -212,6 +213,7 @@ class Widgets:
         self.load_button_enabled = True
         self.format_select_enabled = True
         self.bottom_button_enabled = True
+        self.top_button_enabled = True
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -587,6 +589,18 @@ class Widgets:
             self.bottom_button.configure(style="Disabled.TButton")
             self.disable_widget(self.bottom_button)
             self.bottom_button_enabled = False
+
+    def enable_top_button(self) -> None:
+        if (not self.top_button_enabled) and app.exists():
+            self.top_button.configure(style="Normal.TButton")
+            self.enable_widget(self.top_button)
+            self.top_button_enabled = True
+
+    def disable_top_button(self) -> None:
+        if self.top_button_enabled and app.exists():
+            self.top_button.configure(style="Disabled.TButton")
+            self.disable_widget(self.top_button)
+            self.top_button_enabled = False
 
     def enable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["!disabled"])
