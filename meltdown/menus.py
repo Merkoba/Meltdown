@@ -59,10 +59,29 @@ class Menu:
                 self.hide()
                 Menu.current_command()
 
+        def on_motion(event: Any) -> None:
+            widget = event.widget.winfo_containing(event.x_root, event.y_root)
+
+            if not widget:
+                return
+
+            if isinstance(widget, ttk.Separator):
+                return
+
+            if Menu.current_widget != widget:
+                if Menu.current_widget:
+                    Menu.current_widget.event_generate("<<Custom-Leave>>")
+
+                Menu.current_widget = widget
+
+                if Menu.current_widget:
+                    Menu.current_widget.event_generate("<<Custom-Enter>>")
+
         def make_item(item: MenuItem) -> None:
             if item.separator:
                 separator = ttk.Separator(self.menu, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
+                separator.bind("<Motion>", lambda e: on_motion(e))
             else:
                 frame = tk.Frame(self.menu, background="white")
 
@@ -85,21 +104,6 @@ class Menu:
                     frame["background"] = "white"
                     label["background"] = "white"
 
-                def on_motion(event: Any) -> None:
-                    widget = event.widget.winfo_containing(event.x_root, event.y_root)
-
-                    if not widget:
-                        return
-
-                    if Menu.current_widget != widget:
-                        if Menu.current_widget:
-                            Menu.current_widget.event_generate("<<Custom-Leave>>")
-
-                        Menu.current_widget = widget
-
-                        if Menu.current_widget:
-                            Menu.current_widget.event_generate("<<Custom-Enter>>")
-
                 frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
                 frame.bind("<Motion>", lambda e: on_motion(e))
@@ -108,7 +112,6 @@ class Menu:
                 label.bind("<<Custom-Enter>>", lambda e: on_enter())
                 frame.bind("<<Custom-Leave>>", lambda e: on_leave())
                 label.bind("<<Custom-Leave>>", lambda e: on_leave())
-                frame.bind("<Leave>", lambda e: on_leave())
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
