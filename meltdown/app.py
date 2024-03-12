@@ -98,6 +98,14 @@ class App:
             ],
             })])
 
+        style.configure("Normal.Vertical.TScrollbar", gripcount=0,
+                        background="#494D62", troughcolor="#333B4B", borderwidth=0)
+
+        style.map("Normal.Vertical.TScrollbar",
+                  background=[("disabled", "#333B4B")],
+                  troughcolor=[("disabled", "#333B4B")],
+                  borderwidth=[("disabled", 0)])
+
     def setup(self) -> None:
         self.check_compact()
 

@@ -61,10 +61,13 @@ def make_frame(parent: Optional[ttk.Notebook] = None,
 def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
               state: Literal["normal", "disabled"] = "normal",
               right_padding: Optional[int] = None) -> tk.Text:
-    widget = tk.Text(parent, font=config.font, wrap="word", state=state)
+    scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+    widget = tk.Text(parent, font=config.font, wrap="word", state=state, yscrollcommand=scrollbar.set)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
     do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
+    scrollbar.config(command=widget.yview)
     return widget
 
 
