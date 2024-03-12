@@ -93,22 +93,21 @@ class Menu:
 
                     if Menu.current_widget != widget:
                         if Menu.current_widget:
-                            Menu.current_widget.event_generate("<<B1-Leave>>")
+                            Menu.current_widget.event_generate("<<Custom-Leave>>")
 
                         Menu.current_widget = widget
 
                         if Menu.current_widget:
-                            Menu.current_widget.event_generate("<<B1-Enter>>")
+                            Menu.current_widget.event_generate("<<Custom-Enter>>")
 
                 frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
-                frame.bind("<Enter>", lambda e: on_enter())
-                frame.bind("<B1-Motion>", lambda e: on_motion(e))
-                label.bind("<B1-Motion>", lambda e: on_motion(e))
-                frame.bind("<<B1-Enter>>", lambda e: on_enter())
-                label.bind("<<B1-Enter>>", lambda e: on_enter())
-                frame.bind("<<B1-Leave>>", lambda e: on_leave())
-                label.bind("<<B1-Leave>>", lambda e: on_leave())
+                frame.bind("<Motion>", lambda e: on_motion(e))
+                label.bind("<Motion>", lambda e: on_motion(e))
+                frame.bind("<<Custom-Enter>>", lambda e: on_enter())
+                label.bind("<<Custom-Enter>>", lambda e: on_enter())
+                frame.bind("<<Custom-Leave>>", lambda e: on_leave())
+                label.bind("<<Custom-Leave>>", lambda e: on_leave())
                 frame.bind("<Leave>", lambda e: on_leave())
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
