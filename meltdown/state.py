@@ -6,6 +6,7 @@ from . import timeutils
 from .app import app
 
 # Standard
+import os
 import json
 from typing import Optional, Any, IO
 from pathlib import Path
@@ -244,6 +245,7 @@ def reset_config() -> None:
         widgets.fill()
         app.check_compact()
         save_config()
+
         model.unload(True)
 
     dialogs.show_confirm("This will remove your custom configs"
@@ -326,3 +328,20 @@ def on_format_change(load: bool = True) -> None:
     if model.loaded_format != config.format:
         if load:
             model.load()
+
+
+def open_logs_dir() -> None:
+    path = config.logs_path
+    os_name = os.name.lower()
+
+    if os_name == "posix":
+        # Linux
+        os.system(f"xdg-open {path}")
+    elif os_name == "nt":
+        # Windows
+        os.system(f"start {path}")
+    elif os_name == "darwin":
+        # macOS
+        os.system(f"open {path}")
+    else:
+        print(f"Unsupported operating system: {os_name}")
