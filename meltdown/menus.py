@@ -137,17 +137,15 @@ class Menu:
     def show(self, event: Any) -> None:
         Menu.hide_all()
 
-        def do_show() -> None:
-            if self.menu:
-                self.menu.update_idletasks()
-                self.menu.focus_set()
-
         if not self.items:
             return
 
         self.make(event)
-        Menu.current_menu = self
-        app.root.after(100, do_show)
+
+        if self.menu:
+            self.menu.update_idletasks()
+            self.menu.focus_set()
+            Menu.current_menu = self
 
     def hide(self) -> None:
         if self.menu:
