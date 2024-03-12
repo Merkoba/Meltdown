@@ -301,8 +301,9 @@ class Widgets:
 
         def on_key(event: Any) -> None:
             # Focus the input and insert char
-            if (type(event.widget) == tk.Text) or \
-                    (type(event.widget) == ttk.Combobox) or (type(event.widget) == ttk.Notebook):
+            ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
+
+            if type(event.widget) in ftypes:
                 if (len(event.keysym.strip()) == 1) or (event.keysym == "slash"):
                     self.focus_input()
                     self.input.insert(tk.END, event.char)

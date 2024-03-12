@@ -40,8 +40,9 @@ def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
 
 
 def hide_dialog(dialog: tk.Frame) -> None:
+    from .widgets import widgets
     dialog.destroy()
-    app.root.focus_set()
+    widgets.focus_input()
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:
