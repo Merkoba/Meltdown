@@ -109,12 +109,12 @@ class Session:
 
         for item in items:
             try:
-                session = Document(item["id"], item["name"])
-                session.items = item["items"]
-                self.items[session.id] = session
-                widgets.display.make_tab(session.name, session.id, select_tab=False)
+                document = Document(item["id"], item["name"])
+                document.items = item["items"]
+                self.items[document.id] = document
+                widgets.display.make_tab(document.name, document.id, select_tab=False)
             except BaseException as e:
-                pass
+                session.items = []
 
     def save_state(self) -> None:
         if not config.sessions_path.exists():
