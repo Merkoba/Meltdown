@@ -12,36 +12,37 @@ from tkinter import ttk
 dialog_delay = 100
 
 
-def make_dialog(title: str, text: str) -> Tuple[tk.Toplevel, tk.Frame, tk.Frame]:
-    dialog = tk.Toplevel(app.root)
+def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
+    dialog = tk.Frame(app.root)
+    dialog.lift()
     container = tk.Frame(dialog, padx=10, pady=4)
     container.pack()
-    dialog.title(title)
     tk.Label(container, text=text, font=config.font, wraplength=500).pack(padx=6)
     top_frame = tk.Frame(container)
     top_frame.pack()
     button_frame = tk.Frame(container)
     button_frame.pack()
     dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
-    dialog.withdraw()
+    dialog.bind("<FocusOut>", lambda e: hide_dialog(dialog))
     return dialog, top_frame, button_frame
 
 
-def show_dialog(dialog: tk.Toplevel) -> None:
+def show_dialog(dialog: tk.Frame) -> None:
     def show() -> None:
-        dialog.deiconify()
-        dialog.transient(app.root)
-        dialog.grab_set()
-        dialog.update()
-        x = app.root.winfo_rootx() + (app.root.winfo_width() // 2) - (dialog.winfo_width() // 2)
-        y = app.root.winfo_rooty() + (app.root.winfo_height() // 2) - (dialog.winfo_height() // 2)
-        dialog.geometry("+%d+%d" % (x, y))
-        dialog.wait_window()
+        dialog.update_idletasks()
+        window_width = app.root.winfo_width()
+        window_height = app.root.winfo_height()
+        dialog_width = dialog.winfo_reqwidth()
+        dialog_height = dialog.winfo_reqheight()
+        x = (window_width - dialog_width) // 2
+        y = (window_height - dialog_height) // 2
+        dialog.place(x=x, y=y)
+        dialog.focus_set()
 
     app.root.after(dialog_delay, show)
 
 
-def hide_dialog(dialog: tk.Toplevel) -> None:
+def hide_dialog(dialog: tk.Frame) -> None:
     dialog.destroy()
     app.root.focus_set()
 
@@ -69,7 +70,7 @@ def show_confirm(text: str, cmd_ok: Callable[..., Any],
         hide_dialog(dialog)
         app.root.after(dialog_delay, lambda: func())
 
-    dialog, top_frame, button_frame = make_dialog("Confirm", text)
+    dialog, top_frame, button_frame = make_dialog(text)
     dialog.bind("<Return>", lambda e: ok())
     make_dialog_button(button_frame, "Cancel", cancel)
 
@@ -85,7 +86,7 @@ def show_message(text: str) -> None:
     def ok() -> None:
         hide_dialog(dialog)
 
-    dialog, top_frame, button_frame = make_dialog("Information", text)
+    dialog, top_frame, button_frame = make_dialog(text)
     dialog.bind("<Return>", lambda e: ok())
     make_dialog_button(button_frame, "Ok", ok)
     show_dialog(dialog)
@@ -103,7 +104,7 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
         if cmd_cancel:
             app.root.after(dialog_delay, lambda: cmd_cancel())
 
-    dialog, top_frame, button_frame = make_dialog("Input", text)
+    dialog, top_frame, button_frame = make_dialog(text)
     entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
