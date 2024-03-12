@@ -153,7 +153,7 @@ class Session:
         self.save()
 
     def to_json(self) -> str:
-        sessions_list = [document.to_dict() for document in session.items.values()]
+        sessions_list = [document.to_dict() for document in session.items.values() if document.items]
         return json.dumps(sessions_list, indent=4)
 
 
