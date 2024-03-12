@@ -68,6 +68,9 @@ class Menu:
             if isinstance(widget, ttk.Separator):
                 return
 
+            if isinstance(widget, tk.Frame):
+                return
+
             if Menu.current_widget != widget:
                 if Menu.current_widget:
                     Menu.current_widget.event_generate("<<Custom-Leave>>")
@@ -97,16 +100,16 @@ class Menu:
 
                 self.root.yview_scroll(1, "units")  # Scroll down
 
-        self.container.bind("<Button-4>", on_mousewheel)
-        self.container.bind("<Button-5>", on_mousewheel)
+        self.container.bind("<Button-4>", lambda e: on_mousewheel(e))
+        self.container.bind("<Button-5>", lambda e: on_mousewheel(e))
 
         def make_item(item: MenuItem) -> None:
             if item.separator:
                 separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
                 separator.bind("<Motion>", lambda e: on_motion(e))
-                separator.bind("<Button-4>", on_mousewheel)
-                separator.bind("<Button-5>", on_mousewheel)
+                separator.bind("<Button-4>", lambda e: on_mousewheel(e))
+                separator.bind("<Button-5>", lambda e: on_mousewheel(e))
             else:
                 frame = tk.Frame(self.container, background="white", borderwidth=0)
 
@@ -137,8 +140,8 @@ class Menu:
                 label.bind("<<Custom-Enter>>", lambda e: on_enter())
                 frame.bind("<<Custom-Leave>>", lambda e: on_leave())
                 label.bind("<<Custom-Leave>>", lambda e: on_leave())
-                label.bind("<Button-4>", on_mousewheel)
-                label.bind("<Button-5>", on_mousewheel)
+                label.bind("<Button-4>", lambda e: on_mousewheel(e))
+                label.bind("<Button-5>", lambda e: on_mousewheel(e))
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
