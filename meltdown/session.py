@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from . import timeutils
 
 # Standard
 import json
@@ -14,6 +15,7 @@ class Document:
         self.id = _id
         self.name = name
         self.items: List[Dict[str, str]] = []
+        self.loaded = False
 
     def add(self, context_dict: Dict[str, str]) -> None:
         self.items.append(context_dict)
@@ -54,17 +56,20 @@ class Session:
     def __init__(self) -> None:
         self.items: Dict[str, Document] = {}
 
-    def add(self, tab_id: str) -> Document:
-        tab = widgets.display.get_tab(tab_id)
-        name = widgets.display.get_tab_name(tab_id)
-        session = Document(tab.document_id, name)
-        self.items[tab.document_id] = session
-        return session
+    def add(self, name: str) -> Document:
+        doc_id = str(timeutils.now())
+        document = Document(doc_id, name)
+        document.loaded = True
+        self.items[doc_id] = document
+        return document
 
     def remove(self, document_id: str) -> None:
         if document_id in self.items:
             del self.items[document_id]
             self.save()
+
+    def get_document(self, document_id: str) -> Document:
+        return self.items[document_id]
 
     def change_name(self, document_id: str, name: str) -> None:
         if document_id in self.items:
@@ -107,8 +112,7 @@ class Session:
                 session = Document(item["id"], item["name"])
                 session.items = item["items"]
                 self.items[session.id] = session
-                widgets.display.make_tab(session.name, session.id)
-                session.print()
+                widgets.display.make_tab(session.name, session.id, select_tab=False)
             except BaseException as e:
                 pass
 

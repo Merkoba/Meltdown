@@ -44,9 +44,10 @@ class Display:
         self.drag_start_index = 0
         self.tab_number = 1
 
-    def make_tab(self, name: Optional[str] = None, document_id: Optional[str] = None) -> None:
+    def make_tab(self, name: Optional[str] = None,
+                 document_id: Optional[str] = None, select_tab: bool = True) -> None:
         from .widgets import widgets
-        from . import timeutils
+        from .session import session
         frame = widgetutils.make_frame(self.root)
 
         if not name:
@@ -56,7 +57,8 @@ class Display:
         output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
 
         if not document_id:
-            document_id = str(timeutils.now())
+            document = session.add(name)
+            document_id = document.id
 
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
@@ -68,7 +70,10 @@ class Display:
         frame.grid_columnconfigure(0, weight=1)
         tab = Tab(document_id, tab_id, output)
         self.tabs[tab_id] = tab
-        self.select_tab(tab_id)
+
+        if select_tab:
+            self.select_tab(tab_id)
+
         self.tab_number += 1
         widgets.show_intro(tab_id)
 
@@ -93,7 +98,7 @@ class Display:
 
         def action() -> None:
             self.root.forget(tab_id)
-            self.update_output()
+            self.update_current_tab()
             self.remove_tab(tab_id)
 
             if self.num_tabs() == 0:
@@ -114,7 +119,7 @@ class Display:
         self.root.select(tab_id)
         self.current_tab = tab_id
 
-    def update_output(self) -> None:
+    def update_current_tab(self) -> None:
         tab_id = self.root.select()
         self.current_tab = tab_id
 
@@ -123,7 +128,17 @@ class Display:
 
     def on_tab_change(self, event: Any) -> None:
         from .widgets import widgets
-        self.update_output()
+        from .session import session
+        self.update_current_tab()
+        tab = self.get_current_tab()
+
+        if tab:
+            document = session.get_document(tab.document_id)
+
+            if not document.loaded:
+                document.print()
+                document.loaded = True
+
         widgets.focus_input()
 
     def get_current_tab(self) -> Tab:

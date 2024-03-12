@@ -172,10 +172,7 @@ class Model:
         widgets.enable_stop_button()
 
         tab = widgets.display.get_tab(tab_id)
-        document = session.items.get(tab.document_id)
-
-        if not document:
-            document = session.add(tab_id)
+        document = session.get_document(tab.document_id)
 
         log_dict = {"user": prompt}
         system = replace_content(config.system)
