@@ -35,11 +35,12 @@ class Document:
                 for key in item:
                     if key == "user":
                         widgets.prompt("user", tab_id=tab.tab_id)
-                        value = item.get("user_short", item[key])
-                        widgets.display.insert(value, tab_id=tab.tab_id)
                     elif key == "assistant":
                         widgets.prompt("ai", tab_id=tab.tab_id)
-                        widgets.display.insert(item[key], tab_id=tab.tab_id)
+                    else:
+                        continue
+
+                    widgets.display.insert(item[key], tab_id=tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:
         return {

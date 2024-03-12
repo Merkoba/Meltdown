@@ -155,16 +155,15 @@ class Model:
             content = content.replace("@date", timeutils.today())
             return content
 
+        if config.prepend:
+            prompt = config.prepend + ". " + prompt
+
+        if config.append:
+            prompt = prompt + ". " + config.append
+
         widgets.prompt("user", tab_id=tab_id)
         widgets.display.insert(prompt, tab_id=tab_id)
         widgets.enable_stop_button()
-        full_prompt = prompt
-
-        if config.prepend:
-            full_prompt = config.prepend + ". " + full_prompt
-
-        if config.append:
-            full_prompt = full_prompt + ". " + config.append
 
         tab = widgets.display.get_tab(tab_id)
         document = session.items.get(tab.document_id)
@@ -172,7 +171,7 @@ class Model:
         if not document:
             document = session.add(tab_id)
 
-        log_dict = {"user": full_prompt, "user_short": prompt}
+        log_dict = {"user": prompt}
         system = replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
@@ -188,7 +187,7 @@ class Model:
 
         if config.printlogs:
             print("-----")
-            print("prompt:", full_prompt)
+            print("prompt:", prompt)
             print("messages:", len(messages))
             print("context:", config.context)
             print("max_tokens:", config.max_tokens)
@@ -197,7 +196,7 @@ class Model:
             print("top_p:", config.top_p)
             print("seed:", config.seed)
 
-        content = full_prompt
+        content = prompt
         content = replace_content(content)
         messages.append({"role": "user", "content": content})
 
