@@ -49,10 +49,15 @@ class Menu:
         Menu.current_widget = None
         Menu.current_command = None
 
-        def cmd() -> None:
+        def exec() -> None:
             if Menu.current_command:
-                self.hide()
-                app.root.after(10, lambda: Menu.current_command())
+                Menu.current_command()
+
+        def cmd() -> None:
+            self.hide()
+
+            if Menu.current_command:
+                app.root.after(10, lambda: exec())
 
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)

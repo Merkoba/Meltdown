@@ -19,10 +19,10 @@ class ToolTip:
         self.widget = widget
         self.text = clean_string(text)
         self.tooltip: Optional[tk.Frame] = None
-        self.widget.bind("<Enter>", self.schedule_tooltip)
-        self.widget.bind("<Leave>", self.hide_tooltip)
-        self.widget.bind("<Motion>", self.update_event)
-        self.widget.bind("<Button-1>", self.hide_tooltip)
+        self.widget.bind("<Enter>", lambda e: self.schedule_tooltip(e))
+        self.widget.bind("<Leave>", lambda e: self.hide_tooltip(e))
+        self.widget.bind("<Motion>", lambda e: self.update_event(e))
+        self.widget.bind("<Button-1>", lambda e: self.hide_tooltip(e))
         self.id = ""
 
     def update_event(self, event: Any) -> None:
