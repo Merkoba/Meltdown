@@ -18,7 +18,7 @@ class ToolTip:
     def __init__(self, widget: tk.Widget, text: str) -> None:
         self.widget = widget
         self.text = clean_string(text)
-        self.tooltip: Optional[tk.Toplevel] = None
+        self.tooltip: Optional[tk.Frame] = None
         self.widget.bind("<Enter>", self.schedule_tooltip)
         self.widget.bind("<Leave>", self.hide_tooltip)
         self.widget.bind("<Motion>", self.update_event)
@@ -32,7 +32,7 @@ class ToolTip:
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
-        self.id = self.widget.after(400, lambda: self.show_tooltip())
+        self.id = self.widget.after(500, lambda: self.show_tooltip())
         ToolTip.current_tooltip = self
 
     def show_tooltip(self) -> None:
@@ -41,9 +41,8 @@ class ToolTip:
         if Menu.current_menu:
             return
 
-        self.tooltip = tk.Toplevel(self.widget)
-        self.tooltip.wm_overrideredirect(True)
-        self.tooltip.withdraw()
+        self.tooltip = tk.Frame(app.root)
+        self.tooltip.lift()
         label = tk.Label(self.tooltip, text=self.text, background="white",
                          wraplength=250, justify=tk.LEFT)
         label.pack()
@@ -53,33 +52,20 @@ class ToolTip:
         window_height = app.root.winfo_height()
         tooltip_width = self.tooltip.winfo_reqwidth()
         tooltip_height = self.tooltip.winfo_reqheight()
-        window_x = app.root.winfo_x()
-        window_y = app.root.winfo_y()
-        left_edge = window_x
-        right_edge = window_x + window_width
-        top_edge = window_y
-        bottom_edge = window_y + window_height
-        x = event.x_root - (tooltip_width // 2)
-        y = event.y_root + 20
+        x = event.x_root - app.root.winfo_rootx() - (tooltip_width // 2)
+        y = event.y_root - app.root.winfo_rooty() + 20
 
-        if x < left_edge:
-            x = left_edge
-        elif x + tooltip_width > right_edge:
-            x = right_edge - tooltip_width
+        if x < 0:
+            x = 0
+        elif x + tooltip_width > window_width:
+            x = window_width - tooltip_width
 
-        if y < top_edge:
-            y = top_edge
-        elif y + tooltip_height > bottom_edge:
-            y = event.y_root - tooltip_height - 20
+        if y < 0:
+            y = 0
+        elif y + tooltip_height > window_height:
+            y = event.y_root - app.root.winfo_rooty() - tooltip_height - 20
 
-        self.tooltip.wm_geometry(f"+{x}+{y}")
-
-        def show() -> None:
-            if self.tooltip:
-                self.tooltip.update_idletasks()
-                self.tooltip.deiconify()
-
-        app.root.after(100, lambda: show())
+        self.tooltip.place(x=x, y=y)
 
     def hide_tooltip(self, event: Any = None) -> None:
         if self.tooltip:
