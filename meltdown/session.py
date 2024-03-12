@@ -35,10 +35,11 @@ class Document:
                 for key in item:
                     if key == "user":
                         widgets.prompt("user", tab_id=tab.tab_id)
+                        value = item.get("user_short", item[key])
+                        widgets.display.insert(value, tab_id=tab.tab_id)
                     elif key == "assistant":
                         widgets.prompt("ai", tab_id=tab.tab_id)
-
-                    widgets.display.insert(item[key], tab_id=tab.tab_id)
+                        widgets.display.insert(item[key], tab_id=tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -107,7 +108,7 @@ class Session:
                 self.items[session.id] = session
                 widgets.display.make_tab(session.name, session.id)
                 session.print()
-            except BaseException:
+            except BaseException as e:
                 pass
 
     def save_state(self) -> None:
