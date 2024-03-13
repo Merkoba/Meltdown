@@ -4,6 +4,10 @@
 
 ![](https://i.imgur.com/jqw6tut.jpg)
 
+Compact Mode:
+
+![https://i.imgur.com/6QptHTr.jpg]
+
 ---
 
 ## Features
