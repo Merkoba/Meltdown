@@ -229,7 +229,6 @@ class Menu:
         colors = self.get_colors(els["item"])
         els["frame"]["background"] = colors["hover_background"]
         els["label"]["background"] = colors["hover_background"]
-        diff = self.selected_index - index
         self.selected_index = index
         self.scroll_to_item()
 
@@ -241,6 +240,7 @@ class Menu:
         colors = self.get_colors(els["item"])
         els["frame"]["background"] = colors["background"]
         els["label"]["background"] = colors["background"]
+        self.selected_index = None
 
     def get_colors(self, item: MenuItem) -> Any:
         background = "white"
