@@ -297,7 +297,7 @@ def save_log() -> None:
     config.logs_path.mkdir(parents=True, exist_ok=True)
     file_name = name + ".txt"
     file_path = Path(config.logs_path, file_name)
-    num = 1
+    num = 2
 
     while file_path.exists():
         file_name = f"{name}_{num}.txt"
