@@ -3,11 +3,13 @@ from .app import app
 from .widgets import widgets
 from .model import model
 from .session import session
+from .args import args
 from . import state
 from . import system
 
 
 def main() -> None:
+    args.parse()
     state.load_files()
     session.load()
     widgets.setup()
