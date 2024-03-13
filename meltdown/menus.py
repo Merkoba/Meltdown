@@ -39,6 +39,26 @@ class Menu:
     def clear(self) -> None:
         self.items = []
 
+    def on_mousewheel(self, direction: str) -> None:
+        if not self.container:
+            return
+
+        y_top = self.container.winfo_y()
+        y_bottom = y_top + self.container.winfo_height()
+        height = self.root.winfo_height()
+        distance = height - y_bottom
+
+        if direction == "up":
+            if y_top >= 0:
+                return
+
+            self.root.yview_scroll(-1, "units")
+        elif direction == "down":
+            if distance >= 0:
+                return
+
+            self.root.yview_scroll(1, "units")
+
     def make(self, event: Any) -> None:
         self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
@@ -79,28 +99,8 @@ class Menu:
                 if self.current_widget:
                     self.current_widget.event_generate("<<Custom-Enter>>")
 
-        def on_mousewheel(event: Any) -> None:
-            if not self.container:
-                return
-
-            y_top = self.container.winfo_y()
-            y_bottom = y_top + self.container.winfo_height()
-            height = self.root.winfo_height()
-            distance = height - y_bottom
-
-            if event.num == 4:
-                if y_top >= 0:
-                    return
-
-                self.root.yview_scroll(-1, "units")  # Scroll up
-            elif event.num == 5:
-                if distance >= 0:
-                    return
-
-                self.root.yview_scroll(1, "units")  # Scroll down
-
-        self.container.bind("<Button-4>", lambda e: on_mousewheel(e))
-        self.container.bind("<Button-5>", lambda e: on_mousewheel(e))
+        self.container.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
+        self.container.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
         self.root.bind("<Escape>", lambda e: self.hide())
         self.root.bind("<Return>", lambda e: cmd())
         self.root.bind("<Up>", lambda e: self.arrow_up())
@@ -112,8 +112,8 @@ class Menu:
                 separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
                 separator.bind("<Motion>", lambda e: on_motion(e))
-                separator.bind("<Button-4>", lambda e: on_mousewheel(e))
-                separator.bind("<Button-5>", lambda e: on_mousewheel(e))
+                separator.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
+                separator.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
             else:
                 colors = self.get_colors(item)
                 frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
@@ -129,8 +129,8 @@ class Menu:
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
-                label.bind("<Button-4>", lambda e: on_mousewheel(e))
-                label.bind("<Button-5>", lambda e: on_mousewheel(e))
+                label.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
+                label.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
@@ -229,7 +229,9 @@ class Menu:
         colors = self.get_colors(els["item"])
         els["frame"]["background"] = colors["hover_background"]
         els["label"]["background"] = colors["hover_background"]
+        diff = self.selected_index - index
         self.selected_index = index
+        self.scroll_to_item()
 
     def on_leave(self, index: int) -> None:
         if index not in self.elements:
@@ -252,3 +254,28 @@ class Menu:
 
         return {"background": background, "foreground": foreground,
                 "hover_background": hover_background}
+
+    def scroll_to_item(self) -> None:
+        els = self.elements[self.selected_index]
+        tries = 0
+
+        while tries < 10:
+            widget_y = els["frame"].winfo_rooty() - app.root.winfo_rooty()
+            widget_height = els["frame"].winfo_height()
+            window_height = app.root.winfo_height()
+
+            if widget_y + widget_height > window_height or widget_y < 0:
+                outside_top = abs(min(0, widget_y))
+                outside_bottom = max(0, (widget_y + widget_height) - window_height)
+                print(outside_top, outside_bottom)
+
+                if outside_top > 0:
+                    self.root.yview_scroll(-1, "units")
+                elif outside_bottom > 0:
+                    self.root.yview_scroll(1, "units")
+                else:
+                    break
+            else:
+                break
+
+            tries += 1
