@@ -333,7 +333,7 @@ class Widgets:
 
                 if (len(event.keysym.strip()) == 1) or (event.char in chars):
                     self.focus_input()
-                    self.input.insert(tk.END, event.char)
+                    widgetutils.set_text(self.input, event.char)
                 elif event.keysym == "Return":
                     self.focus_input()
             # Input history Up or Down
