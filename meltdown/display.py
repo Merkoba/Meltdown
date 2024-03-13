@@ -189,7 +189,8 @@ class Display:
 
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
-        dialogs.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s))
+        name = self.get_tab_name(tab_id)
+        dialogs.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s), value=name)
 
     def rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session

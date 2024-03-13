@@ -105,7 +105,8 @@ def show_message(text: str) -> None:
     show_dialog(dialog)
 
 
-def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+def show_input(text: str, cmd_ok: Callable[..., Any],
+               cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
     def ok() -> None:
         text = entry.get()
         hide_dialog(dialog)
@@ -118,7 +119,11 @@ def show_input(text: str, cmd_ok: Callable[..., Any], cmd_cancel: Optional[Calla
             cmd_cancel()
 
     dialog, top_frame, button_frame = make_dialog(text)
-    entry = ttk.Entry(top_frame, font=config.font, width=17, style="Input.TEntry", justify="center")
+    entry = ttk.Entry(top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
+
+    if value:
+        entry.insert(0, value)
+
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
     make_dialog_button(button_frame, "Cancel", cancel)
