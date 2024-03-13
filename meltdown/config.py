@@ -1,3 +1,6 @@
+# Libaries
+import appdirs  # type: ignore
+
 # Standard
 from pathlib import Path
 from typing import List, Any, Dict, Optional
@@ -47,30 +50,19 @@ class Config:
         self.printlogs = False
         self.max_log = 100
 
-        config_dir = ".config"
-        self.config_file = f"~/{config_dir}/{self.program}/config.json"
-        self.models_file = f"~/{config_dir}/{self.program}/models.json"
-        self.inputs_file = f"~/{config_dir}/{self.program}/inputs.json"
-        self.systems_file = f"~/{config_dir}/{self.program}/systems.json"
-        self.prepends_file = f"~/{config_dir}/{self.program}/prepends.json"
-        self.appends_file = f"~/{config_dir}/{self.program}/appends.json"
-        self.session_file = f"~/{config_dir}/{self.program}/session.json"
+        config_dir = appdirs.user_config_dir()
+        self.config_path = Path(config_dir, self.program, "config.json")
+        self.models_path = Path(config_dir, self.program, "models.json")
+        self.inputs_path = Path(config_dir, self.program, "inputs.json")
+        self.systems_path = Path(config_dir, self.program, "systems.json")
+        self.prepends_path = Path(config_dir, self.program, "prepends.json")
+        self.appends_path = Path(config_dir, self.program, "appends.json")
+        self.session_path = Path(config_dir, self.program, "session.json")
 
-        share_dir = ".local/share"
-        self.configs_dir = f"~/{share_dir}/{self.program}/configs/"
-        self.sessions_dir = f"~/{share_dir}/{self.program}/sessions/"
-        self.logs_dir = f"~/{share_dir}/{self.program}/logs/"
-
-        self.config_path = Path(self.config_file).expanduser().resolve()
-        self.configs_path = Path(self.configs_dir).expanduser().resolve()
-        self.models_path = Path(self.models_file).expanduser().resolve()
-        self.inputs_path = Path(self.inputs_file).expanduser().resolve()
-        self.systems_path = Path(self.systems_file).expanduser().resolve()
-        self.prepends_path = Path(self.prepends_file).expanduser().resolve()
-        self.appends_path = Path(self.appends_file).expanduser().resolve()
-        self.logs_path = Path(self.logs_dir).expanduser().resolve()
-        self.session_path = Path(self.session_file).expanduser().resolve()
-        self.sessions_path = Path(self.sessions_dir).expanduser().resolve()
+        data_dir = appdirs.user_data_dir()
+        self.configs_path = Path(data_dir, self.program, "configs")
+        self.sessions_path = Path(data_dir, self.program, "sessions")
+        self.logs_path = Path(data_dir, self.program, "logs")
 
         self.models: List[str] = []
         self.inputs: List[str] = []
