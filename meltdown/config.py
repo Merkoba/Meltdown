@@ -47,16 +47,19 @@ class Config:
         self.printlogs = False
         self.max_log = 100
 
-        self.config_file = f"~/.config/{self.program}/config.json"
-        self.configs_dir = f"~/.config/{self.program}/configs/"
-        self.models_file = f"~/.config/{self.program}/models.json"
-        self.inputs_file = f"~/.config/{self.program}/inputs.json"
-        self.systems_file = f"~/.config/{self.program}/systems.json"
-        self.prepends_file = f"~/.config/{self.program}/prepends.json"
-        self.appends_file = f"~/.config/{self.program}/appends.json"
-        self.session_file = f"~/.config/{self.program}/session.json"
-        self.sessions_dir = f"~/.config/{self.program}/sessions/"
-        self.logs_dir = f"~/.config/{self.program}/logs/"
+        config_dir = ".config"
+        self.config_file = f"~/{config_dir}/{self.program}/config.json"
+        self.models_file = f"~/{config_dir}/{self.program}/models.json"
+        self.inputs_file = f"~/{config_dir}/{self.program}/inputs.json"
+        self.systems_file = f"~/{config_dir}/{self.program}/systems.json"
+        self.prepends_file = f"~/{config_dir}/{self.program}/prepends.json"
+        self.appends_file = f"~/{config_dir}/{self.program}/appends.json"
+        self.session_file = f"~/{config_dir}/{self.program}/session.json"
+
+        share_dir = ".local/share"
+        self.configs_dir = f"~/{share_dir}/{self.program}/configs/"
+        self.sessions_dir = f"~/{share_dir}/{self.program}/sessions/"
+        self.logs_dir = f"~/{share_dir}/{self.program}/logs/"
 
         self.config_path = Path(self.config_file).expanduser().resolve()
         self.configs_path = Path(self.configs_dir).expanduser().resolve()
