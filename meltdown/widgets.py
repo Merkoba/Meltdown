@@ -478,7 +478,7 @@ class Widgets:
             if model.model_loading:
                 return
 
-            model.stream(text, self.displayd.current_tab)
+            model.stream(text, self.display.current_tab)
         else:
             self.display.output_bottom()
 
