@@ -315,6 +315,8 @@ class Widgets:
                 if (len(event.keysym.strip()) == 1) or (event.keysym == "slash"):
                     self.focus_input()
                     self.input.insert(tk.END, event.char)
+                elif event.keysym == "Return":
+                    self.focus_input()
             # Input history Up or Down
             elif event.widget == self.input:
                 if event.keysym == "Up":
@@ -453,6 +455,8 @@ class Widgets:
                 return
 
             model.stream(text, self.display.current_tab)
+        else:
+            self.display.output_bottom()
 
     def check_command(self, text: str) -> bool:
         if not text.startswith("/"):
