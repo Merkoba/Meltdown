@@ -1,12 +1,13 @@
 # Modules
 from .config import config
-from . import widgetutils
 from .app import app
 from .display import Display
 from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
 from .entrybox import EntryBox
+from . import widgetutils
+from . import commands
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -471,35 +472,15 @@ class Widgets:
             self.clear_input()
             state.add_input(text)
 
-            if self.check_command(text):
+            if commands.check(text):
                 return
 
             if model.model_loading:
                 return
 
-            model.stream(text, self.display.current_tab)
+            model.stream(text, self.displayd.current_tab)
         else:
             self.display.output_bottom()
-
-    def check_command(self, text: str) -> bool:
-        if not text.startswith("/"):
-            return False
-
-        if text == "/clear":
-            self.display.clear_output()
-            return True
-        elif text == "/config":
-            config.show_config()
-            return True
-        elif text == "/exit" or text == "/quit":
-            app.exit()
-            return True
-        elif text == "/session":
-            from .session import session
-            self.display.print(session.to_json())
-            return True
-
-        return False
 
     def clear_input(self) -> None:
         widgetutils.clear_text(self.input)
