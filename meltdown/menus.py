@@ -267,7 +267,6 @@ class Menu:
             if widget_y + widget_height > window_height or widget_y < 0:
                 outside_top = abs(min(0, widget_y))
                 outside_bottom = max(0, (widget_y + widget_height) - window_height)
-                print(outside_top, outside_bottom)
 
                 if outside_top > 0:
                     self.root.yview_scroll(-1, "units")
