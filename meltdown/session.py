@@ -106,6 +106,8 @@ class Session:
         widgets.display.close_all_tabs(force=True)
 
     def load_items(self, path: Path) -> None:
+        widgets.display.close_all_tabs(force=True, make_empty=False)
+
         with open(path, "r") as file:
             try:
                 items = json.load(file)
@@ -157,8 +159,6 @@ class Session:
 
         if (not path.exists()) or (not path.is_file()):
             return
-
-        widgets.display.close_all_tabs(force=True, make_empty=False)
 
         try:
             self.load_items(path)
