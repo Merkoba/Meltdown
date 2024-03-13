@@ -54,18 +54,21 @@ class Widgets:
         self.cpu = tk.StringVar()
         self.cpu_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.cpu_label.configure(textvariable=self.cpu)
+        ToolTip(self.cpu_label, "Current CPU usage")
         self.cpu.set("000%")
 
         widgetutils.make_label(frame, "RAM")
         self.ram = tk.StringVar()
         self.ram_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.ram_label.configure(textvariable=self.ram)
+        ToolTip(self.ram_label, "Current RAM usage")
         self.ram.set("000%")
 
         widgetutils.make_label(frame, "TMP")
         self.temp = tk.StringVar()
         self.temp_label = widgetutils.make_label(frame, "", right_padding=right_padding)
         self.temp_label.configure(textvariable=self.temp)
+        ToolTip(self.temp_label, "Current CPU temperature")
         self.temp.set("000°C")
 
         # Details
