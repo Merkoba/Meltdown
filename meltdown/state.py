@@ -246,7 +246,6 @@ def reset_config() -> None:
         widgets.fill()
         app.check_compact()
         save_config()
-
         model.unload(True)
 
     dialogs.show_confirm("This will remove your custom configs"
