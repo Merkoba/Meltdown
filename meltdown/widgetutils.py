@@ -67,7 +67,7 @@ def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
     do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
-    scrollbar.config(command=widget.yview)
+    scrollbar.configure(command=widget.yview)
     return widget
 
 

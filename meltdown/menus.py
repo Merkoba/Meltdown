@@ -157,11 +157,11 @@ class Menu:
         window_height = app.root.winfo_height()
 
         # Limit width to fit the container
-        self.root.config(width=self.container.winfo_reqwidth())
+        self.root.configure(width=self.container.winfo_reqwidth())
 
         # Limit height to 500 or window height if smaller
         h = min(window_height, min(500, self.container.winfo_reqheight()))
-        self.root.config(height=h)
+        self.root.configure(height=h)
 
         menu_width = self.root.winfo_reqwidth()
         menu_height = self.root.winfo_reqheight()
