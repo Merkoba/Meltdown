@@ -45,6 +45,8 @@ class Menu:
         self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
+        self.root.bind("<Escape>", lambda e: self.hide())
+        self.root.bind("<Return>", lambda e: self.hide())
 
         Menu.current_widget = None
         Menu.current_command = None

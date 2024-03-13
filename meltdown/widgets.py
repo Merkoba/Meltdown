@@ -685,6 +685,7 @@ class Widgets:
         if model.model_loading:
             return
 
+        self.focus_input()
         model.load()
 
     def unload(self) -> None:
@@ -693,6 +694,7 @@ class Widgets:
         if model.model_loading:
             return
 
+        self.focus_input()
         model.unload(True)
 
     def load_or_unload(self) -> None:
