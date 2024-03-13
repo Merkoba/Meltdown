@@ -93,24 +93,17 @@ def make_entry(parent: tk.Frame, value: str = "",
 
 
 def get_button(parent: tk.Frame, text: str) -> ttk.Button:
-    return ttk.Button(parent, text=text, style="Normal.TButton", takefocus=False)
+    return ttk.Button(parent, text=text, style="Normal.TButton")
 
 
 def make_button(parent: tk.Frame, text: str,
-                command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None, \
-                    right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
-                    pady: Optional[int] = None) -> ttk.Button:
-    from . import dialogs
+                command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
+                right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
+                pady: Optional[int] = None) -> ttk.Button:
     widget = get_button(parent, text)
 
-    def cmd() -> None:
-        dialogs.hide_all()
-
-        if command:
-            command()
-
     if command:
-        widget.configure(command=lambda: cmd())
+        widget.configure(command=lambda: command())
 
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget

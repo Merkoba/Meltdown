@@ -66,17 +66,14 @@ class Menu:
         self.current_widget = None
 
         def exec() -> None:
-            if self.selected_index is not None:
-                item = self.items[self.selected_index]
+            item = self.items[self.selected_index]
 
-                if item.command:
-                    item.command()
+            if item.command:
+                item.command()
 
         def cmd() -> None:
             self.hide()
-
-            if self.selected_index is not None:
-                app.root.after(10, lambda: exec())
+            app.root.after(10, lambda: exec())
 
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)
@@ -222,8 +219,7 @@ class Menu:
         if index not in self.elements:
             return
 
-        if self.selected_index is not None:
-            self.on_leave(self.selected_index)
+        self.on_leave(self.selected_index)
 
         els = self.elements[index]
         colors = self.get_colors(els["item"])
@@ -240,7 +236,6 @@ class Menu:
         colors = self.get_colors(els["item"])
         els["frame"]["background"] = colors["background"]
         els["label"]["background"] = colors["background"]
-        self.selected_index = None
 
     def get_colors(self, item: MenuItem) -> Any:
         background = "white"
