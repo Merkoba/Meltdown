@@ -201,6 +201,11 @@ class Display:
             if not tab:
                 return
 
+            o_name = self.get_tab_name(tab_id)
+
+            if name == o_name:
+                return
+
             self.root.tab(tab_id, text=name)
             session.change_name(tab.document_id, name)
 
