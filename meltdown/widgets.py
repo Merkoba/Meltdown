@@ -285,32 +285,41 @@ class Widgets:
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
 
-        def bind(key: str, placeholder: str) -> None:
+        def setup_entrybox(key: str, placeholder: str) -> None:
             widget = self.get_widget(key)
 
             if not widget:
                 return
 
-            if type(widget) == EntryBox:
-                widget.key = key
-                widget.placeholder = placeholder
-                widget.check_placeholder()
-            elif type(widget) == ttk.Combobox:
-                widget.bind("<<ComboboxSelected>>", lambda e: state.update_config(key))
+            if type(widget) != EntryBox:
+                return
 
-        bind("name_user", "Name")
-        bind("name_ai", "Name")
-        bind("context", "Int")
-        bind("system", "Instructions to the AI")
-        bind("max_tokens", "Int")
-        bind("temperature", "Float")
-        bind("seed", "Int")
-        bind("top_k", "Int")
-        bind("top_p", "Float")
-        bind("model", "Path to a model file")
-        bind("prepend", "Add before")
-        bind("append", "Add after")
-        bind("format", "")
+            widget.key = key
+            widget.placeholder = placeholder
+            widget.check_placeholder()
+
+        def setup_combobox(key: str) -> None:
+            widget = self.get_widget(key)
+
+            if not widget:
+                return
+
+            widget.bind("<<ComboboxSelected>>", lambda e: state.update_config(key))
+
+        setup_entrybox("input", "Ask something to the AI")
+        setup_entrybox("name_user", "Name")
+        setup_entrybox("name_ai", "Name")
+        setup_entrybox("context", "Int")
+        setup_entrybox("system", "Instructions to the AI")
+        setup_entrybox("max_tokens", "Int")
+        setup_entrybox("temperature", "Float")
+        setup_entrybox("seed", "Int")
+        setup_entrybox("top_k", "Int")
+        setup_entrybox("top_p", "Float")
+        setup_entrybox("model", "Path to a model file")
+        setup_entrybox("prepend", "Add before")
+        setup_entrybox("append", "Add after")
+        setup_combobox("format")
 
         self.input_history_index: int
         self.reset_history_index()
