@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from .paths import paths
 from . import timeutils
 
 # Standard
@@ -82,14 +83,14 @@ class Session:
             self.save()
 
     def save(self) -> None:
-        if not config.session_path.exists():
-            config.session_path.parent.mkdir(parents=True, exist_ok=True)
+        if not paths.session.exists():
+            paths.session.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(config.session_path, "w") as file:
+        with open(paths.session, "w") as file:
             file.write(self.to_json())
 
     def load(self) -> None:
-        path = config.session_path
+        path = paths.session
 
         if not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -129,11 +130,11 @@ class Session:
             widgets.display.select_tab(tab_ids[-1])
 
     def save_state(self) -> None:
-        if not config.sessions_path.exists():
-            config.sessions_path.mkdir(parents=True, exist_ok=True)
+        if not paths.sessions.exists():
+            paths.sessions.mkdir(parents=True, exist_ok=True)
 
         file_path = filedialog.asksaveasfilename(
-            initialdir=config.sessions_path,
+            initialdir=paths.sessions,
             defaultextension=".json",
             filetypes=[("Session Files", "*.json")],
         )
@@ -145,11 +146,11 @@ class Session:
             file.write(self.to_json())
 
     def load_state(self) -> None:
-        if not config.sessions_path.exists():
-            config.sessions_path.mkdir(parents=True, exist_ok=True)
+        if not paths.sessions.exists():
+            paths.sessions.mkdir(parents=True, exist_ok=True)
 
         file_path = filedialog.askopenfilename(
-            initialdir=config.sessions_path,
+            initialdir=paths.sessions,
         )
 
         if not file_path:

@@ -2,6 +2,7 @@
 from .config import config
 
 # Standard
+import json
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
@@ -9,19 +10,28 @@ from pathlib import Path
 
 class App:
     def __init__(self) -> None:
-        self.root = tk.Tk(className=config.program)
         self.here = Path(__file__).parent.expanduser().resolve()
-        self.root.title(config.title)
-        self.set_geometry()
+
+        with open(Path(self.here, "manifest.json"), "r") as file:
+            self.manifest = json.load(file)
+
+        self.root = tk.Tk(className=self.manifest["program"])
+        self.root.title(self.manifest["title"])
         self.root.grid_columnconfigure(0, weight=1)
+        self.set_geometry()
+        self.setup_icon()
+        self.setup_style()
+
+    def setup_icon(self) -> None:
         icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
 
+    def setup_style(self) -> None:
         style = ttk.Style()
-
         self.root.configure(background=config.background_color)
 
         # padding=[left, top, right, bottom])
+
         style.configure("Normal.TCombobox", foreground="white")
         style.map("Normal.TCombobox", fieldbackground=[("readonly", config.combobox_background)], fieldforeground=[("readonly", "white")])
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
@@ -117,7 +127,7 @@ class App:
 
     def exists(self) -> bool:
         try:
-            return app.root.winfo_exists()
+            return self.root.winfo_exists()
         except RuntimeError:
             return False
         except tk.TclError:
@@ -125,12 +135,16 @@ class App:
 
     def show_about(self) -> None:
         from . import dialogs
+        title = self.manifest["title"]
+        version = self.manifest["version"]
+        author = self.manifest["author"]
+        licens = self.manifest["license"]
 
         lines = [
-            f"{config.title} v{config.version}",
+            f"{title} v{version}",
             "Interface for llama.cpp",
-            f"Developer: {config.author}",
-            f"License: {config.license}",
+            f"Developer: {author}",
+            f"License: {licens}",
         ]
 
         dialogs.show_message("\n".join(lines))

@@ -1,9 +1,9 @@
 # Modules
+from .paths import paths
 from .config import config
 from .widgets import widgets
 from . import dialogs
 from . import timeutils
-from .app import app
 
 # Standard
 import os
@@ -29,11 +29,11 @@ def load_files() -> None:
 
 
 def load_config_file() -> None:
-    if not config.config_path.exists():
-        config.config_path.parent.mkdir(parents=True, exist_ok=True)
-        config.config_path.touch(exist_ok=True)
+    if not paths.config.exists():
+        paths.config.parent.mkdir(parents=True, exist_ok=True)
+        paths.config.touch(exist_ok=True)
 
-    with open(config.config_path, "r") as file:
+    with open(paths.config, "r") as file:
         apply_config(file)
 
 
@@ -47,11 +47,11 @@ def get_config_string() -> str:
 
 
 def save_config_state() -> None:
-    if not config.configs_path.exists():
-        config.configs_path.mkdir(parents=True, exist_ok=True)
+    if not paths.configs.exists():
+        paths.configs.mkdir(parents=True, exist_ok=True)
 
     file_path = filedialog.asksaveasfilename(
-        initialdir=config.configs_path,
+        initialdir=paths.configs,
         defaultextension=".json",
         filetypes=[("Config Files", "*.json")],
     )
@@ -66,11 +66,11 @@ def save_config_state() -> None:
 
 
 def load_config_state() -> None:
-    if not config.configs_path.exists():
-        config.configs_path.mkdir(parents=True, exist_ok=True)
+    if not paths.configs.exists():
+        paths.configs.mkdir(parents=True, exist_ok=True)
 
     file_path = filedialog.askopenfilename(
-        initialdir=config.configs_path,
+        initialdir=paths.configs,
     )
 
     if not file_path:
@@ -97,24 +97,24 @@ def apply_config(file: IO[str]) -> None:
 
 
 def load_models_file() -> None:
-    load_list_file(config.models_path, "model", "models")
+    load_list_file(paths.models, "model", "models")
     check_models()
 
 
 def load_inputs_file() -> None:
-    load_list_file(config.inputs_path, "input", "inputs")
+    load_list_file(paths.inputs, "input", "inputs")
 
 
 def load_systems_file() -> None:
-    load_list_file(config.systems_path, "system", "systems")
+    load_list_file(paths.systems, "system", "systems")
 
 
 def load_prepends_file() -> None:
-    load_list_file(config.prepends_path, "system", "prepends")
+    load_list_file(paths.prepends, "system", "prepends")
 
 
 def load_appends_file() -> None:
-    load_list_file(config.appends_path, "system", "appends")
+    load_list_file(paths.appends, "system", "appends")
 
 
 def load_list_file(path: Path, key: str, list_key: str) -> None:
@@ -143,7 +143,7 @@ def save_config() -> None:
     for key in config.defaults():
         conf[key] = getattr(config, key)
 
-    save_file(config.config_path, conf)
+    save_file(paths.config, conf)
 
 
 def check_models(save: bool = True) -> None:
@@ -183,7 +183,7 @@ def add_to_list(key: str, text: str) -> None:
     new_items.insert(0, text)
     new_items = new_items[:config.max_list_items]
     setattr(config, key, new_items)
-    path = getattr(config, key + "_path")
+    path = getattr(paths, key)
     save_file(path, new_items)
 
 
@@ -297,14 +297,14 @@ def do_save_log() -> None:
     text = timeutils.date() + "\n\n" + text
     name = widgets.display.get_current_tab_name().lower()
     name = name.replace(" ", "_")
-    config.logs_path.mkdir(parents=True, exist_ok=True)
+    paths.logs.mkdir(parents=True, exist_ok=True)
     file_name = name + ".txt"
-    file_path = Path(config.logs_path, file_name)
+    file_path = Path(paths.logs, file_name)
     num = 2
 
     while file_path.exists():
         file_name = f"{name}_{num}.txt"
-        file_path = Path(config.logs_path, file_name)
+        file_path = Path(paths.logs, file_name)
         num += 1
 
         if num > 9999:
@@ -335,7 +335,7 @@ def on_format_change(load: bool = True) -> None:
 
 
 def open_logs_dir() -> None:
-    path = config.logs_path
+    path = paths.logs
     path.mkdir(parents=True, exist_ok=True)
     os_name = os.name.lower()
 

@@ -1,18 +1,9 @@
-# Libaries
-import appdirs  # type: ignore
-
 # Standard
-from pathlib import Path
 from typing import List, Any, Dict, Optional
 
 
 class Config:
     def __init__(self) -> None:
-        self.title = "Meltdown"
-        self.program = "meltdown"
-        self.author = "madprops"
-        self.license = "GPL-3.0"
-        self.version = "2.3.0"
         self.width = 784
         self.height = 752
         self.padx = 10
@@ -50,20 +41,6 @@ class Config:
         self.system_threshold = 70
         self.printlogs = False
         self.max_log = 100
-
-        config_dir = appdirs.user_config_dir()
-        self.config_path = Path(config_dir, self.program, "config.json")
-        self.models_path = Path(config_dir, self.program, "models.json")
-        self.inputs_path = Path(config_dir, self.program, "inputs.json")
-        self.systems_path = Path(config_dir, self.program, "systems.json")
-        self.prepends_path = Path(config_dir, self.program, "prepends.json")
-        self.appends_path = Path(config_dir, self.program, "appends.json")
-        self.session_path = Path(config_dir, self.program, "session.json")
-
-        data_dir = appdirs.user_data_dir()
-        self.configs_path = Path(data_dir, self.program, "configs")
-        self.sessions_path = Path(data_dir, self.program, "sessions")
-        self.logs_path = Path(data_dir, self.program, "logs")
 
         self.models: List[str] = []
         self.inputs: List[str] = []
