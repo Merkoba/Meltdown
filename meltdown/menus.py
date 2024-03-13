@@ -5,7 +5,7 @@ from .config import config
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import List, Callable, Any, Optional
+from typing import List, Callable, Any, Optional, Dict
 
 
 class MenuItem:
@@ -20,8 +20,6 @@ class MenuItem:
 
 class Menu:
     current_menu: Optional["Menu"] = None
-    current_widget: Optional[tk.Widget] = None
-    current_command: Optional[Callable[..., Any]] = None
 
     @staticmethod
     def hide_all() -> None:
@@ -45,20 +43,19 @@ class Menu:
         self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
-        self.root.bind("<Escape>", lambda e: self.hide())
-        self.root.bind("<Return>", lambda e: self.hide())
-
-        Menu.current_widget = None
-        Menu.current_command = None
+        self.current_widget = None
 
         def exec() -> None:
-            if Menu.current_command:
-                Menu.current_command()
+            if self.selected_index is not None:
+                item = self.items[self.selected_index]
+
+                if item.command:
+                    item.command()
 
         def cmd() -> None:
             self.hide()
 
-            if Menu.current_command:
+            if self.selected_index is not None:
                 app.root.after(10, lambda: exec())
 
         def on_motion(event: Any) -> None:
@@ -73,14 +70,14 @@ class Menu:
             if isinstance(widget, tk.Frame):
                 return
 
-            if Menu.current_widget != widget:
-                if Menu.current_widget:
-                    Menu.current_widget.event_generate("<<Custom-Leave>>")
+            if self.current_widget != widget:
+                if self.current_widget:
+                    self.current_widget.event_generate("<<Custom-Leave>>")
 
-                Menu.current_widget = widget
+                self.current_widget = widget
 
-                if Menu.current_widget:
-                    Menu.current_widget.event_generate("<<Custom-Enter>>")
+                if self.current_widget:
+                    self.current_widget.event_generate("<<Custom-Enter>>")
 
         def on_mousewheel(event: Any) -> None:
             if not self.container:
@@ -104,8 +101,13 @@ class Menu:
 
         self.container.bind("<Button-4>", lambda e: on_mousewheel(e))
         self.container.bind("<Button-5>", lambda e: on_mousewheel(e))
+        self.root.bind("<Escape>", lambda e: self.hide())
+        self.root.bind("<Return>", lambda e: cmd())
+        self.root.bind("<Up>", lambda e: self.arrow_up())
+        self.root.bind("<Down>", lambda e: self.arrow_down())
+        self.elements: Dict[int, Dict[str, Any]] = {}
 
-        def make_item(item: MenuItem) -> None:
+        def make_item(item: MenuItem, i: int) -> None:
             if item.separator:
                 separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
@@ -113,42 +115,30 @@ class Menu:
                 separator.bind("<Button-4>", lambda e: on_mousewheel(e))
                 separator.bind("<Button-5>", lambda e: on_mousewheel(e))
             else:
-                frame = tk.Frame(self.container, background="white", borderwidth=0)
-
-                if item.disabled:
-                    foreground = "#3D4555"
-                    hover_background = "white"
-                else:
-                    foreground = "black"
-                    hover_background = "lightgray"
-
-                label = tk.Label(frame, text=item.text, background="white", foreground=foreground,
+                colors = self.get_colors(item)
+                frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
+                label = tk.Label(frame, text=item.text, background=colors["background"], foreground=colors["foreground"],
                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0)
 
-                def on_enter() -> None:
-                    frame["background"] = hover_background
-                    label["background"] = hover_background
-                    Menu.current_command = item.command
-
-                def on_leave() -> None:
-                    frame["background"] = "white"
-                    label["background"] = "white"
-
+                self.elements[i] = {"item": item, "index": i, "frame": frame, "label": label}
                 frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
                 frame.bind("<Motion>", lambda e: on_motion(e))
                 label.bind("<Motion>", lambda e: on_motion(e))
-                frame.bind("<<Custom-Enter>>", lambda e: on_enter())
-                label.bind("<<Custom-Enter>>", lambda e: on_enter())
-                frame.bind("<<Custom-Leave>>", lambda e: on_leave())
-                label.bind("<<Custom-Leave>>", lambda e: on_leave())
+                frame.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
+                label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
+                frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
+                label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.bind("<Button-4>", lambda e: on_mousewheel(e))
                 label.bind("<Button-5>", lambda e: on_mousewheel(e))
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
-        for item in self.items:
-            make_item(item)
+        for i, item in enumerate(self.items):
+            make_item(item, i)
+
+        self.selected_index = 0
+        self.select_item(self.selected_index)
 
         self.root.bind("<FocusOut>", lambda e: self.hide())
 
@@ -200,3 +190,65 @@ class Menu:
             self.root.place_forget()
             self.root.destroy()
             Menu.current_menu = None
+
+    def arrow_up(self, n: int = -1) -> None:
+        if n == -1:
+            n = self.selected_index
+
+        n -= 1
+
+        if n >= 0:
+            if not self.select_item(n):
+                self.arrow_up(n)
+
+    def arrow_down(self, n: int = -1) -> None:
+        if n == -1:
+            n = self.selected_index
+
+        n += 1
+
+        if n <= len(self.items) - 1:
+            if not self.select_item(n):
+                self.arrow_down(n)
+
+    def select_item(self, index: int) -> bool:
+        if index in self.elements:
+            self.on_enter(index)
+            return True
+
+        return False
+
+    def on_enter(self, index: int) -> None:
+        if index not in self.elements:
+            return
+
+        if self.selected_index is not None:
+            self.on_leave(self.selected_index)
+
+        els = self.elements[index]
+        colors = self.get_colors(els["item"])
+        els["frame"]["background"] = colors["hover_background"]
+        els["label"]["background"] = colors["hover_background"]
+        self.selected_index = index
+
+    def on_leave(self, index: int) -> None:
+        if index not in self.elements:
+            return
+
+        els = self.elements[index]
+        colors = self.get_colors(els["item"])
+        els["frame"]["background"] = colors["background"]
+        els["label"]["background"] = colors["background"]
+
+    def get_colors(self, item: MenuItem) -> Any:
+        background = "white"
+
+        if item.disabled:
+            foreground = "#3D4555"
+            hover_background = "white"
+        else:
+            foreground = "black"
+            hover_background = "lightgray"
+
+        return {"background": background, "foreground": foreground,
+                "hover_background": hover_background}
