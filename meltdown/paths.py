@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 class Paths:
-    def __init__(self):
+    def __init__(self) -> None:
         program = app.manifest["program"]
 
         config_dir = appdirs.user_config_dir()

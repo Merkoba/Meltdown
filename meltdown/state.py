@@ -231,6 +231,7 @@ def set_config(key: str, value: Any) -> None:
 
 
 def reset_config() -> None:
+    from .app import app
     from .model import model
 
     def reset() -> None:

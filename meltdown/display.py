@@ -167,6 +167,10 @@ class Display:
     def click(self, event: Any) -> None:
         dialogs.hide_all()
         self.on_tab_start_drag(event)
+        tab_id = self.tab_on_coords(event.x, event.y)
+
+        if tab_id:
+            self.check_scroll_buttons(tab_id)
 
     def right_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -303,7 +307,7 @@ class Display:
 
         if output:
             widgetutils.to_top(output)
-            self.output_scroll()
+            self.check_scroll_buttons()
 
     def output_bottom(self) -> None:
         tab = self.get_current_tab()
@@ -313,7 +317,7 @@ class Display:
 
         tab.auto_scroll = True
         widgetutils.to_bottom(tab.output)
-        self.output_scroll()
+        self.check_scroll_buttons()
 
     def copy_output(self) -> None:
         text = self.get_output_text()
@@ -444,9 +448,18 @@ class Display:
         name = con() + vow() + con() + vow() + con() + vow()
         return name.capitalize()
 
-    def output_scroll(self) -> None:
+    def check_scroll_buttons(self, tab_id: str = "") -> None:
         from .widgets import widgets
-        output = self.get_current_output()
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        output = tab.output
 
         if not output:
             return
