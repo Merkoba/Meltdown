@@ -97,8 +97,9 @@ def get_button(parent: tk.Frame, text: str) -> ttk.Button:
 
 
 def make_button(parent: tk.Frame, text: str,
-                command: Optional[Callable[..., Any]] = None,
-                fill: Optional[Fill] = None, right_padding: Optional[int] = None) -> ttk.Button:
+                command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None, \
+                    right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
+                    pady: Optional[int] = None) -> ttk.Button:
     from . import dialogs
     widget = get_button(parent, text)
 
@@ -111,7 +112,7 @@ def make_button(parent: tk.Frame, text: str,
     if command:
         widget.configure(command=lambda: cmd())
 
-    do_pack(widget, fill=fill, right_padding=right_padding)
+    do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
 
 
