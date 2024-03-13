@@ -6,7 +6,7 @@
 
 Compact Mode:
 
-![https://i.imgur.com/6QptHTr.jpg]
+![](https://i.imgur.com/6QptHTr.jpg)
 
 ---
 
