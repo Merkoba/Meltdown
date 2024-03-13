@@ -276,6 +276,10 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
+    dialogs.show_confirm("Save the log to a file?", do_save_log, None)
+
+
+def do_save_log() -> None:
     text = widgets.display.get_output_text()
 
     if not text:
