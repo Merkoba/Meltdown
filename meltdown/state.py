@@ -304,7 +304,7 @@ def save_log() -> None:
         file_path = Path(config.logs_path, file_name)
         num += 1
 
-        if num > 999:
+        if num > 9999:
             break
 
     with open(file_path, "w") as file:
