@@ -726,13 +726,16 @@ class Widgets:
         state.update_config(key)
 
     def esckey(self) -> None:
+        from .model import model
         widget = self.get_widget("input")
         assert isinstance(widget, EntryBox)
 
         if widget.get():
             self.clear_input()
-        else:
+        elif model.streaming:
             self.stop()
+        else:
+            self.display.output_bottom()
 
 
 widgets: Widgets = Widgets()
