@@ -35,11 +35,8 @@ class EntryBox(ttk.Entry):
     def on_focus_change(self, mode: str) -> None:
         from . import state
 
-        if not self.key:
-            return
-
         if mode == "out":
-            if not self.placeholder_active:
+            if self.key and (not self.placeholder_active):
                 state.update_config(self.key)
 
             self.focused = False
