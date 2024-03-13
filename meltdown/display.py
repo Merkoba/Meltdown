@@ -445,14 +445,14 @@ class Display:
         if not output:
             return
 
-        yview = output.yview
+        yview = output.yview()
 
-        if yview()[1] == 1.0:
+        if yview[1] == 1.0:
             widgets.disable_bottom_button()
         else:
             widgets.enable_bottom_button()
 
-        if yview()[0] == 0:
+        if yview[0] == 0:
             widgets.disable_top_button()
         else:
             widgets.enable_top_button()
