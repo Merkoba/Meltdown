@@ -23,6 +23,7 @@ class ToolTip:
         self.widget.bind("<Leave>", lambda e: self.hide_tooltip(e))
         self.widget.bind("<Motion>", lambda e: self.update_event(e))
         self.widget.bind("<Button-1>", lambda e: self.hide_tooltip(e))
+        self.current_event: Optional[Any] = None
         self.id = ""
 
     def update_event(self, event: Any) -> None:
@@ -37,6 +38,9 @@ class ToolTip:
 
     def show_tooltip(self) -> None:
         event = self.current_event
+
+        if event is None:
+            return
 
         if Menu.current_menu:
             return

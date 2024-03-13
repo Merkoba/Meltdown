@@ -12,7 +12,7 @@ class Config:
         self.program = "meltdown"
         self.author = "madprops"
         self.license = "GPL-3.0"
-        self.version = "2.1.0"
+        self.version = "2.2.0"
         self.width = 784
         self.height = 752
         self.padx = 10
@@ -39,6 +39,7 @@ class Config:
         self.button_foreground = "white"
         self.entry_background = "#2B303B"
         self.entry_foreground = "white"
+        self.placeholder_color = "#494D62"
         self.text_background = "#2B303B"
         self.combobox_background = "#2B303B"
         self.text_foreground = "white"

@@ -6,6 +6,7 @@ from .display import Display
 from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
+from .entrybox import EntryBox
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -231,14 +232,17 @@ class Widgets:
         for key in config.defaults():
             self.fill_widget(key, getattr(config, key))
 
-    def fill_widget(self, key: str, value: Any) -> None:
+    def fill_widget(self, key: str, value: Any, focus: bool = False) -> None:
         widget = self.get_widget(key)
 
         if not widget:
             return
 
-        if type(widget) == ttk.Entry or type(widget) == tk.Text:
+        if type(widget) == EntryBox:
             widgetutils.set_text(widget, value)
+
+            if focus:
+                widget.focus_set()
         elif type(widget) == ttk.Combobox:
             widgetutils.set_select(widget, value)
 
@@ -281,32 +285,32 @@ class Widgets:
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
 
-        def bind(key: str) -> None:
+        def bind(key: str, placeholder: str) -> None:
             widget = self.get_widget(key)
 
             if not widget:
                 return
 
-            if type(widget) == ttk.Entry or type(widget) == tk.Text:
-                on = "<FocusOut>"
+            if type(widget) == EntryBox:
+                widget.key = key
+                widget.placeholder = placeholder
+                widget.check_placeholder()
             elif type(widget) == ttk.Combobox:
-                on = "<<ComboboxSelected>>"
+                widget.bind("<<ComboboxSelected>>", lambda e: state.update_config(key))
 
-            widget.bind(on, lambda e: state.update_config(key))
-
-        bind("name_user")
-        bind("name_ai")
-        bind("context")
-        bind("system")
-        bind("max_tokens")
-        bind("temperature")
-        bind("seed")
-        bind("top_k")
-        bind("top_p")
-        bind("format")
-        bind("model")
-        bind("prepend")
-        bind("append")
+        bind("name_user", "Test 123")
+        bind("name_ai", "Test 123")
+        bind("context", "Test 123")
+        bind("system", "Test 123")
+        bind("max_tokens", "Test 123")
+        bind("temperature", "Test 123")
+        bind("seed", "Test 123")
+        bind("top_k", "Test 123")
+        bind("top_p", "Test 123")
+        bind("model", "Test 123")
+        bind("prepend", "Test 123")
+        bind("append", "Test 123")
+        bind("format", "")
 
         self.input_history_index: int
         self.reset_history_index()
@@ -384,7 +388,7 @@ class Widgets:
         if not widget:
             return
 
-        if (type(widget) == ttk.Entry) or (type(widget) == tk.Text):
+        if (type(widget) == EntryBox) or (type(widget) == tk.Text):
             menu.add(text="Copy", command=lambda: self.copy(key))
             menu.add(text="Paste", command=lambda: self.paste(key))
 
@@ -697,34 +701,37 @@ class Widgets:
         if not widget:
             return
 
-        if type(widget) == ttk.Entry:
+        if type(widget) == EntryBox:
             widgetutils.copy(widget.get())
+            widget.focus_set()
             state.update_config(key)
 
     def paste(self, key: str) -> None:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or (type(widget) != ttk.Entry):
+        if (not widget) or (type(widget) != EntryBox):
             return
 
         widgetutils.paste(widget)
+        widget.focus_set()
         state.update_config(key)
 
     def clear(self, key: str) -> None:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or ((type(widget) != ttk.Entry)
+        if (not widget) or ((type(widget) != EntryBox)
                             and (type(widget) != tk.Text)):
             return
 
         widgetutils.clear_text(widget)
+        widget.focus_set()
         state.update_config(key)
 
     def esckey(self) -> None:
         widget = self.get_widget("input")
-        assert isinstance(widget, ttk.Entry)
+        assert isinstance(widget, EntryBox)
 
         if widget.get():
             self.clear_input()

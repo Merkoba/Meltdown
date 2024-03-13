@@ -2,6 +2,7 @@
 from .config import config
 from .app import app
 from .enums import Fill, FillLiteral
+from .entrybox import EntryBox
 
 # Libraries
 import pyperclip  # type: ignore
@@ -80,13 +81,13 @@ def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
 
 def make_entry(parent: tk.Frame, value: str = "",
                width: Optional[int] = None, fill: Optional[Fill] = None,
-               right_padding: Optional[int] = None) -> ttk.Entry:
+               right_padding: Optional[int] = None) -> EntryBox:
     w = width if width else config.entry_width
-    widget = ttk.Entry(parent, font=config.font, width=w, style="Normal.TEntry")
+    widget = EntryBox(parent, font=config.font, width=w, style="Normal.TEntry")
     do_pack(widget, fill=fill, right_padding=right_padding)
 
     if value:
-        widget.insert(0, value)
+        widget.set_text(value)
 
     return widget
 
@@ -133,7 +134,7 @@ def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
     return widget
 
 
-def insert_text(widget: Union[tk.Text, ttk.Entry], text: Union[str, int, float], disable: bool = False) -> None:
+def insert_text(widget: Union[tk.Text], text: Union[str, int, float], disable: bool = False) -> None:
     widget.configure(state="normal")
     widget.insert(tk.END, str(text))
 
@@ -141,13 +142,12 @@ def insert_text(widget: Union[tk.Text, ttk.Entry], text: Union[str, int, float],
         widget.configure(state="disabled")
 
 
-def set_text(widget: Union[tk.Text, ttk.Entry], text: Union[str, int, float],
+def set_text(widget: Union[tk.Text, EntryBox], text: Union[str, int, float],
              disable: bool = False, move: bool = False) -> None:
     widget.configure(state="normal")
 
-    if isinstance(widget, ttk.Entry):
-        widget.delete(0, tk.END)
-        widget.insert(0, str(text))
+    if isinstance(widget, EntryBox):
+        widget.set_text(str(text))
 
         if move:
             widget.xview_moveto(1.0)
@@ -201,12 +201,12 @@ def copy(text: str) -> None:
     pyperclip.copy(text)
 
 
-def paste(widget: ttk.Entry) -> None:
+def paste(widget: EntryBox) -> None:
     text = pyperclip.paste()
     set_text(widget, text)
 
 
-def clear_text(widget: Union[tk.Text, ttk.Entry], disable: bool = False) -> None:
+def clear_text(widget: Union[tk.Text, EntryBox], disable: bool = False) -> None:
     set_text(widget, "", disable)
 
 

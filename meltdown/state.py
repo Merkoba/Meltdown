@@ -231,7 +231,6 @@ def set_config(key: str, value: Any) -> None:
 
 
 def reset_config() -> None:
-    from . import widgetutils
     from .model import model
 
     def reset() -> None:
@@ -260,7 +259,7 @@ def reset_one_config(key: str) -> None:
         return
 
     set_config(key, default)
-    widgets.fill_widget(key, getattr(config, key))
+    widgets.fill_widget(key, getattr(config, key), focus=True)
 
 
 def get_models_dir() -> Optional[str]:
