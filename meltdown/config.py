@@ -24,7 +24,7 @@ class Config:
         self.combobox_width = 11
         self.dialog_color = "#252933"
         self.font = ("sans", 14)
-        self.font_button = ("sans", 13)
+        self.font_button = ("sans", 12)
         self.font_combobox = ("sans", 13)
         self.font_tab = ("sans", 12)
         self.background_color = "#212121"
