@@ -186,14 +186,17 @@ class Widgets:
 
         widgetutils.make_label(frame, "Prepend")
         self.prepend = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
+        ToolTip(self.prepend, "Add this to the beginning of the prompt")
 
         widgetutils.make_label(frame, "Append")
         self.append = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL, right_padding=right_padding)
+        ToolTip(self.append, "Add this to the end of the prompt")
 
         # Input
         frame = get_frame(bottom_padding=10)
         widgetutils.make_label(frame, "Input")
         self.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
+        ToolTip(self.input, "The prompt for the AI. The prompt is a message that the AI will respond to.")
 
         input_history_up_button = widgetutils.make_button(frame, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
@@ -202,7 +205,7 @@ class Widgets:
         ToolTip(input_history_up_down, "Next item in the input history")
 
         submit_button = widgetutils.make_button(frame, "Submit", lambda: self.submit(), right_padding=right_padding)
-        ToolTip(submit_button, "Use the input as the prompt for the AI")
+        ToolTip(submit_button, "Send the prompt to the AI")
 
         self.main_menu = Menu()
         self.models_menu = Menu()
