@@ -9,6 +9,9 @@ import tkinter as tk
 from tkinter import ttk
 
 
+current_dialog: Optional[tk.Frame] = None
+
+
 def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
     background = "white"
     foreground = "black"
@@ -28,6 +31,8 @@ def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
 
 
 def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
+    global current_dialog
+    current_dialog = dialog
     dialog.update_idletasks()
     window_width = app.root.winfo_width()
     window_height = app.root.winfo_height()
@@ -43,9 +48,16 @@ def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
 
 
 def hide_dialog(dialog: tk.Frame) -> None:
+    global current_dialog
     from .widgets import widgets
+    current_dialog = None
     dialog.destroy()
     widgets.focus_input()
+
+
+def hide_all() -> None:
+    if current_dialog:
+        hide_dialog(current_dialog)
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:

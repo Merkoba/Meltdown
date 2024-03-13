@@ -32,7 +32,6 @@ class Display:
         self.root.bind("<Button-3>", lambda e: self.right_click(e))
         self.root.bind("<Double-Button-1>", lambda e: self.double_click(e))
         self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
-        self.root.bind("<Button-1>", self.on_tab_start_drag)
         self.root.bind("<B1-Motion>", self.on_tab_drag)
         self.output_menu = Menu()
         self.tab_menu = Menu()
@@ -166,7 +165,8 @@ class Display:
             return None
 
     def click(self, event: Any) -> None:
-        pass
+        dialogs.hide_all()
+        self.on_tab_start_drag(event)
 
     def right_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)

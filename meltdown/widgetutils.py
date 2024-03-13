@@ -73,7 +73,7 @@ def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
 
 def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
                   right_padding: Optional[int] = None) -> ttk.Notebook:
-    widget = ttk.Notebook(parent, style="Normal.TNotebook", takefocus=False)
+    widget = ttk.Notebook(parent, style="Normal.TNotebook")
     do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
@@ -98,10 +98,17 @@ def get_button(parent: tk.Frame, text: str) -> ttk.Button:
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None,
                 fill: Optional[Fill] = None, right_padding: Optional[int] = None) -> ttk.Button:
+    from . import dialogs
     widget = get_button(parent, text)
 
+    def cmd() -> None:
+        dialogs.hide_all()
+
+        if command:
+            command()
+
     if command:
-        widget.configure(command=command)
+        widget.configure(command=lambda: cmd())
 
     do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
