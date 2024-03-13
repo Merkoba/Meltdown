@@ -98,6 +98,7 @@ class Session:
         try:
             self.load_items(path)
         except BaseException as e:
+            print(e)
             self.reset()
 
     def reset(self) -> None:
@@ -119,6 +120,11 @@ class Session:
             document.items = item["items"]
             self.items[document.id] = document
             widgets.display.make_tab(document.name, document.id, select_tab=False)
+
+        tab_ids = widgets.display.tab_ids()
+
+        if tab_ids:
+            widgets.display.select_tab(tab_ids[-1])
 
     def save_state(self) -> None:
         if not config.sessions_path.exists():
@@ -158,6 +164,7 @@ class Session:
             self.load_items(path)
             self.save()
         except BaseException as e:
+            print(e)
             self.reset()
 
     def to_json(self) -> str:
