@@ -313,7 +313,9 @@ class Widgets:
             ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
 
             if type(event.widget) in ftypes:
-                if (len(event.keysym.strip()) == 1) or (event.keysym == "slash"):
+                chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
+
+                if (len(event.keysym.strip()) == 1) or (event.char in chars):
                     self.focus_input()
                     self.input.insert(tk.END, event.char)
                 elif event.keysym == "Return":
