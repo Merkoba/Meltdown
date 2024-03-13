@@ -275,7 +275,7 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    dialogs.show_confirm("Save the log to a file?", do_save_log, None)
+    dialogs.show_confirm("Save the output to a file?", do_save_log, None)
 
 
 def do_save_log() -> None:
