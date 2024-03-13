@@ -39,7 +39,9 @@ class EntryBox(ttk.Entry):
             return
 
         if mode == "out":
-            state.update_config(self.key)
+            if not self.placeholder_active:
+                state.update_config(self.key)
+
             self.focused = False
         elif mode == "in":
             self.focused = True
