@@ -12,7 +12,7 @@ class Config:
         self.program = "meltdown"
         self.author = "madprops"
         self.license = "GPL-3.0"
-        self.version = "2.2.2"
+        self.version = "2.3.0"
         self.width = 784
         self.height = 752
         self.padx = 10
