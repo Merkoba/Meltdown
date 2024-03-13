@@ -104,24 +104,29 @@ class Menu:
         self.root.bind("<Down>", lambda e: self.arrow_down())
         self.elements: Dict[int, Dict[str, Any]] = {}
 
+        def bind_motion(parent: tk.Widget) -> None:
+            for child in parent.winfo_children():
+                child.bind("<Motion>", lambda e: on_motion(e))
+                child.bind("<B1-Motion>", lambda e: on_motion(e))
+                bind_motion(child)
+
         def make_item(item: MenuItem, i: int) -> None:
+            colors = self.get_colors(item)
+
             if item.separator:
                 separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
-                separator.bind("<Motion>", lambda e: on_motion(e))
                 separator.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
                 separator.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
             else:
-                colors = self.get_colors(item)
                 frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
                 label = tk.Label(frame, text=item.text, background=colors["background"], foreground=colors["foreground"],
                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0)
 
                 self.elements[i] = {"item": item, "index": i, "frame": frame, "label": label}
+
                 frame.bind("<ButtonRelease-1>", lambda e: cmd())
                 label.bind("<ButtonRelease-1>", lambda e: cmd())
-                frame.bind("<Motion>", lambda e: on_motion(e))
-                label.bind("<Motion>", lambda e: on_motion(e))
                 frame.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
@@ -134,6 +139,7 @@ class Menu:
         for i, item in enumerate(self.items):
             make_item(item, i)
 
+        bind_motion(self.root)
         self.selected_index = 0
         self.select_item(self.selected_index)
 
@@ -239,6 +245,7 @@ class Menu:
 
     def get_colors(self, item: MenuItem) -> Any:
         background = "white"
+        separator = "lightgray"
 
         if item.disabled:
             foreground = "#3D4555"
