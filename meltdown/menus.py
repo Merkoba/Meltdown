@@ -108,6 +108,10 @@ class Menu:
             for child in parent.winfo_children():
                 child.bind("<Motion>", lambda e: on_motion(e))
                 child.bind("<B1-Motion>", lambda e: on_motion(e))
+                child.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
+                child.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
+                child.bind("<ButtonRelease-1>", lambda e: cmd())
+                child.bind("<ButtonRelease-1>", lambda e: cmd())
                 bind_motion(child)
 
         def make_item(item: MenuItem, i: int) -> None:
@@ -116,8 +120,6 @@ class Menu:
             if item.separator:
                 separator = ttk.Separator(self.container, orient="horizontal")
                 separator.pack(expand=True, fill="x", padx=6, pady=2)
-                separator.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
-                separator.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
             else:
                 frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
                 label = tk.Label(frame, text=item.text, background=colors["background"], foreground=colors["foreground"],
@@ -125,14 +127,10 @@ class Menu:
 
                 self.elements[i] = {"item": item, "index": i, "frame": frame, "label": label}
 
-                frame.bind("<ButtonRelease-1>", lambda e: cmd())
-                label.bind("<ButtonRelease-1>", lambda e: cmd())
                 frame.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
-                label.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
-                label.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
                 label.pack(expand=True, fill="x", padx=6, pady=0)
                 frame.pack(fill="x", expand=True)
 
