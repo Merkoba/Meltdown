@@ -116,6 +116,8 @@ class App:
                   troughcolor=[("disabled", "#333B4B")],
                   borderwidth=[("disabled", 0)])
 
+        style.configure("Normal.TSeparator", background="lightgrey")
+
     def setup(self) -> None:
         self.check_compact()
 

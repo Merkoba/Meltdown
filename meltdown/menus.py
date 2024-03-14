@@ -31,6 +31,10 @@ class Menu:
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
+        self.disabled_color = "#E0E0E0"
+        self.background_color = "white"
+        self.foreground_color = "black"
+        self.foreground_disabled = "#3D4555"
         self.filter = ""
 
     def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
@@ -70,9 +74,9 @@ class Menu:
         self.root.grid_columnconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
         self.current_widget = None
-        self.selected_index = 0
+        self.selected_index = -1
         self.make_items()
-        self.select_item(self.selected_index)
+        self.select_first_item()
         self.configure_geometry(event)
         self.setup_keyboard()
         self.last_event = event
@@ -83,6 +87,9 @@ class Menu:
             return
 
         def exec() -> None:
+            if self.selected_index not in self.elements:
+                return
+
             item = self.items[self.selected_index]
 
             if item.command:
@@ -136,7 +143,7 @@ class Menu:
             colors = self.get_colors(item)
 
             if item.separator:
-                separator = ttk.Separator(self.container, orient="horizontal")
+                separator = ttk.Separator(self.container, orient="horizontal", style="Normal.TSeparator")
                 separator.grid(row=i, column=0, sticky="ew", padx=6, pady=2)
                 self.separators.append(separator)
             else:
@@ -151,7 +158,16 @@ class Menu:
         for i, item in enumerate(self.items):
             make_item(item, i)
 
+        self.no_items = ttk.Label(self.container, text="No Items", background=self.background_color, foreground=self.foreground_color,
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0, padding=(4, 2, 4, 2))
+
+        self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
+        self.no_items.grid_remove()
+
         bind_motion(self.root)
+
+    def all_hidden(self) -> bool:
+        return all(not els["item"].visible for els in self.elements.values())
 
     def configure_geometry(self, event: Any) -> None:
         if not self.root or not self.container:
@@ -194,8 +210,10 @@ class Menu:
             elif event.keysym == "BackSpace":
                 self.filter = self.filter[:-1]
             elif event.char:
-                self.filter += event.char
+                if not self.all_hidden():
+                    self.filter += event.char
 
+            self.filter = self.filter.strip()
             self.do_filter()
 
         self.root.bind("<KeyPress>", on_key)
@@ -219,7 +237,13 @@ class Menu:
             for sep in self.separators:
                 sep.grid_remove()
 
-        self.select_first_item()
+        if self.all_hidden():
+            self.no_items.grid()
+            self.selected_index = -1
+        else:
+            self.no_items.grid_remove()
+            self.select_first_item()
+
         self.configure_geometry(self.last_event)
 
     def show_item(self, index: int) -> None:
@@ -257,7 +281,13 @@ class Menu:
             self.root.destroy()
             Menu.current_menu = None
 
+    def no_item(self) -> bool:
+        return self.selected_index not in self.elements
+
     def arrow_up(self, n: int = -1) -> None:
+        if self.no_item():
+            return
+
         if n == -1:
             n = self.selected_index
 
@@ -268,6 +298,9 @@ class Menu:
                 self.arrow_up(n)
 
     def arrow_down(self, n: int = -1) -> None:
+        if self.no_item():
+            return
+
         if n == -1:
             n = self.selected_index
 
@@ -310,20 +343,22 @@ class Menu:
         els["label"]["background"] = colors["background"]
 
     def get_colors(self, item: MenuItem) -> Any:
-        background = "white"
-        separator = "lightgray"
+        background = self.background_color
 
         if item.disabled:
-            foreground = "#3D4555"
-            hover_background = "white"
+            foreground = self.foreground_disabled
+            hover_background = self.background_color
         else:
-            foreground = "black"
-            hover_background = "lightgray"
+            foreground = self.foreground_color
+            hover_background = self.disabled_color
 
         return {"background": background, "foreground": foreground,
                 "hover_background": hover_background}
 
     def scroll_to_item(self) -> None:
+        if self.no_item():
+            return
+
         els = self.elements[self.selected_index]
         tries = 0
 
