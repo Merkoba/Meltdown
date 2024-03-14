@@ -37,10 +37,10 @@ class Display:
         self.drag_start_index = 0
         self.tab_number = 1
 
-        self.root.bind("<Button-1>", lambda e: self.click(e))
-        self.root.bind("<ButtonRelease-2>", lambda e: self.middle_click(e))
-        self.root.bind("<Button-3>", lambda e: self.right_click(e))
-        self.root.bind("<Double-Button-1>", lambda e: self.double_click(e))
+        self.root.bind("<Button-1>", lambda e: self.on_click(e))
+        self.root.bind("<ButtonRelease-2>", lambda e: self.on_middle_click(e))
+        self.root.bind("<Button-3>", lambda e: self.on_right_click(e))
+        self.root.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
         self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
         self.root.bind("<B1-Motion>", self.on_tab_drag)
 
@@ -127,6 +127,7 @@ class Display:
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
         self.current_tab = tab_id
+        self.check_scroll_buttons(tab_id)
 
     def update_current_tab(self) -> None:
         tab_id = self.root.select()
@@ -174,7 +175,7 @@ class Display:
         else:
             return None
 
-    def click(self, event: Any) -> None:
+    def on_click(self, event: Any) -> None:
         dialogs.hide_all()
         self.on_tab_start_drag(event)
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -182,20 +183,20 @@ class Display:
         if tab_id:
             self.check_scroll_buttons(tab_id)
 
-    def right_click(self, event: Any) -> None:
+    def on_right_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if tab_id:
             self.tab_menu_id = tab_id
             self.tab_menu.show(event)
 
-    def middle_click(self, event: Any) -> None:
+    def on_middle_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if tab_id:
             self.close_tab(event)
 
-    def double_click(self, event: Any) -> None:
+    def on_double_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
 
         if not tab_id:
