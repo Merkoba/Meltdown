@@ -24,6 +24,16 @@ def on_key(event: Any) -> None:
             widgets.display.tab_right()
         elif event.keysym == "Return":
             widgets.show_main_menu()
+        elif event.keysym == "Escape":
+            widgets.show_main_menu()
+        elif event.keysym == "t":
+            widgets.display.make_tab()
+        elif event.keysym == "w":
+            widgets.display.close_current_tab()
+        elif event.keysym == "l":
+            widgets.display.save_log()
+        elif event.keysym == "BackSpace":
+            widgets.display.clear_output()
 
         return
 

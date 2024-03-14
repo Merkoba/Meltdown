@@ -502,3 +502,6 @@ class Display:
             return
 
         self.select_tab(self.tab_ids()[index])
+
+    def close_current_tab(self) -> None:
+        self.close_tab(tab_id=self.current_tab)
