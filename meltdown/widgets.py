@@ -288,7 +288,6 @@ class Widgets:
         self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
 
         self.input.bind("<Return>", lambda e: self.submit())
-        self.input.bind("<Escape>", lambda e: self.esckey())
 
         def setup_entrybox(key: str, placeholder: str) -> None:
             widget = self.get_widget(key)
@@ -343,6 +342,10 @@ class Widgets:
                 elif event.keysym == "Right":
                     self.display.tab_right()
 
+                return
+
+            if event.keysym == "Escape":
+                self.esckey()
                 return
 
             # Focus the input and insert char
