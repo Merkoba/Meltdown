@@ -265,7 +265,7 @@ class Menu:
                 self.select_item(i)
                 break
 
-    def show(self, event: Optional[Any] = None, coords: Optional[Dict[str, int]] = None) -> None:
+    def show(self, event: Optional[Any] = None, widget: Optional[tk.Widget] = None) -> None:
         Menu.hide_all()
 
         if not self.items:
@@ -273,8 +273,10 @@ class Menu:
 
         if event:
             self.coords = {"x": event.x_root, "y": event.y_root}
-        elif coords:
-            self.coords = coords
+        elif widget:
+            x = widget.winfo_rootx() + widget.winfo_width() // 2
+            y = widget.winfo_rooty() + widget.winfo_height() // 2
+            self.coords = {"x": x, "y": y}
         else:
             return
 

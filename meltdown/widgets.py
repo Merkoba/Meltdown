@@ -253,6 +253,7 @@ class Widgets:
 
     def setup(self) -> None:
         from . import state
+        from . import keyboard
         from .session import session
 
         if self.display.num_tabs() == 0:
@@ -327,53 +328,11 @@ class Widgets:
 
         self.input_history_index: int
         self.reset_history_index()
-
-        def on_key(event: Any) -> None:
-            # Shift = 1
-            # Ctrl = 4
-
-            if event.state & 4:
-                if event.keysym == "Up":
-                    self.display.output_top()
-                elif event.keysym == "Down":
-                    self.display.output_bottom()
-                elif event.keysym == "Left":
-                    self.display.tab_left()
-                elif event.keysym == "Right":
-                    self.display.tab_right()
-
-                return
-
-            if event.keysym == "Escape":
-                self.esckey()
-                return
-
-            # Focus the input and insert char
-            ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
-
-            if type(event.widget) in ftypes:
-                chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
-
-                if (len(event.keysym.strip()) == 1) or (event.char in chars):
-                    self.focus_input()
-                    widgetutils.set_text(self.input, event.char)
-                elif event.keysym == "Return":
-                    self.focus_input()
-            elif event.widget == self.input:
-                if event.keysym == "Up":
-                    if event.state & 1:
-                        self.show_input_menu()
-                    else:
-                        self.input_history_up()
-                elif event.keysym == "Down":
-                    self.input_history_down()
-
-        app.root.bind("<KeyPress>", on_key)
-
         self.focus_input()
         self.add_generic_menus()
         self.disable_bottom_button()
         self.start_checks()
+        keyboard.setup()
 
     def focus_input(self) -> None:
         self.input.focus_set()
@@ -454,9 +413,7 @@ class Widgets:
             widget = self.get_widget(key_config)
 
             if widget:
-                x = widget.winfo_rootx() + widget.winfo_width() // 2
-                y = widget.winfo_rooty() + widget.winfo_height() // 2
-                menu.show(coords={"x": x, "y": y})
+                menu.show(widget=widget)
 
                 if items:
                     menu.select_item(4)
@@ -563,8 +520,11 @@ class Widgets:
     def update(self) -> None:
         app.root.update_idletasks()
 
-    def show_main_menu(self, event: Any) -> None:
-        self.main_menu.show(event)
+    def show_main_menu(self, event: Optional[Any] = None) -> None:
+        if event:
+            self.main_menu.show(event)
+        else:
+            self.main_menu.show(widget=self.main_menu_button)
 
     def add_generic_menus(self) -> None:
         def add_menu(key: str) -> None:
