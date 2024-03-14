@@ -34,6 +34,8 @@ class Menu:
         self.disabled_color = "#E0E0E0"
         self.background_color = "white"
         self.foreground_color = "black"
+        self.hover_background = "#6693C3"
+        self.hover_foreground = "white"
         self.foreground_disabled = "#3D4555"
         self.filter = ""
 
@@ -334,6 +336,7 @@ class Menu:
         els = self.elements[index]
         colors = self.get_colors(els["item"])
         els["label"]["background"] = colors["hover_background"]
+        els["label"]["foreground"] = colors["hover_foreground"]
         self.selected_index = index
         self.scroll_to_item()
 
@@ -344,19 +347,22 @@ class Menu:
         els = self.elements[index]
         colors = self.get_colors(els["item"])
         els["label"]["background"] = colors["background"]
+        els["label"]["foreground"] = colors["foreground"]
 
     def get_colors(self, item: MenuItem) -> Any:
         background = self.background_color
 
         if item.disabled:
             foreground = self.foreground_disabled
+            hover_foreground = self.foreground_disabled
             hover_background = self.background_color
         else:
             foreground = self.foreground_color
-            hover_background = self.disabled_color
+            hover_foreground = self.hover_foreground
+            hover_background = self.hover_background
 
         return {"background": background, "foreground": foreground,
-                "hover_background": hover_background}
+                "hover_background": hover_background, "hover_foreground": hover_foreground}
 
     def scroll_to_item(self) -> None:
         if self.no_item():
