@@ -34,6 +34,11 @@ def on_key(event: Any) -> None:
             widgets.display.save_log()
         elif event.keysym == "BackSpace":
             widgets.display.clear_output()
+        elif event.keysym == "a":
+            widgets.display.select_output()
+        elif event.keysym == "y":
+            widgets.display.copy_output()
+
 
         return
 

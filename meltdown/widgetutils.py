@@ -187,6 +187,10 @@ def select_all(widget: tk.Text) -> None:
     widget.tag_add("sel", "1.0", "end")
 
 
+def deselect_all(widget: tk.Text) -> None:
+    widget.tag_remove("sel", "1.0", "end")
+
+
 def get_text(widget: tk.Text) -> str:
     return widget.get("1.0", "end-1c").strip()
 
