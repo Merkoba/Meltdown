@@ -17,23 +17,24 @@ class ToolTip:
 
     def __init__(self, widget: tk.Widget, text: str) -> None:
         self.widget = widget
+        self.delay = 600
         self.text = clean_string(text)
         self.tooltip: Optional[tk.Frame] = None
-        self.widget.bind("<Enter>", lambda e: self.schedule_tooltip(e))
-        self.widget.bind("<Leave>", lambda e: self.hide_tooltip(e))
+        self.widget.bind("<Enter>", lambda e: self.schedule_tooltip())
+        self.widget.bind("<Leave>", lambda e: self.hide_tooltip())
+        self.widget.bind("<Button-1>", lambda e: self.hide_tooltip())
         self.widget.bind("<Motion>", lambda e: self.update_event(e))
-        self.widget.bind("<Button-1>", lambda e: self.hide_tooltip(e))
         self.current_event: Optional[Any] = None
         self.id = ""
 
     def update_event(self, event: Any) -> None:
         self.current_event = event
 
-    def schedule_tooltip(self, event: Any) -> None:
+    def schedule_tooltip(self) -> None:
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
-        self.id = self.widget.after(500, lambda: self.show_tooltip())
+        self.id = self.widget.after(self.delay, lambda: self.show_tooltip())
         ToolTip.current_tooltip = self
 
     def show_tooltip(self) -> None:
@@ -71,7 +72,7 @@ class ToolTip:
 
         self.tooltip.place(x=x, y=y)
 
-    def hide_tooltip(self, event: Any = None) -> None:
+    def hide_tooltip(self) -> None:
         if self.tooltip:
             self.tooltip.destroy()
             self.tooltip = None
