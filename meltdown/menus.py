@@ -140,18 +140,13 @@ class Menu:
                 separator.grid(row=i, column=0, sticky="ew", padx=6, pady=2)
                 self.separators.append(separator)
             else:
-                frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
-                label = tk.Label(frame, text=item.text, background=colors["background"], foreground=colors["foreground"],
-                                 wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0)
+                label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0, padding=(4, 2, 4, 2))
 
-                self.elements[i] = {"item": item, "index": i, "frame": frame, "label": label}
-                frame.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
+                self.elements[i] = {"item": item, "index": i, "label": label}
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
-                frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
-                frame.grid(row=i, column=0, sticky="ew")
-                frame.grid_columnconfigure(0, weight=1)
-                label.grid(row=0, column=0, sticky="ew", padx=6, pady=0)
+                label.grid(row=i, column=0, sticky="ew", pady=0)
 
         for i, item in enumerate(self.items):
             make_item(item, i)
@@ -230,12 +225,12 @@ class Menu:
     def show_item(self, index: int) -> None:
         els = self.elements[index]
         els["item"].visible = True
-        els["frame"].grid()
+        els["label"].grid()
 
     def hide_item(self, index: int) -> None:
         els = self.elements[index]
         els["item"].visible = False
-        els["frame"].grid_remove()
+        els["label"].grid_remove()
 
     def select_first_item(self) -> None:
         for i in range(len(self.items)):
@@ -302,7 +297,6 @@ class Menu:
         self.on_leave(self.selected_index)
         els = self.elements[index]
         colors = self.get_colors(els["item"])
-        els["frame"]["background"] = colors["hover_background"]
         els["label"]["background"] = colors["hover_background"]
         self.selected_index = index
         self.scroll_to_item()
@@ -313,7 +307,6 @@ class Menu:
 
         els = self.elements[index]
         colors = self.get_colors(els["item"])
-        els["frame"]["background"] = colors["background"]
         els["label"]["background"] = colors["background"]
 
     def get_colors(self, item: MenuItem) -> Any:
@@ -335,8 +328,8 @@ class Menu:
         tries = 0
 
         while tries < 10:
-            widget_y = els["frame"].winfo_rooty() - app.root.winfo_rooty()
-            widget_height = els["frame"].winfo_height()
+            widget_y = els["label"].winfo_rooty() - app.root.winfo_rooty()
+            widget_height = els["label"].winfo_height()
             window_height = app.root.winfo_height()
 
             if widget_y + widget_height > window_height or widget_y < 0:
