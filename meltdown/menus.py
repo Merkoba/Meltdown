@@ -16,6 +16,8 @@ class MenuItem:
         self.command = command
         self.separator = separator
         self.disabled = disabled
+        self.visible = True
+        self.last_event = None
 
 
 class Menu:
@@ -29,6 +31,7 @@ class Menu:
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
+        self.filter = ""
 
     def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
         self.items.append(MenuItem(text, command, disabled=disabled))
@@ -64,12 +67,16 @@ class Menu:
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
         self.root.bind("<FocusOut>", lambda e: self.hide())
+        self.root.grid_columnconfigure(0, weight=1)
+        self.container.grid_columnconfigure(0, weight=1)
         self.current_widget = None
         self.selected_index = 0
         self.make_items()
         self.select_item(self.selected_index)
         self.configure_geometry(event)
         self.setup_keyboard()
+        self.last_event = event
+        self.filter = ""
 
     def make_items(self) -> None:
         if not self.container:
@@ -113,6 +120,7 @@ class Menu:
         self.root.bind("<Up>", lambda e: self.arrow_up())
         self.root.bind("<Down>", lambda e: self.arrow_down())
         self.elements: Dict[int, Dict[str, Any]] = {}
+        self.separators: List[ttk.Separator] = []
 
         def bind_motion(parent: tk.Widget) -> None:
             for child in parent.winfo_children():
@@ -129,20 +137,21 @@ class Menu:
 
             if item.separator:
                 separator = ttk.Separator(self.container, orient="horizontal")
-                separator.pack(expand=True, fill="x", padx=6, pady=2)
+                separator.grid(row=i, column=0, sticky="ew", padx=6, pady=2)
+                self.separators.append(separator)
             else:
                 frame = tk.Frame(self.container, background=colors["background"], borderwidth=0)
                 label = tk.Label(frame, text=item.text, background=colors["background"], foreground=colors["foreground"],
                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0)
 
                 self.elements[i] = {"item": item, "index": i, "frame": frame, "label": label}
-
                 frame.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 frame.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
-                label.pack(expand=True, fill="x", padx=6, pady=0)
-                frame.pack(fill="x", expand=True)
+                frame.grid(row=i, column=0, sticky="ew")
+                frame.grid_columnconfigure(0, weight=1)
+                label.grid(row=0, column=0, sticky="ew", padx=6, pady=0)
 
         for i, item in enumerate(self.items):
             make_item(item, i)
@@ -185,9 +194,54 @@ class Menu:
 
     def setup_keyboard(self) -> None:
         def on_key(event: Any) -> None:
-            print(event.char)
+            if event.keysym == "Escape":
+                self.filter = ""
+            elif event.keysym == "BackSpace":
+                self.filter = self.filter[:-1]
+            elif event.char:
+                self.filter += event.char
+
+            self.do_filter()
 
         self.root.bind("<KeyPress>", on_key)
+
+    def do_filter(self) -> None:
+        if not self.filter:
+            for els in self.elements.values():
+                self.show_item(els["index"])
+
+            for sep in self.separators:
+                sep.grid()
+        else:
+            for els in self.elements.values():
+                if els["item"].disabled:
+                    self.hide_item(els["index"])
+                elif self.filter.lower() in els["item"].text.lower():
+                    self.show_item(els["index"])
+                else:
+                    self.hide_item(els["index"])
+
+            for sep in self.separators:
+                sep.grid_remove()
+
+        self.select_first_item()
+        self.configure_geometry(self.last_event)
+
+    def show_item(self, index: int) -> None:
+        els = self.elements[index]
+        els["item"].visible = True
+        els["frame"].grid()
+
+    def hide_item(self, index: int) -> None:
+        els = self.elements[index]
+        els["item"].visible = False
+        els["frame"].grid_remove()
+
+    def select_first_item(self) -> None:
+        for i in range(len(self.items)):
+            if self.elements[i]["item"].visible:
+                self.select_item(i)
+                break
 
     def show(self, event: Any) -> None:
         Menu.hide_all()
@@ -233,6 +287,9 @@ class Menu:
             return False
 
         if self.elements[index]["item"].disabled:
+            return False
+
+        if not self.elements[index]["item"].visible:
             return False
 
         self.on_enter(index)
