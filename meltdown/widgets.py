@@ -260,7 +260,7 @@ class Widgets:
 
         self.fill()
 
-        self.main_menu.add(text="Recent Models", command=lambda: self.show_recent_models())
+        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu())
         self.main_menu.add(text="Browse Models", command=lambda: self.browse_models())
         self.main_menu.separator()
         self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
@@ -279,13 +279,13 @@ class Widgets:
         self.main_menu.add(text="Exit", command=lambda: app.exit())
         self.main_menu_button.bind("<ButtonRelease-1>", lambda e: self.show_main_menu(e))
 
-        self.model.bind("<Button-3>", lambda e: self.show_recent_models(e))
-        self.system.bind("<Button-3>", lambda e: self.show_recent_systems(e))
+        self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
+        self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
         self.prepend.bind("<Return>", lambda e: self.submit())
-        self.prepend.bind("<Button-3>", lambda e: self.show_recent_prepends(e))
+        self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Return>", lambda e: self.submit())
-        self.append.bind("<Button-3>", lambda e: self.show_recent_appends(e))
-        self.input.bind("<Button-3>", lambda e: self.show_recent_inputs(e))
+        self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
+        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
 
         self.input.bind("<Return>", lambda e: self.submit())
         self.input.bind("<Escape>", lambda e: self.esckey())
@@ -341,6 +341,11 @@ class Widgets:
                     widgetutils.set_text(self.input, event.char)
                 elif event.keysym == "Return":
                     self.focus_input()
+            elif event.widget == self.input:
+                if event.keysym == "Up":
+                    # Shift is pressed
+                    if event.state & 1:
+                        self.show_input_menu()
             # Input history Up or Down
             elif event.widget == self.input:
                 if event.keysym == "Up":
@@ -418,17 +423,30 @@ class Widgets:
         menu.clear()
         items = getattr(config, key_list)[:config.max_list_items]
         self.add_common_commands(menu, key_config)
-        menu.add(text="--- Recent ---", disabled=True)
 
-        for item in items:
-            def proc(item: str = item) -> None:
-                command(item)
+        if items:
+            menu.add(text="--- Recent ---", disabled=True)
 
-            menu.add(text=item[:80], command=proc)
+            for item in items:
+                def proc(item: str = item) -> None:
+                    command(item)
 
-        menu.show(event)
+                menu.add(text=item[:80], command=proc)
 
-    def show_recent_models(self, event: Optional[Any] = None) -> None:
+        if event:
+            menu.show(event)
+        else:
+            widget = self.get_widget(key_config)
+
+            if widget:
+                x = widget.winfo_rootx() + widget.winfo_width() // 2
+                y = widget.winfo_rooty() + widget.winfo_height() // 2
+                menu.show(coords={"x": x, "y": y})
+
+                if items:
+                    menu.select_item(4)
+
+    def show_model_menu(self, event: Optional[Any] = None) -> None:
         from .model import model
 
         if model.model_loading:
@@ -436,16 +454,16 @@ class Widgets:
 
         self.show_menu_items("model", "models", lambda m: self.set_model(m), event)
 
-    def show_recent_systems(self, event: Optional[Any] = None) -> None:
+    def show_system_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
 
-    def show_recent_prepends(self, event: Optional[Any] = None) -> None:
+    def show_prepend_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("prepend", "prepends", lambda s: self.set_prepend(s), event)
 
-    def show_recent_appends(self, event: Optional[Any] = None) -> None:
+    def show_append_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
-    def show_recent_inputs(self, event: Optional[Any] = None) -> None:
+    def show_input_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
 
     def browse_models(self) -> None:

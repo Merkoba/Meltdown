@@ -110,11 +110,11 @@ def load_systems_file() -> None:
 
 
 def load_prepends_file() -> None:
-    load_list_file(paths.prepends, "system", "prepends")
+    load_list_file(paths.prepends, "prepend", "prepends")
 
 
 def load_appends_file() -> None:
-    load_list_file(paths.appends, "system", "appends")
+    load_list_file(paths.appends, "append", "appends")
 
 
 def load_list_file(path: Path, key: str, list_key: str) -> None:

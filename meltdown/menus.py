@@ -17,7 +17,7 @@ class MenuItem:
         self.separator = separator
         self.disabled = disabled
         self.visible = True
-        self.last_event = None
+        self.coords = {"x": 0, "y": 0}
 
 
 class Menu:
@@ -37,7 +37,6 @@ class Menu:
         self.hover_background = "#6693C3"
         self.hover_foreground = "white"
         self.foreground_disabled = "#3D4555"
-        self.filter = ""
 
     def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
         self.items.append(MenuItem(text, command, disabled=disabled))
@@ -68,7 +67,7 @@ class Menu:
 
             self.root.yview_scroll(1, "units")
 
-    def make(self, event: Any) -> None:
+    def make(self) -> None:
         self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
@@ -79,9 +78,8 @@ class Menu:
         self.selected_index = -1
         self.make_items()
         self.select_first_item()
-        self.configure_geometry(event)
+        self.configure_geometry()
         self.setup_keyboard()
-        self.last_event = event
         self.filter = ""
 
     def make_items(self) -> None:
@@ -171,7 +169,7 @@ class Menu:
     def all_hidden(self) -> bool:
         return all(not els["item"].visible for els in self.elements.values())
 
-    def configure_geometry(self, event: Any) -> None:
+    def configure_geometry(self) -> None:
         if not self.root or not self.container:
             return
 
@@ -190,8 +188,8 @@ class Menu:
 
         menu_width = self.root.winfo_reqwidth()
         menu_height = self.root.winfo_reqheight()
-        x = event.x_root - app.root.winfo_rootx()
-        y = event.y_root - app.root.winfo_rooty()
+        x = self.coords["x"] - app.root.winfo_rootx()
+        y = self.coords["y"] - app.root.winfo_rooty()
 
         if x < 0:
             x = 0
@@ -246,7 +244,7 @@ class Menu:
             self.no_items.grid_remove()
             self.select_first_item()
 
-        self.configure_geometry(self.last_event)
+        self.configure_geometry()
 
     def show_item(self, index: int) -> None:
         els = self.elements[index]
@@ -264,13 +262,20 @@ class Menu:
                 self.select_item(i)
                 break
 
-    def show(self, event: Any) -> None:
+    def show(self, event: Optional[Any] = None, coords: Optional[Dict[str, int]] = None) -> None:
         Menu.hide_all()
 
         if not self.items:
             return
 
-        self.make(event)
+        if event:
+            self.coords = {"x": event.x_root, "y": event.y_root}
+        elif coords:
+            self.coords = coords
+        else:
+            return
+
+        self.make()
 
         if self.root:
             self.root.update_idletasks()
