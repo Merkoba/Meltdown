@@ -276,10 +276,13 @@ class Menu:
             Menu.current_menu = self
 
     def hide(self) -> None:
+        from .widgets import widgets
+
         if self.root:
             self.root.place_forget()
             self.root.destroy()
             Menu.current_menu = None
+            widgets.focus_input()
 
     def no_item(self) -> bool:
         return self.selected_index not in self.elements
