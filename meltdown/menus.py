@@ -150,7 +150,7 @@ class Menu:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
                                   wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0, padding=(4, 2, 4, 2))
 
-                self.elements[i] = {"item": item, "index": i, "label": label}
+                self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)
@@ -167,7 +167,7 @@ class Menu:
         bind_motion(self.root)
 
     def all_hidden(self) -> bool:
-        return all(not els["item"].visible for els in self.elements.values())
+        return all(not els["visible"] for els in self.elements.values())
 
     def configure_geometry(self) -> None:
         if not self.root or not self.container:
@@ -248,17 +248,20 @@ class Menu:
 
     def show_item(self, index: int) -> None:
         els = self.elements[index]
-        els["item"].visible = True
+        els["visible"] = True
         els["label"].grid()
 
     def hide_item(self, index: int) -> None:
         els = self.elements[index]
-        els["item"].visible = False
+        els["visible"] = False
         els["label"].grid_remove()
 
     def select_first_item(self) -> None:
         for i in range(len(self.items)):
-            if self.elements[i]["item"].visible:
+            if i not in self.elements:
+                continue
+
+            if self.elements[i]["visible"]:
                 self.select_item(i)
                 break
 
