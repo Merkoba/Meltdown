@@ -27,12 +27,6 @@ class Display:
     def __init__(self, widget: ttk.Notebook) -> None:
         self.root = widget
         self.tabs: Dict[str, Tab] = {}
-        self.root.bind("<Button-1>", lambda e: self.click(e))
-        self.root.bind("<ButtonRelease-2>", lambda e: self.middle_click(e))
-        self.root.bind("<Button-3>", lambda e: self.right_click(e))
-        self.root.bind("<Double-Button-1>", lambda e: self.double_click(e))
-        self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
-        self.root.bind("<B1-Motion>", self.on_tab_drag)
         self.output_menu = Menu()
         self.tab_menu = Menu()
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
@@ -42,6 +36,22 @@ class Display:
         self.current_tab = "none"
         self.drag_start_index = 0
         self.tab_number = 1
+
+        self.root.bind("<Button-1>", lambda e: self.click(e))
+        self.root.bind("<ButtonRelease-2>", lambda e: self.middle_click(e))
+        self.root.bind("<Button-3>", lambda e: self.right_click(e))
+        self.root.bind("<Double-Button-1>", lambda e: self.double_click(e))
+        self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
+        self.root.bind("<B1-Motion>", self.on_tab_drag)
+
+        def on_mousewheel(direction: str) -> None:
+            if direction == "left":
+                self.tab_left()
+            elif direction == "right":
+                self.tab_right()
+
+        self.root.bind("<Button-4>", lambda e: on_mousewheel("left"))
+        self.root.bind("<Button-5>", lambda e: on_mousewheel("right"))
 
     def make_tab(self, name: Optional[str] = None,
                  document_id: Optional[str] = None, select_tab: bool = True) -> None:
