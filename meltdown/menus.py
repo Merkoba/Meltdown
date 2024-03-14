@@ -63,7 +63,17 @@ class Menu:
         self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg="white", borderwidth=0)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
+        self.root.bind("<FocusOut>", lambda e: self.hide())
         self.current_widget = None
+        self.selected_index = 0
+        self.make_items()
+        self.select_item(self.selected_index)
+        self.configure_geometry(event)
+        self.setup_keyboard()
+
+    def make_items(self) -> None:
+        if not self.container:
+            return
 
         def exec() -> None:
             item = self.items[self.selected_index]
@@ -138,10 +148,10 @@ class Menu:
             make_item(item, i)
 
         bind_motion(self.root)
-        self.selected_index = 0
-        self.select_item(self.selected_index)
 
-        self.root.bind("<FocusOut>", lambda e: self.hide())
+    def configure_geometry(self, event: Any) -> None:
+        if not self.root or not self.container:
+            return
 
         self.root.update_idletasks()
         self.container.update_idletasks()
@@ -172,6 +182,12 @@ class Menu:
             y = window_height - menu_height
 
         self.root.place(x=x, y=y)
+
+    def setup_keyboard(self) -> None:
+        def on_key(event: Any) -> None:
+            print(event.char)
+
+        self.root.bind("<KeyPress>", on_key)
 
     def show(self, event: Any) -> None:
         Menu.hide_all()
@@ -213,18 +229,20 @@ class Menu:
                 self.arrow_down(n)
 
     def select_item(self, index: int) -> bool:
-        if index in self.elements:
-            self.on_enter(index)
-            return True
+        if index not in self.elements:
+            return False
 
-        return False
+        if self.elements[index]["item"].disabled:
+            return False
+
+        self.on_enter(index)
+        return True
 
     def on_enter(self, index: int) -> None:
         if index not in self.elements:
             return
 
         self.on_leave(self.selected_index)
-
         els = self.elements[index]
         colors = self.get_colors(els["item"])
         els["frame"]["background"] = colors["hover_background"]
