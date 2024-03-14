@@ -475,3 +475,19 @@ class Display:
             widgets.disable_top_button()
         else:
             widgets.enable_top_button()
+
+    def tab_left(self) -> None:
+        index = self.index(self.current_tab) - 1
+
+        if index < 0:
+            return
+
+        self.select_tab(self.tab_ids()[index])
+
+    def tab_right(self) -> None:
+        index = self.index(self.current_tab) + 1
+
+        if index >= self.num_tabs():
+            return
+
+        self.select_tab(self.tab_ids()[index])

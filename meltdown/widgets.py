@@ -330,6 +330,21 @@ class Widgets:
         self.reset_history_index()
 
         def on_key(event: Any) -> None:
+            # Shift = 1
+            # Ctrl = 4
+
+            if event.state & 4:
+                if event.keysym == "Up":
+                    self.display.output_top()
+                elif event.keysym == "Down":
+                    self.display.output_bottom()
+                elif event.keysym == "Left":
+                    self.display.tab_left()
+                elif event.keysym == "Right":
+                    self.display.tab_right()
+
+                return
+
             # Focus the input and insert char
             ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
 
@@ -343,13 +358,10 @@ class Widgets:
                     self.focus_input()
             elif event.widget == self.input:
                 if event.keysym == "Up":
-                    # Shift is pressed
                     if event.state & 1:
                         self.show_input_menu()
-            # Input history Up or Down
-            elif event.widget == self.input:
-                if event.keysym == "Up":
-                    self.input_history_up()
+                    else:
+                        self.input_history_up()
                 elif event.keysym == "Down":
                     self.input_history_down()
 
