@@ -6,6 +6,9 @@ import json
 import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
+import subprocess
+from typing import List
+import shutil
 
 
 class App:
@@ -198,6 +201,32 @@ class App:
             self.enable_compact()
         else:
             self.disable_compact()
+
+    def run_command(self, cmd: List[str]) -> None:
+        try:
+            subprocess.Popen(cmd, start_new_session=True,
+                             stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+        except BaseException as e:
+            print(e)
+
+    def open_task_manager(self) -> None:
+        if shutil.which("alacritty"):
+            cmd = ["alacritty", "-e"]
+        elif shutil.which("konsole"):
+            cmd = ["konsole", "-e"]
+        elif shutil.which("xterm"):
+            cmd = ["xterm", "-e"]
+        else:
+            return
+
+        if shutil.which("btop"):
+            cmd.extend(["btop"])
+        elif shutil.which("htop"):
+            cmd.extend(["htop"])
+        elif shutil.which("top"):
+            cmd.extend(["top"])
+
+        self.run_command(cmd)
 
 
 app = App()

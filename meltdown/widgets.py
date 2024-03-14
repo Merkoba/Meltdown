@@ -25,6 +25,8 @@ right_padding = 11
 
 class Widgets:
     def __init__(self) -> None:
+        self.input_history_index = -1
+
         def get_frame(bottom_padding: Optional[int] = None) -> tk.Frame:
             return widgetutils.make_frame(bottom_padding=bottom_padding)
 
@@ -51,25 +53,25 @@ class Widgets:
         self.system = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date")
 
-        widgetutils.make_label(frame, "CPU")
+        self.cpu_label = widgetutils.make_label(frame, "CPU")
         self.cpu = tk.StringVar()
-        self.cpu_label = widgetutils.make_label(frame, "", right_padding=right_padding)
-        self.cpu_label.configure(textvariable=self.cpu)
-        ToolTip(self.cpu_label, "Current CPU usage")
+        self.cpu_text = widgetutils.make_label(frame, "", right_padding=right_padding)
+        self.cpu_text.configure(textvariable=self.cpu)
+        ToolTip(self.cpu_text, "Current CPU usage")
         self.cpu.set("000%")
 
-        widgetutils.make_label(frame, "RAM")
+        self.ram_label = widgetutils.make_label(frame, "RAM")
         self.ram = tk.StringVar()
-        self.ram_label = widgetutils.make_label(frame, "", right_padding=right_padding)
-        self.ram_label.configure(textvariable=self.ram)
-        ToolTip(self.ram_label, "Current RAM usage")
+        self.ram_text = widgetutils.make_label(frame, "", right_padding=right_padding)
+        self.ram_text.configure(textvariable=self.ram)
+        ToolTip(self.ram_text, "Current RAM usage")
         self.ram.set("000%")
 
-        widgetutils.make_label(frame, "TMP")
+        self.temp_label = widgetutils.make_label(frame, "TMP")
         self.temp = tk.StringVar()
-        self.temp_label = widgetutils.make_label(frame, "", right_padding=right_padding)
-        self.temp_label.configure(textvariable=self.temp)
-        ToolTip(self.temp_label, "Current CPU temperature")
+        self.temp_text = widgetutils.make_label(frame, "", right_padding=right_padding)
+        self.temp_text.configure(textvariable=self.temp)
+        ToolTip(self.temp_text, "Current CPU temperature")
         self.temp.set("000°C")
 
         # Details
@@ -252,43 +254,33 @@ class Widgets:
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
-        from . import state
         from . import keyboard
-        from .session import session
 
         if self.display.num_tabs() == 0:
             self.display.make_tab()
 
         self.fill()
+        self.setup_main_menu()
+        self.setup_binds()
+        self.setup_widgets()
+        self.focus_input()
+        self.add_generic_menus()
+        self.disable_bottom_button()
+        self.setup_monitors()
+        self.start_checks()
 
-        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu())
-        self.main_menu.add(text="Browse Models", command=lambda: self.browse_models())
-        self.main_menu.separator()
-        self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
-        self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
-        self.main_menu.add(text="Reset Config", command=lambda: state.reset_config())
-        self.main_menu.separator()
-        self.main_menu.add(text="Save Session", command=lambda: session.save_state())
-        self.main_menu.add(text="Load Session", command=lambda: session.load_state())
-        self.main_menu.separator()
-        self.main_menu.add(text="Open Logs", command=lambda: state.open_logs_dir())
-        self.main_menu.separator()
-        self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
-        self.main_menu.add(text="Resize", command=lambda: app.resize())
-        self.main_menu.add(text="About", command=lambda: app.show_about())
-        self.main_menu.separator()
-        self.main_menu.add(text="Exit", command=lambda: app.exit())
-        self.main_menu_button.bind("<ButtonRelease-1>", lambda e: self.show_main_menu(e))
+        keyboard.setup()
 
-        self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
-        self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
-        self.prepend.bind("<Return>", lambda e: self.submit())
-        self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
-        self.append.bind("<Return>", lambda e: self.submit())
-        self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
-        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
+    def setup_monitors(self) -> None:
+        self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
+        self.cpu_text.bind("<Button-1>", lambda e: app.open_task_manager())
+        self.ram_label.bind("<Button-1>", lambda e: app.open_task_manager())
+        self.ram_text.bind("<Button-1>", lambda e: app.open_task_manager())
+        self.temp_label.bind("<Button-1>", lambda e: app.open_task_manager())
+        self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
-        self.input.bind("<Return>", lambda e: self.submit())
+    def setup_widgets(self) -> None:
+        from . import state
 
         def setup_entrybox(key: str, placeholder: str) -> None:
             widget = self.get_widget(key)
@@ -326,13 +318,38 @@ class Widgets:
         setup_entrybox("append", "Add after")
         setup_combobox("format")
 
-        self.input_history_index: int
-        self.reset_history_index()
-        self.focus_input()
-        self.add_generic_menus()
-        self.disable_bottom_button()
-        self.start_checks()
-        keyboard.setup()
+    def setup_binds(self) -> None:
+        self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
+        self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
+        self.prepend.bind("<Return>", lambda e: self.submit())
+        self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
+        self.append.bind("<Return>", lambda e: self.submit())
+        self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
+        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
+        self.input.bind("<Return>", lambda e: self.submit())
+
+    def setup_main_menu(self) -> None:
+        from .session import session
+        from . import state
+
+        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu())
+        self.main_menu.add(text="Browse Models", command=lambda: self.browse_models())
+        self.main_menu.separator()
+        self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
+        self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
+        self.main_menu.add(text="Reset Config", command=lambda: state.reset_config())
+        self.main_menu.separator()
+        self.main_menu.add(text="Save Session", command=lambda: session.save_state())
+        self.main_menu.add(text="Load Session", command=lambda: session.load_state())
+        self.main_menu.separator()
+        self.main_menu.add(text="Open Logs", command=lambda: state.open_logs_dir())
+        self.main_menu.separator()
+        self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
+        self.main_menu.add(text="Resize", command=lambda: app.resize())
+        self.main_menu.add(text="About", command=lambda: app.show_about())
+        self.main_menu.separator()
+        self.main_menu.add(text="Exit", command=lambda: app.exit())
+        self.main_menu_button.bind("<ButtonRelease-1>", lambda e: self.show_main_menu(e))
 
     def focus_input(self) -> None:
         self.input.focus_set()

@@ -11,7 +11,6 @@ import json
 from typing import Optional, Any, IO, List
 from pathlib import Path
 from tkinter import filedialog
-import subprocess
 
 
 def save_file(path: Path, obj: Any) -> None:
@@ -335,22 +334,19 @@ def on_format_change(load: bool = True) -> None:
 
 
 def open_logs_dir() -> None:
+    from .app import app
     path = paths.logs
     path.mkdir(parents=True, exist_ok=True)
     os_name = os.name.lower()
 
-    def run(cmd: List[str]) -> None:
-        subprocess.Popen(cmd, start_new_session=True,
-                         stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
-
     if os_name == "posix":
         # Linux
-        run([f"xdg-open", str(path)])
+        app.run_command([f"xdg-open", str(path)])
     elif os_name == "nt":
         # Windows
-        run([f"start", str(path)])
+        app.run_command([f"start", str(path)])
     elif os_name == "darwin":
         # macOS
-        run([f"open", str(path)])
+        app.run_command([f"open", str(path)])
     else:
         print(f"Unrecognized OS: {os_name}")
