@@ -167,7 +167,7 @@ class Menu:
         bind_motion(self.root)
 
     def all_hidden(self) -> bool:
-        return all(not els["visible"] for els in self.elements.values())
+        return self.num_visible() == 0
 
     def configure_geometry(self) -> None:
         if not self.root or not self.container:
@@ -213,7 +213,6 @@ class Menu:
                 if not self.all_hidden():
                     self.filter += event.char
 
-            self.filter = self.filter.strip()
             self.do_filter()
 
         self.root.bind("<KeyPress>", on_key)
@@ -299,8 +298,14 @@ class Menu:
     def no_item(self) -> bool:
         return self.selected_index not in self.elements
 
+    def num_visible(self) -> int:
+        return len([els for els in self.elements.values() if els["visible"]])
+
     def arrow_up(self, n: int = -1) -> None:
         if self.no_item():
+            return
+
+        if self.num_visible() < 2:
             return
 
         if n == -1:
@@ -308,12 +313,17 @@ class Menu:
 
         n -= 1
 
-        if n >= 0:
-            if not self.select_item(n):
-                self.arrow_up(n)
+        if n < 0:
+            n = len(self.items) - 1
+
+        if not self.select_item(n):
+            self.arrow_up(n)
 
     def arrow_down(self, n: int = -1) -> None:
         if self.no_item():
+            return
+
+        if self.num_visible() < 2:
             return
 
         if n == -1:
@@ -321,9 +331,11 @@ class Menu:
 
         n += 1
 
-        if n <= len(self.items) - 1:
-            if not self.select_item(n):
-                self.arrow_down(n)
+        if n >= len(self.items):
+            n = 0
+
+        if not self.select_item(n):
+            self.arrow_down(n)
 
     def select_item(self, index: int) -> bool:
         if index not in self.elements:

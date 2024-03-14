@@ -39,7 +39,6 @@ def on_key(event: Any) -> None:
         elif event.keysym == "y":
             widgets.display.copy_output()
 
-
         return
 
     if event.keysym == "Escape":
