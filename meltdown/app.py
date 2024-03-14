@@ -225,6 +225,8 @@ class App:
             cmd.extend(["htop"])
         elif shutil.which("top"):
             cmd.extend(["top"])
+        else:
+            return
 
         self.run_command(cmd)
 
