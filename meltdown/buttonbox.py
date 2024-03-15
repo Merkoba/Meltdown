@@ -10,9 +10,13 @@ from typing import Any, Callable, Optional
 class ButtonBox(tk.Frame):
     def __init__(self, parent: tk.Frame, text: str,
                  command: Optional[Callable[..., Any]] = None,
-                 when: str = "<ButtonRelease-1>", style: str = "normal") -> None:
+                 when: Optional[str] = None, style: Optional[str] = None,
+                 width: Optional[int] = None) -> None:
         super().__init__(parent)
         self.text = text
+        style = style if style else "normal"
+        when = when if when else "<ButtonRelease-1>"
+        self.width = width if width else config.button_width
         self.make()
         self.set_style(style)
 
@@ -20,7 +24,7 @@ class ButtonBox(tk.Frame):
             self.set_bind(when, command)
 
     def make(self) -> None:
-        self.label = tk.Label(self, text=self.text, font=config.font_button, width=8, cursor="hand2")
+        self.label = tk.Label(self, text=self.text, font=config.font_button, width=self.width, cursor="hand2")
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)

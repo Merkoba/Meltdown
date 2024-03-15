@@ -75,7 +75,7 @@ class Widgets:
         self.details_frame = frame
 
         frame_1 = widgetutils.make_inner_frame(frame, 0)
-        button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt")
+        button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt", width=5)
         button_1.set_bind("<Button-4>", lambda e: widgets.details_left())
         button_1.set_bind("<Button-5>", lambda e: widgets.details_right())
 
@@ -83,7 +83,7 @@ class Widgets:
 
         frame_3 = widgetutils.make_inner_frame(frame, 2)
         button_2 = widgetutils.make_button(frame_3, ">",
-                                           lambda: widgets.details_right(), right_padding=right_padding, style="alt")
+                                           lambda: widgets.details_right(), right_padding=right_padding, style="alt", width=5)
 
         button_2.set_bind("<Button-4>", lambda e: widgets.details_left())
         button_2.set_bind("<Button-5>", lambda e: widgets.details_right())

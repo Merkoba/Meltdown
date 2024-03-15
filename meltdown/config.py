@@ -25,6 +25,7 @@ class Config:
         self.foreground_color = "white"
         self.red_color = "#FF6B6B"
         self.green_color = "#44B3A1"
+        self.button_width = 8
         self.button_background = "#446CA1"
         self.button_background_alt = "#3D4555"
         self.button_background_hover = "#387ADF"

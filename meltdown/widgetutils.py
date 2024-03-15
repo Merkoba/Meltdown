@@ -114,15 +114,15 @@ def make_entry(parent: tk.Frame, value: str = "",
 
 def get_button(parent: tk.Frame, text: str,
                command: Optional[Callable[..., Any]] = None,
-               style: str = "normal") -> ButtonBox:
-    return ButtonBox(parent, text, command, style=style)
+               style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
+    return ButtonBox(parent, text, command, style=style, width=width)
 
 
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
                 right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
-                pady: Optional[int] = None, style: str = "normal") -> ButtonBox:
-    widget = get_button(parent, text, command, style=style)
+                pady: Optional[int] = None, style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
+    widget = get_button(parent, text, command, style=style, width=width)
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
 
