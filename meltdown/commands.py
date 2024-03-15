@@ -9,11 +9,14 @@ def check(text: str) -> bool:
     from .model import model
     from . import state
 
-    if not text.startswith("/"):
+    prefix = "/"
+    with_prefix = text.startswith(prefix)
+    single_word = len(text.split()) == 1
+
+    if (not with_prefix) or (not single_word):
         return False
 
     cmd = text[1:]
-    is_command = True
 
     if cmd == "clear":
         widgets.display.clear_output()
@@ -35,7 +38,5 @@ def check(text: str) -> bool:
         model.stop_stream()
     elif cmd == "sys":
         app.open_task_manager()
-    else:
-        is_command = False
 
-    return is_command
+    return True
