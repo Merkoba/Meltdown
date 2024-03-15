@@ -686,6 +686,7 @@ class Widgets:
 
     def set_input(self, text: str) -> None:
         widgetutils.set_text(self.input, text, move=True)
+        self.focus_input()
 
     def set_system(self, text: str) -> None:
         from . import state

@@ -63,6 +63,8 @@ class ButtonBox(tk.Frame):
             if not on_top(event):
                 return
 
+            event.widget.focus_set()
+
             if inspect.signature(command).parameters:
                 command(event)
             else:
