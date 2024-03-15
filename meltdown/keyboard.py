@@ -22,7 +22,7 @@ def block() -> None:
 
 def on_key(event: Any) -> None:
     # Focus the input and insert char
-    ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
+    ftypes = [tk.Tk, ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
 
     if type(event.widget) in ftypes:
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
