@@ -44,9 +44,11 @@ Context menus that are filterable and respond to keyboard.
 
 Keyboard and mouse shortcuts.
 
-GUI completely based on Python's Tkinter, no big dependencies.
+GUI completely based on Python's `Tkinter`, no big dependencies.
 
 Installable through `pipx` with a single command.
+
+Should be cross-platform, but only tested on linux for now.
 
 ---
 
