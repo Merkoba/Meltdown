@@ -20,9 +20,11 @@ from typing import Optional, Any, Callable, Tuple
 
 
 right_padding = 11
+num_tunings = 0
 
 
 def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
+    global num_tunings
     frame = widgetutils.make_frame()
 
     # Button Left
@@ -54,6 +56,7 @@ def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
     # Hide initially
     frame.grid_remove()
 
+    num_tunings += 1
     return (frame, frame_2)
 
 
@@ -276,7 +279,6 @@ class Widgets:
         self.bottom_button_enabled = True
         self.top_button_enabled = True
         self.current_tuning = 1
-        self.num_tunings = 3
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -773,14 +775,14 @@ class Widgets:
         num = self.current_tuning - 1
 
         if num < 1:
-            num = self.num_tunings
+            num = num_tunings
 
         self.change_tuning(num)
 
     def tuning_right(self) -> None:
         num = self.current_tuning + 1
 
-        if num > self.num_tunings:
+        if num > num_tunings:
             num = 1
 
         self.change_tuning(num)
