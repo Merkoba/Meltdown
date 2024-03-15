@@ -142,26 +142,11 @@ def insert_text(widget: Union[tk.Text], text: Union[str, int, float], disable: b
         widget.configure(state="disabled")
 
 
-def set_text(widget: Union[tk.Text, EntryBox], text: Union[str, int, float],
-             disable: bool = False, move: bool = False) -> None:
+def set_text(widget: tk.Text, text: Union[str, int, float]) -> None:
     widget.configure(state="normal")
-
-    if isinstance(widget, EntryBox):
-        widget.set_text(str(text))
-
-        if move:
-            widget.xview_moveto(1.0)
-    elif isinstance(widget, tk.Text):
-        widget.delete("1.0", tk.END)
-        widget.insert("1.0", str(text))
-
-    if disable:
-        widget.configure(state="disabled")
-
-
-def move_to_end(widget: EntryBox) -> None:
-    widget.icursor(tk.END)
-    widget.xview_moveto(1.0)
+    widget.delete("1.0", tk.END)
+    widget.insert("1.0", str(text))
+    widget.configure(state="disabled")
 
 
 def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
@@ -212,11 +197,11 @@ def copy(text: str) -> None:
 
 def paste(widget: EntryBox) -> None:
     text = pyperclip.paste()
-    set_text(widget, text)
+    widget.set_text(text)
 
 
-def clear_text(widget: Union[tk.Text, EntryBox], disable: bool = False) -> None:
-    set_text(widget, "", disable)
+def clear_text(widget: tk.Text) -> None:
+    set_text(widget, "")
 
 
 def to_top(widget: tk.Text) -> None:

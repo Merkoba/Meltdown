@@ -301,7 +301,7 @@ class Model:
         file = filedialog.askopenfilename(initialdir=state.get_models_dir())
 
         if file:
-            widgetutils.set_text(widgets.model, file)
+            widgets.model.set_text(file)
             state.update_config("model")
             self.load()
 

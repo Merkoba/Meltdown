@@ -30,7 +30,7 @@ def on_key(event: Any) -> None:
 
         if (len(event.keysym.strip()) == 1) or (event.char in chars):
             widgets.focus_input()
-            widgetutils.set_text(widgets.input, event.char)
+            widgets.input.set_text(event.char)
         elif event.keysym in syms:
             widgets.focus_input()
     elif event.widget == widgets.input:

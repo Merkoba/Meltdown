@@ -286,7 +286,7 @@ class Widgets:
             return
 
         if type(widget) == EntryBox:
-            widgetutils.set_text(widget, value)
+            widget.set_text(value)
 
             if focus:
                 widget.focus_set()
@@ -552,8 +552,7 @@ class Widgets:
     def set_model(self, m: str) -> None:
         from . import state
         from .model import model
-
-        widgetutils.set_text(self.model, m)
+        self.model.set_text(m)
 
         if state.update_config("model"):
             model.load()
@@ -563,7 +562,7 @@ class Widgets:
             self.display.print(line, tab_id=tab_id)
 
     def show_model(self) -> None:
-        widgetutils.set_text(self.model, config.model)
+        self.model.set_text(config.model)
 
     def show_main_menu(self, event: Optional[Any] = None) -> None:
         if event:
@@ -673,22 +672,22 @@ class Widgets:
         app.root.after(200, self.start_checks)
 
     def set_input(self, text: str) -> None:
-        widgetutils.set_text(self.input, text, move=True)
+        self.input.set_text(text)
         self.focus_input()
 
     def set_system(self, text: str) -> None:
         from . import state
-        widgetutils.set_text(self.system, text)
+        self.system.set_text(text)
         state.update_config("system")
 
     def set_prepend(self, text: str) -> None:
         from . import state
-        widgetutils.set_text(self.prepend, text)
+        self.prepend.set_text(text)
         state.update_config("prepend")
 
     def set_append(self, text: str) -> None:
         from . import state
-        widgetutils.set_text(self.append, text)
+        self.append.set_text(text)
         state.update_config("append")
 
     def stop(self) -> None:
@@ -726,11 +725,10 @@ class Widgets:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or ((type(widget) != EntryBox)
-                            and (type(widget) != tk.Text)):
+        if (not widget) or (type(widget) != EntryBox):
             return
 
-        widgetutils.clear_text(widget)
+        widget.clear()
         widget.focus_set()
         state.update_config(key)
 

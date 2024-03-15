@@ -373,7 +373,7 @@ class Display:
             if (not tab) or (not output):
                 return
 
-            widgetutils.clear_text(output, True)
+            widgetutils.clear_text(output)
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
             self.check_scroll_buttons(tab_id)
