@@ -127,6 +127,7 @@ class Display:
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
         self.current_tab = tab_id
+        app.update()
         self.check_scroll_buttons(tab_id)
 
     def update_current_tab(self) -> None:
