@@ -32,7 +32,7 @@ Save and load config files.
 
 Prepend and append text automatically to your prompts.
 
-Show system CPU and RAM usage. Click to open `htop` etc.
+Show system CPU, RAM, and temperature. Click to open `htop` etc.
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 
@@ -45,6 +45,8 @@ Context menus that are filterable and respond to keyboard.
 Keyboard and mouse shortcuts.
 
 GUI completely based on Python's Tkinter, no big dependencies.
+
+Installable through `pipx` with a single command.
 
 ---
 
