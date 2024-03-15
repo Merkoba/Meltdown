@@ -58,6 +58,8 @@ Comands like `/clear`, `/stop`, `/log`, etc.
 
 Change the font size of the output.
 
+Slider rows to accomodate more config widgets.
+
 ---
 
 ## Installation
