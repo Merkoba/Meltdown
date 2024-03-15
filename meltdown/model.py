@@ -110,7 +110,6 @@ class Model:
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
-            self.stop_stream_thread.clear()
             widgets.display.print("\n* Interrupted *")
 
     def stream(self, prompt: str, tab_id: str) -> None:
@@ -123,6 +122,7 @@ class Model:
             return
 
         def wrapper(prompt: str, tab_id: str) -> None:
+            self.stop_stream_thread.clear()
             self.streaming = True
             self.do_stream(prompt, tab_id)
             self.streaming = False
