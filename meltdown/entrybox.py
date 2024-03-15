@@ -16,12 +16,20 @@ class EntryBox(ttk.Entry):
 
         self.bind("<FocusIn>", lambda e: self.on_focus_change("in"))
         self.bind("<FocusOut>", lambda e: self.on_focus_change("out"))
+        self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
 
         self.text_var = tk.StringVar()
         self.text_var.set("")
         self.trace_id = self.text_var.trace_add("write", self.on_write)
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
+
+    def select_all(self) -> None:
+        def do_select() -> None:
+            self.selection_range(0, tk.END)
+            self.icursor(tk.END)
+
+        self.after_idle(lambda: do_select())
 
     def set_text(self, text: str, check_placeholder: bool = True) -> None:
         self.text_var.trace_remove("write", self.trace_id)
@@ -39,6 +47,7 @@ class EntryBox(ttk.Entry):
             if self.key and (not self.placeholder_active):
                 state.update_config(self.key)
 
+            self.selection_clear()
             self.focused = False
         elif mode == "in":
             self.focused = True

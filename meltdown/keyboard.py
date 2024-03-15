@@ -44,7 +44,6 @@ def setup() -> None:
     app.root.bind("<Control-KeyPress-t>", lambda e: widgets.display.make_tab())
     app.root.bind("<Control-KeyPress-w>", lambda e: widgets.display.close_current_tab())
     app.root.bind("<Control-KeyPress-l>", lambda e: state.save_log())
-    app.root.bind("<Control-KeyPress-a>", lambda e: widgets.display.select_output())
     app.root.bind("<Control-KeyPress-y>", lambda e: widgets.display.copy_output())
     app.root.bind("<Control-KeyPress-p>", lambda e: app.toggle_compact())
     app.root.bind("<Control-Shift-KeyPress-L>", lambda e: state.open_logs_dir())
