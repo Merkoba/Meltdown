@@ -180,7 +180,7 @@ class Display:
             return None
 
     def on_click(self, event: Any) -> None:
-        dialogs.hide_all()
+        dialogs.Dialog.hide_all()
         self.on_tab_start_drag(event)
         tab_id = self.tab_on_coords(event.x, event.y)
 

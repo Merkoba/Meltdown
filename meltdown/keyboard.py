@@ -33,36 +33,36 @@ def on_key(event: Any) -> None:
 
 def setup() -> None:
     from .menus import Menu
-    from . import dialogs
+    from .dialogs import Dialog
     app.root.bind("<KeyPress>", on_key)
 
-    def register(when: str, command: Callable[..., Any]):
+    def register(when: str, command: Callable[..., Any]) -> None:
         def cmd() -> None:
             if Menu.current_menu:
                 return
 
-            if dialogs.current_dialog:
+            if Dialog.current_dialog:
                 return
 
             command()
 
-        app.root.bind(when, lambda: cmd())
+        app.root.bind(when, lambda e: cmd())
 
-
-    app.root.bind("<KeyPress-Escape>", lambda e: widgets.esckey())
-    app.root.bind("<Shift-KeyPress-Up>", lambda e: widgets.show_context())
-    app.root.bind("<Control-KeyPress-Up>", lambda e: widgets.display.output_top())
-    app.root.bind("<Control-KeyPress-Down>", lambda e: widgets.display.output_bottom())
-    app.root.bind("<Control-KeyPress-Left>", lambda e: widgets.display.tab_left())
-    app.root.bind("<Control-KeyPress-Right>", lambda e: widgets.display.tab_right())
-    app.root.bind("<Control-KeyPress-Return>", lambda e: widgets.show_main_menu())
-    app.root.bind("<Control-KeyPress-Escape>", lambda e: widgets.show_main_menu())
-    app.root.bind("<Control-KeyPress-BackSpace>", lambda e: widgets.display.clear_output())
-    app.root.bind("<Control-KeyPress-t>", lambda e: widgets.display.make_tab())
-    app.root.bind("<Control-KeyPress-w>", lambda e: widgets.display.close_current_tab())
-    app.root.bind("<Control-KeyPress-l>", lambda e: state.save_log())
-    app.root.bind("<Control-KeyPress-y>", lambda e: widgets.display.copy_output())
-    app.root.bind("<Control-KeyPress-p>", lambda e: app.toggle_compact())
-    app.root.bind("<Control-KeyPress-r>", lambda e: app.resize())
-    app.root.bind("<Control-KeyPress-m>", lambda e: model.browse_models())
-    app.root.bind("<Control-Shift-KeyPress-L>", lambda e: state.open_logs_dir())
+    register("<KeyPress-Escape>", lambda: widgets.esckey())
+    register("<Shift-KeyPress-Up>", lambda: widgets.show_context())
+    register("<Control-KeyPress-Up>", lambda: widgets.display.output_top())
+    register("<Control-KeyPress-Down>", lambda: widgets.display.output_bottom())
+    register("<Control-KeyPress-Left>", lambda: widgets.display.tab_left())
+    register("<Control-KeyPress-Right>", lambda: widgets.display.tab_right())
+    register("<Control-KeyPress-Return>", lambda: widgets.show_main_menu())
+    register("<Control-KeyPress-Escape>", lambda: widgets.show_main_menu())
+    register("<Control-KeyPress-BackSpace>", lambda: widgets.display.clear_output())
+    register("<Control-KeyPress-t>", lambda: widgets.display.make_tab())
+    register("<Control-KeyPress-w>", lambda: widgets.display.close_current_tab())
+    register("<Control-KeyPress-l>", lambda: state.save_log())
+    register("<Control-KeyPress-s>", lambda: state.save_log())
+    register("<Control-KeyPress-y>", lambda: widgets.display.copy_output())
+    register("<Control-KeyPress-p>", lambda: app.toggle_compact())
+    register("<Control-KeyPress-r>", lambda: app.resize())
+    register("<Control-KeyPress-m>", lambda: model.browse_models())
+    register("<Control-Shift-KeyPress-L>", lambda: state.open_logs_dir())

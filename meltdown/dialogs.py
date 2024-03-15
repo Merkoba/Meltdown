@@ -10,18 +10,18 @@ from tkinter import ttk
 
 
 class Dialog:
-    current_dialog: Optional[tk.Frame] = None
+    current_dialog: Optional["Dialog"] = None
 
     @staticmethod
     def hide_all() -> None:
         if Dialog.current_dialog:
             Dialog.current_dialog.hide()
 
-    def __init__(self, text) -> None:
+    def __init__(self, text: str) -> None:
         self.make(text)
         Dialog.current_dialog = self
 
-    def make(self, text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
+    def make(self, text: str) -> None:
         background = config.dialog_background
         foreground = config.dialog_foreground
 
@@ -34,9 +34,8 @@ class Dialog:
         self.top_frame.pack()
         self.button_frame = tk.Frame(container, bg=background)
         self.button_frame.pack()
-        self.root.bind("<Escape>", lambda e: self.hide(self.root))
-        self.root.bind("<FocusOut>", lambda e: self.hide(self.root))
-
+        self.root.bind("<Escape>", lambda e: self.hide())
+        self.root.bind("<FocusOut>", lambda e: self.hide())
 
     def show(self, widget: Optional[tk.Widget] = None) -> None:
         self.root.update_idletasks()
@@ -52,7 +51,6 @@ class Dialog:
         if widget:
             widget.focus_set()
 
-
     def hide(self) -> None:
         from .tooltips import ToolTip
         from .widgets import widgets
@@ -61,15 +59,14 @@ class Dialog:
         widgets.focus_input()
         self.root.destroy()
 
-
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
         button = widgetutils.get_button(self.button_frame, text, command, when="release")
         button.pack(side=tk.LEFT, padx=6, pady=8)
 
 
 def show_confirm(text: str, cmd_ok: Callable[..., Any],
-                cmd_cancel: Optional[Callable[..., Any]] = None,
-                cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+                 cmd_cancel: Optional[Callable[..., Any]] = None,
+                 cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
     dialog = Dialog(text)
 
     def ok() -> None:
@@ -109,7 +106,7 @@ def show_message(text: str) -> None:
 
 
 def show_input(text: str, cmd_ok: Callable[..., Any],
-            cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+               cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
     dialog = Dialog(text)
 
     def ok() -> None:
