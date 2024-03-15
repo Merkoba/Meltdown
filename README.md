@@ -50,6 +50,8 @@ Installable through `pipx` with a single command.
 
 Should be cross-platform, but only tested on linux for now.
 
+Several custom widgets made specifically for this program.
+
 ---
 
 ## Installation
