@@ -537,3 +537,6 @@ class Display:
     def update_font(self) -> None:
         for tab in self.tabs.values():
             tab.output.configure(font=config.get_output_font())
+
+        app.update()
+        self.output_bottom()
