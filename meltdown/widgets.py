@@ -16,7 +16,6 @@ from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as fo
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
-from tkinter import filedialog
 from typing import Optional, Any, Callable
 
 
@@ -330,10 +329,11 @@ class Widgets:
 
     def setup_main_menu(self) -> None:
         from .session import session
+        from .model import model
         from . import state
 
         self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu())
-        self.main_menu.add(text="Browse Models", command=lambda: self.browse_models())
+        self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
         self.main_menu.separator()
         self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
@@ -454,20 +454,6 @@ class Widgets:
 
     def show_input_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
-
-    def browse_models(self) -> None:
-        from . import state
-        from .model import model
-
-        if model.model_loading:
-            return
-
-        file = filedialog.askopenfilename(initialdir=state.get_models_dir())
-
-        if file:
-            widgetutils.set_text(self.model, file)
-            state.update_config("model")
-            model.load()
 
     def submit(self) -> None:
         from .model import model

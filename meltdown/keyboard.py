@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .widgets import widgets
+from .model import model
 from . import widgetutils
 from . import state
 
@@ -47,4 +48,5 @@ def setup() -> None:
     app.root.bind("<Control-KeyPress-y>", lambda e: widgets.display.copy_output())
     app.root.bind("<Control-KeyPress-p>", lambda e: app.toggle_compact())
     app.root.bind("<Control-KeyPress-r>", lambda e: app.resize())
+    app.root.bind("<Control-KeyPress-m>", lambda e: model.browse_models())
     app.root.bind("<Control-Shift-KeyPress-L>", lambda e: state.open_logs_dir())

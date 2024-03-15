@@ -12,6 +12,7 @@ from llama_cpp import Llama  # type: ignore
 import threading
 from pathlib import Path
 from typing import Optional
+from tkinter import filedialog
 
 
 class Model:
@@ -283,6 +284,20 @@ class Model:
             document.add(log_dict)
 
         self.lock.release()
+
+    def browse_models(self) -> None:
+        from . import state
+        from . import widgetutils
+
+        if self.model_loading:
+            return
+
+        file = filedialog.askopenfilename(initialdir=state.get_models_dir())
+
+        if file:
+            widgetutils.set_text(widgets.model, file)
+            state.update_config("model")
+            self.load()
 
 
 model = Model()
