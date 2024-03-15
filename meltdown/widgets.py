@@ -16,21 +16,48 @@ from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as fo
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
-from typing import Optional, Any, Callable
+from typing import Optional, Any, Callable, Tuple
 
 
 right_padding = 11
+
+
+def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
+    frame = widgetutils.make_frame()
+
+    # Button Left
+    frame_1 = widgetutils.make_inner_frame(frame, 0)
+    widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left())
+
+    # Spacer 1
+    widgetutils.make_inner_frame(frame, 1)
+
+    # Add widgets here
+    frame_2 = widgetutils.make_inner_frame(frame, 2)
+
+    # Spacer 2
+    widgetutils.make_inner_frame(frame, 3)
+
+    # Button Right
+    frame_3 = widgetutils.make_inner_frame(frame, 4)
+    widgetutils.make_button(frame_3, ">", lambda: widgets.tuning_right(), right_padding=right_padding)
+
+    # Expand spacers
+    frame.columnconfigure(1, weight=1)
+    frame.columnconfigure(3, weight=1)
+
+    # Hide initially
+    frame.grid_remove()
+
+    return (frame, frame_2)
 
 
 class Widgets:
     def __init__(self) -> None:
         self.input_history_index = -1
 
-        def get_frame(bottom_padding: Optional[int] = None) -> tk.Frame:
-            return widgetutils.make_frame(bottom_padding=bottom_padding)
-
         # Model
-        frame = get_frame()
+        frame = widgetutils.make_frame()
         self.model_frame = frame
 
         widgetutils.make_label(frame, "Model")
@@ -45,7 +72,7 @@ class Widgets:
         ToolTip(self.main_menu_button, "Open the main menu")
 
         # System
-        frame = get_frame()
+        frame = widgetutils.make_frame()
         self.system_frame = frame
 
         widgetutils.make_label(frame, "System")
@@ -74,7 +101,7 @@ class Widgets:
         self.temp.set("000°C")
 
         # Details
-        frame = get_frame()
+        frame = widgetutils.make_frame()
         self.details_frame = frame
 
         widgetutils.make_label(frame, "User")
@@ -104,30 +131,34 @@ class Widgets:
                 " Auto is supposed to work with newer models that include the format in the metadata."
                 " Check llama-cpp-python to find all the available formats.")
 
-        # Tuning
-        frame = get_frame()
-        self.tuning_frame = frame
+        # Tuning 1
+        frame, container = make_tuning_frame()
+        self.tuning_frame_1 = frame
 
-        widgetutils.make_label(frame, "Tokens")
-        self.max_tokens = widgetutils.make_entry(frame, width=config.entry_width_small)
+        widgetutils.make_label(container, "Tokens")
+        self.max_tokens = widgetutils.make_entry(container, width=config.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
-        widgetutils.make_label(frame, "Context")
-        self.context = widgetutils.make_entry(frame, width=config.entry_width_small)
+        widgetutils.make_label(container, "Context")
+        self.context = widgetutils.make_entry(container, width=config.entry_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
-        widgetutils.make_label(frame, "Seed")
-        self.seed = widgetutils.make_entry(frame, width=config.entry_width_small)
+        widgetutils.make_label(container, "Seed")
+        self.seed = widgetutils.make_entry(container, width=config.entry_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
-        widgetutils.make_label(frame, "Top K")
-        self.top_k = widgetutils.make_entry(frame, width=config.entry_width_small)
+        # Tuning 2
+        frame, container = make_tuning_frame()
+        self.tuning_frame_2 = frame
+
+        widgetutils.make_label(container, "Top K")
+        self.top_k = widgetutils.make_entry(container, width=config.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
                 " predictions to the top k most probable tokens at each step"
                 " of generation. By setting a value for k, you are instructing"
@@ -135,8 +166,8 @@ class Widgets:
                 " This can help in fine-tuning the generated output and"
                 " ensuring it adheres to specific patterns or constraints.")
 
-        widgetutils.make_label(frame, "Top P")
-        self.top_p = widgetutils.make_entry(frame, width=config.entry_width_small)
+        widgetutils.make_label(container, "Top P")
+        self.top_p = widgetutils.make_entry(container, width=config.entry_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
                 " the cumulative probability of the generated tokens."
                 " The model generates tokens until the cumulative probability"
@@ -145,8 +176,20 @@ class Widgets:
                 " and encourages diversity in the output by including less"
                 " probable tokens when necessary.")
 
+        widgetutils.make_label(container, "Threads")
+        self.threads = widgetutils.make_entry(container, width=config.entry_width_small)
+        ToolTip(self.threads, "The number of CPU threads to use")
+
+        # Tuning 3
+        frame, container = make_tuning_frame()
+        self.tuning_frame_3 = frame
+
+        widgetutils.make_label(container, "M-Lock")
+        self.mlock = widgetutils.make_combobox(container, width=config.combobox_width_small, values=["yes", "no"])
+        ToolTip(self.mlock, "Keep the model in memory")
+
         # Buttons
-        frame = get_frame()
+        frame = widgetutils.make_frame()
 
         self.stop_button = widgetutils.make_button(frame, "Stop", lambda: self.stop(), fill=Fill.HORIZONTAL)
         ToolTip(self.stop_button, "Stop generating the current response")
@@ -174,13 +217,13 @@ class Widgets:
         # Output
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
 
-        frame = get_frame()
+        frame = widgetutils.make_frame()
 
         notebook = widgetutils.make_notebook(frame, fill=Fill.BOTH, right_padding=right_padding)
         self.display = Display(notebook)
 
         # Bottom
-        frame = get_frame()
+        frame = widgetutils.make_frame()
 
         self.bottom_button = widgetutils.make_button(frame, "Go To Bottom",
                                                      lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL,
@@ -188,7 +231,7 @@ class Widgets:
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         # Addons
-        frame = get_frame()
+        frame = widgetutils.make_frame()
         self.addons_frame = frame
 
         widgetutils.make_label(frame, "Prepend")
@@ -200,7 +243,7 @@ class Widgets:
         ToolTip(self.append, "Add this to the end of the prompt")
 
         # Input
-        frame = get_frame(bottom_padding=10)
+        frame = widgetutils.make_frame(bottom_padding=10)
         widgetutils.make_label(frame, "Input")
         self.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
         ToolTip(self.input, "The prompt for the AI. The prompt is a message that the AI will respond to.")
@@ -225,6 +268,8 @@ class Widgets:
         self.format_select_enabled = True
         self.bottom_button_enabled = True
         self.top_button_enabled = True
+        self.current_tuning = 1
+        self.num_tunings = 3
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -315,7 +360,10 @@ class Widgets:
         setup_entrybox("model", "Path to a model file")
         setup_entrybox("prepend", "Add before")
         setup_entrybox("append", "Add after")
+        setup_entrybox("threads", "Int")
+
         setup_combobox("format")
+        setup_combobox("mlock")
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
@@ -714,6 +762,27 @@ class Widgets:
             self.show_model_menu()
         elif widget == self.system:
             self.show_system_menu()
+
+    def tuning_left(self) -> None:
+        num = self.current_tuning - 1
+
+        if num < 1:
+            num = self.num_tunings
+
+        self.change_tuning(num)
+
+    def tuning_right(self) -> None:
+        num = self.current_tuning + 1
+
+        if num > self.num_tunings:
+            num = 1
+
+        self.change_tuning(num)
+
+    def change_tuning(self, num: int) -> None:
+        getattr(self, f"tuning_frame_{self.current_tuning}").grid_remove()
+        getattr(self, f"tuning_frame_{num}").grid()
+        self.current_tuning = num
 
 
 widgets: Widgets = Widgets()

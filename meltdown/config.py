@@ -13,6 +13,7 @@ class Config:
         self.entry_width = 10
         self.entry_width_small = 6
         self.combobox_width = 11
+        self.combobox_width_small = 7
         self.dialog_color = "#252933"
         self.font_family = "sans"
         self.font = (self.font_family, 14)
@@ -64,7 +65,9 @@ class Config:
         self.default_prepend: str = ""
         self.default_append: str = ""
         self.default_compact: bool = False
-        self.default_output_font_size = 14
+        self.default_output_font_size: int = 14
+        self.default_threads: int = 6
+        self.default_mlock: str = "yes"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -81,6 +84,8 @@ class Config:
         self.append = self.default_append
         self.compact = self.default_compact
         self.output_font_size = self.default_output_font_size
+        self.threads = self.default_threads
+        self.mlock = self.default_mlock
 
         self.intro = [
             "Welcome to Meltdown.",

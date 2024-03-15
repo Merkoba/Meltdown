@@ -83,6 +83,7 @@ class Model:
         try:
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
+            mlock = True if (config.mlock == "yes") else False
             widgets.display.print(f"\n🫠 Loading {name}")
             app.update()
 
@@ -90,8 +91,8 @@ class Model:
                 model_path=str(model),
                 chat_format=fmt,
                 n_ctx=2048,
-                use_mlock=True,
-                n_threads=6,
+                use_mlock=mlock,
+                n_threads=config.threads,
                 verbose=False,
             )
         except BaseException as e:

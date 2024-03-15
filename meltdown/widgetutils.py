@@ -60,6 +60,12 @@ def make_frame(parent: Optional[ttk.Notebook] = None,
     return frame
 
 
+def make_inner_frame(parent: tk.Frame, col: int) -> tk.Frame:
+    frame = tk.Frame(parent, background=config.background_color)
+    frame.grid(sticky="ew", column=col, row=0)
+    return frame
+
+
 def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
               state: Literal["normal", "disabled"] = "normal",
               right_padding: Optional[int] = None) -> tk.Text:
