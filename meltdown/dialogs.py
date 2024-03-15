@@ -49,10 +49,8 @@ def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
 
 def hide_dialog(dialog: tk.Frame) -> None:
     global current_dialog
-    from .widgets import widgets
     current_dialog = None
     dialog.destroy()
-    widgets.focus_input()
 
 
 def hide_all() -> None:

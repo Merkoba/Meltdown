@@ -33,7 +33,7 @@ class EntryBox(ttk.Entry):
 
     def clear(self) -> None:
         self.set_text("")
-        self.focus()
+        self.focus_set()
 
     def select_all(self) -> None:
         def do_select() -> None:
