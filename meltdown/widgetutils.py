@@ -184,11 +184,11 @@ def text_length(widget: Union[tk.Text]) -> int:
 
 
 def select_all(widget: tk.Text) -> None:
-    widget.tag_add("sel", "1.0", "end")
+    widget.tag_add("sel", "1.0", tk.END)
 
 
 def deselect_all(widget: tk.Text) -> None:
-    widget.tag_remove("sel", "1.0", "end")
+    widget.tag_remove("sel", "1.0", tk.END)
 
 
 def get_text(widget: tk.Text) -> str:
