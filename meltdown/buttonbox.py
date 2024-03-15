@@ -60,6 +60,9 @@ class ButtonBox(tk.Frame):
             return bool((x <= event.x <= x + width) and (y <= event.y <= y + height))
 
         def cmd(event: Any) -> None:
+            if self.style == "disabled":
+                return
+
             if not on_top(event):
                 return
 

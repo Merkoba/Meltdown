@@ -62,6 +62,8 @@ Slider rows to accomodate more config widgets.
 
 The conversation tabs can be re-ordered by dragging.
 
+Buttons change color to reflect program state.
+
 ---
 
 ## Installation
