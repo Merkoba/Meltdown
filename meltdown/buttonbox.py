@@ -51,7 +51,7 @@ class ButtonBox(tk.Frame):
             when_ = "<Button-1>"
 
         # Check if press/release happens on top of the button
-        def valid(event: Any) -> bool:
+        def on_top(event: Any) -> bool:
             widget = event.widget
             x = widget.winfo_x()
             y = widget.winfo_y()
@@ -60,7 +60,7 @@ class ButtonBox(tk.Frame):
             return bool((x <= event.x <= x + width) and (y <= event.y <= y + height))
 
         def cmd(event: Any) -> None:
-            if not valid(event):
+            if not on_top(event):
                 return
 
             if inspect.signature(command).parameters:
