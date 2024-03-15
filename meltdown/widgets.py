@@ -490,7 +490,7 @@ class Widgets:
             self.display.output_bottom()
 
     def clear_input(self) -> None:
-        widgetutils.clear_text(self.input)
+        self.input.clear()
         self.reset_history_index()
 
     def reset_history_index(self) -> None:

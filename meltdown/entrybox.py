@@ -24,6 +24,17 @@ class EntryBox(ttk.Entry):
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
 
+    def get(self) -> str:
+        if self.placeholder_active:
+            return ""
+
+        else:
+            return self.text_var.get()
+
+    def clear(self) -> None:
+        self.set_text("")
+        self.focus()
+
     def select_all(self) -> None:
         def do_select() -> None:
             self.selection_range(0, tk.END)
