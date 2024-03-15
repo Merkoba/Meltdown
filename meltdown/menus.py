@@ -154,6 +154,7 @@ class Menu:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
                                   wraplength=600, justify=tk.LEFT, anchor="w", font=config.font_menu, borderwidth=0, padding=(4, 2, 4, 2))
 
+                label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
