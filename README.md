@@ -52,6 +52,8 @@ Should be cross-platform, but only tested on linux for now.
 
 Several custom widgets made specifically for this program.
 
+Starts instantly and only loads the model and conversations when needed.
+
 ---
 
 ## Installation
