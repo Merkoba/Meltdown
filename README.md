@@ -54,6 +54,8 @@ Several custom widgets made specifically for this program.
 
 Starts instantly and only loads the model and conversations when needed.
 
+Comands like `/clear`, `/stop`, `/log`, etc.
+
 ---
 
 ## Installation
