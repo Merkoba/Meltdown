@@ -287,9 +287,12 @@ class Menu:
             Menu.current_menu = self
 
     def hide(self) -> None:
+        from .tooltips import ToolTip
+
         if self.root:
             self.root.place_forget()
             self.root.destroy()
+            ToolTip.block()
             Menu.current_menu = None
 
     def no_item(self) -> bool:

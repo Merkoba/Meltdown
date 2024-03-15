@@ -48,8 +48,10 @@ def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
 
 
 def hide_dialog(dialog: tk.Frame) -> None:
+    from .tooltips import ToolTip
     global current_dialog
     current_dialog = None
+    ToolTip.block()
     dialog.destroy()
 
 
