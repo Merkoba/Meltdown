@@ -78,10 +78,10 @@ class Model:
         self.model_loading = True
 
         now = timeutils.now()
-        cformat = config.format
+        chat_format = config.format
 
         try:
-            fmt = config.format if (cformat != "auto") else None
+            fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
             widgets.display.print(f"\n🫠 Loading {name}")
             app.update()
@@ -100,7 +100,7 @@ class Model:
 
         self.model_loading = False
         self.loaded_model = model
-        self.loaded_format = cformat
+        self.loaded_format = chat_format
         msg, now = timeutils.check_time("Model loaded", now)
         widgets.display.print(msg)
         self.lock.release()
