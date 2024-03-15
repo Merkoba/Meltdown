@@ -122,14 +122,11 @@ class Widgets:
         self.name_ai = widgetutils.make_entry(frame)
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
-        widgetutils.make_label(frame, "Temp")
-        self.temperature = widgetutils.make_entry(frame, width=config.entry_width_small)
-        ToolTip(self.temperature, "The temperature parameter is used to control"
-                " the randomness of the output. A higher temperature (~1) results in more randomness"
-                " and diversity in the generated text, as the model is more likely to"
-                " explore a wider range of possible tokens. Conversely, a lower temperature"
-                " (<1) produces more focused and deterministic output, emphasizing the"
-                " most probable tokens.")
+        widgetutils.make_label(frame, "Context")
+        self.context = widgetutils.make_entry(frame, width=config.entry_width_small)
+        ToolTip(self.context, "The number of previous messages to include as the context."
+                " The computation will take longer with more context."
+                " 0 means context is not used at all.")
 
         widgetutils.make_label(frame, "Format")
         values = ["auto"]
@@ -142,33 +139,36 @@ class Widgets:
                 " Check llama-cpp-python to find all the available formats.")
 
         # Tuning 1
-        frame, container = make_tuning_frame()
-        self.tuning_frame_1 = frame
+        t_frame, frame = make_tuning_frame()
+        self.tuning_frame_1 = t_frame
 
-        widgetutils.make_label(container, "Tokens")
-        self.max_tokens = widgetutils.make_entry(container, width=config.entry_width_small)
+        widgetutils.make_label(frame, "Tokens")
+        self.max_tokens = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
-        widgetutils.make_label(container, "Context")
-        self.context = widgetutils.make_entry(container, width=config.entry_width_small)
-        ToolTip(self.context, "The number of previous messages to include as the context."
-                " The computation will take longer with more context."
-                " 0 means context is not used at all.")
+        widgetutils.make_label(frame, "Temp")
+        self.temperature = widgetutils.make_entry(frame, width=config.entry_width_small)
+        ToolTip(self.temperature, "The temperature parameter is used to control"
+                " the randomness of the output. A higher temperature (~1) results in more randomness"
+                " and diversity in the generated text, as the model is more likely to"
+                " explore a wider range of possible tokens. Conversely, a lower temperature"
+                " (<1) produces more focused and deterministic output, emphasizing the"
+                " most probable tokens.")
 
-        widgetutils.make_label(container, "Seed")
-        self.seed = widgetutils.make_entry(container, width=config.entry_width_small)
+        widgetutils.make_label(frame, "Seed")
+        self.seed = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
         # Tuning 2
-        frame, container = make_tuning_frame()
-        self.tuning_frame_2 = frame
+        t_frame, frame = make_tuning_frame()
+        self.tuning_frame_2 = t_frame
 
-        widgetutils.make_label(container, "Top K")
-        self.top_k = widgetutils.make_entry(container, width=config.entry_width_small)
+        widgetutils.make_label(frame, "Top K")
+        self.top_k = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
                 " predictions to the top k most probable tokens at each step"
                 " of generation. By setting a value for k, you are instructing"
@@ -176,8 +176,8 @@ class Widgets:
                 " This can help in fine-tuning the generated output and"
                 " ensuring it adheres to specific patterns or constraints.")
 
-        widgetutils.make_label(container, "Top P")
-        self.top_p = widgetutils.make_entry(container, width=config.entry_width_small)
+        widgetutils.make_label(frame, "Top P")
+        self.top_p = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
                 " the cumulative probability of the generated tokens."
                 " The model generates tokens until the cumulative probability"
@@ -186,16 +186,16 @@ class Widgets:
                 " and encourages diversity in the output by including less"
                 " probable tokens when necessary.")
 
-        widgetutils.make_label(container, "Threads")
-        self.threads = widgetutils.make_entry(container, width=config.entry_width_small)
+        widgetutils.make_label(frame, "Threads")
+        self.threads = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.threads, "The number of CPU threads to use")
 
         # Tuning 3
-        frame, container = make_tuning_frame()
-        self.tuning_frame_3 = frame
+        t_frame, frame = make_tuning_frame()
+        self.tuning_frame_3 = t_frame
 
-        widgetutils.make_label(container, "M-Lock")
-        self.mlock = widgetutils.make_combobox(container, width=config.combobox_width_small, values=["yes", "no"])
+        widgetutils.make_label(frame, "M-Lock")
+        self.mlock = widgetutils.make_combobox(frame, width=config.combobox_width_small, values=["yes", "no"])
         ToolTip(self.mlock, "Keep the model in memory")
 
         # Buttons
