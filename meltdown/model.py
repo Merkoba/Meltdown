@@ -90,6 +90,8 @@ class Model:
                 model_path=str(model),
                 chat_format=fmt,
                 n_ctx=2048,
+                use_mlock=True,
+                n_threads=6,
                 verbose=False,
             )
         except BaseException as e:
