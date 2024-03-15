@@ -20,7 +20,8 @@ frame_number = 0
 def do_pack(widget: tk.Widget,
             fill: Optional[Fill] = None, right_padding: Optional[int] = None,
             bottom_padding: Optional[int] = None,
-            padx: Optional[int] = None, pady: Optional[int] = None) -> None:
+            padx: Optional[int] = None,
+            pady: Optional[int] = None) -> None:
     if padx is not None:
         px = (padx, padx)
     else:
@@ -100,15 +101,16 @@ def make_entry(parent: tk.Frame, value: str = "",
 
 
 def get_button(parent: tk.Frame, text: str,
-               command: Optional[Callable[..., Any]] = None, when: str = "release") -> ButtonBox:
-    return ButtonBox(parent, text, command, when=when)
+               command: Optional[Callable[..., Any]] = None,
+               when: str = "release", style: str = "normal") -> ButtonBox:
+    return ButtonBox(parent, text, command, when=when, style=style)
 
 
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
                 right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
-                pady: Optional[int] = None) -> ButtonBox:
-    widget = get_button(parent, text, command)
+                pady: Optional[int] = None, style: str = "normal") -> ButtonBox:
+    widget = get_button(parent, text, command, style=style)
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
 

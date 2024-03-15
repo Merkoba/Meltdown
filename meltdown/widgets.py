@@ -27,7 +27,7 @@ def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
 
     # Button Left
     frame_1 = widgetutils.make_inner_frame(frame, 0)
-    widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left())
+    widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left(), style="alt")
 
     # Spacer 1
     widgetutils.make_inner_frame(frame, 1)
@@ -40,7 +40,8 @@ def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
 
     # Button Right
     frame_3 = widgetutils.make_inner_frame(frame, 4)
-    widgetutils.make_button(frame_3, ">", lambda: widgets.tuning_right(), right_padding=right_padding)
+    button_2 = widgetutils.make_button(frame_3, ">",
+                                       lambda: widgets.tuning_right(), right_padding=right_padding, style="alt")
 
     # Expand spacers
     frame.columnconfigure(1, weight=1)
@@ -594,22 +595,22 @@ class Widgets:
 
     def enable_stop_button(self) -> None:
         if (not self.stop_button_enabled) and app.exists():
-            self.stop_button.style("green")
+            self.stop_button.set_style("green")
             self.stop_button_enabled = True
 
     def disable_stop_button(self) -> None:
         if self.stop_button_enabled and app.exists():
-            self.stop_button.style("disabled")
+            self.stop_button.set_style("disabled")
             self.stop_button_enabled = False
 
     def enable_load_button(self) -> None:
         if (not self.load_button_enabled) and app.exists():
-            self.load_button.style("normal")
+            self.load_button.set_style("normal")
             self.load_button_enabled = True
 
     def disable_load_button(self) -> None:
         if self.load_button_enabled and app.exists():
-            self.load_button.style("disabled")
+            self.load_button.set_style("disabled")
             self.load_button_enabled = False
 
     def enable_format_select(self) -> None:
@@ -626,22 +627,22 @@ class Widgets:
 
     def enable_bottom_button(self) -> None:
         if (not self.bottom_button_enabled) and app.exists():
-            self.bottom_button.style("normal")
+            self.bottom_button.set_style("normal")
             self.bottom_button_enabled = True
 
     def disable_bottom_button(self) -> None:
         if self.bottom_button_enabled and app.exists():
-            self.bottom_button.style("disabled")
+            self.bottom_button.set_style("disabled")
             self.bottom_button_enabled = False
 
     def enable_top_button(self) -> None:
         if (not self.top_button_enabled) and app.exists():
-            self.top_button.style("normal")
+            self.top_button.set_style("normal")
             self.top_button_enabled = True
 
     def disable_top_button(self) -> None:
         if self.top_button_enabled and app.exists():
-            self.top_button.style("disabled")
+            self.top_button.set_style("disabled")
             self.top_button_enabled = False
 
     def enable_widget(self, widget: ttk.Widget) -> None:

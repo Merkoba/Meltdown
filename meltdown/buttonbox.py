@@ -9,11 +9,12 @@ from typing import Any, Callable, Optional
 
 class ButtonBox(tk.Frame):
     def __init__(self, parent: tk.Frame, text: str,
-                 command: Optional[Callable[..., Any]] = None, when: str = "release") -> None:
+                 command: Optional[Callable[..., Any]] = None,
+                 when: str = "release", style: str = "normal") -> None:
         super().__init__(parent)
         self.text = text
         self.make()
-        self.style("normal")
+        self.set_style(style)
 
         if command:
             self.set_bind(when, command)
@@ -27,18 +28,22 @@ class ButtonBox(tk.Frame):
         self.label.bind("<Leave>", lambda e: self.on_leave())
 
     def on_enter(self) -> None:
-        if self.mode == "normal":
+        if self.style == "normal":
             self.set_background(config.button_background_hover)
-        elif self.mode == "green":
+        elif self.style == "green":
             self.set_background(config.green_button_background_hover)
+        elif self.style == "alt":
+            self.set_background(config.button_background_hover_alt)
 
     def on_leave(self) -> None:
-        if self.mode == "normal":
+        if self.style == "normal":
             self.set_background(config.button_background)
-        elif self.mode == "green":
+        elif self.style == "green":
             self.set_background(config.green_background)
-        elif self.mode == "disabled":
+        elif self.style == "disabled":
             self.set_background(config.background_disabled)
+        elif self.style == "alt":
+            self.set_background(config.button_background_alt)
 
     def set_background(self, color: str) -> None:
         self.configure(background=color)
@@ -71,17 +76,19 @@ class ButtonBox(tk.Frame):
         self.bind(when_, lambda e: cmd(e))
         self.label.bind(when_, lambda e: cmd(e))
 
-    def style(self, mode: str) -> None:
+    def set_style(self, style: str) -> None:
         self.label.configure(foreground=config.button_foreground)
 
-        if mode == "normal":
+        if style == "normal":
             self.set_background(config.button_background)
-        elif mode == "green":
+        elif style == "green":
             self.set_background(config.green_background)
-        elif mode == "disabled":
+        elif style == "disabled":
             self.set_background(config.background_disabled)
+        elif style == "alt":
+            self.set_background(config.button_background_alt)
 
-        self.mode = mode
+        self.style = style
 
     def set_text(self, text: str) -> None:
         self.label.configure(text=text)
