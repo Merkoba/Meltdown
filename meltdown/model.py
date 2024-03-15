@@ -69,6 +69,7 @@ class Model:
         self.load_thread.start()
 
     def do_load(self, model: str) -> None:
+        from .app import app
         self.lock.acquire()
         self.model_loading = True
 
@@ -79,7 +80,7 @@ class Model:
             fmt = config.format if (cformat != "auto") else None
             name = Path(model).name
             widgets.display.print(f"\n🫠 Loading {name}")
-            widgets.update()
+            app.update()
 
             self.model = Llama(
                 model_path=str(model),

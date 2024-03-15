@@ -534,9 +534,6 @@ class Widgets:
     def show_model(self) -> None:
         widgetutils.set_text(self.model, config.model)
 
-    def update(self) -> None:
-        app.root.update_idletasks()
-
     def show_main_menu(self, event: Optional[Any] = None) -> None:
         if event:
             self.main_menu.show(event)

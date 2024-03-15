@@ -158,7 +158,7 @@ def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
 
 
 def show_menu_at_center(menu: tk.Menu) -> None:
-    app.root.update_idletasks()
+    app.update()
     menu.update_idletasks()
     window_width = app.root.winfo_width()
     window_height = app.root.winfo_height()

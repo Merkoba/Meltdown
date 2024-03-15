@@ -160,11 +160,20 @@ class App:
     def set_geometry(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
 
+    def update(self) -> None:
+        self.root.update_idletasks()
+
     def resize(self) -> None:
         from .widgets import widgets
         self.unmaximize()
-        self.root.after(100, lambda: self.set_geometry())
-        self.root.after(200, lambda: widgets.display.output_bottom())
+
+        def action() -> None:
+            self.update()
+            self.set_geometry()
+            self.update()
+            widgets.display.output_bottom()
+
+        self.root.after(100, lambda: action())
 
     def toggle_compact(self) -> None:
         from . import state
@@ -194,7 +203,7 @@ class App:
 
     def after_compact(self) -> None:
         from .widgets import widgets
-        app.root.update_idletasks()
+        self.update()
         widgets.display.output_bottom()
         widgets.focus_input()
 
