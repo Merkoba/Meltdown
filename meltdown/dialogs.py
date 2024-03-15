@@ -129,5 +129,5 @@ class Dialog:
         self.root.destroy()
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
-        button = widgetutils.get_button(self.button_frame, text, command, when="release")
+        button = widgetutils.get_button(self.button_frame, text, command)
         button.pack(side=tk.LEFT, padx=6, pady=8)

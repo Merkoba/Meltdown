@@ -10,7 +10,7 @@ from typing import Any, Callable, Optional
 class ButtonBox(tk.Frame):
     def __init__(self, parent: tk.Frame, text: str,
                  command: Optional[Callable[..., Any]] = None,
-                 when: str = "release", style: str = "normal") -> None:
+                 when: str = "<ButtonRelease-1>", style: str = "normal") -> None:
         super().__init__(parent)
         self.text = text
         self.make()
@@ -50,11 +50,6 @@ class ButtonBox(tk.Frame):
         self.label.configure(background=color)
 
     def set_bind(self, when: str, command: Callable[..., Any]) -> None:
-        if when == "release":
-            when_ = "<ButtonRelease-1>"
-        else:
-            when_ = "<Button-1>"
-
         # Check if press/release happens on top of the button
         def on_top(event: Any) -> bool:
             widget = event.widget
@@ -73,8 +68,8 @@ class ButtonBox(tk.Frame):
             else:
                 command()
 
-        self.bind(when_, lambda e: cmd(e))
-        self.label.bind(when_, lambda e: cmd(e))
+        self.bind(when, lambda e: cmd(e))
+        self.label.bind(when, lambda e: cmd(e))
 
     def set_style(self, style: str) -> None:
         self.label.configure(foreground=config.button_foreground)

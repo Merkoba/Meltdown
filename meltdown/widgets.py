@@ -27,7 +27,9 @@ def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
 
     # Button Left
     frame_1 = widgetutils.make_inner_frame(frame, 0)
-    widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left(), style="alt")
+    button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left(), style="alt")
+    button_1.set_bind("<Button-4>", lambda e: widgets.tuning_left())
+    button_1.set_bind("<Button-5>", lambda e: widgets.tuning_right())
 
     # Spacer 1
     widgetutils.make_inner_frame(frame, 1)
@@ -42,6 +44,8 @@ def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
     frame_3 = widgetutils.make_inner_frame(frame, 4)
     button_2 = widgetutils.make_button(frame_3, ">",
                                        lambda: widgets.tuning_right(), right_padding=right_padding, style="alt")
+    button_2.set_bind("<Button-4>", lambda e: widgets.tuning_left())
+    button_2.set_bind("<Button-5>", lambda e: widgets.tuning_right())
 
     # Expand spacers
     frame.columnconfigure(1, weight=1)
@@ -69,7 +73,9 @@ class Widgets:
         self.load_button = widgetutils.make_button(frame, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load or unload the model")
 
-        self.main_menu_button = widgetutils.make_button(frame, "Menu", right_padding=right_padding)
+        self.main_menu_button = widgetutils.make_button(frame, "Menu",
+                                                        lambda e: self.show_main_menu(e),
+                                                        right_padding=right_padding)
         ToolTip(self.main_menu_button, "Open the main menu")
 
         # System
@@ -398,7 +404,6 @@ class Widgets:
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())
-        self.main_menu_button.set_bind("release", self.show_main_menu)
 
     def focus_input(self) -> None:
         self.input.focus_set()
