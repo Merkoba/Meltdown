@@ -152,6 +152,7 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
+                self.check_scroll_buttons()
 
         widgets.focus_input()
 
