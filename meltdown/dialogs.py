@@ -1,12 +1,12 @@
 # Modules
 from .app import app
 from .config import config
+from .entrybox import EntryBox
 from . import widgetutils
 
 # Standard
 from typing import Any, Callable, List, Optional, Tuple
 import tkinter as tk
-from tkinter import ttk
 
 
 class Dialog:
@@ -57,7 +57,7 @@ class Dialog:
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
         dialog = Dialog(text)
-        entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
+        entry = EntryBox(dialog.top_frame, font=config.font, width=15, justify="center")
 
         def ok() -> None:
             text = entry.get()
@@ -77,7 +77,8 @@ class Dialog:
         entry.pack(padx=6, pady=6)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
-        dialog.show(entry)
+        dialog.show()
+        entry.full_focus()
 
     @staticmethod
     def hide_all() -> None:
@@ -104,7 +105,7 @@ class Dialog:
         self.root.bind("<Escape>", lambda e: self.hide())
         self.root.bind("<FocusOut>", lambda e: self.hide())
 
-    def show(self, widget: Optional[tk.Widget] = None) -> None:
+    def show(self) -> None:
         self.root.update_idletasks()
         window_width = app.root.winfo_width()
         window_height = app.root.winfo_height()
@@ -114,9 +115,6 @@ class Dialog:
         y = (window_height - dialog_height) // 2
         self.root.place(x=x, y=y)
         self.root.focus_set()
-
-        if widget:
-            widget.focus_set()
 
     def hide(self) -> None:
         from .tooltips import ToolTip

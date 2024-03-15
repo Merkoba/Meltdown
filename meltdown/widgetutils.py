@@ -159,6 +159,11 @@ def set_text(widget: Union[tk.Text, EntryBox], text: Union[str, int, float],
         widget.configure(state="disabled")
 
 
+def move_to_end(widget: EntryBox) -> None:
+    widget.icursor(tk.END)
+    widget.xview_moveto(1.0)
+
+
 def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
     widget.set(str(value))
 

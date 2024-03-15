@@ -35,6 +35,11 @@ class EntryBox(ttk.Entry):
         self.set_text("")
         self.focus_set()
 
+    def full_focus(self) -> None:
+        self.focus_set()
+        self.icursor(tk.END)
+        self.xview_moveto(1.0)
+
     def select_all(self) -> None:
         def do_select() -> None:
             self.selection_range(0, tk.END)
