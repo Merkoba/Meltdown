@@ -194,7 +194,9 @@ class App:
 
     def after_compact(self) -> None:
         from .widgets import widgets
-        self.root.after(100, lambda: widgets.display.output_bottom())
+        app.root.update_idletasks()
+        widgets.display.output_bottom()
+        widgets.focus_input()
 
     def check_compact(self) -> None:
         if config.compact:
