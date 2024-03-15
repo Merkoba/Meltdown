@@ -747,5 +747,19 @@ class Widgets:
         else:
             self.display.output_bottom()
 
+    def show_context(self) -> None:
+        widget = app.root.focus_get()
+
+        if widget == self.input:
+            self.show_input_menu()
+        elif widget == self.prepend:
+            self.show_prepend_menu()
+        elif widget == self.append:
+            self.show_append_menu()
+        elif widget == self.model:
+            self.show_model_menu()
+        elif widget == self.system:
+            self.show_system_menu()
+
 
 widgets: Widgets = Widgets()

@@ -2,6 +2,7 @@
 from .app import app
 from .widgets import widgets
 from . import widgetutils
+from . import state
 
 # Standard
 from tkinter import ttk
@@ -10,41 +11,6 @@ from typing import Any
 
 
 def on_key(event: Any) -> None:
-    # Shift = 1
-    # Ctrl = 4
-
-    if event.state & 4:
-        if event.keysym == "Up":
-            widgets.display.output_top()
-        elif event.keysym == "Down":
-            widgets.display.output_bottom()
-        elif event.keysym == "Left":
-            widgets.display.tab_left()
-        elif event.keysym == "Right":
-            widgets.display.tab_right()
-        elif event.keysym == "Return":
-            widgets.show_main_menu()
-        elif event.keysym == "Escape":
-            widgets.show_main_menu()
-        elif event.keysym == "t":
-            widgets.display.make_tab()
-        elif event.keysym == "w":
-            widgets.display.close_current_tab()
-        elif event.keysym == "l":
-            widgets.display.save_log()
-        elif event.keysym == "BackSpace":
-            widgets.display.clear_output()
-        elif event.keysym == "a":
-            widgets.display.select_output()
-        elif event.keysym == "y":
-            widgets.display.copy_output()
-
-        return
-
-    if event.keysym == "Escape":
-        widgets.esckey()
-        return
-
     # Focus the input and insert char
     ftypes = [ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
 
@@ -58,13 +24,26 @@ def on_key(event: Any) -> None:
             widgets.focus_input()
     elif event.widget == widgets.input:
         if event.keysym == "Up":
-            if event.state & 1:
-                widgets.show_input_menu()
-            else:
-                widgets.input_history_up()
+            widgets.input_history_up()
         elif event.keysym == "Down":
             widgets.input_history_down()
 
 
 def setup() -> None:
     app.root.bind("<KeyPress>", on_key)
+    app.root.bind("<KeyPress-Escape>", lambda e: widgets.esckey())
+    app.root.bind("<Shift-KeyPress-Up>", lambda e: widgets.show_context())
+    app.root.bind("<Control-KeyPress-Up>", lambda e: widgets.display.output_top())
+    app.root.bind("<Control-KeyPress-Down>", lambda e: widgets.display.output_bottom())
+    app.root.bind("<Control-KeyPress-Left>", lambda e: widgets.display.tab_left())
+    app.root.bind("<Control-KeyPress-Right>", lambda e: widgets.display.tab_right())
+    app.root.bind("<Control-KeyPress-Return>", lambda e: widgets.show_main_menu())
+    app.root.bind("<Control-KeyPress-Escape>", lambda e: widgets.show_main_menu())
+    app.root.bind("<Control-KeyPress-BackSpace>", lambda e: widgets.display.clear_output())
+    app.root.bind("<Control-KeyPress-t>", lambda e: widgets.display.make_tab())
+    app.root.bind("<Control-KeyPress-w>", lambda e: widgets.display.close_current_tab())
+    app.root.bind("<Control-KeyPress-l>", lambda e: state.save_log())
+    app.root.bind("<Control-KeyPress-a>", lambda e: widgets.display.select_output())
+    app.root.bind("<Control-KeyPress-y>", lambda e: widgets.display.copy_output())
+    app.root.bind("<Control-KeyPress-p>", lambda e: app.toggle_compact())
+    app.root.bind("<Control-Shift-KeyPress-L>", lambda e: state.open_logs_dir())
