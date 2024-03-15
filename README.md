@@ -60,6 +60,8 @@ Change the font size of the output.
 
 Slider rows to accomodate more config widgets.
 
+The conversation tabs can be re-ordered by dragging.
+
 ---
 
 ## Installation
