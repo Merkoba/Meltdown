@@ -375,6 +375,7 @@ class Display:
             widgetutils.clear_text(output, True)
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
+            self.check_scroll_buttons(tab_id)
 
         dialogs.show_confirm("Clear output?", lambda: action())
 

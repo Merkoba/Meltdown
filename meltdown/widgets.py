@@ -349,7 +349,7 @@ class Widgets:
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())
-        self.main_menu_button.set_bind("<ButtonRelease-1>", self.show_main_menu)
+        self.main_menu_button.set_bind("release", self.show_main_menu)
 
     def focus_input(self) -> None:
         self.input.focus_set()

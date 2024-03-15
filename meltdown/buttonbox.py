@@ -8,14 +8,15 @@ from typing import Any, Callable, Optional
 
 
 class ButtonBox(tk.Frame):
-    def __init__(self, parent: tk.Frame, text: str, command: Optional[Callable[..., Any]] = None) -> None:
+    def __init__(self, parent: tk.Frame, text: str, \
+                 command: Optional[Callable[..., Any]] = None, when: str = "press") -> None:
         super().__init__(parent)
         self.text = text
         self.make()
         self.style("normal")
 
         if command:
-            self.set_bind("<Button-1>", command)
+            self.set_bind(when, command)
 
     def make(self) -> None:
         self.label = tk.Label(self, text=self.text, font=config.font_button, width=7)
@@ -44,12 +45,23 @@ class ButtonBox(tk.Frame):
         self.label.configure(background=color)
 
     def set_bind(self, when: str, command: Callable[..., Any]) -> None:
-        if inspect.signature(command).parameters:
-            self.bind(when, lambda e: command(e))
-            self.label.bind(when, lambda e: command(e))
+        if when == "release":
+            when_ = "<ButtonRelease-1>"
         else:
-            self.bind(when, lambda e: command())
-            self.label.bind(when, lambda e: command())
+            when_ = "<Button-1>"
+
+        def cmd_1(e) -> None:
+            command(e)
+
+        def cmd_2() -> None:
+            command()
+
+        if inspect.signature(command).parameters:
+            self.bind(when_, lambda e: cmd_1(e))
+            self.label.bind(when_, lambda e: cmd_1(e))
+        else:
+            self.bind(when_, lambda e: cmd_2())
+            self.label.bind(when_, lambda e: cmd_2())
 
     def style(self, mode: str) -> None:
         self.label.configure(foreground=config.button_foreground)
