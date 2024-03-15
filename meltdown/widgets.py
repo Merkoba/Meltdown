@@ -747,13 +747,20 @@ class Widgets:
             self.show_system_menu()
 
     def details_left(self) -> None:
-        self.details_canvas.xview_scroll(-1, "pages")
+        scroll_pos = self.details_canvas.xview()[0]
+
+        if scroll_pos > 0:
+            self.details_canvas.xview_scroll(-1, "pages")
+        else:
+            self.details_canvas.xview_moveto(1)
 
     def details_right(self) -> None:
-        self.details_canvas.xview_scroll(1, "pages")
+        scroll_pos = self.details_canvas.xview()[1]
 
-    def details_reset(self) -> None:
-        self.details_canvas.xview_moveto(0)
+        if scroll_pos < 1:
+            self.details_canvas.xview_scroll(1, "pages")
+        else:
+            self.details_canvas.xview_moveto(0)
 
 
 widgets: Widgets = Widgets()
