@@ -20,49 +20,16 @@ from typing import Optional, Any, Callable, Tuple
 
 
 right_padding = 11
-num_tunings = 0
-
-
-def make_tuning_frame() -> Tuple[tk.Frame, tk.Frame]:
-    global num_tunings
-    frame = widgetutils.make_frame()
-
-    # Button Left
-    frame_1 = widgetutils.make_inner_frame(frame, 0)
-    button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.tuning_left(), style="alt")
-    button_1.set_bind("<Button-4>", lambda e: widgets.tuning_left())
-    button_1.set_bind("<Button-5>", lambda e: widgets.tuning_right())
-
-    # Spacer 1
-    widgetutils.make_inner_frame(frame, 1)
-
-    # Add widgets here
-    frame_2 = widgetutils.make_inner_frame(frame, 2)
-
-    # Spacer 2
-    widgetutils.make_inner_frame(frame, 3)
-
-    # Button Right
-    frame_3 = widgetutils.make_inner_frame(frame, 4)
-    button_2 = widgetutils.make_button(frame_3, ">",
-                                       lambda: widgets.tuning_right(), right_padding=right_padding, style="alt")
-    button_2.set_bind("<Button-4>", lambda e: widgets.tuning_left())
-    button_2.set_bind("<Button-5>", lambda e: widgets.tuning_right())
-
-    # Expand spacers
-    frame.columnconfigure(1, weight=1)
-    frame.columnconfigure(3, weight=1)
-
-    # Hide initially
-    frame.grid_remove()
-
-    num_tunings += 1
-    return (frame, frame_2)
 
 
 class Widgets:
     def __init__(self) -> None:
-        self.input_history_index = -1
+        self.num_details = 0
+
+        def register_details(frame: tk.Frame) -> None:
+            self.num_details += 1
+            setattr(self, f"details_{self.num_details}", frame)
+            frame.grid_remove()
 
         # Model
         frame = widgetutils.make_frame()
@@ -114,6 +81,28 @@ class Widgets:
         frame = widgetutils.make_frame()
         self.details_frame = frame
 
+        frame_1 = widgetutils.make_inner_frame(frame, 0)
+        button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt")
+        button_1.set_bind("<Button-4>", lambda e: widgets.details_left())
+        button_1.set_bind("<Button-5>", lambda e: widgets.details_right())
+
+        widgetutils.make_inner_frame(frame, 1)
+        self.details_container = widgetutils.make_inner_frame(frame, 2)
+        widgetutils.make_inner_frame(frame, 3)
+
+        frame_3 = widgetutils.make_inner_frame(frame, 4)
+        button_2 = widgetutils.make_button(frame_3, ">",
+                                           lambda: widgets.details_right(), right_padding=right_padding, style="alt")
+
+        button_2.set_bind("<Button-4>", lambda e: widgets.details_left())
+        button_2.set_bind("<Button-5>", lambda e: widgets.details_right())
+
+        frame.columnconfigure(1, weight=1)
+        frame.columnconfigure(3, weight=1)
+
+        # Details Frame
+        frame = widgetutils.make_inner_frame(self.details_container, 0)
+        register_details(frame)
         widgetutils.make_label(frame, "User")
         self.name_user = widgetutils.make_entry(frame)
         ToolTip(self.name_user, "The name of the user (you)")
@@ -128,20 +117,9 @@ class Widgets:
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
-        widgetutils.make_label(frame, "Format")
-        values = ["auto"]
-        fmts = [item for item in formats._chat_handlers]
-        fmts.sort()
-        values.extend(fmts)
-        self.format = widgetutils.make_combobox(frame, values=values, width=17, right_padding=right_padding)
-        ToolTip(self.format, "That will format the prompt according to how model expects it."
-                " Auto is supposed to work with newer models that include the format in the metadata."
-                " Check llama-cpp-python to find all the available formats.")
-
-        # Tuning 1
-        t_frame, frame = make_tuning_frame()
-        self.tuning_frame_1 = t_frame
-
+        # Details Frame
+        frame = widgetutils.make_inner_frame(self.details_container, 0)
+        register_details(frame)
         widgetutils.make_label(frame, "Tokens")
         self.max_tokens = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
@@ -163,10 +141,9 @@ class Widgets:
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
-        # Tuning 2
-        t_frame, frame = make_tuning_frame()
-        self.tuning_frame_2 = t_frame
-
+        # Details Frame
+        frame = widgetutils.make_inner_frame(self.details_container, 0)
+        register_details(frame)
         widgetutils.make_label(frame, "Top K")
         self.top_k = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
@@ -190,9 +167,18 @@ class Widgets:
         self.threads = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.threads, "The number of CPU threads to use")
 
-        # Tuning 3
-        t_frame, frame = make_tuning_frame()
-        self.tuning_frame_3 = t_frame
+        # Details Frame
+        frame = widgetutils.make_inner_frame(self.details_container, 0)
+        register_details(frame)
+        widgetutils.make_label(frame, "Format")
+        values = ["auto"]
+        fmts = [item for item in formats._chat_handlers]
+        fmts.sort()
+        values.extend(fmts)
+        self.format = widgetutils.make_combobox(frame, values=values, width=17)
+        ToolTip(self.format, "That will format the prompt according to how model expects it."
+                " Auto is supposed to work with newer models that include the format in the metadata."
+                " Check llama-cpp-python to find all the available formats.")
 
         widgetutils.make_label(frame, "M-Lock")
         self.mlock = widgetutils.make_combobox(frame, width=config.combobox_width_small, values=["yes", "no"])
@@ -278,7 +264,8 @@ class Widgets:
         self.format_select_enabled = True
         self.bottom_button_enabled = True
         self.top_button_enabled = True
-        self.current_tuning = 1
+        self.input_history_index = -1
+        self.current_details = 1
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -321,6 +308,7 @@ class Widgets:
         self.disable_bottom_button()
         self.setup_monitors()
         self.start_checks()
+        self.change_details(1)
 
         keyboard.setup()
 
@@ -772,26 +760,26 @@ class Widgets:
         elif widget == self.system:
             self.show_system_menu()
 
-    def tuning_left(self) -> None:
-        num = self.current_tuning - 1
+    def details_left(self) -> None:
+        num = self.current_details - 1
 
         if num < 1:
-            num = num_tunings
+            num = self.num_details
 
-        self.change_tuning(num)
+        self.change_details(num)
 
-    def tuning_right(self) -> None:
-        num = self.current_tuning + 1
+    def details_right(self) -> None:
+        num = self.current_details + 1
 
-        if num > num_tunings:
+        if num > self.num_details:
             num = 1
 
-        self.change_tuning(num)
+        self.change_details(num)
 
-    def change_tuning(self, num: int) -> None:
-        getattr(self, f"tuning_frame_{self.current_tuning}").grid_remove()
-        getattr(self, f"tuning_frame_{num}").grid()
-        self.current_tuning = num
+    def change_details(self, num: int) -> None:
+        getattr(self, f"details_{self.current_details}").grid_remove()
+        getattr(self, f"details_{num}").grid()
+        self.current_details = num
 
 
 widgets: Widgets = Widgets()

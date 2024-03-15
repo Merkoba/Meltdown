@@ -158,17 +158,15 @@ class App:
 
     def enable_compact(self) -> None:
         from .widgets import widgets
-        widgets.details_frame.grid_remove()
         widgets.system_frame.grid_remove()
-        widgets.tuning_frame_1.grid_remove()
+        widgets.details_frame.grid_remove()
         widgets.addons_frame.grid_remove()
         self.after_compact()
 
     def disable_compact(self) -> None:
         from .widgets import widgets
-        widgets.details_frame.grid()
         widgets.system_frame.grid()
-        widgets.tuning_frame_1.grid()
+        widgets.details_frame.grid()
         widgets.addons_frame.grid()
         self.after_compact()
 
