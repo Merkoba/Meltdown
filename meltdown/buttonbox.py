@@ -8,7 +8,7 @@ from typing import Any, Callable, Optional
 
 
 class ButtonBox(tk.Frame):
-    def __init__(self, parent: tk.Frame, text: str, \
+    def __init__(self, parent: tk.Frame, text: str,
                  command: Optional[Callable[..., Any]] = None, when: str = "press") -> None:
         super().__init__(parent)
         self.text = text
@@ -19,8 +19,8 @@ class ButtonBox(tk.Frame):
             self.set_bind(when, command)
 
     def make(self) -> None:
-        self.label = tk.Label(self, text=self.text, font=config.font_button, width=7)
-        self.label.grid(sticky="nsew", padx=6)
+        self.label = tk.Label(self, text=self.text, font=config.font_button, width=8)
+        self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
         self.label.bind("<Enter>", lambda e: self.on_enter())
@@ -50,18 +50,26 @@ class ButtonBox(tk.Frame):
         else:
             when_ = "<Button-1>"
 
-        def cmd_1(e) -> None:
-            command(e)
+        # Check if press/release happens on top of the button
+        def valid(event: Any) -> bool:
+            widget = event.widget
+            x = widget.winfo_x()
+            y = widget.winfo_y()
+            width = widget.winfo_width()
+            height = widget.winfo_height()
+            return bool((x <= event.x <= x + width) and (y <= event.y <= y + height))
 
-        def cmd_2() -> None:
-            command()
+        def cmd(event: Any) -> None:
+            if not valid(event):
+                return
 
-        if inspect.signature(command).parameters:
-            self.bind(when_, lambda e: cmd_1(e))
-            self.label.bind(when_, lambda e: cmd_1(e))
-        else:
-            self.bind(when_, lambda e: cmd_2())
-            self.label.bind(when_, lambda e: cmd_2())
+            if inspect.signature(command).parameters:
+                command(event)
+            else:
+                command()
+
+        self.bind(when_, lambda e: cmd(e))
+        self.label.bind(when_, lambda e: cmd(e))
 
     def style(self, mode: str) -> None:
         self.label.configure(foreground=config.button_foreground)

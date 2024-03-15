@@ -93,8 +93,8 @@ def make_entry(parent: tk.Frame, value: str = "",
     return widget
 
 
-def get_button(parent: tk.Frame, text: str, \
-               command: Optional[Callable[..., Any]] = None, when: Optional[str] = None) -> ButtonBox:
+def get_button(parent: tk.Frame, text: str,
+               command: Optional[Callable[..., Any]] = None, when: str = "press") -> ButtonBox:
     return ButtonBox(parent, text, command, when=when)
 
 
