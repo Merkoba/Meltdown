@@ -349,7 +349,7 @@ class Widgets:
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())
-        self.main_menu_button.bind("<ButtonRelease-1>", lambda e: self.show_main_menu(e))
+        self.main_menu_button.set_bind("<ButtonRelease-1>", self.show_main_menu)
 
     def focus_input(self) -> None:
         self.input.focus_set()
@@ -559,26 +559,22 @@ class Widgets:
 
     def enable_stop_button(self) -> None:
         if (not self.stop_button_enabled) and app.exists():
-            self.stop_button.configure(style="Green.TButton")
-            self.enable_widget(self.stop_button)
+            self.stop_button.style("green")
             self.stop_button_enabled = True
 
     def disable_stop_button(self) -> None:
         if self.stop_button_enabled and app.exists():
-            self.stop_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.stop_button)
+            self.stop_button.style("disabled")
             self.stop_button_enabled = False
 
     def enable_load_button(self) -> None:
         if (not self.load_button_enabled) and app.exists():
-            self.load_button.configure(style="Normal.TButton")
-            self.enable_widget(self.load_button)
+            self.load_button.style("normal")
             self.load_button_enabled = True
 
     def disable_load_button(self) -> None:
         if self.load_button_enabled and app.exists():
-            self.load_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.load_button)
+            self.load_button.style("disabled")
             self.load_button_enabled = False
 
     def enable_format_select(self) -> None:
@@ -595,26 +591,22 @@ class Widgets:
 
     def enable_bottom_button(self) -> None:
         if (not self.bottom_button_enabled) and app.exists():
-            self.bottom_button.configure(style="Normal.TButton")
-            self.enable_widget(self.bottom_button)
+            self.bottom_button.style("normal")
             self.bottom_button_enabled = True
 
     def disable_bottom_button(self) -> None:
         if self.bottom_button_enabled and app.exists():
-            self.bottom_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.bottom_button)
+            self.bottom_button.style("disabled")
             self.bottom_button_enabled = False
 
     def enable_top_button(self) -> None:
         if (not self.top_button_enabled) and app.exists():
-            self.top_button.configure(style="Normal.TButton")
-            self.enable_widget(self.top_button)
+            self.top_button.style("normal")
             self.top_button_enabled = True
 
     def disable_top_button(self) -> None:
         if self.top_button_enabled and app.exists():
-            self.top_button.configure(style="Disabled.TButton")
-            self.disable_widget(self.top_button)
+            self.top_button.style("disabled")
             self.top_button_enabled = False
 
     def enable_widget(self, widget: ttk.Widget) -> None:
@@ -639,9 +631,9 @@ class Widgets:
             self.enable_format_select()
 
         if model.loaded_model:
-            self.load_button.configure(text="Unload")
+            self.load_button.set_text("Unload")
         else:
-            self.load_button.configure(text="Load")
+            self.load_button.set_text("Load")
 
         self.display.check_scroll_buttons()
 

@@ -227,6 +227,8 @@ def set_config(key: str, value: Any) -> None:
         on_model_change()
     elif key == "format":
         on_format_change()
+    elif key == "output_font_size":
+        on_output_font_change()
 
 
 def reset_config() -> None:
@@ -242,6 +244,7 @@ def reset_config() -> None:
 
         on_model_change(False)
         on_format_change(False)
+        on_output_font_change()
         widgets.fill()
         app.check_compact()
         save_config()
@@ -331,6 +334,10 @@ def on_format_change(load: bool = True) -> None:
     if model.loaded_format != config.format:
         if load:
             model.load()
+
+
+def on_output_font_change() -> None:
+    widgets.display.update_font()
 
 
 def open_logs_dir() -> None:

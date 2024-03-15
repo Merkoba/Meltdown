@@ -47,35 +47,6 @@ class App:
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
-        style.configure("Normal.TButton", background=config.button_background)
-        style.configure("Normal.TButton", foreground=config.button_foreground)
-        style.configure("Normal.TButton", borderwidth=0)
-        style.configure("Normal.TButton", padding=[0, 0, 0, 0])
-        style.configure("Normal.TButton", font=config.font_button)
-
-        style.configure("Green.TButton", background=config.green_background)
-        style.configure("Green.TButton", foreground=config.button_foreground)
-        style.configure("Green.TButton", borderwidth=0)
-        style.configure("Green.TButton", padding=[0, 0, 0, 0])
-        style.configure("Green.TButton", font=config.font_button)
-
-        style.configure("Disabled.TButton", borderwidth=0)
-        style.configure("Disabled.TButton", padding=[0, 0, 0, 0])
-        style.configure("Disabled.TButton", font=config.font_button)
-
-        style.map("Disabled.TButton",
-                  background=[("disabled", config.background_disabled), ("active", config.background_disabled)],
-                  foreground=[("disabled", config.button_foreground)],
-                  )
-
-        style.map("Normal.TButton",
-                  background=[("active", config.button_background_hover)]
-                  )
-
-        style.map("Green.TButton",
-                  background=[("active", config.green_button_background_hover)]
-                  )
-
         style.configure("Normal.TEntry", fieldbackground=config.entry_background)
         style.configure("Normal.TEntry", foreground=config.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=0)

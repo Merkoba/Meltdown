@@ -59,8 +59,7 @@ def hide_all() -> None:
 
 
 def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:
-    button = widgetutils.get_button(parent, text)
-    button.configure(command=command)
+    button = widgetutils.get_button(parent, text, command)
     button.pack(side=tk.LEFT, padx=6, pady=8)
 
 

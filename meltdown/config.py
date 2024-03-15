@@ -1,5 +1,5 @@
 # Standard
-from typing import List, Any, Dict, Optional
+from typing import List, Any, Dict, Optional, Tuple
 
 
 class Config:
@@ -14,10 +14,12 @@ class Config:
         self.entry_width_small = 6
         self.combobox_width = 11
         self.dialog_color = "#252933"
-        self.font = ("sans", 14)
-        self.font_button = ("sans", 12)
-        self.font_combobox = ("sans", 13)
-        self.font_tab = ("sans", 12)
+        self.font_family = "sans"
+        self.font = (self.font_family, 14)
+        self.font_button = (self.font_family, 12)
+        self.font_combobox = (self.font_family, 13)
+        self.font_tab = (self.font_family, 12)
+        self.font_menu = (self.font_family, 13)
         self.background_color = "#212121"
         self.foreground_color = "white"
         self.red_color = "#FF6B6B"
@@ -60,6 +62,7 @@ class Config:
         self.default_prepend: str = ""
         self.default_append: str = ""
         self.default_compact: bool = False
+        self.default_output_font_size = 14
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -75,6 +78,7 @@ class Config:
         self.prepend = self.default_prepend
         self.append = self.default_append
         self.compact = self.default_compact
+        self.output_font_size = self.default_output_font_size
 
         self.intro = [
             "Welcome to Meltdown.",
@@ -121,6 +125,9 @@ class Config:
                 value = "[Empty]"
 
             widgets.display.print(f"{key}: {value}")
+
+    def get_output_font(self) -> Tuple[str, int]:
+        return (self.font_family, self.output_font_size)
 
 
 config = Config()

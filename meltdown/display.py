@@ -33,6 +33,9 @@ class Display:
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
+        self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
+        self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
+        self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
         self.current_tab = "none"
         self.drag_start_index = 0
         self.tab_number = 1
@@ -506,3 +509,29 @@ class Display:
 
     def close_current_tab(self) -> None:
         self.close_tab(tab_id=self.current_tab)
+
+    def decrease_font(self) -> None:
+        from . import state
+        new_size = config.output_font_size - 1
+
+        if new_size < 6:
+            return
+
+        state.set_config("output_font_size", new_size)
+
+    def increase_font(self) -> None:
+        from . import state
+        new_size = config.output_font_size + 1
+
+        if new_size > 60:
+            return
+
+        state.set_config("output_font_size", new_size)
+
+    def reset_font(self) -> None:
+        from . import state
+        state.reset_one_config("output_font_size")
+
+    def update_font(self) -> None:
+        for tab in self.tabs.values():
+            tab.output.configure(font=config.get_output_font())

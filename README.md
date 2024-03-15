@@ -56,6 +56,8 @@ Starts instantly and only loads the model and conversations when needed.
 
 Comands like `/clear`, `/stop`, `/log`, etc.
 
+Change the font size of the output.
+
 ---
 
 ## Installation

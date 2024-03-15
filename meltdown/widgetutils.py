@@ -3,6 +3,7 @@ from .config import config
 from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
+from .buttonbox import ButtonBox
 
 # Libraries
 import pyperclip  # type: ignore
@@ -64,7 +65,7 @@ def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
               right_padding: Optional[int] = None) -> tk.Text:
     scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    widget = tk.Text(parent, font=config.font, wrap="word", state=state, yscrollcommand=scrollbar.set)
+    widget = tk.Text(parent, font=config.get_output_font(), wrap="word", state=state, yscrollcommand=scrollbar.set)
     widget.configure(background=config.text_background, foreground=config.text_foreground)
     widget.configure(bd=4, highlightthickness=0, relief="flat")
     do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
@@ -92,19 +93,15 @@ def make_entry(parent: tk.Frame, value: str = "",
     return widget
 
 
-def get_button(parent: tk.Frame, text: str) -> ttk.Button:
-    return ttk.Button(parent, text=text, style="Normal.TButton")
+def get_button(parent: tk.Frame, text: str, command: Optional[Callable[..., Any]] = None) -> ButtonBox:
+    return ButtonBox(parent, text, command)
 
 
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
                 right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
-                pady: Optional[int] = None) -> ttk.Button:
-    widget = get_button(parent, text)
-
-    if command:
-        widget.configure(command=lambda: command())
-
+                pady: Optional[int] = None) -> ButtonBox:
+    widget = get_button(parent, text, command)
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
 

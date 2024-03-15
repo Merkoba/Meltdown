@@ -148,7 +148,7 @@ class Menu:
                 self.separators.append(separator)
             else:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0, padding=(4, 2, 4, 2))
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=config.font_menu, borderwidth=0, padding=(4, 2, 4, 2))
 
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
