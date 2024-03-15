@@ -15,11 +15,11 @@ def clean_string(text: str) -> str:
 
 class ToolTip:
     current_tooltip: Optional["ToolTip"] = None
-    last_date = 0.0
+    block_date = 0.0
 
     @staticmethod
     def block() -> None:
-        ToolTip.last_date = timeutils.now()
+        ToolTip.block_date = timeutils.now()
 
     def __init__(self, widget: tk.Widget, text: str) -> None:
         self.widget = widget
@@ -40,7 +40,7 @@ class ToolTip:
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
-        if (timeutils.now() - ToolTip.last_date) < 0.8:
+        if (timeutils.now() - ToolTip.block_date) < 0.8:
             return
 
         self.id = self.widget.after(self.delay, lambda: self.show_tooltip())

@@ -11,12 +11,12 @@ from tkinter import ttk
 import tkinter as tk
 from typing import Any, Callable
 
-last_date = 0.0
+block_date = 0.0
 
 
 def block() -> None:
-    global last_date
-    last_date = timeutils.now()
+    global block_date
+    block_date = timeutils.now()
 
 
 def on_key(event: Any) -> None:
@@ -52,7 +52,7 @@ def setup() -> None:
             if Dialog.current_dialog:
                 return
 
-            if (timeutils.now() - last_date) < 0.8:
+            if (timeutils.now() - block_date) < 0.8:
                 return
 
             command()
