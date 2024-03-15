@@ -32,13 +32,17 @@ Save and load config files.
 
 Prepend and append text automatically to your prompts.
 
-Show system CPU and RAM usage.
+Show system CPU and RAM usage. Click to open `htop` etc.
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 
 Multiple tabs, each with their own context.
 
 Sessions are remembered, can also be saved and loaded from files.
+
+Context menus that are filterable and respond to keyboard.
+
+Keyboard and mouse shortcuts.
 
 ---
 
