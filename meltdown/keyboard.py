@@ -11,6 +11,7 @@ from tkinter import ttk
 import tkinter as tk
 from typing import Any, Callable
 
+
 block_date = 0.0
 
 
@@ -65,8 +66,8 @@ def setup() -> None:
     register("<Control-KeyPress-Down>", lambda: widgets.display.output_bottom())
     register("<Control-KeyPress-Left>", lambda: widgets.display.tab_left())
     register("<Control-KeyPress-Right>", lambda: widgets.display.tab_right())
-    register("<Control-KeyPress-Return>", lambda: widgets.show_main_menu())
-    register("<Control-KeyPress-Escape>", lambda: widgets.show_main_menu())
+    register("<Control-KeyPress-Return>", lambda: model.load())
+    register("<Control-KeyPress-Escape>", lambda: model.unload(True))
     register("<Control-KeyPress-BackSpace>", lambda: widgets.display.clear_output())
     register("<Control-KeyPress-t>", lambda: widgets.display.make_tab())
     register("<Control-KeyPress-w>", lambda: widgets.display.close_current_tab())

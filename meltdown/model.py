@@ -31,6 +31,9 @@ class Model:
         self.stream_date = 0.0
 
     def unload(self, announce: bool = False) -> None:
+        if self.model_loading:
+            return
+
         self.stop_stream()
 
         if self.model:
@@ -297,6 +300,15 @@ class Model:
         if file:
             widgetutils.set_text(widgets.model, file)
             state.update_config("model")
+            self.load()
+
+    def load_or_unload(self) -> None:
+        if self.model_loading:
+            return
+
+        if self.loaded_model:
+            self.unload(True)
+        else:
             self.load()
 
 

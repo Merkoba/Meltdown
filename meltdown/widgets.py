@@ -650,31 +650,9 @@ class Widgets:
         from .model import model
         model.stop_stream()
 
-    def load(self) -> None:
-        from .model import model
-
-        if model.model_loading:
-            return
-
-        self.focus_input()
-        model.load()
-
-    def unload(self) -> None:
-        from .model import model
-
-        if model.model_loading:
-            return
-
-        self.focus_input()
-        model.unload(True)
-
     def load_or_unload(self) -> None:
         from .model import model
-
-        if model.loaded_format:
-            self.unload()
-        else:
-            self.load()
+        model.load_or_unload()
 
     def copy(self, key: str) -> None:
         from . import state
