@@ -57,6 +57,7 @@ class Dialog:
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
         dialog = Dialog(text)
+        entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
 
         def ok() -> None:
             text = entry.get()
@@ -68,8 +69,6 @@ class Dialog:
 
             if cmd_cancel:
                 cmd_cancel()
-
-        entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
 
         if value:
             entry.insert(0, value)
