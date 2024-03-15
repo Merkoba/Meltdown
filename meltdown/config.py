@@ -35,6 +35,8 @@ class Config:
         self.placeholder_color = "#494D62"
         self.text_background = "#2B303B"
         self.combobox_background = "#2B303B"
+        self.dialog_background = "white"
+        self.dialog_foreground = "black"
         self.text_foreground = "white"
         self.max_list_items = 10
         self.avatar_user = "👽"

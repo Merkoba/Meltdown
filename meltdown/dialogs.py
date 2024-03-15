@@ -9,122 +9,127 @@ import tkinter as tk
 from tkinter import ttk
 
 
-current_dialog: Optional[tk.Frame] = None
+class Dialog:
+    current_dialog: Optional[tk.Frame] = None
+
+    @staticmethod
+    def hide_all() -> None:
+        if Dialog.current_dialog:
+            Dialog.current_dialog.hide()
+
+    def __init__(self, text) -> None:
+        self.make(text)
+        Dialog.current_dialog = self
+
+    def make(self, text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
+        background = config.dialog_background
+        foreground = config.dialog_foreground
+
+        self.root = tk.Frame(app.root, bg=background)
+        self.root.lift()
+        container = tk.Frame(self.root, padx=10, pady=4, bg=background)
+        container.pack()
+        tk.Label(container, text=text, font=config.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
+        self.top_frame = tk.Frame(container)
+        self.top_frame.pack()
+        self.button_frame = tk.Frame(container, bg=background)
+        self.button_frame.pack()
+        self.root.bind("<Escape>", lambda e: self.hide(self.root))
+        self.root.bind("<FocusOut>", lambda e: self.hide(self.root))
 
 
-def make_dialog(text: str) -> Tuple[tk.Frame, tk.Frame, tk.Frame]:
-    background = "white"
-    foreground = "black"
+    def show(self, widget: Optional[tk.Widget] = None) -> None:
+        self.root.update_idletasks()
+        window_width = app.root.winfo_width()
+        window_height = app.root.winfo_height()
+        dialog_width = self.root.winfo_reqwidth()
+        dialog_height = self.root.winfo_reqheight()
+        x = (window_width - dialog_width) // 2
+        y = (window_height - dialog_height) // 2
+        self.root.place(x=x, y=y)
+        self.root.focus_set()
 
-    dialog = tk.Frame(app.root, bg=background)
-    dialog.lift()
-    container = tk.Frame(dialog, padx=10, pady=4, bg=background)
-    container.pack()
-    tk.Label(container, text=text, font=config.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
-    top_frame = tk.Frame(container)
-    top_frame.pack()
-    button_frame = tk.Frame(container, bg=background)
-    button_frame.pack()
-    dialog.bind("<Escape>", lambda e: hide_dialog(dialog))
-    dialog.bind("<FocusOut>", lambda e: hide_dialog(dialog))
-    return dialog, top_frame, button_frame
+        if widget:
+            widget.focus_set()
 
 
-def show_dialog(dialog: tk.Frame, widget: Optional[tk.Widget] = None) -> None:
-    global current_dialog
-    current_dialog = dialog
-    dialog.update_idletasks()
-    window_width = app.root.winfo_width()
-    window_height = app.root.winfo_height()
-    dialog_width = dialog.winfo_reqwidth()
-    dialog_height = dialog.winfo_reqheight()
-    x = (window_width - dialog_width) // 2
-    y = (window_height - dialog_height) // 2
-    dialog.place(x=x, y=y)
-    dialog.focus_set()
-
-    if widget:
-        widget.focus_set()
+    def hide(self) -> None:
+        from .tooltips import ToolTip
+        from .widgets import widgets
+        Dialog.current_dialog = None
+        ToolTip.block()
+        widgets.focus_input()
+        self.root.destroy()
 
 
-def hide_dialog(dialog: tk.Frame) -> None:
-    from .tooltips import ToolTip
-    global current_dialog
-    current_dialog = None
-    ToolTip.block()
-    dialog.destroy()
-
-
-def hide_all() -> None:
-    if current_dialog:
-        hide_dialog(current_dialog)
-
-
-def make_dialog_button(parent: tk.Frame, text: str, command: Callable[..., Any]) -> None:
-    button = widgetutils.get_button(parent, text, command, when="release")
-    button.pack(side=tk.LEFT, padx=6, pady=8)
+    def make_button(self, text: str, command: Callable[..., Any]) -> None:
+        button = widgetutils.get_button(self.button_frame, text, command, when="release")
+        button.pack(side=tk.LEFT, padx=6, pady=8)
 
 
 def show_confirm(text: str, cmd_ok: Callable[..., Any],
-                 cmd_cancel: Optional[Callable[..., Any]] = None,
-                 cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+                cmd_cancel: Optional[Callable[..., Any]] = None,
+                cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+    dialog = Dialog(text)
+
     def ok() -> None:
-        hide_dialog(dialog)
+        dialog.hide()
         cmd_ok()
 
     def cancel() -> None:
-        hide_dialog(dialog)
+        dialog.hide()
 
         if cmd_cancel:
             cmd_cancel()
 
     def generic(func: Callable[..., Any]) -> None:
-        hide_dialog(dialog)
+        dialog.hide()
         func()
 
-    dialog, top_frame, button_frame = make_dialog(text)
-    dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Cancel", cancel)
+    dialog.root.bind("<Return>", lambda e: ok())
+    dialog.make_button("Cancel", cancel)
 
     if cmd_list:
         for cmd in cmd_list:
-            make_dialog_button(button_frame, cmd[0], lambda: generic(cmd[1]))
+            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
-    make_dialog_button(button_frame, "Ok", ok)
-    show_dialog(dialog)
+    dialog.make_button("Ok", ok)
+    dialog.show()
 
 
 def show_message(text: str) -> None:
-    def ok() -> None:
-        hide_dialog(dialog)
+    dialog = Dialog(text)
 
-    dialog, top_frame, button_frame = make_dialog(text)
-    dialog.bind("<Return>", lambda e: ok())
-    make_dialog_button(button_frame, "Ok", ok)
-    show_dialog(dialog)
+    def ok() -> None:
+        dialog.hide()
+
+    dialog.root.bind("<Return>", lambda e: ok())
+    dialog.make_button("Ok", ok)
+    dialog.show()
 
 
 def show_input(text: str, cmd_ok: Callable[..., Any],
-               cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+            cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+    dialog = Dialog(text)
+
     def ok() -> None:
         text = entry.get()
-        hide_dialog(dialog)
+        dialog.hide()
         cmd_ok(text)
 
     def cancel() -> None:
-        hide_dialog(dialog)
+        dialog.hide()
 
         if cmd_cancel:
             cmd_cancel()
 
-    dialog, top_frame, button_frame = make_dialog(text)
-    entry = ttk.Entry(top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
+    entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
 
     if value:
         entry.insert(0, value)
 
     entry.bind("<Return>", lambda e: ok())
     entry.pack(padx=6, pady=6)
-    make_dialog_button(button_frame, "Cancel", cancel)
-    make_dialog_button(button_frame, "Ok", ok)
-    show_dialog(dialog, entry)
+    dialog.make_button("Cancel", cancel)
+    dialog.make_button("Ok", ok)
+    dialog.show(entry)

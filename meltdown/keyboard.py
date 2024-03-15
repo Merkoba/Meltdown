@@ -8,7 +8,7 @@ from . import state
 # Standard
 from tkinter import ttk
 import tkinter as tk
-from typing import Any
+from typing import Any, Callable
 
 
 def on_key(event: Any) -> None:
@@ -32,7 +32,23 @@ def on_key(event: Any) -> None:
 
 
 def setup() -> None:
+    from .menus import Menu
+    from . import dialogs
     app.root.bind("<KeyPress>", on_key)
+
+    def register(when: str, command: Callable[..., Any]):
+        def cmd() -> None:
+            if Menu.current_menu:
+                return
+
+            if dialogs.current_dialog:
+                return
+
+            command()
+
+        app.root.bind(when, lambda: cmd())
+
+
     app.root.bind("<KeyPress-Escape>", lambda e: widgets.esckey())
     app.root.bind("<Shift-KeyPress-Up>", lambda e: widgets.show_context())
     app.root.bind("<Control-KeyPress-Up>", lambda e: widgets.display.output_top())

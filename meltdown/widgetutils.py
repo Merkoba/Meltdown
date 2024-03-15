@@ -94,7 +94,7 @@ def make_entry(parent: tk.Frame, value: str = "",
 
 
 def get_button(parent: tk.Frame, text: str,
-               command: Optional[Callable[..., Any]] = None, when: str = "press") -> ButtonBox:
+               command: Optional[Callable[..., Any]] = None, when: str = "release") -> ButtonBox:
     return ButtonBox(parent, text, command, when=when)
 
 

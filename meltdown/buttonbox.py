@@ -9,7 +9,7 @@ from typing import Any, Callable, Optional
 
 class ButtonBox(tk.Frame):
     def __init__(self, parent: tk.Frame, text: str,
-                 command: Optional[Callable[..., Any]] = None, when: str = "press") -> None:
+                 command: Optional[Callable[..., Any]] = None, when: str = "release") -> None:
         super().__init__(parent)
         self.text = text
         self.make()
