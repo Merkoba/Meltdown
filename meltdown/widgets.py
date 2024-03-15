@@ -414,6 +414,7 @@ class Widgets:
         menu.clear()
         items = getattr(config, key_list)[:config.max_list_items]
         self.add_common_commands(menu, key_config)
+        num_common = len(menu.items)
 
         if items:
             menu.add(text="--- Recent ---", disabled=True)
@@ -433,7 +434,7 @@ class Widgets:
                 menu.show(widget=widget)
 
                 if items:
-                    menu.select_item(4)
+                    menu.select_item(num_common + 1)
 
     def show_model_menu(self, event: Optional[Any] = None) -> None:
         from .model import model
