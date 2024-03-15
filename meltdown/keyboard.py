@@ -53,7 +53,7 @@ def setup() -> None:
             if Dialog.current_dialog:
                 return
 
-            if (timeutils.now() - block_date) < 0.8:
+            if (timeutils.now() - block_date) < 0.5:
                 return
 
             command()
@@ -77,4 +77,5 @@ def setup() -> None:
     register("<Control-KeyPress-p>", lambda: app.toggle_compact())
     register("<Control-KeyPress-r>", lambda: app.resize())
     register("<Control-KeyPress-m>", lambda: model.browse_models())
+    register("<Control-KeyPress-space>", lambda: widgets.show_main_menu())
     register("<Control-Shift-KeyPress-L>", lambda: state.open_logs_dir())
