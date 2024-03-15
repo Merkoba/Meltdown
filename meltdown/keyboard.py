@@ -16,11 +16,12 @@ def on_key(event: Any) -> None:
 
     if type(event.widget) in ftypes:
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
+        syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
 
         if (len(event.keysym.strip()) == 1) or (event.char in chars):
             widgets.focus_input()
             widgetutils.set_text(widgets.input, event.char)
-        elif event.keysym == "Return":
+        elif event.keysym in syms:
             widgets.focus_input()
     elif event.widget == widgets.input:
         if event.keysym == "Up":
