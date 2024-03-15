@@ -2,11 +2,11 @@
 
 <img src="media/image.jpg" width="380">
 
-![](https://i.imgur.com/jqw6tut.jpg)
+![](https://i.imgur.com/lJoovqI.jpg)
 
 Compact Mode:
 
-![](https://i.imgur.com/RQh9bQL.jpg)
+![](https://i.imgur.com/OgkwxRS.jpg)
 
 ---
 
