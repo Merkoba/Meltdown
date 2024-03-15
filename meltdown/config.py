@@ -36,6 +36,7 @@ class Config:
         self.entry_background = "#2B303B"
         self.entry_foreground = "white"
         self.placeholder_color = "#494D62"
+        self.separator_color = "#2B303B"
         self.text_background = "#2B303B"
         self.combobox_background = "#2B303B"
         self.dialog_background = "white"

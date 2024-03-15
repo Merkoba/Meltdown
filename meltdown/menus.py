@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .config import config
+from .separatorbox import SeparatorBox
 
 # Standard
 import tkinter as tk
@@ -105,7 +106,7 @@ class Menu:
             if not widget:
                 return
 
-            if isinstance(widget, ttk.Separator):
+            if isinstance(widget, SeparatorBox):
                 return
 
             if isinstance(widget, tk.Frame):
@@ -127,7 +128,7 @@ class Menu:
         self.root.bind("<Up>", lambda e: self.arrow_up())
         self.root.bind("<Down>", lambda e: self.arrow_down())
         self.elements: Dict[int, Dict[str, Any]] = {}
-        self.separators: List[ttk.Separator] = []
+        self.separators: List[SeparatorBox] = []
 
         def bind_motion(parent: tk.Widget) -> None:
             for child in parent.winfo_children():
@@ -140,10 +141,13 @@ class Menu:
                 bind_motion(child)
 
         def make_item(item: MenuItem, i: int) -> None:
+            if not self.container:
+                return
+
             colors = self.get_colors(item)
 
             if item.separator:
-                separator = ttk.Separator(self.container, orient="horizontal", style="Normal.TSeparator")
+                separator = SeparatorBox(self.container)
                 separator.grid(row=i, column=0, sticky="ew", padx=6, pady=2)
                 self.separators.append(separator)
             else:
