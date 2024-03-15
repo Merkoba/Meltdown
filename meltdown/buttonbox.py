@@ -19,7 +19,7 @@ class ButtonBox(tk.Frame):
             self.set_bind(when, command)
 
     def make(self) -> None:
-        self.label = tk.Label(self, text=self.text, font=config.font_button, width=8)
+        self.label = tk.Label(self, text=self.text, font=config.font_button, width=8, cursor="hand2")
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
