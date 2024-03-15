@@ -194,7 +194,7 @@ class Model:
         messages = [{"role": "system", "content": system}]
 
         if document.items:
-            for item in document.items[-config.context:]:
+            for item in document.items[-abs(config.context):]:
                 for key in item:
                     content = item[key]
 
