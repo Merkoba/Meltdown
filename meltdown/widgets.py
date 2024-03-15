@@ -747,10 +747,10 @@ class Widgets:
             self.show_system_menu()
 
     def details_left(self) -> None:
-        self.details_canvas.xview_scroll(-3, "units")
+        self.details_canvas.xview_scroll(-1, "pages")
 
     def details_right(self) -> None:
-        self.details_canvas.xview_scroll(3, "units")
+        self.details_canvas.xview_scroll(1, "pages")
 
     def details_reset(self) -> None:
         self.details_canvas.xview_moveto(0)
