@@ -16,7 +16,7 @@ from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as fo
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
-from typing import Optional, Any, Callable, Tuple
+from typing import Optional, Any, Callable
 
 
 right_padding = 11
@@ -24,13 +24,6 @@ right_padding = 11
 
 class Widgets:
     def __init__(self) -> None:
-        self.num_details = 0
-
-        def register_details(frame: tk.Frame) -> None:
-            self.num_details += 1
-            setattr(self, f"details_{self.num_details}", frame)
-            frame.grid_remove()
-
         # Model
         frame = widgetutils.make_frame()
         self.model_frame = frame
@@ -77,7 +70,7 @@ class Widgets:
         ToolTip(self.temp_text, "Current CPU temperature")
         self.temp.set("000°C")
 
-        # Details
+        # Details Container
         frame = widgetutils.make_frame()
         self.details_frame = frame
 
@@ -86,11 +79,9 @@ class Widgets:
         button_1.set_bind("<Button-4>", lambda e: widgets.details_left())
         button_1.set_bind("<Button-5>", lambda e: widgets.details_right())
 
-        widgetutils.make_inner_frame(frame, 1)
-        self.details_container = widgetutils.make_inner_frame(frame, 2)
-        widgetutils.make_inner_frame(frame, 3)
+        self.details, self.details_canvas = widgetutils.make_scrollable_frame(frame, 1)
 
-        frame_3 = widgetutils.make_inner_frame(frame, 4)
+        frame_3 = widgetutils.make_inner_frame(frame, 2)
         button_2 = widgetutils.make_button(frame_3, ">",
                                            lambda: widgets.details_right(), right_padding=right_padding, style="alt")
 
@@ -98,11 +89,10 @@ class Widgets:
         button_2.set_bind("<Button-5>", lambda e: widgets.details_right())
 
         frame.columnconfigure(1, weight=1)
-        frame.columnconfigure(3, weight=1)
 
-        # Details Frame
-        frame = widgetutils.make_inner_frame(self.details_container, 0)
-        register_details(frame)
+        # Details Widgets
+        frame = self.details
+
         widgetutils.make_label(frame, "User")
         self.name_user = widgetutils.make_entry(frame)
         ToolTip(self.name_user, "The name of the user (you)")
@@ -117,9 +107,6 @@ class Widgets:
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
-        # Details Frame
-        frame = widgetutils.make_inner_frame(self.details_container, 0)
-        register_details(frame)
         widgetutils.make_label(frame, "Tokens")
         self.max_tokens = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
@@ -141,9 +128,6 @@ class Widgets:
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
-        # Details Frame
-        frame = widgetutils.make_inner_frame(self.details_container, 0)
-        register_details(frame)
         widgetutils.make_label(frame, "Top K")
         self.top_k = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
@@ -167,9 +151,6 @@ class Widgets:
         self.threads = widgetutils.make_entry(frame, width=config.entry_width_small)
         ToolTip(self.threads, "The number of CPU threads to use")
 
-        # Details Frame
-        frame = widgetutils.make_inner_frame(self.details_container, 0)
-        register_details(frame)
         widgetutils.make_label(frame, "Format")
         values = ["auto"]
         fmts = [item for item in formats._chat_handlers]
@@ -300,6 +281,7 @@ class Widgets:
             self.display.make_tab()
 
         self.fill()
+        self.setup_details()
         self.setup_main_menu()
         self.setup_binds()
         self.setup_widgets()
@@ -308,9 +290,15 @@ class Widgets:
         self.disable_bottom_button()
         self.setup_monitors()
         self.start_checks()
-        self.change_details(1)
 
         keyboard.setup()
+
+    def setup_details(self) -> None:
+        app.root.update_idletasks()
+        self.details.update_idletasks()
+        self.details_canvas.update_idletasks()
+        self.details_canvas.configure(width=self.details.winfo_reqwidth())
+        self.details_canvas.configure(height=self.details.winfo_reqheight())
 
     def setup_monitors(self) -> None:
         self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
@@ -759,25 +747,13 @@ class Widgets:
             self.show_system_menu()
 
     def details_left(self) -> None:
-        num = self.current_details - 1
-
-        if num < 1:
-            num = self.num_details
-
-        self.change_details(num)
+        self.details_canvas.xview_scroll(-3, "units")
 
     def details_right(self) -> None:
-        num = self.current_details + 1
+        self.details_canvas.xview_scroll(3, "units")
 
-        if num > self.num_details:
-            num = 1
-
-        self.change_details(num)
-
-    def change_details(self, num: int) -> None:
-        getattr(self, f"details_{self.current_details}").grid_remove()
-        getattr(self, f"details_{num}").grid()
-        self.current_details = num
+    def details_reset(self) -> None:
+        self.details_canvas.xview_moveto(0)
 
 
 widgets: Widgets = Widgets()

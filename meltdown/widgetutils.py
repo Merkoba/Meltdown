@@ -11,7 +11,7 @@ import pyperclip  # type: ignore
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Union, Callable, Literal, Optional, List
+from typing import Any, Union, Callable, Literal, Optional, List, Tuple
 
 
 frame_number = 0
@@ -65,6 +65,18 @@ def make_inner_frame(parent: tk.Frame, col: int) -> tk.Frame:
     frame = tk.Frame(parent, background=config.background_color)
     frame.grid(sticky="ew", column=col, row=0)
     return frame
+
+
+def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canvas]:
+    canvas = tk.Canvas(parent)
+    scrollbar = tk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
+    frame = tk.Frame(canvas, background=config.background_color)
+    frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+    canvas.create_window((0, 0), window=frame, anchor="nw")
+    canvas.configure(xscrollcommand=scrollbar.set)
+    canvas.configure(borderwidth=0, highlightthickness=0, background=config.background_color)
+    canvas.grid(column=col, row=0, sticky="ew", padx=10)
+    return frame, canvas
 
 
 def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
