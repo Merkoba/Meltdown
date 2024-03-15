@@ -2,6 +2,7 @@
 from .app import app
 from .widgets import widgets
 from .model import model
+from . import timeutils
 from . import widgetutils
 from . import state
 
@@ -9,6 +10,13 @@ from . import state
 from tkinter import ttk
 import tkinter as tk
 from typing import Any, Callable
+
+last_date = 0.0
+
+
+def block() -> None:
+    global last_date
+    last_date = timeutils.now()
 
 
 def on_key(event: Any) -> None:
@@ -42,6 +50,9 @@ def setup() -> None:
                 return
 
             if Dialog.current_dialog:
+                return
+
+            if (timeutils.now() - last_date) < 0.8:
                 return
 
             command()

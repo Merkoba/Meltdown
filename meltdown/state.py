@@ -2,7 +2,7 @@
 from .paths import paths
 from .config import config
 from .widgets import widgets
-from . import dialogs
+from .dialogs import Dialog
 from . import timeutils
 
 # Standard
@@ -250,8 +250,8 @@ def reset_config() -> None:
         save_config()
         model.unload(True)
 
-    dialogs.show_confirm("This will remove your custom configs"
-                         "\nand refresh the widgets", reset, None)
+    Dialog.show_confirm("This will remove your custom configs"
+                        "\nand refresh the widgets", reset, None)
 
 
 def reset_one_config(key: str) -> None:
@@ -277,7 +277,7 @@ def get_models_dir() -> Optional[str]:
 
 
 def save_log() -> None:
-    dialogs.show_confirm("Save the output to a file?", do_save_log, None)
+    Dialog.show_confirm("Save the output to a file?", do_save_log, None)
 
 
 def do_save_log() -> None:

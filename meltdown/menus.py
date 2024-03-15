@@ -288,11 +288,13 @@ class Menu:
 
     def hide(self) -> None:
         from .tooltips import ToolTip
+        from . import keyboard
 
         if self.root:
             self.root.place_forget()
             self.root.destroy()
             ToolTip.block()
+            keyboard.block()
             Menu.current_menu = None
 
     def no_item(self) -> bool:

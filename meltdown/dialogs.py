@@ -13,6 +13,74 @@ class Dialog:
     current_dialog: Optional["Dialog"] = None
 
     @staticmethod
+    def show_confirm(text: str, cmd_ok: Callable[..., Any],
+                     cmd_cancel: Optional[Callable[..., Any]] = None,
+                     cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+        dialog = Dialog(text)
+
+        def ok() -> None:
+            dialog.hide()
+            cmd_ok()
+
+        def cancel() -> None:
+            dialog.hide()
+
+            if cmd_cancel:
+                cmd_cancel()
+
+        def generic(func: Callable[..., Any]) -> None:
+            dialog.hide()
+            func()
+
+        dialog.root.bind("<Return>", lambda e: ok())
+        dialog.make_button("Cancel", cancel)
+
+        if cmd_list:
+            for cmd in cmd_list:
+                dialog.make_button(cmd[0], lambda: generic(cmd[1]))
+
+        dialog.make_button("Ok", ok)
+        dialog.show()
+
+    @staticmethod
+    def show_message(text: str) -> None:
+        dialog = Dialog(text)
+
+        def ok() -> None:
+            dialog.hide()
+
+        dialog.root.bind("<Return>", lambda e: ok())
+        dialog.make_button("Ok", ok)
+        dialog.show()
+
+    @staticmethod
+    def show_input(text: str, cmd_ok: Callable[..., Any],
+                   cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+        dialog = Dialog(text)
+
+        def ok() -> None:
+            text = entry.get()
+            dialog.hide()
+            cmd_ok(text)
+
+        def cancel() -> None:
+            dialog.hide()
+
+            if cmd_cancel:
+                cmd_cancel()
+
+        entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
+
+        if value:
+            entry.insert(0, value)
+
+        entry.bind("<Return>", lambda e: ok())
+        entry.pack(padx=6, pady=6)
+        dialog.make_button("Cancel", cancel)
+        dialog.make_button("Ok", ok)
+        dialog.show(entry)
+
+    @staticmethod
     def hide_all() -> None:
         if Dialog.current_dialog:
             Dialog.current_dialog.hide()
@@ -54,79 +122,13 @@ class Dialog:
     def hide(self) -> None:
         from .tooltips import ToolTip
         from .widgets import widgets
+        from . import keyboard
         Dialog.current_dialog = None
         ToolTip.block()
+        keyboard.block()
         widgets.focus_input()
         self.root.destroy()
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
         button = widgetutils.get_button(self.button_frame, text, command, when="release")
         button.pack(side=tk.LEFT, padx=6, pady=8)
-
-
-def show_confirm(text: str, cmd_ok: Callable[..., Any],
-                 cmd_cancel: Optional[Callable[..., Any]] = None,
-                 cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
-    dialog = Dialog(text)
-
-    def ok() -> None:
-        dialog.hide()
-        cmd_ok()
-
-    def cancel() -> None:
-        dialog.hide()
-
-        if cmd_cancel:
-            cmd_cancel()
-
-    def generic(func: Callable[..., Any]) -> None:
-        dialog.hide()
-        func()
-
-    dialog.root.bind("<Return>", lambda e: ok())
-    dialog.make_button("Cancel", cancel)
-
-    if cmd_list:
-        for cmd in cmd_list:
-            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
-
-    dialog.make_button("Ok", ok)
-    dialog.show()
-
-
-def show_message(text: str) -> None:
-    dialog = Dialog(text)
-
-    def ok() -> None:
-        dialog.hide()
-
-    dialog.root.bind("<Return>", lambda e: ok())
-    dialog.make_button("Ok", ok)
-    dialog.show()
-
-
-def show_input(text: str, cmd_ok: Callable[..., Any],
-               cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
-    dialog = Dialog(text)
-
-    def ok() -> None:
-        text = entry.get()
-        dialog.hide()
-        cmd_ok(text)
-
-    def cancel() -> None:
-        dialog.hide()
-
-        if cmd_cancel:
-            cmd_cancel()
-
-    entry = ttk.Entry(dialog.top_frame, font=config.font, width=15, style="Input.TEntry", justify="center")
-
-    if value:
-        entry.insert(0, value)
-
-    entry.bind("<Return>", lambda e: ok())
-    entry.pack(padx=6, pady=6)
-    dialog.make_button("Cancel", cancel)
-    dialog.make_button("Ok", ok)
-    dialog.show(entry)

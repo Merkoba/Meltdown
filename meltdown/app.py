@@ -110,7 +110,7 @@ class App:
             return False
 
     def show_about(self) -> None:
-        from . import dialogs
+        from .dialogs import Dialog
         title = self.manifest["title"]
         version = self.manifest["version"]
         author = self.manifest["author"]
@@ -123,7 +123,7 @@ class App:
             f"License: {licens}",
         ]
 
-        dialogs.show_message("\n".join(lines))
+        Dialog.show_message("\n".join(lines))
 
     def unmaximize(self) -> None:
         self.root.attributes("-zoomed", False)
