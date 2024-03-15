@@ -14,6 +14,10 @@
 
 ![](https://i.imgur.com/ThPfxMD.jpg)
 
+## In Action:
+
+![](https://i.imgur.com/GXG9kUN.gif)
+
 ---
 
 ## Features
