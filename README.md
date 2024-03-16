@@ -76,6 +76,18 @@ Buttons change color to reflect program state.
 
 ---
 
+## GUI Toolkit
+
+Python comes bundled with the `Tkinter` library which is a wrapper around `TCL`.
+
+This should just work after installing Python normally.
+
+This means Meltdown has no big dependencies like `QT`, which can even cost money.
+
+Which means Meltdown is flexible and is able to run in many environments.
+
+---
+
 ## Installation
 
 You might be able to install it with `pipx`:
