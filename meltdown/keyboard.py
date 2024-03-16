@@ -85,8 +85,6 @@ def setup() -> None:
     register("<KeyPress-Escape>", lambda: widgets.esckey())
     register("<KeyPress-Page_Up>", lambda: widgets.display.scroll_up())
     register("<KeyPress-Page_Down>", lambda: widgets.display.scroll_down())
-    register("<KeyPress-Home>", lambda: widgets.display.to_top())
-    register("<KeyPress-End>", lambda: widgets.display.to_bottom())
     register("<Shift-KeyPress-Up>", lambda: widgets.show_context())
     register("<Control-KeyPress-Up>", lambda: widgets.display.to_top())
     register("<Control-KeyPress-Down>", lambda: widgets.display.to_bottom())
