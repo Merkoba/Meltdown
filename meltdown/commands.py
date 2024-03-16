@@ -28,7 +28,7 @@ def check(text: str) -> bool:
         widgets.display.print(session.to_json())
     elif cmd == "compact":
         app.toggle_compact()
-    elif cmd == "log":
+    elif cmd == "log" or cmd == "save":
         state.save_log()
     elif cmd == "logs":
         state.open_logs_dir()
