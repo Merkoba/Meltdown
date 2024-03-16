@@ -76,6 +76,8 @@ Autocomplete commands with Tab.
 
 Scrollable config panel to pack more configs.
 
+Close single tabs, all tabs, or old tabs.
+
 ---
 
 ## GUI Toolkit
