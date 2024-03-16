@@ -2,13 +2,11 @@
 from .app import app
 from .widgets import widgets
 from .model import model
-from .buttonbox import ButtonBox
 from .entrybox import EntryBox
 from . import timeutils
 from . import state
 
 # Standard
-from tkinter import ttk
 import tkinter as tk
 from typing import Any, Callable
 
@@ -21,6 +19,22 @@ def block() -> None:
     block_date = timeutils.now()
 
 
+def blocked() -> bool:
+    from .menus import Menu
+    from .dialogs import Dialog
+
+    if Menu.current_menu:
+        return True
+
+    if Dialog.current_dialog:
+        return True
+
+    if (timeutils.now() - block_date) < 0.5:
+        return True
+
+    return False
+
+
 def is_entrybox(widget: tk.Misc) -> bool:
     if isinstance(widget, EntryBox):
         return True
@@ -31,6 +45,9 @@ def is_entrybox(widget: tk.Misc) -> bool:
 
 
 def on_key(event: Any) -> None:
+    if blocked():
+        return
+
     if event.widget and (not is_entrybox(event.widget)):
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
@@ -49,19 +66,11 @@ def on_key(event: Any) -> None:
 
 
 def setup() -> None:
-    from .menus import Menu
-    from .dialogs import Dialog
     app.root.bind("<KeyPress>", on_key)
 
     def register(when: str, command: Callable[..., Any]) -> None:
         def cmd() -> None:
-            if Menu.current_menu:
-                return
-
-            if Dialog.current_dialog:
-                return
-
-            if (timeutils.now() - block_date) < 0.5:
+            if blocked():
                 return
 
             command()
