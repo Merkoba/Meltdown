@@ -28,9 +28,9 @@ class ButtonBox(tk.Frame):
         padx = 0
         pady = 3 if self.bigger else 0
 
-        self.label = tk.Label(self, text=self.text, \
-                              font=config.font_button, width=self.width, \
-                                cursor="hand2", padx=padx, pady=pady)
+        self.label = tk.Label(self, text=self.text,
+                              font=config.font_button, width=self.width,
+                              cursor="hand2", padx=padx, pady=pady)
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
