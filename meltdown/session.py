@@ -52,6 +52,22 @@ class Document:
             "items": self.items
         }
 
+    def to_log(self) -> str:
+        log = ""
+
+        for item in self.items:
+            for key in item:
+                if key == "user":
+                    log += widgets.get_prompt("user")
+                elif key == "assistant":
+                    log += widgets.get_prompt("ai")
+                else:
+                    continue
+
+                log += item[key] + "\n"
+
+        return log
+
 
 class Session:
     def __init__(self) -> None:
@@ -71,6 +87,14 @@ class Session:
 
     def get_document(self, document_id: str) -> Optional[Document]:
         return self.items[document_id]
+
+    def get_current_document(self) -> Optional[Document]:
+        tab = widgets.display.get_current_tab()
+
+        if tab:
+            return self.get_document(tab.document_id)
+        else:
+            return None
 
     def change_name(self, document_id: str, name: str) -> None:
         if document_id in self.items:

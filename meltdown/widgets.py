@@ -520,7 +520,7 @@ class Widgets:
     def reset_history_index(self) -> None:
         self.input_history_index = -1
 
-    def prompt(self, who: str, tab_id: str = "") -> None:
+    def get_prompt(self, who: str) -> str:
         avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
 
@@ -528,6 +528,11 @@ class Widgets:
             prompt = f"\n{avatar} {name} : "
         else:
             prompt = f"\n{avatar} : "
+
+        return prompt
+
+    def prompt(self, who: str, tab_id: str = "") -> None:
+        prompt = self.get_prompt(who)
 
         if not tab_id:
             tab_id = self.display.current_tab

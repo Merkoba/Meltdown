@@ -290,7 +290,13 @@ def save_log() -> None:
 
 
 def do_save_log() -> None:
-    text = widgets.display.get_output_text()
+    from .session import session
+    document = session.get_current_document()
+
+    if not document:
+        return
+
+    text = document.to_log()
 
     if not text:
         return
@@ -305,7 +311,7 @@ def do_save_log() -> None:
         new_lines.append(line)
 
     text = "\n".join(new_lines)
-    text = timeutils.date() + "\n\n" + text
+    text = timeutils.date() + "\n" + text
     name = widgets.display.get_current_tab_name().lower()
     name = name.replace(" ", "_")
     paths.logs.mkdir(parents=True, exist_ok=True)
