@@ -296,6 +296,9 @@ class Widgets:
         self.details_canvas.configure(height=self.details.winfo_reqheight())
 
         self.details_button_left.set_bind("<Button-4>", lambda e: widgets.details_left())
+        self.details_button_left.set_bind("<Button-5>", lambda e: widgets.details_right())
+
+        self.details_button_right.set_bind("<Button-4>", lambda e: widgets.details_left())
         self.details_button_right.set_bind("<Button-5>", lambda e: widgets.details_right())
 
         self.details.bind("<Button-4>", lambda e: widgets.details_left())
