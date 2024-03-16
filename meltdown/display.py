@@ -72,12 +72,26 @@ class Display:
             document = session.add(name)
             document_id = document.id
 
+        if not document_id:
+            return
+
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         output.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
         output.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
         output.tag_config("name_user", foreground="#87CEEB")
         output.tag_config("name_ai", foreground="#98FB98")
+
+        def page_up(event: Any) -> str:
+            self.scroll_up()
+            return "break"
+
+        def page_down(event: Any) -> str:
+            self.scroll_down()
+            return "break"
+
+        output.bind("<Prior>", page_up)
+        output.bind("<Next>", page_down)
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
         tab = Tab(document_id, tab_id, output)
@@ -540,3 +554,15 @@ class Display:
 
         app.update()
         self.output_bottom()
+
+    def scroll_up(self) -> None:
+        output = self.get_current_output()
+
+        if output:
+            output.yview_scroll(-3, "units")
+
+    def scroll_down(self) -> None:
+        output = self.get_current_output()
+
+        if output:
+            output.yview_scroll(3, "units")

@@ -48,11 +48,6 @@ def on_key(event: Any) -> None:
     if blocked():
         return
 
-    if event.keysym == "Return":
-        widgets.focus_input()
-        widgets.submit()
-        return
-
     if event.widget and (not is_entrybox(event.widget)):
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
@@ -82,7 +77,14 @@ def setup() -> None:
 
         app.root.bind(when, lambda e: cmd())
 
+    def on_enter() -> None:
+        widgets.focus_input()
+        widgets.submit()
+
+    register("<KeyPress-Return>", lambda: on_enter())
     register("<KeyPress-Escape>", lambda: widgets.esckey())
+    register("<KeyPress-Page_Up>", lambda: widgets.display.scroll_up())
+    register("<KeyPress-Page_Down>", lambda: widgets.display.scroll_down())
     register("<Shift-KeyPress-Up>", lambda: widgets.show_context())
     register("<Control-KeyPress-Up>", lambda: widgets.display.output_top())
     register("<Control-KeyPress-Down>", lambda: widgets.display.output_bottom())
