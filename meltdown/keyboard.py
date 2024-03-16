@@ -59,11 +59,6 @@ def on_key(event: Any) -> None:
             widgets.input.insert_text(event.char)
         elif event.keysym in syms:
             widgets.focus_input()
-    elif event.widget == widgets.input:
-        if event.keysym == "Up":
-            widgets.input_history_up()
-        elif event.keysym == "Down":
-            widgets.input_history_down()
 
 
 def setup() -> None:
@@ -113,4 +108,6 @@ def setup_input() -> None:
         commands.check_autocomplete()
         return "break"
 
-    widgets.input.bind("<Tab>", lambda e: on_tab())
+    widgets.input.bind("<KeyPress-Tab>", lambda e: on_tab())
+    widgets.input.bind("<KeyPress-Up>", lambda e: widgets.input_history_up())
+    widgets.input.bind("<KeyPress-Down>", lambda e: widgets.input_history_down())
