@@ -123,6 +123,9 @@ class Display:
             cmd_list = []
 
             if show_close_all and (self.num_tabs() > 1):
+                if self.num_tabs() > 5:
+                    cmd_list.append(("Close Old", lambda: self.close_old_tabs()))
+
                 cmd_list.append(("Close All", lambda: self.close_all_tabs()))
 
             Dialog.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)
@@ -291,6 +294,19 @@ class Display:
             action()
         else:
             Dialog.show_confirm("Close all tabs?", lambda: action())
+
+    def close_old_tabs(self) -> None:
+        if self.num_tabs() <= 5:
+            return
+
+        for tab_id in self.tab_ids():
+            print(self.get_tab_name(tab_id))
+
+        def action() -> None:
+            for tab_id in self.tab_ids()[:-5]:
+                self.close_tab(tab_id=tab_id, force=True)
+
+        Dialog.show_confirm("Close old tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
         return self.root.tabs()  # type: ignore

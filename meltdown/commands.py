@@ -30,6 +30,10 @@ class Commands:
             "bottom": {"help": "Scroll to the bottom", "action": lambda: widgets.display.to_bottom()},
             "maximize": {"aliases": ["max"], "help": "Maximize the window", "action": lambda: app.toggle_maximize()},
             "unmaximize": {"aliases": ["unmax"], "help": "Unmaximize the window", "action": lambda: app.unmaximize()},
+            "close": {"help": "Close the current tab", "action": lambda: widgets.display.close_tab()},
+            "closeall": {"help": "Close all tabs", "action": lambda: widgets.display.close_all_tabs()},
+            "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
+            "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
             "help": {"help": "Show help information", "action": lambda: self.show_help()},
         }
 
@@ -44,8 +48,10 @@ class Commands:
 
         cmd = text[1:]
 
-        if cmd in self.commands:
-            self.commands[cmd]["action"]()
+        for key, value in self.commands.items():
+            if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
+                value["action"]()
+                return True
 
         return True
 

@@ -35,9 +35,12 @@ class Dialog:
         dialog.root.bind("<Return>", lambda e: ok())
         dialog.make_button("Cancel", cancel)
 
+        def make_button(cmd: Tuple[str, Callable[..., Any]]) -> None:
+            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
+
         if cmd_list:
             for cmd in cmd_list:
-                dialog.make_button(cmd[0], lambda: generic(cmd[1]))
+                make_button(cmd)
 
         dialog.make_button("Ok", ok)
         dialog.show()
@@ -127,5 +130,5 @@ class Dialog:
         Dialog.current_dialog = None
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
-        button = widgetutils.get_button(self.button_frame, text, command)
+        button = widgetutils.get_button(self.button_frame, text, command, width=10)
         button.pack(side=tk.LEFT, padx=6, pady=8)
