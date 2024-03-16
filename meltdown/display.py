@@ -75,10 +75,30 @@ class Display:
         if not document_id:
             return
 
+        def scroll_up() -> str:
+            self.scroll_up()
+            return "break"
+
+        def scroll_down() -> str:
+            self.scroll_down()
+            return "break"
+
+        def home() -> str:
+            self.to_top()
+            return "break"
+
+        def end() -> str:
+            self.to_bottom()
+            return "break"
+
         tab_id = self.tab_ids()[-1]
         output.bind("<Button-3>", lambda e: self.show_output_menu(e))
         output.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
         output.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
+        output.bind("<Prior>", lambda e: scroll_up())
+        output.bind("<Next>", lambda e: scroll_down())
+        output.bind("<Home>", lambda e: home())
+        output.bind("<End>", lambda e: end())
         output.tag_config("name_user", foreground="#87CEEB")
         output.tag_config("name_ai", foreground="#98FB98")
         frame.grid_rowconfigure(0, weight=1)
@@ -547,17 +567,11 @@ class Display:
     def scroll_up(self) -> None:
         output = self.get_current_output()
 
-        if self.root.focus_get() == output:
-            return
-
         if output:
             output.yview_scroll(-3, "units")
 
     def scroll_down(self) -> None:
         output = self.get_current_output()
-
-        if self.root.focus_get() == output:
-            return
 
         if output:
             output.yview_scroll(3, "units")
