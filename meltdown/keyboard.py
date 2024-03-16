@@ -48,6 +48,11 @@ def on_key(event: Any) -> None:
     if blocked():
         return
 
+    if event.keysym == "Return":
+        widgets.focus_input()
+        widgets.submit()
+        return
+
     if event.widget and (not is_entrybox(event.widget)):
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\""]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
