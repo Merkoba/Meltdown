@@ -750,7 +750,7 @@ class Widgets:
         scroll_pos = self.details_canvas.xview()[0]
 
         if scroll_pos > 0:
-            self.details_canvas.xview_scroll(-1, "pages")
+            self.details_canvas.xview_scroll(-2, "units")
         else:
             self.details_canvas.xview_moveto(1)
 
@@ -758,7 +758,7 @@ class Widgets:
         scroll_pos = self.details_canvas.xview()[1]
 
         if scroll_pos < 1:
-            self.details_canvas.xview_scroll(1, "pages")
+            self.details_canvas.xview_scroll(2, "units")
         else:
             self.details_canvas.xview_moveto(0)
 

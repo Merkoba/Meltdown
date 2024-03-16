@@ -190,36 +190,43 @@ def update_config(key: str) -> bool:
     if not hasattr(config, key):
         return False
 
-    vtype = config.get_default(key).__class__
     widget = getattr(widgets, key)
-    valuestr = widget.get()
+
+    if widget:
+        return set_config(key, widget.get())
+    else:
+        return False
+
+
+def set_config(key: str, value: Any) -> bool:
+    vtype = config.get_default(key).__class__
 
     if vtype == str:
-        value = valuestr
+        value = str(value)
     elif vtype == int:
         try:
-            value = int(valuestr)
+            value = int(value)
         except BaseException as e:
             widgets.fill_widget(key, config.get_default(key))
             return False
     elif vtype == float:
         try:
-            value = float(valuestr)
+            value = float(value)
         except BaseException as e:
             widgets.fill_widget(key, config.get_default(key))
             return False
+    else:
+        return False
+
+    if key in config.validations:
+        value = config.validations[key](value)
 
     current = getattr(config, key)
+    widgets.fill_widget(key, value)
 
-    if value != current:
-        set_config(key, value)
-        setattr(config, key, value)
-        return True
+    if current == value:
+        return False
 
-    return False
-
-
-def set_config(key: str, value: Any) -> None:
     setattr(config, key, value)
     save_config()
 
@@ -229,6 +236,8 @@ def set_config(key: str, value: Any) -> None:
         on_format_change()
     elif key == "output_font_size":
         on_output_font_change()
+
+    return True
 
 
 def reset_config() -> None:

@@ -1,5 +1,5 @@
 # Standard
-from typing import List, Any, Dict, Optional, Tuple
+from typing import List, Any, Dict, Optional, Tuple, Callable
 
 
 class Config:
@@ -105,6 +105,10 @@ class Config:
             "name_user",
             "name_ai",
         ]
+
+        self.validations: Dict[str, Callable[..., Any]] = {
+            "context": lambda x: max(0, x),
+        }
 
     def defaults(self) -> Dict[str, Any]:
         items: Dict[str, Any] = {}
