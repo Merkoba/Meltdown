@@ -131,7 +131,7 @@ class Display:
         self.root.select(tab_id)
         self.current_tab = tab_id
         app.update()
-        self.check_scroll_buttons(tab_id)
+        self.check_scroll_buttons()
 
     def update_current_tab(self) -> None:
         tab_id = self.root.select()
@@ -152,7 +152,6 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
-                self.check_scroll_buttons()
 
         widgets.focus_input()
 
@@ -183,10 +182,6 @@ class Display:
     def on_click(self, event: Any) -> None:
         Dialog.hide_all()
         self.on_tab_start_drag(event)
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if tab_id:
-            self.check_scroll_buttons(tab_id)
 
     def on_right_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -382,7 +377,6 @@ class Display:
             tab.output.clear_text()
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
-            self.check_scroll_buttons(tab_id)
 
         Dialog.show_confirm("Clear output?", lambda: action())
 

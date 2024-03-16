@@ -3,14 +3,15 @@ from .config import config
 
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from typing import Any
 
 
 class Output(tk.Text):
     def __init__(self, parent: tk.Frame, **kwargs: Any) -> None:
         super().__init__(parent, state="disabled", **kwargs)
-        self.configure(background=config.text_background, foreground=config.text_foreground)
-        self.configure(bd=4, highlightthickness=0, relief="flat")
+        self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
+        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
     def setup(self, tab_id: str) -> None:
         from .widgets import widgets
@@ -40,6 +41,15 @@ class Output(tk.Text):
         self.bind("<KeyPress-Home>", lambda e: home())
         self.bind("<KeyPress-End>", lambda e: end())
 
+        def on_scroll(*args: Any) -> None:
+            self.display.check_scroll_buttons()
+            self.scrollbar.set(*args)
+
+        self.scrollbar.configure(command=self.yview)
+        self.configure(yscrollcommand=on_scroll)
+        self.configure(background=config.text_background, foreground=config.text_foreground)
+        self.configure(bd=4, highlightthickness=0, relief="flat")
+
         self.tag_config("name_user", foreground="#87CEEB")
         self.tag_config("name_ai", foreground="#98FB98")
 
@@ -59,11 +69,9 @@ class Output(tk.Text):
 
     def to_top(self) -> None:
         self.yview_moveto(0.0)
-        self.display.check_scroll_buttons()
 
     def to_bottom(self) -> None:
         self.yview_moveto(1.0)
-        self.display.check_scroll_buttons()
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")
@@ -83,8 +91,6 @@ class Output(tk.Text):
 
     def scroll_up(self) -> None:
         self.yview_scroll(-3, "units")
-        self.display.check_scroll_buttons()
 
     def scroll_down(self) -> None:
         self.yview_scroll(3, "units")
-        self.display.check_scroll_buttons()

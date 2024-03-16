@@ -82,11 +82,8 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
 
 def make_output(parent: tk.Frame, fill: Optional[Fill] = None,
                 right_padding: Optional[int] = None) -> Output:
-    scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
-    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    widget = Output(parent, font=config.get_output_font(), wrap="word", yscrollcommand=scrollbar.set)
+    widget = Output(parent, font=config.get_output_font(), wrap="word")
     do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
-    scrollbar.configure(command=widget.yview)
     return widget
 
 

@@ -664,8 +664,6 @@ class Widgets:
         else:
             self.load_button.set_text("Load")
 
-        self.display.check_scroll_buttons()
-
     def start_checks(self) -> None:
         self.do_checks()
         app.root.after(200, self.start_checks)
