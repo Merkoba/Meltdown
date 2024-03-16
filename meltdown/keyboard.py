@@ -49,7 +49,7 @@ def on_key(event: Any) -> None:
     if blocked():
         return
 
-    if event.widget and (not is_entrybox(event.widget)):
+    if event.widget != widgets.input:
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
 
@@ -60,12 +60,29 @@ def on_key(event: Any) -> None:
         elif event.keysym in syms:
             widgets.focus_input()
 
+            if event.keysym == "Up":
+                widgets.input_history_up()
+            elif event.keysym == "Down":
+                widgets.input_history_down()
+
 
 def setup() -> None:
     setup_input()
-
+    setup_globals()
     app.root.bind("<KeyPress>", on_key)
 
+
+def setup_input() -> None:
+    def on_tab() -> str:
+        commands.check_autocomplete()
+        return "break"
+
+    widgets.input.bind("<KeyPress-Tab>", lambda e: on_tab())
+    widgets.input.bind("<KeyPress-Up>", lambda e: widgets.input_history_up())
+    widgets.input.bind("<KeyPress-Down>", lambda e: widgets.input_history_down())
+
+
+def setup_globals() -> None:
     def register(when: str, command: Callable[..., Any]) -> None:
         def cmd() -> None:
             if blocked():
@@ -101,13 +118,3 @@ def setup() -> None:
     register("<Control-KeyPress-m>", lambda: model.browse_models())
     register("<Control-KeyPress-space>", lambda: widgets.show_main_menu())
     register("<Control-Shift-KeyPress-L>", lambda: state.open_logs_dir())
-
-
-def setup_input() -> None:
-    def on_tab() -> str:
-        commands.check_autocomplete()
-        return "break"
-
-    widgets.input.bind("<KeyPress-Tab>", lambda e: on_tab())
-    widgets.input.bind("<KeyPress-Up>", lambda e: widgets.input_history_up())
-    widgets.input.bind("<KeyPress-Down>", lambda e: widgets.input_history_down())
