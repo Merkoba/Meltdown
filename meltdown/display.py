@@ -394,7 +394,7 @@ class Display:
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
 
-        Dialog.show_confirm("Clear output?", lambda: action())
+        Dialog.show_confirm("Clear conversation?", lambda: action())
 
     def select_output(self) -> None:
         output = self.get_current_output()
