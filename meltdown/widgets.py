@@ -298,9 +298,11 @@ class Widgets:
 
         self.details_button_left.set_bind("<Button-4>", lambda e: widgets.details_left())
         self.details_button_left.set_bind("<Button-5>", lambda e: widgets.details_right())
+        self.details_button_left.set_bind("<Button-2>", lambda e: widgets.details_start())
 
         self.details_button_right.set_bind("<Button-4>", lambda e: widgets.details_left())
         self.details_button_right.set_bind("<Button-5>", lambda e: widgets.details_right())
+        self.details_button_right.set_bind("<Button-2>", lambda e: widgets.details_end())
 
         self.details.bind("<Button-4>", lambda e: widgets.details_left())
         self.details.bind("<Button-5>", lambda e: widgets.details_right())
@@ -761,6 +763,14 @@ class Widgets:
 
     def details_right(self) -> None:
         self.details_canvas.xview_scroll(2, "units")
+        self.check_details_buttons()
+
+    def details_start(self) -> None:
+        self.details_canvas.xview_moveto(0)
+        self.check_details_buttons()
+
+    def details_end(self) -> None:
+        self.details_canvas.xview_moveto(1.0)
         self.check_details_buttons()
 
     def check_details_buttons(self) -> None:
