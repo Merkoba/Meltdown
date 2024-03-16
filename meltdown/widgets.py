@@ -6,8 +6,8 @@ from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
 from .entrybox import EntryBox
+from .commands import commands
 from . import widgetutils
-from . import commands
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -361,12 +361,9 @@ class Widgets:
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
         self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
-        self.prepend.bind("<Return>", lambda e: self.submit())
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
-        self.append.bind("<Return>", lambda e: self.submit())
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
         self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
-        self.input.bind("<Return>", lambda e: self.submit())
 
     def setup_main_menu(self) -> None:
         from .session import session

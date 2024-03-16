@@ -2,49 +2,57 @@
 from .app import app
 from .config import config
 
+# Standard
+from typing import Any, Dict
 
-def check(text: str) -> bool:
-    from .widgets import widgets
-    from .session import session
-    from .model import model
-    from . import state
 
-    prefix = "/"
-    with_prefix = text.startswith(prefix)
-    single_word = len(text.split()) == 1
+class Commands:
+    def __init__(self) -> None:
+        self.commands: Dict[str, Dict[str, Any]] = {}
 
-    if (not with_prefix) or (not single_word):
-        return False
+    def setup(self) -> None:
+        from .widgets import widgets
+        from .model import model
+        from . import state
 
-    cmd = text[1:]
+        self.commands = {
+            "clear": {"help": "Clear the output", "action": lambda: widgets.display.clear_output()},
+            "config": {"help": "Show the current configuration", "action": lambda: config.show_config()},
+            "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
+            "compact": {"help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
+            "log": {"help": "Save the current log", "action": lambda: state.save_log()},
+            "logs": {"help": "Open the logs directory", "action": lambda: state.open_logs_dir()},
+            "resize": {"help": "Resize the window", "action": lambda: app.resize()},
+            "stop": {"help": "Stop the current stream", "action": lambda: model.stop_stream()},
+            "sys": {"help": "Open the system task manager", "action": lambda: app.open_task_manager()},
+            "top": {"help": "Scroll to the top", "action": lambda: widgets.display.to_top()},
+            "bottom": {"help": "Scroll to the bottom", "action": lambda: widgets.display.to_bottom()},
+            "maximize": {"aliases": ["max"], "help": "Maximize the window", "action": lambda: app.toggle_maximize()},
+            "unmaximize": {"aliases": ["unmax"], "help": "Unmaximize the window", "action": lambda: app.unmaximize()},
+            "help": {"help": "Show help information", "action": lambda: self.show_help()},
+        }
 
-    if cmd == "clear":
-        widgets.display.clear_output()
-    elif cmd == "config":
-        config.show_config()
-    elif cmd == "exit" or cmd == "quit":
-        app.exit()
-    elif cmd == "session":
-        widgets.display.print(session.to_json())
-    elif cmd == "compact":
-        app.toggle_compact()
-    elif cmd == "log" or cmd == "save":
-        state.save_log()
-    elif cmd == "logs":
-        state.open_logs_dir()
-    elif cmd == "resize":
-        app.resize()
-    elif cmd == "stop":
-        model.stop_stream()
-    elif cmd == "sys":
-        app.open_task_manager()
-    elif cmd == "top":
-        widgets.display.to_top()
-    elif cmd == "bottom":
-        widgets.display.to_bottom()
-    elif cmd == "maximize" or cmd == "max":
-        app.toggle_maximize()
-    elif cmd == "unmaximize" or cmd == "unmax":
-        app.unmaximize()
+    def check(self, text: str) -> bool:
+        prefix = "/"
+        with_prefix = text.startswith(prefix)
+        single_word = len(text.split()) == 1
 
-    return True
+        if (not with_prefix) or (not single_word):
+            return False
+
+        cmd = text[1:]
+
+        if cmd in self.commands:
+            self.commands[cmd]["action"]()
+
+        return True
+
+    def show_help(self) -> None:
+        from .widgets import widgets
+        widgets.display.print("\nCommands:")
+
+        for cmd, data in self.commands.items():
+            widgets.display.print(f"{cmd}: {data['help']}")
+
+
+commands = Commands()
