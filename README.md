@@ -93,7 +93,7 @@ Which means Meltdown is flexible and is able to run in many environments.
 You might be able to install it with `pipx`:
 
 ```sh
-pipx install git+https://github.com/madprops/meltdown --force
+pipx install git+https://github.com/Merkoba/Meltdown --force
 ```
 
 Which should provide the `meltdown` command.
