@@ -75,18 +75,13 @@ class Widgets:
         self.details_frame = frame
 
         frame_1 = widgetutils.make_inner_frame(frame, 0)
-        button_1 = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt", width=5)
-        button_1.set_bind("<Button-4>", lambda e: widgets.details_left())
-        button_1.set_bind("<Button-5>", lambda e: widgets.details_right())
+        self.details_button_left = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt", width=5)
 
         self.details, self.details_canvas = widgetutils.make_scrollable_frame(frame, 1)
 
         frame_3 = widgetutils.make_inner_frame(frame, 2)
-        button_2 = widgetutils.make_button(frame_3, ">",
-                                           lambda: widgets.details_right(), right_padding=right_padding, style="alt", width=5)
-
-        button_2.set_bind("<Button-4>", lambda e: widgets.details_left())
-        button_2.set_bind("<Button-5>", lambda e: widgets.details_right())
+        self.details_button_right = widgetutils.make_button(frame_3, ">",
+                                                            lambda: widgets.details_right(), right_padding=right_padding, style="alt", width=5)
 
         frame.columnconfigure(1, weight=1)
 
@@ -299,6 +294,16 @@ class Widgets:
         self.details_canvas.update_idletasks()
         self.details_canvas.configure(width=self.details.winfo_reqwidth())
         self.details_canvas.configure(height=self.details.winfo_reqheight())
+
+        self.details_button_left.set_bind("<Button-4>", lambda e: widgets.details_left())
+        self.details_button_right.set_bind("<Button-5>", lambda e: widgets.details_right())
+
+        self.details.bind("<Button-4>", lambda e: widgets.details_left())
+        self.details.bind("<Button-5>", lambda e: widgets.details_right())
+
+        for child in self.details.winfo_children():
+            child.bind("<Button-4>", lambda e: widgets.details_left())
+            child.bind("<Button-5>", lambda e: widgets.details_right())
 
     def setup_monitors(self) -> None:
         self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())

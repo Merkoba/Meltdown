@@ -142,6 +142,12 @@ def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
     w = width if width else config.combobox_width
     widget = ttk.Combobox(parent, values=v, state="readonly",
                           font=config.font_combobox, style="Normal.TCombobox", width=w)
+
+    # Remove mousewheel events
+    widget.bind_class("TCombobox", "<MouseWheel>", lambda e: "break")
+    widget.bind_class("TCombobox", "<Button-4>", lambda e: "break")
+    widget.bind_class("TCombobox", "<Button-5>", lambda e: "break")
+
     do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
