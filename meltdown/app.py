@@ -112,13 +112,11 @@ class App:
         title = self.manifest["title"]
         version = self.manifest["version"]
         author = self.manifest["author"]
-        licens = self.manifest["license"]
 
         lines = [
             f"{title} v{version}",
             "Interface for llama.cpp",
             f"Developer: {author}",
-            f"License: {licens}",
         ]
 
         Dialog.show_message("\n".join(lines))

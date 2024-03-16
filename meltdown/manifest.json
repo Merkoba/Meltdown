@@ -2,6 +2,5 @@
     "version": "5.0.0",
     "title": "Meltdown",
     "program": "meltdown",
-    "license": "GPL-3.0",
-    "author": "madprops"
+    "author": "Merkoba"
 }
