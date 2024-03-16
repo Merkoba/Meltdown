@@ -182,7 +182,7 @@ class Widgets:
                                                   lambda: self.display.save_log(), fill=Fill.HORIZONTAL)
         ToolTip(self.log_button, "Save the output to a log file")
 
-        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.output_top(),
+        self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.to_top(),
                                                   fill=Fill.HORIZONTAL, right_padding=right_padding)
         ToolTip(self.top_button, "Scroll to the top of the output")
 
@@ -198,7 +198,7 @@ class Widgets:
         frame = widgetutils.make_frame()
 
         self.bottom_button = widgetutils.make_button(frame, "Go To Bottom",
-                                                     lambda: self.display.output_bottom(), fill=Fill.HORIZONTAL,
+                                                     lambda: self.display.to_bottom(), fill=Fill.HORIZONTAL,
                                                             right_padding=right_padding, pady=2)
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
@@ -502,7 +502,7 @@ class Widgets:
         text = self.input.get().strip()
 
         if text:
-            self.display.output_bottom()
+            self.display.to_bottom()
             self.clear_input()
             state.add_input(text)
 
@@ -514,7 +514,7 @@ class Widgets:
 
             model.stream(text, self.display.current_tab)
         else:
-            self.display.output_bottom()
+            self.display.to_bottom()
 
     def clear_input(self) -> None:
         self.input.clear()
@@ -738,7 +738,7 @@ class Widgets:
         elif model.streaming:
             self.stop()
         else:
-            self.display.output_bottom()
+            self.display.to_bottom()
 
     def show_context(self) -> None:
         widget = app.root.focus_get()

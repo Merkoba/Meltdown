@@ -39,9 +39,9 @@ def check(text: str) -> bool:
     elif cmd == "sys":
         app.open_task_manager()
     elif cmd == "top":
-        widgets.display.output_top()
+        widgets.display.to_top()
     elif cmd == "bottom":
-        widgets.display.output_bottom()
+        widgets.display.to_bottom()
     elif cmd == "maximize" or cmd == "max":
         app.toggle_maximize()
     elif cmd == "unmaximize" or cmd == "unmax":

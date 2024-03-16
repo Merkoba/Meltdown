@@ -147,11 +147,11 @@ class App:
 
     def update_bottom(self) -> None:
         from .widgets import widgets
-        widgets.display.output_bottom()
+        widgets.display.to_bottom()
 
         def action() -> None:
             self.update()
-            widgets.display.output_bottom()
+            widgets.display.to_bottom()
 
         self.root.after(100, lambda: action())
 
@@ -187,7 +187,7 @@ class App:
     def after_compact(self) -> None:
         from .widgets import widgets
         self.update()
-        widgets.display.output_bottom()
+        widgets.display.to_bottom()
         widgets.focus_input()
 
     def check_compact(self) -> None:
