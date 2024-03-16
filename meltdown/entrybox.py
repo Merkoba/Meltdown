@@ -56,6 +56,15 @@ class EntryBox(ttk.Entry):
         if check_placeholder:
             self.check_placeholder()
 
+    def insert_text(self, text: str, check_placeholder: bool = True) -> None:
+        if self.placeholder_active:
+            self.delete(0, tk.END)
+
+        self.insert(tk.INSERT, text)
+
+        if check_placeholder:
+            self.check_placeholder()
+
     def on_focus_change(self, mode: str) -> None:
         from . import state
 
