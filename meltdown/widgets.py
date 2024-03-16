@@ -285,6 +285,7 @@ class Widgets:
         self.disable_bottom_button()
         self.setup_monitors()
         self.start_checks()
+        self.check_details_buttons()
 
         keyboard.setup()
 
@@ -758,9 +759,27 @@ class Widgets:
 
     def details_left(self) -> None:
         self.details_canvas.xview_scroll(-2, "units")
+        self.check_details_buttons()
 
     def details_right(self) -> None:
         self.details_canvas.xview_scroll(2, "units")
+        self.check_details_buttons()
+
+    def check_details_buttons(self) -> None:
+        scroll_pos_left = self.details_canvas.xview()[0]
+        scroll_pos_right = self.details_canvas.xview()[1]
+        button_left = self.details_button_left
+        button_right = self.details_button_right
+
+        if scroll_pos_left == 0:
+            button_left.set_style("disabled")
+        else:
+            button_left.set_style("alt")
+
+        if scroll_pos_right == 1.0:
+            button_right.set_style("disabled")
+        else:
+            button_right.set_style("alt")
 
 
 widgets: Widgets = Widgets()
