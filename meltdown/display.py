@@ -33,7 +33,7 @@ class Display:
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
-        self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
+        self.output_menu.add(text="Smalleridk  Font", command=lambda: self.decrease_font())
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
         self.current_tab = "none"

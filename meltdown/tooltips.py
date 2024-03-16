@@ -22,16 +22,19 @@ class ToolTip:
         ToolTip.block_date = timeutils.now()
 
     def __init__(self, widget: tk.Widget, text: str) -> None:
+        self.id = ""
         self.widget = widget
         self.delay = 600
         self.text = clean_string(text)
         self.tooltip: Optional[tk.Frame] = None
+        self.current_event: Optional[Any] = None
+
         self.widget.bind("<Enter>", lambda e: self.schedule_tooltip())
         self.widget.bind("<Leave>", lambda e: self.hide_tooltip())
         self.widget.bind("<Button-1>", lambda e: self.hide_tooltip())
-        self.widget.bind("<Motion>", lambda e: self.update_event(e))
-        self.current_event: Optional[Any] = None
-        self.id = ""
+
+        for child in self.widget.winfo_children():
+            child.bind("<Motion>", lambda e: self.update_event(e))
 
     def update_event(self, event: Any) -> None:
         self.current_event = event

@@ -49,7 +49,7 @@ def on_key(event: Any) -> None:
         return
 
     if event.widget and (not is_entrybox(event.widget)):
-        chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
+        chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\""]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
 
         # Focus the input and insert char
