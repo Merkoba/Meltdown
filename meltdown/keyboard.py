@@ -2,8 +2,9 @@
 from .app import app
 from .widgets import widgets
 from .model import model
+from .buttonbox import ButtonBox
+from .entrybox import EntryBox
 from . import timeutils
-from . import widgetutils
 from . import state
 
 # Standard
@@ -20,14 +21,21 @@ def block() -> None:
     block_date = timeutils.now()
 
 
-def on_key(event: Any) -> None:
-    # Focus the input and insert char
-    ftypes = [tk.Tk, ttk.Combobox, ttk.Notebook, ttk.Button, tk.Text]
+def is_entrybox(widget: tk.Misc) -> bool:
+    if isinstance(widget, EntryBox):
+        return True
+    elif widget.master is not None:
+        return is_entrybox(widget.master)
+    else:
+        return False
 
-    if type(event.widget) in ftypes:
+
+def on_key(event: Any) -> None:
+    if event.widget and (not is_entrybox(event.widget)):
         chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", "."]
         syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
 
+        # Focus the input and insert char
         if (len(event.keysym.strip()) == 1) or (event.char in chars):
             widgets.focus_input()
             widgets.input.set_text(event.char)
