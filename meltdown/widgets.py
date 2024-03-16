@@ -499,7 +499,7 @@ class Widgets:
     def submit(self) -> None:
         from .model import model
         from . import state
-        text = self.input.get()
+        text = self.input.get().strip()
 
         if text:
             self.display.output_bottom()
