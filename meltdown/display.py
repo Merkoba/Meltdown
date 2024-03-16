@@ -5,6 +5,7 @@ from . import widgetutils
 from .enums import Fill
 from .menus import Menu
 from .dialogs import Dialog
+from .output import Output
 
 # Standard
 import random
@@ -16,7 +17,7 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, document_id: str, tab_id: str, output: tk.Text) -> None:
+    def __init__(self, document_id: str, tab_id: str, output: Output) -> None:
         self.document_id = document_id
         self.tab_id = tab_id
         self.output = output
@@ -66,7 +67,7 @@ class Display:
             name = self.random_tab_name()
 
         self.root.add(frame, text=name)
-        output = widgetutils.make_text(frame, state="disabled", fill=Fill.BOTH)
+        output = widgetutils.make_output(frame, fill=Fill.BOTH)
 
         if not document_id:
             document = session.add(name)
@@ -75,32 +76,8 @@ class Display:
         if not document_id:
             return
 
-        def scroll_up() -> str:
-            self.scroll_up()
-            return "break"
-
-        def scroll_down() -> str:
-            self.scroll_down()
-            return "break"
-
-        def home() -> str:
-            self.to_top()
-            return "break"
-
-        def end() -> str:
-            self.to_bottom()
-            return "break"
-
         tab_id = self.tab_ids()[-1]
-        output.bind("<Button-3>", lambda e: self.show_output_menu(e))
-        output.bind("<Button-4>", lambda e: self.on_output_scroll(tab_id, "up"))
-        output.bind("<Button-5>", lambda e: self.on_output_scroll(tab_id, "down"))
-        output.bind("<Prior>", lambda e: scroll_up())
-        output.bind("<Next>", lambda e: scroll_down())
-        output.bind("<KeyPress-Home>", lambda e: home())
-        output.bind("<KeyPress-End>", lambda e: end())
-        output.tag_config("name_user", foreground="#87CEEB")
-        output.tag_config("name_ai", foreground="#98FB98")
+        output.setup(tab_id)
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
         tab = Tab(document_id, tab_id, output)
@@ -182,7 +159,7 @@ class Display:
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
 
-    def get_current_output(self) -> Optional[tk.Text]:
+    def get_current_output(self) -> Optional[Output]:
         return self.get_output(self.current_tab)
 
     def get_tab(self, id: str) -> Optional[Tab]:
@@ -195,7 +172,7 @@ class Display:
 
         return None
 
-    def get_output(self, id: str) -> Optional[tk.Text]:
+    def get_output(self, id: str) -> Optional[Output]:
         tab = self.get_tab(id)
 
         if tab:
@@ -345,7 +322,7 @@ class Display:
         output = self.get_current_output()
 
         if output:
-            widgetutils.to_top(output)
+            output.to_top()
             self.check_scroll_buttons()
 
     def to_bottom(self) -> None:
@@ -355,7 +332,7 @@ class Display:
             return
 
         tab.auto_scroll = True
-        widgetutils.to_bottom(tab.output)
+        tab.output.to_bottom()
         self.check_scroll_buttons()
 
     def copy_output(self) -> None:
@@ -371,7 +348,7 @@ class Display:
         if not output:
             return ""
 
-        text = widgetutils.get_text(output)
+        text = output.get_text()
         text = "\n".join(text.split("\n")[len(config.intro):]).strip()
         return text
 
@@ -396,7 +373,7 @@ class Display:
             if (not tab) or (not output):
                 return
 
-            widgetutils.clear_text(output)
+            output.clear_text()
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
             self.check_scroll_buttons(tab_id)
@@ -407,7 +384,7 @@ class Display:
         output = self.get_current_output()
 
         if output:
-            widgetutils.select_all(output)
+            output.select_all()
 
     def print(self, text: str, linebreak: bool = True, tab_id: str = "") -> None:
         if not app.exists():
@@ -424,16 +401,16 @@ class Display:
         if not output:
             return
 
-        if widgetutils.text_length(output) and \
-                (widgetutils.last_character(output) != "\n"):
+        if output.text_length() and \
+                (output.last_character() != "\n"):
             left = "\n"
 
         if linebreak:
             right = "\n"
 
         text = left + text + right
-        widgetutils.insert_text(output, text, True)
-        widgetutils.to_bottom(output)
+        output.insert_text(text)
+        output.to_bottom()
 
     def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
@@ -447,10 +424,10 @@ class Display:
         if not tab:
             return
 
-        widgetutils.insert_text(tab.output, text, True)
+        tab.output.insert_text(text)
 
         if tab.auto_scroll:
-            widgetutils.to_bottom(tab.output)
+            tab.output.to_bottom()
 
     def save_log(self) -> None:
         from . import state
@@ -568,10 +545,12 @@ class Display:
         output = self.get_current_output()
 
         if output:
-            output.yview_scroll(-3, "units")
+            output.scroll_up()
+            self.check_scroll_buttons()
 
     def scroll_down(self) -> None:
         output = self.get_current_output()
 
         if output:
-            output.yview_scroll(3, "units")
+            output.scroll_down()
+            self.check_scroll_buttons()

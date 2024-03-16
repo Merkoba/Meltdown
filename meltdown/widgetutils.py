@@ -4,6 +4,7 @@ from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
+from .output import Output
 
 # Libraries
 import pyperclip  # type: ignore
@@ -11,7 +12,7 @@ import pyperclip  # type: ignore
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Union, Callable, Literal, Optional, List, Tuple
+from typing import Any, Union, Callable, Optional, List, Tuple
 
 
 frame_number = 0
@@ -79,14 +80,11 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     return frame, canvas
 
 
-def make_text(parent: tk.Frame, fill: Optional[Fill] = None,
-              state: Literal["normal", "disabled"] = "normal",
-              right_padding: Optional[int] = None) -> tk.Text:
+def make_output(parent: tk.Frame, fill: Optional[Fill] = None,
+                right_padding: Optional[int] = None) -> Output:
     scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
     scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-    widget = tk.Text(parent, font=config.get_output_font(), wrap="word", state=state, yscrollcommand=scrollbar.set)
-    widget.configure(background=config.text_background, foreground=config.text_foreground)
-    widget.configure(bd=4, highlightthickness=0, relief="flat")
+    widget = Output(parent, font=config.get_output_font(), wrap="word", yscrollcommand=scrollbar.set)
     do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
     scrollbar.configure(command=widget.yview)
     return widget
@@ -152,61 +150,8 @@ def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
     return widget
 
 
-def insert_text(widget: Union[tk.Text], text: Union[str, int, float], disable: bool = False) -> None:
-    widget.configure(state="normal")
-    widget.insert(tk.END, str(text))
-
-    if disable:
-        widget.configure(state="disabled")
-
-
-def set_text(widget: tk.Text, text: Union[str, int, float]) -> None:
-    widget.configure(state="normal")
-    widget.delete("1.0", tk.END)
-    widget.insert("1.0", str(text))
-    widget.configure(state="disabled")
-
-
 def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
     widget.set(str(value))
-
-
-def show_menu_at_center(menu: tk.Menu) -> None:
-    app.update()
-    menu.update_idletasks()
-    window_width = app.root.winfo_width()
-    window_height = app.root.winfo_height()
-    window_x = app.root.winfo_rootx()
-    window_y = app.root.winfo_rooty()
-
-    menu_width = menu.winfo_reqwidth()
-    menu_height = menu.winfo_reqheight()
-
-    x = window_x + (window_width - menu_width) // 2
-    y = window_y + (window_height - menu_height) // 2
-
-    menu.post(x, y)
-
-
-def last_character(widget: Union[tk.Text]) -> str:
-    text = widget.get("1.0", "end-1c")
-    return text[-1] if text else ""
-
-
-def text_length(widget: Union[tk.Text]) -> int:
-    return len(widget.get("1.0", "end-1c"))
-
-
-def select_all(widget: tk.Text) -> None:
-    widget.tag_add("sel", "1.0", tk.END)
-
-
-def deselect_all(widget: tk.Text) -> None:
-    widget.tag_remove("sel", "1.0", tk.END)
-
-
-def get_text(widget: tk.Text) -> str:
-    return widget.get("1.0", "end-1c").strip()
 
 
 def copy(text: str) -> None:
@@ -216,15 +161,3 @@ def copy(text: str) -> None:
 def paste(widget: EntryBox) -> None:
     text = pyperclip.paste()
     widget.set_text(text)
-
-
-def clear_text(widget: tk.Text) -> None:
-    set_text(widget, "")
-
-
-def to_top(widget: tk.Text) -> None:
-    widget.yview_moveto(0.0)
-
-
-def to_bottom(widget: tk.Text) -> None:
-    widget.yview_moveto(1.0)
