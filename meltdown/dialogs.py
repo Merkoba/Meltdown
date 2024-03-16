@@ -120,11 +120,11 @@ class Dialog:
         from .tooltips import ToolTip
         from .widgets import widgets
         from . import keyboard
-        Dialog.current_dialog = None
         ToolTip.block()
         keyboard.block()
         widgets.focus_input()
         self.root.destroy()
+        Dialog.current_dialog = None
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
         button = widgetutils.get_button(self.button_frame, text, command)

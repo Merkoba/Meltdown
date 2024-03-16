@@ -300,7 +300,8 @@ class Menu:
             self.root.destroy()
             ToolTip.block()
             keyboard.block()
-            Menu.current_menu = None
+
+        Menu.current_menu = None
 
     def no_item(self) -> bool:
         return self.selected_index not in self.elements
