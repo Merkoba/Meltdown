@@ -123,8 +123,23 @@ class App:
 
         Dialog.show_message("\n".join(lines))
 
-    def unmaximize(self) -> None:
+    def toggle_maximize(self) -> None:
+        if self.root.attributes("-zoomed"):
+            self.unmaximize()
+        else:
+            self.maximize()
+
+    def maximize(self, update: bool = True) -> None:
+        self.root.attributes("-zoomed", True)
+
+        if update:
+            self.update_bottom()
+
+    def unmaximize(self, update: bool = True) -> None:
         self.root.attributes("-zoomed", False)
+
+        if update:
+            self.update_bottom()
 
     def set_geometry(self) -> None:
         self.root.geometry(f"{config.width}x{config.height}")
@@ -132,17 +147,20 @@ class App:
     def update(self) -> None:
         self.root.update_idletasks()
 
-    def resize(self) -> None:
+    def update_bottom(self) -> None:
         from .widgets import widgets
-        self.unmaximize()
+        widgets.display.output_bottom()
 
         def action() -> None:
-            self.update()
-            self.set_geometry()
             self.update()
             widgets.display.output_bottom()
 
         self.root.after(100, lambda: action())
+
+    def resize(self) -> None:
+        self.unmaximize(False)
+        self.set_geometry()
+        self.update_bottom()
 
     def toggle_compact(self) -> None:
         from . import state

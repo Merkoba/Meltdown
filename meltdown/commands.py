@@ -42,5 +42,9 @@ def check(text: str) -> bool:
         widgets.display.output_top()
     elif cmd == "bottom":
         widgets.display.output_bottom()
+    elif cmd == "maximize" or cmd == "max":
+        app.toggle_maximize()
+    elif cmd == "unmaximize":
+        app.unmaximize()
 
     return True
