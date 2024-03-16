@@ -9,6 +9,7 @@ from typing import Any, Dict
 class Commands:
     def __init__(self) -> None:
         self.commands: Dict[str, Dict[str, Any]] = {}
+        self.prefix = "/"
 
     def setup(self) -> None:
         from .widgets import widgets
@@ -32,12 +33,13 @@ class Commands:
             "help": {"help": "Show help information", "action": lambda: self.show_help()},
         }
 
-    def check(self, text: str) -> bool:
-        prefix = "/"
-        with_prefix = text.startswith(prefix)
+    def command_format(self, text: str) -> bool:
+        with_prefix = text.startswith(self.prefix)
         single_word = len(text.split()) == 1
+        return (with_prefix and single_word)
 
-        if (not with_prefix) or (not single_word):
+    def check(self, text: str) -> bool:
+        if not self.command_format(text):
             return False
 
         cmd = text[1:]
@@ -53,6 +55,21 @@ class Commands:
 
         for cmd, data in self.commands.items():
             widgets.display.print(f"{cmd}: {data['help']}")
+
+    def check_autocomplete(self) -> None:
+        from .widgets import widgets
+        from .model import model
+        from . import state
+
+        text = widgets.input.get()
+
+        if not self.command_format(text):
+            return
+
+        for cmd in self.commands:
+            if cmd.startswith(text[1:]):
+                widgets.input.set_text(f"{self.prefix}{cmd} ")
+                return
 
 
 commands = Commands()

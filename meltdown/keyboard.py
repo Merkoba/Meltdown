@@ -3,6 +3,7 @@ from .app import app
 from .widgets import widgets
 from .model import model
 from .entrybox import EntryBox
+from .commands import commands
 from . import timeutils
 from . import state
 
@@ -66,6 +67,8 @@ def on_key(event: Any) -> None:
 
 
 def setup() -> None:
+    setup_input()
+
     app.root.bind("<KeyPress>", on_key)
 
     def register(when: str, command: Callable[..., Any]) -> None:
@@ -103,3 +106,11 @@ def setup() -> None:
     register("<Control-KeyPress-m>", lambda: model.browse_models())
     register("<Control-KeyPress-space>", lambda: widgets.show_main_menu())
     register("<Control-Shift-KeyPress-L>", lambda: state.open_logs_dir())
+
+
+def setup_input() -> None:
+    def on_tab() -> str:
+        commands.check_autocomplete()
+        return "break"
+
+    widgets.input.bind("<Tab>", lambda e: on_tab())

@@ -74,6 +74,8 @@ The conversation tabs can be re-ordered by dragging.
 
 Buttons change color to reflect program state.
 
+Autocomplete commands with Tab.
+
 ---
 
 ## GUI Toolkit
