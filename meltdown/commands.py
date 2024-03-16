@@ -38,5 +38,9 @@ def check(text: str) -> bool:
         model.stop_stream()
     elif cmd == "sys":
         app.open_task_manager()
+    elif cmd == "top":
+        widgets.display.output_top()
+    elif cmd == "bottom":
+        widgets.display.output_bottom()
 
     return True
