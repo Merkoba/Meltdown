@@ -22,7 +22,7 @@
 
 ## Features
 
-Load models from your file system (Only tested with gguf for now).
+Load models from your file system (only tested with gguf for now).
 
 Stream responses in real time.
 
@@ -58,7 +58,7 @@ GUI completely based on Python's `Tkinter`, no big dependencies.
 
 Installable through `pipx` with a single command.
 
-Should be cross-platform, but only tested on linux for now.
+Should be cross-platform, but only tested on Linux for now.
 
 Several custom widgets made specifically for this program.
 
@@ -68,19 +68,19 @@ Comands like `/clear`, `/stop`, `/log`, etc.
 
 Change the font size of the output.
 
-Slider rows to accomodate more config widgets.
-
 The conversation tabs can be re-ordered by dragging.
 
 Buttons change color to reflect program state.
 
 Autocomplete commands with Tab.
 
+Scrollable config panel to pack more configs.
+
 ---
 
 ## GUI Toolkit
 
-Python comes bundled with the `Tkinter` library which is a wrapper around `TCL`.
+Python comes bundled with the `Tkinter` library which is a wrapper around `Tcl`.
 
 This should just work after installing Python normally.
 
