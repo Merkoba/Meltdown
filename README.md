@@ -24,9 +24,9 @@
 
 Load models from your file system (Only tested with gguf for now).
 
-Stream response tokens as they appear.
+Stream responses in real time.
 
-All the available configurations are what you can see in the screenshot.
+All the available configurations are what you can see in the screenshots.
 
 All fields have context menus to perform some actions.
 
@@ -42,7 +42,7 @@ Save and load config files.
 
 Prepend and append text automatically to your prompts.
 
-Show system CPU, RAM, and temperature. Click to open `htop` etc.
+Show system CPU, RAM, and temperature. Click to open `btop` etc.
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 
@@ -62,7 +62,7 @@ Should be cross-platform, but only tested on linux for now.
 
 Several custom widgets made specifically for this program.
 
-Starts instantly and only loads the model and conversations when needed.
+Starts instantly and only loads the models and conversations when needed.
 
 Comands like `/clear`, `/stop`, `/log`, etc.
 
@@ -90,13 +90,13 @@ Which means Meltdown is flexible and is able to run in many environments.
 
 ## Installation
 
-You might be able to install it with `pipx`:
+You can install it with [pipx](https://pypi.org/project/pipx/):
 
 ```sh
 pipx install git+https://github.com/Merkoba/Meltdown --force
 ```
 
-Which should provide the `meltdown` command.
+Which provides the `meltdown` command.
 
 ---
 
