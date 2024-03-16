@@ -60,7 +60,7 @@ class Dialog:
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
         dialog = Dialog(text)
-        entry = EntryBox(dialog.top_frame, font=config.font, width=15, justify="center")
+        entry = EntryBox(dialog.top_frame, font=config.font, width=17, justify="center")
 
         def ok() -> None:
             text = entry.get()
@@ -130,5 +130,5 @@ class Dialog:
         Dialog.current_dialog = None
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
-        button = widgetutils.get_button(self.button_frame, text, command, width=10)
+        button = widgetutils.get_button(self.button_frame, text, command, width=10, bigger=True)
         button.pack(side=tk.LEFT, padx=6, pady=8)

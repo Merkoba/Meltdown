@@ -109,8 +109,8 @@ def make_entry(parent: tk.Frame, value: str = "",
 
 def get_button(parent: tk.Frame, text: str,
                command: Optional[Callable[..., Any]] = None,
-               style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
-    return ButtonBox(parent, text, command, style=style, width=width)
+               style: Optional[str] = None, width: Optional[int] = None, bigger: bool = False) -> ButtonBox:
+    return ButtonBox(parent, text, command, style=style, width=width, bigger=bigger)
 
 
 def make_button(parent: tk.Frame, text: str,
