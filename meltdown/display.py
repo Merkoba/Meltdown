@@ -323,7 +323,6 @@ class Display:
 
         if output:
             output.to_top()
-            self.check_scroll_buttons()
 
     def to_bottom(self) -> None:
         tab = self.get_current_tab()
@@ -333,7 +332,6 @@ class Display:
 
         tab.auto_scroll = True
         tab.output.to_bottom()
-        self.check_scroll_buttons()
 
     def copy_output(self) -> None:
         text = self.get_output_text()
@@ -546,11 +544,9 @@ class Display:
 
         if output:
             output.scroll_up()
-            self.check_scroll_buttons()
 
     def scroll_down(self) -> None:
         output = self.get_current_output()
 
         if output:
             output.scroll_down()
-            self.check_scroll_buttons()

@@ -14,6 +14,7 @@ class Output(tk.Text):
 
     def setup(self, tab_id: str) -> None:
         from .widgets import widgets
+        self.display = widgets.display
 
         def scroll_up() -> str:
             self.scroll_up()
@@ -31,9 +32,9 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
-        self.bind("<Button-3>", lambda e: widgets.display.show_output_menu(e))
-        self.bind("<Button-4>", lambda e: widgets.display.on_output_scroll(tab_id, "up"))
-        self.bind("<Button-5>", lambda e: widgets.display.on_output_scroll(tab_id, "down"))
+        self.bind("<Button-3>", lambda e: self.display.show_output_menu(e))
+        self.bind("<Button-4>", lambda e: self.display.on_output_scroll(tab_id, "up"))
+        self.bind("<Button-5>", lambda e: self.display.on_output_scroll(tab_id, "down"))
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<KeyPress-Home>", lambda e: home())
@@ -58,9 +59,11 @@ class Output(tk.Text):
 
     def to_top(self) -> None:
         self.yview_moveto(0.0)
+        self.display.check_scroll_buttons()
 
     def to_bottom(self) -> None:
         self.yview_moveto(1.0)
+        self.display.check_scroll_buttons()
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")
@@ -80,6 +83,8 @@ class Output(tk.Text):
 
     def scroll_up(self) -> None:
         self.yview_scroll(-3, "units")
+        self.display.check_scroll_buttons()
 
     def scroll_down(self) -> None:
         self.yview_scroll(3, "units")
+        self.display.check_scroll_buttons()
