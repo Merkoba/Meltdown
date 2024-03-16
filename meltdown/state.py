@@ -215,8 +215,8 @@ def set_config(key: str, value: Any) -> bool:
         except BaseException as e:
             widgets.fill_widget(key, config.get_default(key))
             return False
-    else:
-        return False
+    elif vtype == bool:
+        value = bool(value)
 
     if key in config.validations:
         value = config.validations[key](value)
