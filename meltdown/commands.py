@@ -23,7 +23,7 @@ class Commands:
             "compact": {"help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
             "log": {"help": "Save the current log", "action": lambda: state.save_log()},
             "logs": {"help": "Open the logs directory", "action": lambda: state.open_logs_dir()},
-            "resize": {"help": "Resize the window", "action": lambda: app.resize()},
+            "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
             "stop": {"help": "Stop the current stream", "action": lambda: model.stop_stream()},
             "sys": {"help": "Open the system task manager", "action": lambda: app.open_task_manager()},
             "top": {"help": "Scroll to the top", "action": lambda: widgets.display.to_top()},
@@ -34,7 +34,7 @@ class Commands:
             "closeall": {"help": "Close all tabs", "action": lambda: widgets.display.close_all_tabs()},
             "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
-            "help": {"help": "Show help information", "action": lambda: self.show_help()},
+            "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
         }
 
     def command_format(self, text: str) -> bool:
