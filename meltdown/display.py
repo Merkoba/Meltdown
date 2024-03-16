@@ -338,40 +338,48 @@ class Display:
         widgetutils.copy(text)
 
     def get_output_text(self, tab_id: str = "") -> str:
+        from .session import session
+
         if not tab_id:
             tab_id = self.current_tab
 
-        output = self.get_output(tab_id)
+        tab = self.get_tab(tab_id)
 
-        if not output:
+        if not tab:
             return ""
 
-        text = output.get_text()
-        text = "\n".join(text.split("\n")[len(config.intro):]).strip()
-        return text
+        document = session.get_document(tab.document_id)
+
+        if not document:
+            return ""
+
+        return document.to_log()
 
     def clear_output(self, tab_id: str = "") -> None:
         from .widgets import widgets
+        from .session import session
 
         if not tab_id:
             tab_id = self.current_tab
 
-        output = self.get_output(tab_id)
+        tab = self.get_tab(tab_id)
 
-        if not output:
+        if not tab:
             return
 
-        if not self.get_output_text(tab_id):
+        document = session.get_document(tab.document_id)
+
+        if not document:
+            return
+
+        if document.is_empty():
             return
 
         def action() -> None:
-            from .session import session
-            tab = self.get_tab(tab_id)
-
-            if (not tab) or (not output):
+            if (not tab) or (not tab.output):
                 return
 
-            output.clear_text()
+            tab.output.clear_text()
             session.clear(tab.document_id)
             widgets.show_intro(tab_id)
             self.check_scroll_buttons(tab_id)

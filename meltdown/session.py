@@ -30,6 +30,9 @@ class Document:
         self.items = []
         session.save()
 
+    def is_empty(self) -> bool:
+        return len(self.items) == 0
+
     def print(self) -> None:
         tab = widgets.display.get_tab_by_document_id(self.id)
 
