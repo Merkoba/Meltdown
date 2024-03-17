@@ -1,6 +1,6 @@
 # Modules
 from .config import config
-from .snippet import Snippet
+from .app import app
 
 # Standard
 import re
@@ -11,6 +11,7 @@ from typing import Any, List, Optional
 
 class Output(tk.Text):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
+        from .snippet import Snippet
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -118,6 +119,7 @@ class Output(tk.Text):
         self.yview_scroll(3, "units")
 
     def format_text(self) -> None:
+        from .snippet import Snippet
         self.cancel_debouncer()
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
@@ -140,6 +142,8 @@ class Output(tk.Text):
             self.snippets.append(snippet)
 
         self.configure(state="disabled")
+        app.update()
+        self.to_bottom()
 
     def index_at_char(self, char_index: int) -> str:
         line_start = 0

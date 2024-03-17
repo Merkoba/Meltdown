@@ -299,9 +299,6 @@ class Display:
         if self.num_tabs() <= 5:
             return
 
-        for tab_id in self.tab_ids():
-            print(self.get_tab_name(tab_id))
-
         def action() -> None:
             for tab_id in self.tab_ids()[:-5]:
                 self.close_tab(tab_id=tab_id, force=True)
