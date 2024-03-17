@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .menus import Menu
+from .args import args
 from . import timeutils
 
 # Standard
@@ -42,9 +43,15 @@ class ToolTip:
         bind_scroll_events(self.widget)
 
     def update_event(self, event: Any) -> None:
+        if args.no_tooltips:
+            return
+
         self.current_event = event
 
     def schedule_tooltip(self) -> None:
+        if args.no_tooltips:
+            return
+
         if ToolTip.current_tooltip is not None:
             ToolTip.current_tooltip.hide_tooltip()
 
