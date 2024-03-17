@@ -54,7 +54,7 @@ class Document:
         return {
             "id": self.id,
             "name": self.name,
-            "items": self.items
+            "items": self.items,
         }
 
     def to_log(self) -> str:
@@ -196,6 +196,26 @@ class Session:
         except BaseException as e:
             print(e)
             self.reset()
+
+    def update(self) -> None:
+        tabs = widgets.display.tab_ids()
+        new_items = {}
+
+        for tab_id in tabs:
+            tab = widgets.display.get_tab(tab_id)
+
+            if not tab:
+                continue
+
+            document = self.get_document(tab.document_id)
+
+            if not document:
+                continue
+
+            new_items[document.id] = document
+
+        self.items = new_items
+        self.save()
 
     def to_json(self) -> str:
         sessions_list = [document.to_dict() for document in self.items.values() if document.items]

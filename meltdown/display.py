@@ -273,6 +273,7 @@ class Display:
 
         self.root.insert(x, self.drag_start_index)
         self.update_tab_index()
+        self.update_session()
         self.drag_start_x = event.x
 
     def get_tab_width(self, index: int) -> int:
@@ -531,3 +532,7 @@ class Display:
 
         if output:
             output.scroll_down()
+
+    def update_session(self) -> None:
+        from .session import session
+        session.update()
