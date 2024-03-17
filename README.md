@@ -18,6 +18,10 @@
 
 ![](https://i.imgur.com/GXG9kUN.gif)
 
+## Markdown Support:
+
+![](https://i.imgur.com/DZhF5A1.jpg)
+
 ---
 
 ## Features
