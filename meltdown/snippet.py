@@ -23,19 +23,14 @@ class Snippet(tk.Frame):
         self.text.delete("1.0", tk.END)
         self.text.insert("1.0", text)
         self.text.configure(state="disabled")
-
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
         self.text.configure(xscrollcommand=self.scrollbar.set)
-        self.scrollbar.configure(command=self.text.xview)
-        self.scrollbar.configure(cursor="hand2")
-
         num_lines = int(self.text.index("end-1c").split(".")[0])
         self.text.configure(height=num_lines)
-
         self.text.configure(background=config.snippet_background)
         self.text.configure(foreground=config.snippet_foreground)
-
         self.text.configure(font=config.get_snippet_font())
+        self.scrollbar.configure(command=self.text.xview)
         self.update_size()
 
         def scroll_up(event: Any) -> str:
