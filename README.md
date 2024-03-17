@@ -123,3 +123,17 @@ Here's a small one you can use:
 https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
 
 You can find more in that site.
+
+---
+
+## Arguments
+
+These are flags you can use when running the program.
+
+For example: `meltdown --no-tooltips`
+
+---
+
+>no-tooltips
+
+Don't show tooltips when hovering over items.
