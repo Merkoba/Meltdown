@@ -1,5 +1,6 @@
 # Modules
 from .config import config
+from .output import Output
 
 # Standard
 import tkinter as tk
@@ -7,7 +8,7 @@ from tkinter import ttk
 from typing import Any
 
 class Snippet(tk.Frame):
-    def __init__(self, parent: tk.Text, text: str) -> None:
+    def __init__(self, parent: Output, text: str) -> None:
         super().__init__(parent)
         self.parent = parent
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
@@ -32,23 +33,37 @@ class Snippet(tk.Frame):
         self.text.configure(font=config.get_snippet_font())
         self.update_size()
 
-        def scroll_up() -> str:
-            self.parent.scroll_up()
+        def scroll_up(event: Any) -> str:
+            if event.state & 0x1:
+                self.scroll_left()
+            else:
+                self.parent.scroll_up()
+
             return "break"
 
-        def scroll_down() -> str:
-            self.parent.scroll_down()
+        def scroll_down(event: Any) -> str:
+            if event.state & 0x1:
+                self.scroll_right()
+            else:
+                self.parent.scroll_down()
+
             return "break"
 
-        self.bind("<Button-4>", lambda e: scroll_up())
-        self.bind("<Button-5>", lambda e: scroll_down())
+        self.text.bind("<Button-4>", lambda e: scroll_up(e))
+        self.text.bind("<Button-5>", lambda e: scroll_down(e))
 
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
         width_pixels = self.parent.winfo_width() - self.parent.scrollbar.winfo_width()
-        width_pixels = width_pixels * 0.98
+        width_pixels = int(width_pixels * 0.98)
         width_chars = int(width_pixels / char_width)
         self.text.configure(width=width_chars)
 
     def update_font(self) -> None:
         self.text.configure(font=config.get_snippet_font())
+
+    def scroll_left(self) -> None:
+        self.text.xview_scroll(-2, "units")
+
+    def scroll_right(self) -> None:
+        self.text.xview_scroll(2, "units")

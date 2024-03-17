@@ -6,7 +6,7 @@ from .snippet import Snippet
 import re
 import tkinter as tk
 from tkinter import ttk
-from typing import Any
+from typing import Any, List, Optional
 
 
 class Output(tk.Text):
@@ -14,11 +14,11 @@ class Output(tk.Text):
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.text_debouncer = None
+        self.text_debouncer: Optional[str] = None
         self.debounce_delay = 200
         self.tab_id = tab_id
-        self.snippets = []
-        self.pack(fill=tk.BOTH, padx=0, pady=1)
+        self.snippets: List[Snippet] = []
+        self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.setup()
 
     def setup(self) -> None:
@@ -117,7 +117,7 @@ class Output(tk.Text):
     def scroll_down(self) -> None:
         self.yview_scroll(3, "units")
 
-    def format_text(self):
+    def format_text(self) -> None:
         self.cancel_debouncer()
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
@@ -141,7 +141,7 @@ class Output(tk.Text):
 
         self.configure(state="disabled")
 
-    def index_at_char(self, char_index):
+    def index_at_char(self, char_index: int) -> str:
         line_start = 0
 
         for i, line in enumerate(self.get("1.0", "end-1c").split("\n")):
@@ -151,6 +151,8 @@ class Output(tk.Text):
                 return f"{i + 1}.{char_index - line_start}"
 
             line_start = line_end + 1
+
+        return ""
 
     def update_font(self) -> None:
         self.configure(font=config.get_output_font())
