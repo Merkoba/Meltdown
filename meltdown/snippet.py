@@ -100,6 +100,7 @@ class Snippet(tk.Frame):
         self.text.configure(font=config.get_snippet_font())
         self.header_text.configure(font=config.get_snippet_font(True))
         self.header_copy.configure(font=config.get_snippet_font(True))
+        self.header_select.configure(font=config.get_snippet_font(True))
         self.update_size()
 
     def scroll_left(self) -> None:
