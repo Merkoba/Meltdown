@@ -9,115 +9,167 @@ from . import state
 
 # Standard
 import tkinter as tk
-from typing import Any, Callable
+from typing import Any, Callable, Optional, Dict, List
 
 
-block_date = 0.0
+class Keyboard:
+    def __init__(self) -> None:
+        self.block_date = 0.0
+        self.ctrl = False
+        self.shift = False
+        self.commands: Dict[str, List[Dict[str, Any]]] = {}
 
+    def reset(self) -> None:
+        self.ctrl = False
+        self.shift = False
 
-def block() -> None:
-    global block_date
-    block_date = timeutils.now()
+    def block(self) -> None:
+        self.block_date = timeutils.now()
 
+    def blocked(self) -> bool:
+        from .menus import Menu
+        from .dialogs import Dialog
 
-def blocked() -> bool:
-    from .menus import Menu
-    from .dialogs import Dialog
+        if Menu.current_menu:
+            return True
 
-    if Menu.current_menu:
-        return True
+        if Dialog.current_dialog:
+            return True
 
-    if Dialog.current_dialog:
-        return True
+        if (timeutils.now() - self.block_date) < 0.5:
+            return True
 
-    if (timeutils.now() - block_date) < 0.5:
-        return True
-
-    return False
-
-
-def is_entrybox(widget: tk.Misc) -> bool:
-    if isinstance(widget, EntryBox):
-        return True
-    elif widget.master is not None:
-        return is_entrybox(widget.master)
-    else:
         return False
 
+    def on_key_press(self, event: Any) -> None:
+        if event.keysym == "Control_L" or event.keysym == "Control_R":
+            self.ctrl = True
+        elif event.keysym == "Shift_L" or event.keysym == "Shift_R":
+            self.shift = True
 
-def on_key(event: Any) -> None:
-    if blocked():
-        return
+        if self.blocked():
+            return
 
-    if event.widget != widgets.input:
-        chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
-        syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
+        if event.widget != widgets.input:
+            chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
+            syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
 
-        # Focus the input and insert char
-        if (len(event.keysym.strip()) == 1) or (event.char in chars):
+            # Focus the input and insert char
+            if (len(event.keysym.strip()) == 1) or (event.char in chars):
+                widgets.focus_input()
+                widgets.input.insert_text(event.char)
+            elif event.keysym in syms:
+                widgets.focus_input()
+
+                # if event.keysym == "Up":
+                #     self.on_up_key(event)
+                # elif event.keysym == "Down":
+                #     self.on_down_key(event)
+        else:
+            if event.keysym != "Tab":
+                commands.reset()
+
+    def on_key_release(self, event: Any) -> None:
+        if event.keysym == "Control_L" or event.keysym == "Control_R":
+            self.ctrl = False
+        elif event.keysym == "Shift_L" or event.keysym == "Shift_R":
+            self.shift = False
+
+    def no_modifiers(self) -> bool:
+        return (not self.ctrl) and (not self.shift)
+
+    def action(self, cmd: Dict[str, Any]) -> bool:
+        if self.blocked():
+            return False
+
+        ok = True
+
+        if self.ctrl and self.shift:
+            if cmd["on_ctrl_shift"]:
+                cmd["on_ctrl_shift"]()
+        elif self.ctrl:
+            if cmd["on_ctrl"]:
+                cmd["on_ctrl"]()
+        elif self.shift:
+            if cmd["on_shift"]:
+                cmd["on_shift"]()
+        elif cmd["command"]:
+            cmd["command"]()
+        else:
+            ok = False
+
+        return ok
+
+    def setup(self) -> None:
+        self.setup_input()
+        self.setup_globals()
+        app.root.bind("<KeyPress>", lambda e: self.on_key_press(e))
+        app.root.bind("<KeyRelease>", lambda e: self.on_key_release(e))
+
+        def run_command(event: Any, key: str) -> None:
+            cmds = self.commands[key]
+
+            for cmd in cmds:
+                if not cmd["widget"]:
+                    if self.action(cmd):
+                        return
+
+            for cmd in cmds:
+                if cmd["widget"]:
+                    if cmd["widget"] == event.widget:
+                        if self.action(cmd):
+                            return
+
+        for key in self.commands:
+            command: Callable[..., Any] = lambda e, key=key: run_command(e, key)
+            app.root.bind(key, command)
+
+    def register(self, key: str,
+                 command: Optional[Callable[..., Any]] = None,
+                 on_ctrl: Optional[Callable[..., Any]] = None,
+                 on_shift: Optional[Callable[..., Any]] = None,
+                 on_ctrl_shift: Optional[Callable[..., Any]] = None,
+                 widget: Optional[tk.Widget] = None) -> None:
+
+        if not self.commands.get(key):
+            self.commands[key] = []
+
+        self.commands[key].append({"widget": widget, "command": command,
+                                   "on_ctrl": on_ctrl, "on_shift": on_shift,
+                                   "on_ctrl_shift": on_ctrl_shift})
+
+    def setup_input(self) -> None:
+        self.register("<Tab>", lambda: self.on_tab(), widget=widgets.input)
+        self.register("<Up>", lambda: widgets.input_history_up(), widget=widgets.input)
+        self.register("<Down>", lambda: widgets.input_history_down(), widget=widgets.input)
+
+    def setup_globals(self) -> None:
+        def on_enter() -> None:
             widgets.focus_input()
-            widgets.input.insert_text(event.char)
-        elif event.keysym in syms:
-            widgets.focus_input()
+            widgets.submit()
 
-            if event.keysym == "Up":
-                widgets.input_history_up()
-            elif event.keysym == "Down":
-                widgets.input_history_down()
-    else:
-        if event.keysym != "Tab":
-            commands.reset()
+        self.register("<Return>", lambda: on_enter(), on_ctrl=lambda: model.load())
+        self.register("<Escape>", lambda: widgets.esckey(), on_ctrl=lambda: model.unload(True))
+        self.register("<Page_Up>", lambda: widgets.display.scroll_up())
+        self.register("<Page_Down>", lambda: widgets.display.scroll_down())
+        self.register("<Up>", on_ctrl=lambda: widgets.display.to_top(), on_shift=lambda: widgets.show_context())
+        self.register("<Down>", on_ctrl=lambda: widgets.display.to_bottom())
+        self.register("<Left>", on_ctrl=lambda: widgets.display.tab_left())
+        self.register("<Right>", on_ctrl=lambda: widgets.display.tab_right())
+        self.register("<BackSpace>", lambda: widgets.display.clear_output())
+        self.register("space", on_ctrl=lambda: widgets.show_main_menu())
+        self.register("t", on_ctrl=lambda: widgets.display.make_tab())
+        self.register("w", on_ctrl=lambda: widgets.display.close_current_tab())
+        self.register("s", on_ctrl=lambda: state.save_log())
+        self.register("y", on_ctrl=lambda: widgets.display.copy_output())
+        self.register("p", on_ctrl=lambda: app.toggle_compact())
+        self.register("r", on_ctrl=lambda: app.resize())
+        self.register("m", on_ctrl=lambda: model.browse_models())
+        self.register("l", on_ctrl=lambda: state.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
 
-
-def setup() -> None:
-    setup_input()
-    setup_globals()
-    app.root.bind("<KeyPress>", on_key)
-
-
-def setup_input() -> None:
-    def on_tab() -> str:
+    def on_tab(self) -> str:
         commands.check_autocomplete()
         return "break"
 
-    widgets.input.bind("<KeyPress-Tab>", lambda e: on_tab())
-    widgets.input.bind("<KeyPress-Up>", lambda e: widgets.input_history_up())
-    widgets.input.bind("<KeyPress-Down>", lambda e: widgets.input_history_down())
 
-
-def setup_globals() -> None:
-    def register(when: str, command: Callable[..., Any]) -> None:
-        def cmd() -> None:
-            if blocked():
-                return
-
-            command()
-
-        app.root.bind(when, lambda e: cmd())
-
-    def on_enter() -> None:
-        widgets.focus_input()
-        widgets.submit()
-
-    register("<KeyPress-Return>", lambda: on_enter())
-    register("<KeyPress-Escape>", lambda: widgets.esckey())
-    register("<KeyPress-Page_Up>", lambda: widgets.display.scroll_up())
-    register("<KeyPress-Page_Down>", lambda: widgets.display.scroll_down())
-    register("<Shift-KeyPress-Up>", lambda: widgets.show_context())
-    register("<Control-KeyPress-Up>", lambda: widgets.display.to_top())
-    register("<Control-KeyPress-Down>", lambda: widgets.display.to_bottom())
-    register("<Control-KeyPress-Left>", lambda: widgets.display.tab_left())
-    register("<Control-KeyPress-Right>", lambda: widgets.display.tab_right())
-    register("<Control-KeyPress-Return>", lambda: model.load())
-    register("<Control-KeyPress-Escape>", lambda: model.unload(True))
-    register("<Control-KeyPress-BackSpace>", lambda: widgets.display.clear_output())
-    register("<Control-KeyPress-t>", lambda: widgets.display.make_tab())
-    register("<Control-KeyPress-w>", lambda: widgets.display.close_current_tab())
-    register("<Control-KeyPress-l>", lambda: state.save_log())
-    register("<Control-KeyPress-s>", lambda: state.save_log())
-    register("<Control-KeyPress-y>", lambda: widgets.display.copy_output())
-    register("<Control-KeyPress-p>", lambda: app.toggle_compact())
-    register("<Control-KeyPress-r>", lambda: app.resize())
-    register("<Control-KeyPress-m>", lambda: model.browse_models())
-    register("<Control-KeyPress-space>", lambda: widgets.show_main_menu())
-    register("<Control-Shift-KeyPress-L>", lambda: state.open_logs_dir())
+keyboard = Keyboard()

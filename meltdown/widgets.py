@@ -270,8 +270,6 @@ class Widgets:
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
-        from . import keyboard
-
         if self.display.num_tabs() == 0:
             self.display.make_tab()
 
@@ -286,8 +284,6 @@ class Widgets:
         self.setup_monitors()
         self.start_checks()
         self.check_details_buttons()
-
-        keyboard.setup()
 
     def setup_details(self) -> None:
         app.root.update_idletasks()

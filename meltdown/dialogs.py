@@ -122,7 +122,7 @@ class Dialog:
     def hide(self) -> None:
         from .tooltips import ToolTip
         from .widgets import widgets
-        from . import keyboard
+        from .keyboard import keyboard
         ToolTip.block()
         keyboard.block()
         widgets.focus_input()

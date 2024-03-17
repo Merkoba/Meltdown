@@ -5,6 +5,7 @@ from .model import model
 from .session import session
 from .args import args
 from .commands import commands
+from .keyboard import keyboard
 from . import state
 from . import system
 
@@ -14,6 +15,7 @@ def main() -> None:
     state.load_files()
     session.load()
     widgets.setup()
+    keyboard.setup()
     commands.setup()
     system.start()
     app.setup()

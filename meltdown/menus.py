@@ -293,7 +293,7 @@ class Menu:
 
     def hide(self) -> None:
         from .tooltips import ToolTip
-        from . import keyboard
+        from .keyboard import keyboard
 
         if self.root:
             self.root.place_forget()
