@@ -2,6 +2,9 @@
 from .config import config
 from .app import app
 
+# Libraries
+import pyperclip  # type: ignore
+
 # Standard
 import re
 import tkinter as tk
@@ -241,3 +244,25 @@ class Output(tk.Text):
 
     def disable(self) -> None:
         self.configure(state="disabled")
+
+    def copy_all(self) -> None:
+        text = self.to_log()
+
+        if not text:
+            return
+
+        pyperclip.copy(text)
+
+    def to_log(self, tab_id: str = "") -> str:
+        from .session import session
+        tab = self.display.get_tab(self.tab_id)
+
+        if not tab:
+            return ""
+
+        document = session.get_document(tab.document_id)
+
+        if not document:
+            return ""
+
+        return document.to_log()

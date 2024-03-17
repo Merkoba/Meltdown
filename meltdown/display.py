@@ -2,7 +2,6 @@
 from .config import config
 from .app import app
 from . import widgetutils
-from .enums import Fill
 from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
@@ -330,26 +329,12 @@ class Display:
         output.to_bottom()
 
     def copy_output(self) -> None:
-        text = self.get_output_text()
-        widgetutils.copy(text)
+        output = self.get_current_output()
 
-    def get_output_text(self, tab_id: str = "") -> str:
-        from .session import session
+        if not output:
+            return
 
-        if not tab_id:
-            tab_id = self.current_tab
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return ""
-
-        document = session.get_document(tab.document_id)
-
-        if not document:
-            return ""
-
-        return document.to_log()
+        output.copy_all()
 
     def clear_output(self, tab_id: str = "") -> None:
         from .widgets import widgets

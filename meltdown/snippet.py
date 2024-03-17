@@ -16,20 +16,31 @@ class Snippet(tk.Frame):
     def __init__(self, parent: Output, content: str, language: str) -> None:
         super().__init__(parent, borderwidth=0, highlightthickness=0)
         self.content = content
+
         self.header = tk.Frame(self)
         self.header.configure(background=config.snippet_header_color)
+
         header_text = f"Language: {language}"
         self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font(True))
         self.header_text.configure(foreground=config.snippet_header_text)
         self.header_text.configure(background=config.snippet_header_color)
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
+
         self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font(True))
         self.header_copy.configure(cursor="hand2")
-        self.header_copy.bind("<Button-1>", lambda e: self.copy())
+        self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_copy.pack(side=tk.RIGHT, padx=5)
         self.header_copy.configure(foreground=config.snippet_header_text)
         self.header_copy.configure(background=config.snippet_header_color)
+
+        self.header_select = tk.Label(self.header, text="Select", font=config.get_snippet_font(True))
+        self.header_select.configure(cursor="hand2")
+        self.header_select.bind("<Button-1>", lambda e: self.select_all())
+        self.header_select.pack(side=tk.RIGHT, padx=5)
+        self.header_select.configure(foreground=config.snippet_header_text)
+        self.header_select.configure(background=config.snippet_header_color)
+
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
         self.text.configure(borderwidth=0, highlightthickness=0)
@@ -97,7 +108,10 @@ class Snippet(tk.Frame):
     def scroll_right(self) -> None:
         self.text.xview_scroll(2, "units")
 
-    def copy(self) -> None:
+    def copy_all(self) -> None:
         pyperclip.copy(self.content)
         self.header_copy.configure(text="Copied!")
         self.after(1000, lambda: self.header_copy.configure(text="Copy"))
+
+    def select_all(self) -> None:
+        self.text.tag_add("sel", "1.0", tk.END)
