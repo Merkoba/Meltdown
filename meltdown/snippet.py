@@ -7,6 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 
+
 class Snippet(tk.Frame):
     def __init__(self, parent: Output, text: str) -> None:
         super().__init__(parent)
