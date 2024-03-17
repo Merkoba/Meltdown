@@ -3,21 +3,32 @@ from .config import config
 
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from typing import Any
 
-class Snippet(tk.Text):
-    def __init__(self, parent: tk.Text, text: str, **kwargs: Any) -> None:
-        super().__init__(**kwargs)
+class Snippet(tk.Frame):
+    def __init__(self, parent: tk.Text, text: str) -> None:
+        super().__init__(parent)
+        self.text = tk.Text(self)
         self.parent = parent
-        self.configure(parent, state="normal")
-        self.delete("1.0", tk.END)
-        self.insert("1.0", text)
-        self.configure(state="disabled")
-        num_lines = int(self.index("end-1c").split(".")[0])
-        self.configure(height=num_lines)
-        self.configure(background=config.snippet_background)
-        self.configure(foreground=config.snippet_foreground)
-        self.configure(font=config.get_snippet_font())
+        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar")
+
+        self.text.configure(parent, state="normal")
+        self.text.delete("1.0", tk.END)
+        self.text.insert("1.0", text)
+        self.text.configure(state="disabled")
+
+        self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        self.scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+
+        num_lines = int(self.text.index("end-1c").split(".")[0])
+        self.text.configure(height=num_lines)
+
+        self.text.configure(background=config.snippet_background)
+        self.text.configure(foreground=config.snippet_foreground)
+
+        self.text.configure(font=config.get_snippet_font())
         self.update_size()
 
         def scroll_up() -> str:
@@ -32,11 +43,11 @@ class Snippet(tk.Text):
         self.bind("<Button-5>", lambda e: scroll_down())
 
     def update_size(self) -> None:
-        char_width = self.tk.call("font", "measure", self.cget("font"), "0")
+        char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
         width_pixels = self.parent.winfo_width() - self.parent.scrollbar.winfo_width()
         width_pixels = width_pixels * 0.98
         width_chars = int(width_pixels / char_width)
-        self.configure(width=width_chars)
+        self.text.configure(width=width_chars)
 
     def update_font(self) -> None:
-        self.configure(font=config.get_snippet_font())
+        self.text.configure(font=config.get_snippet_font())
