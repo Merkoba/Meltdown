@@ -70,7 +70,12 @@ class Output(tk.Text):
 
     def insert_text(self, text: str) -> None:
         self.configure(state="normal")
+        last_line = self.get("end-2l", "end-1c")
         self.insert(tk.END, str(text))
+
+        if last_line == "```\n":
+            self.format_text()
+
         self.configure(state="disabled")
         self.debounce()
 
