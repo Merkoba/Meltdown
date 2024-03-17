@@ -21,7 +21,6 @@ class Tab:
         self.document_id = document_id
         self.tab_id = tab_id
         self.output = output
-        self.auto_scroll = True
 
 
 class Display:
@@ -311,35 +310,24 @@ class Display:
     def index(self, tab_id: str) -> int:
         return self.root.index(tab_id)  # type: ignore
 
-    def on_output_scroll(self, tab_id: str, direction: str) -> None:
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        if direction == "up":
-            tab.auto_scroll = False
-        elif direction == "down":
-            if tab.output.yview()[1] >= 1.0:
-                tab.auto_scroll = True
-
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
 
     def to_top(self) -> None:
         output = self.get_current_output()
 
-        if output:
-            output.to_top()
-
-    def to_bottom(self) -> None:
-        tab = self.get_current_tab()
-
-        if not tab:
+        if not output:
             return
 
-        tab.auto_scroll = True
-        tab.output.to_bottom()
+        output.to_top()
+
+    def to_bottom(self) -> None:
+        output = self.get_current_output()
+
+        if not output:
+            return
+
+        output.to_bottom()
 
     def copy_output(self) -> None:
         text = self.get_output_text()
@@ -432,15 +420,12 @@ class Display:
         if not tab_id:
             tab_id = self.current_tab
 
-        tab = self.get_tab(tab_id)
+        output = self.get_output(tab_id)
 
-        if not tab:
+        if not output:
             return
 
-        tab.output.insert_text(text)
-
-        if tab.auto_scroll:
-            tab.output.to_bottom()
+        output.insert_text(text)
 
     def save_log(self) -> None:
         from . import state

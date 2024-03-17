@@ -19,6 +19,7 @@ class Output(tk.Text):
         self.debounce_delay = 500
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
+        self.auto_scroll = True
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.setup()
 
@@ -28,10 +29,12 @@ class Output(tk.Text):
 
         def scroll_up() -> str:
             self.scroll_up()
+            self.check_autoscroll("up")
             return "break"
 
         def scroll_down() -> str:
             self.scroll_down()
+            self.check_autoscroll("down")
             return "break"
 
         def home() -> str:
@@ -43,6 +46,8 @@ class Output(tk.Text):
             return "break"
 
         self.bind("<Button-3>", lambda e: self.display.show_output_menu(e))
+        self.bind("<Button-4>", lambda e: scroll_up())
+        self.bind("<Button-5>", lambda e: scroll_down())
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<KeyPress-Home>", lambda e: home())
@@ -77,6 +82,10 @@ class Output(tk.Text):
             self.format_text()
 
         self.configure(state="disabled")
+
+        if self.auto_scroll:
+            self.to_bottom()
+
         self.debounce()
 
     def debounce(self) -> None:
@@ -96,9 +105,11 @@ class Output(tk.Text):
         self.set_text("")
 
     def to_top(self) -> None:
+        self.auto_scroll = False
         self.yview_moveto(0.0)
 
     def to_bottom(self) -> None:
+        self.auto_scroll = True
         self.yview_moveto(1.0)
 
     def last_character(self) -> str:
@@ -172,3 +183,10 @@ class Output(tk.Text):
     def update_size(self) -> None:
         for snippet in self.snippets:
             snippet.update_size()
+
+    def check_autoscroll(self, direction: str) -> None:
+        if direction == "up":
+            self.auto_scroll = False
+        elif direction == "down":
+            if self.yview()[1] >= 1.0:
+                self.auto_scroll = True
