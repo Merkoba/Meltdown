@@ -45,6 +45,7 @@ class Config:
         self.text_foreground = "white"
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
+        self.snippet_border = "#D8DEE9"
         self.max_list_items = 10
         self.avatar_user = "👽"
         self.avatar_ai = "😎"

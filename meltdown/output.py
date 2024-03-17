@@ -135,7 +135,7 @@ class Output(tk.Text):
             start_line_col = self.index_at_char(content_start)
             end_line_col = self.index_at_char(content_end)
             snippet_text = self.get(start_line_col, end_line_col)
-            self.delete(f"{start_line_col} - 1 lines", f"{end_line_col} + 1 lines")
+            self.delete(f"{start_line_col} - 1 lines linestart", f"{end_line_col} + 1 lines lineend")
 
             snippet = Snippet(self, snippet_text)
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)

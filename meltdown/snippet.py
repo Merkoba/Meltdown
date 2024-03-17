@@ -10,12 +10,16 @@ from typing import Any
 
 class Snippet(tk.Frame):
     def __init__(self, parent: Output, text: str) -> None:
-        super().__init__(parent)
+        super().__init__(parent, borderwidth=0, highlightthickness=0)
         self.parent = parent
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
 
-        self.text = tk.Text(self, wrap="none")
+        self.text = tk.Text(self)
+        self.text.configure(wrap="none")
         self.text.configure(state="normal")
+        self.text.configure(borderwidth=0)
+        self.text.configure(highlightthickness=1)
+        self.text.configure(highlightbackground=config.snippet_border)
         self.text.delete("1.0", tk.END)
         self.text.insert("1.0", text)
         self.text.configure(state="disabled")
