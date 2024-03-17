@@ -149,8 +149,13 @@ class Config:
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, self.output_font_size)
 
-    def get_snippet_font(self) -> Tuple[str, int]:
-        return ("monospace", self.output_font_size)
+    def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
+        size = self.output_font_size
+
+        if smaller:
+            size -= 1
+
+        return ("monospace", size)
 
 
 config = Config()

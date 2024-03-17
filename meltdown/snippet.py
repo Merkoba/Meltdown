@@ -19,12 +19,12 @@ class Snippet(tk.Frame):
         self.header = tk.Frame(self)
         self.header.configure(background=config.snippet_header_color)
         header_text = f"Language: {language}"
-        self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font())
+        self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font(True))
         self.header_text.configure(foreground=config.snippet_header_text)
         self.header_text.configure(background=config.snippet_header_color)
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
-        self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font())
+        self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font(True))
         self.header_copy.configure(cursor="hand2")
         self.header_copy.bind("<Button-1>", lambda e: self.copy())
         self.header_copy.pack(side=tk.RIGHT, padx=5)
@@ -87,8 +87,8 @@ class Snippet(tk.Frame):
 
     def update_font(self) -> None:
         self.text.configure(font=config.get_snippet_font())
-        self.header_text.configure(font=config.get_snippet_font())
-        self.header_copy.configure(font=config.get_snippet_font())
+        self.header_text.configure(font=config.get_snippet_font(True))
+        self.header_copy.configure(font=config.get_snippet_font(True))
         self.update_size()
 
     def scroll_left(self) -> None:
@@ -99,3 +99,5 @@ class Snippet(tk.Frame):
 
     def copy(self) -> None:
         pyperclip.copy(self.content)
+        self.header_copy.configure(text="Copied!")
+        self.after(1000, lambda: self.header_copy.configure(text="Copy"))
