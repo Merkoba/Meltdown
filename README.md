@@ -10,15 +10,11 @@
 
 ![](https://i.imgur.com/OgkwxRS.jpg)
 
-### Maximized:
-
-![](https://i.imgur.com/ThPfxMD.jpg)
-
-## In Action:
+### In Action:
 
 ![](https://i.imgur.com/GXG9kUN.gif)
 
-## Markdown Support:
+### Markdown Support:
 
 ![](https://i.imgur.com/DZhF5A1.jpg)
 
