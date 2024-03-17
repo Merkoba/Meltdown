@@ -48,6 +48,8 @@ class Config:
         self.snippet_border = "#A0B8BF"
         self.snippet_header_color = "white"
         self.snippet_header_text = "#2B303B"
+        self.highlight_background = "#3D4555"
+        self.highlight_foreground = "white"
         self.max_list_items = 10
         self.avatar_user = "👽"
         self.avatar_ai = "😎"

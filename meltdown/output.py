@@ -15,12 +15,14 @@ class Output(tk.Text):
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.text_debouncer: Optional[str] = None
-        self.debounce_delay = 500
+        self.format_debouncer: Optional[str] = None
+        self.format_debouncer_delay = 500
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
+        self.tag_config("highlight", background=config.highlight_background,
+                        foreground=config.highlight_foreground)
         self.setup()
 
     def setup(self) -> None:
@@ -67,39 +69,39 @@ class Output(tk.Text):
         self.tag_config("name_ai", foreground="#98FB98")
 
     def set_text(self, text: str) -> None:
-        self.configure(state="normal")
+        self.enable()
         self.delete("1.0", tk.END)
         self.insert("1.0", str(text))
-        self.configure(state="disabled")
-        self.debounce()
+        self.disable()
+        self.debounce_format()
 
     def insert_text(self, text: str) -> None:
-        self.configure(state="normal")
+        self.enable()
         last_line = self.get("end-2l", "end-1c")
         self.insert(tk.END, str(text))
 
         if last_line == "```\n":
             self.format_text()
 
-        self.configure(state="disabled")
+        self.disable()
 
         if self.auto_scroll:
             self.to_bottom()
 
-        self.debounce()
+        self.debounce_format()
 
-    def debounce(self) -> None:
-        self.cancel_debouncer()
+    def debounce_format(self) -> None:
+        self.cancel_format_debouncer()
 
         def action() -> None:
             self.format_text()
 
-        self.text_debouncer = self.after(self.debounce_delay, lambda: action())
+        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: action())
 
-    def cancel_debouncer(self) -> None:
-        if self.text_debouncer is not None:
-            self.after_cancel(self.text_debouncer)
-            self.text_debouncer = None
+    def cancel_format_debouncer(self) -> None:
+        if self.format_debouncer is not None:
+            self.after_cancel(self.format_debouncer)
+            self.format_debouncer = None
 
     def clear_text(self) -> None:
         self.set_text("")
@@ -135,11 +137,15 @@ class Output(tk.Text):
         self.yview_scroll(2, "units")
 
     def format_text(self) -> None:
+        self.cancel_format_debouncer()
+        self.format_snippets()
+        self.format_backticks()
+
+    def format_snippets(self) -> None:
         from .snippet import Snippet
-        self.cancel_debouncer()
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
-        self.configure(state="normal")
+        self.enable()
         matches = []
 
         for match in re.finditer(pattern, text, flags=re.DOTALL):
@@ -158,9 +164,47 @@ class Output(tk.Text):
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)
             self.snippets.append(snippet)
 
-        self.configure(state="disabled")
+        self.disable()
         app.update()
         self.to_bottom()
+
+    def format_backticks(self) -> None:
+        self.enable()
+        start_index = "1.0"
+
+        while True:
+            # Find the start and end indices of the next occurrence of text enclosed in backticks
+            start_index = self.search("`", start_index, "end")
+            if not start_index:
+                break
+            # Check if the next character is also a backtick
+            if self.get(start_index + "+1c") == "`":
+                start_index += "+2c"
+                continue
+            end_index = self.search("`", start_index + "+1c", "end")
+
+            # If the end index is not found, break the loop
+            if not end_index:
+                break
+
+            # Check if the character after the end index is also a backtick
+            if self.get(end_index + "+1c") == "`":
+                start_index = end_index + "+2c"
+                continue
+
+            # Add the "highlight" tag to the found occurrence
+            self.tag_add("highlight", start_index, end_index + "+1c")
+            self.tag_lower("highlight")
+
+            # Remove the backticks
+            self.delete(start_index, start_index + "+1c")
+            end_index = end_index + "-1c"
+            self.delete(end_index, end_index + "+1c")
+
+            # Update the start index for the next search
+            start_index = end_index + "+1c"
+
+        self.disable()
 
     def index_at_char(self, char_index: int) -> str:
         line_start = 0
@@ -191,3 +235,9 @@ class Output(tk.Text):
         elif direction == "down":
             if self.yview()[1] >= 1.0:
                 self.auto_scroll = True
+
+    def enable(self) -> None:
+        self.configure(state="normal")
+
+    def disable(self) -> None:
+        self.configure(state="disabled")
