@@ -10,12 +10,18 @@ from typing import Any
 
 
 class Output(tk.Text):
-    def __init__(self, parent: tk.Frame, **kwargs: Any) -> None:
-        super().__init__(parent, state="disabled", **kwargs)
+    def __init__(self, parent: tk.Frame, tab_id: str) -> None:
+        super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.text_debouncer = None
+        self.debounce_delay = 200
+        self.tab_id = tab_id
+        self.snippets = []
+        self.pack(fill=tk.BOTH, padx=0, pady=1)
+        self.setup()
 
-    def setup(self, tab_id: str) -> None:
+    def setup(self) -> None:
         from .widgets import widgets
         self.display = widgets.display
 
@@ -36,12 +42,11 @@ class Output(tk.Text):
             return "break"
 
         self.bind("<Button-3>", lambda e: self.display.show_output_menu(e))
-        self.bind("<Button-4>", lambda e: self.display.on_output_scroll(tab_id, "up"))
-        self.bind("<Button-5>", lambda e: self.display.on_output_scroll(tab_id, "down"))
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<KeyPress-Home>", lambda e: home())
         self.bind("<KeyPress-End>", lambda e: end())
+        self.bind("<Configure>", lambda e: self.update_size())
 
         def on_scroll(*args: Any) -> None:
             self.display.check_scroll_buttons()
@@ -60,11 +65,19 @@ class Output(tk.Text):
         self.delete("1.0", tk.END)
         self.insert("1.0", str(text))
         self.configure(state="disabled")
+        self.debounce()
 
     def insert_text(self, text: str) -> None:
         self.configure(state="normal")
         self.insert(tk.END, str(text))
         self.configure(state="disabled")
+        self.debounce()
+
+    def debounce(self) -> None:
+        if self.text_debouncer is not None:
+            self.after_cancel(self.text_debouncer)
+
+        self.text_debouncer = self.after(self.debounce_delay, lambda: self.format_text())
 
     def clear_text(self) -> None:
         self.set_text("")
@@ -97,33 +110,6 @@ class Output(tk.Text):
     def scroll_down(self) -> None:
         self.yview_scroll(3, "units")
 
-    def markdown(self) -> None:
-        text = self.get("1.0", "end-1c")
-
-        if not text:
-            return
-
-        lines = text.split("\n")
-        start_index = 1
-
-        while True:
-            start_pos = text.find("```", start_index)
-
-            if start_pos == -1:
-                break
-
-            end_pos = text.find("```", start_pos + 3)
-
-            if end_pos == -1:
-                break
-
-            # Convert character positions to line and column positions
-            start_line_col = self.index_at_char(start_pos)
-            end_line_col = self.index_at_char(end_pos)
-
-            self.tag_add("code", f"{start_line_col}+3c", f"{end_line_col}")
-            start_index = end_pos + 3
-
     def format_text(self):
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
@@ -141,8 +127,9 @@ class Output(tk.Text):
             snippet_text = self.get(start_line_col, end_line_col)
             self.delete(f"{start_line_col} - 1 lines", f"{end_line_col} + 1 lines")
 
-            subtext = Snippet(self, snippet_text)
-            self.window_create(f"{start_line_col} - 1 lines", window=subtext)
+            snippet = Snippet(self, snippet_text)
+            self.window_create(f"{start_line_col} - 1 lines", window=snippet)
+            self.snippets.append(snippet)
 
         self.configure(state="disabled")
 
@@ -156,3 +143,13 @@ class Output(tk.Text):
                 return f"{i + 1}.{char_index - line_start}"
 
             line_start = line_end + 1
+
+    def update_font(self) -> None:
+        self.configure(font=config.get_output_font())
+
+        for snippet in self.snippets:
+            snippet.update_font()
+
+    def update_size(self) -> None:
+        for snippet in self.snippets:
+            snippet.update_size()

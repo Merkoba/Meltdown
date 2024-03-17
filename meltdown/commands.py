@@ -34,7 +34,6 @@ class Commands:
             "closeall": {"aliases": [], "help": "Close all tabs", "action": lambda: widgets.display.close_all_tabs()},
             "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
-            "test": {"aliases": [], "help": "Make a new tab", "action": lambda: widgets.display.format_text()},
             "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
         }
 

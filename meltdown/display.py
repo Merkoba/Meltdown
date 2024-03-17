@@ -67,7 +67,6 @@ class Display:
             name = self.random_tab_name()
 
         self.root.add(frame, text=name)
-        output = widgetutils.make_output(frame, fill=Fill.BOTH)
 
         if not document_id:
             document = session.add(name)
@@ -77,7 +76,7 @@ class Display:
             return
 
         tab_id = self.tab_ids()[-1]
-        output.setup(tab_id)
+        output = Output(frame, tab_id)
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
         tab = Tab(document_id, tab_id, output)
@@ -552,7 +551,7 @@ class Display:
 
     def update_font(self) -> None:
         for tab in self.tabs.values():
-            tab.output.configure(font=config.get_output_font())
+            tab.output.update_font()
 
         app.update()
         self.to_bottom()
@@ -568,15 +567,6 @@ class Display:
 
         if output:
             output.scroll_down()
-
-    def markdown(self, tab_id: str = "") -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        output = self.get_output(tab_id)
-
-        if output:
-            output.markdown()
 
     def format_text(self, tab_id: str = "") -> None:
         if not tab_id:

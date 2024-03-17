@@ -80,13 +80,6 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     return frame, canvas
 
 
-def make_output(parent: tk.Frame, fill: Optional[Fill] = None,
-                right_padding: Optional[int] = None) -> Output:
-    widget = Output(parent, font=config.get_output_font(), wrap="word")
-    do_pack(widget, fill=fill, right_padding=right_padding, padx=0, pady=1)
-    return widget
-
-
 def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
                   right_padding: Optional[int] = None) -> ttk.Notebook:
     widget = ttk.Notebook(parent, style="Normal.TNotebook")
