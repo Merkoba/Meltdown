@@ -43,6 +43,8 @@ class Config:
         self.dialog_background = "white"
         self.dialog_foreground = "black"
         self.text_foreground = "white"
+        self.snippet_background = "#3D4555"
+        self.snippet_foreground = "white"
         self.max_list_items = 10
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
@@ -144,7 +146,7 @@ class Config:
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, self.output_font_size)
 
-    def get_code_font(self) -> Tuple[str, int]:
+    def get_snippet_font(self) -> Tuple[str, int]:
         return ("monospace", self.output_font_size)
 
 

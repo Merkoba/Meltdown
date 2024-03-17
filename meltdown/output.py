@@ -1,5 +1,6 @@
 # Modules
 from .config import config
+from .snippet import Snippet
 
 # Standard
 import re
@@ -127,7 +128,6 @@ class Output(tk.Text):
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
         self.configure(state="normal")
-        sep = "-----------------------------"
         matches = []
 
         for match in re.finditer(pattern, text, flags=re.DOTALL):
@@ -138,19 +138,11 @@ class Output(tk.Text):
         for content_start, content_end in reversed(matches):
             start_line_col = self.index_at_char(content_start)
             end_line_col = self.index_at_char(content_end)
-            self.delete(f"{start_line_col} - 1 line linestart", f"{start_line_col} - 1 line lineend")
-            self.delete(f"{end_line_col} + 1 line linestart", f"{end_line_col} + 1 line lineend")
+            snippet_text = self.get(start_line_col, end_line_col)
+            self.delete(f"{start_line_col} - 1 lines", f"{end_line_col} + 1 lines")
 
-            code_text = self.get(start_line_col, end_line_col)
-            self.delete(start_line_col, end_line_col)
-            subtext = tk.Text(self)
-            self.window_create(start_line_col, window=subtext)
-            subtext.configure(state="normal")
-            subtext.delete("1.0", tk.END)
-            subtext.insert("1.0", code_text)
-            subtext.configure(state="disabled")
-            num_lines = int(subtext.index("end-1c").split(".")[0])
-            subtext.configure(height=num_lines)
+            subtext = Snippet(self, snippet_text)
+            self.window_create(f"{start_line_col} - 1 lines", window=subtext)
 
         self.configure(state="disabled")
 
