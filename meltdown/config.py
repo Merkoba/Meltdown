@@ -144,5 +144,8 @@ class Config:
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, self.output_font_size)
 
+    def get_code_font(self) -> Tuple[str, int]:
+        return ("monospace", self.output_font_size)
+
 
 config = Config()

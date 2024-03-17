@@ -2,6 +2,7 @@
 from .config import config
 
 # Standard
+import re
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
@@ -94,3 +95,72 @@ class Output(tk.Text):
 
     def scroll_down(self) -> None:
         self.yview_scroll(3, "units")
+
+    def markdown(self) -> None:
+        text = self.get("1.0", "end-1c")
+
+        if not text:
+            return
+
+        lines = text.split("\n")
+        start_index = 1
+
+        while True:
+            start_pos = text.find("```", start_index)
+
+            if start_pos == -1:
+                break
+
+            end_pos = text.find("```", start_pos + 3)
+
+            if end_pos == -1:
+                break
+
+            # Convert character positions to line and column positions
+            start_line_col = self.index_at_char(start_pos)
+            end_line_col = self.index_at_char(end_pos)
+
+            self.tag_add("code", f"{start_line_col}+3c", f"{end_line_col}")
+            start_index = end_pos + 3
+
+    def format_text(self):
+        text = self.get("1.0", "end-1c")
+        pattern = r"```(\w*)\n(.*?)\n```"
+        self.configure(state="normal")
+        sep = "-----------------------------"
+        matches = []
+
+        for match in re.finditer(pattern, text, flags=re.DOTALL):
+            content_start = match.start(2)
+            content_end = match.end(2)
+            matches.append((content_start, content_end))
+
+        for content_start, content_end in reversed(matches):
+            start_line_col = self.index_at_char(content_start)
+            end_line_col = self.index_at_char(content_end)
+            self.delete(f"{start_line_col} - 1 line linestart", f"{start_line_col} - 1 line lineend")
+            self.delete(f"{end_line_col} + 1 line linestart", f"{end_line_col} + 1 line lineend")
+
+            code_text = self.get(start_line_col, end_line_col)
+            self.delete(start_line_col, end_line_col)
+            subtext = tk.Text(self)
+            self.window_create(start_line_col, window=subtext)
+            subtext.configure(state="normal")
+            subtext.delete("1.0", tk.END)
+            subtext.insert("1.0", code_text)
+            subtext.configure(state="disabled")
+            num_lines = int(subtext.index("end-1c").split(".")[0])
+            subtext.configure(height=num_lines)
+
+        self.configure(state="disabled")
+
+    def index_at_char(self, char_index):
+        line_start = 0
+
+        for i, line in enumerate(self.get("1.0", "end-1c").split("\n")):
+            line_end = line_start + len(line)
+
+            if line_start <= char_index <= line_end:
+                return f"{i + 1}.{char_index - line_start}"
+
+            line_start = line_end + 1

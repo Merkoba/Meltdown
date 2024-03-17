@@ -301,7 +301,7 @@ def do_save_log() -> None:
     if not text:
         return
 
-    lines = text.splitlines()
+    lines = text.split("\n")
     new_lines = []
 
     for line in lines:

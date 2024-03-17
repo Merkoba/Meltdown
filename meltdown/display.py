@@ -568,3 +568,21 @@ class Display:
 
         if output:
             output.scroll_down()
+
+    def markdown(self, tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if output:
+            output.markdown()
+
+    def format_text(self, tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if output:
+            output.format_text()

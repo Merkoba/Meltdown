@@ -289,11 +289,11 @@ class Model:
             log_dict["assistant"] = "".join(tokens).strip()
             document.add(log_dict)
 
+        # widgets.display.apply_formatting()
         self.lock.release()
 
     def browse_models(self) -> None:
         from . import state
-        from . import widgetutils
 
         if self.model_loading:
             return
