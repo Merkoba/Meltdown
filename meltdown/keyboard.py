@@ -10,13 +10,27 @@ from . import state
 import tkinter as tk
 from typing import Any, Callable, Optional, Dict, List
 
+KbCmd = Optional[Callable[..., Any]]
+
+
+class KbItem:
+    def __init__(self, command: KbCmd, on_ctrl: KbCmd,
+                 on_shift: KbCmd, on_ctrl_shift: KbCmd,
+                 widget: Optional[tk.Widget], return_break: bool) -> None:
+        self.command = command
+        self.on_ctrl = on_ctrl
+        self.on_shift = on_shift
+        self.on_ctrl_shift = on_ctrl_shift
+        self.widget = widget
+        self.return_break = return_break
+
 
 class Keyboard:
     def __init__(self) -> None:
         self.block_date = 0.0
         self.ctrl = False
         self.shift = False
-        self.commands: Dict[str, List[Dict[str, Any]]] = {}
+        self.commands: Dict[str, List[KbItem]] = {}
 
     def reset(self) -> None:
         self.ctrl = False
@@ -72,23 +86,23 @@ class Keyboard:
     def no_modifiers(self) -> bool:
         return (not self.ctrl) and (not self.shift)
 
-    def action(self, cmd: Dict[str, Any]) -> bool:
+    def action(self, item: KbItem) -> bool:
         if self.blocked():
             return False
 
         ok = True
 
         if self.ctrl and self.shift:
-            if cmd["on_ctrl_shift"]:
-                cmd["on_ctrl_shift"]()
+            if item.on_ctrl_shift:
+                item.on_ctrl_shift()
         elif self.ctrl:
-            if cmd["on_ctrl"]:
-                cmd["on_ctrl"]()
+            if item.on_ctrl:
+                item.on_ctrl()
         elif self.shift:
-            if cmd["on_shift"]:
-                cmd["on_shift"]()
-        elif cmd["command"]:
-            cmd["command"]()
+            if item.on_shift:
+                item.on_shift()
+        elif item.command:
+            item.command()
         else:
             ok = False
 
@@ -105,21 +119,21 @@ class Keyboard:
         app.root.bind("<KeyRelease>", lambda e: self.on_key_release(e))
 
         def run_command(event: Any, key: str) -> str:
-            cmds = self.commands[key]
+            items = self.commands[key]
 
-            for cmd in cmds:
-                if not cmd["widget"]:
-                    if self.action(cmd):
-                        if cmd["return_break"]:
+            for item in items:
+                if not item.widget:
+                    if self.action(item):
+                        if item.return_break:
                             return "break"
                         else:
                             return ""
 
-            for cmd in cmds:
-                if cmd["widget"]:
-                    if cmd["widget"] == event.widget:
-                        if self.action(cmd):
-                            if cmd["return_break"]:
+            for item in items:
+                if item.widget:
+                    if item.widget == event.widget:
+                        if self.action(item):
+                            if item.return_break:
                                 return "break"
                             else:
                                 return ""
@@ -142,10 +156,8 @@ class Keyboard:
             if not self.commands.get(key):
                 self.commands[key] = []
 
-            self.commands[key].append({"widget": widget, "command": command,
-                                       "on_ctrl": on_ctrl, "on_shift": on_shift,
-                                       "on_ctrl_shift": on_ctrl_shift,
-                                       "return_break": return_break})
+            item = KbItem(command, on_ctrl, on_shift, on_ctrl_shift, widget, return_break)
+            self.commands[key].append(item)
 
         add(key)
 
