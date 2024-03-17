@@ -199,7 +199,7 @@ class Widgets:
 
         self.bottom_button = widgetutils.make_button(frame, "Go To Bottom",
                                                      lambda: self.display.to_bottom(), fill=Fill.HORIZONTAL,
-                                                            right_padding=right_padding, pady=2)
+                                                            right_padding=right_padding, pady=2, bigger=True)
         ToolTip(self.bottom_button, "Scroll to the bottom of the output")
 
         # Addons

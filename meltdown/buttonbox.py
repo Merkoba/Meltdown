@@ -26,7 +26,7 @@ class ButtonBox(tk.Frame):
 
     def make(self) -> None:
         padx = 0
-        pady = 3 if self.bigger else 0
+        pady = 2 if self.bigger else 0
 
         self.label = tk.Label(self, text=self.text,
                               font=config.font_button, width=self.width,

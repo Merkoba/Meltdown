@@ -108,9 +108,9 @@ def get_button(parent: tk.Frame, text: str,
 
 def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
-                right_padding: Optional[int] = None, bottom_padding: Optional[int] = None,
+                right_padding: Optional[int] = None, bottom_padding: Optional[int] = None, bigger: bool = False,
                 pady: Optional[int] = None, style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
-    widget = get_button(parent, text, command, style=style, width=width)
+    widget = get_button(parent, text, command, style=style, width=width, bigger=bigger)
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
 
