@@ -129,10 +129,10 @@ class Output(tk.Text):
         return self.get("1.0", "end-1c").strip()
 
     def scroll_up(self) -> None:
-        self.yview_scroll(-3, "units")
+        self.yview_scroll(-2, "units")
 
     def scroll_down(self) -> None:
-        self.yview_scroll(3, "units")
+        self.yview_scroll(2, "units")
 
     def format_text(self) -> None:
         from .snippet import Snippet
