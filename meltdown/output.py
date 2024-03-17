@@ -50,6 +50,7 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
+        self.bind("<Button-1>", lambda e: self.deselect_all())
         self.bind("<Button-3>", lambda e: self.display.show_output_menu(e))
         self.bind("<Button-4>", lambda e: scroll_up())
         self.bind("<Button-5>", lambda e: scroll_down())
@@ -129,6 +130,9 @@ class Output(tk.Text):
 
     def deselect_all(self) -> None:
         self.tag_remove("sel", "1.0", tk.END)
+
+        for snippet in self.snippets:
+            snippet.deselect_all()
 
     def get_text(self) -> str:
         return self.get("1.0", "end-1c").strip()

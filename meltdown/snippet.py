@@ -115,3 +115,6 @@ class Snippet(tk.Frame):
 
     def select_all(self) -> None:
         self.text.tag_add("sel", "1.0", tk.END)
+
+    def deselect_all(self) -> None:
+        self.text.tag_remove("sel", "1.0", tk.END)
