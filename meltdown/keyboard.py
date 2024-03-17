@@ -10,6 +10,7 @@ from . import state
 import tkinter as tk
 from typing import Any, Callable, Optional, Dict, List
 
+
 KbCmd = Optional[Callable[..., Any]]
 
 
