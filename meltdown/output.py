@@ -35,7 +35,7 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.position: Optional[str] = None
+        self.position = "1.0"
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.tag_config("highlight", background=config.highlight_background,
                         foreground=config.highlight_foreground)
@@ -183,7 +183,7 @@ class Output(tk.Text):
 
     def format_snippets(self) -> None:
         from .snippet import Snippet
-        start_index = self.position if self.position else "1.0"
+        start_index = self.position
         text = self.get(start_index, "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
         matches = []
@@ -205,7 +205,7 @@ class Output(tk.Text):
             self.snippets.append(snippet)
 
     def format_backticks(self) -> None:
-        start_index = self.position if self.position else "1.0"
+        start_index = self.position
 
         while True:
             start_index = self.search("`", start_index, "end")
