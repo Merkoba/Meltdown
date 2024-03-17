@@ -3,6 +3,7 @@ from .config import config
 from .widgets import widgets
 from .paths import paths
 from . import timeutils
+from .output import Output
 
 # Standard
 import json
@@ -40,13 +41,14 @@ class Document:
             for item in self.items:
                 for key in item:
                     if key == "user":
-                        widgets.prompt("user", tab_id=tab.tab_id)
+                        tab.output.prompt("user")
                     elif key == "assistant":
-                        widgets.prompt("ai", tab_id=tab.tab_id)
+                        tab.output.prompt("ai")
                     else:
                         continue
 
-                    widgets.display.insert(item[key], tab_id=tab.tab_id)
+                    tab.output.insert_text(item[key], linebreak=True)
+                    tab.output.format_text()
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -61,9 +63,9 @@ class Document:
         for item in self.items:
             for key in item:
                 if key == "user":
-                    log += widgets.get_prompt("user")
+                    log += Output.get_prompt("user")
                 elif key == "assistant":
-                    log += widgets.get_prompt("ai")
+                    log += Output.get_prompt("ai")
                 else:
                     continue
 

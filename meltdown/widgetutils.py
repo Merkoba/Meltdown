@@ -4,7 +4,6 @@ from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
-from .output import Output
 
 # Libraries
 import pyperclip  # type: ignore

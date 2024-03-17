@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 import subprocess
-from typing import List, Any
+from typing import List
 import shutil
 
 

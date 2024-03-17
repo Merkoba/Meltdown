@@ -175,15 +175,14 @@ class Model:
         if config.append:
             prompt = check_dot(prompt) + config.append
 
-        widgets.prompt("user", tab_id=tab_id)
-        widgets.display.insert(prompt, tab_id=tab_id)
-        widgets.enable_stop_button()
-
         tab = widgets.display.get_tab(tab_id)
 
         if not tab:
             return
 
+        tab.output.prompt("user")
+        tab.output.insert_text(prompt, linebreak=True)
+        widgets.enable_stop_button()
         document = session.get_document(tab.document_id)
 
         if not document:
@@ -262,7 +261,7 @@ class Model:
 
                 if "content" in delta:
                     if not added_name:
-                        widgets.prompt("ai", tab_id=tab_id)
+                        tab.output.prompt("ai")
                         added_name = True
 
                     token = delta["content"]
@@ -281,7 +280,7 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    widgets.display.insert(token, tab_id=tab_id)
+                    tab.output.insert_text(token)
         except BaseException:
             pass
 
@@ -289,7 +288,6 @@ class Model:
             log_dict["assistant"] = "".join(tokens).strip()
             document.add(log_dict)
 
-        # widgets.display.apply_formatting()
         self.lock.release()
 
     def browse_models(self) -> None:

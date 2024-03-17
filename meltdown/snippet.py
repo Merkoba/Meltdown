@@ -1,7 +1,6 @@
 # Modules
 from .config import config
 from .output import Output
-from .buttonbox import ButtonBox
 
 # Libraries
 import pyperclip  # type: ignore
@@ -49,7 +48,9 @@ class Snippet(tk.Frame):
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
+        self.scrollbar.configure(cursor="hand2")
         self.text.configure(xscrollcommand=self.scrollbar.set)
+        self.scrollbar.pack(fill=tk.X)
         self.parent = parent
 
         num_lines = int(self.text.index("end-1c").split(".")[0])

@@ -8,7 +8,7 @@ from . import timeutils
 # Standard
 import os
 import json
-from typing import Optional, Any, IO, List
+from typing import Optional, Any, IO
 from pathlib import Path
 from tkinter import filedialog
 

@@ -519,33 +519,6 @@ class Widgets:
     def reset_history_index(self) -> None:
         self.input_history_index = -1
 
-    def get_prompt(self, who: str) -> str:
-        avatar = getattr(config, f"avatar_{who}")
-        name = getattr(config, f"name_{who}")
-
-        if name:
-            prompt = f"\n{avatar} {name} : "
-        else:
-            prompt = f"\n{avatar} : "
-
-        return prompt
-
-    def prompt(self, who: str, tab_id: str = "") -> None:
-        prompt = self.get_prompt(who)
-
-        if not tab_id:
-            tab_id = self.display.current_tab
-
-        self.display.print(prompt, False, tab_id=tab_id)
-        output = self.display.get_output(tab_id)
-
-        if not output:
-            return
-
-        start_index = output.index(f"end - {len(prompt)}c")
-        end_index = output.index("end - 3c")
-        output.tag_add(f"name_{who}", start_index, end_index)
-
     def set_model(self, m: str) -> None:
         from . import state
         from .model import model

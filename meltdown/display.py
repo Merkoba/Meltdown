@@ -152,7 +152,6 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
-                tab.output.format_text()
 
         widgets.focus_input()
 
@@ -387,8 +386,7 @@ class Display:
         if not output:
             return
 
-        if output.text_length() and \
-                (output.last_character() != "\n"):
+        if output.text_length() and (output.last_character() != "\n"):
             left = "\n"
 
         if linebreak:
