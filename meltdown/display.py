@@ -536,9 +536,6 @@ class Display:
         for tab in self.tabs.values():
             tab.output.update_font()
 
-        app.update()
-        self.to_bottom()
-
     def scroll_up(self) -> None:
         output = self.get_current_output()
 
