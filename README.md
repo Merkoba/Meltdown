@@ -82,6 +82,8 @@ Horizontally-scrollable snippet text areas to show code.
 
 Custom keyboard system.
 
+Markdown for triple backticks and single backticks.
+
 ---
 
 ## GUI Toolkit
