@@ -16,7 +16,7 @@ class Output(tk.Text):
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.text_debouncer: Optional[str] = None
-        self.debounce_delay = 200
+        self.debounce_delay = 500
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
