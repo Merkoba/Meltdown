@@ -80,6 +80,8 @@ Close single tabs, all tabs, or old tabs.
 
 Horizontally-scrollable snippet text areas to show code.
 
+Custom keyboard system.
+
 ---
 
 ## GUI Toolkit

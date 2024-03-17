@@ -131,12 +131,19 @@ class Keyboard:
                  on_ctrl_shift: Optional[Callable[..., Any]] = None,
                  widget: Optional[tk.Widget] = None) -> None:
 
-        if not self.commands.get(key):
-            self.commands[key] = []
+        def add(key: str) -> None:
+            if not self.commands.get(key):
+                self.commands[key] = []
 
-        self.commands[key].append({"widget": widget, "command": command,
-                                   "on_ctrl": on_ctrl, "on_shift": on_shift,
-                                   "on_ctrl_shift": on_ctrl_shift})
+            self.commands[key].append({"widget": widget, "command": command,
+                                       "on_ctrl": on_ctrl, "on_shift": on_shift,
+                                       "on_ctrl_shift": on_ctrl_shift})
+
+        add(key)
+
+        # Add uppercase key since it changes with shift
+        if (len(key) == 1) and key.isalpha() and (on_shift or on_ctrl_shift):
+            add(key.upper())
 
     def setup_input(self) -> None:
         self.register("<Tab>", lambda: self.on_tab(), widget=widgets.input)
@@ -156,7 +163,7 @@ class Keyboard:
         self.register("<Down>", on_ctrl=lambda: widgets.display.to_bottom())
         self.register("<Left>", on_ctrl=lambda: widgets.display.tab_left())
         self.register("<Right>", on_ctrl=lambda: widgets.display.tab_right())
-        self.register("<BackSpace>", lambda: widgets.display.clear_output())
+        self.register("<BackSpace>", on_ctrl=lambda: widgets.display.clear_output())
         self.register("space", on_ctrl=lambda: widgets.show_main_menu())
         self.register("t", on_ctrl=lambda: widgets.display.make_tab())
         self.register("w", on_ctrl=lambda: widgets.display.close_current_tab())
