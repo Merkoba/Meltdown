@@ -195,8 +195,9 @@ class Output(tk.Text):
             matches.append((content_start, content_end, language))
 
         for content_start, content_end, language in reversed(matches):
-            start_line_col = self.index_at_char(content_start)
-            end_line_col = self.index_at_char(content_end)
+            start_line_col = self.index_at_char(content_start, start_index)
+            print(start_line_col)
+            end_line_col = self.index_at_char(content_end, start_index)
             snippet_text = self.get(start_line_col, end_line_col)
             self.delete(f"{start_line_col} - 1 lines linestart", f"{end_line_col} + 1 lines lineend")
 
@@ -234,14 +235,15 @@ class Output(tk.Text):
 
             start_index = end_index + "+1c"
 
-    def index_at_char(self, char_index: int) -> str:
+    def index_at_char(self, char_index: int, start_index: str) -> str:
+        o_line = int(start_index.split(".")[0])
         line_start = 0
 
-        for i, line in enumerate(self.get("1.0", "end-1c").split("\n")):
+        for i, line in enumerate(self.get(start_index, "end-1c").split("\n")):
             line_end = line_start + len(line)
 
             if line_start <= char_index <= line_end:
-                return f"{i + 1}.{char_index - line_start}"
+                return f"{i + o_line}.{char_index - line_start}"
 
             line_start = line_end + 1
 
