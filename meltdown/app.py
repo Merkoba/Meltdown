@@ -22,7 +22,6 @@ class App:
         self.root.title(self.manifest["title"])
         self.root.grid_columnconfigure(0, weight=1)
         self.root.minsize(100, 100)
-        self.set_geometry()
         self.setup_icon()
         self.setup_style()
 
@@ -149,7 +148,10 @@ class App:
             self.update_bottom()
 
     def set_geometry(self) -> None:
-        self.root.geometry(f"{config.width}x{config.height}")
+        from .args import args
+        width = args.width if args.width != -1 else config.width
+        height = args.height if args.height != -1 else config.height
+        self.root.geometry(f"{width}x{height}")
 
     def update(self) -> None:
         self.root.update_idletasks()
