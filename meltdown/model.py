@@ -181,7 +181,7 @@ class Model:
             return
 
         tab.output.prompt("user")
-        tab.output.insert_text(prompt, linebreak=True)
+        tab.output.insert_text(prompt)
         widgets.enable_stop_button()
         document = session.get_document(tab.document_id)
 

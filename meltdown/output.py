@@ -92,7 +92,7 @@ class Output(tk.Text):
         self.disable()
         self.debounce_format()
 
-    def insert_text(self, text: str, linebreak: bool = False) -> None:
+    def insert_text(self, text: str) -> None:
         self.enable()
         last_line = self.get("end-2l", "end-1c")
 
@@ -100,9 +100,6 @@ class Output(tk.Text):
             highlights = re.findall(r"`([^`]+)`", last_line)
         else:
             highlights = []
-
-        if linebreak:
-            text += "\n"
 
         self.insert(tk.END, text)
 
@@ -196,7 +193,6 @@ class Output(tk.Text):
 
         for content_start, content_end, language in reversed(matches):
             start_line_col = self.index_at_char(content_start, start_index)
-            print(start_line_col)
             end_line_col = self.index_at_char(content_end, start_index)
             snippet_text = self.get(start_line_col, end_line_col)
             self.delete(f"{start_line_col} - 1 lines linestart", f"{end_line_col} + 1 lines lineend")
@@ -299,8 +295,22 @@ class Output(tk.Text):
 
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who)
-        self.insert_text(prompt)
+        self.print(prompt, False)
         start_index = self.index(f"end - {len(prompt)}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
         self.update_position()
+
+    def print(self, text: str, linebreak: bool = False) -> None:
+        left = ""
+        right = ""
+
+        if self.text_length() and (self.last_character() != "\n"):
+            left = "\n"
+
+        if linebreak:
+            right = "\n"
+
+        text = left + text + right
+        self.insert_text(text)
+        self.to_bottom()

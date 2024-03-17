@@ -389,9 +389,6 @@ class Display:
         if not app.exists():
             return
 
-        left = ""
-        right = ""
-
         if not tab_id:
             tab_id = self.current_tab
 
@@ -400,15 +397,7 @@ class Display:
         if not output:
             return
 
-        if output.text_length() and (output.last_character() != "\n"):
-            left = "\n"
-
-        if linebreak:
-            right = "\n"
-
-        text = left + text + right
-        output.insert_text(text)
-        output.to_bottom()
+        output.print(text, linebreak)
 
     def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
