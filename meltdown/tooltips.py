@@ -93,3 +93,4 @@ class ToolTip:
             self.id = ""
 
         ToolTip.current_tooltip = None
+        self.current_event = None
