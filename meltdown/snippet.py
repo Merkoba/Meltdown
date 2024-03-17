@@ -9,18 +9,19 @@ from typing import Any
 class Snippet(tk.Frame):
     def __init__(self, parent: tk.Text, text: str) -> None:
         super().__init__(parent)
-        self.text = tk.Text(self)
         self.parent = parent
-        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar")
+        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
 
-        self.text.configure(parent, state="normal")
+        self.text = tk.Text(self, wrap="none")
+        self.text.configure(state="normal")
         self.text.delete("1.0", tk.END)
         self.text.insert("1.0", text)
         self.text.configure(state="disabled")
 
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
-        self.scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
-        self.scrollbar.pack(side=tk.BOTTOM, fill=tk.X)
+        self.text.configure(xscrollcommand=self.scrollbar.set)
+        self.scrollbar.configure(command=self.text.xview)
+        self.scrollbar.configure(cursor="hand2")
 
         num_lines = int(self.text.index("end-1c").split(".")[0])
         self.text.configure(height=num_lines)
