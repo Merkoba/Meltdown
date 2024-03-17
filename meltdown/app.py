@@ -21,7 +21,7 @@ class App:
         self.root = tk.Tk(className=self.manifest["program"])
         self.root.title(self.manifest["title"])
         self.root.grid_columnconfigure(0, weight=1)
-        self.root.minsize(500, 500)
+        self.root.minsize(500, 400)
         self.set_geometry()
         self.setup_icon()
         self.setup_style()
