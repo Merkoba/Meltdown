@@ -89,6 +89,7 @@ class Snippet(tk.Frame):
         self.text.configure(font=config.get_snippet_font())
         self.header_text.configure(font=config.get_snippet_font())
         self.header_copy.configure(font=config.get_snippet_font())
+        self.update_size()
 
     def scroll_left(self) -> None:
         self.text.xview_scroll(-2, "units")
