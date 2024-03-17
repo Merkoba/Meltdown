@@ -46,13 +46,11 @@ class Output(tk.Text):
         self.display = widgets.display
 
         def scroll_up() -> str:
-            self.scroll_up()
-            self.check_autoscroll("up")
+            self.scroll_up(True)
             return "break"
 
         def scroll_down() -> str:
-            self.scroll_down()
-            self.check_autoscroll("down")
+            self.scroll_down(True)
             return "break"
 
         def home() -> str:
@@ -158,11 +156,17 @@ class Output(tk.Text):
     def get_text(self) -> str:
         return self.get("1.0", "end-1c").strip()
 
-    def scroll_up(self) -> None:
+    def scroll_up(self, check: bool = False) -> None:
         self.yview_scroll(-2, "units")
 
-    def scroll_down(self) -> None:
+        if check:
+            self.check_autoscroll("up")
+
+    def scroll_down(self, check: bool = False) -> None:
         self.yview_scroll(2, "units")
+
+        if check:
+            self.check_autoscroll("down")
 
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
@@ -182,10 +186,10 @@ class Output(tk.Text):
         from .snippet import Snippet
         start_index = self.position
         text = self.get(start_index, "end-1c")
-        pattern = r"```(\w*)\n(.*?)\n```"
+        pattern = r"^```([\w#]*)\n(.*?)\n```$"
         matches = []
 
-        for match in re.finditer(pattern, text, flags=re.DOTALL):
+        for match in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
             language = match.group(1)
             content_start = match.start(2)
             content_end = match.end(2)

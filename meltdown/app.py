@@ -233,5 +233,8 @@ class App:
 
         self.run_command(cmd)
 
+    def test(self) -> None:
+        pass
+
 
 app = App()

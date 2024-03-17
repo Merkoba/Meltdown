@@ -68,7 +68,7 @@ class Snippet(tk.Frame):
             if event.state & 0x1:
                 self.scroll_left()
             else:
-                self.parent.scroll_up()
+                self.parent.scroll_up(True)
 
             return "break"
 
@@ -76,7 +76,7 @@ class Snippet(tk.Frame):
             if event.state & 0x1:
                 self.scroll_right()
             else:
-                self.parent.scroll_down()
+                self.parent.scroll_down(True)
 
             return "break"
 

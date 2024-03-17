@@ -37,6 +37,7 @@ class Commands:
             "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
             "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
+            "test": {"aliases": [], "help": "Test", "action": lambda: app.test()},
         }
 
         aliases = []
