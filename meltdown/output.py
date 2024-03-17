@@ -74,10 +74,17 @@ class Output(tk.Text):
         self.debounce()
 
     def debounce(self) -> None:
+        self.cancel_debouncer()
+
+        def action() -> None:
+            self.format_text()
+
+        self.text_debouncer = self.after(self.debounce_delay, lambda: action())
+
+    def cancel_debouncer(self) -> None:
         if self.text_debouncer is not None:
             self.after_cancel(self.text_debouncer)
-
-        self.text_debouncer = self.after(self.debounce_delay, lambda: self.format_text())
+            self.text_debouncer = None
 
     def clear_text(self) -> None:
         self.set_text("")
@@ -111,6 +118,7 @@ class Output(tk.Text):
         self.yview_scroll(3, "units")
 
     def format_text(self):
+        self.cancel_debouncer()
         text = self.get("1.0", "end-1c")
         pattern = r"```(\w*)\n(.*?)\n```"
         self.configure(state="normal")

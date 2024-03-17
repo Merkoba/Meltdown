@@ -154,6 +154,7 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
+                tab.output.format_text()
 
         widgets.focus_input()
 
@@ -567,12 +568,3 @@ class Display:
 
         if output:
             output.scroll_down()
-
-    def format_text(self, tab_id: str = "") -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        output = self.get_output(tab_id)
-
-        if output:
-            output.format_text()
