@@ -60,11 +60,6 @@ class Keyboard:
                 widgets.input.insert_text(event.char)
             elif event.keysym in syms:
                 widgets.focus_input()
-
-                # if event.keysym == "Up":
-                #     self.on_up_key(event)
-                # elif event.keysym == "Down":
-                #     self.on_down_key(event)
         else:
             if event.keysym != "Tab":
                 commands.reset()
@@ -106,19 +101,27 @@ class Keyboard:
         app.root.bind("<KeyPress>", lambda e: self.on_key_press(e))
         app.root.bind("<KeyRelease>", lambda e: self.on_key_release(e))
 
-        def run_command(event: Any, key: str) -> None:
+        def run_command(event: Any, key: str) -> str:
             cmds = self.commands[key]
 
             for cmd in cmds:
                 if not cmd["widget"]:
                     if self.action(cmd):
-                        return
+                        if cmd["return_break"]:
+                            return "break"
+                        else:
+                            return ""
 
             for cmd in cmds:
                 if cmd["widget"]:
                     if cmd["widget"] == event.widget:
                         if self.action(cmd):
-                            return
+                            if cmd["return_break"]:
+                                return "break"
+                            else:
+                                return ""
+
+            return ""
 
         for key in self.commands:
             command: Callable[..., Any] = lambda e, key=key: run_command(e, key)
@@ -129,6 +132,7 @@ class Keyboard:
                  on_ctrl: Optional[Callable[..., Any]] = None,
                  on_shift: Optional[Callable[..., Any]] = None,
                  on_ctrl_shift: Optional[Callable[..., Any]] = None,
+                 return_break: bool = False,
                  widget: Optional[tk.Widget] = None) -> None:
 
         def add(key: str) -> None:
@@ -137,7 +141,8 @@ class Keyboard:
 
             self.commands[key].append({"widget": widget, "command": command,
                                        "on_ctrl": on_ctrl, "on_shift": on_shift,
-                                       "on_ctrl_shift": on_ctrl_shift})
+                                       "on_ctrl_shift": on_ctrl_shift,
+                                       "return_break": return_break})
 
         add(key)
 
@@ -146,9 +151,7 @@ class Keyboard:
             add(key.upper())
 
     def setup_input(self) -> None:
-        self.register("<Tab>", lambda: self.on_tab(), widget=widgets.input)
-        self.register("<Up>", lambda: widgets.input_history_up(), widget=widgets.input)
-        self.register("<Down>", lambda: widgets.input_history_down(), widget=widgets.input)
+        self.register("<Tab>", lambda: commands.check_autocomplete(), widget=widgets.input, return_break=True)
 
     def setup_globals(self) -> None:
         def on_enter() -> None:
@@ -159,11 +162,13 @@ class Keyboard:
         self.register("<Escape>", lambda: widgets.esckey(), on_ctrl=lambda: model.unload(True))
         self.register("<Page_Up>", lambda: widgets.display.scroll_up())
         self.register("<Page_Down>", lambda: widgets.display.scroll_down())
-        self.register("<Up>", on_ctrl=lambda: widgets.display.to_top(), on_shift=lambda: widgets.show_context())
-        self.register("<Down>", on_ctrl=lambda: widgets.display.to_bottom())
+        self.register("<BackSpace>", on_ctrl=lambda: widgets.display.clear_output())
+        self.register("<Up>", command=lambda: widgets.input_history_up(),
+                      on_ctrl=lambda: widgets.display.to_top(), on_shift=lambda: widgets.show_context())
+        self.register("<Down>", command=lambda: widgets.input_history_down(),
+                      on_ctrl=lambda: widgets.display.to_bottom())
         self.register("<Left>", on_ctrl=lambda: widgets.display.tab_left())
         self.register("<Right>", on_ctrl=lambda: widgets.display.tab_right())
-        self.register("<BackSpace>", on_ctrl=lambda: widgets.display.clear_output())
         self.register("space", on_ctrl=lambda: widgets.show_main_menu())
         self.register("t", on_ctrl=lambda: widgets.display.make_tab())
         self.register("w", on_ctrl=lambda: widgets.display.close_current_tab())
@@ -173,10 +178,6 @@ class Keyboard:
         self.register("r", on_ctrl=lambda: app.resize())
         self.register("m", on_ctrl=lambda: model.browse_models())
         self.register("l", on_ctrl=lambda: state.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
-
-    def on_tab(self) -> str:
-        commands.check_autocomplete()
-        return "break"
 
 
 keyboard = Keyboard()
