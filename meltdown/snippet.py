@@ -1,7 +1,10 @@
 # Modules
 from .config import config
 from .output import Output
-from .tooltips import ToolTip
+from .buttonbox import ButtonBox
+
+# Libraries
+import pyperclip  # type: ignore
 
 # Standard
 import tkinter as tk
@@ -10,30 +13,38 @@ from typing import Any
 
 
 class Snippet(tk.Frame):
-    def __init__(self, parent: Output, text: str, language: str) -> None:
+    def __init__(self, parent: Output, content: str, language: str) -> None:
         super().__init__(parent, borderwidth=0, highlightthickness=0)
-        self.parent = parent
-        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
-        self.text = tk.Text(self)
-
-        if language:
-            ToolTip(self, f"Language: {language}")
-
-        self.text.configure(takefocus=False)
-        self.text.configure(wrap="none")
-        self.text.configure(state="normal")
-        self.text.configure(borderwidth=0)
-        self.text.configure(highlightthickness=1)
-        self.text.configure(highlightbackground=config.snippet_border)
+        self.content = content
+        self.header = tk.Frame(self)
+        self.header.configure(background=config.snippet_header_color)
+        header_text = f"Language: {language}"
+        self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font())
+        self.header_text.configure(foreground=config.snippet_header_text)
+        self.header_text.configure(background=config.snippet_header_color)
+        self.header_text.configure(cursor="arrow")
+        self.header_text.pack(side=tk.LEFT, padx=5)
+        self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font())
+        self.header_copy.configure(cursor="hand2")
+        self.header_copy.bind("<Button-1>", lambda e: self.copy())
+        self.header_copy.pack(side=tk.RIGHT, padx=5)
+        self.header_copy.configure(foreground=config.snippet_header_text)
+        self.header_copy.configure(background=config.snippet_header_color)
+        self.header.pack(side=tk.TOP, fill=tk.X)
+        self.text = tk.Text(self, wrap="none", state="normal")
+        self.text.configure(borderwidth=0, highlightthickness=0)
         self.text.delete("1.0", tk.END)
-        self.text.insert("1.0", text)
+        self.text.insert("1.0", self.content)
         self.text.configure(state="disabled")
-        self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True)
+        self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
+        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
         self.text.configure(xscrollcommand=self.scrollbar.set)
+        self.parent = parent
 
         num_lines = int(self.text.index("end-1c").split(".")[0])
         self.text.configure(height=num_lines)
 
+        self.configure(background=config.snippet_background)
         self.text.configure(background=config.snippet_background)
         self.text.configure(foreground=config.snippet_foreground)
         self.text.configure(font=config.get_snippet_font())
@@ -57,8 +68,15 @@ class Snippet(tk.Frame):
 
             return "break"
 
-        self.text.bind("<Button-4>", lambda e: scroll_up(e))
-        self.text.bind("<Button-5>", lambda e: scroll_down(e))
+        def bind_scroll_events(widget: tk.Widget) -> None:
+            widget.bind("<Button-4>", lambda e: scroll_up(e))
+            widget.bind("<Button-5>", lambda e: scroll_down(e))
+            widget.bind("<Button-3>", lambda e: self.parent.display.show_output_menu(e))
+
+            for child in widget.winfo_children():
+                bind_scroll_events(child)
+
+        bind_scroll_events(self)
 
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
@@ -69,9 +87,14 @@ class Snippet(tk.Frame):
 
     def update_font(self) -> None:
         self.text.configure(font=config.get_snippet_font())
+        self.header_text.configure(font=config.get_snippet_font())
+        self.header_copy.configure(font=config.get_snippet_font())
 
     def scroll_left(self) -> None:
         self.text.xview_scroll(-2, "units")
 
     def scroll_right(self) -> None:
         self.text.xview_scroll(2, "units")
+
+    def copy(self) -> None:
+        pyperclip.copy(self.content)

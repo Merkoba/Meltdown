@@ -102,3 +102,6 @@ class ButtonBox(tk.Frame):
 
     def set_text(self, text: str) -> None:
         self.label.configure(text=text)
+
+    def set_font(self, font: str) -> None:
+        self.label.configure(font=font)
