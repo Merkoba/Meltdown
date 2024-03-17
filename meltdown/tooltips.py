@@ -33,8 +33,13 @@ class ToolTip:
         self.widget.bind("<Leave>", lambda e: self.hide_tooltip())
         self.widget.bind("<Button-1>", lambda e: self.hide_tooltip())
 
-        for child in self.widget.winfo_children():
-            child.bind("<Motion>", lambda e: self.update_event(e))
+        def bind_scroll_events(widget: tk.Widget) -> None:
+            widget.bind("<Motion>", lambda e: self.update_event(e))
+
+            for child in widget.winfo_children():
+                bind_scroll_events(child)
+
+        bind_scroll_events(self.widget)
 
     def update_event(self, event: Any) -> None:
         self.current_event = event
