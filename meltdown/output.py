@@ -112,11 +112,7 @@ class Output(tk.Text):
 
     def debounce_format(self) -> None:
         self.cancel_format_debouncer()
-
-        def action() -> None:
-            self.format_text()
-
-        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: action())
+        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: self.format_text())
 
     def cancel_format_debouncer(self) -> None:
         if self.format_debouncer is not None:
