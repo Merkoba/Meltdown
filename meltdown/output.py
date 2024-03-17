@@ -143,17 +143,18 @@ class Output(tk.Text):
         matches = []
 
         for match in re.finditer(pattern, text, flags=re.DOTALL):
+            language = match.group(1)
             content_start = match.start(2)
             content_end = match.end(2)
-            matches.append((content_start, content_end))
+            matches.append((content_start, content_end, language))
 
-        for content_start, content_end in reversed(matches):
+        for content_start, content_end, language in reversed(matches):
             start_line_col = self.index_at_char(content_start)
             end_line_col = self.index_at_char(content_end)
             snippet_text = self.get(start_line_col, end_line_col)
             self.delete(f"{start_line_col} - 1 lines linestart", f"{end_line_col} + 1 lines lineend")
 
-            snippet = Snippet(self, snippet_text)
+            snippet = Snippet(self, snippet_text, language)
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)
             self.snippets.append(snippet)
 

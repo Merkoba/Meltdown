@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .output import Output
+from .tooltips import ToolTip
 
 # Standard
 import tkinter as tk
@@ -9,11 +10,16 @@ from typing import Any
 
 
 class Snippet(tk.Frame):
-    def __init__(self, parent: Output, text: str) -> None:
+    def __init__(self, parent: Output, text: str, language: str) -> None:
         super().__init__(parent, borderwidth=0, highlightthickness=0)
         self.parent = parent
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
         self.text = tk.Text(self)
+
+        if language:
+            ToolTip(self, f"Language: {language}")
+
+        self.text.configure(takefocus=False)
         self.text.configure(wrap="none")
         self.text.configure(state="normal")
         self.text.configure(borderwidth=0)
