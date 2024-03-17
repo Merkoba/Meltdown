@@ -64,6 +64,9 @@ def on_key(event: Any) -> None:
                 widgets.input_history_up()
             elif event.keysym == "Down":
                 widgets.input_history_down()
+    else:
+        if event.keysym != "Tab":
+            commands.reset()
 
 
 def setup() -> None:

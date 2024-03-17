@@ -78,6 +78,8 @@ Scrollable config panel to pack more configs.
 
 Close single tabs, all tabs, or old tabs.
 
+Horizontally-scrollable snippet text areas to show code.
+
 ---
 
 ## GUI Toolkit

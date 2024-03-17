@@ -3,13 +3,15 @@ from .app import app
 from .config import config
 
 # Standard
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 
 class Commands:
     def __init__(self) -> None:
         self.commands: Dict[str, Dict[str, Any]] = {}
         self.prefix = "/"
+        self.autocomplete_index = 0
+        self.autocomplete_matches: List[str] = []
 
     def setup(self) -> None:
         from .widgets import widgets
@@ -74,26 +76,35 @@ class Commands:
 
     def check_autocomplete(self) -> None:
         from .widgets import widgets
-
         text = widgets.input.get()
 
         if not self.command_format(text):
             return
 
+        if not self.autocomplete_matches:
+            self.get_matches(text)
+
+        if self.autocomplete_matches:
+            widgets.input.set_text(self.prefix + self.autocomplete_matches[self.autocomplete_index])
+            self.autocomplete_index += 1
+
+            if self.autocomplete_index >= len(self.autocomplete_matches):
+                self.autocomplete_index = 0
+
+    def reset(self) -> None:
+        self.autocomplete_matches = []
+        self.autocomplete_index = 0
+
+    def get_matches(self, text: str) -> None:
+        self.reset()
+
         for cmd, data in self.commands.items():
-            matched = ""
-
             if cmd.startswith(text[1:]):
-                matched = cmd
-            else:
-                for alias in data["aliases"]:
-                    if alias.startswith(text[1:]):
-                        matched = alias
-                        break
+                self.autocomplete_matches.append(cmd)
 
-            if matched:
-                widgets.input.set_text(f"{self.prefix}{matched} ")
-                break
+            for alias in data["aliases"]:
+                if alias.startswith(text[1:]):
+                    self.autocomplete_matches.append(alias)
 
 
 commands = Commands()
