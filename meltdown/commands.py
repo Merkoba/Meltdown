@@ -84,12 +84,26 @@ class Commands:
         if not self.autocomplete_matches:
             self.get_matches(text)
 
-        if self.autocomplete_matches:
-            widgets.input.set_text(self.prefix + self.autocomplete_matches[self.autocomplete_index])
-            self.autocomplete_index += 1
-
+        def check() -> None:
             if self.autocomplete_index >= len(self.autocomplete_matches):
                 self.autocomplete_index = 0
+
+            match = self.autocomplete_matches[self.autocomplete_index]
+            input_text = widgets.input.get()[1:]
+
+            if match == input_text:
+                if len(self.autocomplete_matches) == 1:
+                    return
+
+                self.autocomplete_index += 1
+                check()
+                return
+
+            widgets.input.set_text(self.prefix + match)
+            self.autocomplete_index += 1
+
+        if self.autocomplete_matches:
+            check()
 
     def reset(self) -> None:
         self.autocomplete_matches = []
