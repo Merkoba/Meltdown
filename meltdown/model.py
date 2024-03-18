@@ -113,6 +113,9 @@ class Model:
         return self.model_loading or self.stream_loading
 
     def stop_stream(self) -> None:
+        if self.stop_stream_thread.is_set():
+            return
+
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
