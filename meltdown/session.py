@@ -47,7 +47,7 @@ class Document:
                     else:
                         continue
 
-                    tab.output.print(item[key])
+                    tab.output.insert_text(item[key])
                     tab.output.format_text()
 
     def to_dict(self) -> Dict[str, Any]:
