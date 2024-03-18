@@ -11,18 +11,20 @@ launch_program() {
     # Replace 'your_program' with the actual command to launch your program
     venv/bin/python -m meltdown.main "$@" &
     program_pid=$!
+    disown $program_pid
 }
 
 # Function to stop and restart the program
 restart_program() {
-    kill -9 "$program_pid" >/dev/null 2>&1
+    kill -9 "$program_pid" 2>/dev/null
     launch_program
 }
 
 # Cleanup function to execute before exiting
 cleanup() {
     echo "Exiting script..."
-    kill -9 "$program_pid" >/dev/null 2>&1
+    kill -9 "$program_pid" 2>/dev/null
+    wait $program_pid 2>/dev/null
     exit 0
 }
 
