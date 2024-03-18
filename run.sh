@@ -2,9 +2,9 @@
 root="$(dirname "$(readlink -f "$0")")"
 cd "$root"
 
-################################################
-# To restart the program just press Up arrow key
-################################################
+####################################################
+# To restart the program just press the Up arrow key
+####################################################
 
 # Function to launch the program
 launch_program() {
