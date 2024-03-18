@@ -43,6 +43,7 @@ class Config:
         self.combobox_background = "#2B303B"
         self.dialog_background = "white"
         self.dialog_foreground = "black"
+        self.dialog_border = "#446CA1"
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
         self.snippet_border = "#A0B8BF"

@@ -95,7 +95,7 @@ class Display:
             return ""
 
     def close_tab(self, event: Optional[Any] = None, tab_id: str = "",
-                  force: bool = False, make_empty: bool = True, show_close_all: bool = False) -> None:
+                  force: bool = False, make_empty: bool = True) -> None:
         if (not tab_id) and event:
             tab_id = self.tab_on_coords(event.x, event.y)
 
@@ -119,11 +119,12 @@ class Display:
         else:
             cmd_list = []
 
-            if show_close_all and (self.num_tabs() > 1):
+            if self.num_tabs() > 1:
+                cmd_list.append(("Others", lambda: self.close_other_tabs()))
+
                 if self.num_tabs() > 5:
                     cmd_list.append(("Old", lambda: self.close_old_tabs()))
 
-                cmd_list.append(("Others", lambda: self.close_other_tabs()))
                 cmd_list.append(("All", lambda: self.close_all_tabs()))
 
             Dialog.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)

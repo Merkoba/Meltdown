@@ -95,10 +95,13 @@ class Dialog:
     def make(self, text: str) -> None:
         background = config.dialog_background
         foreground = config.dialog_foreground
+        border = config.dialog_border
 
-        self.root = tk.Frame(app.root, bg=background)
+        self.root = tk.Frame(app.root, bg=border)
+        self.main = tk.Frame(self.root, bg=background)
+        self.main.pack(padx=8, pady=8)
         self.root.lift()
-        container = tk.Frame(self.root, padx=10, pady=4, bg=background)
+        container = tk.Frame(self.main, padx=10, pady=4, bg=background)
         container.pack()
         tk.Label(container, text=text, font=config.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
         self.top_frame = tk.Frame(container)

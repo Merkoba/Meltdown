@@ -37,8 +37,7 @@ class Output(tk.Text):
         self.auto_scroll = True
         self.position = "1.0"
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
-        self.tag_config("highlight", background=config.highlight_background,
-                        foreground=config.highlight_foreground)
+        self.tag_config("highlight", underline=True)
         self.setup()
 
     def setup(self) -> None:
