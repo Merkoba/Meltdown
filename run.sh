@@ -2,10 +2,6 @@
 root="$(dirname "$(readlink -f "$0")")"
 cd "$root"
 
-####################################################
-# To restart the program just press the Up arrow key
-####################################################
-
 # Function to launch the program
 launch_program() {
     # Replace 'your_program' with the actual command to launch your program
@@ -22,7 +18,6 @@ restart_program() {
 
 # Cleanup function to execute before exiting
 cleanup() {
-    echo "Exiting script..."
     kill -9 "$program_pid" 2>/dev/null
     wait $program_pid 2>/dev/null
     exit 0
@@ -34,21 +29,17 @@ trap cleanup SIGINT
 # Main function
 main() {
     launch_program
+    echo "Enter: Restart | Ctrl-c: Exit"
 
     # Loop to capture keypresses and check program status
     while true; do
         # Read with a timeout of 1 second
-        if read -rsn1 -t 1 key; then
-            if [[ "$key" == $'\x1b' ]]; then  # Check if the key is escape (starting sequence for arrow keys)
-                read -rsn2 -t 1 key  # Capture the next 2 characters
-                if [[ "$key" == '[A' ]]; then  # Check if it's the Up arrow key
-                    echo "Restarting program..."
-                    restart_program
-                fi
+        if read -rs -t 1 key; then
+            if [[ "$key" == "" ]]; then  # Check if it's the Enter key
+                restart_program
             fi
         fi
         if ! ps -p "$program_pid" >/dev/null 2>&1; then  # Check if program is still running
-            echo "Program exited. Exiting script."
             exit 0
         fi
     done
