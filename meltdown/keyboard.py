@@ -139,6 +139,7 @@ class Keyboard:
                             else:
                                 return ""
 
+            self.on_key_press(event)
             return ""
 
         for key in self.commands:
