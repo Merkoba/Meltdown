@@ -38,6 +38,24 @@ class Output(tk.Text):
         self.position = "1.0"
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.tag_config("highlight", underline=True)
+
+        def on_highlight_click(event: Any) -> None:
+            adjacent = self.tag_prevrange("highlight", event.widget.index(tk.CURRENT))
+            adjacent_text = self.get(*adjacent)
+            self.search_text(adjacent_text)
+
+        self.tag_bind("highlight", "<Button-1>", lambda e: on_highlight_click(e))
+
+        def on_motion(event: Any) -> None:
+            current_index = self.index(tk.CURRENT)
+            word_under_cursor = self.get(f"{current_index} wordstart", f"{current_index} wordend")
+            tags = self.tag_names(current_index)
+            if "highlight" in tags:
+                self.config(cursor="hand2")
+            else:
+                self.config(cursor="xterm")
+
+        self.bind("<Motion>", on_motion)
         self.setup()
 
     def setup(self) -> None:
@@ -178,7 +196,7 @@ class Output(tk.Text):
 
         self.enable()
         self.format_snippets()
-        self.format_backticks()
+        self.format_highlights()
         self.disable()
 
         app.update()
@@ -207,35 +225,59 @@ class Output(tk.Text):
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)
             self.snippets.append(snippet)
 
-    def format_backticks(self) -> None:
+    def format_highlights(self) -> None:
         start_index = self.position
+        text = self.get(start_index, "end-1c")
+        backtick = "`"
+        result = ""
+        code_string = ""
+        in_code = False
+        matches = []
+        index_start = 0
 
-        while True:
-            start_index = self.search("`", start_index, "end")
+        def reset_code() -> None:
+            nonlocal in_code
+            nonlocal code_string
+            in_code = False
+            code_string = ""
 
-            if not start_index:
-                break
+        def rollback() -> None:
+            nonlocal result
+            result += backtick + code_string
 
-            if self.get(start_index + "+1c") == "`":
-                start_index += "+2c"
-                continue
-            end_index = self.search("`", start_index + "+1c", "end")
+        for i, char in enumerate(text):
+            prev_char = text[i - 1] if (i - 1) >= 0 else None
+            next_char = text[i + 1] if (i + 1) < len(text) else None
 
-            if not end_index:
-                break
+            if char == backtick:
+                if in_code:
+                    matches.append([index_start, i])
+                    reset_code()
+                elif (prev_char != backtick) and (next_char != backtick):
+                    reset_code()
+                    in_code = True
+                    index_start = i
+            else:
+                if char == "\n":
+                    if in_code:
+                        rollback()
+                        reset_code()
 
-            if self.get(end_index + "+1c") == "`":
-                start_index = end_index + "+2c"
-                continue
+                    result += char
+                else:
+                    if in_code:
+                        code_string += char
+                    else:
+                        result += char
 
-            self.tag_add("highlight", start_index, end_index + "+1c")
-            self.tag_lower("highlight")
-
-            self.delete(start_index, start_index + "+1c")
-            end_index = end_index + "-1c"
-            self.delete(end_index, end_index + "+1c")
-
-            start_index = end_index + "+1c"
+        if matches:
+            for start, end in reversed(matches):
+                start_line_col = self.index_at_char(start, start_index)
+                end_line_col = self.index_at_char(end, start_index)
+                clean_text = self.get(f"{start_line_col} + 1c", f"{end_line_col}")
+                self.delete(start_line_col, f"{end_line_col} + 1c")
+                self.insert(start_line_col, clean_text)
+                self.tag_add("highlight", start_line_col, end_line_col)
 
     def index_at_char(self, char_index: int, start_index: str) -> str:
         o_line = int(start_index.split(".")[0])
@@ -320,3 +362,16 @@ class Output(tk.Text):
         text = left + text + right
         self.insert_text(text)
         self.to_bottom()
+
+    def search_text(self, text: str) -> None:
+        import webbrowser
+        import urllib.parse
+        from .dialogs import Dialog
+
+        def action() -> None:
+            base_url = "https://www.google.com/search?"
+            query_params = {"q": text}
+            url = base_url + urllib.parse.urlencode(query_params)
+            webbrowser.open_new_tab(url)
+
+        Dialog.show_confirm("Search this on Google?", lambda: action())
