@@ -152,14 +152,21 @@ class Output(tk.Text):
     def get_text(self) -> str:
         return self.get("1.0", "end-1c").strip()
 
+    def get_fraction(self, num_lines: int = 1) -> float:
+        total_lines = self.count("1.0", "end-1c lineend", "displaylines")[0]  # type: ignore
+        fraction = float(num_lines / total_lines)
+        return fraction
+
     def scroll_up(self, check: bool = False) -> None:
-        self.yview_scroll(-2, "units")
+        fraction = self.get_fraction()
+        self.yview_moveto(self.yview()[0] - fraction)
 
         if check:
             self.check_autoscroll("up")
 
     def scroll_down(self, check: bool = False) -> None:
-        self.yview_scroll(2, "units")
+        fraction = self.get_fraction()
+        self.yview_moveto(self.yview()[0] + fraction)
 
         if check:
             self.check_autoscroll("down")
