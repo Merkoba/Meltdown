@@ -11,6 +11,7 @@ class Args:
         self. no_tooltips = False
         self.width = -1
         self.height = -1
+        self.test = False
 
     class Internal:
         title = app.manifest["title"]
@@ -22,6 +23,7 @@ class Args:
             "no-tooltips": {"action": "store_true", "help": "Don't show tooltips"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
+            "test": {"action": "store_true", "help": "Make a test tab"},
         }
 
         aliases: Dict[str, List[str]] = {}
@@ -31,6 +33,7 @@ class Args:
         ap.normal("no_tooltips")
         ap.normal("width")
         ap.normal("height")
+        ap.normal("test")
 
 
 args = Args()

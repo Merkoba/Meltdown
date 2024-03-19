@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 root="$(dirname "$(readlink -f "$0")")"
 cd "$root"
+args=("$@")
 
 # Function to launch the program
 launch_program() {
     # Replace 'your_program' with the actual command to launch your program
-    venv/bin/python -m meltdown.main "$@" &
+    venv/bin/python -m meltdown.main "${args[@]}" &
     program_pid=$!
     disown $program_pid
 }

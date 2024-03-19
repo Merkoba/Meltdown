@@ -170,5 +170,8 @@ class Config:
     def get_bold_font(self) -> Tuple[str, int, str]:
         return (self.font_family, self.output_font_size, "bold")
 
+    def get_italic_font(self) -> Tuple[str, int, str]:
+        return (self.font_family, self.output_font_size, "italic")
+
 
 config = Config()

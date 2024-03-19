@@ -2,6 +2,7 @@
 from .config import config
 from .widgets import widgets
 from .paths import paths
+from .args import args
 from . import timeutils
 from .output import Output
 
@@ -10,6 +11,26 @@ import json
 from typing import List, Dict, Any, Optional
 from tkinter import filedialog
 from pathlib import Path
+
+
+test_session = {
+    "id": "123",
+    "name": "Test",
+    "items": [
+        {"user": "Highlight Test"},
+        {"assistant": "Here is a `highlight` and `a longer highlight`."},
+        {"user": "Bold Test"},
+        {"assistant": "Here is a bold **word** and **a bold sentence**."},
+        {"user": "Italic Test"},
+        {"assistant": "Here is an italic *word* and *an italic sentence*."},
+        {"user": "Italic Test 2"},
+        {"assistant": "Here is a an italic _word_ and _an italic sentence_."},
+        {"user": "Snippet Test"},
+        {"assistant": "Here is some code:\n\n```python\na = 123\nprint('Hello, World!')\n```"},
+        {"user": "Normal last sentence"},
+        {"assistant": "Here is the last sentence"},
+    ],
+}
 
 
 class Document:
@@ -144,6 +165,9 @@ class Session:
                 items = json.load(file)
             except BaseException:
                 items = []
+
+        if args.test:
+            items.append(test_session)
 
         if not items:
             return

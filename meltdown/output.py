@@ -2,12 +2,12 @@
 from .config import config
 from .app import app
 from .menus import Menu
+from .markdown import Markdown
 
 # Libraries
 import pyperclip  # type: ignore
 
 # Standard
-import re
 import tkinter as tk
 from tkinter import ttk
 from typing import Any, List, Optional
@@ -89,6 +89,7 @@ class Output(tk.Text):
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
         self.tag_config("bold", font=config.get_bold_font())
+        self.markdown = Markdown(self)
         self.setup()
 
     def setup(self) -> None:
@@ -227,227 +228,10 @@ class Output(tk.Text):
     def format_text(self, complete: bool = False, from_start: bool = False) -> None:
         self.enable()
         position = "1.0" if from_start else self.position
-
-        self.format_snippets(complete, position)
-        self.format_highlights(complete, position)
-        self.format_bold(complete, position)
-        self.format_urls(complete, position)
-
+        self.markdown.format(complete, position)
         self.disable()
         app.update()
         self.to_bottom(True)
-
-    def format_snippets(self, complete: bool, position: str) -> None:
-        from .snippet import Snippet
-        start_index = position
-        text = self.get(start_index, "end-1c")
-        pattern = r"^```([\w#]*)\n(.*?)\n```$"
-        matches = []
-
-        for match in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
-            language = match.group(1)
-            content_start = match.start(2)
-            content_end = match.end(2)
-            matches.append((content_start, content_end, language))
-
-        for content_start, content_end, language in reversed(matches):
-            start_line_col = self.index_at_char(content_start, start_index)
-            end_line_col = self.index_at_char(content_end, start_index)
-            snippet_text = self.get(start_line_col, end_line_col)
-            self.delete(f"{start_line_col} - 1 lines linestart", f"{end_line_col} + 1 lines lineend")
-
-            snippet = Snippet(self, snippet_text, language)
-            self.window_create(f"{start_line_col} - 1 lines", window=snippet)
-            self.snippets.append(snippet)
-
-    def format_highlights(self, complete: bool, position: str) -> None:
-        start_index = position
-        text = self.get(start_index, "end-1c")
-        backtick = "`"
-        result = ""
-        code_string = ""
-        in_code = False
-        matches = []
-        index_start = 0
-        last = len(text) - 1
-
-        def ended(i: int) -> bool:
-            if complete:
-                return i == last
-            else:
-                return False
-
-        def reset_code() -> None:
-            nonlocal in_code
-            nonlocal code_string
-            in_code = False
-            code_string = ""
-
-        def rollback() -> None:
-            nonlocal result
-            result += backtick + code_string
-
-        for i, char in enumerate(text):
-            if char == backtick:
-                prev_char = text[i - 1] if (i - 1) >= 0 else None
-                next_char = text[i + 1] if (i + 1) < len(text) else None
-
-                if in_code:
-                    matches.append((index_start, i))
-                    reset_code()
-                elif (prev_char != backtick) and (next_char != backtick):
-                    reset_code()
-                    in_code = True
-                    index_start = i
-            else:
-                if char == "\n" or ended(i):
-                    if in_code:
-                        rollback()
-                        reset_code()
-
-                    result += char
-                else:
-                    if in_code:
-                        code_string += char
-                    else:
-                        result += char
-
-        if matches:
-            for start, end in reversed(matches):
-                start_coords = self.coords_at_index(start, start_index)
-                end_coords = self.coords_at_index(end, start_index)
-                clean_text = self.get(f"{start_coords} + 1c", f"{end_coords}")
-                self.delete(start_coords, f"{end_coords} + 1c")
-                self.insert(start_coords, clean_text)
-                self.tag_add("highlight", start_coords, end_coords)
-
-    def format_bold(self, complete: bool, position: str) -> None:
-        start_index = position
-        text = self.get(start_index, "end-1c")
-        asterisk = "*"
-        result = ""
-        code_string = ""
-        in_code = False
-        matches = []
-        index_start = 0
-        last = len(text) - 1
-
-        def ended(i: int) -> bool:
-            if complete:
-                return i == last
-            else:
-                return False
-
-        def reset_code() -> None:
-            nonlocal in_code
-            nonlocal code_string
-            in_code = False
-            code_string = ""
-
-        def rollback() -> None:
-            nonlocal result
-            result += asterisk + code_string
-
-        for i, char in enumerate(text):
-            if char == asterisk:
-                prev_char = text[i - 1] if (i - 1) >= 0 else None
-                next_char = text[i + 1] if (i + 1) < len(text) else None
-                next_char_2 = text[i + 2] if (i + 2) < len(text) else None
-
-                if in_code:
-                    if (prev_char != asterisk) and (next_char == asterisk) and (next_char_2 != asterisk):
-                        matches.append((index_start, i))
-                        reset_code()
-                elif (prev_char != asterisk) and (next_char == asterisk) and (next_char_2 != asterisk):
-                    reset_code()
-                    in_code = True
-                    index_start = i
-            else:
-                if char == "\n" or ended(i):
-                    if in_code:
-                        rollback()
-                        reset_code()
-
-                    result += char
-                else:
-                    if in_code:
-                        code_string += char
-                    else:
-                        result += char
-
-        if matches:
-            for start, end in reversed(matches):
-                start_coords = self.coords_at_index(start, start_index)
-                end_coords = self.coords_at_index(end, start_index)
-                clean_text = self.get(f"{start_coords} + 2c", f"{end_coords}")
-                self.delete(start_coords, f"{end_coords} + 2c")
-                self.insert(start_coords, clean_text)
-                self.tag_add("bold", start_coords, end_coords)
-
-    def format_urls(self, complete: bool, position: str) -> None:
-        start_index = position
-        text = self.get(start_index, "end-1c")
-        protocols = ("http://", "https://", "ftp://", "www.")
-        stoppers = (" ", "\n")
-        matches = []
-        last = len(text) - 1
-        word = ""
-
-        def ended(i: int) -> bool:
-            if complete:
-                return i == last
-            else:
-                return False
-
-        for i, char in enumerate(text):
-            if char in stoppers or ended(i):
-                end_index = i
-
-                if ended(i):
-                    word += char
-                    end_index += 1
-
-                if any([word.startswith(protocol) for protocol in protocols]):
-                    matches.append((i - len(word), end_index))
-
-                word = ""
-            else:
-                word += char
-
-        if matches:
-            for start, end in reversed(matches):
-                start_coords = self.coords_at_index(start, start_index)
-                end_coords = self.coords_at_index(end, start_index)
-                self.tag_add("url", start_coords, end_coords)
-
-    def coords_at_index(self, index: int, start_index: str) -> str:
-        line, col = map(int, start_index.split("."))
-        text = self.get(start_index, "end-1c")
-
-        for i in range(index):
-            if i >= len(text):
-                break
-            elif (text[i] == "\n"):
-                line += 1
-                col = 0
-            else:
-                col += 1
-
-        return f"{line}.{col}"
-
-    def index_at_char(self, char_index: int, start_index: str) -> str:
-        o_line = int(start_index.split(".")[0])
-        line_start = 0
-
-        for i, line in enumerate(self.get(start_index, "end-1c").split("\n")):
-            line_end = line_start + len(line)
-
-            if line_start <= char_index <= line_end:
-                return f"{i + o_line}.{char_index - line_start}"
-
-            line_start = line_end + 1
-
-        return ""
 
     def update_font(self) -> None:
         self.configure(font=config.get_output_font())
