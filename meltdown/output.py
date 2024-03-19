@@ -2,7 +2,6 @@
 from .config import config
 from .app import app
 from .menus import Menu
-from .markdown import Markdown
 
 # Libraries
 import pyperclip  # type: ignore
@@ -90,12 +89,13 @@ class Output(tk.Text):
         self.tag_config("url", underline=True)
         self.tag_config("bold", font=config.get_bold_font())
         self.tag_config("italic", font=config.get_italic_font())
-        self.markdown = Markdown(self)
         self.setup()
 
     def setup(self) -> None:
         from .widgets import widgets
+        from .markdown import Markdown
         self.display = widgets.display
+        self.markdown = Markdown(self)
 
         def on_highlight_click(event: Any) -> None:
             self.show_words_menu(event)

@@ -3,7 +3,6 @@ from .output import Output
 
 # Standard
 import re
-import tkinter as tk
 from typing import Optional
 
 
