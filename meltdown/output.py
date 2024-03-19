@@ -56,11 +56,11 @@ class Output(tk.Text):
 
         def on_motion(event: Any) -> None:
             current_index = self.index(tk.CURRENT)
-            # word = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             tags = self.tag_names(current_index)
+
             if "highlight" in tags:
                 self.config(cursor="hand2")
-            if "url" in tags:
+            elif "url" in tags:
                 self.config(cursor="hand2")
             else:
                 self.config(cursor="xterm")
@@ -273,12 +273,12 @@ class Output(tk.Text):
 
         if matches:
             for start, end in reversed(matches):
-                start_line_col = self.index_at_char(start, start_index)
-                end_line_col = self.index_at_char(end, start_index)
-                clean_text = self.get(f"{start_line_col} + 1c", f"{end_line_col}")
-                self.delete(start_line_col, f"{end_line_col} + 1c")
-                self.insert(start_line_col, clean_text)
-                self.tag_add("highlight", start_line_col, end_line_col)
+                start_coords = self.coords_at_index(start, start_index)
+                end_coords = self.coords_at_index(end, start_index)
+                clean_text = self.get(f"{start_coords} + 1c", f"{end_coords}")
+                self.delete(start_coords, f"{end_coords} + 1c")
+                self.insert(start_coords, clean_text)
+                self.tag_add("highlight", start_coords, end_coords)
 
     def format_urls(self, complete: bool) -> None:
         start_index = self.position
@@ -312,9 +312,9 @@ class Output(tk.Text):
 
         if matches:
             for start, end in reversed(matches):
-                start_line_col = self.coords_at_index(start, start_index)
-                end_line_col = self.coords_at_index(end, start_index)
-                self.tag_add("url", start_line_col, end_line_col)
+                start_coords = self.coords_at_index(start, start_index)
+                end_coords = self.coords_at_index(end, start_index)
+                self.tag_add("url", start_coords, end_coords)
 
     def coords_at_index(self, index: int, start_index: str) -> str:
         line, col = map(int, start_index.split("."))
