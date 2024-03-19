@@ -260,7 +260,6 @@ class Model:
         try:
             for chunk in output:
                 if self.stop_stream_thread.is_set():
-                    print("Interrupted")
                     break
 
                 delta = chunk["choices"][0]["delta"]

@@ -26,10 +26,10 @@ class Display:
     def __init__(self, widget: ttk.Notebook) -> None:
         self.root = widget
         self.tabs: Dict[str, Tab] = {}
-        self.output_menu = Menu()
         self.tab_menu = Menu()
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
+        self.output_menu = Menu()
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())

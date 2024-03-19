@@ -14,24 +14,37 @@ from typing import Any, List, Optional
 
 
 class Output(tk.Text):
-    highlights_menu = Menu()
-    highlights_menu.add(text="Explain", command=lambda: Output.highlight_explain())
-    highlights_menu.add(text="Search", command=lambda: Output.highlight_search())
-    current_highlight = {}
+    words_menu = Menu()
+    words_menu.add(text="Explain", command=lambda: Output.explain_words())
+    words_menu.add(text="Search", command=lambda: Output.search_words())
+    tab_id = ""
+    words = ""
 
     @staticmethod
-    def highlight_explain() -> None:
-        Output.explain()
+    def get_words() -> str:
+        return Output.words.strip()
 
     @staticmethod
-    def highlight_search() -> None:
-        Output.search_text()
+    def explain_words() -> None:
+        from .model import model
+        text = Output.get_words()
+
+        if not text:
+            return
+
+        query = f"What is '{text}' ?"
+        tab_id = Output.tab_id
+        model.stream(query, tab_id)
 
     @staticmethod
-    def search_text(text: str) -> None:
+    def search_words() -> None:
         import webbrowser
         import urllib.parse
         from .dialogs import Dialog
+        text = Output.get_words()
+
+        if not text:
+            return
 
         def action() -> None:
             base_url = "https://www.google.com/search?"
@@ -50,14 +63,6 @@ class Output(tk.Text):
             webbrowser.open_new_tab(url)
 
         Dialog.show_confirm("Open this URL??", lambda: action())
-
-    @staticmethod
-    def explain() -> None:
-        from .model import model
-        text = Output.current_highlight["text"]
-        query = f"What is '{text}' ?"
-        tab_id = Output.current_highlight["tab_id"]
-        model.stream(query, tab_id)
 
     @staticmethod
     def get_prompt(who: str) -> str:
@@ -83,13 +88,14 @@ class Output(tk.Text):
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
+        self.setup()
+
+    def setup(self) -> None:
+        from .widgets import widgets
+        self.display = widgets.display
 
         def on_highlight_click(event: Any) -> None:
-            text = self.get_tagwords("highlight", event)
-
-            if text:
-                Output.current_highlight = {"tab_id": self.tab_id, "text": text}
-                self.show_highlights_menu(event, text)
+            self.show_words_menu(event)
 
         self.tag_bind("highlight", "<ButtonRelease-1>", lambda e: on_highlight_click(e))
 
@@ -104,20 +110,22 @@ class Output(tk.Text):
         def on_motion(event: Any) -> None:
             current_index = self.index(tk.CURRENT)
             tags = self.tag_names(current_index)
+            Output.tab_id = self.tab_id
 
-            if "highlight" in tags:
-                self.config(cursor="hand2")
-            elif "url" in tags:
-                self.config(cursor="hand2")
+            if tags:
+                Output.words = self.get_tagwords("highlight", event)
+
+                if "highlight" in tags:
+                    self.config(cursor="hand2")
+                elif "url" in tags:
+                    self.config(cursor="hand2")
+                else:
+                    self.config(cursor="xterm")
             else:
+                Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
                 self.config(cursor="xterm")
 
         self.bind("<Motion>", on_motion)
-        self.setup()
-
-    def setup(self) -> None:
-        from .widgets import widgets
-        self.display = widgets.display
 
         def scroll_up() -> str:
             self.scroll_up(True)
@@ -135,8 +143,8 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
+        self.bind("<ButtonRelease-3>", lambda e: self.show_words_menu(e))
         self.bind("<Button-1>", lambda e: self.deselect_all())
-        self.bind("<Button-3>", lambda e: self.display.show_output_menu(e))
         self.bind("<Button-4>", lambda e: scroll_up())
         self.bind("<Button-5>", lambda e: scroll_down())
         self.bind("<Prior>", lambda e: scroll_up())
@@ -481,5 +489,20 @@ class Output(tk.Text):
 
         return ""
 
-    def show_highlights_menu(self, event: Any, text: str) -> None:
-        Output.highlights_menu.show(event)
+    def get_selected_text(self) -> str:
+        try:
+            start = self.index(tk.SEL_FIRST)
+            end = self.index(tk.SEL_LAST)
+            selected_text = self.get(start, end)
+            return selected_text
+        except tk.TclError:
+            return ""
+
+    def show_words_menu(self, event: Any) -> None:
+        seltext = self.get_selected_text()
+
+        if seltext:
+            Output.words = seltext
+
+        if Output.words:
+            Output.words_menu.show(event)

@@ -57,7 +57,7 @@ class Config:
         self.system_threshold = 70
         self.printlogs = False
         self.max_log = 100
-        self.border_width = 6
+        self.border_width = 4
         self.border_color = "#959595"
         self.menu_background = "white"
         self.menu_foreground = "black"

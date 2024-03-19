@@ -188,8 +188,12 @@ class Widgets:
         ToolTip(self.log_button, "Save the output to a log file")
 
         self.top_button = widgetutils.make_button(frame, "Top", lambda: self.display.to_top(),
-                                                  fill=Fill.HORIZONTAL, right_padding=right_padding)
+                                                  fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
+
+        self.output_menu = widgetutils.make_button(frame, "#", lambda e: self.display.show_output_menu(e),
+                                                   fill=Fill.HORIZONTAL, right_padding=right_padding, width=3)
+        ToolTip(self.output_menu, "Open the output menu")
 
         # Output
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
