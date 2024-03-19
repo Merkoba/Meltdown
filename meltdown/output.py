@@ -234,19 +234,21 @@ class Output(tk.Text):
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self, complete: bool = False) -> None:
+    def format_text(self, complete: bool = False, from_start: bool = False) -> None:
         self.enable()
-        self.format_snippets(complete)
-        self.format_highlights(complete)
-        self.format_urls(complete)
-        self.disable()
+        position = "1.0" if from_start else self.position
 
+        self.format_snippets(complete, position)
+        self.format_highlights(complete, position)
+        self.format_urls(complete, position)
+
+        self.disable()
         app.update()
         self.to_bottom(True)
 
-    def format_snippets(self, complete: bool) -> None:
+    def format_snippets(self, complete: bool, position: str) -> None:
         from .snippet import Snippet
-        start_index = self.position
+        start_index = position
         text = self.get(start_index, "end-1c")
         pattern = r"^```([\w#]*)\n(.*?)\n```$"
         matches = []
@@ -267,11 +269,11 @@ class Output(tk.Text):
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)
             self.snippets.append(snippet)
 
-    def format_highlights(self, complete: bool) -> None:
+    def format_highlights(self, complete: bool, position: str) -> None:
         if not complete:
             return
 
-        start_index = self.position
+        start_index = position
         text = self.get(start_index, "end-1c")
         backtick = "`"
         result = ""
@@ -331,8 +333,8 @@ class Output(tk.Text):
                 self.insert(start_coords, clean_text)
                 self.tag_add("highlight", start_coords, end_coords)
 
-    def format_urls(self, complete: bool) -> None:
-        start_index = self.position
+    def format_urls(self, complete: bool, position: str) -> None:
+        start_index = position
         text = self.get(start_index, "end-1c")
         protocols = ("http://", "https://", "ftp://", "www.")
         stoppers = (" ", "\n")
@@ -444,8 +446,6 @@ class Output(tk.Text):
         return document.to_log()
 
     def update_position(self) -> None:
-        self.update_idletasks()
-        app.update()
         self.position = self.index(tk.INSERT)
 
     def prompt(self, who: str) -> None:

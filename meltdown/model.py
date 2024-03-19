@@ -135,8 +135,6 @@ class Model:
             self.streaming = True
             self.do_stream(prompt, tab_id)
             self.streaming = False
-            tab = widgets.display.get_tab(tab_id)
-            tab.output.format_text(True)
 
         self.stop_stream()
         self.stream_thread = threading.Thread(target=wrapper, args=(prompt, tab_id))

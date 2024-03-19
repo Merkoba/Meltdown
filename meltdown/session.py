@@ -47,7 +47,9 @@ class Document:
                     else:
                         continue
 
-                    tab.output.insert_text(item[key], format_text=True, complete=True)
+                    tab.output.insert_text(item[key], format_text=False)
+
+            tab.output.format_text(complete=True, from_start=True)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
