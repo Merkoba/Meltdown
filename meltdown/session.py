@@ -48,7 +48,7 @@ class Document:
                         continue
 
                     tab.output.insert_text(item[key])
-                    tab.output.format_text()
+                    tab.output.format_text(True)
 
     def to_dict(self) -> Dict[str, Any]:
         return {

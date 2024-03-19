@@ -38,19 +38,31 @@ class Output(tk.Text):
         self.position = "1.0"
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.tag_config("highlight", underline=True)
+        self.tag_config("url", underline=True)
 
         def on_highlight_click(event: Any) -> None:
-            adjacent = self.tag_prevrange("highlight", event.widget.index(tk.CURRENT))
-            adjacent_text = self.get(*adjacent)
-            self.search_text(adjacent_text)
+            text = self.get_tagwords("highlight", event)
 
-        self.tag_bind("highlight", "<Button-1>", lambda e: on_highlight_click(e))
+            if text:
+                self.search_text(text)
+
+        self.tag_bind("highlight", "<ButtonRelease-1>", lambda e: on_highlight_click(e))
+
+        def on_url_click(event: Any) -> None:
+            text = self.get_tagwords("url", event)
+
+            if text:
+                self.open_url(text)
+
+        self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
 
         def on_motion(event: Any) -> None:
             current_index = self.index(tk.CURRENT)
-            word_under_cursor = self.get(f"{current_index} wordstart", f"{current_index} wordend")
+            # word = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             tags = self.tag_names(current_index)
             if "highlight" in tags:
+                self.config(cursor="hand2")
+            if "url" in tags:
                 self.config(cursor="hand2")
             else:
                 self.config(cursor="xterm")
@@ -109,18 +121,10 @@ class Output(tk.Text):
 
     def insert_text(self, text: str) -> None:
         self.enable()
-        last_line = self.get("end-2l", "end-1c")
-
-        if "`" in last_line:
-            highlights = re.findall(r"`([^`]+)`", last_line)
-        else:
-            highlights = []
-
         self.insert(tk.END, text)
+        checks = (" ", "\n")
 
-        if last_line == "```\n":
-            self.format_text()
-        elif highlights:
+        if text in checks:
             self.format_text()
 
         self.disable()
@@ -191,18 +195,19 @@ class Output(tk.Text):
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self) -> None:
+    def format_text(self, complete: bool = False) -> None:
         self.cancel_format_debouncer()
 
         self.enable()
-        self.format_snippets()
-        self.format_highlights()
+        self.format_snippets(complete)
+        self.format_highlights(complete)
+        self.format_urls(complete)
         self.disable()
 
         app.update()
         self.to_bottom(True)
 
-    def format_snippets(self) -> None:
+    def format_snippets(self, complete: bool) -> None:
         from .snippet import Snippet
         start_index = self.position
         text = self.get(start_index, "end-1c")
@@ -225,7 +230,7 @@ class Output(tk.Text):
             self.window_create(f"{start_line_col} - 1 lines", window=snippet)
             self.snippets.append(snippet)
 
-    def format_highlights(self) -> None:
+    def format_highlights(self, complete: bool) -> None:
         start_index = self.position
         text = self.get(start_index, "end-1c")
         backtick = "`"
@@ -234,6 +239,13 @@ class Output(tk.Text):
         in_code = False
         matches = []
         index_start = 0
+        last = len(text) - 1
+
+        def ended(i: int) -> bool:
+            if complete:
+                return i == last
+            else:
+                return False
 
         def reset_code() -> None:
             nonlocal in_code
@@ -246,19 +258,19 @@ class Output(tk.Text):
             result += backtick + code_string
 
         for i, char in enumerate(text):
-            prev_char = text[i - 1] if (i - 1) >= 0 else None
-            next_char = text[i + 1] if (i + 1) < len(text) else None
-
             if char == backtick:
+                prev_char = text[i - 1] if (i - 1) >= 0 else None
+                next_char = text[i + 1] if (i + 1) < len(text) else None
+
                 if in_code:
-                    matches.append([index_start, i])
+                    matches.append((index_start, i))
                     reset_code()
                 elif (prev_char != backtick) and (next_char != backtick):
                     reset_code()
                     in_code = True
                     index_start = i
             else:
-                if char == "\n":
+                if char == "\n" or ended(i):
                     if in_code:
                         rollback()
                         reset_code()
@@ -278,6 +290,46 @@ class Output(tk.Text):
                 self.delete(start_line_col, f"{end_line_col} + 1c")
                 self.insert(start_line_col, clean_text)
                 self.tag_add("highlight", start_line_col, end_line_col)
+
+    def format_urls(self, complete: bool) -> None:
+        start_index = self.position
+        text = self.get(start_index, "end-1c")
+        protocols = ("http://", "https://", "ftp://", "www.")
+        stoppers = (" ", "\n")
+        matches = []
+        ticks = 0
+        word = ""
+        last = len(text) - 1
+
+        def ended(i: int) -> bool:
+            if complete:
+                return i == last
+            else:
+                return False
+
+        for i, char in enumerate(text):
+            if ticks > 0:
+                ticks -= 1
+
+                if ticks > 0:
+                    continue
+
+            if char in stoppers or ended(i):
+                if ended(i):
+                    word += char
+
+                if any([word.startswith(protocol) for protocol in protocols]):
+                    matches.append((i - len(word), i))
+
+                word = ""
+            else:
+                word += char
+
+        if matches:
+            for start, end in reversed(matches):
+                start_line_col = self.index_at_char(start, start_index)
+                end_line_col = self.index_at_char(end, start_index)
+                self.tag_add("url", start_line_col, end_line_col)
 
     def index_at_char(self, char_index: int, start_index: str) -> str:
         o_line = int(start_index.split(".")[0])
@@ -374,4 +426,27 @@ class Output(tk.Text):
             url = base_url + urllib.parse.urlencode(query_params)
             webbrowser.open_new_tab(url)
 
-        Dialog.show_confirm("Search this on Google?", lambda: action())
+        Dialog.show_confirm("Search for this term?", lambda: action())
+
+    def open_url(self, url: str) -> None:
+        import webbrowser
+        from .dialogs import Dialog
+
+        def action() -> None:
+            webbrowser.open_new_tab(url)
+
+        Dialog.show_confirm("Open this URL??", lambda: action())
+
+    def get_tagwords(self, tag: str, event: Any) -> str:
+        adjacent = self.tag_prevrange(tag, event.widget.index(tk.CURRENT))
+
+        if not adjacent:
+            adjacent = self.tag_nextrange(tag, event.widget.index(tk.CURRENT))
+
+        if len(adjacent) == 2:
+            text = self.get(*adjacent)
+
+            if text:
+                return text
+
+        return ""

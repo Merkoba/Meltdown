@@ -287,6 +287,8 @@ class Model:
         except BaseException:
             pass
 
+        tab.output.format_text(True)
+
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()
             document.add(log_dict)
