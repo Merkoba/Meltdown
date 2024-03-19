@@ -343,6 +343,13 @@ class Output(tk.Text):
         Output.current_output = self
         seltext = self.get_selected_text()
 
+        if not seltext:
+            for snippet in self.snippets:
+                seltext = snippet.get_selected_text()
+
+                if seltext:
+                    break
+
         if seltext:
             Output.words = seltext
 

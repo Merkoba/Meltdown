@@ -126,3 +126,12 @@ class Snippet(tk.Frame):
         current_index = self.text.index(tk.CURRENT)
         Output.tab_id = self.parent.tab_id
         Output.words = self.text.get(f"{current_index} wordstart", f"{current_index} wordend")
+
+    def get_selected_text(self) -> str:
+        try:
+            start = self.text.index(tk.SEL_FIRST)
+            end = self.text.index(tk.SEL_LAST)
+            selected_text = self.text.get(start, end)
+            return selected_text
+        except tk.TclError:
+            return ""
