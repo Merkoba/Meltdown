@@ -171,7 +171,7 @@ class Output(tk.Text):
             if complete:
                 self.format_text(True)
             else:
-                checks = (" ", "\n")
+                checks = ("`", ":")
 
                 if text in checks:
                     self.format_text()
@@ -270,9 +270,6 @@ class Output(tk.Text):
             self.snippets.append(snippet)
 
     def format_highlights(self, complete: bool, position: str) -> None:
-        if not complete:
-            return
-
         start_index = position
         text = self.get(start_index, "end-1c")
         backtick = "`"
@@ -446,7 +443,7 @@ class Output(tk.Text):
         return document.to_log()
 
     def update_position(self) -> None:
-        self.position = self.index(tk.INSERT)
+        self.position = self.index("end")
 
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who)
