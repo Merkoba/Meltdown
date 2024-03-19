@@ -62,6 +62,7 @@ class Snippet(tk.Frame):
         self.text.configure(font=config.get_snippet_font())
 
         self.scrollbar.configure(command=self.text.xview)
+        self.text.bind("<Motion>", lambda e: self.on_motion(e))
         self.update_size()
 
         def scroll_up(event: Any) -> str:
@@ -83,7 +84,7 @@ class Snippet(tk.Frame):
         def bind_scroll_events(widget: tk.Widget) -> None:
             widget.bind("<Button-4>", lambda e: scroll_up(e))
             widget.bind("<Button-5>", lambda e: scroll_down(e))
-            widget.bind("<Button-3>", lambda e: self.parent.display.show_output_menu(e))
+            widget.bind("<Button-3>", lambda e: self.parent.show_words_menu(e))
 
             for child in widget.winfo_children():
                 bind_scroll_events(child)
@@ -120,3 +121,8 @@ class Snippet(tk.Frame):
 
     def deselect_all(self) -> None:
         self.text.tag_remove("sel", "1.0", tk.END)
+
+    def on_motion(self, event: Any) -> None:
+        current_index = self.text.index(tk.CURRENT)
+        Output.tab_id = self.parent.tab_id
+        Output.words = self.text.get(f"{current_index} wordstart", f"{current_index} wordend")

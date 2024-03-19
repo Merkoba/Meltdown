@@ -107,26 +107,7 @@ class Output(tk.Text):
                 self.open_url(text)
 
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
-
-        def on_motion(event: Any) -> None:
-            current_index = self.index(tk.CURRENT)
-            tags = self.tag_names(current_index)
-            Output.tab_id = self.tab_id
-
-            if tags:
-                Output.words = self.get_tagwords("highlight", event)
-
-                if "highlight" in tags:
-                    self.config(cursor="hand2")
-                elif "url" in tags:
-                    self.config(cursor="hand2")
-                else:
-                    self.config(cursor="xterm")
-            else:
-                Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
-                self.config(cursor="xterm")
-
-        self.bind("<Motion>", on_motion)
+        self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def scroll_up() -> str:
             self.scroll_up(True)
@@ -571,3 +552,21 @@ class Output(tk.Text):
 
         if Output.words:
             Output.words_menu.show(event)
+
+    def on_motion(self, event: Any) -> None:
+        current_index = self.index(tk.CURRENT)
+        tags = self.tag_names(current_index)
+        Output.tab_id = self.tab_id
+
+        if tags:
+            Output.words = self.get_tagwords("highlight", event)
+
+            if "highlight" in tags:
+                self.config(cursor="hand2")
+            elif "url" in tags:
+                self.config(cursor="hand2")
+            else:
+                self.config(cursor="xterm")
+        else:
+            Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
+            self.config(cursor="xterm")
