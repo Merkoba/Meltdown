@@ -27,6 +27,8 @@ test_session = {
         {"assistant": "Here is a an italic _word_ and _an italic sentence_."},
         {"user": "Snippet Test"},
         {"assistant": "Here is some code:\n\n```python\na = 123\nprint('Hello, World!')\n```"},
+        {"user": "URL Test"},
+        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com"},
         {"user": "Normal last sentence"},
         {"assistant": "Here is the last sentence"},
     ],

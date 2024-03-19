@@ -89,6 +89,7 @@ class Output(tk.Text):
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
         self.tag_config("bold", font=config.get_bold_font())
+        self.tag_config("italic", font=config.get_italic_font())
         self.markdown = Markdown(self)
         self.setup()
 
