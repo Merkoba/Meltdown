@@ -100,7 +100,7 @@ Python comes bundled with the `Tkinter` library which is a wrapper around `Tcl`.
 
 This should just work after installing Python normally.
 
-Which means Meltdown is flexible and is able to run in many environments.
+Which means Meltdown is able to run in many environments.
 
 ---
 
