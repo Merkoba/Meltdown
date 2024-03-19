@@ -754,8 +754,13 @@ class Widgets:
     def check_details_buttons(self) -> None:
         scroll_pos_left = self.details_canvas.xview()[0]
         scroll_pos_right = self.details_canvas.xview()[1]
+        info = "Scroll this row. Middle click for instant"
+
         button_left = self.details_button_left
+        ToolTip(button_left, info)
+
         button_right = self.details_button_right
+        ToolTip(button_right, info)
 
         if scroll_pos_left == 0:
             button_left.set_style("disabled")
