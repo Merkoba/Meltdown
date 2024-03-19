@@ -30,8 +30,6 @@ class Output(tk.Text):
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-        self.format_debouncer: Optional[str] = None
-        self.format_debouncer_delay = 500
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
@@ -117,28 +115,21 @@ class Output(tk.Text):
         self.delete("1.0", tk.END)
         self.insert("1.0", str(text))
         self.disable()
-        self.debounce_format()
 
-    def insert_text(self, text: str) -> None:
+    def insert_text(self, text: str, complete: bool = False) -> None:
         self.enable()
         self.insert(tk.END, text)
-        checks = (" ", "\n")
 
-        if text in checks:
-            self.format_text()
+        if complete:
+            self.format_text(True)
+        else:
+            checks = (" ", "\n")
+
+            if text in checks:
+                self.format_text()
 
         self.disable()
         self.to_bottom(True)
-        self.debounce_format()
-
-    def debounce_format(self) -> None:
-        self.cancel_format_debouncer()
-        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: self.format_text())
-
-    def cancel_format_debouncer(self) -> None:
-        if self.format_debouncer is not None:
-            self.after_cancel(self.format_debouncer)
-            self.format_debouncer = None
 
     def clear_text(self) -> None:
         self.set_text("")
@@ -196,8 +187,6 @@ class Output(tk.Text):
         return self.display.get_tab(self.tab_id)
 
     def format_text(self, complete: bool = False) -> None:
-        self.cancel_format_debouncer()
-
         self.enable()
         self.format_snippets(complete)
         self.format_highlights(complete)
@@ -297,9 +286,8 @@ class Output(tk.Text):
         protocols = ("http://", "https://", "ftp://", "www.")
         stoppers = (" ", "\n")
         matches = []
-        ticks = 0
-        word = ""
         last = len(text) - 1
+        word = ""
 
         def ended(i: int) -> bool:
             if complete:
@@ -308,18 +296,15 @@ class Output(tk.Text):
                 return False
 
         for i, char in enumerate(text):
-            if ticks > 0:
-                ticks -= 1
-
-                if ticks > 0:
-                    continue
-
             if char in stoppers or ended(i):
+                end_index = i
+
                 if ended(i):
                     word += char
+                    end_index += 1
 
                 if any([word.startswith(protocol) for protocol in protocols]):
-                    matches.append((i - len(word), i))
+                    matches.append((i - len(word), end_index))
 
                 word = ""
             else:
@@ -327,9 +312,24 @@ class Output(tk.Text):
 
         if matches:
             for start, end in reversed(matches):
-                start_line_col = self.index_at_char(start, start_index)
-                end_line_col = self.index_at_char(end, start_index)
+                start_line_col = self.coords_at_index(start, start_index)
+                end_line_col = self.coords_at_index(end, start_index)
                 self.tag_add("url", start_line_col, end_line_col)
+
+    def coords_at_index(self, index: int, start_index: str) -> str:
+        line, col = map(int, start_index.split("."))
+        text = self.get(start_index, "end-1c")
+
+        for i in range(index):
+            if i >= len(text):
+                break
+            elif (text[i] == "\n"):
+                line += 1
+                col = 0
+            else:
+                col += 1
+
+        return f"{line}.{col}"
 
     def index_at_char(self, char_index: int, start_index: str) -> str:
         o_line = int(start_index.split(".")[0])
