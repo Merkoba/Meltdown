@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .app import app
+from .menus import Menu
 
 # Libraries
 import pyperclip  # type: ignore
@@ -13,6 +14,51 @@ from typing import Any, List, Optional
 
 
 class Output(tk.Text):
+    highlights_menu = Menu()
+    highlights_menu.add(text="Explain", command=lambda: Output.highlight_explain())
+    highlights_menu.add(text="Search", command=lambda: Output.highlight_search())
+    current_highlight = {}
+
+    @staticmethod
+    def highlight_explain() -> None:
+        Output.explain()
+
+    @staticmethod
+    def highlight_search() -> None:
+        Output.search_text()
+
+    @staticmethod
+    def search_text(text: str) -> None:
+        import webbrowser
+        import urllib.parse
+        from .dialogs import Dialog
+
+        def action() -> None:
+            base_url = "https://www.google.com/search?"
+            query_params = {"q": text}
+            url = base_url + urllib.parse.urlencode(query_params)
+            webbrowser.open_new_tab(url)
+
+        Dialog.show_confirm("Search for this term?", lambda: action())
+
+    @staticmethod
+    def open_url(url: str) -> None:
+        import webbrowser
+        from .dialogs import Dialog
+
+        def action() -> None:
+            webbrowser.open_new_tab(url)
+
+        Dialog.show_confirm("Open this URL??", lambda: action())
+
+    @staticmethod
+    def explain() -> None:
+        from .model import model
+        text = Output.current_highlight["text"]
+        query = f"What is '{text}' ?"
+        tab_id = Output.current_highlight["tab_id"]
+        model.stream(query, tab_id)
+
     @staticmethod
     def get_prompt(who: str) -> str:
         avatar = getattr(config, f"avatar_{who}")
@@ -42,7 +88,8 @@ class Output(tk.Text):
             text = self.get_tagwords("highlight", event)
 
             if text:
-                self.search_text(text)
+                Output.current_highlight = {"tab_id": self.tab_id, "text": text}
+                self.show_highlights_menu(event, text)
 
         self.tag_bind("highlight", "<ButtonRelease-1>", lambda e: on_highlight_click(e))
 
@@ -116,17 +163,18 @@ class Output(tk.Text):
         self.insert("1.0", str(text))
         self.disable()
 
-    def insert_text(self, text: str, complete: bool = False) -> None:
+    def insert_text(self, text: str, format_text: bool = False, complete: bool = False) -> None:
         self.enable()
         self.insert(tk.END, text)
 
-        if complete:
-            self.format_text(True)
-        else:
-            checks = (" ", "\n")
+        if format_text:
+            if complete:
+                self.format_text(True)
+            else:
+                checks = (" ", "\n")
 
-            if text in checks:
-                self.format_text()
+                if text in checks:
+                    self.format_text()
 
         self.disable()
         self.to_bottom(True)
@@ -220,6 +268,9 @@ class Output(tk.Text):
             self.snippets.append(snippet)
 
     def format_highlights(self, complete: bool) -> None:
+        if not complete:
+            return
+
         start_index = self.position
         text = self.get(start_index, "end-1c")
         backtick = "`"
@@ -363,10 +414,12 @@ class Output(tk.Text):
                 self.auto_scroll = True
 
     def enable(self) -> None:
-        self.configure(state="normal")
+        if self.cget("state") != "normal":
+            self.configure(state="normal")
 
     def disable(self) -> None:
-        self.configure(state="disabled")
+        if self.cget("state") != "disabled":
+            self.configure(state="disabled")
 
     def copy_all(self) -> None:
         text = self.to_log()
@@ -391,6 +444,8 @@ class Output(tk.Text):
         return document.to_log()
 
     def update_position(self) -> None:
+        self.update_idletasks()
+        app.update()
         self.position = self.index(tk.INSERT)
 
     def prompt(self, who: str) -> None:
@@ -415,28 +470,6 @@ class Output(tk.Text):
         self.insert_text(text)
         self.to_bottom()
 
-    def search_text(self, text: str) -> None:
-        import webbrowser
-        import urllib.parse
-        from .dialogs import Dialog
-
-        def action() -> None:
-            base_url = "https://www.google.com/search?"
-            query_params = {"q": text}
-            url = base_url + urllib.parse.urlencode(query_params)
-            webbrowser.open_new_tab(url)
-
-        Dialog.show_confirm("Search for this term?", lambda: action())
-
-    def open_url(self, url: str) -> None:
-        import webbrowser
-        from .dialogs import Dialog
-
-        def action() -> None:
-            webbrowser.open_new_tab(url)
-
-        Dialog.show_confirm("Open this URL??", lambda: action())
-
     def get_tagwords(self, tag: str, event: Any) -> str:
         adjacent = self.tag_prevrange(tag, event.widget.index(tk.CURRENT))
 
@@ -450,3 +483,6 @@ class Output(tk.Text):
                 return text
 
         return ""
+
+    def show_highlights_menu(self, event: Any, text: str) -> None:
+        Output.highlights_menu.show(event)

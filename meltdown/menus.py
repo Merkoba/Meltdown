@@ -32,12 +32,6 @@ class Menu:
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
-        self.disabled_color = "#E0E0E0"
-        self.background_color = "white"
-        self.foreground_color = "black"
-        self.hover_background = "#6693C3"
-        self.hover_foreground = "white"
-        self.foreground_disabled = "#3D4555"
 
     def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
         self.items.append(MenuItem(text, command, disabled=disabled))
@@ -69,8 +63,9 @@ class Menu:
             self.root.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.root, bg="white", borderwidth=0, highlightthickness=0)
-        self.container = tk.Frame(self.root, bg="white", borderwidth=0)
+        self.root = tk.Canvas(app.root, bg=config.menu_background, borderwidth=0, highlightthickness=0)
+        self.container = tk.Frame(self.root, bg=config.menu_background, borderwidth=config.border_width)
+        self.container.configure(background=config.border_color)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
         self.root.bind("<FocusOut>", lambda e: self.hide())
         self.root.grid_columnconfigure(0, weight=1)
@@ -147,8 +142,8 @@ class Menu:
             colors = self.get_colors(item)
 
             if item.separator:
-                separator = SeparatorBox(self.container)
-                separator.grid(row=i, column=0, sticky="ew", padx=6, pady=2)
+                separator = SeparatorBox(self.container, config.menu_background, padx=6, pady=2)
+                separator.grid(row=i, column=0, sticky="ew")
                 self.separators.append(separator)
             else:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
@@ -163,7 +158,7 @@ class Menu:
         for i, item in enumerate(self.items):
             make_item(item, i)
 
-        self.no_items = ttk.Label(self.container, text="No Items", background=self.background_color, foreground=self.foreground_color,
+        self.no_items = ttk.Label(self.container, text="No Items", background=config.menu_background, foreground=config.menu_foreground,
                                   wraplength=600, justify=tk.LEFT, anchor="w", font=config.font, borderwidth=0, padding=(4, 2, 4, 2))
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
@@ -380,16 +375,16 @@ class Menu:
         els["label"]["foreground"] = colors["foreground"]
 
     def get_colors(self, item: MenuItem) -> Any:
-        background = self.background_color
+        background = config.menu_background
 
         if item.disabled:
-            foreground = self.foreground_disabled
-            hover_foreground = self.foreground_disabled
-            hover_background = self.background_color
+            foreground = config.menu_disabled_foreground
+            hover_foreground = config.menu_disabled_foreground
+            hover_background = config.menu_background
         else:
-            foreground = self.foreground_color
-            hover_foreground = self.hover_foreground
-            hover_background = self.hover_background
+            foreground = config.menu_foreground
+            hover_foreground = config.menu_hover_foreground
+            hover_background = config.menu_hover_background
 
         return {"background": background, "foreground": foreground,
                 "hover_background": hover_background, "hover_foreground": hover_foreground}

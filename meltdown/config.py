@@ -46,7 +46,6 @@ class Config:
         self.dialog_border = "#446CA1"
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
-        self.snippet_border = "#A0B8BF"
         self.snippet_header_color = "white"
         self.snippet_header_text = "#2B303B"
         self.highlight_background = "#3D4555"
@@ -58,6 +57,14 @@ class Config:
         self.system_threshold = 70
         self.printlogs = False
         self.max_log = 100
+        self.border_width = 6
+        self.border_color = "#959595"
+        self.menu_background = "white"
+        self.menu_foreground = "black"
+        self.menu_hover_background = "#6693C3"
+        self.menu_hover_foreground = "white"
+        self.menu_disabled_background = "#E0E0E0"
+        self.menu_disabled_foreground = "#3D4555"
 
         self.models: List[str] = []
         self.inputs: List[str] = []

@@ -135,6 +135,8 @@ class Model:
             self.streaming = True
             self.do_stream(prompt, tab_id)
             self.streaming = False
+            tab = widgets.display.get_tab(tab_id)
+            tab.output.format_text(True)
 
         self.stop_stream()
         self.stream_thread = threading.Thread(target=wrapper, args=(prompt, tab_id))
@@ -245,6 +247,7 @@ class Model:
             )
         except BaseException as e:
             self.stream_loading = False
+            self.lock.release()
             return
 
         self.stream_loading = False
@@ -253,11 +256,13 @@ class Model:
             return
 
         if self.stop_stream_thread.is_set():
+            self.lock.release()
             return
 
         try:
             for chunk in output:
                 if self.stop_stream_thread.is_set():
+                    print("Interrupted")
                     break
 
                 delta = chunk["choices"][0]["delta"]
@@ -283,11 +288,9 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    tab.output.insert_text(token)
-        except BaseException:
-            pass
-
-        tab.output.format_text(True)
+                    tab.output.insert_text(token, format_text=True)
+        except BaseException as e:
+            print(e)
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()
