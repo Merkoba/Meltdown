@@ -84,6 +84,14 @@ Custom keyboard system.
 
 Markdown for triple backticks and single backticks.
 
+Markdown for bold and italic.
+
+URL highlighting and handling.
+
+Explain words, selections, highlights.
+
+Search for words on a search engine.
+
 ---
 
 ## GUI Toolkit

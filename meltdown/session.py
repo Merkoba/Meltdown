@@ -14,7 +14,7 @@ from pathlib import Path
 
 
 test_session = {
-    "id": "123",
+    "id": "test123",
     "name": "Test",
     "items": [
         {"user": "Highlight Test"},
@@ -248,7 +248,8 @@ class Session:
         self.save()
 
     def to_json(self) -> str:
-        sessions_list = [document.to_dict() for document in self.items.values() if document.items]
+        sessions_list = [document.to_dict() for document in
+                         self.items.values() if document.items and (document.id != "test123")]
         return json.dumps(sessions_list, indent=4)
 
 

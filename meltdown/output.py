@@ -16,7 +16,7 @@ class Output(tk.Text):
     words_menu = Menu()
     words_menu.add(text="Explain", command=lambda: Output.explain_words())
     words_menu.add(text="Search", command=lambda: Output.search_words())
-    tab_id = ""
+    current_output: Optional["Output"] = None
     words = ""
 
     @staticmethod
@@ -26,21 +26,31 @@ class Output(tk.Text):
     @staticmethod
     def explain_words() -> None:
         from .model import model
+
+        if not Output.current_output:
+            return
+
         text = Output.get_words()
+        Output.current_output.deselect_all()
 
         if not text:
             return
 
         query = f"What is '{text}' ?"
-        tab_id = Output.tab_id
+        tab_id = Output.current_output.tab_id
         model.stream(query, tab_id)
 
     @staticmethod
     def search_words() -> None:
         import webbrowser
         import urllib.parse
+
+        if not Output.current_output:
+            return
+
         from .dialogs import Dialog
         text = Output.get_words()
+        Output.current_output.deselect_all()
 
         if not text:
             return
@@ -330,6 +340,7 @@ class Output(tk.Text):
             return ""
 
     def show_words_menu(self, event: Any) -> None:
+        Output.current_output = self
         seltext = self.get_selected_text()
 
         if seltext:
@@ -341,7 +352,6 @@ class Output(tk.Text):
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
         tags = self.tag_names(current_index)
-        Output.tab_id = self.tab_id
 
         if tags:
             Output.words = self.get_tagwords("highlight", event)
