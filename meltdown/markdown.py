@@ -1,3 +1,6 @@
+# Modules
+from .output import Output
+
 # Standard
 import re
 import tkinter as tk
@@ -5,14 +8,16 @@ from typing import Optional
 
 
 class Markdown():
-    def __init__(self, widget: tk.Text) -> None:
+    protocols = ("http://", "https://", "ftp://", "www.")
+
+    def __init__(self, widget: Output) -> None:
         self.widget = widget
 
     def format(self, complete: bool, position: str) -> None:
-        # self.format_snippets(complete, position)
-        # self.format_highlights(complete, position)
-        # self.format_bold(complete, position)
-        # self.format_italic(complete, position)
+        self.format_snippets(complete, position)
+        self.format_highlights(complete, position)
+        self.format_bold(complete, position)
+        self.format_italic(complete, position)
         self.format_urls(complete, position)
 
     def is_space(self, char: Optional[str]) -> bool:
@@ -72,26 +77,31 @@ class Markdown():
         def reset_code() -> None:
             nonlocal in_code
             nonlocal code_string
-            global index_start
+            nonlocal index_start
             in_code = False
             code_string = ""
-            index_start = 0
+            index_start = ""
 
-        def on_match(start: int, end: int) -> None:
+        def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
             clean_text = self.untoken(original_text, token)
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{clean_text}")
-            self.widget.tag_add("highlight", f"{start}", f"{end} - 2c")
-            self.format_highlights(complete, self.get_line(end))
+            end_index = f"{end} - 2c"
+            self.widget.tag_add("highlight", f"{start}", end_index)
+            self.format_highlights(complete, self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
 
         for line_ in lines:
-            start_index = ""
             in_code = False
-            col = 0
+
+            if col_ > 0:
+                col = col_
+                col_ = 0
+            else:
+                col = 0
 
             for char in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
                 col += 1
@@ -117,7 +127,7 @@ class Markdown():
         token = "*"
         code_string = ""
         in_code = False
-        index_start = 0
+        index_start = ""
 
         def reset_code() -> None:
             nonlocal in_code
@@ -125,21 +135,26 @@ class Markdown():
             in_code = False
             code_string = ""
 
-        def on_match(start: int, end: int) -> None:
+        def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
             clean_text = self.untoken(original_text, token * 2)
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{clean_text}")
-            self.widget.tag_add("bold", f"{start}", f"{end} - 2c")
-            self.format_bold(complete, self.get_line(end))
+            end_index = f"{end} - 2c"
+            self.widget.tag_add("bold", f"{start}", end_index)
+            self.format_bold(complete, self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
 
         for line_ in lines:
-            start_index = ""
             in_code = False
-            col = 0
+
+            if col_ > 0:
+                col = col_
+                col_ = 0
+            else:
+                col = 0
 
             for char_ in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
                 col += 1
@@ -166,7 +181,7 @@ class Markdown():
         token = ""
         code_string = ""
         in_code = False
-        index_start = 0
+        index_start = ""
 
         def is_token(char: str) -> bool:
             return char in ("*", "_")
@@ -177,21 +192,26 @@ class Markdown():
             in_code = False
             code_string = ""
 
-        def on_match(start: int, end: int) -> None:
+        def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
             clean_text = self.untoken(original_text, token)
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{clean_text}")
-            self.widget.tag_add("italic", f"{start}", f"{end} - 2c")
-            self.format_italic(complete, self.get_line(end))
+            end_index = f"{end} - 2c"
+            self.widget.tag_add("italic", f"{start}", end_index)
+            self.format_italic(complete, self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
 
         for line_ in lines:
-            start_index = ""
             in_code = False
-            col = 0
+
+            if col_ > 0:
+                col = col_
+                col_ = 0
+            else:
+                col = 0
 
             for char_ in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
                 col += 1
@@ -215,24 +235,27 @@ class Markdown():
             current_line += 1
 
     def format_urls(self, complete: bool, position: str) -> None:
-        protocols = ("http://", "https://", "ftp://", "www.")
-        start_index = ""
+        index_start = ""
 
-        def on_match(start: int, end: int) -> None:
+        def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
-            print(original_text)
             self.widget.delete(f"{start}", f"{end}")
-            self.widget.insert(f"{start}", f"{clean_text}")
-            self.widget.tag_add("url", f"{start}", f"{end} - 2c")
-            return
-            self.format_urls(complete, self.get_line(end))
+            self.widget.insert(f"{start}", f"{original_text}")
+            end_index = f"{end} + 1c"
+            self.widget.tag_add("url", f"{start}", end_index)
+            self.format_urls(complete, self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
 
         for line_ in lines:
-            start_index = ""
-            col = 0
+            index_start = ""
+
+            if col_ > 0:
+                col = col_
+                col_ = 0
+            else:
+                col = 0
 
             chars = self.widget.get(f"{current_line}.0", f"{current_line}.end")
 
@@ -240,23 +263,21 @@ class Markdown():
                 col += 1
                 index = f"{current_line}.{col}"
                 char = self.widget.get(f"{index} + 1c")
-                print(char)
 
-                if start_index and ((char == " ") or (i >= len(chars) - 1)):
-                    word = self.widget.get(f"{start_index}", f"{index}")
+                if index_start and ((char == " ") or (i >= len(chars) - 1)):
+                    word = self.widget.get(f"{index_start}", f"{index} + 1c")
 
                     if not word:
                         return
 
-                    print(word)
-
-                    if any([word.startswith(protocol) for protocol in protocols]):
-                        on_match(start_index, index)
+                    if any([word.startswith(protocol) for protocol in Markdown.protocols]):
+                        on_match(index_start, index)
                         return
 
-                    start_index = ""
+                    index_start = ""
                 else:
-                    start_index = index
+                    if (char != " ") and (not index_start):
+                        index_start = f"{index} + 1c"
 
             current_line += 1
 
@@ -265,3 +286,6 @@ class Markdown():
         string = string[length:]
         string = string[:-length]
         return string
+
+    def solve_index(self, index: str) -> str:
+        return self.widget.index(index)
