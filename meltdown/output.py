@@ -88,6 +88,7 @@ class Output(tk.Text):
         self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
+        self.tag_config("bold", font=config.get_bold_font())
         self.setup()
 
     def setup(self) -> None:
@@ -248,6 +249,7 @@ class Output(tk.Text):
 
         self.format_snippets(complete, position)
         self.format_highlights(complete, position)
+        self.format_bold(complete, position)
         self.format_urls(complete, position)
 
         self.disable()
@@ -337,6 +339,69 @@ class Output(tk.Text):
                 self.delete(start_coords, f"{end_coords} + 1c")
                 self.insert(start_coords, clean_text)
                 self.tag_add("highlight", start_coords, end_coords)
+
+    def format_bold(self, complete: bool, position: str) -> None:
+        start_index = position
+        text = self.get(start_index, "end-1c")
+        asterisk = "*"
+        result = ""
+        code_string = ""
+        in_code = False
+        matches = []
+        index_start = 0
+        last = len(text) - 1
+
+        def ended(i: int) -> bool:
+            if complete:
+                return i == last
+            else:
+                return False
+
+        def reset_code() -> None:
+            nonlocal in_code
+            nonlocal code_string
+            in_code = False
+            code_string = ""
+
+        def rollback() -> None:
+            nonlocal result
+            result += asterisk + code_string
+
+        for i, char in enumerate(text):
+            if char == asterisk:
+                prev_char = text[i - 1] if (i - 1) >= 0 else None
+                next_char = text[i + 1] if (i + 1) < len(text) else None
+                next_char_2 = text[i + 2] if (i + 2) < len(text) else None
+
+                if in_code:
+                    if (prev_char != asterisk) and (next_char == asterisk) and (next_char_2 != asterisk):
+                        matches.append((index_start, i))
+                        reset_code()
+                elif (prev_char != asterisk) and (next_char == asterisk) and (next_char_2 != asterisk):
+                    reset_code()
+                    in_code = True
+                    index_start = i
+            else:
+                if char == "\n" or ended(i):
+                    if in_code:
+                        rollback()
+                        reset_code()
+
+                    result += char
+                else:
+                    if in_code:
+                        code_string += char
+                    else:
+                        result += char
+
+        if matches:
+            for start, end in reversed(matches):
+                start_coords = self.coords_at_index(start, start_index)
+                end_coords = self.coords_at_index(end, start_index)
+                clean_text = self.get(f"{start_coords} + 2c", f"{end_coords}")
+                self.delete(start_coords, f"{end_coords} + 2c")
+                self.insert(start_coords, clean_text)
+                self.tag_add("bold", start_coords, end_coords)
 
     def format_urls(self, complete: bool, position: str) -> None:
         start_index = position

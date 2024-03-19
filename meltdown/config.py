@@ -167,5 +167,8 @@ class Config:
 
         return ("monospace", size)
 
+    def get_bold_font(self) -> Tuple[str, int, str]:
+        return (self.font_family, self.output_font_size, "bold")
+
 
 config = Config()
