@@ -14,6 +14,9 @@ class Args:
         self.avatars = True
         self.monitors = True
         self.monitor_colors = True
+        self.monitor_cpu = True
+        self.monitor_ram = True
+        self.monitor_temp = True
         self.keyboard = True
         self.maximized = False
         self.compact = False
@@ -36,6 +39,9 @@ class Args:
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
             "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
             "no-monitor-colors": {"action": "store_false", "help": "Disable system monitor colors"},
+            "no-cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
+            "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
+            "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
@@ -56,6 +62,9 @@ class Args:
         ap.normal("no_avatars", "avatars")
         ap.normal("no_monitors", "monitors")
         ap.normal("no_monitor_colors", "monitor_colors")
+        ap.normal("no_cpu", "monitor_cpu")
+        ap.normal("no_ram", "monitor_ram")
+        ap.normal("no_temp", "monitor_temp")
         ap.normal("no_keyboard", "keyboard")
         ap.normal("maximized")
         ap.normal("compact")

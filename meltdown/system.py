@@ -18,44 +18,51 @@ def padnum(num: int) -> str:
 
 
 def get_info() -> None:
-    cpu = int(psutil.cpu_percent(interval=1))
-    ram = int(psutil.virtual_memory().percent)
-    temps = psutil.sensors_temperatures()
-    temp: Optional[int] = None
+    if args.monitor_cpu:
+        cpu = int(psutil.cpu_percent(interval=1))
+        widgets.cpu.set(padnum(cpu) + "%")
 
-    if "k10temp" in temps:
-        ktemps = temps["k10temp"]
+    if args.monitor_ram:
+        ram = int(psutil.virtual_memory().percent)
+        widgets.ram.set(padnum(ram) + "%")
 
-        for ktemp in ktemps:
-            # This one works with AMD Ryzen
-            if ktemp.label == "Tctl":
-                temp = int(ktemp.current)
-                break
+    if args.monitor_temp:
+        temps = psutil.sensors_temperatures()
+        temp: Optional[int] = None
 
-    widgets.cpu.set(padnum(cpu) + "%")
-    widgets.ram.set(padnum(ram) + "%")
+        if "k10temp" in temps:
+            ktemps = temps["k10temp"]
 
-    if temp:
-        widgets.temp.set(padnum(temp) + "°C")
-    else:
-        widgets.temp.set("N/A")
-
-    if args.monitor_colors:
-        if cpu >= config.system_threshold:
-            widgets.cpu_text.configure(foreground=Theme.red_color)
-        else:
-            widgets.cpu_text.configure(foreground=Theme.green_color)
-
-        if ram >= config.system_threshold:
-            widgets.ram_text.configure(foreground=Theme.red_color)
-        else:
-            widgets.ram_text.configure(foreground=Theme.green_color)
+            for ktemp in ktemps:
+                # This one works with AMD Ryzen
+                if ktemp.label == "Tctl":
+                    temp = int(ktemp.current)
+                    break
 
         if temp:
-            if temp >= config.system_threshold:
-                widgets.temp_text.configure(foreground=Theme.red_color)
+            widgets.temp.set(padnum(temp) + "°C")
+        else:
+            widgets.temp.set("N/A")
+
+    if args.monitor_colors:
+        if args.monitor_cpu:
+            if cpu >= config.system_threshold:
+                widgets.cpu_text.configure(foreground=Theme.red_color)
             else:
-                widgets.temp_text.configure(foreground=Theme.green_color)
+                widgets.cpu_text.configure(foreground=Theme.green_color)
+
+        if args.monitor_ram:
+            if ram >= config.system_threshold:
+                widgets.ram_text.configure(foreground=Theme.red_color)
+            else:
+                widgets.ram_text.configure(foreground=Theme.green_color)
+
+        if args.monitor_temp:
+            if temp:
+                if temp >= config.system_threshold:
+                    widgets.temp_text.configure(foreground=Theme.red_color)
+                else:
+                    widgets.temp_text.configure(foreground=Theme.green_color)
 
 
 def check() -> None:

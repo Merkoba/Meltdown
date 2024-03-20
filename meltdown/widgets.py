@@ -45,49 +45,49 @@ class Widgets:
         # System
         self.system_frame = widgetutils.make_frame()
 
-        sysframe = widgetutils.make_inner_frame(self.system_frame, 0)
-        self.system_frame.columnconfigure(0, weight=1)
-        widgetutils.make_label(sysframe, "System")
+        widgetutils.make_label(self.system_frame, "System")
 
-        if args.monitors:
-            rpadding = 0
-        else:
+        monitors_disabled = (not args.monitors) or \
+            ((not args.monitor_cpu) and (not args.monitor_ram) and (not args.monitor_temp))
+
+        if monitors_disabled:
             rpadding = right_padding
+        else:
+            rpadding = 0
 
-        self.system = widgetutils.make_entry(sysframe, fill=Fill.HORIZONTAL, right_padding=rpadding)
+        self.system = widgetutils.make_entry(self.system_frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
         ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date")
 
-        self.monitors = widgetutils.make_inner_frame(self.system_frame, 1)
+        if not monitors_disabled:
+            if args.monitor_cpu:
+                self.cpu_label = widgetutils.make_label(self.system_frame, "CPU")
+                self.cpu_label.configure(cursor="hand2")
+                self.cpu = tk.StringVar()
+                self.cpu_text = widgetutils.make_label(self.system_frame, "", right_padding=right_padding)
+                self.cpu_text.configure(textvariable=self.cpu)
+                self.cpu_text.configure(cursor="hand2")
+                ToolTip(self.cpu_text, "Current CPU usage")
+                self.cpu.set("000%")
 
-        self.cpu_label = widgetutils.make_label(self.monitors, "CPU")
-        self.cpu_label.configure(cursor="hand2")
-        self.cpu = tk.StringVar()
-        self.cpu_text = widgetutils.make_label(self.monitors, "", right_padding=right_padding)
-        self.cpu_text.configure(textvariable=self.cpu)
-        self.cpu_text.configure(cursor="hand2")
-        ToolTip(self.cpu_text, "Current CPU usage")
-        self.cpu.set("000%")
+            if args.monitor_ram:
+                self.ram_label = widgetutils.make_label(self.system_frame, "RAM")
+                self.ram_label.configure(cursor="hand2")
+                self.ram = tk.StringVar()
+                self.ram_text = widgetutils.make_label(self.system_frame, "", right_padding=right_padding)
+                self.ram_text.configure(textvariable=self.ram)
+                self.ram_text.configure(cursor="hand2")
+                ToolTip(self.ram_text, "Current RAM usage")
+                self.ram.set("000%")
 
-        self.ram_label = widgetutils.make_label(self.monitors, "RAM")
-        self.ram_label.configure(cursor="hand2")
-        self.ram = tk.StringVar()
-        self.ram_text = widgetutils.make_label(self.monitors, "", right_padding=right_padding)
-        self.ram_text.configure(textvariable=self.ram)
-        self.ram_text.configure(cursor="hand2")
-        ToolTip(self.ram_text, "Current RAM usage")
-        self.ram.set("000%")
-
-        self.temp_label = widgetutils.make_label(self.monitors, "TMP")
-        self.temp_label.configure(cursor="hand2")
-        self.temp = tk.StringVar()
-        self.temp_text = widgetutils.make_label(self.monitors, "", right_padding=right_padding)
-        self.temp_text.configure(textvariable=self.temp)
-        self.temp_text.configure(cursor="hand2")
-        ToolTip(self.temp_text, "Current CPU temperature")
-        self.temp.set("000°C")
-
-        if not args.monitors:
-            self.hide_monitors()
+            if args.monitor_temp:
+                self.temp_label = widgetutils.make_label(self.system_frame, "TMP")
+                self.temp_label.configure(cursor="hand2")
+                self.temp = tk.StringVar()
+                self.temp_text = widgetutils.make_label(self.system_frame, "", right_padding=right_padding)
+                self.temp_text.configure(textvariable=self.temp)
+                self.temp_text.configure(cursor="hand2")
+                ToolTip(self.temp_text, "Current CPU temperature")
+                self.temp.set("000°C")
 
         # Details Container
         self.details_frame = widgetutils.make_frame()
@@ -316,12 +316,17 @@ class Widgets:
             child.bind("<Button-5>", lambda e: widgets.details_right())
 
     def setup_monitors(self) -> None:
-        self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
-        self.cpu_text.bind("<Button-1>", lambda e: app.open_task_manager())
-        self.ram_label.bind("<Button-1>", lambda e: app.open_task_manager())
-        self.ram_text.bind("<Button-1>", lambda e: app.open_task_manager())
-        self.temp_label.bind("<Button-1>", lambda e: app.open_task_manager())
-        self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
+        if args.monitor_cpu:
+            self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
+            self.cpu_text.bind("<Button-1>", lambda e: app.open_task_manager())
+
+        if args.monitor_ram:
+            self.ram_label.bind("<Button-1>", lambda e: app.open_task_manager())
+            self.ram_text.bind("<Button-1>", lambda e: app.open_task_manager())
+
+        if args.monitor_temp:
+            self.temp_label.bind("<Button-1>", lambda e: app.open_task_manager())
+            self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
     def setup_widgets(self) -> None:
         from . import state
@@ -770,9 +775,6 @@ class Widgets:
             button_right.set_style("disabled")
         else:
             button_right.set_style("alt")
-
-    def hide_monitors(self) -> None:
-        self.monitors.grid_remove()
 
     def insert_name(self, who: str) -> None:
         name = getattr(config, f"name_{who}")

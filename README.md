@@ -200,6 +200,22 @@ Don't use colors on the system monitors.
 
 ---
 
+>no-cpu
+
+Don't show the CPU monitor.
+
+---
+
+>no-ram
+
+Don't show the RAM monitor.
+
+---
+
+>no-temp
+
+Don't show the temperature monitor.
+
 ---
 
 >maximized

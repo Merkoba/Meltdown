@@ -30,9 +30,9 @@ class ToolTip:
         self.tooltip: Optional[tk.Frame] = None
         self.current_event: Optional[Any] = None
 
-        self.widget.bind("<Enter>", lambda e: self.schedule_tooltip())
-        self.widget.bind("<Leave>", lambda e: self.hide_tooltip())
-        self.widget.bind("<Button-1>", lambda e: self.hide_tooltip())
+        self.widget.bind("<Enter>", lambda e: self.schedule())
+        self.widget.bind("<Leave>", lambda e: self.hide())
+        self.widget.bind("<Button-1>", lambda e: self.hide())
 
         def bind_scroll_events(widget: tk.Widget) -> None:
             widget.bind("<Motion>", lambda e: self.update_event(e))
@@ -48,20 +48,20 @@ class ToolTip:
 
         self.current_event = event
 
-    def schedule_tooltip(self) -> None:
+    def schedule(self) -> None:
         if not args.tooltips:
             return
 
         if ToolTip.current_tooltip is not None:
-            ToolTip.current_tooltip.hide_tooltip()
+            ToolTip.current_tooltip.hide()
 
         if (timeutils.now() - ToolTip.block_date) < 0.8:
             return
 
-        self.id = self.widget.after(self.delay, lambda: self.show_tooltip())
+        self.id = self.widget.after(self.delay, lambda: self.show())
         ToolTip.current_tooltip = self
 
-    def show_tooltip(self) -> None:
+    def show(self) -> None:
         event = self.current_event
 
         if event is None:
@@ -72,9 +72,11 @@ class ToolTip:
 
         self.tooltip = tk.Frame(app.root)
         self.tooltip.lift()
+
         label = tk.Label(self.tooltip, text=self.text, background="white",
                          wraplength=250, justify=tk.LEFT)
         label.pack()
+        label.bind("<Button-1>", lambda e: self.hide())
 
         self.tooltip.update_idletasks()
         window_width = app.root.winfo_width()
@@ -96,7 +98,7 @@ class ToolTip:
 
         self.tooltip.place(x=x, y=y)
 
-    def hide_tooltip(self) -> None:
+    def hide(self) -> None:
         if self.tooltip:
             self.tooltip.destroy()
             self.tooltip = None
