@@ -183,6 +183,7 @@ class Model:
         if not tab:
             return
 
+        tab.output.to_bottom(check_instant=True)
         tab.output.prompt("user")
         tab.output.insert_text(prompt)
         widgets.enable_stop_button()

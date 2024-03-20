@@ -1,13 +1,14 @@
 # Modules
 from .buttonbox import ButtonBox
 from .app import app
+from .output import Output
 
 # Standard
 import tkinter as tk
 
 
 class Bottom(tk.Frame):
-    def __init__(self, parent: tk.Frame, tab_id: str) -> None:
+    def __init__(self, parent: tk.Frame, tab_id: str, output: Output) -> None:
         super().__init__(parent)
         self.button = ButtonBox(self, text="Go To Bottom", command=self.to_bottom, bigger=True)
         self.button.grid(row=0, column=0, sticky="nsew")
@@ -18,12 +19,8 @@ class Bottom(tk.Frame):
         self.visible = True
         self.debouncer = ""
         self.delay = 200
+        self.output = output
         self.grid(row=1, column=0, sticky="nsew")
-        self.setup()
-
-    def setup(self) -> None:
-        from .widgets import widgets
-        self.display = widgets.display
 
     def cancel_debouncer(self) -> None:
         if self.debouncer:
@@ -52,4 +49,4 @@ class Bottom(tk.Frame):
         self.grid_remove()
 
     def to_bottom(self) -> None:
-        self.display.to_bottom(self.tab_id)
+        self.output.to_bottom(check_instant=True)

@@ -81,7 +81,7 @@ class Display:
         output_frame = widgetutils.make_frame(frame)
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
-        bottom = Bottom(frame, tab_id)
+        bottom = Bottom(frame, tab_id, output)
         tab = Tab(document_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
 

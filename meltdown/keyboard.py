@@ -178,7 +178,7 @@ class Keyboard:
         self.register("<Up>", command=lambda: widgets.input_history_up(),
                       on_ctrl=lambda: widgets.display.to_top(), on_shift=lambda: widgets.show_context())
         self.register("<Down>", command=lambda: widgets.input_history_down(),
-                      on_ctrl=lambda: widgets.display.to_bottom())
+                      on_ctrl=lambda: widgets.display.to_bottom(check_instant=True))
         self.register("<Left>", on_ctrl=lambda: widgets.display.tab_left())
         self.register("<Right>", on_ctrl=lambda: widgets.display.tab_right())
         self.register("space", on_ctrl=lambda: widgets.show_main_menu())

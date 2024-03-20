@@ -148,7 +148,7 @@ class Output(tk.Text):
             return "break"
 
         def end() -> str:
-            self.to_bottom()
+            self.to_bottom(check_instant=True)
             return "break"
 
         self.bind("<ButtonRelease-3>", lambda e: self.show_words_menu(e))
@@ -208,13 +208,13 @@ class Output(tk.Text):
         self.auto_scroll = False
         self.yview_moveto(0.0)
 
-    def to_bottom(self, check: bool = False) -> None:
+    def to_bottom(self, check: bool = False, check_instant: bool = False) -> None:
         if check and (not self.auto_scroll):
             return
 
         self.auto_scroll = True
         self.yview_moveto(1.0)
-        self.display.check_scroll_buttons(instant=True)
+        self.display.check_scroll_buttons(instant=check_instant)
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")
@@ -342,7 +342,7 @@ class Output(tk.Text):
 
         text = left + text + right
         self.insert_text(text)
-        self.to_bottom()
+        self.to_bottom(True)
 
     def get_tagwords(self, tag: str, event: Any) -> str:
         adjacent = self.tag_prevrange(tag, event.widget.index(tk.CURRENT))
