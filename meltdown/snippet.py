@@ -28,14 +28,12 @@ class Snippet(tk.Frame):
 
         self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font(True))
         self.header_copy.configure(cursor="hand2")
-        self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_copy.pack(side=tk.RIGHT, padx=5)
         self.header_copy.configure(foreground=config.snippet_header_text)
         self.header_copy.configure(background=config.snippet_header_color)
 
         self.header_select = tk.Label(self.header, text="Select", font=config.get_snippet_font(True))
         self.header_select.configure(cursor="hand2")
-        self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_select.pack(side=tk.RIGHT, padx=5)
         self.header_select.configure(foreground=config.snippet_header_text)
         self.header_select.configure(background=config.snippet_header_color)
@@ -60,9 +58,8 @@ class Snippet(tk.Frame):
         self.text.configure(background=config.snippet_background)
         self.text.configure(foreground=config.snippet_foreground)
         self.text.configure(font=config.get_snippet_font())
-
         self.scrollbar.configure(command=self.text.xview)
-        self.text.bind("<Motion>", lambda e: self.on_motion(e))
+
         self.update_size()
         self.setup_bindings()
 
@@ -71,6 +68,14 @@ class Snippet(tk.Frame):
 
         def on_click(event: Any) -> None:
             Dialog.hide_all()
+
+        def copy_all() -> None:
+            Dialog.hide_all()
+            self.copy_all()
+
+        def select_all() -> None:
+            Dialog.hide_all()
+            self.select_all()
 
         def scroll_up(event: Any) -> str:
             if event.state & 0x1:
@@ -98,6 +103,10 @@ class Snippet(tk.Frame):
                 bind_scroll_events(child)
 
         bind_scroll_events(self)
+
+        self.header_copy.bind("<Button-1>", lambda e: copy_all())
+        self.header_select.bind("<Button-1>", lambda e: select_all())
+        self.text.bind("<Motion>", lambda e: self.on_motion(e))
 
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
