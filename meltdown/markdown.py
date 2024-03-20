@@ -19,12 +19,6 @@ class Markdown():
         self.format_italic(complete, position)
         self.format_urls(complete, position)
 
-    def is_space(self, char: Optional[str]) -> bool:
-        if char is None:
-            return True
-
-        return char == " "
-
     def index_of_relative(self, index: int, position: str) -> str:
         line, col = map(int, position.split("."))
         text = self.widget.get(position, "end-1c")
@@ -115,7 +109,7 @@ class Markdown():
                         if (prev_char != token) and (next_char != token):
                             on_match(f"{index_start} + 1c", f"{index} + 2c")
                             return
-                    elif self.is_space(prev_char) and (next_char != token):
+                    elif (prev_char != token) and (next_char not in (token, " ")):
                         reset_code()
                         in_code = True
                         index_start = index
@@ -169,7 +163,7 @@ class Markdown():
                         if (prev_char != token) and (next_char == token) and (next_char_2 != token):
                             on_match(f"{index_start} + 1c", f"{index} + 3c")
                             return
-                    elif self.is_space(prev_char) and (next_char == token) and (next_char_2 != token):
+                    elif (prev_char != token) and (next_char == token) and (next_char_2 not in (token, " ")):
                         reset_code()
                         in_code = True
                         index_start = index
@@ -178,12 +172,11 @@ class Markdown():
 
     def format_italic(self, complete: bool, position: str) -> None:
         token = ""
+        tokens = ("*", "_")
+        tokens_2 = ("*", "_", " ")
         code_string = ""
         in_code = False
         index_start = ""
-
-        def is_token(char: str) -> bool:
-            return char in ("*", "_")
 
         def reset_code() -> None:
             nonlocal in_code
@@ -217,7 +210,7 @@ class Markdown():
                 index = f"{current_line}.{col}"
                 char = self.widget.get(f"{index} + 1c")
 
-                if is_token(char):
+                if char in tokens:
                     prev_char = self.widget.get(index)
                     next_char = self.widget.get(f"{index} + 2c")
 
@@ -225,7 +218,7 @@ class Markdown():
                         if (prev_char != token) and (next_char != token):
                             on_match(f"{index_start} + 1c", f"{index} + 2c")
                             return
-                    elif self.is_space(prev_char) and (next_char != char):
+                    elif (prev_char != token) and (next_char not in tokens_2):
                         reset_code()
                         in_code = True
                         index_start = index
