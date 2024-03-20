@@ -767,7 +767,7 @@ class Widgets:
         name = getattr(config, f"name_{who}")
         text = self.input.get()
 
-        if text.endswith(" "):
+        if (not text) or text.endswith(" "):
             self.input.insert_text(name)
         else:
             self.input.insert_text(f" {name}")
