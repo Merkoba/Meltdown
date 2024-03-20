@@ -65,6 +65,7 @@ class Config:
         self.menu_hover_foreground = "white"
         self.menu_disabled_background = "#E0E0E0"
         self.menu_disabled_foreground = "#3D4555"
+        self.syntax_style = "monokai"
 
         self.models: List[str] = []
         self.inputs: List[str] = []

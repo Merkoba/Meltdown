@@ -166,7 +166,7 @@ class Snippet(tk.Frame):
             return ""
 
     def syntax_highlighter(self) -> None:
-        style = get_style_by_name("monokai")
+        style = get_style_by_name(config.syntax_style)
         parsed = style.list_styles()
 
         for key in parsed:
