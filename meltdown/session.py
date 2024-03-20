@@ -168,7 +168,8 @@ class Session:
         with open(path, "r") as file:
             try:
                 items = json.load(file)
-            except BaseException:
+            except BaseException as e:
+                print(e)
                 items = []
 
         if args.test:

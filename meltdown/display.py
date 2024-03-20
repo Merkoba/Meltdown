@@ -75,12 +75,16 @@ class Display:
         if not document_id:
             return
 
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_rowconfigure(1, weight=0)
-        frame.grid_columnconfigure(0, weight=1)
-
         tab_id = self.tab_ids()[-1]
-        output = Output(frame, tab_id)
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_columnconfigure(0, weight=1)
+        # frame.grid_rowconfigure(0, weight=1)
+        # frame.grid_rowconfigure(1, weight=0)
+        # frame.grid_columnconfigure(0, weight=1)
+
+        output_frame = widgetutils.make_frame(frame)
+        output_frame.grid(row=0, column=0, sticky="nsew")
+        output = Output(output_frame, tab_id)
         bottom = Bottom(frame, tab_id)
         tab = Tab(document_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
