@@ -247,12 +247,19 @@ class Output(tk.Text):
         if check:
             self.check_autoscroll("up")
 
+        self.check_scroll()
+
     def scroll_down(self, check: bool = False) -> None:
         fraction = self.get_fraction()
         self.yview_moveto(self.yview()[0] + fraction)
 
         if check:
             self.check_autoscroll("down")
+
+        self.check_scroll()
+
+    def check_scroll(self) -> None:
+        self.display.check_scroll_buttons(instant=True)
 
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
