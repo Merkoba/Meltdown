@@ -201,7 +201,7 @@ class Output(tk.Text):
 
         self.auto_scroll = True
         self.yview_moveto(1.0)
-        self.display.hide_bottom(self.tab_id)
+        self.display.check_scroll_buttons(instant=True)
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")

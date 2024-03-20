@@ -345,6 +345,7 @@ class Display:
             return
 
         output.to_top()
+        self.check_scroll_buttons(instant=True)
 
     def to_bottom(self, tab_id: str = "") -> None:
         if tab_id:
@@ -465,7 +466,7 @@ class Display:
         name = con() + vow() + con() + vow() + con() + vow()
         return name.capitalize()
 
-    def check_scroll_buttons(self, tab_id: str = "") -> None:
+    def check_scroll_buttons(self, tab_id: str = "", instant: bool = False) -> None:
         from .widgets import widgets
 
         if not tab_id:
@@ -484,9 +485,15 @@ class Display:
         yview = output.yview()
 
         if yview[1] == 1.0:
-            tab.bottom.hide()
+            if instant:
+                tab.bottom.do_hide()
+            else:
+                tab.bottom.hide()
         else:
-            tab.bottom.show()
+            if instant:
+                tab.bottom.do_show()
+            else:
+                tab.bottom.show()
 
         if yview[0] == 0:
             widgets.disable_top_button()
