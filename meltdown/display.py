@@ -467,9 +467,9 @@ class Display:
         yview = output.yview()
 
         if yview[1] == 1.0:
-            widgets.disable_bottom_button()
+            widgets.hide_bottom()
         else:
-            widgets.enable_bottom_button()
+            widgets.show_bottom()
 
         if yview[0] == 0:
             widgets.disable_top_button()

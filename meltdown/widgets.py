@@ -205,6 +205,7 @@ class Widgets:
 
         # Bottom
         frame = widgetutils.make_frame()
+        self.bottom_frame = frame
 
         self.bottom_button = widgetutils.make_button(frame, "Go To Bottom",
                                                      lambda: self.display.to_bottom(), fill=Fill.HORIZONTAL,
@@ -251,6 +252,7 @@ class Widgets:
         self.top_button_enabled = True
         self.input_history_index = -1
         self.current_details = 1
+        self.bottom_debouncer = ""
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -289,7 +291,7 @@ class Widgets:
         self.setup_widgets()
         self.focus_input()
         self.add_generic_menus()
-        self.disable_bottom_button()
+        self.hide_bottom()
         self.setup_monitors()
         self.start_checks()
         self.check_details_buttons()
@@ -598,15 +600,29 @@ class Widgets:
             self.disable_widget(self.format)
             self.format_select_enabled = False
 
-    def enable_bottom_button(self) -> None:
-        if (not self.bottom_button_enabled) and app.exists():
-            self.bottom_button.set_style("normal")
-            self.bottom_button_enabled = True
+    def cancel_bottom_debouncer(self) -> None:
+        if self.bottom_debouncer:
+            app.root.after_cancel(self.bottom_debouncer)
 
-    def disable_bottom_button(self) -> None:
+    def show_bottom(self) -> None:
+        if (not self.bottom_button_enabled) and app.exists():
+            self.cancel_bottom_debouncer()
+            self.bottom_debouncer = app.root.after(200, self.do_show_bottom)
+
+    def do_show_bottom(self) -> None:
+        self.cancel_bottom_debouncer()
+        self.bottom_button_enabled = True
+        self.bottom_frame.grid()
+
+    def hide_bottom(self) -> None:
         if self.bottom_button_enabled and app.exists():
-            self.bottom_button.set_style("disabled")
-            self.bottom_button_enabled = False
+            self.cancel_bottom_debouncer()
+            self.bottom_debouncer = app.root.after(200, self.do_hide_bottom)
+
+    def do_hide_bottom(self) -> None:
+        self.cancel_bottom_debouncer()
+        self.bottom_button_enabled = False
+        self.bottom_frame.grid_remove()
 
     def enable_top_button(self) -> None:
         if (not self.top_button_enabled) and app.exists():

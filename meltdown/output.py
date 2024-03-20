@@ -192,11 +192,14 @@ class Output(tk.Text):
         self.yview_moveto(0.0)
 
     def to_bottom(self, check: bool = False) -> None:
+        from .widgets import widgets
+
         if check and (not self.auto_scroll):
             return
 
         self.auto_scroll = True
         self.yview_moveto(1.0)
+        widgets.do_hide_bottom()
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")
