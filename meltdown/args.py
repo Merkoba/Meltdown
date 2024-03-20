@@ -13,6 +13,7 @@ class Args:
         self.colors = True
         self.avatars = True
         self.monitors = True
+        self.keyboard = True
         self.compact = False
         self.full = False
         self.test = False
@@ -32,6 +33,7 @@ class Args:
             "no-colors": {"action": "store_false", "help": "Don't show user colors"},
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
             "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
+            "no-keyboard": {"action": "store_false", "help": "Don't show system monitors"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
             "width": {"type": int, "help": "Width of the window"},
@@ -47,6 +49,7 @@ class Args:
         ap.normal("no_colors", "colors")
         ap.normal("no_avatars", "avatars")
         ap.normal("no_monitors", "monitors")
+        ap.normal("no_keyboard", "keyboard")
         ap.normal("compact")
         ap.normal("full")
         ap.normal("width")

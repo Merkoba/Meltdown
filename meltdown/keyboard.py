@@ -4,6 +4,7 @@ from .widgets import widgets
 from .model import model
 from .commands import commands
 from .entrybox import EntryBox
+from .args import args
 from . import timeutils
 from . import state
 
@@ -108,7 +109,10 @@ class Keyboard:
 
     def setup(self) -> None:
         self.setup_input()
-        self.setup_globals()
+
+        if args.keyboard:
+            self.setup_globals()
+
         self.bind_commands()
 
     def bind_commands(self) -> None:

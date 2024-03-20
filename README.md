@@ -176,6 +176,12 @@ Don't display colors on the user names.
 
 ---
 
+>no-keyboard
+
+Disable keyboard shortcuts.
+
+---
+
 >no-avatars
 
 Don't display user avatars.
