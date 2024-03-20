@@ -147,3 +147,19 @@ For example: `meltdown --no-tooltips`
 >no-tooltips
 
 Don't show tooltips when hovering over items.
+
+>width
+
+Start the window with this width.
+
+>height
+
+Start the window with this height.
+
+>test
+
+Open a test tab for debugging.
+
+>version
+
+Show the version of the program.
