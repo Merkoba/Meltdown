@@ -376,7 +376,7 @@ class Widgets:
         from .model import model
         from . import state
 
-        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu())
+        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
         self.main_menu.separator()
         self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
@@ -452,10 +452,17 @@ class Widgets:
             menu.add(text="Reset", command=lambda: state.reset_one_config(key))
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
-                        event: Optional[Any] = None) -> None:
+                        event: Optional[Any] = None, require_items: bool = False) -> None:
+        from .dialogs import Dialog
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
         items = getattr(config, key_list)[:config.max_list_items]
+
+        if require_items:
+            if not items:
+                Dialog.show_message("No items yet")
+                return
+
         self.add_common_commands(menu, key_config)
         num_common = len(menu.items)
 
@@ -479,13 +486,14 @@ class Widgets:
                 if items:
                     menu.select_item(num_common + 1)
 
-    def show_model_menu(self, event: Optional[Any] = None) -> None:
+    def show_model_menu(self, event: Optional[Any] = None, require_items: bool = False) -> None:
         from .model import model
 
         if model.model_loading:
             return
 
-        self.show_menu_items("model", "models", lambda m: self.set_model(m), event)
+        self.show_menu_items("model", "models",
+                             lambda m: self.set_model(m), event, require_items=require_items)
 
     def show_system_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
@@ -620,7 +628,9 @@ class Widgets:
         else:
             self.disable_stop_button()
 
-        if model.model_loading:
+        model_empty = self.model.get() == ""
+
+        if model.model_loading or (model_empty and (not model.loaded_model)):
             self.disable_load_button()
             self.disable_format_select()
         else:

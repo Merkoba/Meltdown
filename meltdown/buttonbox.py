@@ -30,7 +30,7 @@ class ButtonBox(tk.Frame):
 
         self.label = tk.Label(self, text=self.text,
                               font=config.font_button, width=self.width,
-                              cursor="hand2", padx=padx, pady=pady)
+                              padx=padx, pady=pady)
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)
@@ -91,12 +91,16 @@ class ButtonBox(tk.Frame):
 
         if style == "normal":
             self.set_background(config.button_background)
+            self.configure(cursor="hand2")
         elif style == "green":
             self.set_background(config.green_background)
+            self.configure(cursor="hand2")
         elif style == "disabled":
             self.set_background(config.background_disabled)
+            self.configure(cursor="arrow")
         elif style == "alt":
             self.set_background(config.button_background_alt)
+            self.configure(cursor="hand2")
 
         self.style = style
 

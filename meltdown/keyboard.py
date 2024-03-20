@@ -62,7 +62,7 @@ class Keyboard:
 
         if event.widget != widgets.input:
             chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
-            syms = ["Return", "BackSpace", "Up", "Down", "Left", "Right"]
+            syms = ["Return", "Up", "Down"]
 
             # Focus the input and insert char
             if (len(event.keysym.strip()) == 1) or (event.char in chars):
