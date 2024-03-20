@@ -64,6 +64,13 @@ class Snippet(tk.Frame):
         self.scrollbar.configure(command=self.text.xview)
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
         self.update_size()
+        self.setup_bindings()
+
+    def setup_bindings(self) -> None:
+        from .dialogs import Dialog
+
+        def on_click(event: Any) -> None:
+            Dialog.hide_all()
 
         def scroll_up(event: Any) -> str:
             if event.state & 0x1:
@@ -82,6 +89,7 @@ class Snippet(tk.Frame):
             return "break"
 
         def bind_scroll_events(widget: tk.Widget) -> None:
+            widget.bind("<Button-1>", lambda e: on_click(e))
             widget.bind("<Button-4>", lambda e: scroll_up(e))
             widget.bind("<Button-5>", lambda e: scroll_down(e))
             widget.bind("<Button-3>", lambda e: self.parent.show_words_menu(e))
