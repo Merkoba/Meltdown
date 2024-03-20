@@ -7,7 +7,7 @@ import tkinter as tk
 from tkinter import ttk
 from pathlib import Path
 import subprocess
-from typing import List
+from typing import List, Any
 import shutil
 
 
@@ -24,6 +24,7 @@ class App:
         self.root.minsize(100, 100)
         self.setup_icon()
         self.setup_style()
+        self.setup_focus()
 
     def setup_icon(self) -> None:
         icon_path = Path(self.here, "icon.png")
@@ -235,6 +236,16 @@ class App:
             return
 
         self.run_command(cmd)
+
+    def setup_focus(self) -> None:
+        self.root.bind("<FocusOut>", lambda e: self.on_focus_out(e))
+
+    def on_focus_out(self, event: Any) -> None:
+        from .keyboard import keyboard
+        what = str(event.widget)
+
+        if what == ".":
+            keyboard.reset()
 
 
 app = App()

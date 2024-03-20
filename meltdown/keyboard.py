@@ -191,5 +191,9 @@ class Keyboard:
         self.register("m", on_ctrl=lambda: model.browse_models())
         self.register("l", on_ctrl=lambda: state.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
 
+    def reset(self) -> None:
+        self.ctrl = False
+        self.shift = False
+
 
 keyboard = Keyboard()
