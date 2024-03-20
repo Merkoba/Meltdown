@@ -156,18 +156,6 @@ Start the window with this height.
 
 ---
 
->test
-
-Open a test tab for debugging.
-
----
-
->version
-
-Show the version of the program.
-
----
-
 >no-tooltips
 
 Don't show tooltips when hovering over items.
@@ -189,3 +177,15 @@ Don't display colors on the user names.
 >no-avatars
 
 Don't display user avatars.
+
+---
+
+>test
+
+Open a test tab for debugging.
+
+---
+
+>version
+
+Show the version of the program.
