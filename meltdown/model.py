@@ -101,6 +101,7 @@ class Model:
             print(e)
             return
 
+        state.add_model(model)
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
@@ -226,7 +227,6 @@ class Model:
         last_token = " "
         tokens = []
 
-        state.add_model(config.model)
         state.add_system(config.system)
         state.add_prepends(config.prepend)
         state.add_appends(config.append)

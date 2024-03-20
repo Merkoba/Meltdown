@@ -3,6 +3,7 @@ from .app import app
 from .widgets import widgets
 from .model import model
 from .commands import commands
+from .entrybox import EntryBox
 from . import timeutils
 from . import state
 
@@ -60,9 +61,9 @@ class Keyboard:
         if self.blocked():
             return
 
-        if event.widget != widgets.input:
+        if (event.widget != widgets.input) and (not isinstance(event.widget, EntryBox)):
             chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
-            syms = ["Return", "Up", "Down"]
+            syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 
             # Focus the input and insert char
             if (len(event.keysym.strip()) == 1) or (event.char in chars):
