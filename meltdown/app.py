@@ -204,7 +204,9 @@ class App:
         widgets.focus_input()
 
     def check_compact(self) -> None:
-        if config.compact:
+        from .args import args
+
+        if config.compact or args.compact:
             self.enable_compact()
         else:
             self.disable_compact()

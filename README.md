@@ -180,6 +180,12 @@ Don't display user avatars.
 
 ---
 
+>compact
+
+Start in compact mode.
+
+---
+
 >test
 
 Open a test tab for debugging.

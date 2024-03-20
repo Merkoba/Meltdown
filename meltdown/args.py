@@ -12,6 +12,7 @@ class Args:
         self.scrollbars = True
         self.colors = True
         self.avatars = True
+        self.compact = False
         self.test = False
         self.width = -1
         self.height = -1
@@ -28,6 +29,7 @@ class Args:
             "no-scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
             "no-colors": {"action": "store_false", "help": "Don't show scrollbars"},
             "no-avatars": {"action": "store_false", "help": "Don't show scrollbars"},
+            "compact": {"action": "store_true", "help": "Don't show scrollbars"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
         }
@@ -40,6 +42,7 @@ class Args:
         ap.normal("no_scrollbars", "scrollbars")
         ap.normal("no_colors", "colors")
         ap.normal("no_avatars", "avatars")
+        ap.normal("compact")
         ap.normal("width")
         ap.normal("height")
         ap.normal("test")
