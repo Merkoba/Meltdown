@@ -1,7 +1,7 @@
 # Modules
 from .app import app
-from .config import config
 from .entrybox import EntryBox
+from .theme import Theme
 from . import widgetutils
 
 # Standard
@@ -60,7 +60,7 @@ class Dialog:
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
         dialog = Dialog(text)
-        entry = EntryBox(dialog.top_frame, font=config.font, width=17, justify="center")
+        entry = EntryBox(dialog.top_frame, font=Theme.font, width=17, justify="center")
 
         def ok() -> None:
             text = entry.get()
@@ -93,17 +93,17 @@ class Dialog:
         Dialog.current_dialog = self
 
     def make(self, text: str) -> None:
-        background = config.dialog_background
-        foreground = config.dialog_foreground
-        border = config.border_color
+        background = Theme.dialog_background
+        foreground = Theme.dialog_foreground
+        border = Theme.border_color
 
         self.root = tk.Frame(app.root, bg=border)
         self.main = tk.Frame(self.root, bg=background)
-        self.main.pack(padx=config.border_width, pady=config.border_width)
+        self.main.pack(padx=Theme.border_width, pady=Theme.border_width)
         self.root.lift()
         container = tk.Frame(self.main, padx=10, pady=4, bg=background)
         container.pack()
-        tk.Label(container, text=text, font=config.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
+        tk.Label(container, text=text, font=Theme.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
         self.top_frame = tk.Frame(container)
         self.top_frame.pack()
         self.button_frame = tk.Frame(container, bg=background)

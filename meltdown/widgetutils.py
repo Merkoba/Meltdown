@@ -1,9 +1,9 @@
 # Modules
-from .config import config
 from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
+from .theme import Theme
 
 # Libraries
 import pyperclip  # type: ignore
@@ -26,13 +26,13 @@ def do_pack(widget: tk.Widget,
         px = (padx, padx)
     else:
         padx_right = right_padding if right_padding else 0
-        px = (config.padx, padx_right)
+        px = (Theme.padx, padx_right)
 
     if pady is not None:
         py = (pady, pady)
     else:
         pady_bottom = bottom_padding if bottom_padding else 0
-        py = (config.pady, pady_bottom)
+        py = (Theme.pady, pady_bottom)
 
     expand = True if fill else False
     fillmode: FillLiteral = fill if fill else Fill.NONE
@@ -46,23 +46,23 @@ def make_frame(parent: Union[ttk.Notebook, tk.Frame, None] = None,
     p = app.root if not parent else parent
     frame = tk.Frame(p)
 
-    padx = (config.frame_padx, config.frame_padx)
+    padx = (Theme.frame_padx, Theme.frame_padx)
 
     if bottom_padding is not None:
-        pady = (config.frame_pady, bottom_padding)
+        pady = (Theme.frame_pady, bottom_padding)
     else:
-        pady = (config.frame_pady, 0)
+        pady = (Theme.frame_pady, 0)
 
     frame.grid(row=frame_number, column=0, padx=padx,
                pady=pady, sticky="nsew")
 
-    frame.configure(background=config.background_color)
+    frame.configure(background=Theme.background_color)
     frame_number += 1
     return frame
 
 
 def make_inner_frame(parent: tk.Frame, col: int) -> tk.Frame:
-    frame = tk.Frame(parent, background=config.background_color)
+    frame = tk.Frame(parent, background=Theme.background_color)
     frame.grid(sticky="ew", column=col, row=0)
     return frame
 
@@ -70,11 +70,11 @@ def make_inner_frame(parent: tk.Frame, col: int) -> tk.Frame:
 def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canvas]:
     canvas = tk.Canvas(parent)
     scrollbar = tk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
-    frame = tk.Frame(canvas, background=config.background_color)
+    frame = tk.Frame(canvas, background=Theme.background_color)
     frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
     canvas.create_window((0, 0), window=frame, anchor="nw")
     canvas.configure(xscrollcommand=scrollbar.set)
-    canvas.configure(borderwidth=0, highlightthickness=0, background=config.background_color)
+    canvas.configure(borderwidth=0, highlightthickness=0, background=Theme.background_color)
     canvas.grid(column=col, row=0, sticky="ew", padx=10)
     return frame, canvas
 
@@ -89,8 +89,8 @@ def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
 def make_entry(parent: tk.Frame, value: str = "",
                width: Optional[int] = None, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> EntryBox:
-    w = width if width else config.entry_width
-    widget = EntryBox(parent, font=config.font, width=w, style="Normal.TEntry")
+    w = width if width else Theme.entry_width
+    widget = EntryBox(parent, font=Theme.font, width=w, style="Normal.TEntry")
     do_pack(widget, fill=fill, right_padding=right_padding)
 
     if value:
@@ -116,8 +116,8 @@ def make_button(parent: tk.Frame, text: str,
 
 def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> tk.Label:
-    widget = tk.Label(parent, text=f"{text}:", font=config.font)
-    widget.configure(background=config.background_color, foreground=config.foreground_color)
+    widget = tk.Label(parent, text=f"{text}:", font=Theme.font)
+    widget.configure(background=Theme.background_color, foreground=Theme.foreground_color)
     do_pack(widget, fill=fill, right_padding=right_padding)
     return widget
 
@@ -126,9 +126,9 @@ def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
                   fill: Optional[Fill] = None, width: Optional[int] = None,
                   right_padding: Optional[int] = None) -> ttk.Combobox:
     v = values if values else ["empty"]
-    w = width if width else config.combobox_width
+    w = width if width else Theme.combobox_width
     widget = ttk.Combobox(parent, values=v, state="readonly",
-                          font=config.font_combobox, style="Normal.TCombobox", width=w)
+                          font=Theme.font_combobox, style="Normal.TCombobox", width=w)
 
     # Remove mousewheel events
     widget.bind_class("TCombobox", "<MouseWheel>", lambda e: "break")

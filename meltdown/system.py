@@ -2,6 +2,7 @@
 from .config import config
 from .widgets import widgets
 from .args import args
+from .theme import Theme
 from . import timeutils
 
 # Standard
@@ -40,20 +41,20 @@ def get_info() -> None:
         widgets.temp.set("N/A")
 
     if cpu >= config.system_threshold:
-        widgets.cpu_text.configure(foreground=config.red_color)
+        widgets.cpu_text.configure(foreground=Theme.red_color)
     else:
-        widgets.cpu_text.configure(foreground=config.green_color)
+        widgets.cpu_text.configure(foreground=Theme.green_color)
 
     if ram >= config.system_threshold:
-        widgets.ram_text.configure(foreground=config.red_color)
+        widgets.ram_text.configure(foreground=Theme.red_color)
     else:
-        widgets.ram_text.configure(foreground=config.green_color)
+        widgets.ram_text.configure(foreground=Theme.green_color)
 
     if temp:
         if temp >= config.system_threshold:
-            widgets.temp_text.configure(foreground=config.red_color)
+            widgets.temp_text.configure(foreground=Theme.red_color)
         else:
-            widgets.temp_text.configure(foreground=config.green_color)
+            widgets.temp_text.configure(foreground=Theme.green_color)
 
 
 def check() -> None:

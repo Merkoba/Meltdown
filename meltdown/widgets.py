@@ -8,6 +8,7 @@ from .menus import Menu
 from .entrybox import EntryBox
 from .commands import commands
 from .args import args
+from .theme import Theme
 from . import widgetutils
 
 # Libraries
@@ -112,19 +113,19 @@ class Widgets:
         ToolTip(self.name_ai, "The name of the assistant (AI)")
 
         widgetutils.make_label(self.details, "Context")
-        self.context = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.context = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context."
                 " 0 means context is not used at all.")
 
         widgetutils.make_label(self.details, "Tokens")
-        self.max_tokens = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.max_tokens = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
                 " also take longer to compute.")
 
         widgetutils.make_label(self.details, "Temp")
-        self.temperature = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.temperature = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.temperature, "The temperature parameter is used to control"
                 " the randomness of the output. A higher temperature (~1) results in more randomness"
                 " and diversity in the generated text, as the model is more likely to"
@@ -133,13 +134,13 @@ class Widgets:
                 " most probable tokens.")
 
         widgetutils.make_label(self.details, "Seed")
-        self.seed = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.seed = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used.")
 
         widgetutils.make_label(self.details, "Top K")
-        self.top_k = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.top_k = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.top_k, "The top-k parameter limits the model's"
                 " predictions to the top k most probable tokens at each step"
                 " of generation. By setting a value for k, you are instructing"
@@ -148,7 +149,7 @@ class Widgets:
                 " ensuring it adheres to specific patterns or constraints.")
 
         widgetutils.make_label(self.details, "Top P")
-        self.top_p = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.top_p = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
                 " the cumulative probability of the generated tokens."
                 " The model generates tokens until the cumulative probability"
@@ -158,7 +159,7 @@ class Widgets:
                 " probable tokens when necessary.")
 
         widgetutils.make_label(self.details, "Threads")
-        self.threads = widgetutils.make_entry(self.details, width=config.entry_width_small)
+        self.threads = widgetutils.make_entry(self.details, width=Theme.entry_width_small)
         ToolTip(self.threads, "The number of CPU threads to use")
 
         widgetutils.make_label(self.details, "Format")
@@ -172,7 +173,7 @@ class Widgets:
                 " Check llama-cpp-python to find all the available formats.")
 
         widgetutils.make_label(self.details, "M-Lock")
-        self.mlock = widgetutils.make_combobox(self.details, width=config.combobox_width_small, values=["yes", "no"])
+        self.mlock = widgetutils.make_combobox(self.details, width=Theme.combobox_width_small, values=["yes", "no"])
         ToolTip(self.mlock, "Keep the model in memory")
 
         # Buttons

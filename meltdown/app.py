@@ -1,5 +1,6 @@
 # Modules
 from .config import config
+from .theme import Theme
 
 # Standard
 import json
@@ -32,24 +33,24 @@ class App:
 
     def setup_style(self) -> None:
         style = ttk.Style()
-        self.root.configure(background=config.background_color)
+        self.root.configure(background=Theme.background_color)
 
         # padding=[left, top, right, bottom])
 
         style.configure("Normal.TCombobox", foreground="white")
-        style.map("Normal.TCombobox", fieldbackground=[("readonly", config.combobox_background)], fieldforeground=[("readonly", "white")])
+        style.map("Normal.TCombobox", fieldbackground=[("readonly", Theme.combobox_background)], fieldforeground=[("readonly", "white")])
         style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
-        style.map("Disabled.TCombobox", fieldbackground=[("readonly", config.combobox_background)], fieldforeground=[("readonly", "white")])
+        style.map("Disabled.TCombobox", fieldbackground=[("readonly", Theme.combobox_background)], fieldforeground=[("readonly", "white")])
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
-        style.configure("Normal.TEntry", fieldbackground=config.entry_background)
-        style.configure("Normal.TEntry", foreground=config.entry_foreground)
+        style.configure("Normal.TEntry", fieldbackground=Theme.entry_background)
+        style.configure("Normal.TEntry", foreground=Theme.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=0)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor="white")
@@ -61,9 +62,9 @@ class App:
         style.configure("Input.TEntry", insertcolor="black")
 
         style.configure("Normal.TNotebook", borderwidth=0)
-        style.configure("Normal.TNotebook", background=config.entry_background)
+        style.configure("Normal.TNotebook", background=Theme.entry_background)
         style.configure("Normal.TNotebook.Tab", padding=[18, 2])
-        style.configure("Normal.TNotebook.Tab", font=config.font_tab)
+        style.configure("Normal.TNotebook.Tab", font=Theme.font_tab)
 
         style.map("Normal.TNotebook.Tab", background=[
             ("selected", "#494D62"),
@@ -151,8 +152,8 @@ class App:
 
     def set_geometry(self) -> None:
         from .args import args
-        width = args.width if args.width != -1 else config.width
-        height = args.height if args.height != -1 else config.height
+        width = args.width if args.width != -1 else Theme.width
+        height = args.height if args.height != -1 else Theme.height
         self.root.geometry(f"{width}x{height}")
 
     def update(self) -> None:

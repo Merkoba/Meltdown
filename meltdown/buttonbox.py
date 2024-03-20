@@ -1,5 +1,5 @@
 # Modules
-from .config import config
+from .theme import Theme
 
 # Standard
 import inspect
@@ -17,7 +17,7 @@ class ButtonBox(tk.Frame):
         self.bigger = bigger
         style = style if style else "normal"
         when = when if when else "<ButtonRelease-1>"
-        self.width = width if width else config.button_width
+        self.width = width if width else Theme.button_width
         self.make()
         self.set_style(style)
 
@@ -29,7 +29,7 @@ class ButtonBox(tk.Frame):
         pady = 2 if self.bigger else 0
 
         self.label = tk.Label(self, text=self.text,
-                              font=config.font_button, width=self.width,
+                              font=Theme.font_button, width=self.width,
                               padx=padx, pady=pady)
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
@@ -39,21 +39,21 @@ class ButtonBox(tk.Frame):
 
     def on_enter(self) -> None:
         if self.style == "normal":
-            self.set_background(config.button_background_hover)
+            self.set_background(Theme.button_background_hover)
         elif self.style == "green":
-            self.set_background(config.green_button_background_hover)
+            self.set_background(Theme.green_button_background_hover)
         elif self.style == "alt":
-            self.set_background(config.button_background_hover_alt)
+            self.set_background(Theme.button_background_hover_alt)
 
     def on_leave(self) -> None:
         if self.style == "normal":
-            self.set_background(config.button_background)
+            self.set_background(Theme.button_background)
         elif self.style == "green":
-            self.set_background(config.green_background)
+            self.set_background(Theme.green_background)
         elif self.style == "disabled":
-            self.set_background(config.background_disabled)
+            self.set_background(Theme.background_disabled)
         elif self.style == "alt":
-            self.set_background(config.button_background_alt)
+            self.set_background(Theme.button_background_alt)
 
     def set_background(self, color: str) -> None:
         self.configure(background=color)
@@ -87,19 +87,19 @@ class ButtonBox(tk.Frame):
         self.label.bind(when, lambda e: cmd(e))
 
     def set_style(self, style: str) -> None:
-        self.label.configure(foreground=config.button_foreground)
+        self.label.configure(foreground=Theme.button_foreground)
 
         if style == "normal":
-            self.set_background(config.button_background)
+            self.set_background(Theme.button_background)
             self.configure(cursor="hand2")
         elif style == "green":
-            self.set_background(config.green_background)
+            self.set_background(Theme.green_background)
             self.configure(cursor="hand2")
         elif style == "disabled":
-            self.set_background(config.background_disabled)
+            self.set_background(Theme.background_disabled)
             self.configure(cursor="arrow")
         elif style == "alt":
-            self.set_background(config.button_background_alt)
+            self.set_background(Theme.button_background_alt)
             self.configure(cursor="hand2")
 
         self.style = style

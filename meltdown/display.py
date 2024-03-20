@@ -1,10 +1,10 @@
 # Modules
-from .config import config
 from .app import app
 from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
+from .theme import Theme
 from . import widgetutils
 
 # Standard
@@ -525,7 +525,7 @@ class Display:
 
     def decrease_font(self) -> None:
         from . import state
-        new_size = config.output_font_size - 1
+        new_size = Theme.output_font_size - 1
 
         if new_size < 6:
             return
@@ -534,7 +534,7 @@ class Display:
 
     def increase_font(self) -> None:
         from . import state
-        new_size = config.output_font_size + 1
+        new_size = Theme.output_font_size + 1
 
         if new_size > 60:
             return
