@@ -40,7 +40,7 @@ class Markdown():
     def format_snippets(self, complete: bool, position: str) -> None:
         from .snippet import Snippet
         text = self.widget.get(position, "end-1c")
-        pattern = r"^```([\w#]*)\n(.*?)\n```$"
+        pattern = r"^```([-\w.#]*)\n(.*?)\n```$"
         matches = []
 
         for match in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):

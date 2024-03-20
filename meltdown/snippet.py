@@ -23,7 +23,11 @@ class Snippet(tk.Frame):
         self.header = tk.Frame(self)
         self.header.configure(background=config.snippet_header_background)
 
-        header_text = f"Language: {language}"
+        if language:
+            header_text = f"Language: {language}"
+        else:
+            header_text = "Plain Text"
+
         self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font(True))
         self.header_text.configure(foreground=config.snippet_header_foreground)
         self.header_text.configure(background=config.snippet_header_background)
@@ -47,9 +51,12 @@ class Snippet(tk.Frame):
         self.text.configure(borderwidth=0, highlightthickness=0)
         self.text.delete("1.0", tk.END)
 
-        try:
-            self.syntax_highlighter()
-        except BaseException:
+        if language:
+            try:
+                self.syntax_highlighter()
+            except BaseException:
+                self.text.insert("1.0", self.content)
+        else:
             self.text.insert("1.0", self.content)
 
         self.text.configure(state="disabled")
