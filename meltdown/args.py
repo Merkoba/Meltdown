@@ -33,7 +33,7 @@ class Args:
             "no-colors": {"action": "store_false", "help": "Don't show user colors"},
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
             "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
-            "no-keyboard": {"action": "store_false", "help": "Don't show system monitors"},
+            "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
             "width": {"type": int, "help": "Width of the window"},
