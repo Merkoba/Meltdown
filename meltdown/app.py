@@ -125,6 +125,7 @@ class App:
             f"{title} v{version}",
             "Interface for llama.cpp",
             f"Developer: {author}",
+            "All Rights Reserved",
         ]
 
         Dialog.show_message("\n".join(lines))
