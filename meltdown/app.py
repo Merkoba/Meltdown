@@ -156,6 +156,10 @@ class App:
         height = args.height if args.height != -1 else Theme.height
         self.root.geometry(f"{width}x{height}")
 
+        if args.maximized:
+            app.update()
+            self.maximize(False)
+
     def update(self) -> None:
         self.root.update_idletasks()
 

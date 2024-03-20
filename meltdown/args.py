@@ -13,7 +13,9 @@ class Args:
         self.colors = True
         self.avatars = True
         self.monitors = True
+        self.monitor_colors = True
         self.keyboard = True
+        self.maximized = False
         self.compact = False
         self.full = False
         self.test = False
@@ -33,14 +35,18 @@ class Args:
             "no-colors": {"action": "store_false", "help": "Don't show user colors"},
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
             "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
+            "no-monitor-colors": {"action": "store_false", "help": "Disable system monitor colors"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
+            "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
         }
 
-        aliases: Dict[str, List[str]] = {}
+        aliases: Dict[str, List[str]] = {
+            "maximized": ["--maximize", "-maximize", "--max", "-max"],
+        }
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self.Internal.aliases, self)
@@ -49,7 +55,9 @@ class Args:
         ap.normal("no_colors", "colors")
         ap.normal("no_avatars", "avatars")
         ap.normal("no_monitors", "monitors")
+        ap.normal("no_monitor_colors", "monitor_colors")
         ap.normal("no_keyboard", "keyboard")
+        ap.normal("maximized")
         ap.normal("compact")
         ap.normal("full")
         ap.normal("width")

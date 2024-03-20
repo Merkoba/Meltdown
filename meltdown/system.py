@@ -40,21 +40,22 @@ def get_info() -> None:
     else:
         widgets.temp.set("N/A")
 
-    if cpu >= config.system_threshold:
-        widgets.cpu_text.configure(foreground=Theme.red_color)
-    else:
-        widgets.cpu_text.configure(foreground=Theme.green_color)
-
-    if ram >= config.system_threshold:
-        widgets.ram_text.configure(foreground=Theme.red_color)
-    else:
-        widgets.ram_text.configure(foreground=Theme.green_color)
-
-    if temp:
-        if temp >= config.system_threshold:
-            widgets.temp_text.configure(foreground=Theme.red_color)
+    if args.monitor_colors:
+        if cpu >= config.system_threshold:
+            widgets.cpu_text.configure(foreground=Theme.red_color)
         else:
-            widgets.temp_text.configure(foreground=Theme.green_color)
+            widgets.cpu_text.configure(foreground=Theme.green_color)
+
+        if ram >= config.system_threshold:
+            widgets.ram_text.configure(foreground=Theme.red_color)
+        else:
+            widgets.ram_text.configure(foreground=Theme.green_color)
+
+        if temp:
+            if temp >= config.system_threshold:
+                widgets.temp_text.configure(foreground=Theme.red_color)
+            else:
+                widgets.temp_text.configure(foreground=Theme.green_color)
 
 
 def check() -> None:

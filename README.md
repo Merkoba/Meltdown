@@ -188,6 +188,26 @@ Don't display user avatars.
 
 ---
 
+>no-monitors
+
+Don't show the system monitors like CPU.
+
+---
+
+>no-monitor-colors
+
+Don't use colors on the system monitors.
+
+---
+
+---
+
+>maximized
+
+Start the window maximized.
+
+Aliases: `--maximize` and `--max`
+
 >compact
 
 Start in compact mode.
