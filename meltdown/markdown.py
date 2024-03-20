@@ -139,7 +139,7 @@ class Markdown():
             clean_text = self.untoken(original_text, token * 2)
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{clean_text}")
-            end_index = f"{end} - 2c"
+            end_index = f"{end} - 4c"
             self.widget.tag_add("bold", f"{start}", end_index)
             self.format_bold(complete, self.solve_index(end_index))
 
