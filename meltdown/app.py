@@ -174,39 +174,41 @@ class App:
         self.update_bottom()
 
     def toggle_compact(self) -> None:
-        from . import state
-
         if config.compact:
             self.disable_compact()
         else:
             self.enable_compact()
-
-        state.set_config("compact", not config.compact)
 
     def enable_compact(self) -> None:
         from .widgets import widgets
         widgets.system_frame.grid_remove()
         widgets.details_frame.grid_remove()
         widgets.addons_frame.grid_remove()
-        self.after_compact()
+        self.after_compact(True)
 
     def disable_compact(self) -> None:
         from .widgets import widgets
         widgets.system_frame.grid()
         widgets.details_frame.grid()
         widgets.addons_frame.grid()
-        self.after_compact()
+        self.after_compact(False)
 
-    def after_compact(self) -> None:
+    def after_compact(self, enabled: bool) -> None:
         from .widgets import widgets
+        from . import state
         self.update()
         widgets.display.to_bottom()
         widgets.focus_input()
+        state.set_config("compact", enabled)
 
     def check_compact(self) -> None:
         from .args import args
 
-        if config.compact or args.compact:
+        if args.full:
+            self.disable_compact()
+        elif args.compact:
+            self.enable_compact()
+        elif config.compact:
             self.enable_compact()
         else:
             self.disable_compact()

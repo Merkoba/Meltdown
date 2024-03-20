@@ -14,6 +14,7 @@ class Args:
         self.avatars = True
         self.monitors = True
         self.compact = False
+        self.full = False
         self.test = False
         self.width = -1
         self.height = -1
@@ -32,6 +33,7 @@ class Args:
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
             "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
+            "full": {"action": "store_true", "help": "Start in full mode"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
         }
@@ -46,6 +48,7 @@ class Args:
         ap.normal("no_avatars", "avatars")
         ap.normal("no_monitors", "monitors")
         ap.normal("compact")
+        ap.normal("full")
         ap.normal("width")
         ap.normal("height")
         ap.normal("test")
