@@ -1,10 +1,11 @@
 # Modules
 from .config import config
 from .app import app
-from . import widgetutils
 from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
+from .bottom import Bottom
+from . import widgetutils
 
 # Standard
 import random
@@ -16,10 +17,11 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, document_id: str, tab_id: str, output: Output) -> None:
+    def __init__(self, document_id: str, tab_id: str, output: Output, bottom: Bottom) -> None:
         self.document_id = document_id
         self.tab_id = tab_id
         self.output = output
+        self.bottom = bottom
 
 
 class Display:
@@ -73,11 +75,14 @@ class Display:
         if not document_id:
             return
 
+        frame.grid_rowconfigure(0, weight=1)
+        frame.grid_rowconfigure(1, weight=0)
+        frame.grid_columnconfigure(0, weight=1)
+
         tab_id = self.tab_ids()[-1]
         output = Output(frame, tab_id)
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
-        tab = Tab(document_id, tab_id, output)
+        bottom = Bottom(frame, tab_id)
+        tab = Tab(document_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
 
         if select_tab:
@@ -132,7 +137,6 @@ class Display:
         self.root.select(tab_id)
         self.current_tab = tab_id
         app.update()
-        self.check_scroll_buttons()
 
     def update_current_tab(self) -> None:
         tab_id = self.root.select()
@@ -144,7 +148,7 @@ class Display:
     def on_tab_change(self, event: Any) -> None:
         from .widgets import widgets
         from .session import session
-        self.update_current_tab()
+
         tab = self.get_current_tab()
 
         if tab:
@@ -155,12 +159,17 @@ class Display:
                 document.loaded = True
 
         widgets.focus_input()
+        app.update()
+        self.check_scroll_buttons()
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
 
     def get_current_output(self) -> Optional[Output]:
         return self.get_output(self.current_tab)
+
+    def get_current_bottom(self) -> Optional[Bottom]:
+        return self.get_bottom(self.current_tab)
 
     def get_tab(self, id: str) -> Optional[Tab]:
         return self.tabs.get(id)
@@ -172,11 +181,19 @@ class Display:
 
         return None
 
-    def get_output(self, id: str) -> Optional[Output]:
-        tab = self.get_tab(id)
+    def get_output(self, tab_id: str) -> Optional[Output]:
+        tab = self.get_tab(tab_id)
 
         if tab:
             return tab.output
+        else:
+            return None
+
+    def get_bottom(self, tab_id: str) -> Optional[Bottom]:
+        tab = self.get_tab(tab_id)
+
+        if tab:
+            return tab.bottom
         else:
             return None
 
@@ -332,8 +349,11 @@ class Display:
 
         output.to_top()
 
-    def to_bottom(self) -> None:
-        output = self.get_current_output()
+    def to_bottom(self, tab_id: str = "") -> None:
+        if tab_id:
+            output = self.get_output(tab_id)
+        else:
+            output = self.get_current_output()
 
         if not output:
             return
@@ -467,9 +487,9 @@ class Display:
         yview = output.yview()
 
         if yview[1] == 1.0:
-            widgets.hide_bottom()
+            tab.bottom.hide()
         else:
-            widgets.show_bottom()
+            tab.bottom.show()
 
         if yview[0] == 0:
             widgets.disable_top_button()
@@ -536,3 +556,14 @@ class Display:
     def update_session(self) -> None:
         from .session import session
         session.update()
+
+    def hide_bottom(self, tab_id: str = "") -> None:
+        if tab_id:
+            bottom = self.get_bottom(tab_id)
+        else:
+            bottom = self.get_current_bottom()
+
+        if not bottom:
+            return
+
+        bottom.do_hide()

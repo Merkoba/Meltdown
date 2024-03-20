@@ -89,12 +89,12 @@ class Output(tk.Text):
         from .snippet import Snippet
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
-        self.scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
         self.position = "1.0"
-        self.pack(fill=tk.BOTH, expand=True, padx=0, pady=1)
+        self.grid(row=0, column=0, sticky="nsew", padx=0, pady=1)
+        self.scrollbar.grid(row=0, column=1, sticky="ns")
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
         self.tag_config("bold", font=config.get_bold_font())
@@ -192,14 +192,12 @@ class Output(tk.Text):
         self.yview_moveto(0.0)
 
     def to_bottom(self, check: bool = False) -> None:
-        from .widgets import widgets
-
         if check and (not self.auto_scroll):
             return
 
         self.auto_scroll = True
         self.yview_moveto(1.0)
-        widgets.do_hide_bottom()
+        self.display.hide_bottom(self.tab_id)
 
     def last_character(self) -> str:
         text = self.get("1.0", "end-1c")

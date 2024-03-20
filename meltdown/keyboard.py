@@ -33,10 +33,6 @@ class Keyboard:
         self.shift = False
         self.commands: Dict[str, List[KbItem]] = {}
 
-    def reset(self) -> None:
-        self.ctrl = False
-        self.shift = False
-
     def block(self) -> None:
         self.block_date = timeutils.now()
 
@@ -112,7 +108,6 @@ class Keyboard:
     def setup(self) -> None:
         self.setup_input()
         self.setup_globals()
-        self.setup_focus()
         self.bind_commands()
 
     def bind_commands(self) -> None:
@@ -195,12 +190,6 @@ class Keyboard:
         self.register("r", on_ctrl=lambda: app.resize())
         self.register("m", on_ctrl=lambda: model.browse_models())
         self.register("l", on_ctrl=lambda: state.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
-
-    def setup_focus(self) -> None:
-        def on_focus_out() -> None:
-            self.reset()
-
-        app.root.bind("<FocusOut>", lambda e: on_focus_out())
 
 
 keyboard = Keyboard()
