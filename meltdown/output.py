@@ -361,7 +361,7 @@ class Output(tk.Text):
         tags = self.tag_names(current_index)
 
         if tags:
-            Output.words = self.get_tagwords("highlight", event)
+            Output.words = self.get_tagwords(tags[0], event).strip()
 
             if "highlight" in tags:
                 self.config(cursor="hand2")
