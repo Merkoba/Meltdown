@@ -97,6 +97,7 @@ class Output(tk.Text):
         from .snippet import Snippet
         super().__init__(parent, state="disabled", wrap="word", font=config.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
+        self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True

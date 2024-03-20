@@ -55,7 +55,7 @@ class Snippet(tk.Frame):
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
-        self.scrollbar.configure(cursor="hand2")
+        self.scrollbar.configure(cursor="arrow")
         self.text.configure(xscrollcommand=self.scrollbar.set)
 
         if args.scrollbars:
