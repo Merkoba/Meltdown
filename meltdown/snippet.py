@@ -18,26 +18,26 @@ class Snippet(tk.Frame):
         self.content = content
 
         self.header = tk.Frame(self)
-        self.header.configure(background=config.snippet_header_color)
+        self.header.configure(background=config.snippet_header_background)
 
         header_text = f"Language: {language}"
         self.header_text = tk.Label(self.header, text=header_text, font=config.get_snippet_font(True))
-        self.header_text.configure(foreground=config.snippet_header_text)
-        self.header_text.configure(background=config.snippet_header_color)
+        self.header_text.configure(foreground=config.snippet_header_foreground)
+        self.header_text.configure(background=config.snippet_header_background)
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
 
         self.header_copy = tk.Label(self.header, text="Copy", font=config.get_snippet_font(True))
         self.header_copy.configure(cursor="hand2")
         self.header_copy.pack(side=tk.RIGHT, padx=5)
-        self.header_copy.configure(foreground=config.snippet_header_text)
-        self.header_copy.configure(background=config.snippet_header_color)
+        self.header_copy.configure(foreground=config.snippet_header_foreground)
+        self.header_copy.configure(background=config.snippet_header_background)
 
         self.header_select = tk.Label(self.header, text="Select", font=config.get_snippet_font(True))
         self.header_select.configure(cursor="hand2")
         self.header_select.pack(side=tk.RIGHT, padx=5)
-        self.header_select.configure(foreground=config.snippet_header_text)
-        self.header_select.configure(background=config.snippet_header_color)
+        self.header_select.configure(foreground=config.snippet_header_foreground)
+        self.header_select.configure(background=config.snippet_header_background)
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")

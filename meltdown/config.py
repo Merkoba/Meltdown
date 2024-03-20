@@ -46,8 +46,8 @@ class Config:
         self.dialog_border = "#446CA1"
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
-        self.snippet_header_color = "white"
-        self.snippet_header_text = "#2B303B"
+        self.snippet_header_background = "#494D62"
+        self.snippet_header_foreground = "white"
         self.highlight_background = "#3D4555"
         self.highlight_foreground = "white"
         self.max_list_items = 10

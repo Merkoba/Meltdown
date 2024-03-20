@@ -18,20 +18,20 @@ test_session = {
     "name": "Test",
     "items": [
         {"user": "Highlight Test"},
-        {"assistant": "Here is a `highlight` and `a longer highlight`."},
+        {"assistant": "Here is a `highlight` and `a longer highlight`.\nHere is a `highlight` and `a longer highlight`."},
         {"user": "Bold Test"},
-        {"assistant": "Here is a bold **word** and **a bold sentence**."},
+        {"assistant": "Here is a bold **word** and **a bold sentence**.\nHere is a bold **word** and **a bold sentence**."},
         {"user": "Italic Test with Asterisk"},
-        {"assistant": "Here is an italic *word* and *an italic sentence*."},
+        {"assistant": "Here is an italic *word* and *an italic sentence*.\nHere is an italic *word* and *an italic sentence*."},
         {"user": "Italic Test with Underscore"},
-        {"assistant": "Here is a an italic _word_ and _an italic sentence_."},
+        {"assistant": "Here is a an italic _word_ and _an italic sentence_.\nHere is a an italic _word_ and _an italic sentence_."},
         {"user": "Snippet Test"},
         {"assistant":
             "Here is some code:\n\n```python\na = 123\nprint('Hello, World!')\n```\n\n" +
             "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
          },
         {"user": "URL Test"},
-        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com"},
+        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\nHere are some urls https://aa.com and http://cc.com and ftp://44.com"},
         {"user": "Normal last sentence"},
         {"assistant": "Here is the last sentence"},
     ],

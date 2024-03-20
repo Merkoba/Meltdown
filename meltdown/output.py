@@ -179,8 +179,13 @@ class Output(tk.Text):
 
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)
-        self.tag_config("bold", font=config.get_bold_font())
-        self.tag_config("italic", font=config.get_italic_font())
+
+        if args.test:
+            self.tag_config("bold", font=config.get_bold_font(), underline=True)
+            self.tag_config("italic", font=config.get_italic_font(), underline=True)
+        else:
+            self.tag_config("bold", font=config.get_bold_font())
+            self.tag_config("italic", font=config.get_italic_font())
 
     def set_text(self, text: str) -> None:
         self.enable()
