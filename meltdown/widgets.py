@@ -253,6 +253,7 @@ class Widgets:
         self.input_history_index = -1
         self.current_details = 1
         self.bottom_debouncer = ""
+        self.bottom_delay = 200
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -605,9 +606,10 @@ class Widgets:
             app.root.after_cancel(self.bottom_debouncer)
 
     def show_bottom(self) -> None:
+        self.cancel_bottom_debouncer()
+
         if (not self.bottom_button_enabled) and app.exists():
-            self.cancel_bottom_debouncer()
-            self.bottom_debouncer = app.root.after(200, self.do_show_bottom)
+            self.bottom_debouncer = app.root.after(self.bottom_delay, self.do_show_bottom)
 
     def do_show_bottom(self) -> None:
         self.cancel_bottom_debouncer()
@@ -615,9 +617,10 @@ class Widgets:
         self.bottom_frame.grid()
 
     def hide_bottom(self) -> None:
+        self.cancel_bottom_debouncer()
+
         if self.bottom_button_enabled and app.exists():
-            self.cancel_bottom_debouncer()
-            self.bottom_debouncer = app.root.after(200, self.do_hide_bottom)
+            self.bottom_debouncer = app.root.after(self.bottom_delay, self.do_hide_bottom)
 
     def do_hide_bottom(self) -> None:
         self.cancel_bottom_debouncer()
