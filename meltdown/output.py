@@ -391,7 +391,11 @@ class Output(tk.Text):
 
         if tags:
             Output.words = self.get_tagwords(tags[0], event).strip()
-            self.config(cursor="hand2")
+
+            if ("sel" in tags) and (len(tags) == 1):
+                self.config(cursor="xterm")
+            else:
+                self.config(cursor="hand2")
         else:
             Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             self.config(cursor="xterm")
