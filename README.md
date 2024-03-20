@@ -148,17 +148,25 @@ For example: `meltdown --no-tooltips --width 800 --height 900`
 
 Don't show tooltips when hovering over items.
 
+---
+
 >width
 
 Start the window with this width.
+
+---
 
 >height
 
 Start the window with this height.
 
+---
+
 >test
 
 Open a test tab for debugging.
+
+---
 
 >version
 
