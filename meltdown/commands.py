@@ -37,6 +37,7 @@ class Commands:
             "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
             "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
+            "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
         }
 
         aliases = []
@@ -73,6 +74,13 @@ class Commands:
 
         for cmd, data in self.commands.items():
             widgets.display.print(f"{cmd}: {data['help']}")
+
+    def show_arguments(self) -> None:
+        from .args import args
+        from .widgets import widgets
+        text = args.parser.format_help().strip()
+        widgets.display.print("\nCommand Line Arguments:\n")
+        widgets.display.print(text)
 
     def check_autocomplete(self) -> None:
         from .widgets import widgets

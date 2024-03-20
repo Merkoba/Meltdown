@@ -35,6 +35,7 @@ class ArgParser:
                     value in item.items() if value is not None}
             parser.add_argument(*names, **tail)
 
+        self.parser = parser
         self.args = parser.parse_args()
         self.obj = obj
 

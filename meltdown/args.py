@@ -53,5 +53,7 @@ class Args:
         ap.normal("height")
         ap.normal("test")
 
+        self.parser = ap.parser
+
 
 args = Args()
