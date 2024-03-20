@@ -107,10 +107,13 @@ class Output(tk.Text):
         self.display = widgets.display
         self.markdown = Markdown(self)
 
-        def on_highlight_click(event: Any) -> None:
+        def on_tag_click(event: Any) -> None:
             self.show_words_menu(event)
 
-        self.tag_bind("highlight", "<ButtonRelease-1>", lambda e: on_highlight_click(e))
+        tags = ("bold", "italic", "highlight")
+
+        for tag in tags:
+            self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
         def on_url_click(event: Any) -> None:
             text = self.get_tagwords("url", event)
@@ -362,13 +365,7 @@ class Output(tk.Text):
 
         if tags:
             Output.words = self.get_tagwords(tags[0], event).strip()
-
-            if "highlight" in tags:
-                self.config(cursor="hand2")
-            elif "url" in tags:
-                self.config(cursor="hand2")
-            else:
-                self.config(cursor="xterm")
+            self.config(cursor="hand2")
         else:
             Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             self.config(cursor="xterm")
