@@ -248,7 +248,7 @@ class Widgets:
         self.stop_button_enabled = True
         self.load_button_enabled = True
         self.format_select_enabled = True
-        self.bottom_button_enabled = True
+        self.bottom_visible = True
         self.top_button_enabled = True
         self.input_history_index = -1
         self.current_details = 1
@@ -608,23 +608,23 @@ class Widgets:
     def show_bottom(self) -> None:
         self.cancel_bottom_debouncer()
 
-        if (not self.bottom_button_enabled) and app.exists():
+        if (not self.bottom_visible) and app.exists():
             self.bottom_debouncer = app.root.after(self.bottom_delay, self.do_show_bottom)
 
     def do_show_bottom(self) -> None:
         self.cancel_bottom_debouncer()
-        self.bottom_button_enabled = True
+        self.bottom_visible = True
         self.bottom_frame.grid()
 
     def hide_bottom(self) -> None:
         self.cancel_bottom_debouncer()
 
-        if self.bottom_button_enabled and app.exists():
+        if self.bottom_visible and app.exists():
             self.bottom_debouncer = app.root.after(self.bottom_delay, self.do_hide_bottom)
 
     def do_hide_bottom(self) -> None:
         self.cancel_bottom_debouncer()
-        self.bottom_button_enabled = False
+        self.bottom_visible = False
         self.bottom_frame.grid_remove()
 
     def enable_top_button(self) -> None:
