@@ -158,6 +158,7 @@ class Display:
                 document.loaded = True
 
         widgets.focus_input()
+        self.check_scroll_buttons(instant=True)
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
