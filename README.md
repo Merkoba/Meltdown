@@ -140,7 +140,7 @@ You can find more in that site.
 
 These are flags you can use when running the program.
 
-For example: `meltdown --no-tooltips`
+For example: `meltdown --no-tooltips --width 800 --height 900`
 
 ---
 
