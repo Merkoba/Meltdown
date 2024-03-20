@@ -144,12 +144,6 @@ For example: `meltdown --no-tooltips --width 800 --height 900`
 
 ---
 
->no-tooltips
-
-Don't show tooltips when hovering over items.
-
----
-
 >width
 
 Start the window with this width.
@@ -174,6 +168,24 @@ Show the version of the program.
 
 ---
 
+>no-tooltips
+
+Don't show tooltips when hovering over items.
+
+---
+
 >no-scrollbars
 
 Don't display the scrollbars.
+
+---
+
+>no-colors
+
+Don't display colors on the user names.
+
+---
+
+>no-avatars
+
+Don't display user avatars.
