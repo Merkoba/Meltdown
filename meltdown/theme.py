@@ -1,90 +1,86 @@
+# Modules
+from .config import config
+
 # Standard
 from typing import Tuple
 
 
 class Theme:
-    width = 784
-    height = 752
+    def __init__(self) -> None:
+        self.width: int
+        self.height: int
 
-    font_family = "sans"
-    font = (font_family, 14)
-    font_button = (font_family, 12)
-    font_combobox = (font_family, 13)
-    font_tab = (font_family, 12)
-    font_menu = (font_family, 13)
-    snippet_font_family = "monospace"
+        self.font_family: str
+        self.font: Tuple[str, int]
+        self.font_button: Tuple[str, int]
+        self.font_combobox: Tuple[str, int]
+        self.font_tab: Tuple[str, int]
+        self.font_menu: Tuple[str, int]
+        self.snippet_font_family: str
 
-    syntax_style = "monokai"
-    dialog_color = "#252933"
-    background_color = "#212121"
-    foreground_color = "white"
-    red_color = "#FF6B6B"
-    green_color = "#44B3A1"
-    button_background = "#446CA1"
-    button_background_alt = "#3D4555"
-    button_background_hover = "#387ADF"
-    button_background_hover_alt = "#494D62"
-    green_button_background_hover = "#944E63"
-    green_background = "#3F9687"
-    background_disabled = "#2B303B"
-    button_foreground = "white"
-    entry_background = "#2B303B"
-    entry_foreground = "white"
-    placeholder_color = "#494D62"
-    separator_color = "#2B303B"
-    text_background = "#2B303B"
-    text_foreground = "white"
-    combobox_background = "#2B303B"
-    dialog_background = "white"
-    dialog_foreground = "black"
-    dialog_border = "#446CA1"
-    snippet_background = "#3D4555"
-    snippet_foreground = "white"
-    snippet_header_background = "#A9C3CA"
-    snippet_header_foreground = "#2B303B"
-    highlight_background = "#3D4555"
-    highlight_foreground = "white"
-    border_color = "#959595"
-    menu_background = "white"
-    menu_foreground = "black"
-    menu_hover_background = "#6693C3"
-    menu_hover_foreground = "white"
-    menu_disabled_background = "#E0E0E0"
-    menu_disabled_foreground = "#3D4555"
+        self.syntax_style: str
+        self.dialog_color: str
+        self.background_color: str
+        self.foreground_color: str
+        self.red_color: str
+        self.green_color: str
+        self.button_background: str
+        self.button_background_alt: str
+        self.button_background_hover: str
+        self.button_background_hover_alt: str
+        self.green_button_background_hover: str
+        self.green_background: str
+        self.background_disabled: str
+        self.button_foreground: str
+        self.entry_background: str
+        self.entry_foreground: str
+        self.placeholder_color: str
+        self.separator_color: str
+        self.text_background: str
+        self.text_foreground: str
+        self.combobox_background: str
+        self.dialog_background: str
+        self.dialog_foreground: str
+        self.dialog_border: str
+        self.snippet_background: str
+        self.snippet_foreground: str
+        self.snippet_header_background: str
+        self.snippet_header_foreground: str
+        self.highlight_background: str
+        self.highlight_foreground: str
+        self.border_color: str
+        self.menu_background: str
+        self.menu_foreground: str
+        self.menu_hover_background: str
+        self.menu_hover_foreground: str
+        self.menu_disabled_background: str
+        self.menu_disabled_foreground: str
 
-    padx = 10
-    pady = 10
-    frame_padx = 0
-    frame_pady = 0
-    entry_width = 10
-    entry_width_small = 6
-    combobox_width = 11
-    combobox_width_small = 7
-    border_width = 4
-    button_width = 8
-    snippet_header_minus = 1
+        self.padx: int
+        self.pady: int
+        self.frame_padx: int
+        self.frame_pady: int
+        self.entry_width: int
+        self.entry_width_small: int
+        self.combobox_width: int
+        self.combobox_width_small: int
+        self.border_width: int
+        self.button_width: int
+        self.snippet_header_minus: int
 
-    @staticmethod
-    def get_output_font() -> Tuple[str, int]:
-        from .config import config
-        return (Theme.font_family, config.output_font_size)
+    def get_output_font(self) -> Tuple[str, int]:
+        return (self.font_family, config.output_font_size)
 
-    @staticmethod
-    def get_snippet_font(smaller: bool = False) -> Tuple[str, int]:
-        from .config import config
+    def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
         size = config.output_font_size
 
         if smaller:
-            size -= Theme.snippet_header_minus
+            size -= self.snippet_header_minus
 
-        return (Theme.snippet_font_family, size)
+        return (self.snippet_font_family, size)
 
-    @staticmethod
-    def get_bold_font() -> Tuple[str, int, str]:
-        from .config import config
-        return (Theme.font_family, config.output_font_size, "bold")
+    def get_bold_font(self) -> Tuple[str, int, str]:
+        return (self.font_family, config.output_font_size, "bold")
 
-    @staticmethod
-    def get_italic_font() -> Tuple[str, int, str]:
-        from .config import config
-        return (Theme.font_family, config.output_font_size, "italic")
+    def get_italic_font(self) -> Tuple[str, int, str]:
+        return (self.font_family, config.output_font_size, "italic")

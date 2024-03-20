@@ -1,7 +1,7 @@
 # Modules
 from .output import Output
 from .args import args
-from .theme import Theme
+from .app import app
 
 # Libraries
 import pyperclip  # type: ignore
@@ -21,30 +21,30 @@ class Snippet(tk.Frame):
         self.language = language
 
         self.header = tk.Frame(self)
-        self.header.configure(background=Theme.snippet_header_background)
+        self.header.configure(background=app.theme.snippet_header_background)
 
         if language:
             header_text = f"Language: {language}"
         else:
             header_text = "Plain Text"
 
-        self.header_text = tk.Label(self.header, text=header_text, font=Theme.get_snippet_font(True))
-        self.header_text.configure(foreground=Theme.snippet_header_foreground)
-        self.header_text.configure(background=Theme.snippet_header_background)
+        self.header_text = tk.Label(self.header, text=header_text, font=app.theme.get_snippet_font(True))
+        self.header_text.configure(foreground=app.theme.snippet_header_foreground)
+        self.header_text.configure(background=app.theme.snippet_header_background)
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
 
-        self.header_copy = tk.Label(self.header, text="Copy", font=Theme.get_snippet_font(True))
+        self.header_copy = tk.Label(self.header, text="Copy", font=app.theme.get_snippet_font(True))
         self.header_copy.configure(cursor="hand2")
         self.header_copy.pack(side=tk.RIGHT, padx=5)
-        self.header_copy.configure(foreground=Theme.snippet_header_foreground)
-        self.header_copy.configure(background=Theme.snippet_header_background)
+        self.header_copy.configure(foreground=app.theme.snippet_header_foreground)
+        self.header_copy.configure(background=app.theme.snippet_header_background)
 
-        self.header_select = tk.Label(self.header, text="Select", font=Theme.get_snippet_font(True))
+        self.header_select = tk.Label(self.header, text="Select", font=app.theme.get_snippet_font(True))
         self.header_select.configure(cursor="hand2")
         self.header_select.pack(side=tk.RIGHT, padx=5)
-        self.header_select.configure(foreground=Theme.snippet_header_foreground)
-        self.header_select.configure(background=Theme.snippet_header_background)
+        self.header_select.configure(foreground=app.theme.snippet_header_foreground)
+        self.header_select.configure(background=app.theme.snippet_header_background)
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
@@ -73,10 +73,10 @@ class Snippet(tk.Frame):
         num_lines = int(self.text.index("end-1c").split(".")[0])
         self.text.configure(height=num_lines)
 
-        self.configure(background=Theme.snippet_background)
-        self.text.configure(background=Theme.snippet_background)
-        self.text.configure(foreground=Theme.snippet_foreground)
-        self.text.configure(font=Theme.get_snippet_font())
+        self.configure(background=app.theme.snippet_background)
+        self.text.configure(background=app.theme.snippet_background)
+        self.text.configure(foreground=app.theme.snippet_foreground)
+        self.text.configure(font=app.theme.get_snippet_font())
         self.scrollbar.configure(command=self.text.xview)
 
         self.update_size()
@@ -135,10 +135,10 @@ class Snippet(tk.Frame):
         self.text.configure(width=width_chars)
 
     def update_font(self) -> None:
-        self.text.configure(font=Theme.get_snippet_font())
-        self.header_text.configure(font=Theme.get_snippet_font(True))
-        self.header_copy.configure(font=Theme.get_snippet_font(True))
-        self.header_select.configure(font=Theme.get_snippet_font(True))
+        self.text.configure(font=app.theme.get_snippet_font())
+        self.header_text.configure(font=app.theme.get_snippet_font(True))
+        self.header_copy.configure(font=app.theme.get_snippet_font(True))
+        self.header_select.configure(font=app.theme.get_snippet_font(True))
         self.update_size()
 
     def scroll_left(self) -> None:
@@ -173,7 +173,7 @@ class Snippet(tk.Frame):
             return ""
 
     def syntax_highlighter(self) -> None:
-        style = get_style_by_name(Theme.syntax_style)
+        style = get_style_by_name(app.theme.syntax_style)
         parsed = style.list_styles()
 
         for key in parsed:

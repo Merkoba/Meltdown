@@ -1,7 +1,6 @@
 # Modules
 from .app import app
 from .separatorbox import SeparatorBox
-from .theme import Theme
 
 # Standard
 import tkinter as tk
@@ -62,9 +61,9 @@ class Menu:
             self.root.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.root, bg=Theme.menu_background, borderwidth=0, highlightthickness=0)
-        self.container = tk.Frame(self.root, bg=Theme.menu_background, borderwidth=Theme.border_width)
-        self.container.configure(background=Theme.border_color)
+        self.root = tk.Canvas(app.root, bg=app.theme.menu_background, borderwidth=0, highlightthickness=0)
+        self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.border_width)
+        self.container.configure(background=app.theme.border_color)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
         self.root.bind("<FocusOut>", lambda e: self.hide())
         self.root.grid_columnconfigure(0, weight=1)
@@ -141,12 +140,12 @@ class Menu:
             colors = self.get_colors(item)
 
             if item.separator:
-                separator = SeparatorBox(self.container, Theme.menu_background, padx=6, pady=2)
+                separator = SeparatorBox(self.container, app.theme.menu_background, padx=6, pady=2)
                 separator.grid(row=i, column=0, sticky="ew")
                 self.separators.append(separator)
             else:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=Theme.font_menu, borderwidth=0, padding=(4, 2, 4, 2))
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font_menu, borderwidth=0, padding=(4, 2, 4, 2))
 
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
@@ -157,8 +156,8 @@ class Menu:
         for i, item in enumerate(self.items):
             make_item(item, i)
 
-        self.no_items = ttk.Label(self.container, text="No Items", background=Theme.menu_background, foreground=Theme.menu_foreground,
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=Theme.font, borderwidth=0, padding=(4, 2, 4, 2))
+        self.no_items = ttk.Label(self.container, text="No Items", background=app.theme.menu_background, foreground=app.theme.menu_foreground,
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font, borderwidth=0, padding=(4, 2, 4, 2))
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
         self.no_items.grid_remove()
@@ -374,16 +373,16 @@ class Menu:
         els["label"]["foreground"] = colors["foreground"]
 
     def get_colors(self, item: MenuItem) -> Any:
-        background = Theme.menu_background
+        background = app.theme.menu_background
 
         if item.disabled:
-            foreground = Theme.menu_disabled_foreground
-            hover_foreground = Theme.menu_disabled_foreground
-            hover_background = Theme.menu_background
+            foreground = app.theme.menu_disabled_foreground
+            hover_foreground = app.theme.menu_disabled_foreground
+            hover_background = app.theme.menu_background
         else:
-            foreground = Theme.menu_foreground
-            hover_foreground = Theme.menu_hover_foreground
-            hover_background = Theme.menu_hover_background
+            foreground = app.theme.menu_foreground
+            hover_foreground = app.theme.menu_hover_foreground
+            hover_background = app.theme.menu_hover_background
 
         return {"background": background, "foreground": foreground,
                 "hover_background": hover_background, "hover_foreground": hover_foreground}

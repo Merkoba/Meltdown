@@ -1,5 +1,5 @@
 # Modules
-from .theme import Theme
+from .app import app
 
 # Standard
 import tkinter as tk
@@ -88,7 +88,7 @@ class EntryBox(ttk.Entry):
 
         self.placeholder_active = True
         self.set_text(self.placeholder, check_placeholder=False)
-        self.configure(foreground=Theme.placeholder_color)
+        self.configure(foreground=app.theme.placeholder_color)
 
     def disable_placeholder(self) -> None:
         if not self.placeholder_active:
@@ -99,7 +99,7 @@ class EntryBox(ttk.Entry):
         if self.text_var.get() == self.placeholder:
             self.set_text("", check_placeholder=False)
 
-        self.configure(foreground=Theme.entry_foreground)
+        self.configure(foreground=app.theme.entry_foreground)
 
     def check_placeholder(self) -> None:
         if not self.placeholder:

@@ -3,7 +3,6 @@ from .config import config
 from .app import app
 from .menus import Menu
 from .args import args
-from .theme import Theme
 
 # Libraries
 import pyperclip  # type: ignore
@@ -96,7 +95,7 @@ class Output(tk.Text):
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
-        super().__init__(parent, state="disabled", wrap="word", font=Theme.get_output_font())
+        super().__init__(parent, state="disabled", wrap="word", font=app.theme.get_output_font())
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
@@ -172,7 +171,7 @@ class Output(tk.Text):
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
-        self.configure(background=Theme.text_background, foreground=Theme.text_foreground)
+        self.configure(background=app.theme.text_background, foreground=app.theme.text_foreground)
         self.configure(bd=4, highlightthickness=0, relief="flat")
 
         if args.colors:
@@ -183,11 +182,11 @@ class Output(tk.Text):
         self.tag_config("url", underline=True)
 
         if args.test:
-            self.tag_config("bold", font=Theme.get_bold_font(), underline=True)
-            self.tag_config("italic", font=Theme.get_italic_font(), underline=True)
+            self.tag_config("bold", font=app.theme.get_bold_font(), underline=True)
+            self.tag_config("italic", font=app.theme.get_italic_font(), underline=True)
         else:
-            self.tag_config("bold", font=Theme.get_bold_font())
-            self.tag_config("italic", font=Theme.get_italic_font())
+            self.tag_config("bold", font=app.theme.get_bold_font())
+            self.tag_config("italic", font=app.theme.get_italic_font())
 
     def set_text(self, text: str) -> None:
         self.enable()
@@ -284,7 +283,7 @@ class Output(tk.Text):
         self.to_bottom(True)
 
     def update_font(self) -> None:
-        self.configure(font=Theme.get_output_font())
+        self.configure(font=app.theme.get_output_font())
 
         for snippet in self.snippets:
             snippet.update_font()
