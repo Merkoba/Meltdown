@@ -62,7 +62,7 @@ class Model:
             return
 
         def wrapper() -> None:
-            self.do_load(config.model)
+            self.do_load(config.model, tab_id)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -72,7 +72,7 @@ class Model:
         self.load_thread.daemon = True
         self.load_thread.start()
 
-    def do_load(self, model: str) -> None:
+    def do_load(self, model: str, tab_id: str) -> None:
         from .app import app
         self.lock.acquire()
         self.model_loading = True
@@ -84,7 +84,8 @@ class Model:
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
             mlock = True if (config.mlock == "yes") else False
-            widgets.display.print(f"\n🫠 Loading {name}")
+            widgets.display.to_bottom(tab_id)
+            widgets.display.print(f"\n🫠 Loading {name}", tab_id=tab_id)
             app.update()
 
             self.model = Llama(
