@@ -37,6 +37,9 @@ class EntryBox(ttk.Entry):
 
     def full_focus(self) -> None:
         self.focus_set()
+        self.move_to_end()
+
+    def move_to_end(self) -> None:
         self.icursor(tk.END)
         self.xview_moveto(1.0)
 

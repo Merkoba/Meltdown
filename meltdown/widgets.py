@@ -783,5 +783,7 @@ class Widgets:
         else:
             self.input.insert_text(f" {name}")
 
+        self.input.full_focus()
+
 
 widgets: Widgets = Widgets()
