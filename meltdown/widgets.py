@@ -763,5 +763,14 @@ class Widgets:
     def hide_monitors(self) -> None:
         self.monitors.grid_remove()
 
+    def insert_name(self, who: str) -> None:
+        name = getattr(config, f"name_{who}")
+        text = self.input.get()
+
+        if text.endswith(" "):
+            self.input.insert_text(name)
+        else:
+            self.input.insert_text(f" {name}")
+
 
 widgets: Widgets = Widgets()

@@ -73,7 +73,7 @@ class Document:
                     else:
                         continue
 
-                    tab.output.insert_text(item[key], format_text=False)
+                    tab.output.insert_text(item[key])
 
             tab.output.format_text(complete=True, from_start=True)
 

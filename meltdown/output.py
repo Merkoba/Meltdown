@@ -126,6 +126,9 @@ class Output(tk.Text):
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
+        self.tag_bind("name_user", "<ButtonRelease-1>", lambda e: widgets.insert_name("user"))
+        self.tag_bind("name_ai", "<ButtonRelease-1>", lambda e: widgets.insert_name("ai"))
+
         def on_url_click(event: Any) -> None:
             text = self.get_tagwords("url", event)
 
