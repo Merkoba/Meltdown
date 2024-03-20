@@ -339,16 +339,7 @@ class Display:
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
 
-    def to_top(self) -> None:
-        output = self.get_current_output()
-
-        if not output:
-            return
-
-        output.to_top()
-        self.check_scroll_buttons(instant=True)
-
-    def to_bottom(self, tab_id: str = "") -> None:
+    def to_top(self, tab_id: str = "", **kwargs: Any) -> None:
         if tab_id:
             output = self.get_output(tab_id)
         else:
@@ -357,7 +348,19 @@ class Display:
         if not output:
             return
 
-        output.to_bottom()
+        output.to_top(**kwargs)
+        self.check_scroll_buttons(instant=True)
+
+    def to_bottom(self, tab_id: str = "", **kwargs: Any) -> None:
+        if tab_id:
+            output = self.get_output(tab_id)
+        else:
+            output = self.get_current_output()
+
+        if not output:
+            return
+
+        output.to_bottom(**kwargs)
 
     def copy_output(self) -> None:
         output = self.get_current_output()

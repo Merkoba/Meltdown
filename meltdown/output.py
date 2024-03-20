@@ -144,7 +144,7 @@ class Output(tk.Text):
             return "break"
 
         def home() -> str:
-            self.to_top()
+            self.to_top(check_instant=True)
             return "break"
 
         def end() -> str:
@@ -204,9 +204,10 @@ class Output(tk.Text):
     def clear_text(self) -> None:
         self.set_text("")
 
-    def to_top(self) -> None:
+    def to_top(self, check_instant: bool = False) -> None:
         self.auto_scroll = False
         self.yview_moveto(0.0)
+        self.display.check_scroll_buttons(instant=check_instant)
 
     def to_bottom(self, check: bool = False, check_instant: bool = False) -> None:
         if check and (not self.auto_scroll):

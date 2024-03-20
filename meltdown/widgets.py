@@ -509,7 +509,7 @@ class Widgets:
 
             model.stream(text, self.display.current_tab)
         else:
-            self.display.to_bottom()
+            self.display.to_bottom(check_instant=True)
 
     def clear_input(self) -> None:
         self.input.clear()
