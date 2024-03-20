@@ -78,10 +78,6 @@ class Display:
         tab_id = self.tab_ids()[-1]
         frame.grid_rowconfigure(0, weight=1)
         frame.grid_columnconfigure(0, weight=1)
-        # frame.grid_rowconfigure(0, weight=1)
-        # frame.grid_rowconfigure(1, weight=0)
-        # frame.grid_columnconfigure(0, weight=1)
-
         output_frame = widgetutils.make_frame(frame)
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
@@ -139,7 +135,6 @@ class Display:
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)
-        self.current_tab = tab_id
         app.update()
 
     def update_current_tab(self) -> None:
@@ -152,7 +147,7 @@ class Display:
     def on_tab_change(self, event: Any) -> None:
         from .widgets import widgets
         from .session import session
-
+        self.update_current_tab()
         tab = self.get_current_tab()
 
         if tab:

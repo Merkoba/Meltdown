@@ -39,7 +39,7 @@ def do_pack(widget: tk.Widget,
     widget.pack(side="left", padx=px, pady=py, fill=fillmode.value, expand=expand)
 
 
-def make_frame(parent: Optional[ttk.Notebook] = None,
+def make_frame(parent: Union[ttk.Notebook, tk.Frame, None] = None,
                bottom_padding: Optional[int] = None) -> tk.Frame:
     global frame_number
 
