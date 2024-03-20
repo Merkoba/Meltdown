@@ -12,6 +12,7 @@ class Theme:
     font_combobox = (font_family, 13)
     font_tab = (font_family, 12)
     font_menu = (font_family, 13)
+    snippet_font_family = "monospace"
 
     syntax_style = "monokai"
     dialog_color = "#252933"
@@ -61,6 +62,7 @@ class Theme:
     combobox_width_small = 7
     border_width = 4
     button_width = 8
+    snippet_header_minus = 1
 
     @staticmethod
     def get_output_font() -> Tuple[str, int]:
@@ -73,9 +75,9 @@ class Theme:
         size = config.output_font_size
 
         if smaller:
-            size -= 1
+            size -= Theme.snippet_header_minus
 
-        return ("monospace", size)
+        return (Theme.snippet_font_family, size)
 
     @staticmethod
     def get_bold_font() -> Tuple[str, int, str]:
