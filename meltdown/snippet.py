@@ -5,6 +5,8 @@ from .args import args
 
 # Libraries
 import pyperclip  # type: ignore
+from pygments.lexers import get_lexer_by_name  # type: ignore
+from pygments.styles import get_style_by_name  # type: ignore
 
 # Standard
 import tkinter as tk
@@ -15,7 +17,8 @@ from typing import Any
 class Snippet(tk.Frame):
     def __init__(self, parent: Output, content: str, language: str) -> None:
         super().__init__(parent, borderwidth=0, highlightthickness=0)
-        self.content = content
+        self.content = content.strip()
+        self.language = language
 
         self.header = tk.Frame(self)
         self.header.configure(background=config.snippet_header_background)
@@ -43,7 +46,12 @@ class Snippet(tk.Frame):
         self.text = tk.Text(self, wrap="none", state="normal")
         self.text.configure(borderwidth=0, highlightthickness=0)
         self.text.delete("1.0", tk.END)
-        self.text.insert("1.0", self.content)
+
+        try:
+            self.syntax_highlighter()
+        except BaseException:
+            self.text.insert("1.0", self.content)
+
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
@@ -156,3 +164,24 @@ class Snippet(tk.Frame):
             return selected_text
         except tk.TclError:
             return ""
+
+    def syntax_highlighter(self) -> None:
+        style = get_style_by_name("monokai")
+        parsed = style.list_styles()
+
+        for key in parsed:
+            if key[1]["color"] != "" and key[1]["color"] is not None:
+                color = "#" + key[1]["color"]
+                self.text.tag_config(str(key[0]), foreground=color)
+
+        lexer = get_lexer_by_name(self.language, stripall=True)
+        tokens = list(lexer.get_tokens(self.content))
+
+        for text in tokens:
+            self.text.insert(tk.END, text[1], str(text[0]))
+
+        last_line_index = self.text.index("end-1c linestart")
+        last_line_text = self.text.get(last_line_index, "end-1c")
+
+        if not last_line_text.strip():
+            self.text.delete(last_line_index, "end")

@@ -16,7 +16,7 @@
 
 ### Markdown Support:
 
-![](https://i.imgur.com/DZhF5A1.jpg)
+![](https://i.imgur.com/i9eJ9OJ.jpg)
 
 ---
 
@@ -91,6 +91,8 @@ URL highlighting and handling.
 Explain words, selections, highlights.
 
 Search for words on a search engine.
+
+Programming language syntax highlighting.
 
 ---
 
