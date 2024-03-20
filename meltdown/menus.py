@@ -17,7 +17,6 @@ class MenuItem:
         self.command = command
         self.separator = separator
         self.disabled = disabled
-        self.visible = True
         self.coords = {"x": 0, "y": 0}
 
 
@@ -347,7 +346,7 @@ class Menu:
         if self.elements[index]["item"].disabled:
             return False
 
-        if not self.elements[index]["item"].visible:
+        if not self.elements[index]["visible"]:
             return False
 
         self.on_enter(index)
