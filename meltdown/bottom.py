@@ -9,7 +9,7 @@ import tkinter as tk
 class Bottom(tk.Frame):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         super().__init__(parent)
-        self.button = ButtonBox(self, text="Go To Bottom", command=self.to_bottom)
+        self.button = ButtonBox(self, text="Go To Bottom", command=self.to_bottom, bigger=True)
         self.button.grid(row=0, column=0, sticky="nsew")
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
