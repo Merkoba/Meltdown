@@ -49,4 +49,4 @@ class Bottom(tk.Frame):
         self.grid_remove()
 
     def to_bottom(self) -> None:
-        self.output.to_bottom(check_instant=True)
+        self.output.to_bottom()
