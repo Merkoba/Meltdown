@@ -2,6 +2,7 @@
 from .config import config
 from .app import app
 from .menus import Menu
+from .args import args
 
 # Libraries
 import pyperclip  # type: ignore
@@ -75,13 +76,20 @@ class Output(tk.Text):
 
     @staticmethod
     def get_prompt(who: str) -> str:
-        avatar = getattr(config, f"avatar_{who}")
         name = getattr(config, f"name_{who}")
 
-        if name:
-            prompt = f"\n{avatar} {name} : "
+        if args.avatars:
+            avatar = getattr(config, f"avatar_{who}")
+
+            if name:
+                prompt = f"\n{avatar} {name} : "
+            else:
+                prompt = f"\n{avatar} : "
         else:
-            prompt = f"\n{avatar} : "
+            if name:
+                prompt = f"\n{name} : "
+            else:
+                prompt = "\nAnon : "
 
         return prompt
 
@@ -98,11 +106,10 @@ class Output(tk.Text):
         parent.grid_columnconfigure(0, weight=1)
         parent.grid_columnconfigure(1, weight=0)
         self.grid(row=0, column=0, sticky="nsew", padx=0, pady=1)
-        self.scrollbar.grid(row=0, column=1, sticky="ns")
-        self.tag_config("highlight", underline=True)
-        self.tag_config("url", underline=True)
-        self.tag_config("bold", font=config.get_bold_font())
-        self.tag_config("italic", font=config.get_italic_font())
+
+        if args.scrollbars:
+            self.scrollbar.grid(row=0, column=1, sticky="ns")
+
         self.setup()
 
     def setup(self) -> None:
@@ -163,8 +170,14 @@ class Output(tk.Text):
         self.configure(background=config.text_background, foreground=config.text_foreground)
         self.configure(bd=4, highlightthickness=0, relief="flat")
 
-        self.tag_config("name_user", foreground="#87CEEB")
-        self.tag_config("name_ai", foreground="#98FB98")
+        if args.colors:
+            self.tag_config("name_user", foreground="#87CEEB")
+            self.tag_config("name_ai", foreground="#98FB98")
+
+        self.tag_config("highlight", underline=True)
+        self.tag_config("url", underline=True)
+        self.tag_config("bold", font=config.get_bold_font())
+        self.tag_config("italic", font=config.get_italic_font())
 
     def set_text(self, text: str) -> None:
         self.enable()

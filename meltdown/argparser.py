@@ -49,11 +49,14 @@ class ArgParser:
 
         return lst
 
-    def normal(self, attr: str) -> None:
+    def normal(self, attr: str, key: str = "") -> None:
         value = getattr(self.args, attr)
 
         if value is not None:
-            self.set(attr, value)
+            if key:
+                self.set(key, value)
+            else:
+                self.set(attr, value)
 
     def commas(self, attr: str, vtype: Any, allow_string: bool = False, is_tuple: bool = False) -> None:
         value = getattr(self.args, attr)

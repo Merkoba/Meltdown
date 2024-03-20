@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .output import Output
+from .args import args
 
 # Libraries
 import pyperclip  # type: ignore
@@ -48,7 +49,10 @@ class Snippet(tk.Frame):
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
         self.scrollbar.configure(cursor="hand2")
         self.text.configure(xscrollcommand=self.scrollbar.set)
-        self.scrollbar.pack(fill=tk.X)
+
+        if args.scrollbars:
+            self.scrollbar.pack(fill=tk.X)
+
         self.parent = parent
 
         num_lines = int(self.text.index("end-1c").split(".")[0])

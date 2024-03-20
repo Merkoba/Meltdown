@@ -8,10 +8,13 @@ from typing import Any, Dict, List
 
 class Args:
     def __init__(self) -> None:
-        self. no_tooltips = False
+        self.tooltips = True
+        self.scrollbars = True
+        self.colors = True
+        self.avatars = True
+        self.test = False
         self.width = -1
         self.height = -1
-        self.test = False
 
     class Internal:
         title = app.manifest["title"]
@@ -19,18 +22,24 @@ class Args:
         vinfo = f"{title} {version}"
 
         arguments: Dict[str, Any] = {
+            "test": {"action": "store_true", "help": "Make a test tab"},
             "version": {"action": "version", "help": "Check the version of the program", "version": vinfo},
-            "no-tooltips": {"action": "store_true", "help": "Don't show tooltips"},
+            "no-tooltips": {"action": "store_false", "help": "Don't show tooltips"},
+            "no-scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
+            "no-colors": {"action": "store_false", "help": "Don't show scrollbars"},
+            "no-avatars": {"action": "store_false", "help": "Don't show scrollbars"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
-            "test": {"action": "store_true", "help": "Make a test tab"},
         }
 
         aliases: Dict[str, List[str]] = {}
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self.Internal.aliases, self)
-        ap.normal("no_tooltips")
+        ap.normal("no_tooltips", "tooltips")
+        ap.normal("no_scrollbars", "scrollbars")
+        ap.normal("no_colors", "colors")
+        ap.normal("no_avatars", "avatars")
         ap.normal("width")
         ap.normal("height")
         ap.normal("test")

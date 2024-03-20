@@ -171,3 +171,9 @@ Open a test tab for debugging.
 >version
 
 Show the version of the program.
+
+---
+
+>no-scrollbars
+
+Don't display the scrollbars.

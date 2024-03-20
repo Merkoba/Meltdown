@@ -43,13 +43,13 @@ class ToolTip:
         bind_scroll_events(self.widget)
 
     def update_event(self, event: Any) -> None:
-        if args.no_tooltips:
+        if not args.tooltips:
             return
 
         self.current_event = event
 
     def schedule_tooltip(self) -> None:
-        if args.no_tooltips:
+        if not args.tooltips:
             return
 
         if ToolTip.current_tooltip is not None:
