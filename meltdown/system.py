@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from .args import args
 from . import timeutils
 
 # Standard
@@ -67,6 +68,9 @@ def check() -> None:
 
 
 def start() -> None:
+    if not args.monitors:
+        return
+
     thread = threading.Thread(target=check, args=())
     thread.daemon = True
     thread.start()

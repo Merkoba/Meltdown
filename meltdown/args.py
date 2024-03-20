@@ -12,6 +12,7 @@ class Args:
         self.scrollbars = True
         self.colors = True
         self.avatars = True
+        self.monitors = True
         self.compact = False
         self.test = False
         self.width = -1
@@ -23,13 +24,14 @@ class Args:
         vinfo = f"{title} {version}"
 
         arguments: Dict[str, Any] = {
-            "test": {"action": "store_true", "help": "Make a test tab"},
+            "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "version": {"action": "version", "help": "Check the version of the program", "version": vinfo},
             "no-tooltips": {"action": "store_false", "help": "Don't show tooltips"},
             "no-scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
-            "no-colors": {"action": "store_false", "help": "Don't show scrollbars"},
-            "no-avatars": {"action": "store_false", "help": "Don't show scrollbars"},
-            "compact": {"action": "store_true", "help": "Don't show scrollbars"},
+            "no-colors": {"action": "store_false", "help": "Don't show user colors"},
+            "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
+            "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
+            "compact": {"action": "store_true", "help": "Start in compact mode"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
         }
@@ -42,6 +44,7 @@ class Args:
         ap.normal("no_scrollbars", "scrollbars")
         ap.normal("no_colors", "colors")
         ap.normal("no_avatars", "avatars")
+        ap.normal("no_monitors", "monitors")
         ap.normal("compact")
         ap.normal("width")
         ap.normal("height")
