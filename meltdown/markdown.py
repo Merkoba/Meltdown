@@ -231,7 +231,7 @@ class Markdown():
 
         def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
-            # print(original_text, "123")
+            print(original_text, "123")
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{original_text}")
             end_index = f"{end} + 1c"
@@ -252,26 +252,26 @@ class Markdown():
 
             chars = self.widget.get(f"{current_line}.0", f"{current_line}.end")
 
-            for i, char_ in enumerate(chars):
+            for char_ in chars:
                 col += 1
                 index = f"{current_line}.{col}"
                 char = self.widget.get(f"{index} + 1c")
                 next_char = self.widget.get(f"{index} + 2c")
 
-                if index_start and ((next_char == " ") or ((i + 1) >= len(chars) - 1)):
+                if index_start and ((next_char == " ") or col >= len(chars) - 1):
                     word = self.widget.get(f"{index_start} + 1c", f"{index} + 2c")
 
-                    if not word:
-                        return
-
-                    if any([word.startswith(protocol) for protocol in Markdown.protocols]):
+                    if word and any([word.startswith(protocol) for protocol in Markdown.protocols]):
                         on_match(f"{index_start} + 1c", f"{index} + 2c")
                         return
 
                     index_start = ""
                 else:
-                    if (char != " ") and (not index_start):
-                        index_start = index
+                    if char != " ":
+                        if not index_start:
+                            index_start = index
+                    else:
+                        index_start = ""
 
             current_line += 1
 

@@ -36,7 +36,8 @@ test_session = {
             "Here is more code:\n\n```\nlet a = 123\nconsole.log('Hello, World!')\n```"
          },
         {"user": "URL Test"},
-        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\nHere are some urls https://aa.com and http://cc.com and ftp://44.com"},
+        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n" +
+         "Here are some urls https://aa.com and http://cc.com and ftp://44.com"},
         {"user": "Normal last sentence"},
         {"assistant": "Here is the last sentence"},
     ],
