@@ -6,23 +6,23 @@ class LightTheme(Theme):
     def __init__(self) -> None:
         super().__init__()
         self.background_color = "white"
-        self.foreground_color = "black"
+        self.foreground_color = "#343434"
 
         self.output_background = "#CBCBCB"
-        self.output_foreground = "black"
+        self.output_foreground = "#343434"
 
         self.entry_background = "#C5C5C5"
-        self.entry_foreground = "black"
+        self.entry_foreground = "#343434"
         self.entry_placeholder_color = "grey"
-        self.entry_insert = "black"
+        self.entry_insert = "#343434"
 
-        self.name_user = "black"
-        self.name_ai = "black"
+        self.name_user = "#343434"
+        self.name_ai = "#343434"
 
         self.tab_selected_background = "#969696",
         self.tab_normal_background = "#AEAEAE",
         self.tab_selected_foreground = "white",
-        self.tab_normal_foreground = "black",
+        self.tab_normal_foreground = "#343434",
 
         self.button_foreground = "white"
         self.button_background = "#6A7B83"
@@ -37,10 +37,10 @@ class LightTheme(Theme):
         self.button_disabled_background = "#C5C5C5"
 
         self.combobox_background = "#C5C5C5"
-        self.combobox_foreground = "black"
+        self.combobox_foreground = "#343434"
 
         self.snippet_background = "#E7E7E7"
-        self.snippet_foreground = "black"
+        self.snippet_foreground = "#343434"
         self.snippet_header_background = "#7B7B7B"
         self.snippet_header_foreground = "white"
         self.syntax_style = "sas"
