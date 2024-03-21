@@ -70,7 +70,7 @@ class Theme:
         self.tab_selected_foreground = "white",
         self.tab_normal_foreground = "white",
         self.scrollbar_1 = "#333B4B"
-        self.scrollbar_2 = "#494D62"
+        self.scrollbar_2 = "#98A1A3"
 
         self.padx = 10
         self.pady = 10
