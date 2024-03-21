@@ -503,12 +503,12 @@ class Display:
 
         yview = output.yview()
 
-        if yview[1] == 1.0:
+        if yview[1] >= 0.9999:
             tab.bottom.hide()
         else:
             tab.bottom.show()
 
-        if yview[0] == 0:
+        if yview[0] <= 0.0001:
             widgets.disable_top_button()
         else:
             widgets.enable_top_button()
