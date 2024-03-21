@@ -546,14 +546,20 @@ class Display:
         for tab in self.tabs.values():
             tab.output.update_font()
 
-    def scroll_up(self) -> None:
-        output = self.get_current_output()
+    def scroll_up(self, tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
 
         if output:
             output.scroll_up()
 
-    def scroll_down(self) -> None:
-        output = self.get_current_output()
+    def scroll_down(self, tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
 
         if output:
             output.scroll_down()
@@ -564,9 +570,9 @@ class Display:
 
     def hide_bottom(self, tab_id: str = "") -> None:
         if tab_id:
-            bottom = self.get_bottom(tab_id)
-        else:
-            bottom = self.get_current_bottom()
+            tab_id = self.current_tab
+
+        bottom = self.get_bottom(tab_id)
 
         if not bottom:
             return
