@@ -14,7 +14,7 @@
 
 ![](https://i.imgur.com/i9eJ9OJ.jpg)
 
-### Light Theme
+### Light Theme:
 
 ![](https://i.imgur.com/nUzsEVu.jpg)
 
