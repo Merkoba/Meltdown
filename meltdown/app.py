@@ -227,6 +227,13 @@ class App:
         except BaseException as e:
             print(e)
 
+    def open_url(self, url: str) -> None:
+        if not url:
+            return
+
+        cmd = ["xdg-open", url]
+        self.run_command(cmd)
+
     def open_task_manager(self) -> None:
         if shutil.which("alacritty"):
             cmd = ["alacritty", "-e"]

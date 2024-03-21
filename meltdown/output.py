@@ -66,11 +66,10 @@ class Output(tk.Text):
 
     @staticmethod
     def open_url(url: str) -> None:
-        import webbrowser
         from .dialogs import Dialog
 
         def action() -> None:
-            webbrowser.open_new_tab(url)
+            app.open_url(url)
 
         Dialog.show_confirm("Open this URL??", lambda: action())
 
