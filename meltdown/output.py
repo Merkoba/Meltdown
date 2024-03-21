@@ -15,6 +15,7 @@ from typing import Any, List, Optional
 
 class Output(tk.Text):
     word_menu = Menu()
+    word_menu.add(text="Copy", command=lambda: Output.copy_words())
     word_menu.add(text="Explain", command=lambda: Output.explain_words())
     word_menu.add(text="Search", command=lambda: Output.search_words())
     current_output: Optional["Output"] = None
@@ -23,6 +24,12 @@ class Output(tk.Text):
     @staticmethod
     def get_words() -> str:
         return Output.words.strip()
+
+    @staticmethod
+    def copy_words() -> None:
+        text = Output.get_words()
+        Output.current_output.deselect_all()
+        pyperclip.copy(text)
 
     @staticmethod
     def explain_words() -> None:

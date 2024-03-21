@@ -40,7 +40,7 @@ def get_info() -> None:
                     break
 
         if temp:
-            widgets.temp.set(padnum(temp) + "°C")
+            widgets.temp.set(padnum(temp) + "°")
         else:
             widgets.temp.set("N/A")
 
