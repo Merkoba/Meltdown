@@ -231,10 +231,9 @@ class Markdown():
 
         def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
-            print(original_text, "123")
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{original_text}")
-            end_index = f"{end} + 1c"
+            end_index = end
             self.widget.tag_add("url", f"{start}", end_index)
             self.format_urls(self.solve_index(end_index))
 
@@ -258,7 +257,7 @@ class Markdown():
                 char = self.widget.get(f"{index} + 1c")
                 next_char = self.widget.get(f"{index} + 2c")
 
-                if index_start and ((next_char == " ") or col >= len(chars) - 1):
+                if index_start and ((next_char in (" ", "\n")) or col >= len(chars) - 1):
                     word = self.widget.get(f"{index_start} + 1c", f"{index} + 2c")
 
                     if word and any([word.startswith(protocol) for protocol in Markdown.protocols]):
