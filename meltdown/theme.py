@@ -71,6 +71,8 @@ class Theme:
         self.tab_normal_foreground = "white",
         self.scrollbar_1 = "#333B4B"
         self.scrollbar_2 = "#98A1A3"
+        self.tooltip_background = "white"
+        self.tooltip_foreground = "black"
 
         self.padx = 10
         self.pady = 10

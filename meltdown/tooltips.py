@@ -73,8 +73,9 @@ class ToolTip:
         self.tooltip = tk.Frame(app.root)
         self.tooltip.lift()
 
-        label = tk.Label(self.tooltip, text=self.text, background="white",
-                         wraplength=250, justify=tk.LEFT)
+        label = tk.Label(self.tooltip, text=self.text, font=app.theme.font,
+                         background=app.theme.tooltip_background, foreground=app.theme.tooltip_foreground,
+                         wraplength=480, justify=tk.LEFT, padx=2, pady=2)
         label.pack()
         label.bind("<Button-1>", lambda e: self.hide())
 
