@@ -27,6 +27,9 @@ class Output(tk.Text):
 
     @staticmethod
     def copy_words() -> None:
+        if not Output.current_output:
+            return
+
         text = Output.get_words()
         Output.current_output.deselect_all()
         pyperclip.copy(text)
