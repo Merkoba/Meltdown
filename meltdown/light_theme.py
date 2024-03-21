@@ -8,7 +8,7 @@ class LightTheme(Theme):
         self.background_color = "white"
         self.foreground_color = "#343434"
 
-        self.output_background = "#CBCBCB"
+        self.output_background = "#E7E7E7"
         self.output_foreground = "#343434"
 
         self.entry_background = "#C5C5C5"
@@ -39,7 +39,7 @@ class LightTheme(Theme):
         self.combobox_background = "#C5C5C5"
         self.combobox_foreground = "#343434"
 
-        self.snippet_background = "#E7E7E7"
+        self.snippet_background = "#CBCBCB"
         self.snippet_foreground = "#343434"
         self.snippet_header_background = "#7B7B7B"
         self.snippet_header_foreground = "white"

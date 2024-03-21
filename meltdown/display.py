@@ -63,7 +63,6 @@ class Display:
 
     def make_tab(self, name: Optional[str] = None,
                  document_id: Optional[str] = None, select_tab: bool = True) -> None:
-        from .widgets import widgets
         from .session import session
         frame = widgetutils.make_frame(self.root)
 
