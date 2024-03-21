@@ -92,7 +92,8 @@ class Config:
 
     def show_config(self) -> None:
         from .display import display
-        display.print("")
+        display.print("Config:")
+        text = []
 
         for key in self.defaults():
             value = getattr(self, key)
@@ -100,7 +101,9 @@ class Config:
             if value == "":
                 value = "[Empty]"
 
-            display.print(f"{key}: {value}")
+            text.append(f"{key}: {value}")
+
+        display.print("\n".join(text))
 
 
 config = Config()

@@ -330,15 +330,27 @@ class Output(tk.Text):
     def print(self, text: str) -> None:
         left = ""
 
-        if len(self.get_text()):
-            last_chars = self.last_characters(2).strip(" ")
+        last_line_index = self.index("end-2l")
+        elements = self.dump(last_line_index, "end-1c", window=True)
+        widget_above = False
 
-            if last_chars == "\n\n":
-                pass
-            elif last_chars == "\n":
-                left = "\n"
-            else:
-                left = "\n\n"
+        for element in elements:
+            if element[0] == "window":
+                widget_above = True
+                break
+
+        if widget_above:
+            left = "\n\n"
+        else:
+            if len(self.get_text()):
+                last_chars = self.last_characters(2).strip(" ")
+
+                if last_chars == "\n\n":
+                    pass
+                elif last_chars == "\n":
+                    left = "\n"
+                else:
+                    left = "\n\n"
 
         text = left + text
         self.insert_text(text)
