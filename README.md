@@ -98,6 +98,8 @@ Search for words on a search engine.
 
 Programming language syntax highlighting.
 
+Dark and light themes.
+
 ---
 
 ## GUI Toolkit
