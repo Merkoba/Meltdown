@@ -406,8 +406,7 @@ class Display:
         if output:
             output.select_all()
 
-    def print(self, text: str, linebreak_left: bool = False,
-              linebreak_right: bool = True, tab_id: str = "") -> None:
+    def print(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
             return
 
@@ -419,7 +418,7 @@ class Display:
         if not output:
             return
 
-        output.print(text, linebreak_left=linebreak_left, linebreak_right=linebreak_right)
+        output.print(text)
 
     def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():

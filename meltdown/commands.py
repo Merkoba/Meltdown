@@ -70,16 +70,19 @@ class Commands:
 
     def show_help(self) -> None:
         from .widgets import widgets
-        widgets.display.print("\nCommands:")
+        widgets.display.print("Commands:")
+        text = []
 
         for cmd, data in self.commands.items():
-            widgets.display.print(f"{cmd}: {data['help']}")
+            text.append(f"{self.prefix}{cmd} = {data['help']}")
+
+        widgets.display.print("\n".join(text))
 
     def show_arguments(self) -> None:
         from .args import args
         from .widgets import widgets
         text = args.parser.format_help().strip()
-        widgets.display.print("\nCommand Line Arguments:\n")
+        widgets.display.print("Arguments:")
         widgets.display.print(text)
 
     def check_autocomplete(self) -> None:

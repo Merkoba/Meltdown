@@ -75,14 +75,14 @@ class Output(tk.Text):
             avatar = getattr(config, f"avatar_{who}")
 
             if name:
-                prompt = f"\n{avatar} {name} : "
+                prompt = f"{avatar} {name} : "
             else:
-                prompt = f"\n{avatar} : "
+                prompt = f"{avatar} : "
         else:
             if name:
-                prompt = f"\n{name} : "
+                prompt = f"{name} : "
             else:
-                prompt = "\nAnon : "
+                prompt = "Anon : "
 
         return prompt
 
@@ -326,25 +326,28 @@ class Output(tk.Text):
 
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who)
-        self.print(prompt, linebreak_left=True, linebreak_right=False)
-        start_index = self.index(f"end - {len(prompt)}c")
+        self.print(prompt)
+        start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
 
         if who == "ai":
             self.position = self.index("end - 1c")
 
-    def print(self, text: str, linebreak_left: bool = False, linebreak_right: bool = False) -> None:
+    def print(self, text: str) -> None:
         left = ""
-        right = ""
 
-        if linebreak_left:
-            left = "\n"
+        if len(self.get_text()):
+            last_chars = self.last_characters(2).strip(" ")
 
-        if linebreak_right:
-            right = "\n"
+            if last_chars == "\n\n":
+                pass
+            elif last_chars == "\n":
+                left = "\n"
+            else:
+                left = "\n\n"
 
-        text = left + text + right
+        text = left + text
         self.insert_text(text)
         self.to_bottom(True, check_instant=False)
 

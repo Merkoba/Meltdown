@@ -42,7 +42,7 @@ class Model:
             self.loaded_format = ""
 
             if announce:
-                widgets.display.print("\n👻 Model unloaded")
+                widgets.display.print("👻 Model unloaded")
 
     def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
@@ -85,7 +85,7 @@ class Model:
             name = Path(model).name
             mlock = True if (config.mlock == "yes") else False
             widgets.display.to_bottom(tab_id)
-            widgets.display.print(f"\n🫠 Loading {name}", tab_id=tab_id)
+            widgets.display.print(f"🫠 Loading {name}", tab_id=tab_id)
             app.update()
 
             self.model = Llama(
@@ -121,7 +121,7 @@ class Model:
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
-            widgets.display.print("\n* Interrupted *")
+            widgets.display.print("* Interrupted *")
 
     def stream(self, prompt: str, tab_id: str) -> None:
         if self.is_loading():

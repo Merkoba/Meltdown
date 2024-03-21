@@ -330,7 +330,7 @@ def do_save_log() -> None:
     with open(file_path, "w") as file:
         file.write(text)
 
-    widgets.display.print(f"\n>> Log saved as {file_name}")
+    widgets.display.print(f">> Log saved as {file_name}")
     print(f"Log saved at {file_path}")
 
 

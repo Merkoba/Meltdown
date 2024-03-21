@@ -293,14 +293,8 @@ class App:
 
     def show_intro(self, tab_id: str = "") -> None:
         from .widgets import widgets
-
-        for i, line in enumerate(config.intro):
-            if i < len(config.intro) - 1:
-                linebreak_right = True
-            else:
-                linebreak_right = False
-
-            widgets.display.print(line, tab_id=tab_id, linebreak_right=linebreak_right)
+        text = "\n".join(config.intro)
+        widgets.display.print(text, tab_id=tab_id)
 
 
 app = App()
