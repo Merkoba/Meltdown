@@ -16,40 +16,20 @@ class Bottom(tk.Frame):
         self.parent = parent
         self.tab_id = tab_id
         self.visible = True
-        self.debouncer = ""
-        self.delay = 200
         self.grid(row=1, column=0, sticky="nsew")
         self.grid_remove()
 
-    def cancel_debouncer(self) -> None:
-        if self.debouncer:
-            app.root.after_cancel(self.debouncer)
-
     def show(self) -> None:
-        self.cancel_debouncer()
-
-        if not self.visible and app.exists():
-            self.debouncer = app.root.after(self.delay, self.do_show)
-
-    def do_show(self) -> None:
         if self.visible or (not app.exists()):
             return
 
-        self.cancel_debouncer()
         self.visible = True
         self.grid()
 
     def hide(self) -> None:
-        self.cancel_debouncer()
-
-        if self.visible and app.exists():
-            self.debouncer = app.root.after(self.delay, self.do_hide)
-
-    def do_hide(self) -> None:
         if (not self.visible) or (not app.exists()):
             return
 
-        self.cancel_debouncer()
         self.visible = False
         self.grid_remove()
 

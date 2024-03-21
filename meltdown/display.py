@@ -22,10 +22,6 @@ class Tab:
         self.output = output
         self.bottom = bottom
 
-    def to_bottom(self) -> None:
-        self.output.to_bottom()
-        self.bottom.do_hide()
-
 
 class Display:
     def __init__(self) -> None:
@@ -163,7 +159,7 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
-                self.full_bottom(tab.tab_id)
+                self.to_bottom(tab.tab_id)
 
         widgets.focus_input()
         self.check_scroll_buttons()
@@ -367,18 +363,8 @@ class Display:
         if not tab:
             return
 
-        self.full_bottom(tab_id)
-
-    def full_bottom(self, tab_id: str = "") -> None:
-        if tab_id:
-            tab = self.get_tab(tab_id)
-        else:
-            tab = self.get_current_tab()
-
-        if not tab:
-            return
-
-        tab.to_bottom()
+        tab.output.to_bottom()
+        tab.bottom.hide()
 
     def copy_output(self) -> None:
         output = self.get_current_output()
@@ -585,7 +571,7 @@ class Display:
         if not bottom:
             return
 
-        bottom.do_hide()
+        bottom.hide()
 
 
 display = Display()
