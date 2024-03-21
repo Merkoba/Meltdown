@@ -4,21 +4,17 @@
 
 ---
 
-![](https://i.imgur.com/lJoovqI.jpg)
+![](https://i.imgur.com/IWlH7Ss.jpg)
 
 ### Compact Mode:
 
-![](https://i.imgur.com/OgkwxRS.jpg)
-
-### In Action:
-
-![](https://i.imgur.com/GXG9kUN.gif)
+![](https://i.imgur.com/4paAA7B.jpg)
 
 ### Markdown Support:
 
 ![](https://i.imgur.com/i9eJ9OJ.jpg)
 
-### With the Light Theme
+### Light Theme
 
 ![](https://i.imgur.com/nUzsEVu.jpg)
 
