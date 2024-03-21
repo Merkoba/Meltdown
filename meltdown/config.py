@@ -11,7 +11,6 @@ class Config:
         self.system_delay = 3
         self.system_threshold = 70
         self.printlogs = False
-        self.theme = "light"
 
         self.models: List[str] = []
         self.inputs: List[str] = []

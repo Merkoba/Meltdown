@@ -1,5 +1,6 @@
 # Modules
 from .config import config
+from .theme import Theme
 
 # Standard
 import json
@@ -24,16 +25,15 @@ class App:
         self.root.title(self.manifest["title"])
         self.root.grid_columnconfigure(0, weight=1)
         self.root.minsize(100, 100)
-        self.get_theme()
         self.setup_icon()
-        self.setup_style()
         self.setup_focus()
+        self.theme: Theme
 
     def setup_icon(self) -> None:
         icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
 
-    def setup_style(self) -> None:
+    def set_style(self) -> None:
         style = ttk.Style()
         self.root.configure(background=self.theme.background_color)
 
@@ -62,7 +62,7 @@ class App:
         style.configure("Normal.TEntry", foreground=self.theme.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=0)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
-        style.configure("Normal.TEntry", insertcolor="white")
+        style.configure("Normal.TEntry", insertcolor=self.theme.entry_insert)
         style.configure("Normal.TEntry", selectbackground=self.theme.entry_selection_background)
         style.configure("Normal.TEntry", selectforeground=self.theme.entry_selection_foreground)
 
@@ -287,12 +287,19 @@ class App:
         if what == ".":
             keyboard.reset()
 
-    def get_theme(self) -> None:
-        if config.theme == "light":
-            from .light_theme import LightTheme
+    def prepare(self) -> None:
+        self.set_theme()
+        self.set_style()
+        self.set_geometry()
+
+    def set_theme(self) -> None:
+        from .args import args
+        from .light_theme import LightTheme
+        from .dark_theme import DarkTheme
+
+        if args.theme == "light":
             self.theme = LightTheme()
         else:
-            from .dark_theme import DarkTheme
             self.theme = DarkTheme()
 
     def show_intro(self, tab_id: str = "") -> None:

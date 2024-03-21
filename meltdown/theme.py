@@ -37,6 +37,7 @@ class Theme:
         self.entry_background = "#2B303B"
         self.entry_foreground = "white"
         self.entry_placeholder_color = "#494D62"
+        self.entry_insert = "white"
         self.separator_color = "#2B303B"
         self.output_background = "#2B303B"
         self.output_foreground = "white"

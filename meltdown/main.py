@@ -12,7 +12,7 @@ from . import system
 
 def main() -> None:
     args.parse()
-    app.set_geometry()
+    app.prepare()
     widgets.make()
     state.load_files()
     session.load()

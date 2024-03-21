@@ -230,6 +230,14 @@ Start in compact mode.
 
 ---
 
+>theme
+
+Change the color theme of the whole program.
+
+Either `dark` or `light`.
+
+---
+
 >test
 
 Open a test tab for debugging.

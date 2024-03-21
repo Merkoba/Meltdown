@@ -7,21 +7,26 @@ class LightTheme(Theme):
         super().__init__()
         self.background_color = "white"
         self.foreground_color = "black"
-        self.output_background = "#C5C5C5"
+
+        self.output_background = "#CBCBCB"
         self.output_foreground = "black"
+
         self.entry_background = "#C5C5C5"
         self.entry_foreground = "black"
         self.entry_placeholder_color = "grey"
+        self.entry_insert = "black"
+
         self.name_user = "black"
-        self.name_ai = "#0000FF"
-        self.tab_selected_background = "grey",
+        self.name_ai = "black"
+
+        self.tab_selected_background = "#969696",
         self.tab_normal_background = "#AEAEAE",
         self.tab_selected_foreground = "white",
         self.tab_normal_foreground = "black",
-        self.button_foreground = "white"
 
+        self.button_foreground = "white"
         self.button_background = "#6A7B83"
-        self.button_hover_background = "#A7BABC"
+        self.button_hover_background = "#86A9AD"
 
         self.button_alt_background = "#B1BBBC"
         self.button_alt_hover_background = "#A8BCBE"
@@ -40,5 +45,12 @@ class LightTheme(Theme):
         self.snippet_header_foreground = "white"
         self.syntax_style = "sas"
 
-        self.scrollbar_1 = "silver"
-        self.scrollbar_2 = "#C5C5C5"
+        self.scrollbar_1 = "#BABABA"
+        self.scrollbar_2 = "#949494"
+
+        self.menu_hover_background = "#6A7B83"
+
+        self.monitor_normal = "#44B3A1"
+        self.monitor_heavy = "#FF6B6B"
+
+        self.button_highlight_background = "#44B3A1"

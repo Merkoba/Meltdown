@@ -24,6 +24,7 @@ class Args:
         self.test = False
         self.width = -1
         self.height = -1
+        self.theme = "dark"
 
     class Internal:
         title = app.manifest["title"]
@@ -48,6 +49,7 @@ class Args:
             "full": {"action": "store_true", "help": "Start in full mode"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
+            "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -71,6 +73,7 @@ class Args:
         ap.normal("full")
         ap.normal("width")
         ap.normal("height")
+        ap.normal("theme")
         ap.normal("test")
 
         self.parser = ap.parser
