@@ -14,9 +14,9 @@ from typing import Any, List, Optional
 
 
 class Output(tk.Text):
-    words_menu = Menu()
-    words_menu.add(text="Explain", command=lambda: Output.explain_words())
-    words_menu.add(text="Search", command=lambda: Output.search_words())
+    word_menu = Menu()
+    word_menu.add(text="Explain", command=lambda: Output.explain_words())
+    word_menu.add(text="Search", command=lambda: Output.search_words())
     current_output: Optional["Output"] = None
     words = ""
 
@@ -115,7 +115,7 @@ class Output(tk.Text):
         self.markdown = Markdown(self)
 
         def on_tag_click(event: Any) -> None:
-            self.show_words_menu(event)
+            self.show_word_menu(event)
 
         tags = ("bold", "italic", "highlight")
 
@@ -150,7 +150,7 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
-        self.bind("<ButtonRelease-3>", lambda e: self.show_words_menu(e))
+        self.bind("<ButtonRelease-3>", lambda e: self.show_word_menu(e))
         self.bind("<Button-1>", lambda e: self.deselect_all())
         self.bind("<Button-4>", lambda e: scroll_up())
         self.bind("<Button-5>", lambda e: scroll_down())
@@ -217,7 +217,6 @@ class Output(tk.Text):
 
     def to_bottom(self, check: bool = False) -> None:
         if check and (not self.auto_scroll):
-            print("blocked")
             return
 
         self.auto_scroll = True
@@ -346,16 +345,17 @@ class Output(tk.Text):
         self.to_bottom(True)
 
     def get_tagwords(self, tag: str, event: Any) -> str:
-        adjacent = self.tag_prevrange(tag, event.widget.index(tk.CURRENT))
+        current_index = event.widget.index(tk.CURRENT)
+        ranges = self.tag_ranges(tag)
 
-        if not adjacent:
-            adjacent = self.tag_nextrange(tag, event.widget.index(tk.CURRENT))
+        for i in range(0, len(ranges), 2):
+            start, end = str(ranges[i]), str(ranges[i + 1])
 
-        if len(adjacent) == 2:
-            text = self.get(*adjacent)
+            if start <= current_index < end:
+                text = self.get(start, end)
 
-            if text:
-                return text
+                if text:
+                    return text
 
         return ""
 
@@ -368,7 +368,7 @@ class Output(tk.Text):
         except tk.TclError:
             return ""
 
-    def show_words_menu(self, event: Any) -> None:
+    def show_word_menu(self, event: Any) -> None:
         Output.current_output = self
         seltext = self.get_selected_text()
 
@@ -383,7 +383,7 @@ class Output(tk.Text):
             Output.words = seltext
 
         if Output.words:
-            Output.words_menu.show(event)
+            Output.word_menu.show(event)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)

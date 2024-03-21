@@ -118,7 +118,7 @@ class Snippet(tk.Frame):
             widget.bind("<Button-1>", lambda e: on_click(e))
             widget.bind("<Button-4>", lambda e: scroll_up(e))
             widget.bind("<Button-5>", lambda e: scroll_down(e))
-            widget.bind("<Button-3>", lambda e: self.parent.show_words_menu(e))
+            widget.bind("<Button-3>", lambda e: self.parent.show_word_menu(e))
 
             for child in widget.winfo_children():
                 bind_scroll_events(child)
