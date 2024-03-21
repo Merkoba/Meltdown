@@ -60,12 +60,8 @@ class App:
         style.configure("Normal.TEntry", borderwidth=0)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor="white")
-
-        style.configure("Input.TEntry", fieldbackground="white")
-        style.configure("Input.TEntry", foreground="black")
-        style.configure("Input.TEntry", borderwidth=1)
-        style.configure("Input.TEntry", padding=[4, 0, 0, 0])
-        style.configure("Input.TEntry", insertcolor="black")
+        style.configure("Normal.TEntry", selectbackground=self.theme.entry_selection_background)
+        style.configure("Normal.TEntry", selectforeground=self.theme.entry_selection_foreground)
 
         style.configure("Normal.TNotebook", borderwidth=0)
         style.configure("Normal.TNotebook", background=self.theme.entry_background)

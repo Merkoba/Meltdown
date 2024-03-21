@@ -188,6 +188,12 @@ class Output(tk.Text):
             self.tag_config("bold", font=app.theme.get_bold_font())
             self.tag_config("italic", font=app.theme.get_italic_font())
 
+        for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
+            self.tag_lower(tag)
+
+        self.tag_config("sel", background=app.theme.output_selection_background,
+                        foreground=app.theme.output_selection_foreground)
+
     def set_text(self, text: str) -> None:
         self.enable()
         self.delete("1.0", tk.END)
