@@ -20,7 +20,7 @@
 
 ### With the Light Theme
 
-![](https://i.imgur.com/TT2zc84.jpg)
+![](https://i.imgur.com/nUzsEVu.jpg)
 
 ---
 
