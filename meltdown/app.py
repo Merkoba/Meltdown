@@ -39,12 +39,13 @@ class App:
 
         # padding=[left, top, right, bottom])
 
-        style.configure("Normal.TCombobox", foreground="white")
+        style.configure("Normal.TCombobox", foreground=self.theme.combobox_foreground)
         style.map(
             "Normal.TCombobox", fieldbackground=[
                 ("readonly", self.theme.combobox_background)], fieldforeground=[
-                ("readonly", "white")])
-        style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")], selectforeground=[("readonly", "white")])
+                ("readonly", self.theme.combobox_foreground)])
+        style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")],
+                  selectforeground=[("readonly", self.theme.combobox_foreground)])
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
@@ -53,7 +54,7 @@ class App:
         style.map(
             "Disabled.TCombobox", fieldbackground=[
                 ("readonly", self.theme.combobox_background)], fieldforeground=[
-                ("readonly", "white")])
+                ("readonly", self.theme.combobox_foreground)])
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
@@ -71,13 +72,13 @@ class App:
         style.configure("Normal.TNotebook.Tab", font=self.theme.font_tab)
 
         style.map("Normal.TNotebook.Tab", background=[
-            ("selected", "#494D62"),
-            ("!selected", "#2B303B"),
+            ("selected", self.theme.tab_selected_background),
+            ("!selected", self.theme.tab_normal_background),
         ])
 
         style.map("Normal.TNotebook.Tab", foreground=[
-            ("selected", "white"),
-            ("!selected", "white"),
+            ("selected", self.theme.tab_selected_foreground),
+            ("!selected", self.theme.tab_normal_foreground),
         ])
 
         style.layout("Normal.TNotebook.Tab", [
@@ -89,19 +90,19 @@ class App:
             })])
 
         style.configure("Normal.Vertical.TScrollbar", gripcount=0,
-                        background="#494D62", troughcolor="#333B4B", borderwidth=0)
+                        background=self.theme.scrollbar_2, troughcolor=self.theme.scrollbar_1, borderwidth=0)
 
         style.map("Normal.Vertical.TScrollbar",
-                  background=[("disabled", "#333B4B")],
-                  troughcolor=[("disabled", "#333B4B")],
+                  background=[("disabled", self.theme.scrollbar_1)],
+                  troughcolor=[("disabled", self.theme.scrollbar_1)],
                   borderwidth=[("disabled", 0)])
 
         style.configure("Normal.Horizontal.TScrollbar", gripcount=0,
-                        background="#494D62", troughcolor="#333B4B", borderwidth=0)
+                        background=self.theme.scrollbar_2, troughcolor=self.theme.scrollbar_1, borderwidth=0)
 
         style.map("Normal.Horizontal.TScrollbar",
-                  background=[("disabled", "#333B4B")],
-                  troughcolor=[("disabled", "#333B4B")],
+                  background=[("disabled", self.theme.scrollbar_1)],
+                  troughcolor=[("disabled", self.theme.scrollbar_1)],
                   borderwidth=[("disabled", 0)])
 
     def setup(self) -> None:
@@ -287,9 +288,12 @@ class App:
             keyboard.reset()
 
     def get_theme(self) -> None:
-        if config.theme == "default":
-            from .default_theme import DefaultTheme
-            self.theme = DefaultTheme()
+        if config.theme == "light":
+            from .light_theme import LightTheme
+            self.theme = LightTheme()
+        else:
+            from .dark_theme import DarkTheme
+            self.theme = DarkTheme()
 
     def show_intro(self, tab_id: str = "") -> None:
         from .widgets import widgets

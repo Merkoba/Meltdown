@@ -39,21 +39,21 @@ class ButtonBox(tk.Frame):
 
     def on_enter(self) -> None:
         if self.style == "normal":
-            self.set_background(app.theme.button_background_hover)
+            self.set_background(app.theme.button_hover_background)
         elif self.style == "green":
-            self.set_background(app.theme.green_button_background_hover)
+            self.set_background(app.theme.button_highlight_hover_background)
         elif self.style == "alt":
-            self.set_background(app.theme.button_background_hover_alt)
+            self.set_background(app.theme.button_alt_hover_background)
 
     def on_leave(self) -> None:
         if self.style == "normal":
             self.set_background(app.theme.button_background)
         elif self.style == "green":
-            self.set_background(app.theme.green_background)
+            self.set_background(app.theme.button_highlight_background)
         elif self.style == "disabled":
-            self.set_background(app.theme.background_disabled)
+            self.set_background(app.theme.button_disabled_background)
         elif self.style == "alt":
-            self.set_background(app.theme.button_background_alt)
+            self.set_background(app.theme.button_alt_background)
 
     def set_background(self, color: str) -> None:
         self.configure(background=color)
@@ -94,13 +94,13 @@ class ButtonBox(tk.Frame):
             self.set_background(app.theme.button_background)
             self.configure(cursor="hand2")
         elif style == "green":
-            self.set_background(app.theme.green_background)
+            self.set_background(app.theme.button_highlight_background)
             self.configure(cursor="hand2")
         elif style == "disabled":
-            self.set_background(app.theme.background_disabled)
+            self.set_background(app.theme.button_disabled_background)
             self.configure(cursor="arrow")
         elif style == "alt":
-            self.set_background(app.theme.button_background_alt)
+            self.set_background(app.theme.button_alt_background)
             self.configure(cursor="hand2")
 
         self.style = style

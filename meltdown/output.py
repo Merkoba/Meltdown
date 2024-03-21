@@ -164,12 +164,12 @@ class Output(tk.Text):
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
-        self.configure(background=app.theme.text_background, foreground=app.theme.text_foreground)
+        self.configure(background=app.theme.output_background, foreground=app.theme.output_foreground)
         self.configure(bd=4, highlightthickness=0, relief="flat")
 
         if args.colors:
-            self.tag_config("name_user", foreground="#87CEEB")
-            self.tag_config("name_ai", foreground="#98FB98")
+            self.tag_config("name_user", foreground=app.theme.name_user)
+            self.tag_config("name_ai", foreground=app.theme.name_ai)
 
         self.tag_config("highlight", underline=True)
         self.tag_config("url", underline=True)

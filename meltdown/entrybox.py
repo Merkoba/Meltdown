@@ -88,7 +88,7 @@ class EntryBox(ttk.Entry):
 
         self.placeholder_active = True
         self.set_text(self.placeholder, check_placeholder=False)
-        self.configure(foreground=app.theme.placeholder_color)
+        self.configure(foreground=app.theme.entry_placeholder_color)
 
     def disable_placeholder(self) -> None:
         if not self.placeholder_active:
