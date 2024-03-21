@@ -23,7 +23,10 @@ def do_pack(widget: tk.Widget,
             padx: Optional[int] = None,
             pady: Optional[int] = None) -> None:
     if padx is not None:
-        px = (padx, padx)
+        if right_padding:
+            px = (padx, right_padding)
+        else:
+            px = (padx, padx)
     else:
         padx_right = right_padding if right_padding else 0
         px = (app.theme.padx, padx_right)
