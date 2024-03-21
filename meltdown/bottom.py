@@ -29,10 +29,13 @@ class Bottom(tk.Frame):
     def show(self) -> None:
         self.cancel_debouncer()
 
-        if (not self.visible) and app.exists():
+        if not self.visible:
             self.debouncer = app.root.after(self.delay, self.do_show)
 
     def do_show(self) -> None:
+        if self.visible:
+            return
+
         self.cancel_debouncer()
         self.visible = True
         self.grid()
@@ -40,10 +43,13 @@ class Bottom(tk.Frame):
     def hide(self) -> None:
         self.cancel_debouncer()
 
-        if self.visible and app.exists():
+        if self.visible:
             self.debouncer = app.root.after(self.delay, self.do_hide)
 
     def do_hide(self) -> None:
+        if not self.visible:
+            return
+
         self.cancel_debouncer()
         self.visible = False
         self.grid_remove()
