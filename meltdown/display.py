@@ -22,6 +22,10 @@ class Tab:
         self.output = output
         self.bottom = bottom
 
+    def to_bottom(self) -> None:
+        self.output.to_bottom()
+        self.bottom.do_hide()
+
 
 class Display:
     def __init__(self) -> None:
@@ -84,7 +88,7 @@ class Display:
         output_frame = widgetutils.make_frame(frame)
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
-        bottom = Bottom(frame, tab_id, output)
+        bottom = Bottom(frame, tab_id)
         tab = Tab(document_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
 
@@ -374,8 +378,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.to_bottom()
-        tab.bottom.do_hide()
+        tab.to_bottom()
 
     def copy_output(self) -> None:
         output = self.get_current_output()
