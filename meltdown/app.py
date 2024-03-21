@@ -9,6 +9,8 @@ from pathlib import Path
 import subprocess
 from typing import List, Any
 import shutil
+import platform
+import urllib.parse
 
 
 class App:
@@ -220,6 +222,19 @@ class App:
         else:
             self.disable_compact()
 
+    def get_opener(self) -> str:
+        system = platform.system()
+        opener = ""
+
+        if system == "Darwin":
+            opener = "open"
+        elif system == "Windows":
+            opener = "start"
+        else:
+            opener = "xdg-open"
+
+        return opener
+
     def run_command(self, cmd: List[str]) -> None:
         try:
             subprocess.Popen(cmd, start_new_session=True,
@@ -231,8 +246,14 @@ class App:
         if not url:
             return
 
-        cmd = ["xdg-open", url]
+        cmd = [self.get_opener(), url]
         self.run_command(cmd)
+
+    def search_text(self, text: str) -> None:
+        base_url = "https://www.google.com/search?"
+        query_params = {"q": text}
+        url = base_url + urllib.parse.urlencode(query_params)
+        self.open_url(url)
 
     def open_task_manager(self) -> None:
         if shutil.which("alacritty"):

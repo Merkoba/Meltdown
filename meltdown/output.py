@@ -43,9 +43,6 @@ class Output(tk.Text):
 
     @staticmethod
     def search_words() -> None:
-        import webbrowser
-        import urllib.parse
-
         if not Output.current_output:
             return
 
@@ -57,10 +54,7 @@ class Output(tk.Text):
             return
 
         def action() -> None:
-            base_url = "https://www.google.com/search?"
-            query_params = {"q": text}
-            url = base_url + urllib.parse.urlencode(query_params)
-            webbrowser.open_new_tab(url)
+            app.search_text(text)
 
         Dialog.show_confirm("Search for this term?", lambda: action())
 
