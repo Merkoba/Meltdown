@@ -9,7 +9,6 @@ class Theme:
     def __init__(self) -> None:
         self.width = 784
         self.height = 752
-
         self.font_family = "sans"
         self.font = (self.font_family, 14)
         self.font_button = (self.font_family, 12)
@@ -17,7 +16,8 @@ class Theme:
         self.font_tab = (self.font_family, 12)
         self.font_menu = (self.font_family, 13)
         self.snippet_font_family = "monospace"
-
+        self.avatar_user = "👽"
+        self.avatar_ai = "😎"
         self.name_user = "#87CEEB"
         self.name_ai = "#98FB98"
         self.syntax_style = "monokai"
@@ -73,7 +73,6 @@ class Theme:
         self.scrollbar_2 = "#98A1A3"
         self.tooltip_background = "white"
         self.tooltip_foreground = "black"
-
         self.padx = 10
         self.pady = 10
         self.frame_padx = 0

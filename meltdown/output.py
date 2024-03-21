@@ -82,7 +82,7 @@ class Output(tk.Text):
         name = getattr(config, f"name_{who}")
 
         if args.avatars:
-            avatar = getattr(config, f"avatar_{who}")
+            avatar = getattr(app.theme, f"avatar_{who}")
 
             if name:
                 prompt = f"{avatar} {name} : "
