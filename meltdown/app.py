@@ -169,12 +169,12 @@ class App:
         self.root.update_idletasks()
 
     def update_bottom(self) -> None:
-        from .widgets import widgets
-        widgets.display.to_bottom()
+        from .display import display
+        display.to_bottom()
 
         def action() -> None:
             self.update()
-            widgets.display.to_bottom()
+            display.to_bottom()
 
         self.root.after(100, lambda: action())
 
@@ -205,9 +205,10 @@ class App:
 
     def after_compact(self, enabled: bool) -> None:
         from .widgets import widgets
+        from .display import display
         from . import state
         self.update()
-        widgets.display.to_bottom()
+        display.to_bottom()
         widgets.focus_input()
         state.set_config("compact", enabled)
 
@@ -303,9 +304,9 @@ class App:
             self.theme = DarkTheme()
 
     def show_intro(self, tab_id: str = "") -> None:
-        from .widgets import widgets
+        from .display import display
         text = "\n".join(config.intro)
-        widgets.display.print(text, tab_id=tab_id)
+        display.print(text, tab_id=tab_id)
 
 
 app = App()

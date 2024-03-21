@@ -21,6 +21,7 @@ class Bottom(tk.Frame):
         self.delay = 200
         self.output = output
         self.grid(row=1, column=0, sticky="nsew")
+        self.grid_remove()
 
     def cancel_debouncer(self) -> None:
         if self.debouncer:
@@ -55,4 +56,5 @@ class Bottom(tk.Frame):
         self.grid_remove()
 
     def to_bottom(self) -> None:
-        self.output.to_bottom()
+        from .display import display
+        display.to_bottom(self.tab_id)

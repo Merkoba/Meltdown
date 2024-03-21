@@ -14,12 +14,12 @@ class Commands:
         self.autocomplete_matches: List[str] = []
 
     def setup(self) -> None:
-        from .widgets import widgets
+        from .display import display
         from .model import model
         from . import state
 
         self.commands = {
-            "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: widgets.display.clear_output()},
+            "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: display.clear_output()},
             "config": {"aliases": ["configuration"], "help": "Show the current configuration", "action": lambda: config.show_config()},
             "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
             "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
@@ -28,14 +28,14 @@ class Commands:
             "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
             "stop": {"aliases": [], "help": "Stop the current stream", "action": lambda: model.stop_stream()},
             "sys": {"aliases": ["monitor", "system"], "help": "Open the system task manager", "action": lambda: app.open_task_manager()},
-            "top": {"aliases": ["up"], "help": "Scroll to the top", "action": lambda: widgets.display.to_top()},
-            "bottom": {"aliases": ["down"], "help": "Scroll to the bottom", "action": lambda: widgets.display.to_bottom()},
+            "top": {"aliases": ["up"], "help": "Scroll to the top", "action": lambda: display.to_top()},
+            "bottom": {"aliases": ["down"], "help": "Scroll to the bottom", "action": lambda: display.to_bottom()},
             "maximize": {"aliases": ["max"], "help": "Maximize the window", "action": lambda: app.toggle_maximize()},
             "unmaximize": {"aliases": ["unmax"], "help": "Unmaximize the window", "action": lambda: app.unmaximize()},
-            "close": {"aliases": [], "help": "Close the current tab", "action": lambda: widgets.display.close_tab()},
-            "closeall": {"aliases": [], "help": "Close all tabs", "action": lambda: widgets.display.close_all_tabs()},
-            "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: widgets.display.close_old_tabs()},
-            "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: widgets.display.make_tab()},
+            "close": {"aliases": [], "help": "Close the current tab", "action": lambda: display.close_tab()},
+            "closeall": {"aliases": [], "help": "Close all tabs", "action": lambda: display.close_all_tabs()},
+            "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: display.close_old_tabs()},
+            "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: display.make_tab()},
             "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
             "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
         }
@@ -69,21 +69,21 @@ class Commands:
         return True
 
     def show_help(self) -> None:
-        from .widgets import widgets
-        widgets.display.print("Commands:")
+        from .display import display
+        display.print("Commands:")
         text = []
 
         for cmd, data in self.commands.items():
             text.append(f"{self.prefix}{cmd} = {data['help']}")
 
-        widgets.display.print("\n".join(text))
+        display.print("\n".join(text))
 
     def show_arguments(self) -> None:
         from .args import args
-        from .widgets import widgets
+        from .display import display
         text = args.parser.format_help().strip()
-        widgets.display.print("Arguments:")
-        widgets.display.print(text)
+        display.print("Arguments:")
+        display.print(text)
 
     def check_autocomplete(self) -> None:
         from .widgets import widgets

@@ -3,6 +3,7 @@ from .paths import paths
 from .config import config
 from .widgets import widgets
 from .dialogs import Dialog
+from .display import display
 from . import timeutils
 
 # Standard
@@ -312,7 +313,7 @@ def do_save_log() -> None:
 
     text = "\n".join(new_lines)
     text = timeutils.date() + "\n" + text
-    name = widgets.display.get_current_tab_name().lower()
+    name = display.get_current_tab_name().lower()
     name = name.replace(" ", "_")
     paths.logs.mkdir(parents=True, exist_ok=True)
     file_name = name + ".txt"
@@ -330,7 +331,7 @@ def do_save_log() -> None:
     with open(file_path, "w") as file:
         file.write(text)
 
-    widgets.display.print(f">> Log saved as {file_name}")
+    display.print(f">> Log saved as {file_name}")
     print(f"Log saved at {file_path}")
 
 
@@ -352,7 +353,7 @@ def on_format_change(load: bool = True) -> None:
 
 
 def on_output_font_change() -> None:
-    widgets.display.update_font()
+    display.update_font()
 
 
 def open_logs_dir() -> None:

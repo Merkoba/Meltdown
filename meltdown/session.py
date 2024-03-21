@@ -1,6 +1,6 @@
 # Modules
 from .config import config
-from .widgets import widgets
+from .display import display
 from .paths import paths
 from .args import args
 from . import timeutils
@@ -67,7 +67,7 @@ class Document:
         return len(self.items) == 0
 
     def print(self) -> None:
-        tab = widgets.display.get_tab_by_document_id(self.id)
+        tab = display.get_tab_by_document_id(self.id)
 
         if tab:
             for item in self.items:
@@ -125,7 +125,7 @@ class Session:
         return self.items[document_id]
 
     def get_current_document(self) -> Optional[Document]:
-        tab = widgets.display.get_current_tab()
+        tab = display.get_current_tab()
 
         if tab:
             return self.get_document(tab.document_id)
@@ -164,10 +164,10 @@ class Session:
 
     def reset(self) -> None:
         self.items = {}
-        widgets.display.close_all_tabs(force=True)
+        display.close_all_tabs(force=True)
 
     def load_items(self, path: Path) -> None:
-        widgets.display.close_all_tabs(force=True, make_empty=False)
+        display.close_all_tabs(force=True, make_empty=False)
 
         with open(path, "r") as file:
             try:
@@ -186,12 +186,12 @@ class Session:
             document = Document(item["id"], item["name"])
             document.items = item["items"]
             self.items[document.id] = document
-            widgets.display.make_tab(document.name, document.id, select_tab=False)
+            display.make_tab(document.name, document.id, select_tab=False)
 
-        tab_ids = widgets.display.tab_ids()
+        tab_ids = display.tab_ids()
 
         if tab_ids:
-            widgets.display.select_tab(tab_ids[-1])
+            display.select_tab(tab_ids[-1])
 
     def save_state(self) -> None:
         if not paths.sessions.exists():
@@ -233,11 +233,11 @@ class Session:
             self.reset()
 
     def update(self) -> None:
-        tabs = widgets.display.tab_ids()
+        tabs = display.tab_ids()
         new_items = {}
 
         for tab_id in tabs:
-            tab = widgets.display.get_tab(tab_id)
+            tab = display.get_tab(tab_id)
 
             if not tab:
                 continue

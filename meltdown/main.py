@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .widgets import widgets
+from .display import display
 from .model import model
 from .session import session
 from .args import args
@@ -14,6 +15,7 @@ def main() -> None:
     args.parse()
     app.prepare()
     widgets.make()
+    display.make()
     state.load_files()
     session.load()
     widgets.setup()

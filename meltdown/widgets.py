@@ -1,7 +1,6 @@
 # Modules
 from .config import config
 from .app import app
-from .display import Display
 from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
@@ -25,6 +24,8 @@ right_padding = 11
 
 class Widgets:
     def make(self) -> None:
+        from .display import display
+
         # Model
         self.model_frame = widgetutils.make_frame()
 
@@ -180,26 +181,26 @@ class Widgets:
         self.stop_button = widgetutils.make_button(self.button_frame, "Stop", lambda: self.stop(), fill=Fill.HORIZONTAL)
         ToolTip(self.stop_button, "Stop generating the current response")
 
-        self.new_button = widgetutils.make_button(self.button_frame, "New", lambda: self.display.make_tab(), fill=Fill.HORIZONTAL)
+        self.new_button = widgetutils.make_button(self.button_frame, "New", lambda: display.make_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.new_button, "Add a new tab")
 
         self.close_button = widgetutils.make_button(
-            self.button_frame, "Close", lambda: self.display.close_tab(), fill=Fill.HORIZONTAL)
+            self.button_frame, "Close", lambda: display.close_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.close_button, "Close the current tab")
 
         self.clear_button = widgetutils.make_button(self.button_frame, "Clear",
-                                                    lambda: self.display.clear_output(), fill=Fill.HORIZONTAL)
+                                                    lambda: display.clear_output(), fill=Fill.HORIZONTAL)
         ToolTip(self.clear_button, "Clear the output of the current tab")
 
         self.log_button = widgetutils.make_button(self.button_frame, "Log",
-                                                  lambda: self.display.save_log(), fill=Fill.HORIZONTAL)
+                                                  lambda: display.save_log(), fill=Fill.HORIZONTAL)
         ToolTip(self.log_button, "Save the output to a log file")
 
-        self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: self.display.to_top(),
+        self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),
                                                   fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.output_menu = widgetutils.make_button(self.button_frame, "#", lambda e: self.display.show_output_menu(e),
+        self.output_menu = widgetutils.make_button(self.button_frame, "#", lambda e: display.show_output_menu(e),
                                                    fill=Fill.HORIZONTAL, right_padding=right_padding, width=3)
         ToolTip(self.output_menu, "Open the output menu")
 
@@ -207,8 +208,7 @@ class Widgets:
         app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
         self.output_frame = widgetutils.make_frame()
 
-        notebook = widgetutils.make_notebook(self.output_frame, fill=Fill.BOTH, right_padding=right_padding)
-        self.display = Display(notebook)
+        self.notebook = widgetutils.make_notebook(self.output_frame, fill=Fill.BOTH, right_padding=right_padding)
 
         # Addons
         self.addons_frame = widgetutils.make_frame()
@@ -277,8 +277,10 @@ class Widgets:
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
-        if self.display.num_tabs() == 0:
-            self.display.make_tab()
+        from .display import display
+
+        if display.num_tabs() == 0:
+            display.make_tab()
 
         self.fill()
         self.setup_details()
@@ -514,10 +516,12 @@ class Widgets:
     def submit(self) -> None:
         from .model import model
         from . import state
+        from .display import display
+
         text = self.input.get().strip()
 
         if text:
-            self.display.to_bottom()
+            display.to_bottom()
             self.clear_input()
             state.add_input(text)
 
@@ -527,9 +531,9 @@ class Widgets:
             if model.model_loading:
                 return
 
-            model.stream(text, self.display.current_tab)
+            model.stream(text, display.current_tab)
         else:
-            self.display.to_bottom()
+            display.to_bottom()
 
     def clear_input(self) -> None:
         self.input.clear()
@@ -667,6 +671,8 @@ class Widgets:
 
     def stop(self) -> None:
         from .model import model
+        from .display import display
+        display.to_bottom()
         model.stop_stream()
 
     def load_or_unload(self) -> None:
@@ -709,6 +715,8 @@ class Widgets:
 
     def esckey(self) -> None:
         from .model import model
+        from .display import display
+
         widget = self.get_widget("input")
         assert isinstance(widget, EntryBox)
 
@@ -717,7 +725,7 @@ class Widgets:
         elif model.streaming:
             self.stop()
         else:
-            self.display.to_bottom()
+            display.to_bottom()
 
     def show_context(self) -> None:
         widget = app.root.focus_get()

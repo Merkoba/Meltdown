@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .widgets import widgets
+from .display import display
 from .model import model
 from .commands import commands
 from .entrybox import EntryBox
@@ -177,20 +178,20 @@ class Keyboard:
 
         self.register("<Return>", lambda: on_enter(), on_ctrl=lambda: model.load())
         self.register("<Escape>", lambda: widgets.esckey(), on_ctrl=lambda: model.unload(True))
-        self.register("<Page_Up>", lambda: widgets.display.scroll_up())
-        self.register("<Page_Down>", lambda: widgets.display.scroll_down())
-        self.register("<BackSpace>", on_ctrl=lambda: widgets.display.clear_output())
+        self.register("<Page_Up>", lambda: display.scroll_up())
+        self.register("<Page_Down>", lambda: display.scroll_down())
+        self.register("<BackSpace>", on_ctrl=lambda: display.clear_output())
         self.register("<Up>", command=lambda: widgets.input_history_up(),
-                      on_ctrl=lambda: widgets.display.to_top(), on_shift=lambda: widgets.show_context())
+                      on_ctrl=lambda: display.to_top(), on_shift=lambda: widgets.show_context())
         self.register("<Down>", command=lambda: widgets.input_history_down(),
-                      on_ctrl=lambda: widgets.display.to_bottom())
-        self.register("<Left>", on_ctrl=lambda: widgets.display.tab_left())
-        self.register("<Right>", on_ctrl=lambda: widgets.display.tab_right())
+                      on_ctrl=lambda: display.to_bottom())
+        self.register("<Left>", on_ctrl=lambda: display.tab_left())
+        self.register("<Right>", on_ctrl=lambda: display.tab_right())
         self.register("space", on_ctrl=lambda: widgets.show_main_menu())
-        self.register("t", on_ctrl=lambda: widgets.display.make_tab())
-        self.register("w", on_ctrl=lambda: widgets.display.close_current_tab())
+        self.register("t", on_ctrl=lambda: display.make_tab())
+        self.register("w", on_ctrl=lambda: display.close_current_tab())
         self.register("s", on_ctrl=lambda: state.save_log())
-        self.register("y", on_ctrl=lambda: widgets.display.copy_output())
+        self.register("y", on_ctrl=lambda: display.copy_output())
         self.register("p", on_ctrl=lambda: app.toggle_compact())
         self.register("r", on_ctrl=lambda: app.resize())
         self.register("m", on_ctrl=lambda: model.browse_models())

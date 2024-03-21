@@ -11,7 +11,6 @@ from . import widgetutils
 import random
 import string
 import tkinter as tk
-from tkinter import ttk
 from typing import List, Dict, Any
 from typing import Optional
 
@@ -25,8 +24,13 @@ class Tab:
 
 
 class Display:
-    def __init__(self, widget: ttk.Notebook) -> None:
-        self.root = widget
+    def __init__(self) -> None:
+        pass
+
+    def make(self) -> None:
+        from .widgets import widgets
+
+        self.root = widgets.notebook
         self.tabs: Dict[str, Tab] = {}
         self.tab_menu = Menu()
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
@@ -156,9 +160,10 @@ class Display:
             if document and (not document.loaded):
                 document.print()
                 document.loaded = True
+                self.full_bottom(tab.tab_id)
 
         widgets.focus_input()
-        self.check_scroll_buttons(instant=True)
+        self.check_scroll_buttons()
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
@@ -339,28 +344,39 @@ class Display:
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
 
-    def to_top(self, tab_id: str = "", **kwargs: Any) -> None:
+    def to_top(self, tab_id: str = "") -> None:
         if tab_id:
-            output = self.get_output(tab_id)
+            tab = self.get_tab(tab_id)
         else:
-            output = self.get_current_output()
+            tab = self.get_current_tab()
 
-        if not output:
+        if not tab:
             return
 
-        output.to_top(**kwargs)
-        self.check_scroll_buttons(instant=True)
+        tab.output.to_top()
 
-    def to_bottom(self, tab_id: str = "", **kwargs: Any) -> None:
+    def to_bottom(self, tab_id: str = "") -> None:
         if tab_id:
-            output = self.get_output(tab_id)
+            tab = self.get_tab(tab_id)
         else:
-            output = self.get_current_output()
+            tab = self.get_current_tab()
 
-        if not output:
+        if not tab:
             return
 
-        output.to_bottom(**kwargs)
+        self.full_bottom(tab_id)
+
+    def full_bottom(self, tab_id: str = "") -> None:
+        if tab_id:
+            tab = self.get_tab(tab_id)
+        else:
+            tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.output.to_bottom()
+        tab.bottom.do_hide()
 
     def copy_output(self) -> None:
         output = self.get_current_output()
@@ -470,7 +486,7 @@ class Display:
         name = con() + vow() + con() + vow() + con() + vow()
         return name.capitalize()
 
-    def check_scroll_buttons(self, tab_id: str = "", instant: bool = False) -> None:
+    def check_scroll_buttons(self, tab_id: str = "") -> None:
         from .widgets import widgets
 
         if not tab_id:
@@ -489,15 +505,9 @@ class Display:
         yview = output.yview()
 
         if yview[1] == 1.0:
-            if instant:
-                tab.bottom.do_hide()
-            else:
-                tab.bottom.hide()
+            tab.bottom.hide()
         else:
-            if instant:
-                tab.bottom.do_show()
-            else:
-                tab.bottom.show()
+            tab.bottom.show()
 
         if yview[0] == 0:
             widgets.disable_top_button()
@@ -575,3 +585,6 @@ class Display:
             return
 
         bottom.do_hide()
+
+
+display = Display()

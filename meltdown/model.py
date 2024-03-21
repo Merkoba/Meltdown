@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .widgets import widgets
+from .display import display
 from .session import session
 from . import timeutils
 from . import state
@@ -42,7 +43,7 @@ class Model:
             self.loaded_format = ""
 
             if announce:
-                widgets.display.print("👻 Model unloaded")
+                display.print("👻 Model unloaded")
 
     def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
@@ -55,10 +56,10 @@ class Model:
         model_path = Path(config.model)
 
         if not tab_id:
-            tab_id = widgets.display.current_tab
+            tab_id = display.current_tab
 
         if (not model_path.exists()) or (not model_path.is_file()):
-            widgets.display.print("Error: Model not found. Check the path.", tab_id=tab_id)
+            display.print("Error: Model not found. Check the path.", tab_id=tab_id)
             return
 
         def wrapper() -> None:
@@ -84,8 +85,8 @@ class Model:
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
             mlock = True if (config.mlock == "yes") else False
-            widgets.display.to_bottom(tab_id)
-            widgets.display.print(f"🫠 Loading {name}", tab_id=tab_id)
+            display.to_bottom(tab_id)
+            display.print(f"🫠 Loading {name}", tab_id=tab_id)
             app.update()
 
             self.model = Llama(
@@ -97,7 +98,7 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            widgets.display.print("Error: Model failed to load.")
+            display.print("Error: Model failed to load.")
             self.model_loading = False
             print(e)
             return
@@ -107,7 +108,7 @@ class Model:
         self.loaded_model = model
         self.loaded_format = chat_format
         msg, now = timeutils.check_time("Model loaded", now)
-        widgets.display.print(msg)
+        display.print(msg)
         self.lock.release()
         return
 
@@ -121,7 +122,7 @@ class Model:
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
-            widgets.display.print("* Interrupted *")
+            display.print("* Interrupted *")
 
     def stream(self, prompt: str, tab_id: str) -> None:
         if self.is_loading():
@@ -180,7 +181,7 @@ class Model:
         if config.append:
             prompt = check_dot(prompt) + config.append
 
-        tab = widgets.display.get_tab(tab_id)
+        tab = display.get_tab(tab_id)
 
         if not tab:
             return

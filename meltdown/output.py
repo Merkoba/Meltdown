@@ -108,8 +108,10 @@ class Output(tk.Text):
 
     def setup(self) -> None:
         from .widgets import widgets
+        from .display import display
         from .markdown import Markdown
-        self.display = widgets.display
+
+        self.display = display
         self.markdown = Markdown(self)
 
         def on_tag_click(event: Any) -> None:
@@ -204,23 +206,22 @@ class Output(tk.Text):
                 self.format_text()
 
         self.disable()
-        self.to_bottom(True, check_instant=False)
+        self.to_bottom(True)
 
     def clear_text(self) -> None:
         self.set_text("")
 
-    def to_top(self, check_instant: bool = True) -> None:
+    def to_top(self) -> None:
         self.auto_scroll = False
         self.yview_moveto(0.0)
-        self.display.check_scroll_buttons(instant=check_instant)
 
-    def to_bottom(self, check: bool = False, check_instant: bool = True) -> None:
+    def to_bottom(self, check: bool = False) -> None:
         if check and (not self.auto_scroll):
+            print("blocked")
             return
 
         self.auto_scroll = True
         self.yview_moveto(1.0)
-        self.display.check_scroll_buttons(instant=check_instant)
 
     def last_characters(self, n: int) -> str:
         text = self.get("1.0", "end-1c")
@@ -253,19 +254,12 @@ class Output(tk.Text):
         if check:
             self.check_autoscroll("up")
 
-        self.check_scroll()
-
     def scroll_down(self, check: bool = False) -> None:
         fraction = self.get_fraction()
         self.yview_moveto(self.yview()[0] + fraction)
 
         if check:
             self.check_autoscroll("down")
-
-        self.check_scroll()
-
-    def check_scroll(self) -> None:
-        self.display.check_scroll_buttons(instant=True)
 
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
@@ -349,7 +343,7 @@ class Output(tk.Text):
 
         text = left + text
         self.insert_text(text)
-        self.to_bottom(True, check_instant=False)
+        self.to_bottom(True)
 
     def get_tagwords(self, tag: str, event: Any) -> str:
         adjacent = self.tag_prevrange(tag, event.widget.index(tk.CURRENT))

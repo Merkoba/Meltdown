@@ -54,3 +54,10 @@ class LightTheme(Theme):
         self.monitor_heavy = "#FF6B6B"
 
         self.button_highlight_background = "#44B3A1"
+
+        self.output_selection_background = "#333B4B"
+        self.output_selection_foreground = "white"
+        self.snippet_selection_background = "#333B4B"
+        self.snippet_selection_foreground = "white"
+        self.entry_selection_background = "#333B4B"
+        self.entry_selection_foreground = "white"

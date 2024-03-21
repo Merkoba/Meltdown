@@ -91,8 +91,8 @@ class Config:
             return None
 
     def show_config(self) -> None:
-        from .widgets import widgets
-        widgets.display.print("")
+        from .display import display
+        display.print("")
 
         for key in self.defaults():
             value = getattr(self, key)
@@ -100,7 +100,7 @@ class Config:
             if value == "":
                 value = "[Empty]"
 
-            widgets.display.print(f"{key}: {value}")
+            display.print(f"{key}: {value}")
 
 
 config = Config()
