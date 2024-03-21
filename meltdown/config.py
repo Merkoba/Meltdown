@@ -31,6 +31,7 @@ class Config:
         self.default_output_font_size: int = 14
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
+        self.default_theme: str = "dark"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -49,6 +50,7 @@ class Config:
         self.output_font_size = self.default_output_font_size
         self.threads = self.default_threads
         self.mlock = self.default_mlock
+        self.theme = self.default_theme
 
         self.intro = [
             "Welcome to Meltdown.",

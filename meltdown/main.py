@@ -13,10 +13,10 @@ from . import system
 
 def main() -> None:
     args.parse()
+    state.load_files()
     app.prepare()
     widgets.make()
     display.make()
-    state.load_files()
     session.load()
     widgets.setup()
     keyboard.setup()

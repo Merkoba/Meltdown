@@ -24,7 +24,7 @@ class Args:
         self.test = False
         self.width = -1
         self.height = -1
-        self.theme = "dark"
+        self.theme = ""
 
     class Internal:
         title = app.manifest["title"]

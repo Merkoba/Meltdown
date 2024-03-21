@@ -396,6 +396,7 @@ class Widgets:
         self.main_menu.separator()
         self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add(text="Resize", command=lambda: app.resize())
+        self.main_menu.add(text="Theme", command=lambda: app.toggle_theme())
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())

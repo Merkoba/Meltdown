@@ -297,8 +297,12 @@ class App:
         from .args import args
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
+        from . import state
 
-        if args.theme == "light":
+        if args.theme and (args.theme != config.theme):
+            state.set_config("theme", args.theme)
+
+        if config.theme == "light":
             self.theme = LightTheme()
         else:
             self.theme = DarkTheme()
@@ -307,6 +311,17 @@ class App:
         from .display import display
         text = "\n".join(config.intro)
         display.print(text, tab_id=tab_id)
+
+    def toggle_theme(self) -> None:
+        from .dialogs import Dialog
+        from . import state
+
+        if config.theme == "light":
+            state.set_config("theme", "dark")
+        else:
+            state.set_config("theme", "light")
+
+        Dialog.show_message("Theme will change after restarting the program")
 
 
 app = App()
