@@ -71,7 +71,8 @@ class ButtonBox(tk.Frame):
 
         def cmd(event: Any) -> None:
             if self.style == "disabled":
-                return
+                if (when == "<Button-1>") or (when == "<ButtonRelease-1>"):
+                    return
 
             if not on_top(event):
                 return

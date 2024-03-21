@@ -99,6 +99,9 @@ class ToolTip:
         self.tooltip.place(x=x, y=y)
 
     def hide(self) -> None:
+        if self.current_tooltip != self:
+            return
+
         if self.tooltip:
             self.tooltip.destroy()
             self.tooltip = None
