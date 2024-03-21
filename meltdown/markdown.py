@@ -12,12 +12,12 @@ class Markdown():
     def __init__(self, widget: Output) -> None:
         self.widget = widget
 
-    def format(self, complete: bool, position: str) -> None:
-        self.format_snippets(complete, position)
-        self.format_highlights(complete, position)
-        self.format_bold(complete, position)
-        self.format_italic(complete, position)
-        self.format_urls(complete, position)
+    def format(self, position: str) -> None:
+        self.format_snippets(position)
+        self.format_highlights(position)
+        self.format_bold(position)
+        self.format_italic(position)
+        self.format_urls(position)
 
     def index_of_relative(self, index: int, position: str) -> str:
         line, col = map(int, position.split("."))
@@ -37,7 +37,7 @@ class Markdown():
     def get_line(self, index: str) -> str:
         return str(index.split(".")[0]) + ".0"
 
-    def format_snippets(self, complete: bool, position: str) -> None:
+    def format_snippets(self, position: str) -> None:
         from .snippet import Snippet
         text = self.widget.get(position, "end-1c")
         pattern = r"^```([-\w.#]*)\n(.*?)\n```$"
@@ -61,7 +61,7 @@ class Markdown():
             self.widget.window_create(f"{start_line} - 1 lines", window=snippet)
             self.widget.snippets.append(snippet)
 
-    def format_highlights(self, complete: bool, position: str) -> None:
+    def format_highlights(self, position: str) -> None:
         token = "`"
         code_string = ""
         in_code = False
@@ -82,7 +82,7 @@ class Markdown():
             self.widget.insert(f"{start}", f"{clean_text}")
             end_index = self.get_end_index(start, clean_text)
             self.widget.tag_add("highlight", f"{start}", end_index)
-            self.format_highlights(complete, self.solve_index(end_index))
+            self.format_highlights(self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
@@ -96,7 +96,7 @@ class Markdown():
             else:
                 col = 0
 
-            for char in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
+            for char_ in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
                 col += 1
                 index = f"{current_line}.{col}"
                 char = self.widget.get(f"{index} + 1c")
@@ -116,7 +116,7 @@ class Markdown():
 
             current_line += 1
 
-    def format_bold(self, complete: bool, position: str) -> None:
+    def format_bold(self, position: str) -> None:
         token = "*"
         code_string = ""
         in_code = False
@@ -135,7 +135,7 @@ class Markdown():
             self.widget.insert(f"{start}", f"{clean_text}")
             end_index = self.get_end_index(start, clean_text)
             self.widget.tag_add("bold", f"{start}", end_index)
-            self.format_bold(complete, self.solve_index(end_index))
+            self.format_bold(self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
@@ -170,7 +170,7 @@ class Markdown():
 
             current_line += 1
 
-    def format_italic(self, complete: bool, position: str) -> None:
+    def format_italic(self, position: str) -> None:
         token = ""
         tokens = ("*", "_")
         tokens_2 = ("*", "_", " ")
@@ -191,7 +191,7 @@ class Markdown():
             self.widget.insert(f"{start}", f"{clean_text}")
             end_index = self.get_end_index(start, clean_text)
             self.widget.tag_add("italic", f"{start}", end_index)
-            self.format_italic(complete, self.solve_index(end_index))
+            self.format_italic(self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
@@ -226,16 +226,17 @@ class Markdown():
 
             current_line += 1
 
-    def format_urls(self, complete: bool, position: str) -> None:
+    def format_urls(self, position: str) -> None:
         index_start = ""
 
         def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
+            # print(original_text, "123")
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{original_text}")
             end_index = f"{end} + 1c"
             self.widget.tag_add("url", f"{start}", end_index)
-            self.format_urls(complete, self.solve_index(end_index))
+            self.format_urls(self.solve_index(end_index))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
@@ -255,21 +256,22 @@ class Markdown():
                 col += 1
                 index = f"{current_line}.{col}"
                 char = self.widget.get(f"{index} + 1c")
+                next_char = self.widget.get(f"{index} + 2c")
 
-                if index_start and ((char == " ") or (i >= len(chars) - 1)):
-                    word = self.widget.get(f"{index_start}", f"{index} + 1c")
+                if index_start and ((next_char == " ") or ((i + 1) >= len(chars) - 1)):
+                    word = self.widget.get(f"{index_start} + 1c", f"{index} + 2c")
 
                     if not word:
                         return
 
                     if any([word.startswith(protocol) for protocol in Markdown.protocols]):
-                        on_match(index_start, index)
+                        on_match(f"{index_start} + 1c", f"{index} + 2c")
                         return
 
                     index_start = ""
                 else:
                     if (char != " ") and (not index_start):
-                        index_start = f"{index} + 1c"
+                        index_start = index
 
             current_line += 1
 

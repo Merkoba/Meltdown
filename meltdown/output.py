@@ -200,18 +200,15 @@ class Output(tk.Text):
         self.insert("1.0", str(text))
         self.disable()
 
-    def insert_text(self, text: str, format_text: bool = False, complete: bool = False) -> None:
+    def insert_text(self, text: str, format_text: bool = False) -> None:
         self.enable()
         self.insert(tk.END, text)
 
         if format_text:
-            if complete:
-                self.format_text(True)
-            else:
-                checks = ("`", ":")
+            checks = ("`", ":", "*", "_")
 
-                if text in checks:
-                    self.format_text()
+            if any([check in text for check in checks]):
+                self.format_text()
 
         self.disable()
         self.to_bottom(True, check_instant=False)
@@ -232,9 +229,9 @@ class Output(tk.Text):
         self.yview_moveto(1.0)
         self.display.check_scroll_buttons(instant=check_instant)
 
-    def last_character(self) -> str:
+    def last_characters(self, n: int) -> str:
         text = self.get("1.0", "end-1c")
-        return text[-1] if text else ""
+        return text[-n:] if text else ""
 
     def text_length(self) -> int:
         return len(self.get("1.0", "end-1c"))
@@ -280,10 +277,9 @@ class Output(tk.Text):
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self, complete: bool = False, from_start: bool = False) -> None:
+    def format_text(self) -> None:
         self.enable()
-        position = "1.0" if from_start else self.position
-        self.markdown.format(complete, position)
+        self.markdown.format(self.position)
         self.disable()
         app.update()
         self.to_bottom(True)
@@ -335,25 +331,24 @@ class Output(tk.Text):
 
         return document.to_log()
 
-    def update_position(self) -> None:
-        self.position = self.index("end")
-
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who)
-        self.print(prompt, False)
+        self.print(prompt, linebreak_left=True, linebreak_right=False)
         start_index = self.index(f"end - {len(prompt)}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
-        self.update_position()
 
-    def print(self, text: str, linebreak: bool = False) -> None:
+        if who == "ai":
+            self.position = end_index
+
+    def print(self, text: str, linebreak_left: bool = False, linebreak_right: bool = False) -> None:
         left = ""
         right = ""
 
-        if self.text_length() and (self.last_character() != "\n"):
+        if linebreak_left:
             left = "\n"
 
-        if linebreak:
+        if linebreak_right:
             right = "\n"
 
         text = left + text + right

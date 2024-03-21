@@ -89,7 +89,7 @@ class Display:
             self.select_tab(tab_id)
 
         self.tab_number += 1
-        widgets.show_intro(tab_id)
+        app.show_intro(tab_id)
 
     def tab_on_coords(self, x: int, y: int) -> str:
         index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
@@ -396,7 +396,7 @@ class Display:
 
             tab.output.clear_text()
             session.clear(tab.document_id)
-            widgets.show_intro(tab_id)
+            app.show_intro(tab_id)
 
         Dialog.show_confirm("Clear conversation?", lambda: action())
 
@@ -406,7 +406,8 @@ class Display:
         if output:
             output.select_all()
 
-    def print(self, text: str, linebreak: bool = True, tab_id: str = "") -> None:
+    def print(self, text: str, linebreak_left: bool = False,
+              linebreak_right: bool = True, tab_id: str = "") -> None:
         if not app.exists():
             return
 
@@ -418,7 +419,7 @@ class Display:
         if not output:
             return
 
-        output.print(text, linebreak)
+        output.print(text, linebreak_left=linebreak_left, linebreak_right=linebreak_right)
 
     def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():

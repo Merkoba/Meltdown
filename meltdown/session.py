@@ -23,7 +23,7 @@ test_session = {
         {"assistant": "Here is a bold **word** and **a bold sentence**.\nHere is a bold **word** and **a bold sentence**."},
         {"user": "Italic Test with Asterisk"},
         {"assistant": "Here is an italic *word* and *an italic sentence*.\nHere is an italic *word* and *an italic sentence*."},
-        {"user": "Italic Test with Underscore"},
+        {"user": "Italic `Test` with Underscore"},
         {"assistant": "Here is a an italic _word_ and _an italic sentence_.\nHere is a an italic _word_ and _an italic sentence_."},
         {"user": "Snippet Test"},
         {"assistant":
@@ -73,14 +73,12 @@ class Document:
                 for key in item:
                     if key == "user":
                         tab.output.prompt("user")
+                        tab.output.insert_text(item[key])
                     elif key == "assistant":
                         tab.output.prompt("ai")
+                        tab.output.insert_text(item[key], format_text=True)
                     else:
                         continue
-
-                    tab.output.insert_text(item[key])
-
-            tab.output.format_text(complete=True, from_start=True)
 
     def to_dict(self) -> Dict[str, Any]:
         return {

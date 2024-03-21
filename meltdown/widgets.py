@@ -163,8 +163,7 @@ class Widgets:
 
         widgetutils.make_label(self.details, "Format")
         values = ["auto"]
-        fmts = [item for item in formats._chat_handlers]
-        fmts.sort()
+        fmts = sorted([item for item in formats._chat_handlers])
         values.extend(fmts)
         self.format = widgetutils.make_combobox(self.details, values=values, width=17)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
@@ -269,12 +268,12 @@ class Widgets:
         if not widget:
             return
 
-        if type(widget) == EntryBox:
+        if isinstance(widget, EntryBox):
             widget.set_text(value)
 
             if focus:
                 widget.focus_set()
-        elif type(widget) == ttk.Combobox:
+        elif isinstance(widget, ttk.Combobox):
             widgetutils.set_select(widget, value)
 
     def setup(self) -> None:
@@ -336,7 +335,7 @@ class Widgets:
             if not widget:
                 return
 
-            if type(widget) != EntryBox:
+            if not isinstance(widget, EntryBox):
                 return
 
             widget.key = key
@@ -446,7 +445,7 @@ class Widgets:
         if not widget:
             return
 
-        if (type(widget) == EntryBox) or (type(widget) == tk.Text):
+        if (isinstance(widget, EntryBox)) or (isinstance(widget, tk.Text)):
             menu.add(text="Copy", command=lambda: self.copy(key))
             menu.add(text="Paste", command=lambda: self.paste(key))
 
@@ -546,10 +545,6 @@ class Widgets:
 
         if state.update_config("model"):
             model.load()
-
-    def show_intro(self, tab_id: str = "") -> None:
-        for line in config.intro:
-            self.display.print(line, tab_id=tab_id)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -685,7 +680,7 @@ class Widgets:
         if not widget:
             return
 
-        if type(widget) == EntryBox:
+        if isinstance(widget, EntryBox):
             widgetutils.copy(widget.get())
             widget.focus_set()
             state.update_config(key)
@@ -694,7 +689,7 @@ class Widgets:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or (type(widget) != EntryBox):
+        if (not widget) or (not isinstance(widget, EntryBox)):
             return
 
         widgetutils.paste(widget)
@@ -705,7 +700,7 @@ class Widgets:
         from . import state
         widget = self.get_widget(key)
 
-        if (not widget) or (type(widget) != EntryBox):
+        if (not widget) or (not isinstance(widget, EntryBox)):
             return
 
         widget.clear()
