@@ -339,7 +339,7 @@ class Output(tk.Text):
         self.tag_add(f"name_{who}", start_index, end_index)
 
         if who == "ai":
-            self.position = end_index
+            self.position = self.index("end - 1c")
 
     def print(self, text: str, linebreak_left: bool = False, linebreak_right: bool = False) -> None:
         left = ""

@@ -27,7 +27,7 @@ test_session = {
         {"assistant": "Here is a an italic _word_ and _an italic sentence_.\nHere is a an italic _word_ and _an italic sentence_."},
         {"user": "Snippet Test"},
         {"assistant":
-            "Here is some code:\n\n```python\na = 123\nprint('Hello, World!')\n```\n\n" +
+            "```python\na = 123\nprint('Hello, World!')\n```\n\n" +
             "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
          },
         {"user": "Snippet Test 2"},
