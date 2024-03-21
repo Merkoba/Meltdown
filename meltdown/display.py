@@ -387,7 +387,6 @@ class Display:
         output.copy_all()
 
     def clear_output(self, tab_id: str = "") -> None:
-        from .widgets import widgets
         from .session import session
 
         if not tab_id:
