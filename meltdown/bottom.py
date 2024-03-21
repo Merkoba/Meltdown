@@ -47,7 +47,7 @@ class Bottom(tk.Frame):
             self.debouncer = app.root.after(self.delay, self.do_hide)
 
     def do_hide(self) -> None:
-        if not self.visible or (not app.exists()):
+        if (not self.visible) or (not app.exists()):
             return
 
         self.cancel_debouncer()
