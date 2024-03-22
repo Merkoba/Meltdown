@@ -1,5 +1,3 @@
-### A Python program to interface with `llama.cpp`
-
 <img src="media/image.jpg" width="380">
 
 ---
