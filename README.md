@@ -30,6 +30,8 @@ Various configs to tweak the responses like `seed`, `max_tokens`, `top_k`, `top_
 
 Configs to tweak llama.cpp like the number of threads to use or mem-lock.
 
+Context is saved to use on future prompts, optionally.
+
 All fields have context menus to perform some actions.
 
 Recent text inputs get saved and you can access them with the context menus.
