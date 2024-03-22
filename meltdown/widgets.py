@@ -123,7 +123,7 @@ class Widgets:
         self.context = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
                 " The computation will take longer with more context"
-                " 0 means context is not used at all.")
+                " 0 means context is not used at all")
 
         widgetutils.make_label(self.details, "Tokens")
         self.max_tokens = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)

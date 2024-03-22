@@ -25,7 +25,7 @@ class InputControl:
         self.input = widgets.input
         ToolTip(self.input, "The prompt for the AI."
                 " The prompt is a message that the AI will respond to."
-                " Use the mousewheel to cycle input history.")
+                " Use the mousewheel to cycle input history")
 
         prev_button = widgetutils.make_button(frame, "< Prev", lambda: self.history_up())
         ToolTip(prev_button, "Previous item in the input history")
