@@ -774,6 +774,7 @@ class Widgets:
     def check_details_buttons(self) -> None:
         scroll_pos_left = self.details_canvas.xview()[0]
         scroll_pos_right = self.details_canvas.xview()[1]
+        ToolTip.hide_all()
 
         if scroll_pos_left == 0:
             self.details_button_left.set_style("disabled")
