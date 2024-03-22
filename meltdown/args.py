@@ -18,6 +18,7 @@ class Args:
         self.monitor_ram = True
         self.monitor_temp = True
         self.keyboard = True
+        self.wrap = True
         self.maximized = False
         self.compact = False
         self.full = False
@@ -46,6 +47,7 @@ class Args:
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
+            "no-wrap": {"action": "store_false", "help": "Disable tab wrapping"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -72,6 +74,7 @@ class Args:
         ap.normal("no_ram", "monitor_ram")
         ap.normal("no_temp", "monitor_temp")
         ap.normal("no_keyboard", "keyboard")
+        ap.normal("no_wrap", "wrap")
         ap.normal("maximized")
         ap.normal("compact")
         ap.normal("full")

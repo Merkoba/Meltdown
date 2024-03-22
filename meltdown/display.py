@@ -5,6 +5,7 @@ from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
 from .config import config
+from .args import args
 from . import widgetutils
 
 # Standard
@@ -507,7 +508,10 @@ class Display:
         index = self.index(self.current_tab) - 1
 
         if index < 0:
-            index = num - 1
+            if args.wrap:
+                index = num - 1
+            else:
+                return
 
         self.select_tab(self.tab_ids()[index])
 
@@ -520,7 +524,10 @@ class Display:
         index = self.index(self.current_tab) + 1
 
         if index >= num:
-            index = 0
+            if args.wrap:
+                index = 0
+            else:
+                return
 
         self.select_tab(self.tab_ids()[index])
 
