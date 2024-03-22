@@ -149,15 +149,6 @@ class Widgets:
                 " The same seed should generate the same or similar results."
                 " -1 means no seed is used")
 
-        widgetutils.make_label(self.details, "Top K")
-        self.top_k = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.top_k, "The top-k parameter limits the model's"
-                " predictions to the top k most probable tokens at each step"
-                " of generation. By setting a value for k, you are instructing"
-                " the model to consider only the k most likely tokens."
-                " This can help in fine-tuning the generated output and"
-                " ensuring it adheres to specific patterns or constraints")
-
         widgetutils.make_label(self.details, "Top P")
         self.top_p = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
@@ -167,6 +158,15 @@ class Widgets:
                 " more dynamic control over the length of the generated text"
                 " and encourages diversity in the output by including less"
                 " probable tokens when necessary")
+
+        widgetutils.make_label(self.details, "Top K")
+        self.top_k = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
+        ToolTip(self.top_k, "(Not applied to GPT) The top-k parameter limits the model's"
+                " predictions to the top k most probable tokens at each step"
+                " of generation. By setting a value for k, you are instructing"
+                " the model to consider only the k most likely tokens."
+                " This can help in fine-tuning the generated output and"
+                " ensuring it adheres to specific patterns or constraints")
 
         widgetutils.make_label(self.details, "Threads")
         self.threads = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
