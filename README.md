@@ -96,6 +96,8 @@ Programming language syntax highlighting.
 
 Dark and light themes.
 
+Command similarity check ( >= 0.8 ).
+
 ---
 
 ## GUI Toolkit
