@@ -4,7 +4,7 @@ from typing import List, Any, Dict, Optional, Tuple, Callable
 
 class Config:
     def __init__(self) -> None:
-        self.max_log = 100
+        self.max_log = 50
         self.max_list_items = 10
         self.system_delay = 3
         self.system_threshold = 70
