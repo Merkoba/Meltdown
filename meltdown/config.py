@@ -9,10 +9,10 @@ class Config:
         self.system_delay = 3
         self.system_threshold = 70
         self.printlogs = False
+        self.list_item_width = 100
 
         self.models: List[str] = []
         self.inputs: List[str] = []
-        self.systems: List[str] = []
 
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"

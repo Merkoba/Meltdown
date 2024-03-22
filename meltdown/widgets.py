@@ -480,7 +480,7 @@ class Widgets:
                 def proc(item: str = item) -> None:
                     command(item)
 
-                menu.add(text=item[:80], command=proc)
+                menu.add(text=item[:config.list_item_width], command=proc)
 
         if event:
             menu.show(event)
