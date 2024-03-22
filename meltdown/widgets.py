@@ -32,7 +32,7 @@ class Widgets:
         widgetutils.make_label(self.model_frame, "Model")
         self.model = widgetutils.make_entry(self.model_frame, fill=Fill.HORIZONTAL)
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
-                " llama.cpp, like gguf files for instance.")
+                " llama.cpp, like gguf files for instance")
 
         self.load_button = widgetutils.make_button(self.model_frame, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load or unload the model")
@@ -115,14 +115,14 @@ class Widgets:
         widgetutils.make_label(self.details, "Context")
         self.context = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         ToolTip(self.context, "The number of previous messages to include as the context."
-                " The computation will take longer with more context."
+                " The computation will take longer with more context"
                 " 0 means context is not used at all.")
 
         widgetutils.make_label(self.details, "Tokens")
         self.max_tokens = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         ToolTip(self.max_tokens, "Maximum number of tokens to generate."
                 " Higher values will result in longer output, but will"
-                " also take longer to compute.")
+                " also take longer to compute")
 
         widgetutils.make_label(self.details, "Temp")
         self.temperature = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
@@ -131,13 +131,13 @@ class Widgets:
                 " and diversity in the generated text, as the model is more likely to"
                 " explore a wider range of possible tokens. Conversely, a lower temperature"
                 " (<1) produces more focused and deterministic output, emphasizing the"
-                " most probable tokens.")
+                " most probable tokens")
 
         widgetutils.make_label(self.details, "Seed")
         self.seed = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         ToolTip(self.seed, "The seed to use for sampling."
                 " The same seed should generate the same or similar results."
-                " -1 means no seed is used.")
+                " -1 means no seed is used")
 
         widgetutils.make_label(self.details, "Top K")
         self.top_k = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
@@ -146,7 +146,7 @@ class Widgets:
                 " of generation. By setting a value for k, you are instructing"
                 " the model to consider only the k most likely tokens."
                 " This can help in fine-tuning the generated output and"
-                " ensuring it adheres to specific patterns or constraints.")
+                " ensuring it adheres to specific patterns or constraints")
 
         widgetutils.make_label(self.details, "Top P")
         self.top_p = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
@@ -156,7 +156,7 @@ class Widgets:
                 " exceeds the chosen threshold (p). This approach allows for"
                 " more dynamic control over the length of the generated text"
                 " and encourages diversity in the output by including less"
-                " probable tokens when necessary.")
+                " probable tokens when necessary")
 
         widgetutils.make_label(self.details, "Threads")
         self.threads = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
@@ -169,7 +169,7 @@ class Widgets:
         self.format = widgetutils.make_combobox(self.details, values=values, width=17)
         ToolTip(self.format, "That will format the prompt according to how model expects it."
                 " Auto is supposed to work with newer models that include the format in the metadata."
-                " Check llama-cpp-python to find all the available formats.")
+                " Check llama-cpp-python to find all the available formats")
 
         widgetutils.make_label(self.details, "M-Lock")
         self.mlock = widgetutils.make_combobox(self.details, width=app.theme.combobox_width_small, values=["yes", "no"])
@@ -226,7 +226,7 @@ class Widgets:
 
         widgetutils.make_label(self.input_frame, "Input")
         self.input = widgetutils.make_entry(self.input_frame, fill=Fill.HORIZONTAL)
-        ToolTip(self.input, "The prompt for the AI. The prompt is a message that the AI will respond to.")
+        ToolTip(self.input, "The prompt for the AI. The prompt is a message that the AI will respond to")
 
         input_history_up_button = widgetutils.make_button(self.input_frame, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
