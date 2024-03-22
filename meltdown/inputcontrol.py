@@ -27,11 +27,11 @@ class InputControl:
                 " The prompt is a message that the AI will respond to."
                 " Use the mousewheel to cycle input history.")
 
-        input_history_up_button = widgetutils.make_button(frame, "< Prev", lambda: self.history_up())
-        ToolTip(input_history_up_button, "Previous item in the input history")
+        prev_button = widgetutils.make_button(frame, "< Prev", lambda: self.history_up())
+        ToolTip(prev_button, "Previous item in the input history")
 
-        input_history_up_down = widgetutils.make_button(frame, "Next >", lambda: self.history_down())
-        ToolTip(input_history_up_down, "Next item in the input history")
+        next_button = widgetutils.make_button(frame, "Next >", lambda: self.history_down())
+        ToolTip(next_button, "Next item in the input history")
 
         submit_button = widgetutils.make_button(frame, "Submit",
                                                 lambda: self.submit(), right_padding=config.right_padding)
