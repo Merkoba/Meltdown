@@ -317,11 +317,15 @@ class App:
         from . import state
 
         if config.theme == "light":
-            state.set_config("theme", "dark")
+            new_theme = "dark"
         else:
-            state.set_config("theme", "light")
+            new_theme = "light"
 
-        Dialog.show_message("Theme will change after restarting the program")
+        def action() -> None:
+            state.set_config("theme", new_theme)
+            Dialog.show_message("Theme will change after restarting the program")
+
+        Dialog.show_confirm(f"Use the {new_theme} theme?", action)
 
 
 app = App()
