@@ -21,6 +21,8 @@ test_session = {
         {"assistant": "Here is a `highlight` and `a longer highlight`.\nHere is a `highlight` and `a longer highlight`."},
         {"user": "Bold Test"},
         {"assistant": "Here is a bold **word** and **a bold sentence**.\nHere is a bold **word** and **a bold sentence**."},
+        {"user": "Bold Test 2"},
+        {"assistant": "\n1) **Some Item:** Description\n2) **Another Item:** Description\n3) **Third Item:** Description"},
         {"user": "Italic Test with Asterisk"},
         {"assistant": "Here is an italic *word* and *an italic sentence*.\nHere is an italic *word* and *an italic sentence*."},
         {"user": "Italic `Test` with Underscore"},
@@ -38,8 +40,8 @@ test_session = {
         {"user": "URL Test"},
         {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n" +
          "Here are some urls https://aa.com and http://cc.com and ftp://44.com"},
-        {"user": "Normal last sentence"},
-        {"assistant": "Here is the last sentence"},
+        {"user": "Normal Sentence"},
+        {"assistant": "Here is a normal sentence"},
     ],
 }
 

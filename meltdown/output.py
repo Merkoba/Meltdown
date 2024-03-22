@@ -391,14 +391,13 @@ class Output(tk.Text):
         ranges = self.tag_ranges(tag)
 
         for i in range(0, len(ranges), 2):
-            start, end = str(ranges[i]), str(ranges[i + 1])
-            start_float = float(start.split(".")[0]) - 0.5
-            end_float = float(end.split(".")[0]) + 0.5
-            current_index_float = float(current_index.split(".")[0])
+            start, end = ranges[i], ranges[i + 1]
+            start_line, start_char = map(int, str(start).split('.'))
+            end_line, end_char = map(int, str(end).split('.'))
+            cur_line, cur_char = map(int, str(current_index).split('.'))
 
-            if start_float <= current_index_float < end_float:
+            if start_line <= cur_line < end_line or (start_line == cur_line == end_line and start_char <= cur_char < end_char):
                 text = self.get(start, end)
-
                 if text:
                     return text
 
