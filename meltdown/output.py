@@ -135,7 +135,7 @@ class Output(tk.Text):
         self.setup()
 
     def setup(self) -> None:
-        from .widgets import widgets
+        from .inputcontrol import inputcontrol
         from .display import display
         from .markdown import Markdown
 
@@ -150,8 +150,8 @@ class Output(tk.Text):
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
-        self.tag_bind("name_user", "<ButtonRelease-1>", lambda e: widgets.insert_name("user"))
-        self.tag_bind("name_ai", "<ButtonRelease-1>", lambda e: widgets.insert_name("ai"))
+        self.tag_bind("name_user", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("user"))
+        self.tag_bind("name_ai", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("ai"))
 
         def on_url_click(event: Any) -> None:
             text = self.get_tagwords("url", event)

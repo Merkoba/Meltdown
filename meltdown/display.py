@@ -26,7 +26,7 @@ class Tab:
 
 class Display:
     def __init__(self) -> None:
-        pass
+        self.current_tab: str = "none"
 
     def make(self) -> None:
         from .widgets import widgets
@@ -42,7 +42,6 @@ class Display:
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
-        self.current_tab = "none"
         self.drag_start_index = 0
         self.tab_number = 1
 
@@ -151,7 +150,7 @@ class Display:
         self.drag_start_index = self.root.index(self.root.select())  # type: ignore
 
     def on_tab_change(self, event: Any) -> None:
-        from .widgets import widgets
+        from .inputcontrol import inputcontrol
         from .session import session
         self.update_current_tab()
         tab = self.get_current_tab()
@@ -164,7 +163,7 @@ class Display:
                 document.loaded = True
                 self.to_bottom(tab.tab_id)
 
-        widgets.focus_input()
+        inputcontrol.focus()
         self.check_scroll_buttons()
 
     def get_current_tab(self) -> Optional[Tab]:

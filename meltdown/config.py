@@ -10,6 +10,7 @@ class Config:
         self.system_threshold = 70
         self.printlogs = False
         self.list_item_width = 100
+        self.right_padding = 11
 
         self.models: List[str] = []
         self.inputs: List[str] = []

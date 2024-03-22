@@ -120,8 +120,8 @@ class Commands:
         display.print(text)
 
     def check_autocomplete(self) -> None:
-        from .widgets import widgets
-        text = widgets.input.get()
+        from .inputcontrol import inputcontrol
+        text = inputcontrol.input.get()
 
         if not self.command_format(text):
             return
@@ -134,7 +134,7 @@ class Commands:
                 self.autocomplete_index = 0
 
             match = self.autocomplete_matches[self.autocomplete_index]
-            input_text = widgets.input.get()[1:]
+            input_text = inputcontrol.input.get()[1:]
 
             if match == input_text:
                 if len(self.autocomplete_matches) == 1:
@@ -144,7 +144,7 @@ class Commands:
                 check()
                 return
 
-            widgets.input.set_text(self.prefix + match)
+            inputcontrol.input.set_text(self.prefix + match)
             self.autocomplete_index += 1
 
         if self.autocomplete_matches:

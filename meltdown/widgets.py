@@ -5,7 +5,7 @@ from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
 from .entrybox import EntryBox
-from .commands import commands
+from .inputcontrol import inputcontrol
 from .args import args
 from . import widgetutils
 
@@ -19,10 +19,13 @@ from typing import Any
 from typing import Optional, Any, Callable
 
 
-right_padding = 11
+right_padding = config.right_padding
 
 
 class Widgets:
+    def __init__(self) -> None:
+        self.input: EntryBox
+
     def make(self) -> None:
         from .display import display
 
@@ -227,18 +230,6 @@ class Widgets:
         # Input
         self.input_frame = widgetutils.make_frame(bottom_padding=10)
 
-        widgetutils.make_label(self.input_frame, "Input")
-        self.input = widgetutils.make_entry(self.input_frame, fill=Fill.HORIZONTAL)
-
-        input_history_up_button = widgetutils.make_button(self.input_frame, "< Prev", lambda: self.input_history_up())
-        ToolTip(input_history_up_button, "Previous item in the input history")
-
-        input_history_up_down = widgetutils.make_button(self.input_frame, "Next >", lambda: self.input_history_down())
-        ToolTip(input_history_up_down, "Next item in the input history")
-
-        submit_button = widgetutils.make_button(self.input_frame, "Submit", lambda: self.submit(), right_padding=right_padding)
-        ToolTip(submit_button, "Send the prompt to the AI")
-
         self.main_menu = Menu()
         self.models_menu = Menu()
         self.gpt_menu = Menu()
@@ -250,7 +241,6 @@ class Widgets:
         self.load_button_enabled = True
         self.format_select_enabled = True
         self.top_button_enabled = True
-        self.input_history_index = -1
         self.current_details = 1
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
@@ -285,17 +275,20 @@ class Widgets:
         if display.num_tabs() == 0:
             display.make_tab()
 
+        inputcontrol.fill()
+
         self.fill()
         self.setup_details()
         self.setup_main_menu()
         self.setup_gpt_menu()
         self.setup_binds()
         self.setup_widgets()
-        self.focus_input()
         self.add_generic_menus()
         self.setup_monitors()
         self.start_checks()
         self.check_details_buttons()
+
+        inputcontrol.focus()
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
@@ -379,7 +372,7 @@ class Widgets:
         self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
-        self.input.bind("<Button-3>", lambda e: self.show_input_menu(e))
+        inputcontrol.bind()
 
     def setup_main_menu(self) -> None:
         from .session import session
@@ -411,46 +404,6 @@ class Widgets:
 
         for gpt in model.gpts:
             self.gpt_menu.add(text=gpt[1], command=lambda gpt=gpt: self.use_gpt(gpt[0]))
-
-    def focus_input(self) -> None:
-        self.input.focus_set()
-
-    def apply_input_history(self) -> None:
-        text = config.inputs[self.input_history_index]
-        self.set_input(text)
-
-    def input_history_up(self) -> None:
-        if not self.input.get():
-            self.reset_history_index()
-
-        if not config.inputs:
-            return
-
-        if self.input_history_index == -1:
-            self.input_history_index = 0
-        else:
-            if self.input_history_index == len(config.inputs) - 1:
-                self.clear_input()
-                return
-            else:
-                self.input_history_index = (self.input_history_index + 1) % len(config.inputs)
-
-        self.apply_input_history()
-
-    def input_history_down(self) -> None:
-        if not config.inputs:
-            return
-
-        if self.input_history_index == -1:
-            self.input_history_index = len(config.inputs) - 1
-        else:
-            if self.input_history_index == 0:
-                self.clear_input()
-                return
-            else:
-                self.input_history_index = (self.input_history_index - 1) % len(config.inputs)
-
-        self.apply_input_history()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
         from . import state
@@ -521,38 +474,6 @@ class Widgets:
 
     def show_append_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
-
-    def show_input_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("input", "inputs", lambda s: self.set_input(s), event)
-
-    def submit(self) -> None:
-        from .model import model
-        from . import state
-        from .display import display
-
-        text = self.input.get().strip()
-
-        if text:
-            display.to_bottom()
-            self.clear_input()
-            state.add_input(text)
-
-            if commands.check(text):
-                return
-
-            if model.model_loading:
-                return
-
-            model.stream(text, display.current_tab)
-        else:
-            display.to_bottom()
-
-    def clear_input(self) -> None:
-        self.input.clear()
-        self.reset_history_index()
-
-    def reset_history_index(self) -> None:
-        self.input_history_index = -1
 
     def set_model(self, m: str) -> None:
         from . import state
@@ -663,10 +584,6 @@ class Widgets:
         self.do_checks()
         app.root.after(200, self.start_checks)
 
-    def set_input(self, text: str) -> None:
-        self.input.set_text(text)
-        self.focus_input()
-
     def set_system(self, text: str) -> None:
         from . import state
         self.system.set_text(text)
@@ -734,7 +651,7 @@ class Widgets:
         assert isinstance(widget, EntryBox)
 
         if widget.get():
-            self.clear_input()
+            inputcontrol.clear()
         elif model.streaming:
             self.stop()
         else:
@@ -744,7 +661,7 @@ class Widgets:
         widget = app.root.focus_get()
 
         if widget == self.input:
-            self.show_input_menu()
+            inputcontrol.show_menu()
         elif widget == self.prepend:
             self.show_prepend_menu()
         elif widget == self.append:
@@ -784,17 +701,6 @@ class Widgets:
             self.details_button_right.set_style("disabled")
         else:
             self.details_button_right.set_style("alt")
-
-    def insert_name(self, who: str) -> None:
-        name = getattr(config, f"name_{who}")
-        text = self.input.get()
-
-        if (not text) or text.endswith(" "):
-            self.input.insert_text(name)
-        else:
-            self.input.insert_text(f" {name}")
-
-        self.input.full_focus()
 
     def use_gpt(self, name: str) -> None:
         from .model import model

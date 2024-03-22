@@ -204,12 +204,12 @@ class App:
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:
-        from .widgets import widgets
+        from .inputcontrol import inputcontrol
         from .display import display
         from . import state
         self.update()
         display.to_bottom()
-        widgets.focus_input()
+        inputcontrol.focus()
         state.set_config("compact", enabled)
 
     def check_compact(self) -> None:

@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .widgets import widgets
+from .inputcontrol import inputcontrol
 from .display import display
 from .model import model
 from .commands import commands
@@ -66,16 +67,16 @@ class Keyboard:
 
         ToolTip.hide_all()
 
-        if (event.widget != widgets.input) and (not isinstance(event.widget, EntryBox)):
+        if (event.widget != inputcontrol.input) and (not isinstance(event.widget, EntryBox)):
             chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
             syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 
             # Focus the input and insert char
             if (len(event.keysym.strip()) == 1) or (event.char in chars):
-                widgets.focus_input()
-                widgets.input.insert_text(event.char)
+                inputcontrol.focus()
+                inputcontrol.input.insert_text(event.char)
             elif event.keysym in syms:
-                widgets.focus_input()
+                inputcontrol.focus()
         else:
             if event.keysym != "Tab":
                 commands.reset()
@@ -172,21 +173,21 @@ class Keyboard:
             add(key.upper())
 
     def setup_input(self) -> None:
-        self.register("<Tab>", lambda: commands.check_autocomplete(), widget=widgets.input, return_break=True)
+        self.register("<Tab>", lambda: commands.check_autocomplete(), widget=inputcontrol.input, return_break=True)
 
     def setup_globals(self) -> None:
         def on_enter() -> None:
-            widgets.focus_input()
-            widgets.submit()
+            inputcontrol.focus()
+            inputcontrol.submit()
 
         self.register("<Return>", lambda: on_enter(), on_ctrl=lambda: model.load())
         self.register("<Escape>", lambda: widgets.esckey(), on_ctrl=lambda: model.unload(True))
         self.register("<Page_Up>", lambda: display.scroll_up())
         self.register("<Page_Down>", lambda: display.scroll_down())
         self.register("<BackSpace>", on_ctrl=lambda: display.clear())
-        self.register("<Up>", command=lambda: widgets.input_history_up(),
+        self.register("<Up>", command=lambda: inputcontrol.history_up(),
                       on_ctrl=lambda: display.to_top(), on_shift=lambda: widgets.show_context())
-        self.register("<Down>", command=lambda: widgets.input_history_down(),
+        self.register("<Down>", command=lambda: inputcontrol.history_down(),
                       on_ctrl=lambda: display.to_bottom())
         self.register("<Left>", on_ctrl=lambda: display.tab_left())
         self.register("<Right>", on_ctrl=lambda: display.tab_right())
