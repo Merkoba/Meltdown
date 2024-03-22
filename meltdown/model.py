@@ -15,6 +15,7 @@ import threading
 from pathlib import Path
 from typing import Optional
 from tkinter import filedialog
+from typing import List, Tuple
 import os
 
 
@@ -32,8 +33,13 @@ class Model:
         self.loaded_format = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
-        self.gpts = ("gpt-3.5-turbo", "gpt-3.5-instruct", "gpt-4-turbo")
         self.gpt_client = None
+        self.gpts: List[Tuple[str, str]] = [
+            ("gpt-3.5-turbo", "GPT-3.5 Turbo"),
+            ("gpt-3.5-instruct", "GPT-3.5 Instruct"),
+            ("gpt-4-turbo", "GPT-4 Turbo"),
+            ("gpt-4-turbo-preview", "GPT-4 Turbo Preview"),
+        ]
 
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
@@ -49,6 +55,9 @@ class Model:
             if announce:
                 display.print("👻 Model unloaded")
 
+    def model_is_gpt(self, name: str) -> bool:
+        return any(name == gpt[0] for gpt in self.gpts)
+
     def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
             return
@@ -57,7 +66,7 @@ class Model:
             print("(Load) Slow down!")
             return
 
-        if config.model in self.gpts:
+        if self.model_is_gpt(config.model):
             try:
                 self.gpt_client = OpenAI(
                     api_key=os.getenv("OPENAI_API_KEY")
@@ -258,7 +267,7 @@ class Model:
         now = timeutils.now()
         self.stream_date = now
 
-        if config.model in self.gpts:
+        if self.model_is_gpt(config.model):
             try:
                 if not self.gpt_client:
                     return
@@ -273,7 +282,10 @@ class Model:
                     seed=config.seed,
                 )
             except BaseException as e:
-                print(e)
+                display.print(f"Error: GPT model failed to stream."
+                              " You might not have access to this particular model,"
+                              " not enough credits,"
+                              " or there is no internet connection.")
                 self.stream_loading = False
                 self.lock.release()
                 return

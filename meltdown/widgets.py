@@ -405,9 +405,10 @@ class Widgets:
         self.main_menu.add(text="Exit", command=lambda: app.exit())
 
     def setup_gpt_menu(self) -> None:
-        self.gpt_menu.add(text="GPT 3.5 Turbo", command=lambda: self.use_gpt("gpt-3.5-turbo"))
-        self.gpt_menu.add(text="GPT 3.5 Instruct", command=lambda: self.use_gpt("gpt-3.5-instruct"))
-        self.gpt_menu.add(text="GPT 4 Turbo", command=lambda: self.use_gpt("gpt-4-turbo"))
+        from .model import model
+
+        for gpt in model.gpts:
+            self.gpt_menu.add(text=gpt[1], command=lambda gpt=gpt: self.use_gpt(gpt[0]))
 
     def focus_input(self) -> None:
         self.input.focus_set()
@@ -801,10 +802,6 @@ class Widgets:
     def use_gpt(self, name: str) -> None:
         from .model import model
         from . import state
-
-        if not name in model.gpts:
-            return
-
         state.set_config("model", name)
 
     def show_gpt_menu(self) -> None:
