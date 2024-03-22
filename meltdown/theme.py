@@ -69,7 +69,7 @@ class Theme:
         self.tab_selected_background = "#494D62",
         self.tab_normal_background = "#2B303B",
         self.tab_selected_foreground = "white",
-        self.tab_normal_foreground = "white",
+        self.tab_normal_foreground = "#C9C9C9",
         self.scrollbar_1 = "#333B4B"
         self.scrollbar_2 = "#98A1A3"
         self.tooltip_background = "white"
