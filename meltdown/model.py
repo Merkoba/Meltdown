@@ -409,7 +409,7 @@ class Model:
 
         if not self.loaded_model:
             icon.configure(text="👻")
-            tooltip.set_text("No model loaded")
+            tooltip.set_text("No model loaded. Pick a local or GPT model to start chatting")
         elif self.model_is_gpt(self.loaded_model):
             icon.configure(text="🌐")
             tooltip.set_text("You are using a remote service."
