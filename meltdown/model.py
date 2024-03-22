@@ -8,12 +8,14 @@ from . import state
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
+from openai import OpenAI  # type: ignore
 
 # Standard
 import threading
 from pathlib import Path
 from typing import Optional
 from tkinter import filedialog
+import os
 
 
 class Model:
@@ -30,6 +32,8 @@ class Model:
         self.loaded_format = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
+        self.gpts = ("gpt-3.5-turbo", "gpt-3.5-instruct", "gpt-4-turbo")
+        self.gpt_client = None
 
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
@@ -51,6 +55,26 @@ class Model:
 
         if self.is_loading():
             print("(Load) Slow down!")
+            return
+
+        if config.model in self.gpts:
+            try:
+                self.gpt_client = OpenAI(
+                    api_key=os.getenv("OPENAI_API_KEY")
+                )
+
+                self.model = config.model
+                self.model_loading = False
+                self.loaded_model = config.model
+                self.loaded_format = "chatgpt"
+                state.add_model(config.model)
+                display.print(f"🔑 {config.model} ready to use")
+
+                if prompt:
+                    self.stream(prompt, tab_id)
+            except BaseException as e:
+                display.print("Error: GPT model failed to load")
+
             return
 
         model_path = Path(config.model)
@@ -234,20 +258,41 @@ class Model:
         now = timeutils.now()
         self.stream_date = now
 
-        try:
-            output = self.model.create_chat_completion(
-                stream=True,
-                messages=messages,
-                max_tokens=config.max_tokens,
-                temperature=config.temperature,
-                top_k=config.top_k,
-                top_p=config.top_p,
-                seed=config.seed,
-            )
-        except BaseException as e:
-            self.stream_loading = False
-            self.lock.release()
-            return
+        if config.model in self.gpts:
+            try:
+                if not self.gpt_client:
+                    return
+
+                output = self.gpt_client.chat.completions.create(
+                    stream=True,
+                    model=config.model,
+                    messages=messages,
+                    max_tokens=config.max_tokens,
+                    temperature=config.temperature,
+                    top_p=config.top_p,
+                    seed=config.seed,
+                )
+            except BaseException as e:
+                print(e)
+                self.stream_loading = False
+                self.lock.release()
+                return
+        else:
+            try:
+                output = self.model.create_chat_completion_openai_v1(
+                    stream=True,
+                    messages=messages,
+                    max_tokens=config.max_tokens,
+                    temperature=config.temperature,
+                    top_k=config.top_k,
+                    top_p=config.top_p,
+                    seed=config.seed,
+                )
+            except BaseException as e:
+                print(e)
+                self.stream_loading = False
+                self.lock.release()
+                return
 
         self.stream_loading = False
 
@@ -263,14 +308,14 @@ class Model:
                 if self.stop_stream_thread.is_set():
                     break
 
-                delta = chunk["choices"][0]["delta"]
+                delta = chunk.choices[0].delta
 
-                if "content" in delta:
+                if hasattr(delta, "content"):
                     if not added_name:
                         display.prompt("ai", tab_id=tab_id)
                         added_name = True
 
-                    token = delta["content"]
+                    token = delta.content
 
                     if token == "\n":
                         if not token_printed:
@@ -281,12 +326,13 @@ class Model:
 
                     last_token = token
 
-                    if not token_printed:
-                        token = token.lstrip()
-                        token_printed = True
+                    if token is not None:
+                        if not token_printed:
+                            token = token.lstrip()
+                            token_printed = True
 
-                    tokens.append(token)
-                    display.insert(token, tab_id=tab_id, format_text=True)
+                        tokens.append(token)
+                        display.insert(token, tab_id=tab_id, format_text=True)
         except BaseException as e:
             print(e)
 

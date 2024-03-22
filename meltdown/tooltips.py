@@ -19,6 +19,11 @@ class ToolTip:
     block_date = 0.0
 
     @staticmethod
+    def hide_all() -> None:
+        if ToolTip.current_tooltip:
+            ToolTip.current_tooltip.hide()
+
+    @staticmethod
     def block() -> None:
         ToolTip.block_date = timeutils.now()
 

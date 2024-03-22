@@ -239,6 +239,7 @@ class Widgets:
 
         self.main_menu = Menu()
         self.models_menu = Menu()
+        self.gpt_menu = Menu()
         self.systems_menu = Menu()
         self.prepends_menu = Menu()
         self.appends_menu = Menu()
@@ -285,6 +286,7 @@ class Widgets:
         self.fill()
         self.setup_details()
         self.setup_main_menu()
+        self.setup_gpt_menu()
         self.setup_binds()
         self.setup_widgets()
         self.focus_input()
@@ -384,6 +386,7 @@ class Widgets:
 
         self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
+        self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
         self.main_menu.separator()
         self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
@@ -400,6 +403,11 @@ class Widgets:
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())
+
+    def setup_gpt_menu(self) -> None:
+        self.gpt_menu.add(text="GPT 3.5 Turbo", command=lambda: self.use_gpt("gpt-3.5-turbo"))
+        self.gpt_menu.add(text="GPT 3.5 Instruct", command=lambda: self.use_gpt("gpt-3.5-instruct"))
+        self.gpt_menu.add(text="GPT 4 Turbo", command=lambda: self.use_gpt("gpt-4-turbo"))
 
     def focus_input(self) -> None:
         self.input.focus_set()
@@ -789,6 +797,18 @@ class Widgets:
             self.input.insert_text(f" {name}")
 
         self.input.full_focus()
+
+    def use_gpt(self, name: str) -> None:
+        from .model import model
+        from . import state
+
+        if not name in model.gpts:
+            return
+
+        state.set_config("model", name)
+
+    def show_gpt_menu(self) -> None:
+        self.gpt_menu.show(widget=self.main_menu_button)
 
 
 widgets: Widgets = Widgets()

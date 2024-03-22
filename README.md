@@ -104,6 +104,8 @@ Click and double click words.
 
 Start new conversations based on some words.
 
+ChatGPT support.
+
 ---
 
 ## GUI Toolkit
@@ -145,6 +147,12 @@ Here's a small one you can use:
 https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
 
 You can find more in that site.
+
+---
+
+## ChatGPT
+
+To use ChatGPT you must export `OPENAI_API_KEY` with your secret key before running the program.
 
 ---
 

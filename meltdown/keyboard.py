@@ -5,6 +5,7 @@ from .display import display
 from .model import model
 from .commands import commands
 from .entrybox import EntryBox
+from .tooltips import ToolTip
 from .args import args
 from . import timeutils
 from . import state
@@ -62,6 +63,8 @@ class Keyboard:
 
         if self.blocked():
             return
+
+        ToolTip.hide_all()
 
         if (event.widget != widgets.input) and (not isinstance(event.widget, EntryBox)):
             chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
@@ -187,7 +190,7 @@ class Keyboard:
                       on_ctrl=lambda: display.to_bottom())
         self.register("<Left>", on_ctrl=lambda: display.tab_left())
         self.register("<Right>", on_ctrl=lambda: display.tab_right())
-        self.register("space", on_ctrl=lambda: widgets.show_main_menu())
+        self.register("<space>", on_ctrl=lambda: widgets.show_main_menu())
         self.register("t", on_ctrl=lambda: display.make_tab())
         self.register("w", on_ctrl=lambda: display.close_current_tab())
         self.register("s", on_ctrl=lambda: state.save_log())
