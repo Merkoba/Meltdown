@@ -130,7 +130,6 @@ class App:
 
         lines = [
             f"{title} v{version}",
-            "Interface for llama.cpp",
             f"Developed by {author}",
             "All Rights Reserved",
         ]
