@@ -36,7 +36,6 @@ class Model:
         self.gpt_client = None
         self.gpts: List[Tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT-3.5 Turbo"),
-            ("gpt-3.5-instruct", "GPT-3.5 Instruct"),
             ("gpt-4-turbo", "GPT-4 Turbo"),
             ("gpt-4-turbo-preview", "GPT-4 Turbo Preview"),
         ]
