@@ -75,7 +75,7 @@ class Model:
                 self.model = config.model
                 self.model_loading = False
                 self.loaded_model = config.model
-                self.loaded_format = "chatgpt"
+                self.loaded_format = "gpt_remote"
                 state.add_model(config.model)
                 display.print(f"🔑 {config.model} ready to use")
 

@@ -644,7 +644,8 @@ class Widgets:
 
         model_empty = self.model.get() == ""
 
-        if model.model_loading or (model_empty and (not model.loaded_model)):
+        if (model.loaded_format == "gpt_remote") or \
+                model.model_loading or (model_empty and (not model.loaded_model)):
             self.disable_load_button()
             self.disable_format_select()
         else:
