@@ -18,6 +18,7 @@ class Output(tk.Text):
     word_menu.add(text="Copy", command=lambda: Output.copy_words())
     word_menu.add(text="Explain", command=lambda: Output.explain_words())
     word_menu.add(text="Search", command=lambda: Output.search_words())
+    word_menu.add(text="New", command=lambda: Output.new_tab())
     current_output: Optional["Output"] = None
     words = ""
 
@@ -67,6 +68,23 @@ class Output(tk.Text):
             app.search_text(text)
 
         Dialog.show_confirm("Search for this term?", lambda: action())
+
+    @staticmethod
+    def new_tab() -> None:
+        from .display import display
+        from .model import model
+        if not Output.current_output:
+            return
+
+        from .dialogs import Dialog
+        text = Output.get_words()
+        Output.current_output.deselect_all()
+
+        if not text:
+            return
+
+        tab_id = display.make_tab()
+        model.stream(text, tab_id)
 
     @staticmethod
     def open_url(url: str) -> None:
@@ -372,8 +390,11 @@ class Output(tk.Text):
 
         for i in range(0, len(ranges), 2):
             start, end = str(ranges[i]), str(ranges[i + 1])
+            start_float = float(start.split(".")[0]) - 0.5
+            end_float = float(end.split(".")[0]) + 0.5
+            current_index_float = float(current_index.split(".")[0])
 
-            if start <= current_index < end:
+            if start_float <= current_index_float < end_float:
                 text = self.get(start, end)
 
                 if text:

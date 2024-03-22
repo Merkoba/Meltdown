@@ -62,7 +62,7 @@ class Display:
         self.root.bind("<Button-5>", lambda e: on_mousewheel("right"))
 
     def make_tab(self, name: Optional[str] = None,
-                 document_id: Optional[str] = None, select_tab: bool = True) -> None:
+                 document_id: Optional[str] = None, select_tab: bool = True) -> str:
         from .session import session
         frame = widgetutils.make_frame(self.root)
 
@@ -76,7 +76,7 @@ class Display:
             document_id = document.id
 
         if not document_id:
-            return
+            return ""
 
         tab_id = self.tab_ids()[-1]
         frame.grid_rowconfigure(0, weight=1)
@@ -93,6 +93,7 @@ class Display:
 
         self.tab_number += 1
         app.show_intro(tab_id)
+        return tab_id
 
     def tab_on_coords(self, x: int, y: int) -> str:
         index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
