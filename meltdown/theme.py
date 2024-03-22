@@ -74,6 +74,7 @@ class Theme:
         self.scrollbar_2 = "#98A1A3"
         self.tooltip_background = "white"
         self.tooltip_foreground = "black"
+        self.tooltip_padding = 4
         self.padx = 10
         self.pady = 10
         self.frame_padx = 0
