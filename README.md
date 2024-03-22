@@ -26,7 +26,7 @@ Or use ChatGPT with your personal api key.
 
 Stream responses in real time.
 
-Various configs to tweak the responses like `seed`, `max_tokens`, `top_k`, `top_p`, `temperature`.
+Various configs to tweak the responses like `seed`, `max_tokens`, `top_p`, `top_k`, `temperature`.
 
 Configs to tweak llama.cpp like the number of threads to use or mem-lock.
 
