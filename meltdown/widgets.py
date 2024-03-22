@@ -229,7 +229,6 @@ class Widgets:
 
         widgetutils.make_label(self.input_frame, "Input")
         self.input = widgetutils.make_entry(self.input_frame, fill=Fill.HORIZONTAL)
-        ToolTip(self.input, "The prompt for the AI. The prompt is a message that the AI will respond to")
 
         input_history_up_button = widgetutils.make_button(self.input_frame, "< Prev", lambda: self.input_history_up())
         ToolTip(input_history_up_button, "Previous item in the input history")
