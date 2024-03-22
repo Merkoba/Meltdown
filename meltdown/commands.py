@@ -43,15 +43,20 @@ class Commands:
             "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
         }
 
-        aliases = []
+        cmds = []
 
-        # Check for duplicate aliases
-        for cmd, data in self.commands.items():
-            if data.get("aliases"):
-                for alias in data["aliases"]:
-                    if alias in aliases:
-                        raise ValueError(f"Command alias '{alias}' is already in use")
-                    aliases.append(alias)
+        # Check for duplicate commands
+        for key, value in self.commands.items():
+            if key in cmds:
+                raise ValueError(f"Command duplicate: {key}")
+            else:
+                cmds.append(key)
+
+            for alias in value["aliases"]:
+                if alias in cmds:
+                    raise ValueError(f"Command duplicate: {key} {alias}")
+                else:
+                    cmds.append(alias)
 
     def command_format(self, text: str) -> bool:
         with_prefix = text.startswith(self.prefix)
@@ -70,7 +75,7 @@ class Commands:
                 value["action"]()
                 return True
 
-        # Similarity on  keys
+        # Similarity on keys
         for key, value in self.commands.items():
             if self.check_match(cmd, key):
                 value["action"]()
