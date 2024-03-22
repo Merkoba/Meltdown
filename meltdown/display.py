@@ -595,5 +595,7 @@ class Display:
             fmt = who == "ai"
             tab.output.insert_text(text, format_text=fmt)
 
+        tab.modified = True
+
 
 display = Display()
