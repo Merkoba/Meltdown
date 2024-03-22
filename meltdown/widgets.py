@@ -91,15 +91,18 @@ class Widgets:
 
         # Details Container
         self.details_frame = widgetutils.make_frame()
+        detail_button_info = "Scroll this row. Middle click for instant"
 
         frame_1 = widgetutils.make_inner_frame(self.details_frame, 0)
         self.details_button_left = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt", width=5)
+        ToolTip(self.details_button_left, detail_button_info)
 
         self.details, self.details_canvas = widgetutils.make_scrollable_frame(self.details_frame, 1)
 
         frame_3 = widgetutils.make_inner_frame(self.details_frame, 2)
         self.details_button_right = widgetutils.make_button(frame_3, ">",
                                                             lambda: widgets.details_right(), right_padding=right_padding, style="alt", width=5)
+        ToolTip(self.details_button_right, detail_button_info)
 
         self.details_frame.columnconfigure(1, weight=1)
 
@@ -771,23 +774,16 @@ class Widgets:
     def check_details_buttons(self) -> None:
         scroll_pos_left = self.details_canvas.xview()[0]
         scroll_pos_right = self.details_canvas.xview()[1]
-        info = "Scroll this row. Middle click for instant"
-
-        button_left = self.details_button_left
-        ToolTip(button_left, info)
-
-        button_right = self.details_button_right
-        ToolTip(button_right, info)
 
         if scroll_pos_left == 0:
-            button_left.set_style("disabled")
+            self.details_button_left.set_style("disabled")
         else:
-            button_left.set_style("alt")
+            self.details_button_left.set_style("alt")
 
         if scroll_pos_right == 1.0:
-            button_right.set_style("disabled")
+            self.details_button_right.set_style("disabled")
         else:
-            button_right.set_style("alt")
+            self.details_button_right.set_style("alt")
 
     def insert_name(self, who: str) -> None:
         name = getattr(config, f"name_{who}")

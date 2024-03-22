@@ -28,7 +28,7 @@ class ToolTip:
         ToolTip.block_date = timeutils.now()
 
     def __init__(self, widget: tk.Widget, text: str) -> None:
-        self.id = ""
+        self.debouncer = ""
         self.widget = widget
         self.delay = 600
         self.text = clean_string(text)
@@ -57,13 +57,12 @@ class ToolTip:
         if not args.tooltips:
             return
 
-        if ToolTip.current_tooltip is not None:
-            ToolTip.current_tooltip.hide()
+        ToolTip.hide_all()
 
         if (timeutils.now() - ToolTip.block_date) < 0.8:
             return
 
-        self.id = self.widget.after(self.delay, lambda: self.show())
+        self.debouncer = self.widget.after(self.delay, lambda: self.show())
         ToolTip.current_tooltip = self
 
     def show(self) -> None:
@@ -105,15 +104,12 @@ class ToolTip:
         self.tooltip.place(x=x, y=y)
 
     def hide(self) -> None:
-        if self.current_tooltip != self:
-            return
-
         if self.tooltip:
             self.tooltip.destroy()
             self.tooltip = None
-        if self.id:
-            self.widget.after_cancel(self.id)
-            self.id = ""
+        if self.debouncer:
+            self.widget.after_cancel(self.debouncer)
+            self.debouncer = ""
 
         ToolTip.current_tooltip = None
         self.current_event = None
