@@ -35,7 +35,8 @@ class Widgets:
         widgetutils.make_label(self.model_frame, "Model")
         self.model = widgetutils.make_entry(self.model_frame, fill=Fill.HORIZONTAL)
         ToolTip(self.model, "Path to a model file. This should be a file that works with"
-                " llama.cpp, like gguf files for instance")
+                " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model."
+                " Check the main menu on the right to load the available models")
 
         self.load_button = widgetutils.make_button(self.model_frame, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load or unload the model")
