@@ -104,7 +104,7 @@ class Widgets:
         self.details_frame.columnconfigure(1, weight=1)
 
         # Details Widgets
-        widgetutils.make_label(self.details, "User")
+        widgetutils.make_label(self.details, "User", padx=0)
         self.name_user = widgetutils.make_entry(self.details)
         ToolTip(self.name_user, "The name of the user (you)")
 
