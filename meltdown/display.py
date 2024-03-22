@@ -589,7 +589,7 @@ class Display:
         if who == "user":
             self.to_bottom(tab_id)
 
-        tab.output.prompt("user")
+        tab.output.prompt(who)
 
         if text:
             fmt = who == "ai"
