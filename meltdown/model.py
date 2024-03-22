@@ -70,7 +70,8 @@ class Model:
                 key = os.getenv("OPENAI_API_KEY")
 
                 if not key:
-                    display.print("Error: OpenAI API key not found")
+                    display.print("Error: API key not found."
+                                  " You need to export it as OPENAI_API_KEY before running this program.")
                     return
 
                 self.gpt_client = OpenAI(
@@ -87,7 +88,7 @@ class Model:
                 if prompt:
                     self.stream(prompt, tab_id)
             except BaseException as e:
-                display.print("Error: GPT model failed to load")
+                display.print("Error: GPT model failed to load.")
 
             return
 
