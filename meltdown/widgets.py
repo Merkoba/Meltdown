@@ -32,11 +32,13 @@ class Widgets:
         # Model
         self.model_frame = widgetutils.make_frame()
 
-        widgetutils.make_label(self.model_frame, "Model")
+        self.model_label = widgetutils.make_label(self.model_frame, "Model")
         self.model = widgetutils.make_entry(self.model_frame, fill=Fill.HORIZONTAL)
-        ToolTip(self.model, "Path to a model file. This should be a file that works with"
-                " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model."
-                " Check the main menu on the right to load the available models")
+        tip = "Path to a model file. This should be a file that works with" \
+            " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model." \
+            " Check the main menu on the right to load the available models"
+        ToolTip(self.model_label, tip)
+        ToolTip(self.model, tip)
 
         self.model_icon = widgetutils.make_label(self.model_frame, "", colons=False)
         self.model_icon_tooltip = ToolTip(self.model_icon, "")
@@ -52,7 +54,7 @@ class Widgets:
         # System
         self.system_frame = widgetutils.make_frame()
 
-        widgetutils.make_label(self.system_frame, "System")
+        self.system_label = widgetutils.make_label(self.system_frame, "System")
 
         monitors_disabled = (not args.monitors) or \
             ((not args.monitor_cpu) and (not args.monitor_ram) and (not args.monitor_temp))
@@ -63,7 +65,9 @@ class Widgets:
             rpadding = 0
 
         self.system = widgetutils.make_entry(self.system_frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
-        ToolTip(self.system, "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date")
+        tip = "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date"
+        ToolTip(self.system_label, tip)
+        ToolTip(self.system, tip)
 
         if not monitors_disabled:
             if args.monitor_cpu:
@@ -73,7 +77,9 @@ class Widgets:
                 self.cpu_text = widgetutils.make_label(self.system_frame, "", padx=0)
                 self.cpu_text.configure(textvariable=self.cpu)
                 self.cpu_text.configure(cursor="hand2")
-                ToolTip(self.cpu_text, "Current CPU usage")
+                tip = "Current CPU usage"
+                ToolTip(self.cpu_label, tip)
+                ToolTip(self.cpu_text, tip)
                 self.cpu.set("000%")
 
             if args.monitor_ram:
@@ -83,7 +89,9 @@ class Widgets:
                 self.ram_text = widgetutils.make_label(self.system_frame, "", padx=0)
                 self.ram_text.configure(textvariable=self.ram)
                 self.ram_text.configure(cursor="hand2")
-                ToolTip(self.ram_text, "Current RAM usage")
+                tip = "Current RAM usage"
+                ToolTip(self.ram_label, tip)
+                ToolTip(self.ram_text, tip)
                 self.ram.set("000%")
 
             if args.monitor_temp:
@@ -93,7 +101,9 @@ class Widgets:
                 self.temp_text = widgetutils.make_label(self.system_frame, "", padx=0, right_padding=right_padding)
                 self.temp_text.configure(textvariable=self.temp)
                 self.temp_text.configure(cursor="hand2")
-                ToolTip(self.temp_text, "Current CPU temperature")
+                tip = "Current CPU temperature"
+                ToolTip(self.temp_label, tip)
+                ToolTip(self.temp_text, tip)
                 self.temp.set("000°")
 
         # Details Container
@@ -114,76 +124,98 @@ class Widgets:
         self.details_frame.columnconfigure(1, weight=1)
 
         # Details Widgets
-        widgetutils.make_label(self.details, "User", padx=0)
+        self.name_user_label = widgetutils.make_label(self.details, "User", padx=0)
         self.name_user = widgetutils.make_entry(self.details)
-        ToolTip(self.name_user, "The name of the user (you)")
+        tip = "The name of the user (You)"
+        ToolTip(self.name_user_label, tip)
+        ToolTip(self.name_user, tip)
 
-        widgetutils.make_label(self.details, "AI")
+        self.name_ai_label = widgetutils.make_label(self.details, "AI")
         self.name_ai = widgetutils.make_entry(self.details)
-        ToolTip(self.name_ai, "The name of the assistant (AI)")
+        tip = "The name of the assistant (AI)"
+        ToolTip(self.name_ai_label, tip)
+        ToolTip(self.name_ai, tip)
 
-        widgetutils.make_label(self.details, "Context")
+        self.context_label = widgetutils.make_label(self.details, "Context")
         self.context = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.context, "The number of previous messages to include as the context."
-                " The computation will take longer with more context"
-                " 0 means context is not used at all")
+        tip = "The number of previous messages to include as the context." \
+            " The computation will take longer with more context" \
+            " 0 means context is not used at all"
+        ToolTip(self.context_label, tip)
+        ToolTip(self.context, tip)
 
-        widgetutils.make_label(self.details, "Tokens")
+        self.max_tokens_label = widgetutils.make_label(self.details, "Tokens")
         self.max_tokens = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.max_tokens, "Maximum number of tokens to generate."
-                " Higher values will result in longer output, but will"
-                " also take longer to compute")
+        tip = "Maximum number of tokens to generate." \
+            " Higher values will result in longer output, but will" \
+            " also take longer to compute"
+        ToolTip(self.max_tokens_label, tip)
+        ToolTip(self.max_tokens, tip)
 
-        widgetutils.make_label(self.details, "Temp")
+        self.temperature_label = widgetutils.make_label(self.details, "Temp")
         self.temperature = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.temperature, "The temperature parameter is used to control"
-                " the randomness of the output. A higher temperature (~1) results in more randomness"
-                " and diversity in the generated text, as the model is more likely to"
-                " explore a wider range of possible tokens. Conversely, a lower temperature"
-                " (<1) produces more focused and deterministic output, emphasizing the"
-                " most probable tokens")
+        tip = "The temperature parameter is used to control" \
+            " the randomness of the output. A higher temperature (~1) results in more randomness" \
+            " and diversity in the generated text, as the model is more likely to" \
+            " explore a wider range of possible tokens. Conversely, a lower temperature" \
+            " (<1) produces more focused and deterministic output, emphasizing the" \
+            " most probable tokens"
+        ToolTip(self.temperature_label, tip)
+        ToolTip(self.temperature, tip)
 
-        widgetutils.make_label(self.details, "Seed")
+        self.seed_label = widgetutils.make_label(self.details, "Seed")
         self.seed = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.seed, "The seed to use for sampling."
-                " The same seed should generate the same or similar results."
-                " -1 means no seed is used")
+        tip = "The seed to use for sampling." \
+            " The same seed should generate the same or similar results." \
+            " -1 means no seed is used"
+        ToolTip(self.seed_label, tip)
+        ToolTip(self.seed, tip)
 
-        widgetutils.make_label(self.details, "Top P")
+        self.top_p_label = widgetutils.make_label(self.details, "Top-P")
         self.top_p = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.top_p, "Top-p, also known as nucleus sampling, controls"
-                " the cumulative probability of the generated tokens."
-                " The model generates tokens until the cumulative probability"
-                " exceeds the chosen threshold (p). This approach allows for"
-                " more dynamic control over the length of the generated text"
-                " and encourages diversity in the output by including less"
-                " probable tokens when necessary")
+        tip = "Top-p, also known as nucleus sampling, controls" \
+            " the cumulative probability of the generated tokens." \
+            " The model generates tokens until the cumulative probability" \
+            " exceeds the chosen threshold (p). This approach allows for" \
+            " more dynamic control over the length of the generated text" \
+            " and encourages diversity in the output by including less" \
+            " probable tokens when necessary"
+        ToolTip(self.top_p_label, tip)
+        ToolTip(self.top_p, tip)
 
-        widgetutils.make_label(self.details, "Top K")
+        self.top_k_label = widgetutils.make_label(self.details, "Top-K")
         self.top_k = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.top_k, "(Not applied to GPT) The top-k parameter limits the model's"
-                " predictions to the top k most probable tokens at each step"
-                " of generation. By setting a value for k, you are instructing"
-                " the model to consider only the k most likely tokens."
-                " This can help in fine-tuning the generated output and"
-                " ensuring it adheres to specific patterns or constraints")
+        tip = "(Not applied to GPT) The Top-k parameter limits the model's" \
+            " predictions to the top k most probable tokens at each step" \
+            " of generation. By setting a value for k, you are instructing" \
+            " the model to consider only the k most likely tokens." \
+            " This can help in fine-tuning the generated output and" \
+            " ensuring it adheres to specific patterns or constraints"
+        ToolTip(self.top_k_label, tip)
+        ToolTip(self.top_k, tip)
 
-        widgetutils.make_label(self.details, "Threads")
+        self.threads_label = widgetutils.make_label(self.details, "Threads")
         self.threads = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
-        ToolTip(self.threads, "The number of CPU threads to use")
+        tip = "The number of CPU threads to use"
+        ToolTip(self.threads_label, tip)
+        ToolTip(self.threads, tip)
 
-        widgetutils.make_label(self.details, "Format")
+        self.format_label = widgetutils.make_label(self.details, "Format")
         values = ["auto"]
         fmts = sorted([item for item in formats._chat_handlers])
         values.extend(fmts)
         self.format = widgetutils.make_combobox(self.details, values=values, width=17)
-        ToolTip(self.format, "That will format the prompt according to how model expects it."
-                " Auto is supposed to work with newer models that include the format in the metadata."
-                " Check llama-cpp-python to find all the available formats")
+        tip = "That will format the prompt according to how model expects it." \
+            " Auto is supposed to work with newer models that include the format in the metadata." \
+            " Check llama-cpp-python to find all the available formats"
+        ToolTip(self.format_label, tip)
+        ToolTip(self.format, tip)
 
-        widgetutils.make_label(self.details, "M-Lock")
+        self.mlock_label = widgetutils.make_label(self.details, "M-Lock")
         self.mlock = widgetutils.make_combobox(self.details, width=app.theme.combobox_width_small, values=["yes", "no"])
-        ToolTip(self.mlock, "Keep the model in memory")
+        tip = "Keep the model in memory"
+        ToolTip(self.mlock_label, tip)
+        ToolTip(self.mlock, tip)
 
         # Buttons
         self.button_frame = widgetutils.make_frame()
@@ -223,13 +255,17 @@ class Widgets:
         # Addons
         self.addons_frame = widgetutils.make_frame()
 
-        widgetutils.make_label(self.addons_frame, "Prepend")
+        self.prepend_label = widgetutils.make_label(self.addons_frame, "Prepend")
         self.prepend = widgetutils.make_entry(self.addons_frame, fill=Fill.HORIZONTAL)
-        ToolTip(self.prepend, "Add this to the beginning of the prompt")
+        tip = "Add this to the beginning of the prompt"
+        ToolTip(self.prepend_label, tip)
+        ToolTip(self.prepend, tip)
 
-        widgetutils.make_label(self.addons_frame, "Append")
+        self.append_label = widgetutils.make_label(self.addons_frame, "Append")
         self.append = widgetutils.make_entry(self.addons_frame, fill=Fill.HORIZONTAL, right_padding=right_padding)
-        ToolTip(self.append, "Add this to the end of the prompt")
+        tip = "Add this to the end of the prompt"
+        ToolTip(self.append_label, tip)
+        ToolTip(self.append, tip)
 
         # Input
         self.input_frame = widgetutils.make_frame(bottom_padding=10)

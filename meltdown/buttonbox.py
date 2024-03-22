@@ -1,5 +1,6 @@
 # Modules
 from .app import app
+from .menus import Menu
 
 # Standard
 import inspect
@@ -72,6 +73,7 @@ class ButtonBox(tk.Frame):
         def cmd(event: Any) -> None:
             if self.style == "disabled":
                 if (when == "<Button-1>") or (when == "<ButtonRelease-1>"):
+                    Menu.hide_all()
                     return
 
             if not on_top(event):

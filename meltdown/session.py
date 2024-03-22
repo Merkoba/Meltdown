@@ -183,7 +183,6 @@ class Session:
         if not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.touch(exist_ok=True)
-
         try:
             self.load_items(path)
         except BaseException as e:
@@ -201,7 +200,6 @@ class Session:
             try:
                 items = json.load(file)
             except BaseException as e:
-                print(e)
                 items = []
 
         if args.test:
