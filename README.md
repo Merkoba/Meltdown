@@ -102,7 +102,7 @@ Click and double click words.
 
 Start new conversations based on some words.
 
-ChatGPT support.
+llama.cpp and ChatGPT support.
 
 ---
 
