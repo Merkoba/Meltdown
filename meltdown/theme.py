@@ -15,6 +15,7 @@ class Theme:
         self.font_combobox = (self.font_family, 13)
         self.font_tab = (self.font_family, 12)
         self.font_menu = (self.font_family, 13)
+        self.font_tooltips = (self.font_family, 12)
         self.snippet_font_family = "monospace"
         self.avatar_user = "👽"
         self.avatar_ai = "😎"

@@ -62,5 +62,5 @@ class LightTheme(Theme):
         self.entry_selection_background = "#677577"
         self.entry_selection_foreground = "white"
 
-        self.tooltip_background = "grey"
+        self.tooltip_background = "#2B303B"
         self.tooltip_foreground = "white"
