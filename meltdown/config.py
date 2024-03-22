@@ -96,7 +96,7 @@ class Config:
         display.print("Config:")
         text = []
 
-        for key in self.defaults():
+        for key in sorted(self.defaults()):
             value = getattr(self, key)
 
             if value == "":
