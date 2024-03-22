@@ -217,6 +217,8 @@ class Output(tk.Text):
         self.tag_config("sel", background=app.theme.output_selection_background,
                         foreground=app.theme.output_selection_foreground)
 
+        self.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
+
     def set_text(self, text: str) -> None:
         self.enable()
         self.delete("1.0", tk.END)
@@ -442,3 +444,7 @@ class Output(tk.Text):
         else:
             Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             self.config(cursor="xterm")
+
+    def on_double_click(self, event: Any) -> str:
+        self.show_word_menu(event)
+        return "break"

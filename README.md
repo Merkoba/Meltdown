@@ -100,6 +100,10 @@ Command similarity check ( >= 0.8 ).
 
 Load config and session files.
 
+Click and double click words.
+
+Start new conversations based on some words.
+
 ---
 
 ## GUI Toolkit
