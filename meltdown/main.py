@@ -16,6 +16,7 @@ def main() -> None:
     state.load_files()
     app.prepare()
     widgets.make()
+    model.setup()
     display.make()
     session.load()
     widgets.setup()

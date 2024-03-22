@@ -3,6 +3,8 @@ from .config import config
 from .widgets import widgets
 from .display import display
 from .session import session
+from .tooltips import ToolTip
+from .app import app
 from . import timeutils
 from . import state
 
@@ -40,6 +42,9 @@ class Model:
             ("gpt-4-turbo-preview", "GPT-4 Turbo Preview"),
         ]
 
+    def setup(self) -> None:
+        self.update_icon()
+
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
             return
@@ -47,9 +52,7 @@ class Model:
         self.stop_stream()
 
         if self.model:
-            self.model = None
-            self.loaded_model = ""
-            self.loaded_format = ""
+            self.clear_model()
 
             if announce:
                 display.print("👻 Model unloaded")
@@ -66,30 +69,8 @@ class Model:
             return
 
         if self.model_is_gpt(config.model):
-            try:
-                key = os.getenv("OPENAI_API_KEY")
-
-                if not key:
-                    display.print("Error: API key not found."
-                                  " You need to export it as OPENAI_API_KEY before running this program.")
-                    return
-
-                self.gpt_client = OpenAI(
-                    api_key=key
-                )
-
-                self.model = config.model
-                self.model_loading = False
-                self.loaded_model = config.model
-                self.loaded_format = "gpt_remote"
-                state.add_model(config.model)
-                display.print(f"🔑 {config.model} ready to use")
-
-                if prompt:
-                    self.stream(prompt, tab_id)
-            except BaseException as e:
-                display.print("Error: GPT model failed to load.")
-
+            self.unload()
+            self.load_gpt(prompt, tab_id)
             return
 
         model_path = Path(config.model)
@@ -102,7 +83,7 @@ class Model:
             return
 
         def wrapper() -> None:
-            self.do_load(config.model, tab_id)
+            self.load_local(config.model, tab_id)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -112,7 +93,43 @@ class Model:
         self.load_thread.daemon = True
         self.load_thread.start()
 
-    def do_load(self, model: str, tab_id: str) -> None:
+    def clear_model(self) -> None:
+        self.loaded_model = ""
+        self.model_loading = False
+        self.loaded_format = ""
+        self.update_icon()
+
+    def load_gpt(self, prompt: str, tab_id: str) -> None:
+        try:
+            key = os.getenv("OPENAI_API_KEY")
+
+            if not key:
+                display.print("Error: API key not found."
+                              " You need to export it as OPENAI_API_KEY before running this program.")
+                self.loaded_model = ""
+                self.model_loading = False
+                self.loaded_format = ""
+                return
+
+            self.gpt_client = OpenAI(
+                api_key=key
+            )
+
+            self.model = config.model
+            self.model_loading = False
+            self.loaded_model = config.model
+            self.loaded_format = "gpt_remote"
+            state.add_model(config.model)
+            display.print(f"🌐 {config.model} is ready to use")
+            self.update_icon()
+
+            if prompt:
+                self.stream(prompt, tab_id)
+        except BaseException as e:
+            display.print("Error: GPT model failed to load.")
+            self.clear_model()
+
+    def load_local(self, model: str, tab_id: str) -> None:
         from .app import app
         self.lock.acquire()
         self.model_loading = True
@@ -137,9 +154,10 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            display.print("Error: Model failed to load.")
-            self.model_loading = False
             print(e)
+            display.print("Error: Model failed to load.")
+            self.clear_model()
+            self.lock.release()
             return
 
         state.add_model(model)
@@ -147,9 +165,9 @@ class Model:
         self.loaded_model = model
         self.loaded_format = chat_format
         msg, now = timeutils.check_time("Model loaded", now)
+        self.update_icon()
         display.print(msg)
         self.lock.release()
-        return
 
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading
@@ -381,6 +399,24 @@ class Model:
             self.unload(True)
         else:
             self.load()
+
+    def update_icon(self) -> None:
+        if not app.exists():
+            return
+
+        icon = widgets.model_icon
+        tooltip = widgets.model_icon_tooltip
+
+        if not self.loaded_model:
+            icon.configure(text="👻")
+            tooltip.set_text("No model loaded")
+        elif self.model_is_gpt(self.loaded_model):
+            icon.configure(text="🌐")
+            tooltip.set_text("You are using a remote service."
+                             " Its usage might cost money. Internet connection is required")
+        else:
+            icon.configure(text="🫠")
+            tooltip.set_text("You are using a local model. No network requests are made")
 
 
 model = Model()

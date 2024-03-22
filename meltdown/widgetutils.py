@@ -118,8 +118,10 @@ def make_button(parent: tk.Frame, text: str,
 
 
 def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
-               right_padding: Optional[int] = None, padx: Optional[int] = None, pady: Optional[int] = None) -> tk.Label:
-    widget = tk.Label(parent, text=f"{text}:", font=app.theme.font)
+               right_padding: Optional[int] = None, padx: Optional[int] = None,
+               pady: Optional[int] = None, colons: bool = True) -> tk.Label:
+    text = f"{text}:" if colons else text
+    widget = tk.Label(parent, text=text, font=app.theme.font)
     widget.configure(background=app.theme.background_color, foreground=app.theme.foreground_color)
     do_pack(widget, fill=fill, right_padding=right_padding, padx=padx, pady=pady)
     return widget

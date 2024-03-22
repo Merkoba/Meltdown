@@ -38,6 +38,9 @@ class Widgets:
                 " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model."
                 " Check the main menu on the right to load the available models")
 
+        self.model_icon = widgetutils.make_label(self.model_frame, "", colons=False)
+        self.model_icon_tooltip = ToolTip(self.model_icon, "")
+
         self.load_button = widgetutils.make_button(self.model_frame, "Load", lambda: self.load_or_unload())
         ToolTip(self.load_button, "Load or unload the model")
 

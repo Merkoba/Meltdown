@@ -113,3 +113,6 @@ class ToolTip:
 
         ToolTip.current_tooltip = None
         self.current_event = None
+
+    def set_text(self, text: str) -> None:
+        self.text = clean_string(text)
