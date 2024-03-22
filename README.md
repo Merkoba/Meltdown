@@ -22,9 +22,13 @@
 
 Load models from your file system (only tested with gguf for now).
 
+Or use ChatGPT with your personal api key.
+
 Stream responses in real time.
 
-All the available configurations are what you can see in the screenshots.
+Various configs to tweak the responses like `seed`, `max_tokens`, `top_k`, `top_p`, `temperature`.
+
+Configs to tweak llama.cpp like the number of threads to use or mem-lock.
 
 All fields have context menus to perform some actions.
 
@@ -101,8 +105,6 @@ Load config and session files.
 Click and double click words.
 
 Start new conversations based on some words.
-
-llama.cpp and ChatGPT support.
 
 ---
 
