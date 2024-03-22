@@ -20,7 +20,7 @@ class Commands:
         from . import state
 
         self.commands = {
-            "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: display.clear_output()},
+            "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: display.clear()},
             "config": {"aliases": ["configuration"], "help": "Show the current configuration", "action": lambda: config.show_config()},
             "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
             "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
@@ -39,7 +39,7 @@ class Commands:
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: display.make_tab()},
             "theme": {"aliases": [], "help": "Change the color theme", "action": lambda: app.toggle_theme()},
             "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
-            "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
+            "help": {"aliases": ["info", "commands", "cmds"], "help": "Show help information", "action": lambda: self.show_help()},
             "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
         }
 

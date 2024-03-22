@@ -21,6 +21,7 @@ class Tab:
         self.tab_id = tab_id
         self.output = output
         self.bottom = bottom
+        self.modified = False
 
 
 class Display:
@@ -93,6 +94,7 @@ class Display:
 
         self.tab_number += 1
         app.show_intro(tab_id)
+        tab.modified = False
         return tab_id
 
     def tab_on_coords(self, x: int, y: int) -> str:
@@ -375,7 +377,7 @@ class Display:
 
         output.copy_all()
 
-    def clear_output(self, tab_id: str = "") -> None:
+    def clear(self, tab_id: str = "") -> None:
         from .session import session
 
         if not tab_id:
@@ -386,12 +388,7 @@ class Display:
         if not tab:
             return
 
-        document = session.get_document(tab.document_id)
-
-        if not document:
-            return
-
-        if document.is_empty():
+        if not tab.modified:
             return
 
         def action() -> None:
@@ -401,6 +398,7 @@ class Display:
             tab.output.clear_text()
             session.clear(tab.document_id)
             app.show_intro(tab_id)
+            tab.modified = False
 
         Dialog.show_confirm("Clear conversation?", lambda: action())
 
@@ -417,26 +415,25 @@ class Display:
         if not tab_id:
             tab_id = self.current_tab
 
-        output = self.get_output(tab_id)
+        tab = self.get_tab(tab_id)
 
-        if not output:
+        if not tab:
             return
 
-        output.print(text)
+        tab.output.print(text)
+        tab.modified = True
 
-    def insert(self, text: str, tab_id: str = "") -> None:
+    def insert(self, text: str, tab_id: str = "", format_text: bool = False) -> None:
         if not app.exists():
             return
 
-        if not tab_id:
-            tab_id = self.current_tab
+        tab = self.get_tab(tab_id)
 
-        output = self.get_output(tab_id)
-
-        if not output:
+        if not tab:
             return
 
-        output.insert_text(text)
+        tab.output.insert_text(text, format_text=format_text)
+        tab.modified = True
 
     def save_log(self) -> None:
         from . import state
@@ -579,6 +576,24 @@ class Display:
             return
 
         bottom.hide()
+
+    def prompt(self, who: str, text: str = "", tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        if who == "user":
+            self.to_bottom(tab_id)
+
+        tab.output.prompt("user")
+
+        if text:
+            fmt = who == "ai"
+            tab.output.insert_text(text, format_text=fmt)
 
 
 display = Display()

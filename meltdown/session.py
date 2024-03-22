@@ -73,11 +73,9 @@ class Document:
             for item in self.items:
                 for key in item:
                     if key == "user":
-                        tab.output.prompt("user")
-                        tab.output.insert_text(item[key])
+                        display.prompt("user", item[key], tab_id=tab.tab_id)
                     elif key == "assistant":
-                        tab.output.prompt("ai")
-                        tab.output.insert_text(item[key], format_text=True)
+                        display.prompt("ai", item[key], tab_id=tab.tab_id)
                     else:
                         continue
 

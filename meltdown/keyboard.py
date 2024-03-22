@@ -180,7 +180,7 @@ class Keyboard:
         self.register("<Escape>", lambda: widgets.esckey(), on_ctrl=lambda: model.unload(True))
         self.register("<Page_Up>", lambda: display.scroll_up())
         self.register("<Page_Down>", lambda: display.scroll_down())
-        self.register("<BackSpace>", on_ctrl=lambda: display.clear_output())
+        self.register("<BackSpace>", on_ctrl=lambda: display.clear())
         self.register("<Up>", command=lambda: widgets.input_history_up(),
                       on_ctrl=lambda: display.to_top(), on_shift=lambda: widgets.show_context())
         self.register("<Down>", command=lambda: widgets.input_history_down(),

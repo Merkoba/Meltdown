@@ -186,9 +186,7 @@ class Model:
         if not tab:
             return
 
-        tab.output.to_bottom()
-        tab.output.prompt("user")
-        tab.output.insert_text(prompt)
+        display.prompt("user", text=prompt, tab_id=tab_id)
         widgets.enable_stop_button()
         document = session.get_document(tab.document_id)
 
@@ -269,7 +267,7 @@ class Model:
 
                 if "content" in delta:
                     if not added_name:
-                        tab.output.prompt("ai")
+                        display.prompt("ai", tab_id=tab_id)
                         added_name = True
 
                     token = delta["content"]
@@ -288,7 +286,7 @@ class Model:
                         token_printed = True
 
                     tokens.append(token)
-                    tab.output.insert_text(token, format_text=True)
+                    display.insert(token, tab_id=tab_id, format_text=True)
         except BaseException as e:
             print(e)
 
