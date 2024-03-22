@@ -68,8 +68,14 @@ class Model:
 
         if self.model_is_gpt(config.model):
             try:
+                key = os.getenv("OPENAI_API_KEY")
+
+                if not key:
+                    display.print("Error: OpenAI API key not found")
+                    return
+
                 self.gpt_client = OpenAI(
-                    api_key=os.getenv("OPENAI_API_KEY")
+                    api_key=key
                 )
 
                 self.model = config.model
