@@ -4,6 +4,7 @@ from .config import config
 
 # Standard
 from typing import Any, Dict, List
+from difflib import SequenceMatcher
 
 
 class Commands:
@@ -36,6 +37,8 @@ class Commands:
             "closeall": {"aliases": [], "help": "Close all tabs", "action": lambda: display.close_all_tabs()},
             "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: display.close_old_tabs()},
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: display.make_tab()},
+            "theme": {"aliases": [], "help": "Change the color theme", "action": lambda: app.toggle_theme()},
+            "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
             "help": {"aliases": ["info"], "help": "Show help information", "action": lambda: self.show_help()},
             "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
         }
@@ -61,12 +64,38 @@ class Commands:
 
         cmd = text[1:]
 
+        # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
                 value["action"]()
                 return True
 
+        # Similarity on  keys
+        for key, value in self.commands.items():
+            if self.check_match(cmd, key):
+                value["action"]()
+                return True
+
+        # Similarity on aliases
+        for key, value in self.commands.items():
+            aliases = value.get("aliases")
+
+            if aliases:
+                for alias in aliases:
+                    if self.check_match(cmd, alias):
+                        value["action"]()
+                        return True
+
         return True
+
+    def check_match(self, a: str, b: str) -> bool:
+        if a == b:
+            return True
+
+        if self.similarity(a, b) >= 0.8:
+            return True
+
+        return False
 
     def show_help(self) -> None:
         from .display import display
@@ -130,6 +159,10 @@ class Commands:
             for alias in data["aliases"]:
                 if alias.startswith(text[1:]):
                     self.autocomplete_matches.append(alias)
+
+    def similarity(self, a: str, b: str) -> float:
+        matcher = SequenceMatcher(None, a, b)
+        return matcher.ratio()
 
 
 commands = Commands()
