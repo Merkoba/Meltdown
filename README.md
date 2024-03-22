@@ -98,6 +98,8 @@ Dark and light themes.
 
 Command similarity check ( >= 0.8 ).
 
+Load config and session files.
+
 ---
 
 ## GUI Toolkit
