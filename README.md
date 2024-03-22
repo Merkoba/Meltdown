@@ -251,3 +251,23 @@ Open a test tab for debugging.
 >version
 
 Show the version of the program.
+
+---
+
+>config
+
+Load a config file.
+
+This can be a name, you can omit the `.json`.
+
+It can also be a direct path.
+
+---
+
+>session
+
+Load a session file.
+
+This can be a name, you can omit the `.json`.
+
+It can also be a direct path.

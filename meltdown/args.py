@@ -25,6 +25,8 @@ class Args:
         self.width = -1
         self.height = -1
         self.theme = ""
+        self.config = ""
+        self.session = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -50,6 +52,8 @@ class Args:
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
             "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
+            "config": {"type": str, "help": "Name or path of a config file to use"},
+            "session": {"type": str, "help": "Name or path of a session file to use"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -75,6 +79,8 @@ class Args:
         ap.normal("height")
         ap.normal("theme")
         ap.normal("test")
+        ap.normal("config")
+        ap.normal("session")
 
         self.parser = ap.parser
 

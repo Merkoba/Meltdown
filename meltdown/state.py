@@ -4,6 +4,7 @@ from .config import config
 from .widgets import widgets
 from .dialogs import Dialog
 from .display import display
+from .args import args
 from . import timeutils
 
 # Standard
@@ -20,7 +21,11 @@ def save_file(path: Path, obj: Any) -> None:
 
 
 def load_files() -> None:
-    load_config_file()
+    if args.config:
+        load_config_arg()
+    else:
+        load_config_file()
+
     load_models_file()
     load_inputs_file()
     load_systems_file()
@@ -84,6 +89,31 @@ def load_config_state() -> None:
     with open(path, "r") as file:
         apply_config(file)
         widgets.fill()
+
+
+def load_config_arg() -> None:
+    try:
+        name = args.config
+
+        if not name.endswith(".json"):
+            name += ".json"
+
+        path = Path(name)
+
+        if (not path.exists()) or (not path.is_file()):
+            path = Path(paths.configs, name)
+
+        if (not path.exists()) or (not path.is_file()):
+            args.config = ""
+            load_config_file()
+            return
+
+        with open(path, "r") as file:
+            apply_config(file)
+    except BaseException as e:
+        print(e)
+        args.config = ""
+        load_config_file()
 
 
 def apply_config(file: IO[str]) -> None:

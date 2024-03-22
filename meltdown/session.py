@@ -149,7 +149,35 @@ class Session:
         with open(paths.session, "w") as file:
             file.write(self.to_json())
 
+    def load_arg(self) -> None:
+        try:
+            name = args.session
+
+            if not name.endswith(".json"):
+                name += ".json"
+
+            path = Path(name)
+
+            if (not path.exists()) or (not path.is_file()):
+                path = Path(paths.sessions, name)
+
+            if (not path.exists()) or (not path.is_file()):
+                args.session = ""
+                self.load()
+                return
+
+            with open(path, "r") as file:
+                self.load_items(path)
+        except BaseException as e:
+            print(e)
+            args.session = ""
+            self.load()
+
     def load(self) -> None:
+        if args.session:
+            self.load_arg()
+            return
+
         path = paths.session
 
         if not path.exists():
