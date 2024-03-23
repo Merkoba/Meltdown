@@ -191,7 +191,6 @@ class Markdown():
 
         def on_match(start: str, end: str) -> None:
             original_text = self.widget.get(f"{start}", f"{end}")
-            print(original_text)
             clean_text = self.untoken(original_text, token)
             self.widget.delete(f"{start}", f"{end}")
             self.widget.insert(f"{start}", f"{clean_text}")
@@ -222,8 +221,6 @@ class Markdown():
                     next_char = self.widget.get(f"{index} + 1c") if i < len(chars) else ""
 
                     if in_code:
-                        print(prev_char, char, next_char)
-                        print(prev_char not in tokens, next_char not in tokens)
                         if (prev_char not in tokens) and (next_char not in tokens):
                             on_match(index_start, f"{index} + 1c")
                             return
