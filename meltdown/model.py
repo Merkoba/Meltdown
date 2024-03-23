@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Optional
 from tkinter import filedialog
 from typing import List, Tuple
-import os
 
 
 class Model:
@@ -41,6 +40,7 @@ class Model:
             ("gpt-4-turbo", "GPT-4 Turbo"),
             ("gpt-4-turbo-preview", "GPT-4 Turbo Preview"),
         ]
+        self.gpt_key = ""
 
     def setup(self) -> None:
         self.update_icon()
@@ -99,11 +99,20 @@ class Model:
         self.loaded_format = ""
         self.update_icon()
 
+    def read_gpt_key(self) -> None:
+        from .paths import paths
+
+        try:
+            with open(paths.apikey, "r") as file:
+                self.gpt_key = file.read().strip()
+        except BaseException as e:
+            self.gpt_key = ""
+
     def load_gpt(self, prompt: str, tab_id: str) -> None:
         try:
-            key = os.getenv("OPENAI_API_KEY")
+            self.read_gpt_key()
 
-            if not key:
+            if not self.gpt_key:
                 display.print("Error: API key not found."
                               " You need to export it as OPENAI_API_KEY before running this program.")
                 self.loaded_model = ""
@@ -112,7 +121,7 @@ class Model:
                 return
 
             self.gpt_client = OpenAI(
-                api_key=key
+                api_key=self.gpt_key
             )
 
             self.model = config.model
@@ -308,7 +317,7 @@ class Model:
             except BaseException as e:
                 display.print(f"Error: GPT model failed to stream."
                               " You might not have access to this particular model,"
-                              " not enough credits,"
+                              " not enough credits, invalid API key,"
                               " or there is no internet connection.")
                 self.stream_loading = False
                 self.lock.release()
@@ -417,6 +426,26 @@ class Model:
         else:
             icon.configure(text="🫠")
             tooltip.set_text("You are using a local model. No network requests are made")
+
+    def set_api_key(self) -> None:
+        from . import state
+        from .dialogs import Dialog
+        from .paths import paths
+
+        def action(key: str) -> None:
+            if not key:
+                return
+
+            path = Path(paths.apikey)
+
+            if (not path.exists()) or not (path.is_file()):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                Path.touch(paths.apikey, exist_ok=True)
+
+            with open(path, "w") as file:
+                file.write(key)
+
+        Dialog.show_input("OpenAI API Key", lambda text: action(text))
 
 
 model = Model()

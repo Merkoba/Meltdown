@@ -154,7 +154,9 @@ You can find more in that site.
 
 ## ChatGPT
 
-To use ChatGPT you must export `OPENAI_API_KEY` with your secret key before running the program.
+You must first set the API key for ChatGPT to work.
+
+This can be done using the main menu: `Set API Key`.
 
 ---
 

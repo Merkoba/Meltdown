@@ -422,7 +422,9 @@ class Widgets:
 
         self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
+        self.main_menu.separator()
         self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
+        self.main_menu.add(text="Set API Key", command=lambda: model.set_api_key())
         self.main_menu.separator()
         self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
         self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
