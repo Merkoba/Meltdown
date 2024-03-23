@@ -83,6 +83,7 @@ class Output(tk.Text):
         if not text:
             return
 
+        text = f"Tell me about '{text}'"
         tab_id = display.make_tab()
         model.stream(text, tab_id)
 
