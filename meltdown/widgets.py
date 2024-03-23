@@ -25,6 +25,7 @@ right_padding = config.right_padding
 class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
+        pass
 
     def make(self) -> None:
         from .display import display
