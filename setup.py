@@ -11,6 +11,7 @@ title = manifest["title"]
 program = manifest["program"]
 version = manifest["version"]
 
+
 def _post_install():
     system = platform.system()
 
@@ -52,13 +53,13 @@ package_data = {}
 package_data[program] = ["*.png", "*.json"]
 
 setup(
-    name = title,
-    version = version,
+    name=title,
+    version=version,
     install_requires=requirements,
-    packages = find_packages(where="."),
-    package_dir = {"": "."},
-    package_data = package_data,
-    entry_points = {
+    packages=find_packages(where="."),
+    package_dir={"": "."},
+    package_data=package_data,
+    entry_points={
         "console_scripts": [
             f"{program}={program}.main:main",
         ],
