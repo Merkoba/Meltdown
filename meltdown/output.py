@@ -48,7 +48,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        query = f"What is '{text}' ?"
+        query = f"What is \"{text}\" ?"
         tab_id = Output.current_output.tab_id
         model.stream(query, tab_id)
 
@@ -83,7 +83,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        text = f"Tell me about '{text}'"
+        text = f"Tell me about \"{text}\""
         tab_id = display.make_tab()
         model.stream(text, tab_id)
 
