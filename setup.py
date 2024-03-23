@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 from pathlib import Path
 import shutil
 import json
+import platform
 
 with open("meltdown/manifest.json", "r") as file:
     manifest = json.load(file)
@@ -11,11 +12,14 @@ program = manifest["program"]
 version = manifest["version"]
 
 def _post_install():
-    try:
-        _copy_icon_file()
-        _create_desktop_file()
-    except Exception as e:
-        print(f"Error during post install: {e}")
+    system = platform.system()
+
+    if system == "Linux":
+        try:
+            _copy_icon_file()
+            _create_desktop_file()
+        except Exception as e:
+            print(f"Error during post install: {e}")
 
 
 def _copy_icon_file():
