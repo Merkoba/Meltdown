@@ -5,3 +5,6 @@ __pycache__/
 .mypy_cache/
 Meltdown.egg-info/
 build/
+dist/
+main.spec
+run.spec
