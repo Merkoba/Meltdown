@@ -149,24 +149,27 @@ class Markdown():
             else:
                 col = 0
 
-            for char_ in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
-                col += 1
+            chars = self.widget.get(f"{current_line}.0", f"{current_line}.end")
+
+            for char_ in chars:
                 index = f"{current_line}.{col}"
-                char = self.widget.get(f"{index} + 1c")
+                char = self.widget.get(index)
 
                 if char == token:
-                    prev_char = self.widget.get(index)
-                    next_char = self.widget.get(f"{index} + 2c")
-                    next_char_2 = self.widget.get(f"{index} + 3c")
+                    prev_char = self.widget.get(f"{index} - 1c") if col > 0 else ""
+                    next_char = self.widget.get(f"{index} + 1c") if col < len(chars) else ""
+                    next_char_2 = self.widget.get(f"{index} + 2c") if col < len(chars) - 1 else ""
 
                     if in_code:
                         if (prev_char != token) and (next_char == token) and (next_char_2 != token):
-                            on_match(f"{index_start} + 1c", f"{index} + 3c")
+                            on_match(f"{index_start}", f"{index} + 2c")
                             return
                     elif (prev_char != token) and (next_char == token) and (next_char_2 not in (token, " ")):
                         reset_code()
                         in_code = True
                         index_start = index
+
+                col += 1
 
             current_line += 1
 
@@ -205,24 +208,27 @@ class Markdown():
             else:
                 col = 0
 
-            for char_ in self.widget.get(f"{current_line}.0", f"{current_line}.end"):
-                col += 1
+            chars = self.widget.get(f"{current_line}.0", f"{current_line}.end")
+
+            for char_ in chars:
                 index = f"{current_line}.{col}"
-                char = self.widget.get(f"{index} + 1c")
+                char = self.widget.get(index)
 
                 if char in tokens:
-                    prev_char = self.widget.get(index)
-                    next_char = self.widget.get(f"{index} + 2c")
+                    prev_char = self.widget.get(f"{index} - 1c") if col > 0 else ""
+                    next_char = self.widget.get(f"{index} + 1c") if col < len(chars) else ""
 
                     if in_code:
-                        if (prev_char != token) and (next_char != token):
-                            on_match(f"{index_start} + 1c", f"{index} + 2c")
+                        if (prev_char not in tokens) and (next_char not in tokens_2):
+                            on_match(index_start, f"{index} + 1c")
                             return
-                    elif (prev_char != token) and (next_char not in tokens_2):
+                    elif (prev_char not in tokens) and (next_char not in tokens_2):
                         reset_code()
                         in_code = True
                         index_start = index
                         token = char
+
+                col += 1
 
             current_line += 1
 
@@ -230,12 +236,9 @@ class Markdown():
         index_start = ""
 
         def on_match(start: str, end: str) -> None:
-            original_text = self.widget.get(f"{start}", f"{end}")
-            self.widget.delete(f"{start}", f"{end}")
-            self.widget.insert(f"{start}", f"{original_text}")
-            end_index = end
-            self.widget.tag_add("url", f"{start}", end_index)
-            self.format_urls(self.solve_index(end_index))
+            end = self.solve_index(end)
+            self.widget.tag_add("url", start, end)
+            self.format_urls(self.solve_index(end))
 
         current_line, col_ = map(int, position.split("."))
         lines = self.widget.get(position, "end-1c").split("\n")
@@ -252,16 +255,20 @@ class Markdown():
             chars = self.widget.get(f"{current_line}.0", f"{current_line}.end")
 
             for char_ in chars:
-                col += 1
                 index = f"{current_line}.{col}"
-                char = self.widget.get(f"{index} + 1c")
-                next_char = self.widget.get(f"{index} + 2c")
+                char = self.widget.get(index)
+                next_char = self.widget.get(f"{index} + 1c") if col < len(chars) else ""
+                stopper = False
 
-                if index_start and ((next_char in (" ", "\n")) or col >= len(chars) - 1):
-                    word = self.widget.get(f"{index_start} + 1c", f"{index} + 2c")
+                if index_start:
+                    if (next_char == " ") or (col >= len(chars) - 1):
+                        stopper = True
+
+                if stopper:
+                    word = self.widget.get(index_start, f"{index} + 1c")
 
                     if word and any([word.startswith(protocol) for protocol in Markdown.protocols]):
-                        on_match(f"{index_start} + 1c", f"{index} + 2c")
+                        on_match(index_start, f"{index} + 1c")
                         return
 
                     index_start = ""
@@ -271,6 +278,8 @@ class Markdown():
                             index_start = index
                     else:
                         index_start = ""
+
+                col += 1
 
             current_line += 1
 

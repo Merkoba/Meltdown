@@ -51,11 +51,10 @@ class Model:
 
         self.stop_stream()
 
-        if self.model:
-            self.clear_model()
+        if self.model and announce:
+            display.print("👻 Model unloaded")
 
-            if announce:
-                display.print("👻 Model unloaded")
+        self.clear_model()
 
     def model_is_gpt(self, name: str) -> bool:
         return any(name == gpt[0] for gpt in self.gpts)
@@ -94,6 +93,7 @@ class Model:
         self.load_thread.start()
 
     def clear_model(self) -> None:
+        self.model = None
         self.loaded_model = ""
         self.model_loading = False
         self.loaded_format = ""
