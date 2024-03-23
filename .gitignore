@@ -8,3 +8,5 @@ build/
 dist/
 main.spec
 run.spec
+decomp/
+proc.py
