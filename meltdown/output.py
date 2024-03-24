@@ -306,6 +306,7 @@ class Output(tk.Text):
         self.format_text_timer = ""
         self.enable()
         self.markdown.format(self.position)
+        self.position = self.index("end - 1c")
         self.disable()
         app.update()
         self.to_bottom(True)
@@ -363,9 +364,6 @@ class Output(tk.Text):
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
-
-        if who == "ai":
-            self.position = self.index("end - 1c")
 
     def print(self, text: str) -> None:
         left = ""
