@@ -342,5 +342,17 @@ class App:
         Dialog.hide_all()
         Menu.hide_all()
 
+    def toggle_fullscreen(self) -> None:
+        if self.root.attributes("-fullscreen"):
+            self.unfullscreen()
+        else:
+            self.fullscreen()
+
+    def fullscreen(self) -> None:
+        self.root.attributes("-fullscreen", True)
+
+    def unfullscreen(self) -> None:
+        self.root.attributes("-fullscreen", False)
+
 
 app = App()

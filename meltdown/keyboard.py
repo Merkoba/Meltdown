@@ -192,6 +192,7 @@ class Keyboard:
         self.register("<Left>", on_ctrl=lambda: display.tab_left())
         self.register("<Right>", on_ctrl=lambda: display.tab_right())
         self.register("<space>", on_ctrl=lambda: widgets.show_main_menu())
+        self.register("<F11>", lambda: app.toggle_fullscreen())
         self.register("t", on_ctrl=lambda: display.make_tab())
         self.register("w", on_ctrl=lambda: display.close_current_tab())
         self.register("s", on_ctrl=lambda: state.save_log())
