@@ -23,10 +23,16 @@ class App:
 
         self.root = tk.Tk(className=self.manifest["program"])
         self.root.title(self.manifest["title"])
+        self.main_frame = tk.Frame(self.root)
+        self.main_frame.grid(row=0, column=0, sticky="nsew")
+        self.main_frame.configure(background="red")
         self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_rowconfigure(0, weight=1)
+        self.main_frame.grid_columnconfigure(0, weight=1)
         self.root.minsize(100, 100)
         self.setup_icon()
         self.setup_focus()
+        self.setup_binds()
         self.theme: Theme
 
     def setup_icon(self) -> None:
@@ -36,6 +42,7 @@ class App:
     def set_style(self) -> None:
         style = ttk.Style()
         self.root.configure(background=self.theme.background_color)
+        self.main_frame.configure(background=self.theme.background_color)
 
         # padding=[left, top, right, bottom])
 
@@ -325,6 +332,15 @@ class App:
             Dialog.show_message("Theme will change after restarting the program")
 
         Dialog.show_confirm(f"Use the {new_theme} theme?", action)
+
+    def setup_binds(self) -> None:
+        self.main_frame.bind("<Button-1>", lambda e: self.on_frame_click())
+
+    def on_frame_click(self) -> None:
+        from .dialogs import Dialog
+        from .menus import Menu
+        Dialog.hide_all()
+        Menu.hide_all()
 
 
 app = App()

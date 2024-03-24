@@ -199,24 +199,24 @@ class Output(tk.Text):
         self.configure(bd=4, highlightthickness=0, relief="flat")
 
         if args.colors:
-            self.tag_config("name_user", foreground=app.theme.name_user)
-            self.tag_config("name_ai", foreground=app.theme.name_ai)
+            self.tag_configure("name_user", foreground=app.theme.name_user)
+            self.tag_configure("name_ai", foreground=app.theme.name_ai)
 
-        self.tag_config("highlight", underline=True)
-        self.tag_config("url", underline=True)
+        self.tag_configure("highlight", underline=True)
+        self.tag_configure("url", underline=True)
 
         if args.test:
-            self.tag_config("bold", font=app.theme.get_bold_font(), underline=True)
-            self.tag_config("italic", font=app.theme.get_italic_font(), underline=True)
+            self.tag_configure("bold", font=app.theme.get_bold_font(), underline=True)
+            self.tag_configure("italic", font=app.theme.get_italic_font(), underline=True)
         else:
-            self.tag_config("bold", font=app.theme.get_bold_font())
-            self.tag_config("italic", font=app.theme.get_italic_font())
+            self.tag_configure("bold", font=app.theme.get_bold_font())
+            self.tag_configure("italic", font=app.theme.get_italic_font())
 
         for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
             self.tag_lower(tag)
 
-        self.tag_config("sel", background=app.theme.output_selection_background,
-                        foreground=app.theme.output_selection_foreground)
+        self.tag_configure("sel", background=app.theme.output_selection_background,
+                           foreground=app.theme.output_selection_foreground)
 
         self.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
 
@@ -438,12 +438,12 @@ class Output(tk.Text):
             Output.words = self.get_tagwords(tags[0], event).strip()
 
             if ("sel" in tags) and (len(tags) == 1):
-                self.config(cursor="xterm")
+                self.configure(cursor="xterm")
             else:
-                self.config(cursor="hand2")
+                self.configure(cursor="hand2")
         else:
             Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
-            self.config(cursor="xterm")
+            self.configure(cursor="xterm")
 
     def on_double_click(self, event: Any) -> str:
         self.show_word_menu(event)

@@ -64,8 +64,8 @@ class Snippet(tk.Frame):
         self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
         self.scrollbar.configure(cursor="arrow")
         self.text.configure(xscrollcommand=self.scrollbar.set)
-        self.text.tag_config("sel", background=app.theme.snippet_selection_background,
-                             foreground=app.theme.snippet_selection_foreground)
+        self.text.tag_configure("sel", background=app.theme.snippet_selection_background,
+                                foreground=app.theme.snippet_selection_foreground)
 
         if args.scrollbars:
             self.scrollbar.pack(fill=tk.X)
@@ -182,7 +182,7 @@ class Snippet(tk.Frame):
             if key[1]["color"] != "" and key[1]["color"] is not None:
                 color = "#" + key[1]["color"]
                 key = str(key[0])
-                self.text.tag_config(key, foreground=color)
+                self.text.tag_configure(key, foreground=color)
                 self.text.tag_lower(key)
 
         lexer = get_lexer_by_name(self.language, stripall=True)

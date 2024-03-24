@@ -4,8 +4,10 @@ from .app import app
 from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
+from .dialogs import Dialog
 from .entrybox import EntryBox
 from .inputcontrol import inputcontrol
+from .display import display
 from .args import args
 from . import widgetutils
 
@@ -28,8 +30,6 @@ class Widgets:
         pass
 
     def make(self) -> None:
-        from .display import display
-
         # Model
         self.model_frame = widgetutils.make_frame()
 
@@ -248,7 +248,7 @@ class Widgets:
         ToolTip(self.output_menu, "Open the output menu")
 
         # Output
-        app.root.grid_rowconfigure(widgetutils.frame_number, weight=1)
+        app.main_frame.grid_rowconfigure(widgetutils.frame_number, weight=1)
         self.output_frame = widgetutils.make_frame()
 
         self.notebook = widgetutils.make_notebook(self.output_frame, fill=Fill.BOTH, right_padding=right_padding)
@@ -413,6 +413,7 @@ class Widgets:
         self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
+        self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         inputcontrol.bind()
 
     def setup_main_menu(self) -> None:
@@ -467,7 +468,6 @@ class Widgets:
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None, require_items: bool = False) -> None:
-        from .dialogs import Dialog
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
         items = getattr(config, key_list)[:config.max_list_items]
@@ -751,6 +751,10 @@ class Widgets:
 
     def show_gpt_menu(self) -> None:
         self.gpt_menu.show(widget=self.main_menu_button)
+
+    def model_icon_click(self) -> None:
+        Menu.hide_all()
+        Dialog.hide_all()
 
 
 widgets: Widgets = Widgets()

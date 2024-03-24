@@ -46,7 +46,7 @@ def make_frame(parent: Union[ttk.Notebook, tk.Frame, None] = None,
                bottom_padding: Optional[int] = None) -> tk.Frame:
     global frame_number
 
-    p = app.root if not parent else parent
+    p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
 
     padx = (app.theme.frame_padx, app.theme.frame_padx)
@@ -58,6 +58,8 @@ def make_frame(parent: Union[ttk.Notebook, tk.Frame, None] = None,
 
     frame.grid(row=frame_number, column=0, padx=padx,
                pady=pady, sticky="nsew")
+
+    frame.bind("<Button-1>", lambda e: app.on_frame_click())
 
     frame.configure(background=app.theme.background_color)
     frame_number += 1

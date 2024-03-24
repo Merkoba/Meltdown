@@ -96,7 +96,7 @@ class Dialog:
         foreground = app.theme.dialog_foreground
         border = app.theme.border_color
 
-        self.root = tk.Frame(app.root, bg=border)
+        self.root = tk.Frame(app.main_frame, bg=border)
         self.main = tk.Frame(self.root, bg=background)
         self.main.pack(padx=app.theme.border_width, pady=app.theme.border_width)
         self.root.lift()
@@ -112,8 +112,8 @@ class Dialog:
 
     def show(self) -> None:
         self.root.update_idletasks()
-        window_width = app.root.winfo_width()
-        window_height = app.root.winfo_height()
+        window_width = app.main_frame.winfo_width()
+        window_height = app.main_frame.winfo_height()
         dialog_width = self.root.winfo_reqwidth()
         dialog_height = self.root.winfo_reqheight()
         x = (window_width - dialog_width) // 2

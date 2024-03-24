@@ -74,7 +74,7 @@ class ToolTip:
         if Menu.current_menu:
             return
 
-        self.tooltip = tk.Frame(app.root)
+        self.tooltip = tk.Frame(app.main_frame)
         self.tooltip.lift()
         padding = app.theme.tooltip_padding
 
@@ -85,12 +85,12 @@ class ToolTip:
         label.bind("<Button-1>", lambda e: self.hide())
 
         self.tooltip.update_idletasks()
-        window_width = app.root.winfo_width()
-        window_height = app.root.winfo_height()
+        window_width = app.main_frame.winfo_width()
+        window_height = app.main_frame.winfo_height()
         tooltip_width = self.tooltip.winfo_reqwidth()
         tooltip_height = self.tooltip.winfo_reqheight()
-        x = event.x_root - app.root.winfo_rootx() - (tooltip_width // 2)
-        y = event.y_root - app.root.winfo_rooty() + 20
+        x = event.x_root - app.main_frame.winfo_rootx() - (tooltip_width // 2)
+        y = event.y_root - app.main_frame.winfo_rooty() + 20
 
         if x < 0:
             x = 0
@@ -100,7 +100,7 @@ class ToolTip:
         if y < 0:
             y = 0
         elif y + tooltip_height > window_height:
-            y = event.y_root - app.root.winfo_rooty() - tooltip_height - 20
+            y = event.y_root - app.main_frame.winfo_rooty() - tooltip_height - 20
 
         self.tooltip.place(x=x, y=y)
 

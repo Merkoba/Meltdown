@@ -61,7 +61,7 @@ class Menu:
             self.root.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.root, bg=app.theme.menu_background, borderwidth=0, highlightthickness=0)
+        self.root = tk.Canvas(app.main_frame, bg=app.theme.menu_background, borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.border_width)
         self.container.configure(background=app.theme.border_color)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
@@ -91,7 +91,7 @@ class Menu:
 
         def cmd() -> None:
             self.hide()
-            app.root.after(10, lambda: exec())
+            app.main_frame.after(10, lambda: exec())
 
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)
@@ -174,8 +174,8 @@ class Menu:
         self.root.update_idletasks()
         self.container.update_idletasks()
 
-        window_width = app.root.winfo_width()
-        window_height = app.root.winfo_height()
+        window_width = app.main_frame.winfo_width()
+        window_height = app.main_frame.winfo_height()
 
         # Limit width to fit the container
         self.root.configure(width=self.container.winfo_reqwidth())
@@ -186,8 +186,8 @@ class Menu:
 
         menu_width = self.root.winfo_reqwidth()
         menu_height = self.root.winfo_reqheight()
-        x = self.coords["x"] - app.root.winfo_rootx()
-        y = self.coords["y"] - app.root.winfo_rooty()
+        x = self.coords["x"] - app.main_frame.winfo_rootx()
+        y = self.coords["y"] - app.main_frame.winfo_rooty()
 
         if x < 0:
             x = 0
@@ -395,9 +395,9 @@ class Menu:
         tries = 0
 
         while tries < 10:
-            widget_y = els["label"].winfo_rooty() - app.root.winfo_rooty()
+            widget_y = els["label"].winfo_rooty() - app.main_frame.winfo_rooty()
             widget_height = els["label"].winfo_height()
-            window_height = app.root.winfo_height()
+            window_height = app.main_frame.winfo_height()
 
             if widget_y + widget_height > window_height or widget_y < 0:
                 outside_top = abs(min(0, widget_y))
