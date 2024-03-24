@@ -124,6 +124,8 @@ class Output(tk.Text):
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
         self.position = "1.0"
+        self.format_text_timer = ""
+        self.format_text_delay = 500
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -295,6 +297,13 @@ class Output(tk.Text):
         return self.display.get_tab(self.tab_id)
 
     def format_text(self) -> None:
+        if self.format_text_timer:
+            return
+
+        self.format_text_timer = self.after(self.format_text_delay, lambda: self.do_format_text())
+
+    def do_format_text(self) -> None:
+        self.format_text_timer = ""
         self.enable()
         self.markdown.format(self.position)
         self.disable()
