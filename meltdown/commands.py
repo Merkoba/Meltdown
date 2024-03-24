@@ -102,22 +102,22 @@ class Commands:
 
         return False
 
-    def show_help(self) -> None:
+    def show_help(self, tab_id: str = "") -> None:
         from .display import display
-        display.print("Commands:")
+        display.print("Commands:", tab_id=tab_id)
         text = []
 
         for cmd, data in self.commands.items():
             text.append(f"{self.prefix}{cmd} = {data['help']}")
 
-        display.print("\n".join(text))
+        display.print("\n".join(text), tab_id=tab_id)
 
-    def show_arguments(self) -> None:
+    def show_arguments(self, tab_id: str = "") -> None:
         from .args import args
         from .display import display
         text = args.parser.format_help().strip()
-        display.print("Arguments:")
-        display.print(text)
+        display.print("Arguments:", tab_id=tab_id)
+        display.print(text, tab_id=tab_id)
 
     def check_autocomplete(self) -> None:
         from .inputcontrol import inputcontrol

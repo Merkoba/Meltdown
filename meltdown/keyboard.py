@@ -211,8 +211,9 @@ class Keyboard:
         self.shift = False
 
     def show_help(self) -> None:
-        commands.show_help()
-        commands.show_arguments()
+        tab_id = display.make_tab()
+        commands.show_help(tab_id=tab_id)
+        commands.show_arguments(tab_id=tab_id)
 
 
 keyboard = Keyboard()
