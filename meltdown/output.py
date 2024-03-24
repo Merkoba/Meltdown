@@ -123,9 +123,7 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.format_position = "1.0"
-        self.format_text_timer = ""
-        self.format_text_delay = 500
+        self.position = "1.0"
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -297,16 +295,8 @@ class Output(tk.Text):
         return self.display.get_tab(self.tab_id)
 
     def format_text(self) -> None:
-        if self.format_text_timer:
-            return
-
-        self.format_text_timer = self.after(self.format_text_delay, lambda: self.do_format_text())
-
-    def do_format_text(self) -> None:
-        self.format_text_timer = ""
         self.enable()
-        self.markdown.format(self.format_position)
-        self.format_position = self.index("end - 1c")
+        self.markdown.format(self.position)
         self.disable()
         app.update()
         self.to_bottom(True)
@@ -364,6 +354,9 @@ class Output(tk.Text):
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
+
+        if who == "ai":
+            self.position = self.index("end - 1c")
 
     def print(self, text: str) -> None:
         left = ""
