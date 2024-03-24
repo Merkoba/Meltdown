@@ -123,7 +123,7 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.position = "1.0"
+        self.format_position = "1.0"
         self.format_text_timer = ""
         self.format_text_delay = 500
 
@@ -305,8 +305,8 @@ class Output(tk.Text):
     def do_format_text(self) -> None:
         self.format_text_timer = ""
         self.enable()
-        self.markdown.format(self.position)
-        self.position = self.index("end - 1c")
+        self.markdown.format(self.format_position)
+        self.format_position = self.index("end - 1c")
         self.disable()
         app.update()
         self.to_bottom(True)
