@@ -192,6 +192,10 @@ class Keyboard:
         self.register("<Left>", on_ctrl=lambda: display.tab_left())
         self.register("<Right>", on_ctrl=lambda: display.tab_right())
         self.register("<space>", on_ctrl=lambda: widgets.show_main_menu())
+        self.register("<F1>", lambda: self.show_help())
+        self.register("<F2>", lambda: inputcontrol.input.focus())
+        self.register("<F3>", lambda: inputcontrol.input.focus())
+        self.register("<F8>", lambda: app.toggle_compact())
         self.register("<F11>", lambda: app.toggle_fullscreen())
         self.register("t", on_ctrl=lambda: display.make_tab())
         self.register("w", on_ctrl=lambda: display.close_current_tab())
@@ -205,6 +209,10 @@ class Keyboard:
     def reset(self) -> None:
         self.ctrl = False
         self.shift = False
+
+    def show_help(self) -> None:
+        commands.show_help()
+        commands.show_arguments()
 
 
 keyboard = Keyboard()
