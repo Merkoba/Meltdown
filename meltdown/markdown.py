@@ -3,7 +3,6 @@ from .output import Output
 
 # Standard
 import re
-from typing import Optional
 
 
 class Markdown():

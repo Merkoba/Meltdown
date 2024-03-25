@@ -3,7 +3,6 @@ from .config import config
 from .widgets import widgets
 from .display import display
 from .session import session
-from .tooltips import ToolTip
 from .app import app
 from . import timeutils
 from . import state

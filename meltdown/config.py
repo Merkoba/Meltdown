@@ -1,5 +1,5 @@
 # Standard
-from typing import List, Any, Dict, Optional, Tuple, Callable
+from typing import List, Any, Dict, Optional, Callable
 
 
 class Config:

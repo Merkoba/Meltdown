@@ -8,7 +8,6 @@ from . import widgetutils
 
 # Standard
 from typing import Any, Optional
-import tkinter as tk
 
 
 class InputControl:
