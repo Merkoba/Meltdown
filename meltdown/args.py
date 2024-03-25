@@ -65,19 +65,25 @@ class Args:
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self.Internal.aliases, self)
 
-        normals = [
-            ["no_tooltips", "tooltips"], ["no_scrollbars", "scrollbars"],
-            ["no_colors", "colors"], ["no_avatars", "avatars"],
-            ["no_monitors", "monitors"], ["no_monitor_colors", "monitor_colors"],
-            ["no_cpu", "monitor_cpu"], ["no_ram", "monitor_ram"],
-            ["no_temp", "monitor_temp"], ["no_keyboard", "keyboard"],
-            ["no_wrap", "wrap"], ["maximized"], ["compact"],
-            ["full"], ["width"], ["height"], ["theme"],
-            ["test"], ["config"], ["session"],
+        reversed = [
+            ("no_tooltips", "tooltips"), ("no_scrollbars", "scrollbars"),
+            ("no_colors", "colors"), ("no_avatars", "avatars"),
+            ("no_monitors", "monitors"), ("no_monitor_colors", "monitor_colors"),
+            ("no_cpu", "monitor_cpu"), ("no_ram", "monitor_ram"),
+            ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
+            ("no_wrap", "wrap"),
         ]
 
-        for normal in normals:
-            ap.normal(*normal)
+        for r_item in reversed:
+            ap.normal(*r_item)
+
+        normals = [
+            "maximized", "compact", "full", "width",
+            "height", "theme", "test", "config", "session",
+        ]
+
+        for n_item in normals:
+            ap.normal(n_item)
 
         self.parser = ap.parser
 
