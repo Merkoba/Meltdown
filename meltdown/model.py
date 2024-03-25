@@ -225,27 +225,11 @@ class Model:
             print("Empty prompt")
             return
 
-        def replace_content(content: str) -> str:
-            if config.name_user:
-                content = content.replace("@name_user", config.name_user)
-
-            if config.name_ai:
-                content = content.replace("@name_ai", config.name_ai)
-
-            content = content.replace("@date", timeutils.today())
-            return content
-
-        def check_dot(text: str) -> str:
-            if text.endswith(".") or text.endswith("!") or text.endswith("?"):
-                return text + " "
-            else:
-                return text + ". "
-
         if config.prepend:
-            prompt = check_dot(config.prepend) + prompt
+            prompt = self.check_dot(config.prepend) + prompt
 
         if config.append:
-            prompt = check_dot(prompt) + config.append
+            prompt = self.check_dot(prompt) + config.append
 
         tab = display.get_tab(tab_id)
 
@@ -260,7 +244,7 @@ class Model:
             return
 
         log_dict = {"user": prompt}
-        system = replace_content(config.system)
+        system = self.replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
         if document.items:
@@ -269,7 +253,7 @@ class Model:
                     content = item[key]
 
                     if key == "user":
-                        content = replace_content(content)
+                        content = self.replace_content(content)
 
                     messages.append({"role": key, "content": content})
 
@@ -285,7 +269,7 @@ class Model:
             print("seed:", config.seed)
 
         content = prompt
-        content = replace_content(content)
+        content = self.replace_content(content)
         messages.append({"role": "user", "content": content})
 
         added_name = False
@@ -446,6 +430,22 @@ class Model:
                 file.write(key)
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text))
+
+    def replace_content(self, content: str) -> str:
+        if config.name_user:
+            content = content.replace("@name_user", config.name_user)
+
+        if config.name_ai:
+            content = content.replace("@name_ai", config.name_ai)
+
+        content = content.replace("@date", timeutils.today())
+        return content
+
+    def check_dot(self, text: str) -> str:
+        if text.endswith(".") or text.endswith("!") or text.endswith("?"):
+            return text + " "
+        else:
+            return text + ". "
 
 
 model = Model()
