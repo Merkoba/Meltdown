@@ -79,7 +79,8 @@ class Args:
 
         normals = [
             "maximized", "compact", "full", "width",
-            "height", "theme", "test", "config", "session",
+            "height", "theme", "test", "config",
+            "session",
         ]
 
         for n_item in normals:
