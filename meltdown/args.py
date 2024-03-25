@@ -78,9 +78,8 @@ class Args:
             ap.normal(*r_item)
 
         normals = [
-            "maximized", "compact", "full", "width",
-            "height", "theme", "test", "config",
-            "session",
+            "maximized", "compact", "full", "width", "height",
+            "theme", "test", "config", "session",
         ]
 
         for n_item in normals:
