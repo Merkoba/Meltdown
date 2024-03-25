@@ -64,26 +64,33 @@ class Args:
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self.Internal.aliases, self)
-        ap.normal("no_tooltips", "tooltips")
-        ap.normal("no_scrollbars", "scrollbars")
-        ap.normal("no_colors", "colors")
-        ap.normal("no_avatars", "avatars")
-        ap.normal("no_monitors", "monitors")
-        ap.normal("no_monitor_colors", "monitor_colors")
-        ap.normal("no_cpu", "monitor_cpu")
-        ap.normal("no_ram", "monitor_ram")
-        ap.normal("no_temp", "monitor_temp")
-        ap.normal("no_keyboard", "keyboard")
-        ap.normal("no_wrap", "wrap")
-        ap.normal("maximized")
-        ap.normal("compact")
-        ap.normal("full")
-        ap.normal("width")
-        ap.normal("height")
-        ap.normal("theme")
-        ap.normal("test")
-        ap.normal("config")
-        ap.normal("session")
+
+        normals = [
+            ["no_tooltips", "tooltips"],
+            ["no_scrollbars", "scrollbars"],
+            ["no_colors", "colors"],
+            ["no_avatars", "avatars"],
+            ["no_monitors", "monitors"],
+            ["no_monitor_colors", "monitor_colors"],
+            ["no_cpu", "monitor_cpu"],
+            ["no_ram", "monitor_ram"],
+            ["no_temp", "monitor_temp"],
+            ["no_keyboard", "keyboard"],
+            ["no_wrap", "wrap"],
+            ["maximized"],
+            ["compact"],
+            ["full"],
+            ["width"],
+            ["height"],
+            ["theme"],
+            ["test"],
+            ["config"],
+            ["session"],
+        ]
+
+        for normal in normals:
+            print(normal)
+            ap.normal(*normal)
 
         self.parser = ap.parser
 
