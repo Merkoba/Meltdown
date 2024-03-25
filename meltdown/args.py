@@ -89,7 +89,6 @@ class Args:
         ]
 
         for normal in normals:
-            print(normal)
             ap.normal(*normal)
 
         self.parser = ap.parser
