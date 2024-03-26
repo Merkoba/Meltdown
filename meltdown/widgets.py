@@ -368,8 +368,6 @@ class Widgets:
             self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
     def setup_widgets(self) -> None:
-        from . import state
-
         def setup_entrybox(key: str, placeholder: str) -> None:
             widget = self.get_widget(key)
 
@@ -389,7 +387,7 @@ class Widgets:
             if not widget:
                 return
 
-            widget.bind("<<ComboboxSelected>>", lambda e: state.update_config(key))
+            widget.bind("<<ComboboxSelected>>", lambda e: config.update(key))
 
         setup_entrybox("input", "Ask something to the AI")
         setup_entrybox("name_user", "Name")
@@ -418,9 +416,8 @@ class Widgets:
         inputcontrol.bind()
 
     def setup_main_menu(self) -> None:
-        from .session import session
         from .model import model
-        from . import state
+        from . import filemanager
 
         self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
@@ -428,14 +425,9 @@ class Widgets:
         self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
         self.main_menu.add(text="Set API Key", command=lambda: model.set_api_key())
         self.main_menu.separator()
-        self.main_menu.add(text="Save Config", command=lambda: state.save_config_state())
-        self.main_menu.add(text="Load Config", command=lambda: state.load_config_state())
-        self.main_menu.add(text="Reset Config", command=lambda: state.reset_config())
-        self.main_menu.separator()
-        self.main_menu.add(text="Save Session", command=lambda: session.save_state())
-        self.main_menu.add(text="Load Session", command=lambda: session.load_state())
-        self.main_menu.separator()
-        self.main_menu.add(text="Open Logs", command=lambda: state.open_logs_dir())
+        self.main_menu.add(text="Configs", command=lambda: self.main_menu_configs())
+        self.main_menu.add(text="Sessions", command=lambda: self.main_menu_sessions())
+        self.main_menu.add(text="Logs", command=lambda: filemanager.open_logs_dir())
         self.main_menu.separator()
         self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add(text="Resize", command=lambda: app.resize())
@@ -451,7 +443,6 @@ class Widgets:
             self.gpt_menu.add(text=gpt[1], command=lambda gpt=gpt: self.use_gpt(gpt[0]))
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
-        from . import state
         widget = self.get_widget(key)
 
         if not widget:
@@ -465,7 +456,7 @@ class Widgets:
                 menu.add(text="Clear", command=lambda: self.clear(key))
 
         if config.get_default(key):
-            menu.add(text="Reset", command=lambda: state.reset_one_config(key))
+            menu.add(text="Reset", command=lambda: config.reset_one(key))
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None, require_items: bool = False) -> None:
@@ -520,11 +511,10 @@ class Widgets:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
     def set_model(self, m: str) -> None:
-        from . import state
         from .model import model
         self.model.set_text(m)
 
-        if state.update_config("model"):
+        if config.update("model"):
             model.load()
 
     def show_model(self) -> None:
@@ -628,19 +618,16 @@ class Widgets:
         app.root.after(200, self.start_checks)
 
     def set_system(self, text: str) -> None:
-        from . import state
         self.system.set_text(text)
-        state.update_config("system")
+        config.update("system")
 
     def set_prepend(self, text: str) -> None:
-        from . import state
         self.prepend.set_text(text)
-        state.update_config("prepend")
+        config.update("prepend")
 
     def set_append(self, text: str) -> None:
-        from . import state
         self.append.set_text(text)
-        state.update_config("append")
+        config.update("append")
 
     def stop(self) -> None:
         from .model import model
@@ -653,7 +640,6 @@ class Widgets:
         model.load_or_unload()
 
     def copy(self, key: str) -> None:
-        from . import state
         widget = self.get_widget(key)
 
         if not widget:
@@ -662,10 +648,9 @@ class Widgets:
         if isinstance(widget, EntryBox):
             widgetutils.copy(widget.get())
             widget.focus_set()
-            state.update_config(key)
+            config.update(key)
 
     def paste(self, key: str) -> None:
-        from . import state
         widget = self.get_widget(key)
 
         if (not widget) or (not isinstance(widget, EntryBox)):
@@ -673,10 +658,9 @@ class Widgets:
 
         widgetutils.paste(widget)
         widget.focus_set()
-        state.update_config(key)
+        config.update(key)
 
     def clear(self, key: str) -> None:
-        from . import state
         widget = self.get_widget(key)
 
         if (not widget) or (not isinstance(widget, EntryBox)):
@@ -684,7 +668,7 @@ class Widgets:
 
         widget.clear()
         widget.focus_set()
-        state.update_config(key)
+        config.update(key)
 
     def esckey(self) -> None:
         from .model import model
@@ -746,9 +730,7 @@ class Widgets:
             self.details_button_right.set_style("alt")
 
     def use_gpt(self, name: str) -> None:
-        from .model import model
-        from . import state
-        state.set_config("model", name)
+        config.set("model", name)
 
     def show_gpt_menu(self) -> None:
         self.gpt_menu.show(widget=self.main_menu_button)
@@ -756,6 +738,14 @@ class Widgets:
     def model_icon_click(self) -> None:
         Menu.hide_all()
         Dialog.hide_all()
+
+    def main_menu_configs(self) -> None:
+        from .config import config
+        config.menu()
+
+    def main_menu_sessions(self) -> None:
+        from .session import session
+        session.menu()
 
 
 widgets: Widgets = Widgets()

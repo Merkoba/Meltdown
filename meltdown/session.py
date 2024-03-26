@@ -3,8 +3,9 @@ from .config import config
 from .display import display
 from .paths import paths
 from .args import args
-from . import timeutils
+from .dialogs import Dialog
 from .output import Output
+from . import timeutils
 
 # Standard
 import json
@@ -293,6 +294,12 @@ class Session:
         sessions_list = [document.to_dict() for document in
                          self.items.values() if document.items and (document.id != "test123")]
         return json.dumps(sessions_list, indent=4)
+
+    def menu(self) -> None:
+        cmds = []
+        cmds.append(("Load", lambda: self.load_state()))
+        cmds.append(("Save", lambda: self.save_state()))
+        Dialog.show_commands("Session Menu", commands=cmds)
 
 
 session = Session()

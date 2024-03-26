@@ -1,5 +1,6 @@
 # Modules
 from .app import app
+from .config import config
 
 # Standard
 import tkinter as tk
@@ -69,11 +70,9 @@ class EntryBox(ttk.Entry):
             self.check_placeholder()
 
     def on_focus_change(self, mode: str) -> None:
-        from . import state
-
         if mode == "out":
             if self.key and (not self.placeholder_active):
-                state.update_config(self.key)
+                config.update(self.key)
 
             self.selection_clear()
             self.focused = False

@@ -5,7 +5,7 @@ from .display import display
 from .session import session
 from .app import app
 from . import timeutils
-from . import state
+from . import filemanager
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
@@ -127,7 +127,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
-            state.add_model(config.model)
+            filemanager.add_model(config.model)
             display.print(f"🌐 {config.model} is ready to use")
             self.update_icon()
 
@@ -168,7 +168,7 @@ class Model:
             self.lock.release()
             return
 
-        state.add_model(model)
+        filemanager.add_model(model)
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
@@ -276,9 +276,9 @@ class Model:
         last_token = " "
         tokens = []
 
-        state.add_system(config.system)
-        state.add_prepends(config.prepend)
-        state.add_appends(config.append)
+        filemanager.add_system(config.system)
+        filemanager.add_prepends(config.prepend)
+        filemanager.add_appends(config.append)
 
         now = timeutils.now()
         self.stream_date = now
@@ -371,16 +371,16 @@ class Model:
         self.lock.release()
 
     def browse_models(self) -> None:
-        from . import state
+        from .config import config
 
         if self.model_loading:
             return
 
-        file = filedialog.askopenfilename(initialdir=state.get_models_dir())
+        file = filedialog.askopenfilename(initialdir=self.get_dir())
 
         if file:
             widgets.model.set_text(file)
-            state.update_config("model")
+            config.update("model")
             self.load()
 
     def load_or_unload(self) -> None:
@@ -411,7 +411,6 @@ class Model:
             tooltip.set_text("You are using a local model. No network requests are made")
 
     def set_api_key(self) -> None:
-        from . import state
         from .dialogs import Dialog
         from .paths import paths
 
@@ -450,6 +449,24 @@ class Model:
             return text + " "
         else:
             return text + ". "
+
+    def get_dir(self) -> Optional[str]:
+        models = [config.model] + config.models
+
+        for model in models:
+            path = Path(model)
+
+            if path.exists() and path.is_file():
+                return str(path.parent)
+
+        return None
+
+    def check_config(self, save: bool = True) -> None:
+        if (not config.model) and config.models:
+            config.model = config.models[0]
+
+            if save:
+                config.save()
 
 
 model = Model()

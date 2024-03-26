@@ -537,26 +537,26 @@ class Display:
         self.close_tab(tab_id=self.current_tab)
 
     def decrease_font(self) -> None:
-        from . import state
+        from .config import config
         new_size = config.output_font_size - 1
 
         if new_size < 6:
             return
 
-        state.set_config("output_font_size", new_size)
+        config.set("output_font_size", new_size)
 
     def increase_font(self) -> None:
-        from . import state
+        from .config import config
         new_size = config.output_font_size + 1
 
         if new_size > 60:
             return
 
-        state.set_config("output_font_size", new_size)
+        config.set("output_font_size", new_size)
 
     def reset_font(self) -> None:
-        from . import state
-        state.reset_one_config("output_font_size")
+        from .config import config
+        config.reset_one("output_font_size")
 
     def update_font(self) -> None:
         for tab in self.tabs.values():

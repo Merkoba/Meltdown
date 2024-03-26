@@ -216,11 +216,12 @@ class App:
     def after_compact(self, enabled: bool) -> None:
         from .inputcontrol import inputcontrol
         from .display import display
-        from . import state
+        from .config import config
+
         self.update()
         display.to_bottom()
         inputcontrol.focus()
-        state.set_config("compact", enabled)
+        config.set("compact", enabled)
 
     def check_compact(self) -> None:
         from .args import args
@@ -307,10 +308,10 @@ class App:
         from .args import args
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
-        from . import state
+        from .config import config
 
         if args.theme and (args.theme != config.theme):
-            state.set_config("theme", args.theme)
+            config.set("theme", args.theme)
 
         if config.theme == "light":
             self.theme = LightTheme()
@@ -324,7 +325,7 @@ class App:
 
     def toggle_theme(self) -> None:
         from .dialogs import Dialog
-        from . import state
+        from .config import config
 
         if config.theme == "light":
             new_theme = "dark"
@@ -332,7 +333,7 @@ class App:
             new_theme = "light"
 
         def action() -> None:
-            state.set_config("theme", new_theme)
+            config.set("theme", new_theme)
             Dialog.show_message("Theme will change after restarting the program")
 
         Dialog.show_confirm(f"Use the {new_theme} theme?", action)

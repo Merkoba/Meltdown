@@ -1,5 +1,8 @@
 # Standard
-from typing import List, Any, Dict, Optional, Callable
+import json
+from typing import List, Any, Dict, Optional, Callable, IO
+from tkinter import filedialog
+from pathlib import Path
 
 
 class Config:
@@ -105,6 +108,231 @@ class Config:
             text.append(f"{key}: {value}")
 
         display.print("\n".join(text))
+
+    def get_string(self) -> str:
+        conf = {}
+
+        for key in self.defaults():
+            conf[key] = getattr(self, key)
+
+        return json.dumps(conf)
+
+    def save_state(self) -> None:
+        from .paths import paths
+
+        if not paths.configs.exists():
+            paths.configs.mkdir(parents=True, exist_ok=True)
+
+        file_path = filedialog.asksaveasfilename(
+            initialdir=paths.configs,
+            defaultextension=".json",
+            filetypes=[("Config Files", "*.json")],
+        )
+
+        if not file_path:
+            return
+
+        conf = self.get_string()
+
+        with open(file_path, "w") as file:
+            file.write(conf)
+
+    def load_state(self) -> None:
+        from .paths import paths
+        from .widgets import widgets
+
+        if not paths.configs.exists():
+            paths.configs.mkdir(parents=True, exist_ok=True)
+
+        file_path = filedialog.askopenfilename(
+            initialdir=paths.configs,
+        )
+
+        if not file_path:
+            return
+
+        path = Path(file_path)
+
+        if (not path.exists()) or (not path.is_file()):
+            return
+
+        with open(path, "r") as file:
+            self.apply(file)
+            widgets.fill()
+
+    def apply(self, file: IO[str]) -> None:
+        try:
+            conf = json.load(file)
+        except BaseException:
+            conf = {}
+
+        for key in self.defaults():
+            setattr(self, key, conf.get(key, getattr(self, key)))
+
+    def load_file(self) -> None:
+        from .paths import paths
+
+        if not paths.config.exists():
+            paths.config.parent.mkdir(parents=True, exist_ok=True)
+            paths.config.touch(exist_ok=True)
+
+        with open(paths.config, "r") as file:
+            self.apply(file)
+
+    def load_arg(self) -> None:
+        from .args import args
+        from .paths import paths
+
+        try:
+            name = args.config
+
+            if not name.endswith(".json"):
+                name += ".json"
+
+            path = Path(name)
+
+            if (not path.exists()) or (not path.is_file()):
+                path = Path(paths.configs, name)
+
+            if (not path.exists()) or (not path.is_file()):
+                args.config = ""
+                self.load_file()
+                return
+
+            with open(path, "r") as file:
+                self.apply(file)
+        except BaseException as e:
+            print(e)
+            args.config = ""
+            self.load_file()
+
+    def save(self) -> None:
+        from .paths import paths
+        from . import filemanager
+
+        conf = {}
+
+        for key in self.defaults():
+            conf[key] = getattr(self, key)
+
+        filemanager.save(paths.config, conf)
+
+    def update(self, key: str) -> bool:
+        from .widgets import widgets
+
+        if not hasattr(self, key):
+            return False
+
+        widget = getattr(widgets, key)
+
+        if widget:
+            return self.set(key, widget.get())
+        else:
+            return False
+
+    def set(self, key: str, value: Any) -> bool:
+        from .widgets import widgets
+        vtype = self.get_default(key).__class__
+
+        if vtype == str:
+            value = str(value)
+        elif vtype == int:
+            try:
+                value = int(value)
+            except BaseException as e:
+                widgets.fill_widget(key, self.get_default(key))
+                return False
+        elif vtype == float:
+            try:
+                value = float(value)
+            except BaseException as e:
+                widgets.fill_widget(key, self.get_default(key))
+                return False
+        elif vtype == bool:
+            value = bool(value)
+
+        if key in self.validations:
+            value = self.validations[key](value)
+
+        current = getattr(self, key)
+        widgets.fill_widget(key, value)
+
+        if current == value:
+            return False
+
+        setattr(self, key, value)
+        self.save()
+
+        if key == "model":
+            self.on_model_change()
+        elif key == "format":
+            self.on_format_change()
+        elif key == "output_font_size":
+            self.on_output_font_change()
+
+        return True
+
+    def reset(self) -> None:
+        from .app import app
+        from .model import model
+        from .widgets import widgets
+        from .dialogs import Dialog
+
+        def action() -> None:
+            for key in self.defaults():
+                default = self.get_default(key)
+
+                if default is not None:
+                    setattr(self, key, default)
+
+            self.on_model_change(False)
+            self.on_format_change(False)
+            self.on_output_font_change()
+            widgets.fill()
+            app.check_compact()
+            self.save()
+            model.unload(True)
+
+        Dialog.show_confirm("This will remove your custom configs"
+                            "\nand refresh the widgets", action)
+
+    def reset_one(self, key: str) -> None:
+        from .widgets import widgets
+        default = self.get_default(key)
+
+        if getattr(self, key) == default:
+            return
+
+        self.set(key, default)
+        widgets.fill_widget(key, getattr(self, key), focus=True)
+
+    def on_model_change(self, unload: bool = True) -> None:
+        from .model import model
+        model.check_config(False)
+
+        if model.loaded_model != self.model:
+            if unload:
+                model.unload()
+
+    def on_format_change(self, load: bool = True) -> None:
+        from .model import model
+
+        if model.loaded_format != self.format:
+            if load:
+                model.load()
+
+    def on_output_font_change(self) -> None:
+        from .display import display
+        display.update_font()
+
+    def menu(self) -> None:
+        from .dialogs import Dialog
+
+        cmds = []
+        cmds.append(("Reset", lambda: self.reset()))
+        cmds.append(("Load", lambda: self.load_state()))
+        cmds.append(("Save", lambda: self.save_state()))
+        Dialog.show_commands("Config Menu", commands=cmds)
 
 
 config = Config()

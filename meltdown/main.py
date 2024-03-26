@@ -7,13 +7,13 @@ from .session import session
 from .args import args
 from .commands import commands
 from .keyboard import keyboard
-from . import state
+from . import filemanager
 from . import system
 
 
 def main() -> None:
     args.parse()
-    state.load_files()
+    filemanager.load()
     app.prepare()
     widgets.make()
     model.setup()

@@ -120,14 +120,14 @@ class InputControl:
     def submit(self) -> None:
         from .model import model
         from .display import display
-        from . import state
+        from . import filemanager
 
         text = self.input.get().strip()
 
         if text:
             display.to_bottom()
             self.clear()
-            state.add_input(text)
+            filemanager.add_input(text)
 
             if commands.check(text):
                 return

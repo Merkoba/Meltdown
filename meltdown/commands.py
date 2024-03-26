@@ -17,7 +17,7 @@ class Commands:
     def setup(self) -> None:
         from .display import display
         from .model import model
-        from . import state
+        from . import filemanager
         from . import logs
 
         self.commands = {
@@ -26,7 +26,7 @@ class Commands:
             "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
             "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
             "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: logs.save_log()},
-            "logs": {"aliases": [], "help": "Open the logs directory", "action": lambda: state.open_logs_dir()},
+            "logs": {"aliases": [], "help": "Open the logs directory", "action": lambda: filemanager.open_logs_dir()},
             "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
             "stop": {"aliases": [], "help": "Stop the current stream", "action": lambda: model.stop_stream()},
             "sys": {"aliases": ["monitor", "system"], "help": "Open the system task manager", "action": lambda: app.open_task_manager()},

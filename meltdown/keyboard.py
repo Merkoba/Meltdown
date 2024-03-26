@@ -8,9 +8,9 @@ from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
+from . import filemanager
 from . import logs
 from . import timeutils
-from . import state
 
 # Standard
 import tkinter as tk
@@ -205,7 +205,7 @@ class Keyboard:
         self.register("p", on_ctrl=lambda: app.toggle_compact())
         self.register("r", on_ctrl=lambda: app.resize())
         self.register("m", on_ctrl=lambda: model.browse_models())
-        self.register("l", on_ctrl=lambda: logs.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
+        self.register("l", on_ctrl=lambda: logs.save_log(), on_ctrl_shift=lambda: filemanager.open_logs_dir())
 
     def reset(self) -> None:
         self.ctrl = False
