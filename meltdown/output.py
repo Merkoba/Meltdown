@@ -94,7 +94,7 @@ class Output(tk.Text):
         def action() -> None:
             app.open_url(url)
 
-        Dialog.show_confirm("Open this URL??", lambda: action())
+        Dialog.show_confirm("Open this URL?", lambda: action())
 
     @staticmethod
     def get_prompt(who: str) -> str:
@@ -440,14 +440,17 @@ class Output(tk.Text):
         if seltext:
             Output.words = seltext
 
-        if Output.words:
-            Output.word_menu.show(event)
+        if not Output.words:
+            return
+
+        Output.word_menu.show(event)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
         char = self.get(current_index)
 
         if char == "\n":
+            Output.words = ""
             self.configure(cursor="arrow")
             return
 
