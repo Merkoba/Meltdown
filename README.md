@@ -307,3 +307,5 @@ This is a command to run after saving a log file.
 For example you can use `--on-log geany` to automatically
 
 open the file on the Geany text editor after it is saved.
+
+It simply passes the file path as an argument to the command/script.
