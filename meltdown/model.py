@@ -441,7 +441,12 @@ class Model:
         return content
 
     def check_dot(self, text: str) -> str:
-        if text.endswith(".") or text.endswith("!") or text.endswith("?"):
+        if not text:
+            return ""
+
+        chars = [".", ",", ";", "!", "?"]
+
+        if text[-1] in chars:
             return text + " "
         else:
             return text + ". "
