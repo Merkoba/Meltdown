@@ -389,6 +389,11 @@ class Output(tk.Text):
 
     def get_tagwords(self, tag: str, event: Any) -> str:
         current_index = event.widget.index(tk.CURRENT)
+        char = event.widget.get(current_index)
+
+        if char == "\n":
+            return ""
+
         cur_line, cur_char = map(int, str(current_index).split("."))
         ranges = self.tag_ranges(tag)
 
