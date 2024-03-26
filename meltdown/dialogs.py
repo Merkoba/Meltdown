@@ -35,7 +35,8 @@ class Dialog:
 
     @staticmethod
     def show_commands(text: str,
-                      commands: List[Tuple[str, Callable[..., Any]]]) -> None:
+                      commands: List[Tuple[str, Callable[..., Any]]],
+                      on_enter: Optional[Callable[..., Any]] = None) -> None:
         dialog = Dialog(text)
 
         def generic(func: Callable[..., Any]) -> None:
@@ -49,6 +50,13 @@ class Dialog:
             for cmd in commands:
                 make_button(cmd)
 
+        def on_enter_action() -> None:
+            dialog.hide()
+
+            if on_enter:
+                on_enter()
+
+        dialog.root.bind("<Return>", lambda e: on_enter_action())
         dialog.show()
 
     @staticmethod
