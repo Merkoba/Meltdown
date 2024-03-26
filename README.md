@@ -244,7 +244,7 @@ Don't show the temperature monitor.
 
 >no-wrap
 
-Disable tab wrapping when switching tabs to the left or right.
+Disable tab and menu wrapping when cycling up/down or left/right.
 
 ---
 

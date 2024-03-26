@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .separatorbox import SeparatorBox
+from .args import args
 
 # Standard
 import tkinter as tk
@@ -315,7 +316,10 @@ class Menu:
         n -= 1
 
         if n < 0:
-            n = len(self.items) - 1
+            if args.wrap:
+                n = len(self.items) - 1
+            else:
+                return
 
         if not self.select_item(n):
             self.arrow_up(n)
@@ -333,7 +337,10 @@ class Menu:
         n += 1
 
         if n >= len(self.items):
-            n = 0
+            if args.wrap:
+                n = 0
+            else:
+                return
 
         if not self.select_item(n):
             self.arrow_down(n)

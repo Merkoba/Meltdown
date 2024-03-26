@@ -48,7 +48,7 @@ class Args:
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
-            "no-wrap": {"action": "store_false", "help": "Disable tab wrapping"},
+            "no-wrap": {"action": "store_false", "help": "Disable tab and menu wrapping"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
