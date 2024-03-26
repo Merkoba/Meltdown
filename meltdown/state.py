@@ -5,7 +5,6 @@ from .widgets import widgets
 from .dialogs import Dialog
 from .display import display
 from .args import args
-from . import timeutils
 
 # Standard
 import os
@@ -314,55 +313,6 @@ def get_models_dir() -> Optional[str]:
             return str(path.parent)
 
     return None
-
-
-def save_log() -> None:
-    Dialog.show_confirm("Save conversation to a file?", do_save_log, None)
-
-
-def do_save_log() -> None:
-    from .session import session
-    document = session.get_current_document()
-
-    if not document:
-        return
-
-    text = document.to_log()
-
-    if not text:
-        return
-
-    lines = text.split("\n")
-    new_lines = []
-
-    for line in lines:
-        if line.startswith(">> Log saved as"):
-            continue
-
-        new_lines.append(line)
-
-    text = "\n".join(new_lines)
-    text = timeutils.date() + "\n" + text
-    name = display.get_current_tab_name().lower()
-    name = name.replace(" ", "_")
-    paths.logs.mkdir(parents=True, exist_ok=True)
-    file_name = name + ".txt"
-    file_path = Path(paths.logs, file_name)
-    num = 2
-
-    while file_path.exists():
-        file_name = f"{name}_{num}.txt"
-        file_path = Path(paths.logs, file_name)
-        num += 1
-
-        if num > 9999:
-            break
-
-    with open(file_path, "w") as file:
-        file.write(text)
-
-    display.print(f">> Log saved as {file_name}")
-    print(f"Log saved at {file_path}")
 
 
 def on_model_change(unload: bool = True) -> None:

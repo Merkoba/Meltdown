@@ -436,8 +436,8 @@ class Display:
         tab.modified = True
 
     def save_log(self) -> None:
-        from . import state
-        state.save_log()
+        from . import logs
+        logs.save_log()
 
     def get_tab_name(self, tab_id: str) -> str:
         return self.root.tab(tab_id, "text")  # type: ignore

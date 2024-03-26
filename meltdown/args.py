@@ -28,6 +28,7 @@ class Args:
         self.theme = ""
         self.config = ""
         self.session = ""
+        self.on_log = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -56,6 +57,7 @@ class Args:
             "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
             "config": {"type": str, "help": "Name or path of a config file to use"},
             "session": {"type": str, "help": "Name or path of a session file to use"},
+            "on-log": {"type": str, "help": "Command to execute when saving a log file"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -79,7 +81,7 @@ class Args:
 
         normals = [
             "maximized", "compact", "full", "width", "height",
-            "theme", "test", "config", "session",
+            "theme", "test", "config", "session", "on_log",
         ]
 
         for n_item in normals:

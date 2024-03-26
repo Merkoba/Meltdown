@@ -8,6 +8,7 @@ from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
+from . import logs
 from . import timeutils
 from . import state
 
@@ -199,12 +200,12 @@ class Keyboard:
         self.register("<F11>", lambda: app.toggle_fullscreen())
         self.register("t", on_ctrl=lambda: display.make_tab())
         self.register("w", on_ctrl=lambda: display.close_current_tab())
-        self.register("s", on_ctrl=lambda: state.save_log())
+        self.register("s", on_ctrl=lambda: logs.save_log())
         self.register("y", on_ctrl=lambda: display.copy_output())
         self.register("p", on_ctrl=lambda: app.toggle_compact())
         self.register("r", on_ctrl=lambda: app.resize())
         self.register("m", on_ctrl=lambda: model.browse_models())
-        self.register("l", on_ctrl=lambda: state.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
+        self.register("l", on_ctrl=lambda: logs.save_log(), on_ctrl_shift=lambda: state.open_logs_dir())
 
     def reset(self) -> None:
         self.ctrl = False

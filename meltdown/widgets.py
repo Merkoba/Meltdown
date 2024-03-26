@@ -10,6 +10,7 @@ from .inputcontrol import inputcontrol
 from .display import display
 from .args import args
 from . import widgetutils
+from . import logs
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -236,7 +237,7 @@ class Widgets:
         ToolTip(self.clear_button, "Clear the output of the current tab")
 
         self.log_button = widgetutils.make_button(self.button_frame, "Log",
-                                                  lambda: display.save_log(), fill=Fill.HORIZONTAL)
+                                                  lambda: logs.save_log(), fill=Fill.HORIZONTAL)
         ToolTip(self.log_button, "Save the output to a log file")
 
         self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),

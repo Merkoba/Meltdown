@@ -295,3 +295,13 @@ Load a session file.
 This can be a name, you can omit the `.json`.
 
 It can also be a direct path.
+
+---
+
+>on-log
+
+This is a command to run after saving a log file.
+
+For example you can use `--on-log geany` to automatically
+
+open the file on the Geany text editor after it is saved.

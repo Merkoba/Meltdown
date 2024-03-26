@@ -18,13 +18,14 @@ class Commands:
         from .display import display
         from .model import model
         from . import state
+        from . import logs
 
         self.commands = {
             "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: display.clear()},
             "config": {"aliases": ["configuration"], "help": "Show the current configuration", "action": lambda: config.show_config()},
             "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
             "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
-            "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: state.save_log()},
+            "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: logs.save_log()},
             "logs": {"aliases": [], "help": "Open the logs directory", "action": lambda: state.open_logs_dir()},
             "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
             "stop": {"aliases": [], "help": "Stop the current stream", "action": lambda: model.stop_stream()},
