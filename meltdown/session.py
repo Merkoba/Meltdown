@@ -60,8 +60,10 @@ class Document:
         self.name = name
         self.items: List[Dict[str, str]] = []
         self.loaded = False
+        self.last_modified = 0.0
 
     def add(self, context_dict: Dict[str, str]) -> None:
+        self.last_modified = timeutils.now()
         self.items.append(context_dict)
         self.limit()
         session.save()
@@ -93,6 +95,7 @@ class Document:
         return {
             "id": self.id,
             "name": self.name,
+            "last_modified": self.last_modified,
             "items": self.items,
         }
 

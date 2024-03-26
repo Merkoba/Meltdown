@@ -4,7 +4,6 @@ from .display import display
 from .args import args
 
 # Standard
-import re
 import json
 from pathlib import Path
 from .paths import paths
@@ -20,6 +19,7 @@ def save_log() -> None:
 
 
 def save_log_file(text: str, ext: str) -> None:
+    text = text.strip()
     name = display.get_current_tab_name().lower()
     name = name.replace(" ", "_")
     paths.logs.mkdir(parents=True, exist_ok=True)
@@ -74,12 +74,11 @@ def log_to_text() -> None:
         return
 
     lines = text.split("\n")
-    new_lines = []
+    lines = [line for line in lines if line.strip()]
 
-    for line in lines:
-        new_lines.append(line)
+    full_text = ""
+    full_text += document.name + "\n"
+    full_text += timeutils.date() + "\n\n"
+    full_text += "\n\n".join(lines)
 
-    text = "\n\n".join(new_lines)
-    text = timeutils.date() + "\n\n" + text
-    text = re.sub(r"\n\s*\n", "\n\n", text).strip()
-    save_log_file(text, "txt")
+    save_log_file(full_text, "txt")
