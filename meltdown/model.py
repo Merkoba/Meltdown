@@ -237,17 +237,17 @@ class Model:
 
         display.prompt("user", text=prompt, tab_id=tab_id)
         widgets.enable_stop_button()
-        document = session.get_document(tab.document_id)
+        conversation = session.get_conversation(tab.conversation_id)
 
-        if not document:
+        if not conversation:
             return
 
         log_dict = {"user": prompt}
         system = self.replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
-        if document.items:
-            for item in document.items[-abs(config.context):]:
+        if conversation.items:
+            for item in conversation.items[-abs(config.context):]:
                 for key in item:
                     content = item[key]
 
@@ -366,7 +366,7 @@ class Model:
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()
-            document.add(log_dict)
+            conversation.add(log_dict)
 
         self.lock.release()
 

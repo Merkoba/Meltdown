@@ -341,12 +341,12 @@ class Output(tk.Text):
         if not tab:
             return ""
 
-        document = session.get_document(tab.document_id)
+        conversation = session.get_conversation(tab.conversation_id)
 
-        if not document:
+        if not conversation:
             return ""
 
-        return document.to_log()
+        return conversation.to_log()
 
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who)

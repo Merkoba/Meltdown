@@ -12,6 +12,13 @@ from . import timeutils
 
 
 def save_log() -> None:
+    from .session import session
+    conversation = session.get_current_conversation()
+
+    if (not conversation) or (not conversation.items):
+        Dialog.show_message("No conversation to save")
+        return
+
     cmds = []
     cmds.append(("Cancel", lambda: None))
     cmds.append(("To JSON", lambda: log_to_json()))
@@ -49,12 +56,12 @@ def save_log_file(text: str, ext: str) -> None:
 
 def log_to_json() -> None:
     from .session import session
-    document = session.get_current_document()
+    conversation = session.get_current_conversation()
 
-    if not document:
+    if not conversation:
         return
 
-    text = document.to_dict()
+    text = conversation.to_dict()
 
     if not text:
         return
@@ -65,12 +72,12 @@ def log_to_json() -> None:
 
 def log_to_text() -> None:
     from .session import session
-    document = session.get_current_document()
+    conversation = session.get_current_conversation()
 
-    if not document:
+    if not conversation:
         return
 
-    text = document.to_log()
+    text = conversation.to_log()
 
     if not text:
         return
@@ -79,7 +86,7 @@ def log_to_text() -> None:
     lines = [line for line in lines if line.strip()]
 
     full_text = ""
-    full_text += document.name + "\n"
+    full_text += conversation.name + "\n"
     full_text += timeutils.date() + "\n\n"
     full_text += "\n\n".join(lines)
 

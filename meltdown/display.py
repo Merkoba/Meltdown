@@ -17,8 +17,8 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, document_id: str, tab_id: str, output: Output, bottom: Bottom) -> None:
-        self.document_id = document_id
+    def __init__(self, conversation_id: str, tab_id: str, output: Output, bottom: Bottom) -> None:
+        self.conversation_id = conversation_id
         self.tab_id = tab_id
         self.output = output
         self.bottom = bottom
@@ -63,7 +63,7 @@ class Display:
         self.root.bind("<Button-5>", lambda e: on_mousewheel("right"))
 
     def make_tab(self, name: Optional[str] = None,
-                 document_id: Optional[str] = None, select_tab: bool = True) -> str:
+                 conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
         from .session import session
         frame = widgetutils.make_frame(self.root)
 
@@ -72,11 +72,11 @@ class Display:
 
         self.root.add(frame, text=name)
 
-        if not document_id:
-            document = session.add(name)
-            document_id = document.id
+        if not conversation_id:
+            conversation = session.add(name)
+            conversation_id = conversation.id
 
-        if not document_id:
+        if not conversation_id:
             return ""
 
         tab_id = self.tab_ids()[-1]
@@ -86,7 +86,7 @@ class Display:
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
         bottom = Bottom(frame, tab_id)
-        tab = Tab(document_id, tab_id, output, bottom)
+        tab = Tab(conversation_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
 
         if select_tab:
@@ -159,11 +159,11 @@ class Display:
         tab = self.get_current_tab()
 
         if tab:
-            document = session.get_document(tab.document_id)
+            conversation = session.get_conversation(tab.conversation_id)
 
-            if document and (not document.loaded):
-                document.print()
-                document.loaded = True
+            if conversation and (not conversation.loaded):
+                conversation.print()
+                conversation.loaded = True
                 self.to_bottom(tab.tab_id)
 
         inputcontrol.focus()
@@ -181,9 +181,9 @@ class Display:
     def get_tab(self, id: str) -> Optional[Tab]:
         return self.tabs.get(id)
 
-    def get_tab_by_document_id(self, document_id: str) -> Optional[Tab]:
+    def get_tab_by_conversation_id(self, conversation_id: str) -> Optional[Tab]:
         for tab in self.tabs.values():
-            if tab.document_id == document_id:
+            if tab.conversation_id == conversation_id:
                 return tab
 
         return None
@@ -247,7 +247,7 @@ class Display:
                 return
 
             self.root.tab(tab_id, text=name)
-            session.change_name(tab.document_id, name)
+            session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
@@ -398,7 +398,7 @@ class Display:
                 return
 
             tab.output.clear_text()
-            session.clear(tab.document_id)
+            session.clear(tab.conversation_id)
             app.show_intro(tab_id)
             tab.modified = False
 
@@ -457,7 +457,7 @@ class Display:
         if not tab:
             return
 
-        session.remove(tab.document_id)
+        session.remove(tab.conversation_id)
         del self.tabs[tab_id]
 
     def random_tab_name(self) -> str:

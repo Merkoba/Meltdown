@@ -14,7 +14,7 @@ from tkinter import filedialog
 from pathlib import Path
 
 
-test_session = {
+test_conversation = {
     "id": "test123",
     "name": "Test",
     "items": [
@@ -55,7 +55,7 @@ test_session = {
 }
 
 
-class Document:
+class Conversation:
     def __init__(self, _id: str, name: str) -> None:
         self.id = _id
         self.name = name
@@ -80,7 +80,7 @@ class Document:
         return len(self.items) == 0
 
     def print(self) -> None:
-        tab = display.get_tab_by_document_id(self.id)
+        tab = display.get_tab_by_conversation_id(self.id)
 
         if tab:
             for item in self.items:
@@ -119,39 +119,39 @@ class Document:
 
 class Session:
     def __init__(self) -> None:
-        self.items: Dict[str, Document] = {}
+        self.items: Dict[str, Conversation] = {}
 
-    def add(self, name: str) -> Document:
-        doc_id = str(timeutils.now())
-        document = Document(doc_id, name)
-        document.loaded = True
-        self.items[doc_id] = document
-        return document
+    def add(self, name: str) -> Conversation:
+        conv_id = str(timeutils.now())
+        conversation = Conversation(conv_id, name)
+        conversation.loaded = True
+        self.items[conv_id] = conversation
+        return conversation
 
-    def remove(self, document_id: str) -> None:
-        if document_id in self.items:
-            del self.items[document_id]
+    def remove(self, conversation_id: str) -> None:
+        if conversation_id in self.items:
+            del self.items[conversation_id]
             self.save()
 
-    def get_document(self, document_id: str) -> Optional[Document]:
-        return self.items[document_id]
+    def get_conversation(self, conversation_id: str) -> Optional[Conversation]:
+        return self.items[conversation_id]
 
-    def get_current_document(self) -> Optional[Document]:
+    def get_current_conversation(self) -> Optional[Conversation]:
         tab = display.get_current_tab()
 
         if tab:
-            return self.get_document(tab.document_id)
+            return self.get_conversation(tab.conversation_id)
         else:
             return None
 
-    def change_name(self, document_id: str, name: str) -> None:
-        if document_id in self.items:
-            self.items[document_id].name = name
+    def change_name(self, conversation_id: str, name: str) -> None:
+        if conversation_id in self.items:
+            self.items[conversation_id].name = name
             self.save()
 
-    def clear(self, document_id: str) -> None:
-        if document_id in self.items:
-            self.items[document_id].clear()
+    def clear(self, conversation_id: str) -> None:
+        if conversation_id in self.items:
+            self.items[conversation_id].clear()
             self.save()
 
     def save(self) -> None:
@@ -215,16 +215,16 @@ class Session:
                 items = []
 
         if args.test:
-            items.append(test_session)
+            items.append(test_conversation)
 
         if not items:
             return
 
         for item in items:
-            document = Document(item["id"], item["name"])
-            document.items = item["items"]
-            self.items[document.id] = document
-            display.make_tab(document.name, document.id, select_tab=False)
+            conversation = Conversation(item["id"], item["name"])
+            conversation.items = item["items"]
+            self.items[conversation.id] = conversation
+            display.make_tab(conversation.name, conversation.id, select_tab=False)
 
         tab_ids = display.tab_ids()
 
@@ -280,19 +280,19 @@ class Session:
             if not tab:
                 continue
 
-            document = self.get_document(tab.document_id)
+            conversation = self.get_conversation(tab.conversation_id)
 
-            if not document:
+            if not conversation:
                 continue
 
-            new_items[document.id] = document
+            new_items[conversation.id] = conversation
 
         self.items = new_items
         self.save()
 
     def to_json(self) -> str:
-        sessions_list = [document.to_dict() for document in
-                         self.items.values() if document.items and (document.id != "test123")]
+        sessions_list = [conversation.to_dict() for conversation in
+                         self.items.values() if conversation.items and (conversation.id != "test123")]
         return json.dumps(sessions_list, indent=4)
 
     def menu(self) -> None:
