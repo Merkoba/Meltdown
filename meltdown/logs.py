@@ -12,10 +12,11 @@ from . import timeutils
 
 
 def save_log() -> None:
-    cmd_list = []
-    cmd_list.append(("To JSON", lambda: log_to_json()))
-    cmd_list.append(("To Text", lambda: log_to_text()))
-    Dialog.show_confirm("Save conversation to a file?", None, cmd_list=cmd_list)
+    cmds = []
+    cmds.append(("Cancel", lambda: None))
+    cmds.append(("To JSON", lambda: log_to_json()))
+    cmds.append(("To Text", lambda: log_to_text()))
+    Dialog.show_commands("Save conversation to a file?", cmds)
 
 
 def save_log_file(text: str, ext: str) -> None:

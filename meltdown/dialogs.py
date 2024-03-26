@@ -12,9 +12,8 @@ class Dialog:
     current_dialog: Optional["Dialog"] = None
 
     @staticmethod
-    def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]],
-                     cmd_cancel: Optional[Callable[..., Any]] = None,
-                     cmd_list: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+    def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]] = None,
+                     cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -29,24 +28,26 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
+        dialog.root.bind("<Return>", lambda e: ok())
+        dialog.make_button("Cancel", cancel)
+        dialog.make_button("Ok", ok)
+        dialog.show()
+
+    @staticmethod
+    def show_commands(text: str,
+                      commands: List[Tuple[str, Callable[..., Any]]]) -> None:
+        dialog = Dialog(text)
+
         def generic(func: Callable[..., Any]) -> None:
             dialog.hide()
             func()
 
-        if cmd_ok:
-            dialog.root.bind("<Return>", lambda e: ok())
-
-        dialog.make_button("Cancel", cancel)
-
         def make_button(cmd: Tuple[str, Callable[..., Any]]) -> None:
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
-        if cmd_list:
-            for cmd in cmd_list:
+        if commands:
+            for cmd in commands:
                 make_button(cmd)
-
-        if cmd_ok:
-            dialog.make_button("Ok", ok)
 
         dialog.show()
 

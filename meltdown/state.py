@@ -290,7 +290,7 @@ def reset_config() -> None:
         model.unload(True)
 
     Dialog.show_confirm("This will remove your custom configs"
-                        "\nand refresh the widgets", reset, None)
+                        "\nand refresh the widgets", reset)
 
 
 def reset_one_config(key: str) -> None:

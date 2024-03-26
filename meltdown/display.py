@@ -128,16 +128,18 @@ class Display:
         if force:
             action()
         else:
-            cmd_list = []
+            cmds = []
+            cmds.append(("Cancel", lambda: None))
 
             if self.num_tabs() > 1:
                 if self.num_tabs() > 5:
-                    cmd_list.append(("Old", lambda: self.close_old_tabs()))
+                    cmds.append(("Old", lambda: self.close_old_tabs()))
 
-                cmd_list.append(("Others", lambda: self.close_other_tabs()))
-                cmd_list.append(("All", lambda: self.close_all_tabs()))
+                cmds.append(("Others", lambda: self.close_other_tabs()))
+                cmds.append(("All", lambda: self.close_all_tabs()))
 
-            Dialog.show_confirm("Close tab?", lambda: action(), cmd_list=cmd_list)
+            cmds.append(("Ok", lambda: action()))
+            Dialog.show_commands("Close tab?", cmds)
 
     def select_tab(self, tab_id: str) -> None:
         self.root.select(tab_id)

@@ -141,7 +141,11 @@ class App:
             "All Rights Reserved",
         ]
 
-        Dialog.show_message("\n".join(lines))
+        cmds = []
+        cmds.append(("Help", lambda: self.show_help()))
+        cmds.append(("Ok", lambda: None))
+
+        Dialog.show_commands("\n".join(lines), cmds)
 
     def toggle_maximize(self) -> None:
         if self.root.attributes("-zoomed"):
@@ -353,6 +357,14 @@ class App:
 
     def unfullscreen(self) -> None:
         self.root.attributes("-fullscreen", False)
+
+    def show_help(self) -> None:
+        from .display import display
+        from .commands import commands
+        tab_id = display.make_tab()
+        commands.show_help(tab_id=tab_id)
+        commands.show_arguments(tab_id=tab_id)
+        display.to_top(tab_id=tab_id)
 
 
 app = App()
