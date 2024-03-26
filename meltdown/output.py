@@ -389,20 +389,28 @@ class Output(tk.Text):
 
     def get_tagwords(self, tag: str, event: Any) -> str:
         current_index = event.widget.index(tk.CURRENT)
+        cur_line, cur_char = map(int, str(current_index).split("."))
         ranges = self.tag_ranges(tag)
 
         for i in range(0, len(ranges), 2):
             start, end = ranges[i], ranges[i + 1]
-            start_line, start_char = map(int, str(start).split('.'))
-            end_line, end_char = map(int, str(end).split('.'))
-            cur_line, cur_char = map(int, str(current_index).split('.'))
+            start_line, start_char = map(int, str(start).split("."))
+            end_line, end_char = map(int, str(end).split("."))
 
-            if start_line <= cur_line < end_line or (start_line == cur_line == end_line and start_char <= cur_char < end_char):
-                text = self.get(start, end)
-                if text:
-                    return text
+            # If the current index is within the start and end range
+            if start_line <= cur_line <= end_line:
+                if cur_line == start_line and cur_char < start_char:
+                    continue  # Skip if the cursor is before the start of the tagged text on the same line
+                if cur_line == end_line and cur_char > end_char:
+                    continue  # Skip if the cursor is after the end of the tagged text on the same line
 
-        return ""
+                tagged_text = self.get(start, end)
+                tagged_lines = tagged_text.split("\n")
+
+                # Return the line of the tagged text that the cursor is on
+                return tagged_lines[cur_line - start_line]
+
+        return ""  # Return an empty string if no tagged word is found
 
     def get_selected_text(self) -> str:
         try:
@@ -432,6 +440,12 @@ class Output(tk.Text):
 
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
+        char = self.get(current_index)
+
+        if char == "\n":
+            self.configure(cursor="arrow")
+            return
+
         tags = self.tag_names(current_index)
 
         if tags:
