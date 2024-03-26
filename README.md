@@ -108,6 +108,8 @@ Click and double click words.
 
 Start new conversations based on some words.
 
+Perform commands automatically upong saving log files.
+
 ---
 
 ## GUI Toolkit
