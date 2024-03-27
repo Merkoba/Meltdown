@@ -20,7 +20,10 @@ class Markdown():
         self.protocols = ("http://", "https://", "ftp://", "www.")
 
     def format(self) -> None:
+        # Code fences
         self.format_snippets()
+
+        # All lines
         lines = self.widget.get("1.0", "end-1c").split("\n")
 
         # Bold with two *
