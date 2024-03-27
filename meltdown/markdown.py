@@ -12,12 +12,21 @@ class MatchItem:
         self.items = items
 
 
+class IndexItem:
+    def __init__(self, start: str, end: str, content: str) -> None:
+        self.start = start
+        self.end = end
+        self.content = content
+
+
 class Markdown():
     def __init__(self, widget: Output) -> None:
         self.widget = widget
         self.start_stopppers = ["", " "]
         self.end_stoppers = ["", " ", "!", ".", "?", "\n", ",", ";"]
         self.protocols = ("http://", "https://", "ftp://", "www.")
+        self.left_side = r"[\(\[]?"
+        self.right_side = r"[\.\,\;\!\?\:\)\]]?"
 
     def format(self) -> None:
         # Code fences
@@ -27,19 +36,19 @@ class Markdown():
         lines = self.widget.get("1.0", "end-1c").split("\n")
 
         # Bold with two *
-        pattern = r"(?:(?<=\s)|^)(?P<all>\*{2}(?P<content>.*?)\*{2})[\.\,\;\!\?\:]?(?=\s|$)"
+        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){self.right_side}(?=\s|$)"
         self.do_format(lines, pattern, "bold")
 
         # Italic with one *
-        pattern = r"(?:(?<=\s)|^)(?P<all>\*(?P<content>.*?)\*)[\.\,\;\!\?\:]?(?=\s|$)"
+        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\*(?P<content>.*?)\*){self.right_side}(?=\s|$)"
         self.do_format(lines, pattern, "italic")
 
         # Italic with one _
-        pattern = r"(?:(?<=\s)|^)(?P<all>\_(?P<content>.*?)\_)[\.\,\;\!\?\:]?(?=\s|$)"
+        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\_(?P<content>.*?)\_){self.right_side}(?=\s|$)"
         self.do_format(lines, pattern, "italic")
 
         # Highlight with one `
-        pattern = r"(?:(?<=\s)|^)(?P<all>\`(?P<content>.*?)\`)[\.\,\;\!\?\:]?(?=\s|$)"
+        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\`(?P<content>.*?)\`){self.right_side}(?=\s|$)"
         self.do_format(lines, pattern, "highlight")
 
         # URLs with http:// | https:// | ftp:// | www.
@@ -58,23 +67,42 @@ class Markdown():
 
         for match in reversed(matches):
             items = match.items
-            indices = []
+            indices: List[IndexItem] = []
 
             for item in reversed(items):
                 all = item.group("all")
                 content = item.group("content")
-                start = self.widget.search(all, f"{match.line}.0", stopindex="end")
+                search_col = 0
 
-                if not start:
-                    continue
+                for _ in range(0, 999):
+                    start = self.widget.search(all, f"{match.line}.{search_col}", stopindex=f"{match.line}.end")
 
-                end = self.widget.index(f"{start} + {len(all)}c")
-                indices.append((start, end, content))
+                    if not start:
+                        break
 
-            for start, end, content in indices:
-                self.widget.delete(start, end)
-                self.widget.insert(start, content)
-                self.widget.tag_add(tag, start, f"{start} + {len(content)}c")
+                    repeated = False
+
+                    for index in indices:
+                        if (index.start == start) and (index.content == content):
+                            search_col = int(start.split(".")[1]) + len(all)
+                            repeated = True
+
+                    if repeated:
+                        continue
+
+                    end = self.widget.index(f"{start} + {len(all)}c")
+
+                    if not end:
+                        break
+
+                    indices.append(IndexItem(start, end, content))
+
+            sorted_indices = reversed(sorted(indices, key=lambda x: int(x.start.split(".")[1])))
+
+            for index_item in sorted_indices:
+                self.widget.delete(index_item.start, index_item.end)
+                self.widget.insert(index_item.start, index_item.content)
+                self.widget.tag_add(tag, index_item.start, f"{index_item.start} + {len(index_item.content)}c")
 
     def format_snippets(self) -> None:
         from .snippet import Snippet
