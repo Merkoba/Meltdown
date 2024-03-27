@@ -46,7 +46,7 @@ test_conversation = {
             "Here is some code:\n\n```\na = 123\nprint('Hello, World!')\n```\n\n" +
             "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
          },
-        {"user": "Snippet Test 2"},
+        {"user": "Snippet Test 3"},
         {"assistant":
             "```python\na = 123\nprint('Hello, World!')\n```"
          },
