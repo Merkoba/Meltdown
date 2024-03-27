@@ -372,7 +372,6 @@ class Output(tk.Text):
 
     def print(self, text: str) -> None:
         left = ""
-
         last_line_index = self.index("end-2l")
         elements = self.dump(last_line_index, "end-1c", window=True)
         widget_above = False
