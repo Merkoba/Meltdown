@@ -460,6 +460,8 @@ class Output(tk.Text):
             else:
                 Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
 
+        Output.words = Output.words.strip()
+
         if not Output.words:
             return
 
