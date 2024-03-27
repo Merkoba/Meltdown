@@ -123,7 +123,8 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.position = "1.0"
+        self.format_debouncer_delay = 250
+        self.format_debouncer = ""
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -229,15 +230,20 @@ class Output(tk.Text):
     def insert_text(self, text: str, format_text: bool = False) -> None:
         self.enable()
         self.insert(tk.END, text)
-
-        if format_text:
-            checks = ("`", ":", "*", "_")
-
-            if any([check in text for check in checks]):
-                self.format_text()
-
         self.disable()
         self.to_bottom(True)
+
+        if format_text:
+            self.start_format_debouncer()
+
+    def start_format_debouncer(self) -> None:
+        self.clear_format_debouncer()
+        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: self.format_text())
+
+    def clear_format_debouncer(self) -> None:
+        if self.format_debouncer:
+            self.after_cancel(self.format_debouncer)
+            self.format_debouncer = ""
 
     def clear_text(self) -> None:
         self.set_text("")
@@ -296,9 +302,8 @@ class Output(tk.Text):
 
     def format_text(self) -> None:
         self.enable()
-        self.markdown.format(self.position)
+        self.markdown.format()
         self.disable()
-        app.update()
         self.to_bottom(True)
 
     def update_font(self) -> None:
@@ -354,9 +359,6 @@ class Output(tk.Text):
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
-
-        if who == "ai":
-            self.position = self.index("end - 1c")
 
     def print(self, text: str) -> None:
         left = ""

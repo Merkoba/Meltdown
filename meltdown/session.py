@@ -35,7 +35,7 @@ test_conversation = {
         {"user": "Italic Test 3"},
         {"assistant": "*This is an italic sentence*\n*This is an italic sentence*"},
         {"user": "Italic Test 4"},
-        {"assistant": "_This is an italic sentence_\n_This is an italic sentence_"},
+        {"assistant": "_This is an italic sentence_ 2\n_This is an italic sentence_ 2"},
         {"user": "Snippet Test"},
         {"assistant":
             "```python\na = 123\nprint('Hello, World!')\n```\n\n" +
@@ -51,6 +51,8 @@ test_conversation = {
          "Here are some urls https://aa.com and http://cc.com\nftp://44.com"},
         {"user": "Normal Sentence"},
         {"assistant": "Here is a normal sentence"},
+        {"user": "Loading dolphin-2_6-phi-2.Q5_K_M.gguf"},
+        {"assistant": "Ok"},
     ],
 }
 

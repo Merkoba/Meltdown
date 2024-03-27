@@ -164,7 +164,8 @@ class Display:
             if conversation and (not conversation.loaded):
                 conversation.print()
                 conversation.loaded = True
-                self.to_bottom(tab.tab_id)
+                self.format_text(tab.tab_id)
+                app.root.after(100, lambda: self.to_bottom(tab.tab_id))
 
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -610,9 +611,20 @@ class Display:
         tab.output.prompt(who)
 
         if text:
-            fmt = who == "ai"
-            tab.output.insert_text(text, format_text=fmt)
+            tab.output.insert_text(text)
 
+        tab.modified = True
+
+    def format_text(self, tab_id: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        tab.output.format_text()
         tab.modified = True
 
 
