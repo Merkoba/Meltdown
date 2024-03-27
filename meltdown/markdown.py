@@ -117,35 +117,35 @@ class Markdown():
 
         for match in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
             language = match.group(1)
-            content_start = match.start(2)
-            content_end = match.end(2)
-            matches.append((content_start, content_end, language))
 
-        for content_start, content_end, language in reversed(matches):
-            start_index = self.index_of_relative(content_start, "1.0")
-            end_index = self.index_of_relative(content_end, "1.0")
-            start_line = self.get_line(start_index)
-            end_line = self.get_line(end_index)
+            content_start = match.start(2)
+            start_line = f"{self.get_line_number(text, content_start)}.0"
+
+            content_end = match.end(2)
+            end_line = f"{self.get_line_number(text, content_end)}.0"
+
+            matches.append((start_line, end_line, language))
+
+        for start_line, end_line, language in reversed(matches):
             snippet_text = self.widget.get(f"{start_line} linestart", f"{end_line} lineend")
-            self.widget.delete(f"{start_line} - 1 lines linestart", f"{end_line} + 1 lines lineend")
+            content_above = self.widget.get(f"{start_line} -1 line linestart", f"{start_line} -1 line lineend").strip()
             snippet = Snippet(self.widget, snippet_text, language)
-            self.widget.window_create(f"{start_line} - 1 lines", window=snippet)
+            numchars = 3
+
+            if language:
+                numchars += len(language)
+
+            if len(content_above) > numchars:
+                end_of_line_above = f"{start_line} -1 line lineend"
+                right_bit = f"{end_of_line_above} -{numchars} chars"
+                self.widget.delete(right_bit, end_of_line_above)
+                self.widget.delete(start_line, f"{end_line} +1 line lineend")
+                self.widget.window_create(start_line, window=snippet)
+            else:
+                self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
+                self.widget.window_create(f"{start_line} - 1 lines", window=snippet)
+
             self.widget.snippets.append(snippet)
 
-    def index_of_relative(self, index: int, position: str) -> str:
-        line, col = map(int, position.split("."))
-        text = self.widget.get(position, "end-1c")
-
-        for i in range(index):
-            if i >= len(text):
-                break
-            elif (text[i] == "\n"):
-                line += 1
-                col = 0
-            else:
-                col += 1
-
-        return f"{line}.{col}"
-
-    def get_line(self, index: str) -> str:
-        return str(index.split(".")[0]) + ".0"
+    def get_line_number(self, text: str, index: int) -> int:
+        return text.count("\n", 0, index) + 1

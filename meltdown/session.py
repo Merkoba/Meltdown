@@ -44,7 +44,11 @@ test_conversation = {
         {"user": "Snippet Test 2"},
         {"assistant":
             "Here is some code:\n\n```\na = 123\nprint('Hello, World!')\n```\n\n" +
-            "Here is more code:\n\n```\nlet a = 123\nconsole.log('Hello, World!')\n```"
+            "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
+         },
+        {"user": "Snippet Test 2"},
+        {"assistant":
+            "```python\na = 123\nprint('Hello, World!')\n```"
          },
         {"user": "URL Test"},
         {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n" +
