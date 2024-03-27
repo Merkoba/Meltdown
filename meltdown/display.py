@@ -165,7 +165,6 @@ class Display:
                 conversation.print()
                 conversation.loaded = True
                 self.format_text(tab.tab_id)
-                app.root.after(100, lambda: self.to_bottom(tab.tab_id))
 
         inputcontrol.focus()
         self.check_scroll_buttons()

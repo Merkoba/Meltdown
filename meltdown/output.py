@@ -304,7 +304,7 @@ class Output(tk.Text):
         self.enable()
         self.markdown.format()
         self.disable()
-        self.to_bottom(True)
+        app.root.after(120, lambda: self.to_bottom(True))
 
     def update_font(self) -> None:
         self.configure(font=app.theme.get_output_font())
@@ -429,8 +429,12 @@ class Output(tk.Text):
             return ""
 
     def show_word_menu(self, event: Any) -> None:
-        Output.current_output = self
+        current_index = self.index(tk.CURRENT)
+        tags = self.tag_names(current_index)
         seltext = self.get_selected_text()
+
+        Output.words = ""
+        Output.current_output = self
 
         if not seltext:
             for snippet in self.snippets:
@@ -441,6 +445,11 @@ class Output(tk.Text):
 
         if seltext:
             Output.words = seltext
+        else:
+            if tags:
+                Output.words = self.get_tagwords(tags[0], event).strip()
+            else:
+                Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
 
         if not Output.words:
             return
@@ -452,23 +461,28 @@ class Output(tk.Text):
         char = self.get(current_index)
 
         if char == "\n":
-            Output.words = ""
             self.configure(cursor="arrow")
             return
 
         tags = self.tag_names(current_index)
 
         if tags:
-            Output.words = self.get_tagwords(tags[0], event).strip()
-
             if ("sel" in tags) and (len(tags) == 1):
                 self.configure(cursor="xterm")
             else:
                 self.configure(cursor="hand2")
         else:
-            Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
             self.configure(cursor="xterm")
 
     def on_double_click(self, event: Any) -> str:
+        current_index = self.index(tk.CURRENT)
+        tags = self.tag_names(current_index)
+
+        if "name_user" in tags:
+            return "break"
+
+        if "name_ai" in tags:
+            return "break"
+
         self.show_word_menu(event)
         return "break"
