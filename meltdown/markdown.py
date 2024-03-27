@@ -42,7 +42,7 @@ class Markdown():
         pattern = r"(?:(?<=\s)|^)(?P<all>\`(?P<content>.*?)\`)[\.\,\;\!\?\:]?(?=\s|$)"
         self.do_format(lines, pattern, "highlight")
 
-        # Regex to detect http:// https:// or ftp:// urls
+        # URLs with http:// | https:// | ftp:// | www.
         pattern = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
         self.do_format(lines, pattern, "url")
 
