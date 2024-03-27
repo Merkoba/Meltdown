@@ -227,14 +227,12 @@ class Output(tk.Text):
         self.insert("1.0", str(text))
         self.disable()
 
-    def insert_text(self, text: str, format_text: bool = False) -> None:
+    def insert_text(self, text: str) -> None:
         self.enable()
         self.insert(tk.END, text)
         self.disable()
         self.to_bottom(True)
-
-        if format_text:
-            self.start_format_debouncer()
+        self.start_format_debouncer()
 
     def start_format_debouncer(self) -> None:
         self.clear_format_debouncer()
@@ -301,6 +299,15 @@ class Output(tk.Text):
         return self.display.get_tab(self.tab_id)
 
     def format_text(self) -> None:
+        self.clear_format_debouncer()
+        tab = self.get_tab()
+
+        if not tab:
+            return
+
+        if not tab.modified:
+            return
+
         self.enable()
         self.markdown.format()
         self.disable()

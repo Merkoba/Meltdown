@@ -4,7 +4,6 @@ from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
-from .config import config
 from .args import args
 from . import widgetutils
 
@@ -164,7 +163,6 @@ class Display:
             if conversation and (not conversation.loaded):
                 conversation.print()
                 conversation.loaded = True
-                self.format_text(tab.tab_id)
 
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -425,7 +423,7 @@ class Display:
         tab.output.print(text)
         tab.modified = True
 
-    def insert(self, text: str, tab_id: str = "", format_text: bool = False) -> None:
+    def insert(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
             return
 
@@ -434,7 +432,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.insert_text(text, format_text=format_text)
+        tab.output.insert_text(text)
         tab.modified = True
 
     def save_log(self) -> None:

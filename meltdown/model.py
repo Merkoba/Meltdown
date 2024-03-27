@@ -362,7 +362,7 @@ class Model:
                             token_printed = True
 
                         tokens.append(token)
-                        display.insert(token, tab_id=tab_id, format_text=True)
+                        display.insert(token, tab_id=tab_id)
         except BaseException as e:
             print(e)
 
