@@ -25,35 +25,40 @@ class Markdown():
         self.start_stopppers = ["", " "]
         self.end_stoppers = ["", " ", "!", ".", "?", "\n", ",", ";"]
         self.protocols = ("http://", "https://", "ftp://", "www.")
-        self.left_side = r"[\(\[]?"
-        self.right_side = r"[\.\,\;\!\?\:\)\]]?"
 
-    def format(self) -> None:
-        # Code fences
-        self.format_snippets()
+        chars_left = self.escape_regex("([")
+        left_side = fr"[{chars_left}]?"
 
-        # All lines
-        lines = self.widget.get("1.0", "end-1c").split("\n")
+        chars_right = self.escape_regex(".,;!?:)")
+        right_side = fr"[{chars_right}]?"
 
         # Bold with two *
-        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){self.right_side}(?=\s|$)"
-        self.do_format(lines, pattern, "bold")
+        self.pattern_bold = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
 
         # Italic with one *
-        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\*(?P<content>.*?)\*){self.right_side}(?=\s|$)"
-        self.do_format(lines, pattern, "italic")
+        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*(?P<content>.*?)\*){right_side}(?=\s|$)"
 
         # Italic with one _
-        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\_(?P<content>.*?)\_){self.right_side}(?=\s|$)"
-        self.do_format(lines, pattern, "italic")
+        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\_(?P<content>.*?)\_){right_side}(?=\s|$)"
 
         # Highlight with one `
-        pattern = fr"(?:(?<=\s)|^){self.left_side}(?P<all>\`(?P<content>.*?)\`){self.right_side}(?=\s|$)"
-        self.do_format(lines, pattern, "highlight")
+        self.pattern_highlight = fr"(?:(?<=\s)|^){left_side}(?P<all>\`(?P<content>.*?)\`){right_side}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
-        pattern = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
-        self.do_format(lines, pattern, "url")
+        self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
+
+    def escape_regex(self, chars: str) -> str:
+        escaped_chars = [re.escape(char) for char in chars]
+        return "".join(escaped_chars)
+
+    def format(self) -> None:
+        self.format_snippets()
+        lines = self.widget.get("1.0", "end-1c").split("\n")
+        self.do_format(lines, self.pattern_bold, "bold")
+        self.do_format(lines, self.pattern_italic_1, "italic")
+        self.do_format(lines, self.pattern_italic_2, "italic")
+        self.do_format(lines, self.pattern_highlight, "highlight")
+        self.do_format(lines, self.pattern_url, "url")
 
     def do_format(self, lines: List[str], pattern: str, tag: str) -> None:
         matches: List[MatchItem] = []
