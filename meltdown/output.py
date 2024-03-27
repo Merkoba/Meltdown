@@ -125,6 +125,7 @@ class Output(tk.Text):
         self.auto_scroll = True
         self.format_debouncer_delay = 250
         self.format_debouncer = ""
+        self.format_tokens = ("`", ":", "*", "_")
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -232,7 +233,9 @@ class Output(tk.Text):
         self.insert(tk.END, text)
         self.disable()
         self.to_bottom(True)
-        self.start_format_debouncer()
+
+        if any(token in text for token in self.format_tokens):
+            self.start_format_debouncer()
 
     def start_format_debouncer(self) -> None:
         self.clear_format_debouncer()
