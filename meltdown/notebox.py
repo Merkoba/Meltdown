@@ -1,10 +1,9 @@
 # Modules
-from .config import config
 from .app import app
 
 # Standard
 import tkinter as tk
-from typing import List, Optional, Any, Tuple
+from typing import List, Optional, Any, Callable
 
 class TabWidget:
     def __init__(self, frame: tk.Frame, inner: tk.Frame, label: tk.Label):
@@ -24,12 +23,14 @@ class NoteboxItem():
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1 # Lock
+        NoteboxItem.notebox_id += 1 # Lock 2
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
         frame.configure(background=app.theme.tab_border)
+        frame.configure(cursor="hand2")
         inner = tk.Frame(frame)
+        inner.configure(cursor="hand2")
         inner.configure(background=app.theme.tab_normal_background)
         inner.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
         label = tk.Label(inner, text=text, font=app.theme.font_tab)
@@ -83,7 +84,7 @@ class Notebox(tk.Frame):
             self.on_tab_double_click()
 
     def bind_tab_click(self, item: NoteboxItem):
-        item.tab.label.bind("<ButtonRelease-1>", lambda e: self.select(item.id))
+        self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(item.id), item.tab.frame)
 
     def bind_tab_mousewheel(self, widget):
         widget.bind("<Button-4>", lambda e: self.select_left())
@@ -93,8 +94,8 @@ class Notebox(tk.Frame):
         widget.bind("<Button-3>", lambda e: self.tab_right_click(e))
 
     def bind_tab_drag(self, item: NoteboxItem):
-        item.tab.label.bind("<B1-Motion>", lambda e: self.do_tab_drag(e, item))
-        item.tab.label.bind("<Leave>", lambda e: self.end_tab_drag())
+        self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, item), item.tab.frame)
+        self.bind_recursive("<Leave>", lambda e: self.end_tab_drag(), item.tab.frame)
 
     def add(self, name: str):
         item = NoteboxItem(self, name)
@@ -215,6 +216,7 @@ class Notebox(tk.Frame):
         if not self.dragging:
             self.dragging = True
             self.drag_item = item
+            self.select(item.id)
             return
 
         new_item = self.get_tab_at_x(event.x_root)
@@ -238,3 +240,9 @@ class Notebox(tk.Frame):
     def end_tab_drag(self) -> None:
         self.dragging = False
         self.drag_item = None
+
+    def bind_recursive(self, what: str, action: Callable[..., Any], widget: tk.Widget):
+        widget.bind(what, action)
+
+        for child in widget.winfo_children():
+            self.bind_recursive(what, action, child)
