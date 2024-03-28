@@ -22,7 +22,7 @@ class NoteboxItem():
         self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1  # Lock 6
+        NoteboxItem.notebox_id += 1
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
