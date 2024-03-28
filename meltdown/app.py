@@ -121,7 +121,7 @@ class App:
         cmds = []
         cmds.append(("Commands", lambda: self.show_help("commands")))
         cmds.append(("Arguments", lambda: self.show_help("arguments")))
-        cmds.append(("Shortcuts", lambda: self.show_help("shortcuts")))
+        cmds.append(("Keyboard", lambda: self.show_help("keyboard")))
         cmds.append(("Ok", lambda: None))
 
         Dialog.show_commands("\n".join(lines), cmds)
@@ -350,8 +350,8 @@ class App:
         elif what == "arguments":
             tab_id = display.make_tab("Arguments")
             args.show_help(tab_id=tab_id)
-        elif what == "shortcuts":
-            tab_id = display.make_tab("Shortcuts")
+        elif what == "keyboard":
+            tab_id = display.make_tab("Keyboard")
             keyboard.show_help(tab_id=tab_id)
 
         display.to_top(tab_id=tab_id)

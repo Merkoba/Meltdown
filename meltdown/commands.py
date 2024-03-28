@@ -43,9 +43,9 @@ class Commands:
             "theme": {"aliases": [], "help": "Change the color theme", "action": lambda: app.toggle_theme()},
             "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
             "help": {"aliases": ["info", "information"], "help": "Show help information", "action": lambda: self.help_command()},
-            "commands": {"aliases": ["cmds"], "help": "Show the command line arguments", "action": lambda: self.show_help()},
-            "arguments": {"aliases": ["args"], "help": "Show the command line arguments", "action": lambda: args.show_help()},
-            "shortcuts": {"aliases": ["keyboard"], "help": "Show the tab list to pick a tab", "action": lambda: keyboard.show_help()},
+            "commands": {"aliases": ["cmds"], "help": "Show the command line arguments", "action": lambda: app.show_help("commands")},
+            "arguments": {"aliases": ["args"], "help": "Show the command line arguments", "action": lambda: app.show_help("arguments")},
+            "keyboard": {"aliases": ["shortcuts"], "help": "Show the tab list to pick a tab", "action": lambda: app.show_help("keyboard")},
             "list": {"aliases": ["tabs"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list(True)},
         }
 
@@ -114,7 +114,7 @@ class Commands:
         items = []
         items.append("Use /commands to see commands")
         items.append("Use /arguments to see command line arguments")
-        items.append("Use /shortcuts to see keyboard shortcuts")
+        items.append("Use /keyboard to see keyboard keyboard")
 
         text = "\n".join(items)
         display.print(text)
