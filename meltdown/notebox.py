@@ -1,5 +1,6 @@
 # Modules
 from .app import app
+from .args import args
 
 # Standard
 import tkinter as tk
@@ -225,9 +226,14 @@ class Notebox(tk.Frame):
         index = self.index(self.current_item.id)
 
         if index == 0:
-            return
+            if args.wrap and (len(self.items) >= 2):
+                index = len(self.items) - 1
+            else:
+                return
+        else:
+            index -= 1
 
-        self.select(self.items[index - 1].id)
+        self.select(self.items[index].id)
 
     def select_right(self) -> None:
         if len(self.items) == 0:
@@ -237,11 +243,17 @@ class Notebox(tk.Frame):
             return
 
         index = self.index(self.current_item.id)
+        length = len(self.items)
 
-        if index == len(self.items) - 1:
-            return
+        if index == length - 1:
+            if args.wrap and (length >= 2):
+                index = 0
+            else:
+                return
+        else:
+            index += 1
 
-        self.select(self.items[index + 1].id)
+        self.select(self.items[index].id)
 
     def get_name(self, id: str) -> str:
         for item in self.items:
