@@ -8,6 +8,7 @@ from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
+from .config import config
 from . import filemanager
 from . import logs
 from . import timeutils
@@ -196,6 +197,7 @@ class Keyboard:
         self.register("<F1>", lambda: app.show_help())
         self.register("<F2>", lambda: inputcontrol.input.focus())
         self.register("<F3>", lambda: display.show_tab_list(True))
+        self.register("<F5>", lambda: config.reset())
         self.register("<F8>", lambda: app.toggle_compact())
         self.register("<F11>", lambda: app.toggle_fullscreen())
         self.register("t", on_ctrl=lambda: display.make_tab())
