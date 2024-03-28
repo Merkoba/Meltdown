@@ -42,6 +42,7 @@ class Commands:
             "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
             "help": {"aliases": ["info", "commands", "cmds"], "help": "Show help information", "action": lambda: self.show_help()},
             "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
+            "list": {"aliases": ["tabs"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list(True)},
         }
 
         cmds = []

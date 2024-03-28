@@ -195,7 +195,7 @@ class Keyboard:
         self.register("<space>", on_ctrl=lambda: widgets.show_main_menu())
         self.register("<F1>", lambda: app.show_help())
         self.register("<F2>", lambda: inputcontrol.input.focus())
-        self.register("<F3>", lambda: inputcontrol.input.focus())
+        self.register("<F3>", lambda: display.show_tab_list(True))
         self.register("<F8>", lambda: app.toggle_compact())
         self.register("<F11>", lambda: app.toggle_fullscreen())
         self.register("t", on_ctrl=lambda: display.make_tab())

@@ -193,8 +193,13 @@ class Display:
     def on_tabs_double_click(self) -> None:
         self.make_tab()
 
-    def show_tab_list(self) -> None:
-        widget = self.notebox.get_tab(self.tab_menu_id)
+    def show_tab_list(self, current: bool = False) -> None:
+        if current:
+            tab_id = self.current_tab
+        else:
+            tab_id = self.tab_menu_id
+
+        widget = self.notebox.get_tab(tab_id)
 
         if not widget:
             return
