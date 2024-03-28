@@ -104,12 +104,9 @@ class Notebox(tk.Frame):
         self.on_change: Optional[Callable[..., Any]] = None
         self.on_reorder: Optional[Callable[..., Any]] = None
 
-    def tab_right_click(self, event: Any) -> None:
-        if not self.current_item:
-            return
-
+    def tab_right_click(self, event: Any, id: str) -> None:
         if self.on_tab_right_click:
-            self.on_tab_right_click(event, self.current_item.id)
+            self.on_tab_right_click(event, id)
 
     def tabs_click(self) -> None:
         if self.on_tabs_click:
@@ -130,8 +127,8 @@ class Notebox(tk.Frame):
         self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
         self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
 
-    def bind_tab_right_click(self, widget: tk.Widget) -> None:
-        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e), widget)
+    def bind_tab_right_click(self, item: NoteboxItem) -> None:
+        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e, item.id), item.tab.frame)
 
     def bind_tab_middle_click(self, item: NoteboxItem) -> None:
         self.bind_recursive("<Button-2>", lambda e: self.tab_middle_click(item), item.tab.frame)
@@ -206,10 +203,10 @@ class Notebox(tk.Frame):
     def add_tab(self, item: NoteboxItem) -> None:
         self.bind_tab_click(item)
         self.bind_tab_mousewheel(item.tab.frame)
-        self.bind_tab_right_click(item.tab.frame)
+        self.bind_tab_right_click(item)
         self.bind_tab_middle_click(item)
         self.bind_tab_drag(item)
-        item.tab.frame.grid(row=0, column=len(self.items), sticky="ew")
+        self.update_tab_columns()
 
     def add_content(self, content: tk.Frame) -> None:
         content.grid(row=0, column=0, sticky="nsew")
@@ -275,14 +272,20 @@ class Notebox(tk.Frame):
                 return
 
     def close(self, id: str) -> None:
+        item = self.get_item_by_id(id)
+
+        if not item:
+            return
+
         index = self.index(id)
-        self.items[index].tab.frame.grid_forget()
-        self.items[index].content.grid_forget()
+        was_current = self.current_item == self.items[index]
+        item.tab.frame.grid_forget()
+        item.content.grid_forget()
         self.items.pop(index)
 
         if len(self.items) == 0:
             self.current_item = None
-        else:
+        elif was_current:
             if index == len(self.items):
                 self.select(self.items[index - 1].id)
             else:
@@ -356,3 +359,7 @@ class Notebox(tk.Frame):
         elif not (xview_left <= item_pos_right <= xview_right):
             # Scroll the canvas to make the right side of the item visible
             self.tabs_canvas.xview_moveto(item_pos_right - (xview_right - xview_left))
+
+    def update_tab_columns(self) -> None:
+        for i, item in enumerate(self.items):
+            item.tab.frame.grid(row=0, column=i, sticky="ew")
