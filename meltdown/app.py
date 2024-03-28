@@ -119,7 +119,9 @@ class App:
         ]
 
         cmds = []
-        cmds.append(("Help", lambda: self.show_help()))
+        cmds.append(("Commands", lambda: self.show_help("commands")))
+        cmds.append(("Arguments", lambda: self.show_help("arguments")))
+        cmds.append(("Shortcuts", lambda: self.show_help("shortcuts")))
         cmds.append(("Ok", lambda: None))
 
         Dialog.show_commands("\n".join(lines), cmds)
@@ -336,12 +338,22 @@ class App:
     def unfullscreen(self) -> None:
         self.root.attributes("-fullscreen", False)
 
-    def show_help(self) -> None:
+    def show_help(self, what: str) -> None:
         from .display import display
         from .commands import commands
-        tab_id = display.make_tab()
-        commands.show_help(tab_id=tab_id)
-        commands.show_arguments(tab_id=tab_id)
+        from .keyboard import keyboard
+        from .args import args
+
+        if what == "commands":
+            tab_id = display.make_tab("Commands")
+            commands.show_help(tab_id=tab_id)
+        elif what == "arguments":
+            tab_id = display.make_tab("Arguments")
+            args.show_help(tab_id=tab_id)
+        elif what == "shortcuts":
+            tab_id = display.make_tab("Shortcuts")
+            keyboard.show_help(tab_id=tab_id)
+
         display.to_top(tab_id=tab_id)
 
 

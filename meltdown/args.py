@@ -89,5 +89,11 @@ class Args:
 
         self.parser = ap.parser
 
+    def show_help(self, tab_id: str = "") -> None:
+        from .display import display
+        text = self.parser.format_help().strip()
+        display.print("Command Line Arguments:", tab_id=tab_id)
+        display.print(text, tab_id=tab_id)
+
 
 args = Args()

@@ -26,12 +26,13 @@ class ButtonBox(tk.Frame):
             self.set_bind(when, command)
 
     def make(self) -> None:
-        padx = 0
+        padx = app.theme.button_padx
         pady = 2 if self.bigger else 0
 
         self.label = tk.Label(self, text=self.text,
-                              font=app.theme.font_button, width=self.width,
+                              font=app.theme.font_button,
                               padx=padx, pady=pady)
+
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=1)

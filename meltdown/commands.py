@@ -17,6 +17,8 @@ class Commands:
     def setup(self) -> None:
         from .display import display
         from .model import model
+        from .args import args
+        from .keyboard import keyboard
         from . import filemanager
         from . import logs
 
@@ -40,8 +42,10 @@ class Commands:
             "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: display.make_tab()},
             "theme": {"aliases": [], "help": "Change the color theme", "action": lambda: app.toggle_theme()},
             "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
-            "help": {"aliases": ["info", "commands", "cmds"], "help": "Show help information", "action": lambda: self.show_help()},
-            "args": {"aliases": ["arguments"], "help": "Show the command line arguments", "action": lambda: self.show_arguments()},
+            "help": {"aliases": ["info", "information"], "help": "Show help information", "action": lambda: self.help_command()},
+            "commands": {"aliases": ["cmds"], "help": "Show the command line arguments", "action": lambda: self.show_help()},
+            "arguments": {"aliases": ["args"], "help": "Show the command line arguments", "action": lambda: args.show_help()},
+            "shortcuts": {"aliases": ["keyboard"], "help": "Show the tab list to pick a tab", "action": lambda: keyboard.show_help()},
             "list": {"aliases": ["tabs"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list(True)},
         }
 
@@ -104,6 +108,17 @@ class Commands:
 
         return False
 
+    def help_command(self) -> None:
+        from .display import display
+
+        items = []
+        items.append("Use /commands to see commands")
+        items.append("Use /arguments to see command line arguments")
+        items.append("Use /shortcuts to see keyboard shortcuts")
+
+        text = "\n".join(items)
+        display.print(text)
+
     def show_help(self, tab_id: str = "") -> None:
         from .display import display
         display.print("Commands:", tab_id=tab_id)
@@ -113,13 +128,6 @@ class Commands:
             text.append(f"{self.prefix}{cmd} = {data['help']}")
 
         display.print("\n".join(text), tab_id=tab_id)
-
-    def show_arguments(self, tab_id: str = "") -> None:
-        from .args import args
-        from .display import display
-        text = args.parser.format_help().strip()
-        display.print("Arguments:", tab_id=tab_id)
-        display.print(text, tab_id=tab_id)
 
     def check_autocomplete(self) -> None:
         from .inputcontrol import inputcontrol

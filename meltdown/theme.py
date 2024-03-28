@@ -35,6 +35,7 @@ class Theme:
         self.button_highlight_background = "#3F9687"
         self.button_disabled_background = "#2B303B"
         self.button_foreground = "white"
+        self.button_padx = 10
         self.entry_background = "#2B303B"
         self.entry_foreground = "white"
         self.entry_placeholder_color = "#494D62"
