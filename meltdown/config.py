@@ -277,8 +277,13 @@ class Config:
         from .widgets import widgets
         from .dialogs import Dialog
 
+        keep = ("model", "theme")
+
         def action() -> None:
             for key in self.defaults():
+                if key in keep:
+                    continue
+
                 default = self.get_default(key)
 
                 if default is not None:
