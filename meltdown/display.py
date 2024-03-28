@@ -4,7 +4,7 @@ from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
-from .notebox import Notebox, NoteboxItem
+from .book import Book, Page
 from . import widgetutils
 
 # Standard
@@ -30,7 +30,7 @@ class Display:
     def make(self) -> None:
         from .widgets import widgets
 
-        self.notebox = Notebox(widgets.display_frame)
+        self.notebox = Book(widgets.display_frame)
         self.notebox.on_change = lambda: self.on_tab_change()
 
         self.tabs: Dict[str, Tab] = {}
@@ -206,14 +206,14 @@ class Display:
 
         self.tab_list_menu.clear()
 
-        def add_item(item: NoteboxItem) -> None:
+        def add_item(page: Page) -> None:
             def command() -> None:
-                return self.select_tab(item.id)
+                return self.select_tab(page.id)
 
-            self.tab_list_menu.add(text=item.name, command=command)
+            self.tab_list_menu.add(text=page.name, command=command)
 
-        for item in self.notebox.get_items():
-            add_item(item)
+        for page in self.notebox.pages:
+            add_item(page)
 
         self.tab_list_menu.show(widget=widget)
 

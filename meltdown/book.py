@@ -14,16 +14,16 @@ class TabWidget:
         self.label = label
 
 
-class NoteboxItem():
+class Page():
     notebox_id = 0
 
-    def __init__(self, parent: "Notebox", name: str) -> None:
+    def __init__(self, parent: "Book", name: str) -> None:
         self.parent = parent
         self.name = name
         self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
-        self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1
+        self.id = f"page_{Page.notebox_id}"
+        Page.notebox_id += 1
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
@@ -51,11 +51,11 @@ class NoteboxItem():
         self.tab.label.configure(text=name)
 
 
-class Notebox(tk.Frame):
+class Book(tk.Frame):
     def __init__(self, parent: tk.Frame) -> None:
         super().__init__(parent)
         self.parent = parent
-        self.items: List[NoteboxItem] = []
+        self.pages: List[Page] = []
 
         tabs_frame = tk.Frame(self)
         self.tabs_canvas = tk.Canvas(tabs_frame, borderwidth=0, highlightthickness=0)
@@ -70,7 +70,9 @@ class Notebox(tk.Frame):
         self.tabs_container.bind("<Configure>", lambda e: self.update_tabs())
         self.tabs_container.configure(background=app.theme.tabs_container_color)
 
-        self.tabs_canvas.grid(row=0, column=0, sticky="ew")
+        if args.tabs:
+            self.tabs_canvas.grid(row=0, column=0, sticky="ew")
+
         # tabs_scrollbar.grid(row=1, column=0, sticky="ew")
         tabs_frame.grid(row=0, column=0, sticky="ew")
 
@@ -83,8 +85,8 @@ class Notebox(tk.Frame):
         self.content_container.grid_columnconfigure(0, weight=1)
         self.content_container.grid_rowconfigure(0, weight=1)
 
-        self.current_item: Optional[NoteboxItem] = None
-        self.drag_item: Optional[NoteboxItem] = None
+        self.current_page: Optional[Page] = None
+        self.drag_page: Optional[Page] = None
         self.dragging = False
 
         padx = ((app.theme.padx, app.theme.right_padding))
@@ -116,51 +118,51 @@ class Notebox(tk.Frame):
         if self.on_tabs_double_click:
             self.on_tabs_double_click()
 
-    def tab_middle_click(self, item: NoteboxItem) -> None:
+    def tab_middle_click(self, page: Page) -> None:
         if self.on_tab_middle_click:
-            self.on_tab_middle_click(item.id)
+            self.on_tab_middle_click(page.id)
 
-    def bind_tab_click(self, item: NoteboxItem) -> None:
-        self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(item.id), item.tab.frame)
+    def bind_tab_click(self, page: Page) -> None:
+        self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(page.id), page.tab.frame)
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
         self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
 
-    def bind_tab_right_click(self, item: NoteboxItem) -> None:
-        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e, item.id), item.tab.frame)
+    def bind_tab_right_click(self, page: Page) -> None:
+        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e, page.id), page.tab.frame)
 
-    def bind_tab_middle_click(self, item: NoteboxItem) -> None:
-        self.bind_recursive("<Button-2>", lambda e: self.tab_middle_click(item), item.tab.frame)
+    def bind_tab_middle_click(self, page: Page) -> None:
+        self.bind_recursive("<Button-2>", lambda e: self.tab_middle_click(page), page.tab.frame)
 
-    def bind_tab_drag(self, item: NoteboxItem) -> None:
-        self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, item), item.tab.frame)
-        self.bind_recursive("<Leave>", lambda e: self.end_tab_drag(), item.tab.frame)
+    def bind_tab_drag(self, page: Page) -> None:
+        self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame)
+        self.bind_recursive("<Leave>", lambda e: self.end_tab_drag(), page.tab.frame)
 
-    def add(self, name: str) -> NoteboxItem:
-        item = NoteboxItem(self, name)
-        self.items.append(item)
-        self.current_item = item
-        self.add_tab(item)
-        self.add_content(item.content)
-        return item
+    def add(self, name: str) -> Page:
+        page = Page(self, name)
+        self.pages.append(page)
+        self.current_page = page
+        self.add_tab(page)
+        self.add_content(page.content)
+        return page
 
     def current(self) -> str:
-        if not self.current_item:
+        if not self.current_page:
             return ""
 
-        return self.current_item.id
+        return self.current_page.id
 
     def select(self, id: str) -> None:
-        if len(self.items) == 0:
+        if len(self.pages) == 0:
             return
 
-        item = self.get_item_by_id(id)
+        page = self.get_page_by_id(id)
 
-        if item:
-            self.hide_all_except(item.id)
-            self.current_item = item
-            self.scroll_to_item(item)
+        if page:
+            self.hide_all_except(page.id)
+            self.current_page = page
+            self.scroll_to_page(page)
 
             if self.on_change:
                 self.on_change()
@@ -168,44 +170,44 @@ class Notebox(tk.Frame):
             self.update_tab_colors()
 
     def update_tab_colors(self) -> None:
-        if not self.current_item:
+        if not self.current_page:
             return
 
-        for item in self.items:
-            if item.id == self.current_item.id:
-                item.tab.inner.configure(background=app.theme.tab_selected_background)
-                item.tab.label.configure(background=app.theme.tab_selected_background)
-                item.tab.label.configure(foreground=app.theme.tab_selected_foreground)
+        for page in self.pages:
+            if page.id == self.current_page.id:
+                page.tab.inner.configure(background=app.theme.tab_selected_background)
+                page.tab.label.configure(background=app.theme.tab_selected_background)
+                page.tab.label.configure(foreground=app.theme.tab_selected_foreground)
             else:
-                item.tab.inner.configure(background=app.theme.tab_normal_background)
-                item.tab.label.configure(background=app.theme.tab_normal_background)
-                item.tab.label.configure(foreground=app.theme.tab_normal_foreground)
+                page.tab.inner.configure(background=app.theme.tab_normal_background)
+                page.tab.label.configure(background=app.theme.tab_normal_background)
+                page.tab.label.configure(foreground=app.theme.tab_normal_foreground)
 
     def hide_all_except(self, id: str) -> None:
-        for item in self.items:
-            if item.id != id:
-                item.content.grid_remove()
+        for page in self.pages:
+            if page.id != id:
+                page.content.grid_remove()
             else:
-                item.content.grid()
+                page.content.grid()
 
         return None
 
-    def get_item_by_id(self, id: str) -> Optional[NoteboxItem]:
-        for item in self.items:
-            if item.id == id:
-                return item
+    def get_page_by_id(self, id: str) -> Optional[Page]:
+        for page in self.pages:
+            if page.id == id:
+                return page
 
         return None
 
     def ids(self) -> List[str]:
-        return [item.id for item in self.items]
+        return [page.id for page in self.pages]
 
-    def add_tab(self, item: NoteboxItem) -> None:
-        self.bind_tab_click(item)
-        self.bind_tab_mousewheel(item.tab.frame)
-        self.bind_tab_right_click(item)
-        self.bind_tab_middle_click(item)
-        self.bind_tab_drag(item)
+    def add_tab(self, page: Page) -> None:
+        self.bind_tab_click(page)
+        self.bind_tab_mousewheel(page.tab.frame)
+        self.bind_tab_right_click(page)
+        self.bind_tab_middle_click(page)
+        self.bind_tab_drag(page)
         self.update_tab_columns()
 
     def add_content(self, content: tk.Frame) -> None:
@@ -213,40 +215,40 @@ class Notebox(tk.Frame):
         content.grid_remove()
 
     def index(self, id: str) -> int:
-        for i, item in enumerate(self.items):
-            if item.id == id:
+        for i, page in enumerate(self.pages):
+            if page.id == id:
                 return i
 
         return -1
 
     def select_left(self) -> None:
-        if len(self.items) == 0:
+        if len(self.pages) == 0:
             return
 
-        if not self.current_item:
+        if not self.current_page:
             return
 
-        index = self.index(self.current_item.id)
+        index = self.index(self.current_page.id)
 
         if index == 0:
-            if args.wrap and (len(self.items) >= 2):
-                index = len(self.items) - 1
+            if args.wrap and (len(self.pages) >= 2):
+                index = len(self.pages) - 1
             else:
                 return
         else:
             index -= 1
 
-        self.select(self.items[index].id)
+        self.select(self.pages[index].id)
 
     def select_right(self) -> None:
-        if len(self.items) == 0:
+        if len(self.pages) == 0:
             return
 
-        if not self.current_item:
+        if not self.current_page:
             return
 
-        index = self.index(self.current_item.id)
-        length = len(self.items)
+        index = self.index(self.current_page.id)
+        length = len(self.pages)
 
         if index == length - 1:
             if args.wrap and (length >= 2):
@@ -256,71 +258,71 @@ class Notebox(tk.Frame):
         else:
             index += 1
 
-        self.select(self.items[index].id)
+        self.select(self.pages[index].id)
 
     def get_name(self, id: str) -> str:
-        for item in self.items:
-            if item.id == id:
-                return item.name
+        for page in self.pages:
+            if page.id == id:
+                return page.name
 
         return ""
 
     def change_name(self, id: str, name: str) -> None:
-        for item in self.items:
-            if item.id == id:
-                item.change_name(name)
+        for page in self.pages:
+            if page.id == id:
+                page.change_name(name)
                 return
 
     def close(self, id: str) -> None:
-        item = self.get_item_by_id(id)
+        page = self.get_page_by_id(id)
 
-        if not item:
+        if not page:
             return
 
         index = self.index(id)
-        was_current = self.current_item == self.items[index]
-        item.tab.frame.grid_forget()
-        item.content.grid_forget()
-        self.items.pop(index)
+        was_current = self.current_page == self.pages[index]
+        page.tab.frame.grid_forget()
+        page.content.grid_forget()
+        self.pages.pop(index)
 
-        if len(self.items) == 0:
-            self.current_item = None
+        if len(self.pages) == 0:
+            self.current_page = None
         elif was_current:
-            if index == len(self.items):
-                self.select(self.items[index - 1].id)
+            if index == len(self.pages):
+                self.select(self.pages[index - 1].id)
             else:
-                self.select(self.items[index].id)
+                self.select(self.pages[index].id)
 
-    def do_tab_drag(self, event: Any, item: NoteboxItem) -> None:
+    def do_tab_drag(self, event: Any, page: Page) -> None:
         if not self.dragging:
             self.dragging = True
-            self.drag_item = item
-            self.select(item.id)
+            self.drag_page = page
+            self.select(page.id)
             return
 
         new_item = self.get_tab_at_x(event.x_root)
 
-        if new_item and self.drag_item and (new_item != self.drag_item):
-            old_index = self.items.index(self.drag_item)
-            new_index = self.items.index(new_item)
-            self.items.insert(new_index, self.items.pop(old_index))
+        if new_item and self.drag_page and (new_item != self.drag_page):
+            old_index = self.pages.index(self.drag_page)
+            new_index = self.pages.index(new_item)
+            self.pages.insert(new_index, self.pages.pop(old_index))
 
-            for i, item in enumerate(self.items):
-                item.tab.frame.grid(row=0, column=i)
+            for i, page in enumerate(self.pages):
+                page.tab.frame.grid(row=0, column=i)
 
-    def get_tab_at_x(self, x: int) -> Optional[NoteboxItem]:
-        for item in self.items:
-            tab_x = item.tab.frame.winfo_rootx()
-            tab_width = item.tab.frame.winfo_width()
+    def get_tab_at_x(self, x: int) -> Optional[Page]:
+        for page in self.pages:
+            tab_x = page.tab.frame.winfo_rootx()
+            tab_width = page.tab.frame.winfo_width()
 
             if tab_x <= x <= tab_x + tab_width:
-                return item
+                return page
 
         return None
 
     def end_tab_drag(self) -> None:
         self.dragging = False
-        self.drag_item = None
+        self.drag_page = None
 
         if self.on_reorder:
             self.on_reorder()
@@ -341,10 +343,10 @@ class Notebox(tk.Frame):
             self.tabs_canvas.configure(scrollregion=bbox)
             self.tabs_canvas.configure(width=bbox[2], height=bbox[3])
 
-    def scroll_to_item(self, item: NoteboxItem) -> None:
+    def scroll_to_page(self, page: Page) -> None:
         app.update()
-        x_left = item.tab.frame.winfo_x()
-        x_right = x_left + item.tab.frame.winfo_width()
+        x_left = page.tab.frame.winfo_x()
+        x_right = x_left + page.tab.frame.winfo_width()
         width = self.tabs_container.winfo_width()
         xview_left, xview_right = self.tabs_canvas.xview()
 
@@ -361,15 +363,12 @@ class Notebox(tk.Frame):
             self.tabs_canvas.xview_moveto(item_pos_right - (xview_right - xview_left))
 
     def update_tab_columns(self) -> None:
-        for i, item in enumerate(self.items):
-            item.tab.frame.grid(row=0, column=i, sticky="ew")
+        for i, page in enumerate(self.pages):
+            page.tab.frame.grid(row=0, column=i, sticky="ew")
 
     def get_tab(self, id: str) -> Optional[tk.Frame]:
-        for item in self.items:
-            if item.id == id:
-                return item.tab.frame
+        for page in self.pages:
+            if page.id == id:
+                return page.tab.frame
 
         return None
-
-    def get_items(self) -> List[NoteboxItem]:
-        return self.items

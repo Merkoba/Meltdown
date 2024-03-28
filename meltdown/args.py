@@ -21,6 +21,7 @@ class Args:
         self.wrap = True
         self.maximized = False
         self.compact = False
+        self.tabs = True
         self.full = False
         self.test = False
         self.width = -1
@@ -49,6 +50,7 @@ class Args:
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "no-wrap": {"action": "store_false", "help": "Disable tab and menu wrapping"},
+            "no-tabs": {"action": "store_false", "help": "Don't show the tab bar"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -73,7 +75,7 @@ class Args:
             ("no_monitors", "monitors"), ("no_monitor_colors", "monitor_colors"),
             ("no_cpu", "monitor_cpu"), ("no_ram", "monitor_ram"),
             ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
-            ("no_wrap", "wrap"),
+            ("no_wrap", "wrap"), ("no_tabs", "tabs"),
         ]
 
         for r_item in reversed:

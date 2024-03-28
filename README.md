@@ -250,6 +250,12 @@ Disable tab and menu wrapping when cycling up/down or left/right.
 
 ---
 
+>no-tabs
+
+Don't show the tab bar.
+
+---
+
 >maximized
 
 Start the window maximized.
