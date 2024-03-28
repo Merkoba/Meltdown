@@ -501,5 +501,8 @@ class Display:
         tab.output.format_text()
         tab.modified = True
 
+    def select_last_tab(self) -> None:
+        tab_ids = self.tab_ids()
+        self.root.select(tab_ids[-1])
 
 display = Display()

@@ -20,10 +20,8 @@ class NoteboxItem():
         self.name = name
         self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
-        self.content.grid_rowconfigure(0, weight=1)
-        self.content.grid_columnconfigure(0, weight=1)
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1 # Lock 2
+        NoteboxItem.notebox_id += 1 # Lock 3
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
@@ -42,6 +40,8 @@ class NoteboxItem():
 
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
+        frame.rowconfigure(0, weight=1)
+        frame.columnconfigure(0, weight=1)
         return frame
 
     def change_name(self, name: str):
@@ -54,11 +54,32 @@ class Notebox(tk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.items: List[NoteboxItem] = []
-        self.tabs_container = tk.Frame(self)
+
+        tabs_frame = tk.Frame(self)
+        self.tabs_canvas = tk.Canvas(tabs_frame, borderwidth=0, highlightthickness=0)
+        self.tabs_canvas.configure(background=app.theme.tabs_container_color)
+
+        tabs_scrollbar = tk.Scrollbar(tabs_frame, command=self.tabs_canvas.xview, orient="horizontal")
+        self.tabs_canvas.configure(xscrollcommand=tabs_scrollbar.set)
+
+        self.tabs_container = tk.Frame(self.tabs_canvas, background=app.theme.background_color)
+        self.tabs_container_id = self.tabs_canvas.create_window((0, 0), window=self.tabs_container, anchor="nw")
+        self.tabs_container.bind("<Configure>", lambda e: self.update_tabs())
         self.tabs_container.configure(background=app.theme.tabs_container_color)
-        self.content_container = tk.Frame(self)
+
+        self.tabs_canvas.grid(row=0, column=0, sticky="ew")
+        tabs_scrollbar.grid(row=1, column=0, sticky="ew")
         self.tabs_container.grid(row=0, column=0, sticky="ew")
+        tabs_frame.grid(row=0, column=0, sticky="nsew")
+
+        tabs_frame.configure(background=app.theme.tabs_container_color)
+        tabs_frame.columnconfigure(0, weight=1)
+
+        self.content_container = tk.Frame(self)
         self.content_container.grid(row=1, column=0, sticky="nsew")
+        self.content_container.grid_columnconfigure(0, weight=1)
+        self.content_container.grid_rowconfigure(0, weight=1)
+
         self.current_item: Optional[NoteboxItem] = None
         self.drag_item: Optional[NoteboxItem] = None
         self.dragging = False
@@ -68,9 +89,6 @@ class Notebox(tk.Frame):
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
-
-        self.content_container.grid_columnconfigure(0, weight=1)
-        self.content_container.grid_rowconfigure(0, weight=1)
         self.bind_tab_mousewheel(self.tabs_container)
 
         self.tabs_container.bind("<Double-Button-1>", lambda e: self.tab_double_click())
@@ -86,12 +104,12 @@ class Notebox(tk.Frame):
     def bind_tab_click(self, item: NoteboxItem):
         self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(item.id), item.tab.frame)
 
-    def bind_tab_mousewheel(self, widget):
-        widget.bind("<Button-4>", lambda e: self.select_left())
-        widget.bind("<Button-5>", lambda e: self.select_right())
+    def bind_tab_mousewheel(self, widget: tk.Widget):
+        self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
+        self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
 
-    def bind_tab_right_click(self, widget):
-        widget.bind("<Button-3>", lambda e: self.tab_right_click(e))
+    def bind_tab_right_click(self, widget: tk.Widget):
+        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e), widget)
 
     def bind_tab_drag(self, item: NoteboxItem):
         self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, item), item.tab.frame)
@@ -117,6 +135,7 @@ class Notebox(tk.Frame):
             if item:
                 self.hide_all_except(item.id)
                 self.current_item = item
+                self.scroll_to_item(item)
 
                 if self.on_change:
                     self.on_change()
@@ -151,14 +170,14 @@ class Notebox(tk.Frame):
 
     def add_tab(self, item: NoteboxItem):
         self.bind_tab_click(item)
-        self.bind_tab_mousewheel(item.tab.label)
-        self.bind_tab_right_click(item.tab.label)
+        self.bind_tab_mousewheel(item.tab.frame)
+        self.bind_tab_right_click(item.tab.frame)
         self.bind_tab_drag(item)
         item.tab.frame.grid(row=0, column=len(self.items), sticky="ew")
 
     def add_content(self, content: tk.Frame):
         content.grid(row=0, column=0, sticky="nsew")
-        content.grid_forget()
+        content.grid_remove()
 
     def index(self, id: int) -> int:
         for i, item in enumerate(self.items):
@@ -246,3 +265,28 @@ class Notebox(tk.Frame):
 
         for child in widget.winfo_children():
             self.bind_recursive(what, action, child)
+
+    def update_tabs(self):
+        self.tabs_canvas.after_idle(self.do_update_tabs)
+
+    def do_update_tabs(self):
+        region = self.tabs_container.bbox("all")
+        self.tabs_canvas.configure(scrollregion=region)
+
+    def scroll_to_item(self, item):
+        return
+        x = item.tab.frame.winfo_x()
+        width = item.tab.frame.winfo_width()
+        x_center = x + width / 2
+
+        # Get the current view
+        x1, x2 = map(float, self.tabs_canvas.xview())
+
+        # Calculate the width of the view
+        view_width = self.tabs_canvas.winfo_width()
+
+        # Calculate the number of units to scroll
+        units = int((x_center - x1 * view_width) / (x2 * view_width - x1 * view_width))
+
+        # Scroll the canvas
+        self.tabs_canvas.xview_scroll(2, "units")

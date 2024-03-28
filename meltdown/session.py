@@ -234,9 +234,6 @@ class Session:
 
         tab_ids = display.tab_ids()
 
-        if tab_ids:
-            display.select_tab(tab_ids[-1])
-
     def save_state(self) -> None:
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)

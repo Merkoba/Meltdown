@@ -90,6 +90,7 @@ class Dialog:
         if value:
             entry.insert(0, value)
 
+        entry.bind("<Escape>", lambda e: dialog.hide())
         entry.bind("<Return>", lambda e: ok())
         entry.pack(padx=6, pady=6)
         dialog.make_button("Cancel", cancel)

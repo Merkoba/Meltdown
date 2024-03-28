@@ -330,6 +330,8 @@ class Widgets:
 
         if display.num_tabs() == 0:
             display.make_tab()
+        else:
+            display.select_last_tab()
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
