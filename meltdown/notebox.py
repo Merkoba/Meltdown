@@ -94,13 +94,17 @@ class Notebox(tk.Frame):
         self.bind_tab_mousewheel(self.tabs_container)
 
         self.tabs_container.bind("<Double-Button-1>", lambda e: self.tab_double_click())
-        self.on_tab_right_click = None
-        self.on_tab_middle_click = None
-        self.on_tab_double_click = None
-        self.on_change = None
-        self.on_reorder = None
+
+        self.on_tab_right_click: Optional[Callable[..., Any]] = None
+        self.on_tab_middle_click: Optional[Callable[..., Any]] = None
+        self.on_tab_double_click: Optional[Callable[..., Any]] = None
+        self.on_change: Optional[Callable[..., Any]] = None
+        self.on_reorder: Optional[Callable[..., Any]] = None
 
     def tab_right_click(self, event: Any) -> None:
+        if not self.current_item:
+            return
+
         if self.on_tab_right_click:
             self.on_tab_right_click(event, self.current_item.id)
 
@@ -160,6 +164,9 @@ class Notebox(tk.Frame):
             self.update_tab_colors()
 
     def update_tab_colors(self) -> None:
+        if not self.current_item:
+            return
+
         for item in self.items:
             if item.id == self.current_item.id:
                 item.tab.inner.configure(background=app.theme.tab_selected_background)
@@ -177,12 +184,16 @@ class Notebox(tk.Frame):
             else:
                 item.content.grid()
 
-    def get_item_by_id(self, id: str) -> NoteboxItem:
+        return None
+
+    def get_item_by_id(self, id: str) -> Optional[NoteboxItem]:
         for item in self.items:
             if item.id == id:
                 return item
 
-    def ids(self) -> List[int]:
+        return None
+
+    def ids(self) -> List[str]:
         return [item.id for item in self.items]
 
     def add_tab(self, item: NoteboxItem) -> None:
@@ -201,6 +212,8 @@ class Notebox(tk.Frame):
         for i, item in enumerate(self.items):
             if item.id == id:
                 return i
+
+        return -1
 
     def select_left(self) -> None:
         if len(self.items) == 0:
@@ -266,7 +279,7 @@ class Notebox(tk.Frame):
 
         new_item = self.get_tab_at_x(event.x_root)
 
-        if new_item and (new_item != self.drag_item):
+        if new_item and self.drag_item and (new_item != self.drag_item):
             old_index = self.items.index(self.drag_item)
             new_index = self.items.index(new_item)
             self.items.insert(new_index, self.items.pop(old_index))
@@ -281,6 +294,8 @@ class Notebox(tk.Frame):
 
             if tab_x <= x <= tab_x + tab_width:
                 return item
+
+        return None
 
     def end_tab_drag(self) -> None:
         self.dragging = False
@@ -299,9 +314,11 @@ class Notebox(tk.Frame):
         self.tabs_canvas.after_idle(self.do_update_tabs)
 
     def do_update_tabs(self) -> None:
-        bbox = self.tabs_container.bbox("all")
-        self.tabs_canvas.configure(scrollregion=bbox)
-        self.tabs_canvas.configure(width=bbox[2], height=bbox[3])
+        bbox = self.tabs_container.bbox()
+
+        if bbox:
+            self.tabs_canvas.configure(scrollregion=bbox)
+            self.tabs_canvas.configure(width=bbox[2], height=bbox[3])
 
     def scroll_to_item(self, item: NoteboxItem) -> None:
         app.update()

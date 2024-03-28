@@ -248,7 +248,7 @@ class Display:
         return self.root.ids()
 
     def index(self, tab_id: str) -> int:
-        return self.root.index(tab_id)  # type: ignore
+        return self.root.index(tab_id)
 
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
