@@ -70,6 +70,9 @@ class Theme:
         self.tab_normal_background = "#2B303B",
         self.tab_selected_foreground = "white",
         self.tab_normal_foreground = "#C9C9C9",
+        self.tab_border = "#6A7B83"
+        self.tab_border_with = 1
+        self.tabs_container_color = "#2B303B"
         self.scrollbar_1 = "#333B4B"
         self.scrollbar_2 = "#98A1A3"
         self.tooltip_background = "white"
@@ -86,6 +89,7 @@ class Theme:
         self.border_width = 4
         self.button_width = 8
         self.snippet_header_minus = 1
+        self.right_padding = 11
 
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, config.output_font_size)

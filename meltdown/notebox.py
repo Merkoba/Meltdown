@@ -1,6 +1,11 @@
+# Modules
+from .config import config
+from .app import app
+
 # Standard
 import tkinter as tk
-from typing import List, Optional, Any
+from typing import List, Optional, Any, Tuple
+
 
 class NoteboxItem():
     notebox_id = 0
@@ -8,7 +13,7 @@ class NoteboxItem():
     def __init__(self, parent: "Notebox", name: str):
         self.parent = parent
         self.name = name
-        self.tab = self.make_tab_widget(name)
+        self.tab, self.tab_label = self.make_tab_widget(name)
         self.tab.bind("<ButtonRelease-1>", lambda e: self.parent.select(self.id))
         self.content = self.make_content_widget()
         self.content.grid_rowconfigure(0, weight=1)
@@ -16,10 +21,17 @@ class NoteboxItem():
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
         NoteboxItem.notebox_id += 1
 
-    def make_tab_widget(self, text: str) -> tk.Frame:
-        label = tk.Label(self.parent.tabs_container, text=text)
-        label.configure(height=1)
-        return label
+    def make_tab_widget(self, text: str) -> Tuple[tk.Frame, tk.Label]:
+        frame = tk.Frame(self.parent.tabs_container)
+        frame.configure(background=app.theme.tab_border)
+        inner_frame = tk.Frame(frame)
+        inner_frame.configure(background=app.theme.tab_normal_background)
+        inner_frame.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
+        label = tk.Label(inner_frame, text=text, font=app.theme.font_tab)
+        label.configure(background=app.theme.tab_normal_background)
+        label.configure(foreground=app.theme.tab_normal_foreground)
+        label.pack(expand=True, fill="both", padx=8, pady=2)
+        return frame, label
 
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
@@ -27,7 +39,8 @@ class NoteboxItem():
 
     def change_name(self, name: str):
         self.name = name
-        self.tab.configure(text=name)
+        self.tab_label.configure(text=name)
+
 
 class Notebox(tk.Frame):
     def __init__(self, parent: tk.Frame):
@@ -35,11 +48,16 @@ class Notebox(tk.Frame):
         self.parent = parent
         self.items: List[NoteboxItem] = []
         self.tabs_container = tk.Frame(self)
+        self.tabs_container.configure(background=app.theme.tabs_container_color)
         self.content_container = tk.Frame(self)
         self.tabs_container.grid(row=0, column=0, sticky="ew")
         self.content_container.grid(row=1, column=0, sticky="nsew")
+        self.current_item: Optional[NoteboxItem] = None
+        self.drag_item: Optional[NoteboxItem] = None
+        self.dragging = False
 
-        self.grid(row=0, column=0, sticky="nsew")
+        padx = ((app.theme.padx, app.theme.right_padding))
+        self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=(app.theme.pady, 0))
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -65,11 +83,15 @@ class Notebox(tk.Frame):
     def bind_tab_right_click(self, widget):
         widget.bind("<Button-3>", lambda e: self.tab_right_click(e))
 
+    def bind_tab_drag(self, item: NoteboxItem):
+        item.tab.bind("<B1-Motion>", lambda e: self.do_tab_drag(e, item))
+        item.tab.bind("<Leave>", lambda e: self.end_tab_drag())
+
     def add(self, name: str):
         item = NoteboxItem(self, name)
         self.items.append(item)
         self.current_item = item.id
-        self.add_tab(item.tab)
+        self.add_tab(item)
         self.add_content(item.content)
         return item
 
@@ -104,10 +126,11 @@ class Notebox(tk.Frame):
     def ids(self) -> List[int]:
         return [item.id for item in self.items]
 
-    def add_tab(self, tab: tk.Frame):
-        self.bind_tab_mousewheel(tab)
-        self.bind_tab_right_click(tab)
-        tab.grid(row=0, column=len(self.items), sticky="ew")
+    def add_tab(self, item: NoteboxItem):
+        self.bind_tab_mousewheel(item.tab)
+        self.bind_tab_right_click(item.tab)
+        self.bind_tab_drag(item)
+        item.tab.grid(row=0, column=len(self.items), sticky="ew")
 
     def add_content(self, content: tk.Frame):
         content.grid(row=0, column=0, sticky="nsew")
@@ -151,50 +174,44 @@ class Notebox(tk.Frame):
                 item.change_name(name)
                 return
 
-    # def on_tab_start_drag(self, event: Any) -> None:
-    #     tab_id = self.tab_on_coords(event.x, event.y)
+    def close(self, id: int):
+        index = self.index(id)
+        self.items[index].tab.grid_forget()
+        self.items[index].content.grid_forget()
+        self.items.pop(index)
 
-    #     if not tab_id:
-    #         return
+        if len(self.items) == 0:
+            self.current_item = None
+        else:
+            if index == len(self.items):
+                self.select(self.items[index - 1].id)
+            else:
+                self.select(self.items[index].id)
 
-    #     self.drag_start_index = self.index(tab_id)
-    #     self.drag_start_x = event.x
+    def do_tab_drag(self, event: Any, item: NoteboxItem) -> None:
+        if not self.dragging:
+            self.dragging = True
+            self.drag_item = item
+            return
 
-    # def on_tab_drag(self, event: Any) -> None:
-    #     tab_id = self.tab_on_coords(event.x, event.y)
+        new_item = self.get_tab_at_x(event.x_root)
 
-    #     if not tab_id:
-    #         return
+        if new_item and (new_item != self.drag_item):
+            old_index = self.items.index(self.drag_item)
+            new_index = self.items.index(new_item)
+            self.items.insert(new_index, self.items.pop(old_index))
 
-    #     if abs(self.drag_start_x - event.x) > 3:
-    #         if event.x > self.drag_start_x:
-    #             direction = "right"
-    #         elif event.x < self.drag_start_x:
-    #             direction = "left"
-    #     else:
-    #         return
+            for i, item in enumerate(self.items):
+                item.tab.grid(row=0, column=i)
 
-    #     if direction == "left":
-    #         if self.drag_start_index == 0:
-    #             return
+    def get_tab_at_x(self, x: int) -> Optional[NoteboxItem]:
+        for item in self.items:
+            tab_x = item.tab.winfo_rootx()
+            tab_width = item.tab.winfo_width()
 
-    #     index = self.index(tab_id)
-    #     width = self.get_tab_width(index)
+            if tab_x <= x <= tab_x + tab_width:
+                return item
 
-    #     if direction == "left":
-    #         x = 0
-    #     elif direction == "right":
-    #         x = width - event.x
-
-    #     if direction == "left":
-    #         x = index
-    #     elif direction == "right":
-    #         if abs(x) > width:
-    #             x = index if x < 0 else index + 1
-    #         else:
-    #             x = index
-
-    #     self.root.insert(x, self.drag_start_index)
-    #     self.update_tab_index()
-    #     self.update_session()
-    #     self.drag_start_x = event.x
+    def end_tab_drag(self) -> None:
+        self.dragging = False
+        self.drag_item = None

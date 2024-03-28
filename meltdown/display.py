@@ -4,14 +4,12 @@ from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
-from .args import args
 from .notebox import Notebox
 from . import widgetutils
 
 # Standard
 import random
 import string
-import tkinter as tk
 from typing import List, Dict, Any
 from typing import Optional
 
@@ -52,6 +50,7 @@ class Display:
 
         self.root.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
         self.root.on_tab_double_click = lambda: self.on_tab_double_click()
+        self.root.on_reorder = lambda: self.update_session()
 
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
@@ -84,20 +83,8 @@ class Display:
         tab.modified = False
         return tab_id
 
-    def tab_on_coords(self, x: int, y: int) -> str:
-        # index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
-
-        # if type(index) == int:
-        #     return self.tab_ids()[index] or ""
-        # else:
-        #     return ""
-        return ""
-
-    def close_tab(self, event: Optional[Any] = None, tab_id: str = "",
+    def close_tab(self, tab_id: str = "",
                   force: bool = False, make_empty: bool = True) -> None:
-        if (not tab_id) and event:
-            tab_id = self.tab_on_coords(event.x, event.y)
-
         if not tab_id:
             tab_id = self.root.select()
 
@@ -105,7 +92,7 @@ class Display:
             return
 
         def action() -> None:
-            self.root.forget(tab_id)
+            self.root.close(tab_id)
             self.update_current_tab()
             self.remove_tab(tab_id)
 
@@ -219,14 +206,6 @@ class Display:
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
-
-    def get_tab_width(self, index: int) -> int:
-        tab_text = self.root.tab(index, "text")
-        label = tk.Label(self.root, text=tab_text)
-        label.pack()
-        width = label.winfo_reqwidth()
-        label.pack_forget()
-        return width
 
     def close_all_tabs(self, force: bool = False, make_empty: bool = True) -> None:
         def action() -> None:

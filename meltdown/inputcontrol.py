@@ -4,6 +4,7 @@ from .enums import Fill
 from .commands import commands
 from .config import config
 from .entrybox import EntryBox
+from .app import app
 from . import widgetutils
 
 # Standard
@@ -34,7 +35,7 @@ class InputControl:
         ToolTip(next_button, "Next item in the input history")
 
         submit_button = widgetutils.make_button(frame, "Submit",
-                                                lambda: self.submit(), right_padding=config.right_padding)
+                                                lambda: self.submit(), right_padding=app.theme.right_padding)
         ToolTip(submit_button, "Send the prompt to the AI")
 
     def wheel_up(self) -> None:

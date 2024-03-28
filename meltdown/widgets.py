@@ -22,15 +22,14 @@ from typing import Any
 from typing import Optional, Any, Callable
 
 
-right_padding = config.right_padding
-
-
 class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
         pass
 
     def make(self) -> None:
+        right_padding = app.theme.right_padding
+
         # Model
         self.model_frame = widgetutils.make_frame()
 
