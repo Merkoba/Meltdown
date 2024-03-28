@@ -363,3 +363,13 @@ class Notebox(tk.Frame):
     def update_tab_columns(self) -> None:
         for i, item in enumerate(self.items):
             item.tab.frame.grid(row=0, column=i, sticky="ew")
+
+    def get_tab(self, id: str) -> Optional[tk.Frame]:
+        for item in self.items:
+            if item.id == id:
+                return item.tab.frame
+
+        return None
+
+    def get_items(self) -> List[NoteboxItem]:
+        return self.items

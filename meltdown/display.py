@@ -4,7 +4,7 @@ from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
-from .notebox import Notebox
+from .notebox import Notebox, NoteboxItem
 from . import widgetutils
 
 # Standard
@@ -36,8 +36,10 @@ class Display:
         self.tabs: Dict[str, Tab] = {}
 
         self.tab_menu = Menu()
+        self.tab_menu.add(text="List", command=lambda: self.show_tab_list())
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
+        self.tab_list_menu = Menu()
 
         self.output_menu = Menu()
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
@@ -190,6 +192,25 @@ class Display:
 
     def on_tabs_double_click(self) -> None:
         self.make_tab()
+
+    def show_tab_list(self) -> None:
+        widget = self.notebox.get_tab(self.tab_menu_id)
+
+        if not widget:
+            return
+
+        self.tab_list_menu.clear()
+
+        def add_item(item: NoteboxItem) -> None:
+            def command() -> None:
+                return self.select_tab(item.id)
+
+            self.tab_list_menu.add(text=item.name, command=command)
+
+        for item in self.notebox.get_items():
+            add_item(item)
+
+        self.tab_list_menu.show(widget=widget)
 
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
