@@ -300,17 +300,18 @@ class Book(tk.Frame):
             self.select(page.id)
             return
 
-        new_item = self.get_tab_at_x(event.x_root)
+        new_page = self.get_page_at_x(event.x_root)
 
-        if new_item and self.drag_page and (new_item != self.drag_page):
+        if new_page and self.drag_page and (new_page != self.drag_page):
             old_index = self.pages.index(self.drag_page)
-            new_index = self.pages.index(new_item)
+            new_index = self.pages.index(new_page)
             self.pages.insert(new_index, self.pages.pop(old_index))
+            self.scroll_to_page(new_page)
 
             for i, page in enumerate(self.pages):
                 page.tab.frame.grid(row=0, column=i)
 
-    def get_tab_at_x(self, x: int) -> Optional[Page]:
+    def get_page_at_x(self, x: int) -> Optional[Page]:
         for page in self.pages:
             tab_x = page.tab.frame.winfo_rootx()
             tab_width = page.tab.frame.winfo_width()

@@ -30,8 +30,8 @@ class Display:
     def make(self) -> None:
         from .widgets import widgets
 
-        self.notebox = Book(widgets.display_frame)
-        self.notebox.on_change = lambda: self.on_tab_change()
+        self.book = Book(widgets.display_frame)
+        self.book.on_change = lambda: self.on_tab_change()
 
         self.tabs: Dict[str, Tab] = {}
 
@@ -50,11 +50,11 @@ class Display:
 
         self.tab_number = 1
 
-        self.notebox.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
-        self.notebox.on_tabs_click = lambda: self.on_tabs_click()
-        self.notebox.on_tabs_double_click = lambda: self.on_tabs_double_click()
-        self.notebox.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
-        self.notebox.on_reorder = lambda: self.update_session()
+        self.book.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
+        self.book.on_tabs_click = lambda: self.on_tabs_click()
+        self.book.on_tabs_double_click = lambda: self.on_tabs_double_click()
+        self.book.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
+        self.book.on_reorder = lambda: self.update_session()
 
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
@@ -70,7 +70,7 @@ class Display:
         if not conversation_id:
             return ""
 
-        notebox_item = self.notebox.add(name)
+        notebox_item = self.book.add(name)
         tab_id = notebox_item.id
         output_frame = widgetutils.make_frame(notebox_item.content)
         output_frame.grid(row=0, column=0, sticky="nsew")
@@ -90,13 +90,13 @@ class Display:
     def close_tab(self, tab_id: str = "",
                   force: bool = False, make_empty: bool = True) -> None:
         if not tab_id:
-            tab_id = self.notebox.current()
+            tab_id = self.book.current()
 
         if not tab_id:
             return
 
         def action() -> None:
-            self.notebox.close(tab_id)
+            self.book.close(tab_id)
             self.update_current_tab()
             self.remove_tab(tab_id)
 
@@ -121,11 +121,11 @@ class Display:
             Dialog.show_commands("Close tab?", cmds, on_enter=lambda: action())
 
     def select_tab(self, tab_id: str) -> None:
-        self.notebox.select(tab_id)
+        self.book.select(tab_id)
         app.update()
 
     def update_current_tab(self) -> None:
-        tab_id = self.notebox.current()
+        tab_id = self.book.current()
         self.current_tab = tab_id
 
     def on_tab_change(self) -> None:
@@ -199,7 +199,7 @@ class Display:
         else:
             tab_id = self.tab_menu_id
 
-        widget = self.notebox.get_tab(tab_id)
+        widget = self.book.get_tab(tab_id)
 
         if not widget:
             return
@@ -212,7 +212,7 @@ class Display:
 
             self.tab_list_menu.add(text=page.name, command=command)
 
-        for page in self.notebox.pages:
+        for page in self.book.pages:
             add_item(page)
 
         self.tab_list_menu.show(widget=widget)
@@ -236,7 +236,7 @@ class Display:
             if name == o_name:
                 return
 
-            self.notebox.change_name(tab_id, name)
+            self.book.change_name(tab_id, name)
             session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
@@ -276,10 +276,10 @@ class Display:
         Dialog.show_confirm("Close other tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
-        return self.notebox.ids()
+        return self.book.ids()
 
     def index(self, tab_id: str) -> int:
-        return self.notebox.index(tab_id)
+        return self.book.index(tab_id)
 
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
@@ -378,7 +378,7 @@ class Display:
         logs.save_log()
 
     def get_tab_name(self, tab_id: str) -> str:
-        return self.notebox.get_name(tab_id)
+        return self.book.get_name(tab_id)
 
     def get_current_tab_name(self) -> str:
         return self.get_tab_name(self.current_tab)
@@ -438,10 +438,10 @@ class Display:
             widgets.enable_top_button()
 
     def tab_left(self) -> None:
-        self.notebox.select_left()
+        self.book.select_left()
 
     def tab_right(self) -> None:
-        self.notebox.select_right()
+        self.book.select_right()
 
     def close_current_tab(self) -> None:
         self.close_tab(tab_id=self.current_tab)
@@ -538,7 +538,7 @@ class Display:
 
     def select_last_tab(self) -> None:
         tab_ids = self.tab_ids()
-        self.notebox.select(tab_ids[-1])
+        self.book.select(tab_ids[-1])
 
 
 display = Display()
