@@ -21,7 +21,7 @@ class NoteboxItem():
         self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1 # Lock 3
+        NoteboxItem.notebox_id += 1 # Lock 5
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
@@ -59,8 +59,9 @@ class Notebox(tk.Frame):
         self.tabs_canvas = tk.Canvas(tabs_frame, borderwidth=0, highlightthickness=0)
         self.tabs_canvas.configure(background=app.theme.tabs_container_color)
 
-        tabs_scrollbar = tk.Scrollbar(tabs_frame, command=self.tabs_canvas.xview, orient="horizontal")
+        tabs_scrollbar = tk.Scrollbar(tabs_frame, orient="horizontal")
         self.tabs_canvas.configure(xscrollcommand=tabs_scrollbar.set)
+        tabs_scrollbar.configure(command=self.tabs_canvas.xview)
 
         self.tabs_container = tk.Frame(self.tabs_canvas, background=app.theme.background_color)
         self.tabs_container_id = self.tabs_canvas.create_window((0, 0), window=self.tabs_container, anchor="nw")
@@ -68,12 +69,12 @@ class Notebox(tk.Frame):
         self.tabs_container.configure(background=app.theme.tabs_container_color)
 
         self.tabs_canvas.grid(row=0, column=0, sticky="ew")
-        tabs_scrollbar.grid(row=1, column=0, sticky="ew")
-        self.tabs_container.grid(row=0, column=0, sticky="ew")
-        tabs_frame.grid(row=0, column=0, sticky="nsew")
+        # tabs_scrollbar.grid(row=1, column=0, sticky="ew")
+        tabs_frame.grid(row=0, column=0, sticky="ew")
 
         tabs_frame.configure(background=app.theme.tabs_container_color)
-        tabs_frame.columnconfigure(0, weight=1)
+        tabs_frame.grid_rowconfigure(0, weight=0)
+        tabs_frame.grid_columnconfigure(0, weight=1)
 
         self.content_container = tk.Frame(self)
         self.content_container.grid(row=1, column=0, sticky="nsew")
@@ -270,23 +271,25 @@ class Notebox(tk.Frame):
         self.tabs_canvas.after_idle(self.do_update_tabs)
 
     def do_update_tabs(self):
-        region = self.tabs_container.bbox("all")
-        self.tabs_canvas.configure(scrollregion=region)
+        bbox = self.tabs_container.bbox("all")
+        self.tabs_canvas.configure(scrollregion=bbox)
+        self.tabs_canvas.configure(width=bbox[2], height=bbox[3])
 
     def scroll_to_item(self, item):
-        return
-        x = item.tab.frame.winfo_x()
-        width = item.tab.frame.winfo_width()
-        x_center = x + width / 2
+        app.update()
+        x_left = item.tab.frame.winfo_x()
+        x_right = x_left + item.tab.frame.winfo_width()
+        width = self.tabs_container.winfo_width()
+        xview_left, xview_right = self.tabs_canvas.xview()
 
-        # Get the current view
-        x1, x2 = map(float, self.tabs_canvas.xview())
+        # Calculate the current position of the item in the view fraction
+        item_pos_left = x_left / width
+        item_pos_right = x_right / width
 
-        # Calculate the width of the view
-        view_width = self.tabs_canvas.winfo_width()
-
-        # Calculate the number of units to scroll
-        units = int((x_center - x1 * view_width) / (x2 * view_width - x1 * view_width))
-
-        # Scroll the canvas
-        self.tabs_canvas.xview_scroll(2, "units")
+        # Check if the item is not visible
+        if not (xview_left <= item_pos_left <= xview_right):
+            # Scroll the canvas to make the left side of the item visible
+            self.tabs_canvas.xview_moveto(item_pos_left)
+        elif not (xview_left <= item_pos_right <= xview_right):
+            # Scroll the canvas to make the right side of the item visible
+            self.tabs_canvas.xview_moveto(item_pos_right - (xview_right - xview_left))
