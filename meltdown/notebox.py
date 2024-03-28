@@ -1,12 +1,13 @@
 # Standard
 import tkinter as tk
-from typing import List, Optional, Callable
+from typing import List, Optional, Any
 
 class NoteboxItem():
     notebox_id = 0
 
     def __init__(self, parent: "Notebox", name: str):
         self.parent = parent
+        self.name = name
         self.tab = self.make_tab_widget(name)
         self.tab.bind("<ButtonRelease-1>", lambda e: self.parent.select(self.id))
         self.content = self.make_content_widget()
@@ -23,6 +24,10 @@ class NoteboxItem():
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
         return frame
+
+    def change_name(self, name: str):
+        self.name = name
+        self.tab.configure(text=name)
 
 class Notebox(tk.Frame):
     def __init__(self, parent: tk.Frame):
@@ -41,11 +46,24 @@ class Notebox(tk.Frame):
 
         self.content_container.grid_columnconfigure(0, weight=1)
         self.content_container.grid_rowconfigure(0, weight=1)
-        self.bind_tab_events(self.tabs_container)
+        self.bind_tab_mousewheel(self.tabs_container)
 
-    def bind_tab_events(self, widget):
+        self.tabs_container.bind("<Double-Button-1>", lambda e: self.tab_double_click())
+
+    def tab_right_click(self, event: Any):
+        if self.on_tab_right_click:
+            self.on_tab_right_click(event, self.current_item.id)
+
+    def tab_double_click(self):
+        if self.on_tab_double_click:
+            self.on_tab_double_click()
+
+    def bind_tab_mousewheel(self, widget):
         widget.bind("<Button-4>", lambda e: self.select_left())
         widget.bind("<Button-5>", lambda e: self.select_right())
+
+    def bind_tab_right_click(self, widget):
+        widget.bind("<Button-3>", lambda e: self.tab_right_click(e))
 
     def add(self, name: str):
         item = NoteboxItem(self, name)
@@ -87,7 +105,8 @@ class Notebox(tk.Frame):
         return [item.id for item in self.items]
 
     def add_tab(self, tab: tk.Frame):
-        self.bind_tab_events(tab)
+        self.bind_tab_mousewheel(tab)
+        self.bind_tab_right_click(tab)
         tab.grid(row=0, column=len(self.items), sticky="ew")
 
     def add_content(self, content: tk.Frame):
@@ -120,6 +139,17 @@ class Notebox(tk.Frame):
             return
 
         self.select(self.items[index + 1].id)
+
+    def get_name(self, id: int) -> str:
+        for item in self.items:
+            if item.id == id:
+                return item.name
+
+    def change_name(self, id: int, name: str):
+        for item in self.items:
+            if item.id == id:
+                item.change_name(name)
+                return
 
     # def on_tab_start_drag(self, event: Any) -> None:
     #     tab_id = self.tab_on_coords(event.x, event.y)

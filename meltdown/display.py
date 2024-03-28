@@ -50,16 +50,8 @@ class Display:
 
         self.tab_number = 1
 
-        self.root.bind("<Button-1>", lambda e: self.on_click(e))
-        self.root.bind("<ButtonRelease-2>", lambda e: self.on_middle_click(e))
-        self.root.bind("<Button-3>", lambda e: self.on_right_click(e))
-        self.root.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
-
-        def on_mousewheel(direction: str) -> None:
-            if direction == "left":
-                self.tab_left()
-            elif direction == "right":
-                self.tab_right()
+        self.root.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
+        self.root.on_tab_double_click = lambda: self.on_tab_double_click()
 
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
@@ -196,27 +188,12 @@ class Display:
         else:
             return None
 
-    def on_click(self, event: Any) -> None:
-        Dialog.hide_all()
+    def on_tab_right_click(self, event: Any, tab_id: str) -> None:
+        self.tab_menu_id = tab_id
+        self.tab_menu.show(event)
 
-    def on_right_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if tab_id:
-            self.tab_menu_id = tab_id
-            self.tab_menu.show(event)
-
-    def on_middle_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if tab_id:
-            self.close_tab(event)
-
-    def on_double_click(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            self.make_tab()
+    def on_tab_double_click(self) -> None:
+        self.make_tab()
 
     def tab_menu_rename(self) -> None:
         tab_id = self.tab_menu_id
@@ -237,7 +214,7 @@ class Display:
             if name == o_name:
                 return
 
-            self.root.tab(tab_id, text=name)
+            self.root.change_name(tab_id, name)
             session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
@@ -385,7 +362,7 @@ class Display:
         logs.save_log()
 
     def get_tab_name(self, tab_id: str) -> str:
-        return self.root.tab(tab_id, "text")  # type: ignore
+        return self.root.get_name(tab_id)
 
     def get_current_tab_name(self) -> str:
         return self.get_tab_name(self.current_tab)
@@ -445,36 +422,10 @@ class Display:
             widgets.enable_top_button()
 
     def tab_left(self) -> None:
-        num = self.num_tabs()
-
-        if num < 2:
-            return
-
-        index = self.index(self.current_tab) - 1
-
-        if index < 0:
-            if args.wrap:
-                index = num - 1
-            else:
-                return
-
-        self.select_tab(self.tab_ids()[index])
+        self.root.select_left()
 
     def tab_right(self) -> None:
-        num = self.num_tabs()
-
-        if num < 2:
-            return
-
-        index = self.index(self.current_tab) + 1
-
-        if index >= num:
-            if args.wrap:
-                index = 0
-            else:
-                return
-
-        self.select_tab(self.tab_ids()[index])
+        self.root.select_right()
 
     def close_current_tab(self) -> None:
         self.close_tab(tab_id=self.current_tab)
