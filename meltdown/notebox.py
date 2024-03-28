@@ -6,6 +6,12 @@ from .app import app
 import tkinter as tk
 from typing import List, Optional, Any, Tuple
 
+class TabWidget:
+    def __init__(self, frame: tk.Frame, inner: tk.Frame, label: tk.Label):
+        self.frame = frame
+        self.inner = inner
+        self.label = label
+
 
 class NoteboxItem():
     notebox_id = 0
@@ -13,25 +19,25 @@ class NoteboxItem():
     def __init__(self, parent: "Notebox", name: str):
         self.parent = parent
         self.name = name
-        self.tab, self.tab_label = self.make_tab_widget(name)
-        self.tab.bind("<ButtonRelease-1>", lambda e: self.parent.select(self.id))
+        self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
         self.content.grid_rowconfigure(0, weight=1)
         self.content.grid_columnconfigure(0, weight=1)
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1
+        NoteboxItem.notebox_id += 1 # Lock
 
-    def make_tab_widget(self, text: str) -> Tuple[tk.Frame, tk.Label]:
+    def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
         frame.configure(background=app.theme.tab_border)
-        inner_frame = tk.Frame(frame)
-        inner_frame.configure(background=app.theme.tab_normal_background)
-        inner_frame.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
-        label = tk.Label(inner_frame, text=text, font=app.theme.font_tab)
+        inner = tk.Frame(frame)
+        inner.configure(background=app.theme.tab_normal_background)
+        inner.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
+        label = tk.Label(inner, text=text, font=app.theme.font_tab)
         label.configure(background=app.theme.tab_normal_background)
         label.configure(foreground=app.theme.tab_normal_foreground)
-        label.pack(expand=True, fill="both", padx=8, pady=2)
-        return frame, label
+        label.pack(expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady)
+        label.configure(cursor="hand2")
+        return TabWidget(frame, inner, label)
 
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
@@ -39,7 +45,7 @@ class NoteboxItem():
 
     def change_name(self, name: str):
         self.name = name
-        self.tab_label.configure(text=name)
+        self.tab.label.configure(text=name)
 
 
 class Notebox(tk.Frame):
@@ -76,6 +82,9 @@ class Notebox(tk.Frame):
         if self.on_tab_double_click:
             self.on_tab_double_click()
 
+    def bind_tab_click(self, item: NoteboxItem):
+        item.tab.label.bind("<ButtonRelease-1>", lambda e: self.select(item.id))
+
     def bind_tab_mousewheel(self, widget):
         widget.bind("<Button-4>", lambda e: self.select_left())
         widget.bind("<Button-5>", lambda e: self.select_right())
@@ -84,8 +93,8 @@ class Notebox(tk.Frame):
         widget.bind("<Button-3>", lambda e: self.tab_right_click(e))
 
     def bind_tab_drag(self, item: NoteboxItem):
-        item.tab.bind("<B1-Motion>", lambda e: self.do_tab_drag(e, item))
-        item.tab.bind("<Leave>", lambda e: self.end_tab_drag())
+        item.tab.label.bind("<B1-Motion>", lambda e: self.do_tab_drag(e, item))
+        item.tab.label.bind("<Leave>", lambda e: self.end_tab_drag())
 
     def add(self, name: str):
         item = NoteboxItem(self, name)
@@ -111,7 +120,20 @@ class Notebox(tk.Frame):
                 if self.on_change:
                     self.on_change()
 
-    def hide_all_except(self, id: int):
+        self.update_tab_colors()
+
+    def update_tab_colors(self) -> None:
+        for item in self.items:
+            if item.id == self.current_item.id:
+                item.tab.inner.configure(background=app.theme.tab_selected_background)
+                item.tab.label.configure(background=app.theme.tab_selected_background)
+                item.tab.label.configure(foreground=app.theme.tab_selected_foreground)
+            else:
+                item.tab.inner.configure(background=app.theme.tab_normal_background)
+                item.tab.label.configure(background=app.theme.tab_normal_background)
+                item.tab.label.configure(foreground=app.theme.tab_normal_foreground)
+
+    def hide_all_except(self, id: int) -> None:
         for item in self.items:
             if item.id != id:
                 item.content.grid_remove()
@@ -127,10 +149,11 @@ class Notebox(tk.Frame):
         return [item.id for item in self.items]
 
     def add_tab(self, item: NoteboxItem):
-        self.bind_tab_mousewheel(item.tab)
-        self.bind_tab_right_click(item.tab)
+        self.bind_tab_click(item)
+        self.bind_tab_mousewheel(item.tab.label)
+        self.bind_tab_right_click(item.tab.label)
         self.bind_tab_drag(item)
-        item.tab.grid(row=0, column=len(self.items), sticky="ew")
+        item.tab.frame.grid(row=0, column=len(self.items), sticky="ew")
 
     def add_content(self, content: tk.Frame):
         content.grid(row=0, column=0, sticky="nsew")
@@ -176,7 +199,7 @@ class Notebox(tk.Frame):
 
     def close(self, id: int):
         index = self.index(id)
-        self.items[index].tab.grid_forget()
+        self.items[index].tab.frame.grid_forget()
         self.items[index].content.grid_forget()
         self.items.pop(index)
 
@@ -202,12 +225,12 @@ class Notebox(tk.Frame):
             self.items.insert(new_index, self.items.pop(old_index))
 
             for i, item in enumerate(self.items):
-                item.tab.grid(row=0, column=i)
+                item.tab.frame.grid(row=0, column=i)
 
     def get_tab_at_x(self, x: int) -> Optional[NoteboxItem]:
         for item in self.items:
-            tab_x = item.tab.winfo_rootx()
-            tab_width = item.tab.winfo_width()
+            tab_x = item.tab.frame.winfo_rootx()
+            tab_width = item.tab.frame.winfo_width()
 
             if tab_x <= x <= tab_x + tab_width:
                 return item

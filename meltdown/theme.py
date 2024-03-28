@@ -73,6 +73,8 @@ class Theme:
         self.tab_border = "#6A7B83"
         self.tab_border_with = 1
         self.tabs_container_color = "#2B303B"
+        self.tab_padx = 20
+        self.tab_pady = 1
         self.scrollbar_1 = "#333B4B"
         self.scrollbar_2 = "#98A1A3"
         self.tooltip_background = "white"

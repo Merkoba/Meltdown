@@ -231,9 +231,11 @@ class Display:
         if self.num_tabs() <= 1:
             return
 
+        current = self.current_tab
+
         def action() -> None:
             for tab_id in self.tab_ids():
-                if tab_id != self.current_tab:
+                if tab_id != current:
                     self.close_tab(tab_id=tab_id, force=True)
 
         Dialog.show_confirm("Close other tabs?", lambda: action())
