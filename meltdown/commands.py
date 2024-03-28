@@ -114,7 +114,7 @@ class Commands:
         items = []
         items.append("Use /commands to see commands")
         items.append("Use /arguments to see command line arguments")
-        items.append("Use /keyboard to see keyboard keyboard")
+        items.append("Use /keyboard to see keyboard shortcuts")
 
         text = "\n".join(items)
         display.print(text)
