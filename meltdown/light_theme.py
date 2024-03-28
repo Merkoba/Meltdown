@@ -19,10 +19,12 @@ class LightTheme(Theme):
         self.name_user = "#343434"
         self.name_ai = "#343434"
 
-        self.tab_selected_background = "#969696",
-        self.tab_normal_background = "#AEAEAE",
-        self.tab_selected_foreground = "white",
-        self.tab_normal_foreground = "#343434",
+        self.tab_selected_background = "#969696"
+        self.tab_normal_background = "#AEAEAE"
+        self.tab_selected_foreground = "white"
+        self.tab_normal_foreground = "#343434"
+        self.tabs_container_color = "#BABABA"
+        self.tab_border = "#37373D"
 
         self.button_foreground = "white"
         self.button_background = "#6A7B83"

@@ -50,6 +50,7 @@ class Display:
 
         self.root.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
         self.root.on_tab_double_click = lambda: self.on_tab_double_click()
+        self.root.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
         self.root.on_reorder = lambda: self.update_session()
 
     def make_tab(self, name: Optional[str] = None,
@@ -86,7 +87,7 @@ class Display:
     def close_tab(self, tab_id: str = "",
                   force: bool = False, make_empty: bool = True) -> None:
         if not tab_id:
-            tab_id = self.root.select()
+            tab_id = self.root.current()
 
         if not tab_id:
             return
@@ -121,7 +122,7 @@ class Display:
         app.update()
 
     def update_current_tab(self) -> None:
-        tab_id = self.root.select()
+        tab_id = self.root.current()
         self.current_tab = tab_id
 
     def on_tab_change(self) -> None:
@@ -178,6 +179,9 @@ class Display:
     def on_tab_right_click(self, event: Any, tab_id: str) -> None:
         self.tab_menu_id = tab_id
         self.tab_menu.show(event)
+
+    def on_tab_middle_click(self, tab_id: str) -> None:
+        self.close_tab(tab_id=tab_id)
 
     def on_tab_double_click(self) -> None:
         self.make_tab()
@@ -504,5 +508,6 @@ class Display:
     def select_last_tab(self) -> None:
         tab_ids = self.tab_ids()
         self.root.select(tab_ids[-1])
+
 
 display = Display()

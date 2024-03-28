@@ -66,10 +66,10 @@ class Theme:
         self.snippet_selection_foreground = "black"
         self.entry_selection_background = "#C3C3C3"
         self.entry_selection_foreground = "black"
-        self.tab_selected_background = "#494D62",
-        self.tab_normal_background = "#2B303B",
-        self.tab_selected_foreground = "white",
-        self.tab_normal_foreground = "#C9C9C9",
+        self.tab_selected_background = "#494D62"
+        self.tab_normal_background = "#2B303B"
+        self.tab_selected_foreground = "white"
+        self.tab_normal_foreground = "#C9C9C9"
         self.tab_border = "#6A7B83"
         self.tab_border_with = 1
         self.tabs_container_color = "#2B303B"

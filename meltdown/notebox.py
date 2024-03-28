@@ -5,6 +5,7 @@ from .app import app
 import tkinter as tk
 from typing import List, Optional, Any, Callable
 
+
 class TabWidget:
     def __init__(self, frame: tk.Frame, inner: tk.Frame, label: tk.Label):
         self.frame = frame
@@ -15,13 +16,13 @@ class TabWidget:
 class NoteboxItem():
     notebox_id = 0
 
-    def __init__(self, parent: "Notebox", name: str):
+    def __init__(self, parent: "Notebox", name: str) -> None:
         self.parent = parent
         self.name = name
         self.tab = self.make_tab_widget(name)
         self.content = self.make_content_widget()
         self.id = f"notebox_item_{NoteboxItem.notebox_id}"
-        NoteboxItem.notebox_id += 1 # Lock 5
+        NoteboxItem.notebox_id += 1  # Lock 6
 
     def make_tab_widget(self, text: str) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
@@ -44,13 +45,13 @@ class NoteboxItem():
         frame.columnconfigure(0, weight=1)
         return frame
 
-    def change_name(self, name: str):
+    def change_name(self, name: str) -> None:
         self.name = name
         self.tab.label.configure(text=name)
 
 
 class Notebox(tk.Frame):
-    def __init__(self, parent: tk.Frame):
+    def __init__(self, parent: tk.Frame) -> None:
         super().__init__(parent)
         self.parent = parent
         self.items: List[NoteboxItem] = []
@@ -93,55 +94,70 @@ class Notebox(tk.Frame):
         self.bind_tab_mousewheel(self.tabs_container)
 
         self.tabs_container.bind("<Double-Button-1>", lambda e: self.tab_double_click())
+        self.on_tab_right_click = None
+        self.on_tab_middle_click = None
+        self.on_tab_double_click = None
+        self.on_change = None
+        self.on_reorder = None
 
-    def tab_right_click(self, event: Any):
+    def tab_right_click(self, event: Any) -> None:
         if self.on_tab_right_click:
             self.on_tab_right_click(event, self.current_item.id)
 
-    def tab_double_click(self):
+    def tab_double_click(self) -> None:
         if self.on_tab_double_click:
             self.on_tab_double_click()
 
-    def bind_tab_click(self, item: NoteboxItem):
+    def tab_middle_click(self, item: NoteboxItem) -> None:
+        if self.on_tab_middle_click:
+            self.on_tab_middle_click(item.id)
+
+    def bind_tab_click(self, item: NoteboxItem) -> None:
         self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(item.id), item.tab.frame)
 
-    def bind_tab_mousewheel(self, widget: tk.Widget):
+    def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
         self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
 
-    def bind_tab_right_click(self, widget: tk.Widget):
+    def bind_tab_right_click(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e), widget)
 
-    def bind_tab_drag(self, item: NoteboxItem):
+    def bind_tab_middle_click(self, item: NoteboxItem) -> None:
+        self.bind_recursive("<Button-2>", lambda e: self.tab_middle_click(item), item.tab.frame)
+
+    def bind_tab_drag(self, item: NoteboxItem) -> None:
         self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, item), item.tab.frame)
         self.bind_recursive("<Leave>", lambda e: self.end_tab_drag(), item.tab.frame)
 
-    def add(self, name: str):
+    def add(self, name: str) -> NoteboxItem:
         item = NoteboxItem(self, name)
         self.items.append(item)
-        self.current_item = item.id
+        self.current_item = item
         self.add_tab(item)
         self.add_content(item.content)
         return item
 
-    def select(self, id: Optional[int] = None):
+    def current(self) -> str:
+        if not self.current_item:
+            return ""
+
+        return self.current_item.id
+
+    def select(self, id: str) -> None:
         if len(self.items) == 0:
             return
 
-        if id is None:
-            return self.current_item.id
-        else:
-            item = self.get_item_by_id(id)
+        item = self.get_item_by_id(id)
 
-            if item:
-                self.hide_all_except(item.id)
-                self.current_item = item
-                self.scroll_to_item(item)
+        if item:
+            self.hide_all_except(item.id)
+            self.current_item = item
+            self.scroll_to_item(item)
 
-                if self.on_change:
-                    self.on_change()
+            if self.on_change:
+                self.on_change()
 
-        self.update_tab_colors()
+            self.update_tab_colors()
 
     def update_tab_colors(self) -> None:
         for item in self.items:
@@ -154,14 +170,14 @@ class Notebox(tk.Frame):
                 item.tab.label.configure(background=app.theme.tab_normal_background)
                 item.tab.label.configure(foreground=app.theme.tab_normal_foreground)
 
-    def hide_all_except(self, id: int) -> None:
+    def hide_all_except(self, id: str) -> None:
         for item in self.items:
             if item.id != id:
                 item.content.grid_remove()
             else:
                 item.content.grid()
 
-    def get_item_by_id(self, id: int) -> NoteboxItem:
+    def get_item_by_id(self, id: str) -> NoteboxItem:
         for item in self.items:
             if item.id == id:
                 return item
@@ -169,24 +185,28 @@ class Notebox(tk.Frame):
     def ids(self) -> List[int]:
         return [item.id for item in self.items]
 
-    def add_tab(self, item: NoteboxItem):
+    def add_tab(self, item: NoteboxItem) -> None:
         self.bind_tab_click(item)
         self.bind_tab_mousewheel(item.tab.frame)
         self.bind_tab_right_click(item.tab.frame)
+        self.bind_tab_middle_click(item)
         self.bind_tab_drag(item)
         item.tab.frame.grid(row=0, column=len(self.items), sticky="ew")
 
-    def add_content(self, content: tk.Frame):
+    def add_content(self, content: tk.Frame) -> None:
         content.grid(row=0, column=0, sticky="nsew")
         content.grid_remove()
 
-    def index(self, id: int) -> int:
+    def index(self, id: str) -> int:
         for i, item in enumerate(self.items):
             if item.id == id:
                 return i
 
     def select_left(self) -> None:
         if len(self.items) == 0:
+            return
+
+        if not self.current_item:
             return
 
         index = self.index(self.current_item.id)
@@ -200,6 +220,9 @@ class Notebox(tk.Frame):
         if len(self.items) == 0:
             return
 
+        if not self.current_item:
+            return
+
         index = self.index(self.current_item.id)
 
         if index == len(self.items) - 1:
@@ -207,18 +230,20 @@ class Notebox(tk.Frame):
 
         self.select(self.items[index + 1].id)
 
-    def get_name(self, id: int) -> str:
+    def get_name(self, id: str) -> str:
         for item in self.items:
             if item.id == id:
                 return item.name
 
-    def change_name(self, id: int, name: str):
+        return ""
+
+    def change_name(self, id: str, name: str) -> None:
         for item in self.items:
             if item.id == id:
                 item.change_name(name)
                 return
 
-    def close(self, id: int):
+    def close(self, id: str) -> None:
         index = self.index(id)
         self.items[index].tab.frame.grid_forget()
         self.items[index].content.grid_forget()
@@ -261,21 +286,24 @@ class Notebox(tk.Frame):
         self.dragging = False
         self.drag_item = None
 
-    def bind_recursive(self, what: str, action: Callable[..., Any], widget: tk.Widget):
+        if self.on_reorder:
+            self.on_reorder()
+
+    def bind_recursive(self, what: str, action: Callable[..., Any], widget: tk.Widget) -> None:
         widget.bind(what, action)
 
         for child in widget.winfo_children():
             self.bind_recursive(what, action, child)
 
-    def update_tabs(self):
+    def update_tabs(self) -> None:
         self.tabs_canvas.after_idle(self.do_update_tabs)
 
-    def do_update_tabs(self):
+    def do_update_tabs(self) -> None:
         bbox = self.tabs_container.bbox("all")
         self.tabs_canvas.configure(scrollregion=bbox)
         self.tabs_canvas.configure(width=bbox[2], height=bbox[3])
 
-    def scroll_to_item(self, item):
+    def scroll_to_item(self, item: NoteboxItem) -> None:
         app.update()
         x_left = item.tab.frame.winfo_x()
         x_right = x_left + item.tab.frame.winfo_width()
