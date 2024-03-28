@@ -94,11 +94,13 @@ class Notebox(tk.Frame):
         self.grid_rowconfigure(1, weight=1)
         self.bind_tab_mousewheel(self.tabs_container)
 
-        self.tabs_container.bind("<Double-Button-1>", lambda e: self.tab_double_click())
+        self.tabs_canvas.bind("<ButtonRelease-1>", lambda e: self.tabs_click())
+        self.tabs_canvas.bind("<Double-Button-1>", lambda e: self.tabs_double_click())
 
         self.on_tab_right_click: Optional[Callable[..., Any]] = None
         self.on_tab_middle_click: Optional[Callable[..., Any]] = None
-        self.on_tab_double_click: Optional[Callable[..., Any]] = None
+        self.on_tabs_click: Optional[Callable[..., Any]] = None
+        self.on_tabs_double_click: Optional[Callable[..., Any]] = None
         self.on_change: Optional[Callable[..., Any]] = None
         self.on_reorder: Optional[Callable[..., Any]] = None
 
@@ -109,9 +111,13 @@ class Notebox(tk.Frame):
         if self.on_tab_right_click:
             self.on_tab_right_click(event, self.current_item.id)
 
-    def tab_double_click(self) -> None:
-        if self.on_tab_double_click:
-            self.on_tab_double_click()
+    def tabs_click(self) -> None:
+        if self.on_tabs_click:
+            self.on_tabs_click()
+
+    def tabs_double_click(self) -> None:
+        if self.on_tabs_double_click:
+            self.on_tabs_double_click()
 
     def tab_middle_click(self, item: NoteboxItem) -> None:
         if self.on_tab_middle_click:

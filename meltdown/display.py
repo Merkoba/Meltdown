@@ -30,8 +30,8 @@ class Display:
     def make(self) -> None:
         from .widgets import widgets
 
-        self.root = Notebox(widgets.display_frame)
-        self.root.on_change = lambda: self.on_tab_change()
+        self.notebox = Notebox(widgets.display_frame)
+        self.notebox.on_change = lambda: self.on_tab_change()
 
         self.tabs: Dict[str, Tab] = {}
 
@@ -48,10 +48,11 @@ class Display:
 
         self.tab_number = 1
 
-        self.root.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
-        self.root.on_tab_double_click = lambda: self.on_tab_double_click()
-        self.root.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
-        self.root.on_reorder = lambda: self.update_session()
+        self.notebox.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
+        self.notebox.on_tabs_click = lambda: self.on_tabs_click()
+        self.notebox.on_tabs_double_click = lambda: self.on_tabs_double_click()
+        self.notebox.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
+        self.notebox.on_reorder = lambda: self.update_session()
 
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
@@ -67,7 +68,7 @@ class Display:
         if not conversation_id:
             return ""
 
-        notebox_item = self.root.add(name)
+        notebox_item = self.notebox.add(name)
         tab_id = notebox_item.id
         output_frame = widgetutils.make_frame(notebox_item.content)
         output_frame.grid(row=0, column=0, sticky="nsew")
@@ -87,13 +88,13 @@ class Display:
     def close_tab(self, tab_id: str = "",
                   force: bool = False, make_empty: bool = True) -> None:
         if not tab_id:
-            tab_id = self.root.current()
+            tab_id = self.notebox.current()
 
         if not tab_id:
             return
 
         def action() -> None:
-            self.root.close(tab_id)
+            self.notebox.close(tab_id)
             self.update_current_tab()
             self.remove_tab(tab_id)
 
@@ -118,11 +119,11 @@ class Display:
             Dialog.show_commands("Close tab?", cmds, on_enter=lambda: action())
 
     def select_tab(self, tab_id: str) -> None:
-        self.root.select(tab_id)
+        self.notebox.select(tab_id)
         app.update()
 
     def update_current_tab(self) -> None:
-        tab_id = self.root.current()
+        tab_id = self.notebox.current()
         self.current_tab = tab_id
 
     def on_tab_change(self) -> None:
@@ -183,7 +184,11 @@ class Display:
     def on_tab_middle_click(self, tab_id: str) -> None:
         self.close_tab(tab_id=tab_id)
 
-    def on_tab_double_click(self) -> None:
+    def on_tabs_click(self) -> None:
+        Menu.hide_all()
+        Dialog.hide_all()
+
+    def on_tabs_double_click(self) -> None:
         self.make_tab()
 
     def tab_menu_rename(self) -> None:
@@ -205,7 +210,7 @@ class Display:
             if name == o_name:
                 return
 
-            self.root.change_name(tab_id, name)
+            self.notebox.change_name(tab_id, name)
             session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
@@ -245,10 +250,10 @@ class Display:
         Dialog.show_confirm("Close other tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
-        return self.root.ids()
+        return self.notebox.ids()
 
     def index(self, tab_id: str) -> int:
-        return self.root.index(tab_id)
+        return self.notebox.index(tab_id)
 
     def show_output_menu(self, event: Any) -> None:
         self.output_menu.show(event)
@@ -347,7 +352,7 @@ class Display:
         logs.save_log()
 
     def get_tab_name(self, tab_id: str) -> str:
-        return self.root.get_name(tab_id)
+        return self.notebox.get_name(tab_id)
 
     def get_current_tab_name(self) -> str:
         return self.get_tab_name(self.current_tab)
@@ -407,10 +412,10 @@ class Display:
             widgets.enable_top_button()
 
     def tab_left(self) -> None:
-        self.root.select_left()
+        self.notebox.select_left()
 
     def tab_right(self) -> None:
-        self.root.select_right()
+        self.notebox.select_right()
 
     def close_current_tab(self) -> None:
         self.close_tab(tab_id=self.current_tab)
@@ -507,7 +512,7 @@ class Display:
 
     def select_last_tab(self) -> None:
         tab_ids = self.tab_ids()
-        self.root.select(tab_ids[-1])
+        self.notebox.select(tab_ids[-1])
 
 
 display = Display()
