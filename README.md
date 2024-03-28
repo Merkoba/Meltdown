@@ -110,6 +110,8 @@ Start new conversations based on some words.
 
 Perform commands automatically upong saving log files.
 
+Tab list with filterable menu.
+
 ---
 
 ## GUI Toolkit
