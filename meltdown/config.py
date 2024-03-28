@@ -329,6 +329,7 @@ class Config:
         from .dialogs import Dialog
 
         cmds = []
+        cmds.append(("Cancel", lambda: None))
         cmds.append(("Reset", lambda: self.reset()))
         cmds.append(("Load", lambda: self.load_state()))
         cmds.append(("Save", lambda: self.save_state()))

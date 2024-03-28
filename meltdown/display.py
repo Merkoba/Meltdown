@@ -5,6 +5,7 @@ from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
 from .args import args
+from .notebox import Notebox
 from . import widgetutils
 
 # Standard
@@ -31,26 +32,28 @@ class Display:
     def make(self) -> None:
         from .widgets import widgets
 
-        self.root = widgets.notebook
+        self.root = Notebox(widgets.display_frame)
+        self.root.on_change = lambda: self.on_tab_change()
+
         self.tabs: Dict[str, Tab] = {}
+
         self.tab_menu = Menu()
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
+
         self.output_menu = Menu()
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
-        self.drag_start_index = 0
+
         self.tab_number = 1
 
         self.root.bind("<Button-1>", lambda e: self.on_click(e))
         self.root.bind("<ButtonRelease-2>", lambda e: self.on_middle_click(e))
         self.root.bind("<Button-3>", lambda e: self.on_right_click(e))
         self.root.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
-        self.root.bind("<<NotebookTabChanged>>", lambda e: self.on_tab_change(e))
-        self.root.bind("<B1-Motion>", self.on_tab_drag)
 
         def on_mousewheel(direction: str) -> None:
             if direction == "left":
@@ -58,18 +61,12 @@ class Display:
             elif direction == "right":
                 self.tab_right()
 
-        self.root.bind("<Button-4>", lambda e: on_mousewheel("left"))
-        self.root.bind("<Button-5>", lambda e: on_mousewheel("right"))
-
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
         from .session import session
-        frame = widgetutils.make_frame(self.root)
 
         if not name:
             name = self.random_tab_name()
-
-        self.root.add(frame, text=name)
 
         if not conversation_id:
             conversation = session.add(name)
@@ -78,13 +75,12 @@ class Display:
         if not conversation_id:
             return ""
 
-        tab_id = self.tab_ids()[-1]
-        frame.grid_rowconfigure(0, weight=1)
-        frame.grid_columnconfigure(0, weight=1)
-        output_frame = widgetutils.make_frame(frame)
+        notebox_item = self.root.add(name)
+        tab_id = notebox_item.id
+        output_frame = widgetutils.make_frame(notebox_item.content)
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
-        bottom = Bottom(frame, tab_id)
+        bottom = Bottom(notebox_item.content, tab_id)
         tab = Tab(conversation_id, tab_id, output, bottom)
         self.tabs[tab_id] = tab
 
@@ -97,12 +93,13 @@ class Display:
         return tab_id
 
     def tab_on_coords(self, x: int, y: int) -> str:
-        index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
+        # index = self.root.tk.call(self.root._w, "identify", "tab", x, y)  # type: ignore
 
-        if type(index) == int:
-            return self.tab_ids()[index] or ""
-        else:
-            return ""
+        # if type(index) == int:
+        #     return self.tab_ids()[index] or ""
+        # else:
+        #     return ""
+        return ""
 
     def close_tab(self, event: Optional[Any] = None, tab_id: str = "",
                   force: bool = False, make_empty: bool = True) -> None:
@@ -148,10 +145,7 @@ class Display:
         tab_id = self.root.select()
         self.current_tab = tab_id
 
-    def update_tab_index(self) -> None:
-        self.drag_start_index = self.root.index(self.root.select())  # type: ignore
-
-    def on_tab_change(self, event: Any) -> None:
+    def on_tab_change(self) -> None:
         from .inputcontrol import inputcontrol
         from .session import session
         self.update_current_tab()
@@ -176,8 +170,8 @@ class Display:
     def get_current_bottom(self) -> Optional[Bottom]:
         return self.get_bottom(self.current_tab)
 
-    def get_tab(self, id: str) -> Optional[Tab]:
-        return self.tabs.get(id)
+    def get_tab(self, tab_id: str) -> Optional[Tab]:
+        return self.tabs.get(tab_id)
 
     def get_tab_by_conversation_id(self, conversation_id: str) -> Optional[Tab]:
         for tab in self.tabs.values():
@@ -204,7 +198,6 @@ class Display:
 
     def on_click(self, event: Any) -> None:
         Dialog.hide_all()
-        self.on_tab_start_drag(event)
 
     def on_right_click(self, event: Any) -> None:
         tab_id = self.tab_on_coords(event.x, event.y)
@@ -250,54 +243,6 @@ class Display:
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
 
-    def on_tab_start_drag(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            return
-
-        self.drag_start_index = self.index(tab_id)
-        self.drag_start_x = event.x
-
-    def on_tab_drag(self, event: Any) -> None:
-        tab_id = self.tab_on_coords(event.x, event.y)
-
-        if not tab_id:
-            return
-
-        if abs(self.drag_start_x - event.x) > 3:
-            if event.x > self.drag_start_x:
-                direction = "right"
-            elif event.x < self.drag_start_x:
-                direction = "left"
-        else:
-            return
-
-        if direction == "left":
-            if self.drag_start_index == 0:
-                return
-
-        index = self.index(tab_id)
-        width = self.get_tab_width(index)
-
-        if direction == "left":
-            x = 0
-        elif direction == "right":
-            x = width - event.x
-
-        if direction == "left":
-            x = index
-        elif direction == "right":
-            if abs(x) > width:
-                x = index if x < 0 else index + 1
-            else:
-                x = index
-
-        self.root.insert(x, self.drag_start_index)
-        self.update_tab_index()
-        self.update_session()
-        self.drag_start_x = event.x
-
     def get_tab_width(self, index: int) -> int:
         tab_text = self.root.tab(index, "text")
         label = tk.Label(self.root, text=tab_text)
@@ -338,7 +283,7 @@ class Display:
         Dialog.show_confirm("Close other tabs?", lambda: action())
 
     def tab_ids(self) -> List[str]:
-        return self.root.tabs()  # type: ignore
+        return self.root.ids()
 
     def index(self, tab_id: str) -> int:
         return self.root.index(tab_id)  # type: ignore

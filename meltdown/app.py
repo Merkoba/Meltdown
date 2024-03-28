@@ -73,29 +73,6 @@ class App:
         style.configure("Normal.TEntry", selectbackground=self.theme.entry_selection_background)
         style.configure("Normal.TEntry", selectforeground=self.theme.entry_selection_foreground)
 
-        style.configure("Normal.TNotebook", borderwidth=0)
-        style.configure("Normal.TNotebook", background=self.theme.entry_background)
-        style.configure("Normal.TNotebook.Tab", padding=[18, 2])
-        style.configure("Normal.TNotebook.Tab", font=self.theme.font_tab)
-
-        style.map("Normal.TNotebook.Tab", background=[
-            ("selected", self.theme.tab_selected_background),
-            ("!selected", self.theme.tab_normal_background),
-        ])
-
-        style.map("Normal.TNotebook.Tab", foreground=[
-            ("selected", self.theme.tab_selected_foreground),
-            ("!selected", self.theme.tab_normal_foreground),
-        ])
-
-        style.layout("Normal.TNotebook.Tab", [
-            ("Notebook.tab", {"sticky": "nswe", "children": [
-                ("Notebook.padding", {"side": "top", "sticky": "nswe", "children": [
-                    ("Notebook.label", {"side": "top", "sticky": ""})
-                ]})
-            ],
-            })])
-
         style.configure("Normal.Vertical.TScrollbar", gripcount=0,
                         background=self.theme.scrollbar_2, troughcolor=self.theme.scrollbar_1, borderwidth=0)
 

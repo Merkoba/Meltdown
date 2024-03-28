@@ -20,8 +20,7 @@ class InputControl:
         frame = widgets.input_frame
 
         self.input_label = widgetutils.make_label(frame, "Input")
-        widgets.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
-        self.input = widgets.input
+        self.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
         tip = "The prompt for the AI." \
             " The prompt is a message that the AI will respond to." \
             " Use the mousewheel to cycle input history"

@@ -303,6 +303,7 @@ class Session:
 
     def menu(self) -> None:
         cmds = []
+        cmds.append(("Cancel", lambda: None))
         cmds.append(("Load", lambda: self.load_state()))
         cmds.append(("Save", lambda: self.save_state()))
         Dialog.show_commands("Session Menu", commands=cmds)

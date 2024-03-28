@@ -84,13 +84,6 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     return frame, canvas
 
 
-def make_notebook(parent: tk.Frame, fill: Optional[Fill] = None,
-                  right_padding: Optional[int] = None) -> ttk.Notebook:
-    widget = ttk.Notebook(parent, style="Normal.TNotebook")
-    do_pack(widget, fill=fill, right_padding=right_padding)
-    return widget
-
-
 def make_entry(parent: tk.Frame, value: str = "",
                width: Optional[int] = None, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> EntryBox:

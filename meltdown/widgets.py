@@ -248,11 +248,12 @@ class Widgets:
                                                    fill=Fill.HORIZONTAL, right_padding=right_padding, width=3)
         ToolTip(self.output_menu, "Open the output menu")
 
-        # Output
+        # Display
         app.main_frame.grid_rowconfigure(widgetutils.frame_number, weight=1)
-        self.output_frame = widgetutils.make_frame()
-
-        self.notebook = widgetutils.make_notebook(self.output_frame, fill=Fill.BOTH, right_padding=right_padding)
+        app.main_frame.grid_columnconfigure(widgetutils.frame_number, weight=1)
+        self.display_frame = widgetutils.make_frame()
+        self.display_frame.grid_rowconfigure(0, weight=1)
+        self.display_frame.grid_columnconfigure(0, weight=1)
 
         # Addons
         self.addons_frame = widgetutils.make_frame()
@@ -313,10 +314,6 @@ class Widgets:
 
     def setup(self) -> None:
         from .display import display
-
-        if display.num_tabs() == 0:
-            display.make_tab()
-
         inputcontrol.fill()
 
         self.fill()
@@ -331,6 +328,9 @@ class Widgets:
         self.check_details_buttons()
 
         inputcontrol.focus()
+
+        if display.num_tabs() == 0:
+            display.make_tab()
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
