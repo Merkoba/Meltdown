@@ -316,14 +316,22 @@ class Keyboard:
 
         separator = "--------------------------------"
         lines = ["Keyboard Shortcuts:"]
-        lines.append(separator)
+        keys = []
 
-        for i, key in enumerate(self.commands):
+        for key in self.commands:
             values = self.commands[key]
+            upkey = key.upper()
+
+            if upkey in keys:
+                continue
+
+            keys.append(upkey)
+            upkey = upkey.replace("<", "< ").replace(">", " >")
+            upkey.replace("_", " ")
+            items = [separator]
+            items.append(f"{upkey}")
 
             for value in values:
-                items = [f"{key}"]
-
                 if value.help:
                     items.append(f"{value.help}")
 
@@ -335,9 +343,6 @@ class Keyboard:
 
                 if value.ctrl_shift_help:
                     items.append(f" Ctrl+Shift: {value.ctrl_shift_help}")
-
-                if i < (len(self.commands) - 1):
-                    items.append(separator)
 
                 lines.append("\n\n".join(items))
 
