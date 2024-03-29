@@ -17,8 +17,7 @@ class Commands:
     def setup(self) -> None:
         from .display import display
         from .model import model
-        from .args import args
-        from .keyboard import keyboard
+        from .session import session
         from . import filemanager
         from . import logs
 
@@ -50,6 +49,9 @@ class Commands:
             "find": {"aliases": ["search"], "help": "Find a text string", "action": lambda: display.find()},
             "first": {"aliases": [], "help": "Go to the first tab", "action": lambda: display.select_first_tab()},
             "last": {"aliases": [], "help": "Go to the last tab", "action": lambda: display.select_last_tab()},
+            "config": {"aliases": ["configuration"], "help": "Show the config menu", "action": lambda: config.menu()},
+            "session": {"aliases": [], "help": "Show the config menu", "action": lambda: session.menu()},
+            "reset": {"aliases": ["restart"], "help": "Reset the config", "action": lambda: config.reset()},
         }
 
         cmds = []
