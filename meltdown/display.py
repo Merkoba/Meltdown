@@ -45,7 +45,7 @@ class Display:
         self.tab_menu.add(text="List", command=lambda: self.show_tab_list())
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add(text="Move", command=lambda: self.move_tab())
-        self.tab_menu.add(text="Last", command=lambda: self.select_last_tab())
+        self.tab_menu.add(text="First", command=lambda: self.select_first_tab())
         self.tab_menu.add(text="Last", command=lambda: self.select_last_tab())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
