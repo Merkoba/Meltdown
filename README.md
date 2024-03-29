@@ -114,6 +114,8 @@ Tab list with filterable menu.
 
 Find text, case sensitive and insensitive.
 
+Find word-bound text.
+
 ---
 
 ## GUI Toolkit
