@@ -29,25 +29,27 @@ class Find:
         self.entry.check_placeholder()
         self.current_match: Optional[str] = None
 
+        padx_button = 4
+
         self.next_i_button = ButtonBox(self.inner, "Next (i)", lambda: self.find_next())
         ToolTip(self.next_i_button, "Find next match (case insensitive)")
-        self.next_i_button.grid(row=0, column=1, sticky="ew", padx=4)
+        self.next_i_button.grid(row=0, column=1, sticky="ew", padx=padx_button)
 
         self.next_ci_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
         ToolTip(self.next_ci_button, "Find next match (case sensitive)")
-        self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=4)
+        self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
 
         self.bound_ci_button = ButtonBox(self.inner, "Bound (i)", lambda: self.find_next(bound=True))
         ToolTip(self.bound_ci_button, "Find next word-bound match (case insensitive)")
-        self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=4)
+        self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
 
         self.bound_i_button = ButtonBox(self.inner, "Bound", lambda: self.find_next(False, bound=True))
         ToolTip(self.bound_i_button, "Find next word-bound match (case sensitive)")
-        self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=4)
+        self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
 
         self.hide_button = ButtonBox(self.inner, "Hide", lambda: self.hide())
         ToolTip(self.hide_button, "Hide the find bar (Esc)")
-        self.hide_button.grid(row=0, column=5, sticky="ew", padx=4)
+        self.hide_button.grid(row=0, column=5, sticky="ew", padx=padx_button)
 
         self.inner.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
         self.root.grid(row=0, column=0, sticky="ew")
@@ -74,6 +76,11 @@ class Find:
             start_pos = "1.0"
 
         content = widget.get(start_pos, "end")
+
+        if query.startswith("/") and query.endswith("/"):
+            query = query[1:-1]
+        else:
+            query = re.escape(query)
 
         if bound:
             query = r"\b" + query + r"\b"
