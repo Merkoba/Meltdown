@@ -546,9 +546,17 @@ class Display:
         tab.output.format_text()
         tab.modified = True
 
+    def select_first_tab(self) -> None:
+        tab_ids = self.tab_ids()
+
+        if tab_ids:
+            self.book.select(tab_ids[0])
+
     def select_last_tab(self) -> None:
         tab_ids = self.tab_ids()
-        self.book.select(tab_ids[-1])
+
+        if tab_ids:
+            self.book.select(tab_ids[-1])
 
     def find(self, tab_id: str = "", widget: Optional[tk.Text] = None) -> None:
         if not tab_id:

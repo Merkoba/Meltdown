@@ -133,8 +133,11 @@ class Find:
             self.widget = display.get_output(self.tab_id)
 
     def hide(self) -> None:
+        from .inputcontrol import inputcontrol
+
         self.clear()
         self.root.grid_remove()
+        inputcontrol.focus()
 
     def on_esc(self) -> None:
         if self.entry.get():
