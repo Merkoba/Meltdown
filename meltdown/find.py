@@ -35,7 +35,7 @@ class Find:
         ToolTip(self.next_ci_button, "Find next match (case sensitive)")
         self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=4)
         self.hide_button = ButtonBox(self.inner, "Hide", lambda: self.hide())
-        ToolTip(self.hide_button, "Hide the find bar")
+        ToolTip(self.hide_button, "Hide the find bar (Esc)")
         self.hide_button.grid(row=0, column=3, sticky="ew", padx=4)
         self.inner.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
         self.root.grid(row=2, column=0, sticky="ew")
