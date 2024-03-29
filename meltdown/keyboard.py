@@ -274,7 +274,7 @@ class Keyboard:
                       help="Reset config")
 
         self.register("<F12>",
-                      lambda: display.show_tab_list(True),
+                      lambda: display.show_tab_list(),
                       help="Show tab list")
 
         self.register("<F8>",

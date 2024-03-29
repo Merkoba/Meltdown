@@ -45,7 +45,7 @@ class Commands:
             "commands": {"aliases": ["cmds"], "help": "Show the command line arguments", "action": lambda: app.show_help("commands")},
             "arguments": {"aliases": ["args"], "help": "Show the command line arguments", "action": lambda: app.show_help("arguments")},
             "keyboard": {"aliases": ["shortcuts"], "help": "Show the tab list to pick a tab", "action": lambda: app.show_help("keyboard")},
-            "list": {"aliases": ["tabs"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list(True)},
+            "list": {"aliases": ["tabs", "tablist"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list()},
             "find": {"aliases": ["search"], "help": "Find a text string", "action": lambda: display.find()},
             "first": {"aliases": [], "help": "Go to the first tab", "action": lambda: display.select_first_tab()},
             "last": {"aliases": [], "help": "Go to the last tab", "action": lambda: display.select_last_tab()},

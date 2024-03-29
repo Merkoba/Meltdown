@@ -44,9 +44,6 @@ class Display:
         self.tab_menu = Menu()
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
         self.tab_menu.add(text="Move", command=lambda: self.move_tab())
-        self.tab_menu.add(text="List", command=lambda: self.show_tab_list())
-        self.tab_menu.add(text="First", command=lambda: self.select_first_tab())
-        self.tab_menu.add(text="Last", command=lambda: self.select_last_tab())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
 
@@ -56,6 +53,9 @@ class Display:
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.output_menu.add(text="View Text", command=lambda: self.view_text())
         self.output_menu.add(text="View JSON", command=lambda: self.view_json())
+        self.output_menu.add(text="Tab List", command=lambda: self.show_tab_list())
+        self.output_menu.add(text="First Tab", command=lambda: self.select_first_tab())
+        self.output_menu.add(text="Last Tab", command=lambda: self.select_last_tab())
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
@@ -222,13 +222,9 @@ class Display:
     def on_tabs_double_click(self) -> None:
         self.make_tab()
 
-    def show_tab_list(self, current: bool = False) -> None:
-        if current:
-            tab_id = self.current_tab
-        else:
-            tab_id = self.tab_menu_id
-
-        widget = self.book.get_tab(tab_id)
+    def show_tab_list(self) -> None:
+        from .widgets import widgets
+        widget = widgets.output_menu
 
         if not widget:
             return
