@@ -148,5 +148,5 @@ class Dialog:
         Dialog.current_dialog = None
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
-        button = widgetutils.get_button(self.button_frame, text, command, width=10, bigger=True)
+        button = widgetutils.get_button(self.button_frame, text, command, bigger=True)
         button.pack(side=tk.LEFT, padx=6, pady=8)

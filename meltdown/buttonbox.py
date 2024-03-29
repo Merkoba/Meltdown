@@ -18,6 +18,7 @@ class ButtonBox(tk.Frame):
         self.bigger = bigger
         style = style if style else "normal"
         when = when if when else "<ButtonRelease-1>"
+        self.custom_width = width is not None
         self.width = width if width else app.theme.button_width
         self.make()
         self.set_style(style)
@@ -29,7 +30,7 @@ class ButtonBox(tk.Frame):
         padx = app.theme.button_padx
         pady = 2 if self.bigger else 0
 
-        if len(self.text) < 4:
+        if (not self.custom_width) and (len(self.text) < 4):
             space = "   "
             text = f"{space}{self.text}{space}"
         else:
