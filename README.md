@@ -254,7 +254,7 @@ Don't show the temperature monitor.
 
 >no-wrap
 
-Disable tab and menu wrapping when cycling up/down or left/right.
+Disable wrapping when selecting items.
 
 ---
 
