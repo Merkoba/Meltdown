@@ -74,7 +74,7 @@ class Display:
             name = self.random_tab_name()
 
         if not conversation_id:
-            conv_id = "ignore" if mode == "raw" else ""
+            conv_id = "ignore" if mode == "ignore" else ""
             conversation = session.add(name, conv_id=conv_id)
             conversation_id = conversation.id
 
@@ -597,9 +597,9 @@ class Display:
         name = self.get_tab_name(tab.tab_id)
 
         if text:
-            new_tab = self.make_tab(name=f"{name} Text", mode="raw")
+            new_tab = self.make_tab(name=f"{name} Text", mode="ignore")
             self.print(text, tab_id=new_tab)
-            app.root.after(100, lambda: self.to_bottom(new_tab))
+            self.to_top(tab_id=new_tab)
 
     def view_json(self) -> None:
         from . import logs
@@ -615,9 +615,9 @@ class Display:
         name = self.get_tab_name(tab.tab_id)
 
         if text:
-            new_tab = self.make_tab(name=f"{name} JSON", mode="raw")
+            new_tab = self.make_tab(name=f"{name} JSON", mode="ignore")
             self.print(text, tab_id=new_tab)
-            app.root.after(100, lambda: self.to_bottom(new_tab))
+            self.to_top(tab_id=new_tab)
 
 
 display = Display()

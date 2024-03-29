@@ -345,13 +345,13 @@ class App:
         from .args import args
 
         if what == "commands":
-            tab_id = display.make_tab("Commands")
+            tab_id = display.make_tab("Commands", mode="ignore")
             commands.show_help(tab_id=tab_id)
         elif what == "arguments":
-            tab_id = display.make_tab("Arguments")
+            tab_id = display.make_tab("Arguments", mode="ignore")
             args.show_help(tab_id=tab_id)
         elif what == "keyboard":
-            tab_id = display.make_tab("Keyboard")
+            tab_id = display.make_tab("Keyboard", mode="ignore")
             keyboard.show_help(tab_id=tab_id)
 
         display.to_top(tab_id=tab_id)

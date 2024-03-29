@@ -123,20 +123,29 @@ class InputControl:
         from .display import display
         from . import filemanager
 
+        tab = display.get_current_tab()
+
+        if not tab:
+            return
+
         text = self.input.get().strip()
 
         if text:
-            display.to_bottom()
             self.clear()
-            filemanager.add_input(text)
 
             if commands.check(text):
                 return
 
+            if tab.mode != "normal":
+                return
+
+            display.to_bottom()
+            filemanager.add_input(text)
+
             if model.model_loading:
                 return
 
-            model.stream(text, display.current_tab)
+            model.stream(text, tab.tab_id)
         else:
             display.to_bottom()
 
