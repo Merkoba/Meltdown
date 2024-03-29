@@ -116,6 +116,10 @@ Find text, case sensitive and insensitive.
 
 Find word-bound text or use regex.
 
+Dialog buttons that respond to keyboard.
+
+View text and view json raw modes.
+
 ---
 
 ## GUI Toolkit
