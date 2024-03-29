@@ -128,7 +128,7 @@ class Display:
                 cmds.append(("All", lambda: self.close_all_tabs()))
 
             cmds.append(("Ok", lambda: action()))
-            Dialog.show_commands("Close tab?", cmds, on_enter=lambda: action())
+            Dialog.show_commands("Close tab?", cmds)
 
     def select_tab(self, tab_id: str) -> None:
         self.book.select(tab_id)

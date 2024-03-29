@@ -23,8 +23,7 @@ def save_log() -> None:
     cmds.append(("Cancel", lambda: None))
     cmds.append(("To JSON", lambda: log_to_json()))
     cmds.append(("To Text", lambda: log_to_text()))
-    Dialog.show_commands("Save conversation to a file?",
-                         cmds, on_enter=lambda: log_to_text())
+    Dialog.show_commands("Save conversation to a file?", cmds)
 
 
 def save_log_file(text: str, ext: str) -> None:

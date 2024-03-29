@@ -29,34 +29,28 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
-        dialog.root.bind("1", lambda e: cancel())
-        dialog.root.bind("2", lambda e: ok())
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
-        dialog.current_button = 1
+        dialog.highlight_button(1)
         dialog.show()
 
     @staticmethod
     def show_commands(text: str,
-                      commands: List[Tuple[str, Callable[..., Any]]],
-                      on_enter: Optional[Callable[..., Any]] = None) -> None:
+                      commands: List[Tuple[str, Callable[..., Any]]]) -> None:
         dialog = Dialog(text)
 
         def generic(func: Callable[..., Any]) -> None:
             dialog.hide()
             func()
 
-        def make_button(cmd: Tuple[str, Callable[..., Any]], num: int) -> None:
+        def make_button(cmd: Tuple[str, Callable[..., Any]]) -> None:
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
-            if num >= 1 and num <= 9:
-                dialog.root.bind(str(num), lambda e: generic(cmd[1]))
-
         if commands:
-            for i, cmd in enumerate(commands):
-                make_button(cmd, i + 1)
+            for cmd in commands:
+                make_button(cmd)
 
-        dialog.current_button = len(dialog.buttons) - 1
+        dialog.highlight_button(len(dialog.buttons) - 1)
         dialog.show()
 
     @staticmethod
@@ -67,7 +61,7 @@ class Dialog:
             dialog.hide()
 
         dialog.make_button("Ok", ok)
-        dialog.current_button = 0
+        dialog.highlight_button(0)
         dialog.show()
 
     @staticmethod
@@ -90,12 +84,13 @@ class Dialog:
         if value:
             entry.insert(0, value)
 
-        entry.bind("<Escape>", lambda e: dialog.hide())
+        entry.bind("<Return>", lambda e: dialog.enter())
+        entry.bind("<Escape>", lambda e: dialog.root.focus_set())
         entry.pack(padx=6, pady=6)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
         dialog.show()
-        dialog.current_button = 1
+        dialog.highlight_button(1)
         entry.full_focus()
 
     @staticmethod
@@ -107,6 +102,7 @@ class Dialog:
         self.buttons: List[ButtonBox] = []
         self.make(text)
 
+        self.highlighted = False
         self.current_button: Optional[int] = None
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())
@@ -158,35 +154,45 @@ class Dialog:
         button = widgetutils.get_button(self.button_frame, text, command, bigger=True)
         button.pack(side=tk.LEFT, padx=6, pady=8)
         self.buttons.append(button)
+        num = len(self.buttons)
+        self.root.bind(str(num), lambda e: command())
 
     def left(self) -> None:
         if not len(self.buttons):
             return
 
         if self.current_button is None:
-            self.current_button = len(self.buttons) - 1
+            new_index = len(self.buttons) - 1
         elif self.current_button > 0:
-            self.current_button -= 1
+            new_index = self.current_button - 1
+        else:
+            return
 
-        self.highlight_button()
+        self.highlight_button(new_index)
 
     def right(self) -> None:
         if not len(self.buttons):
             return
 
         if self.current_button is None:
-            self.current_button = 0
+            new_index = 0
         elif self.current_button < len(self.buttons) - 1:
-            self.current_button += 1
+            new_index = self.current_button + 1
+        else:
+            return
 
-        self.highlight_button()
+        self.highlight_button(new_index)
 
-    def highlight_button(self) -> None:
+    def highlight_button(self, index: int) -> None:
+        self.current_button = index
+
         for i, button in enumerate(self.buttons):
-            if i == self.current_button:
+            if i == index:
                 button.set_style("highlight")
             else:
                 button.set_style("normal")
+
+        self.highlighted = True
 
     def enter(self) -> None:
         if self.current_button is not None:
