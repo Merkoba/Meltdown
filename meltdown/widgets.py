@@ -671,14 +671,26 @@ class Widgets:
         widget.focus_set()
         config.update(key)
 
+    def find_focused(self) -> bool:
+        focused = app.root.focus_get()
+
+        if isinstance(focused, EntryBox):
+            if focused.name == "find":
+                return True
+
+        return False
+
     def esckey(self) -> None:
         from .model import model
         from .display import display
 
-        widget = self.get_widget("input")
-        assert isinstance(widget, EntryBox)
+        if Dialog.current_dialog or Menu.current_menu:
+            return
 
-        if widget.get():
+        if self.find_focused():
+            return
+
+        if self.input.get():
             inputcontrol.clear()
         elif model.streaming:
             self.stop()

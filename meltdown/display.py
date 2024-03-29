@@ -5,6 +5,7 @@ from .dialogs import Dialog
 from .output import Output
 from .bottom import Bottom
 from .book import Book, Page
+from .find import Find
 from . import widgetutils
 
 # Standard
@@ -15,10 +16,12 @@ from typing import Optional
 
 
 class Tab:
-    def __init__(self, conversation_id: str, tab_id: str, output: Output, bottom: Bottom) -> None:
+    def __init__(self, conversation_id: str, tab_id: str,
+                 output: Output, find: Find, bottom: Bottom) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
         self.output = output
+        self.find = find
         self.bottom = bottom
         self.modified = False
 
@@ -42,6 +45,7 @@ class Display:
         self.tab_list_menu = Menu()
 
         self.output_menu = Menu()
+        self.output_menu.add(text="Find", command=lambda: self.find())
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
@@ -70,13 +74,14 @@ class Display:
         if not conversation_id:
             return ""
 
-        notebox_item = self.book.add(name)
-        tab_id = notebox_item.id
-        output_frame = widgetutils.make_frame(notebox_item.content)
+        page = self.book.add(name)
+        tab_id = page.id
+        output_frame = widgetutils.make_frame(page.content)
         output_frame.grid(row=0, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
-        bottom = Bottom(notebox_item.content, tab_id)
-        tab = Tab(conversation_id, tab_id, output, bottom)
+        find = Find(page.content, output)
+        bottom = Bottom(page.content, tab_id)
+        tab = Tab(conversation_id, tab_id, output, find, bottom)
         self.tabs[tab_id] = tab
 
         if select_tab:
@@ -539,6 +544,14 @@ class Display:
     def select_last_tab(self) -> None:
         tab_ids = self.tab_ids()
         self.book.select(tab_ids[-1])
+
+    def find(self) -> None:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.find.show()
 
 
 display = Display()

@@ -24,6 +24,10 @@ class EntryBox(ttk.Entry):
         self.trace_id = self.text_var.trace_add("write", self.on_write)
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
+        self.name = ""
+
+    def set_name(self, name: str) -> None:
+        self.name = name
 
     def get(self) -> str:
         if self.placeholder_active:

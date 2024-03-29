@@ -93,6 +93,9 @@ class Theme:
         self.button_width = 8
         self.snippet_header_minus = 1
         self.right_padding = 11
+        self.find_background = "#6A7B83"
+        self.find_match_background = "#C3C3C3"
+        self.find_match_foreground = "black"
 
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, config.output_font_size)

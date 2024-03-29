@@ -66,3 +66,7 @@ class LightTheme(Theme):
 
         self.tooltip_background = "#2B303B"
         self.tooltip_foreground = "white"
+
+        self.find_background = "#8799C2"
+        self.find_match_background = "#677577"
+        self.find_match_foreground = "white"

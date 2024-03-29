@@ -196,6 +196,9 @@ class Keyboard:
 
     def setup_globals(self) -> None:
         def on_enter() -> None:
+            if widgets.find_focused():
+                return
+
             inputcontrol.focus()
             inputcontrol.submit()
 
@@ -208,7 +211,7 @@ class Keyboard:
         self.register("<Escape>",
                       lambda: widgets.esckey(),
                       on_ctrl=lambda: model.unload(True),
-                      help="Clear input or stop model stream",
+                      help="Clear input, stop model stream, or go to bottom",
                       ctrl_help="Unload model")
 
         self.register("<Page_Up>",
@@ -272,6 +275,10 @@ class Keyboard:
         self.register("<F11>",
                       lambda: app.toggle_fullscreen(),
                       help="Toggle fullscreen")
+
+        self.register("f",
+                      on_ctrl=lambda: display.find(),
+                      ctrl_help="Find text")
 
         self.register("t",
                       on_ctrl=lambda: display.make_tab(),
