@@ -29,7 +29,13 @@ class ButtonBox(tk.Frame):
         padx = app.theme.button_padx
         pady = 2 if self.bigger else 0
 
-        self.label = tk.Label(self, text=self.text,
+        if len(self.text) < 4:
+            space = "   "
+            text = f"{space}{self.text}{space}"
+        else:
+            text = self.text
+
+        self.label = tk.Label(self, text=text,
                               font=app.theme.font_button,
                               padx=padx, pady=pady)
 

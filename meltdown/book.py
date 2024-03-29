@@ -79,6 +79,7 @@ class Book(tk.Frame):
         tabs_frame.configure(background=app.theme.tabs_container_color)
         tabs_frame.grid_rowconfigure(0, weight=0)
         tabs_frame.grid_columnconfigure(0, weight=1)
+        tabs_frame.bind("<Configure>", lambda e: self.on_tabs_configure())
 
         self.content_container = tk.Frame(self)
         self.content_container.grid(row=1, column=0, sticky="nsew")
@@ -105,6 +106,9 @@ class Book(tk.Frame):
         self.on_tabs_double_click: Optional[Callable[..., Any]] = None
         self.on_change: Optional[Callable[..., Any]] = None
         self.on_reorder: Optional[Callable[..., Any]] = None
+
+        self.discover_debouncer = ""
+        self.discover_delay = 250
 
     def tab_right_click(self, event: Any, id: str) -> None:
         if self.on_tab_right_click:
@@ -371,3 +375,15 @@ class Book(tk.Frame):
                 return page.tab.frame
 
         return None
+
+    def on_tabs_configure(self) -> None:
+        if self.discover_debouncer:
+            app.root.after_cancel(self.discover_debouncer)
+
+        self.discover_debouncer = app.root.after(self.discover_delay, lambda: self.discover())
+
+    def discover(self) -> None:
+        if not self.current_page:
+            return
+
+        self.scroll_to_page(self.current_page)
