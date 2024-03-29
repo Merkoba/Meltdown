@@ -42,7 +42,7 @@ def save_all() -> None:
     Dialog.show_commands("Save all conversations?", cmds)
 
 
-def save_log_file(text: str, name: str, ext: str) -> None:
+def save_log_file(text: str, name: str, ext: str, all: bool) -> None:
     text = text.strip()
     name = name.replace(" ", "_").lower()
     paths.logs.mkdir(parents=True, exist_ok=True)
@@ -61,14 +61,16 @@ def save_log_file(text: str, name: str, ext: str) -> None:
     with open(file_path, "w") as file:
         file.write(text)
 
-    display.print(f">> Log saved as {file_name}")
+    if not all:
+        display.print(f"< Log saved as {file_name} >")
 
-    if args.on_log:
-        app.run_command([args.on_log, str(file_path)])
+        if args.on_log:
+            app.run_command([args.on_log, str(file_path)])
 
 
 def log_to_json(all: bool = False) -> None:
     conversations = []
+    num = 0
 
     if all:
         for key in session.conversations:
@@ -85,7 +87,16 @@ def log_to_json(all: bool = False) -> None:
         if not text:
             return
 
-        save_log_file(text, conversation.name, "json")
+        num += 1
+        save_log_file(text, conversation.name, "json", all)
+
+    if all:
+        if num == 1:
+            s = f"< {num} JSON log saved >"
+        else:
+            s = f"< {num} JSON logs saved >"
+
+        display.print(s)
 
 
 def get_json_log(conversation: Conversation) -> str:
@@ -103,6 +114,7 @@ def get_json_log(conversation: Conversation) -> str:
 
 def log_to_text(all: bool = False) -> None:
     conversations = []
+    num = 0
 
     if all:
         for key in session.conversations:
@@ -119,7 +131,16 @@ def log_to_text(all: bool = False) -> None:
         if not text:
             return
 
-        save_log_file(text, conversation.name, "text")
+        num += 1
+        save_log_file(text, conversation.name, "txt", all)
+
+    if all:
+        if num == 1:
+            s = f"< {num} text log saved >"
+        else:
+            s = f"< {num} text logs saved >"
+
+        display.print(s)
 
 
 def get_text_log(conversation: Conversation) -> str:
