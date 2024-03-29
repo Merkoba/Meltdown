@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .entrybox import EntryBox
+from .buttonbox import ButtonBox
 from . import widgetutils
 
 # Standard
@@ -28,9 +29,11 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
-        dialog.root.bind("<Return>", lambda e: ok())
+        dialog.root.bind("1", lambda e: cancel())
+        dialog.root.bind("2", lambda e: ok())
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
+        dialog.current_button = 1
         dialog.show()
 
     @staticmethod
@@ -43,20 +46,17 @@ class Dialog:
             dialog.hide()
             func()
 
-        def make_button(cmd: Tuple[str, Callable[..., Any]]) -> None:
+        def make_button(cmd: Tuple[str, Callable[..., Any]], num: int) -> None:
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
+            if num >= 1 and num <= 9:
+                dialog.root.bind(str(num), lambda e: generic(cmd[1]))
+
         if commands:
-            for cmd in commands:
-                make_button(cmd)
+            for i, cmd in enumerate(commands):
+                make_button(cmd, i + 1)
 
-        def on_enter_action() -> None:
-            dialog.hide()
-
-            if on_enter:
-                on_enter()
-
-        dialog.root.bind("<Return>", lambda e: on_enter_action())
+        dialog.current_button = len(dialog.buttons) - 1
         dialog.show()
 
     @staticmethod
@@ -66,8 +66,8 @@ class Dialog:
         def ok() -> None:
             dialog.hide()
 
-        dialog.root.bind("<Return>", lambda e: ok())
         dialog.make_button("Ok", ok)
+        dialog.current_button = 0
         dialog.show()
 
     @staticmethod
@@ -91,11 +91,11 @@ class Dialog:
             entry.insert(0, value)
 
         entry.bind("<Escape>", lambda e: dialog.hide())
-        entry.bind("<Return>", lambda e: ok())
         entry.pack(padx=6, pady=6)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
         dialog.show()
+        dialog.current_button = 1
         entry.full_focus()
 
     @staticmethod
@@ -104,7 +104,14 @@ class Dialog:
             Dialog.current_dialog.hide()
 
     def __init__(self, text: str) -> None:
+        self.buttons: List[ButtonBox] = []
         self.make(text)
+
+        self.current_button: Optional[int] = None
+        self.root.bind("<Left>", lambda e: self.left())
+        self.root.bind("<Right>", lambda e: self.right())
+        self.root.bind("<Return>", lambda e: self.enter())
+
         Dialog.current_dialog = self
 
     def make(self, text: str) -> None:
@@ -150,3 +157,40 @@ class Dialog:
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
         button = widgetutils.get_button(self.button_frame, text, command, bigger=True)
         button.pack(side=tk.LEFT, padx=6, pady=8)
+        self.buttons.append(button)
+
+    def left(self) -> None:
+        if not len(self.buttons):
+            return
+
+        if self.current_button is None:
+            self.current_button = len(self.buttons) - 1
+        elif self.current_button > 0:
+            self.current_button -= 1
+
+        self.highlight_button()
+
+    def right(self) -> None:
+        if not len(self.buttons):
+            return
+
+        if self.current_button is None:
+            self.current_button = 0
+        elif self.current_button < len(self.buttons) - 1:
+            self.current_button += 1
+
+        self.highlight_button()
+
+    def highlight_button(self) -> None:
+        for i, button in enumerate(self.buttons):
+            if i == self.current_button:
+                button.set_style("highlight")
+            else:
+                button.set_style("normal")
+
+    def enter(self) -> None:
+        if self.current_button is not None:
+            button = self.buttons[self.current_button]
+
+            if button and button.command:
+                button.command()

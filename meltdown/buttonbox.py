@@ -20,6 +20,7 @@ class ButtonBox(tk.Frame):
         when = when if when else "<ButtonRelease-1>"
         self.custom_width = width is not None
         self.width = width if width else app.theme.button_width
+        self.command = command
         self.make()
         self.set_style(style)
 
@@ -49,7 +50,7 @@ class ButtonBox(tk.Frame):
     def on_enter(self) -> None:
         if self.style == "normal":
             self.set_background(app.theme.button_hover_background)
-        elif self.style == "green":
+        elif self.style == "highlight":
             self.set_background(app.theme.button_highlight_hover_background)
         elif self.style == "alt":
             self.set_background(app.theme.button_alt_hover_background)
@@ -57,7 +58,7 @@ class ButtonBox(tk.Frame):
     def on_leave(self) -> None:
         if self.style == "normal":
             self.set_background(app.theme.button_background)
-        elif self.style == "green":
+        elif self.style == "highlight":
             self.set_background(app.theme.button_highlight_background)
         elif self.style == "disabled":
             self.set_background(app.theme.button_disabled_background)
@@ -103,7 +104,7 @@ class ButtonBox(tk.Frame):
         if style == "normal":
             self.set_background(app.theme.button_background)
             self.configure(cursor="hand2")
-        elif style == "green":
+        elif style == "highlight":
             self.set_background(app.theme.button_highlight_background)
             self.configure(cursor="hand2")
         elif style == "disabled":
