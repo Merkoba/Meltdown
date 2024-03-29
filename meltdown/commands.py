@@ -54,6 +54,7 @@ class Commands:
             "reset": {"aliases": ["restart"], "help": "Reset the config", "action": lambda: config.reset()},
             "viewtext": {"aliases": ["text"], "help": "View raw text", "action": lambda: display.view_text()},
             "viewjson": {"aliases": ["json"], "help": "View raw JSON", "action": lambda: display.view_json()},
+            "move": {"aliases": [], "help": "Move tab to start or end", "action": lambda: display.move_tab(True)},
         }
 
         cmds = []

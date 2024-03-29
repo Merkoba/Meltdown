@@ -44,6 +44,9 @@ class Display:
         self.tab_menu = Menu()
         self.tab_menu.add(text="List", command=lambda: self.show_tab_list())
         self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
+        self.tab_menu.add(text="Move", command=lambda: self.move_tab())
+        self.tab_menu.add(text="Last", command=lambda: self.select_last_tab())
+        self.tab_menu.add(text="Last", command=lambda: self.select_last_tab())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
 
@@ -636,6 +639,27 @@ class Display:
             new_tab = self.make_tab(name=f"{name} JSON", mode="ignore")
             self.print(text, tab_id=new_tab)
             self.to_top(tab_id=new_tab)
+
+    def move_tab(self, current: bool = False) -> None:
+        if len(self.tab_ids()) <= 1:
+            return
+
+        if current:
+            tab_id = self.current_tab
+        else:
+            tab_id = self.tab_menu_id
+
+        cmds = []
+        cmds.append(("Cancel", lambda: None))
+        cmds.append(("To Start", lambda: self.move_tab_to_start(tab_id)))
+        cmds.append(("To End", lambda: self.move_tab_to_end(tab_id)))
+        Dialog.show_commands("Move tab?", cmds)
+
+    def move_tab_to_start(self, tab_id: str) -> None:
+        self.book.move_to_start(tab_id)
+
+    def move_tab_to_end(self, tab_id: str) -> None:
+        self.book.move_to_end(tab_id)
 
 
 display = Display()
