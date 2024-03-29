@@ -266,12 +266,16 @@ class Keyboard:
                       help="Focus input")
 
         self.register("<F3>",
-                      lambda: display.show_tab_list(True),
-                      help="Show tab list")
+                      lambda: display.find_next(),
+                      help="Find next string")
 
         self.register("<F5>",
                       lambda: config.reset(),
                       help="Reset config")
+
+        self.register("<F12>",
+                      lambda: display.show_tab_list(True),
+                      help="Show tab list")
 
         self.register("<F8>",
                       lambda: app.toggle_compact(),
