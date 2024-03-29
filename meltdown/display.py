@@ -74,7 +74,8 @@ class Display:
             name = self.random_tab_name()
 
         if not conversation_id:
-            conversation = session.add(name)
+            conv_id = "ignore" if mode == "raw" else ""
+            conversation = session.add(name, conv_id=conv_id)
             conversation_id = conversation.id
 
         if not conversation_id:
@@ -589,6 +590,9 @@ class Display:
         if not tab:
             return
 
+        if tab.mode != "normal":
+            return
+
         text = logs.get_text_log()
         name = self.get_tab_name(tab.tab_id)
 
@@ -602,6 +606,9 @@ class Display:
         tab = self.get_current_tab()
 
         if not tab:
+            return
+
+        if tab.mode != "normal":
             return
 
         text = logs.get_json_log()

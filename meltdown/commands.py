@@ -52,6 +52,8 @@ class Commands:
             "config": {"aliases": ["configuration"], "help": "Show the config menu", "action": lambda: config.menu()},
             "session": {"aliases": [], "help": "Show the config menu", "action": lambda: session.menu()},
             "reset": {"aliases": ["restart"], "help": "Reset the config", "action": lambda: config.reset()},
+            "viewtext": {"aliases": ["text"], "help": "View raw text", "action": lambda: display.view_text()},
+            "viewjson": {"aliases": ["json"], "help": "View raw JSON", "action": lambda: display.view_json()},
         }
 
         cmds = []

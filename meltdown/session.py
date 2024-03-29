@@ -15,7 +15,7 @@ from pathlib import Path
 
 
 test_conversation = {
-    "id": "test123",
+    "id": "ignore",
     "name": "Test",
     "items": [
         {"user": "Highlight Test"},
@@ -127,8 +127,10 @@ class Session:
     def __init__(self) -> None:
         self.items: Dict[str, Conversation] = {}
 
-    def add(self, name: str) -> Conversation:
-        conv_id = str(timeutils.now())
+    def add(self, name: str, conv_id: str = "") -> Conversation:
+        if not conv_id:
+            conv_id = str(timeutils.now())
+
         conversation = Conversation(conv_id, name)
         conversation.loaded = True
         self.items[conv_id] = conversation
@@ -295,7 +297,7 @@ class Session:
 
     def to_json(self) -> str:
         sessions_list = [conversation.to_dict() for conversation in
-                         self.items.values() if conversation.items and (conversation.id != "test123")]
+                         self.items.values() if conversation.items and (conversation.id != "ignore")]
         return json.dumps(sessions_list, indent=4)
 
     def menu(self) -> None:
