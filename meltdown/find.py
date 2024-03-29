@@ -12,14 +12,15 @@ from typing import Optional
 
 
 class Find:
-    def __init__(self, parent: tk.Frame, widget: Output) -> None:
+    def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         self.parent = parent
-        self.widget = widget
+        self.tab_id = tab_id
         self.root = tk.Frame(parent)
         self.inner = tk.Frame(self.root)
         self.root.configure(background=app.theme.find_background)
         self.inner.configure(background=app.theme.find_background)
-        self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font)
+        w = app.theme.find_entry_width
+        self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font, width=w)
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
@@ -27,32 +28,55 @@ class Find:
         self.entry.placeholder = "Find..."
         self.entry.check_placeholder()
         self.current_match: Optional[str] = None
+
         self.next_i_button = ButtonBox(self.inner, "Next (i)", lambda: self.find_next())
         ToolTip(self.next_i_button, "Find next match (case insensitive)")
         self.next_i_button.grid(row=0, column=1, sticky="ew", padx=4)
+
         self.next_ci_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
         ToolTip(self.next_ci_button, "Find next match (case sensitive)")
         self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=4)
+
+        self.bound_ci_button = ButtonBox(self.inner, "Bound (i)", lambda: self.find_next(bound=True))
+        ToolTip(self.bound_ci_button, "Find next word-bound match (case insensitive)")
+        self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=4)
+
+        self.bound_i_button = ButtonBox(self.inner, "Bound", lambda: self.find_next(False, bound=True))
+        ToolTip(self.bound_i_button, "Find next word-bound match (case sensitive)")
+        self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=4)
+
         self.hide_button = ButtonBox(self.inner, "Hide", lambda: self.hide())
         ToolTip(self.hide_button, "Hide the find bar (Esc)")
-        self.hide_button.grid(row=0, column=3, sticky="ew", padx=4)
+        self.hide_button.grid(row=0, column=5, sticky="ew", padx=4)
+
         self.inner.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
-        self.root.grid(row=2, column=0, sticky="ew")
+        self.root.grid(row=0, column=0, sticky="ew")
         self.root.grid_remove()
 
-    def find_next(self, case_insensitive: bool = True, no_match: bool = False) -> None:
+    def find_next(self, case_insensitive: bool = True, bound: bool = False, no_match: bool = False) -> None:
+        from .display import display
+
         self.clear()
+        self.entry.focus_set()
         query = self.entry.get()
 
         if not query:
             return
 
+        widget = display.get_output(self.tab_id)
+
+        if not widget:
+            return
+
         if self.current_match is not None:
-            start_pos = self.widget.index(f"{self.current_match}+1c")
+            start_pos = widget.index(f"{self.current_match}+1c")
         else:
             start_pos = "1.0"
 
-        content = self.widget.get(start_pos, "end")
+        content = widget.get(start_pos, "end")
+
+        if bound:
+            query = r"\b" + query + r"\b"
 
         if case_insensitive:
             match = re.search(query, content, re.IGNORECASE)
@@ -61,12 +85,12 @@ class Find:
 
         if match:
             start, end = match.span()
-            start_index = self.widget.index(f"{start_pos}+{start}c")
-            end_index = self.widget.index(f"{start_pos}+{end}c")
-            self.widget.tag_add("find", start_index, end_index)
-            self.widget.tag_config("find", background=app.theme.find_match_background)
-            self.widget.tag_config("find", foreground=app.theme.find_match_foreground)
-            self.widget.see(start_index)
+            start_index = widget.index(f"{start_pos}+{start}c")
+            end_index = widget.index(f"{start_pos}+{end}c")
+            widget.tag_add("find", start_index, end_index)
+            widget.tag_config("find", background=app.theme.find_match_background)
+            widget.tag_config("find", foreground=app.theme.find_match_foreground)
+            widget.see(start_index)
             self.current_match = start_index
         else:
             self.current_match = None
@@ -74,10 +98,16 @@ class Find:
             if no_match:
                 return
 
-            self.find_next(case_insensitive, True)
+            self.find_next(case_insensitive, bound=bound, no_match=True)
 
     def clear(self) -> None:
-        self.widget.tag_remove("find", "1.0", "end")
+        from .display import display
+        widget = display.get_output(self.tab_id)
+
+        if not widget:
+            return
+
+        widget.tag_remove("find", "1.0", "end")
 
     def show(self) -> None:
         self.root.grid()

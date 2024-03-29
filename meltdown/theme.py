@@ -96,6 +96,7 @@ class Theme:
         self.find_background = "#6A7B83"
         self.find_match_background = "#C3C3C3"
         self.find_match_foreground = "black"
+        self.find_entry_width = 12
 
     def get_output_font(self) -> Tuple[str, int]:
         return (self.font_family, config.output_font_size)

@@ -76,16 +76,20 @@ class Display:
 
         page = self.book.add(name)
         tab_id = page.id
+        find = Find(page.content, tab_id)
         output_frame = widgetutils.make_frame(page.content)
-        output_frame.grid(row=0, column=0, sticky="nsew")
+        output_frame.grid(row=1, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
-        find = Find(page.content, output)
         bottom = Bottom(page.content, tab_id)
         tab = Tab(conversation_id, tab_id, output, find, bottom)
         self.tabs[tab_id] = tab
 
         if select_tab:
             self.select_tab(tab_id)
+
+        page.content.grid_rowconfigure(0, weight=0)
+        page.content.grid_rowconfigure(1, weight=1)
+        page.content.grid_rowconfigure(2, weight=0)
 
         self.tab_number += 1
         app.show_intro(tab_id)

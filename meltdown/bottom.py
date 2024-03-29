@@ -20,7 +20,7 @@ class Bottom(tk.Frame):
         self.visible = True
         self.delay = 500
         self.show_debouncer = ""
-        self.grid(row=1, column=0, sticky="nsew")
+        self.grid(row=2, column=0, sticky="nsew")
         self.grid_remove()
 
     def do_show(self) -> None:
