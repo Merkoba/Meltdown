@@ -2,6 +2,8 @@
 from .dialogs import Dialog
 from .display import display
 from .args import args
+from .session import session
+from .session import Conversation
 
 # Standard
 import json
@@ -11,8 +13,7 @@ from .app import app
 from . import timeutils
 
 
-def save_log() -> None:
-    from .session import session
+def log_menu() -> None:
     conversation = session.get_current_conversation()
 
     if (not conversation) or (not conversation.items):
@@ -21,15 +22,29 @@ def save_log() -> None:
 
     cmds = []
     cmds.append(("Cancel", lambda: None))
+    cmds.append(("Save All", lambda: save_all()))
     cmds.append(("To JSON", lambda: log_to_json()))
     cmds.append(("To Text", lambda: log_to_text()))
     Dialog.show_commands("Save conversation to a file?", cmds)
 
 
-def save_log_file(text: str, ext: str) -> None:
+def save_all() -> None:
+    conversation = session.get_current_conversation()
+
+    if (not conversation) or (not conversation.items):
+        Dialog.show_message("No conversation to save")
+        return
+
+    cmds = []
+    cmds.append(("Cancel", lambda: None))
+    cmds.append(("To JSON", lambda: log_to_json(True)))
+    cmds.append(("To Text", lambda: log_to_text(True)))
+    Dialog.show_commands("Save all conversations?", cmds)
+
+
+def save_log_file(text: str, name: str, ext: str) -> None:
     text = text.strip()
-    name = display.get_current_tab_name().lower()
-    name = name.replace(" ", "_")
+    name = name.replace(" ", "_").lower()
     paths.logs.mkdir(parents=True, exist_ok=True)
     file_name = name + f".{ext}"
     file_path = Path(paths.logs, file_name)
@@ -47,25 +62,33 @@ def save_log_file(text: str, ext: str) -> None:
         file.write(text)
 
     display.print(f">> Log saved as {file_name}")
-    print(f"Log saved at {file_path}")
 
     if args.on_log:
         app.run_command([args.on_log, str(file_path)])
 
 
-def log_to_json() -> None:
-    text = get_json_log()
+def log_to_json(all: bool = False) -> None:
+    conversations = []
 
-    if not text:
-        return
+    if all:
+        for key in session.conversations:
+            conversations.append(session.get_conversation(key))
+    else:
+        conversations.append(session.get_current_conversation())
 
-    save_log_file(text, "json")
+    for conversation in conversations:
+        if not conversation:
+            continue
+
+        text = get_json_log(conversation)
+
+        if not text:
+            return
+
+        save_log_file(text, conversation.name, "json")
 
 
-def get_json_log() -> str:
-    from .session import session
-    conversation = session.get_current_conversation()
-
+def get_json_log(conversation: Conversation) -> str:
     if not conversation:
         return ""
 
@@ -78,19 +101,28 @@ def get_json_log() -> str:
     return json_text
 
 
-def log_to_text() -> None:
-    text = get_text_log()
+def log_to_text(all: bool = False) -> None:
+    conversations = []
 
-    if not text:
-        return
+    if all:
+        for key in session.conversations:
+            conversations.append(session.get_conversation(key))
+    else:
+        conversations.append(session.get_current_conversation())
 
-    save_log_file(text, "txt")
+    for conversation in conversations:
+        if not conversation:
+            continue
+
+        text = get_text_log(conversation)
+
+        if not text:
+            return
+
+        save_log_file(text, conversation.name, "text")
 
 
-def get_text_log() -> str:
-    from .session import session
-    conversation = session.get_current_conversation()
-
+def get_text_log(conversation: Conversation) -> str:
     if not conversation:
         return ""
 

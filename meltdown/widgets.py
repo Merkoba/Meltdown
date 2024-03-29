@@ -236,7 +236,7 @@ class Widgets:
         ToolTip(self.clear_button, "Clear the output of the current tab")
 
         self.log_button = widgetutils.make_button(self.button_frame, "Log",
-                                                  lambda: logs.save_log(), fill=Fill.HORIZONTAL)
+                                                  lambda: logs.log_menu(), fill=Fill.HORIZONTAL)
         ToolTip(self.log_button, "Save the output to a log file")
 
         self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),

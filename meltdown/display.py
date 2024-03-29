@@ -399,10 +399,6 @@ class Display:
         tab.output.insert_text(text)
         tab.modified = True
 
-    def save_log(self) -> None:
-        from . import logs
-        logs.save_log()
-
     def get_tab_name(self, tab_id: str) -> str:
         return self.book.get_name(tab_id)
 
@@ -594,6 +590,7 @@ class Display:
         tab.find.find_next(case_insensitive)
 
     def view_text(self) -> None:
+        from .session import session
         from . import logs
         tab = self.get_current_tab()
 
@@ -603,7 +600,12 @@ class Display:
         if tab.mode == "ignore":
             return
 
-        text = logs.get_text_log()
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        text = logs.get_text_log(conversation)
         name = self.get_tab_name(tab.tab_id)
 
         if text:
@@ -612,6 +614,7 @@ class Display:
             self.to_top(tab_id=new_tab)
 
     def view_json(self) -> None:
+        from .session import session
         from . import logs
         tab = self.get_current_tab()
 
@@ -621,7 +624,12 @@ class Display:
         if tab.mode == "ignore":
             return
 
-        text = logs.get_json_log()
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        text = logs.get_json_log(conversation)
         name = self.get_tab_name(tab.tab_id)
 
         if text:

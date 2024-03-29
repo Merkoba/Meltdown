@@ -125,7 +125,7 @@ class Conversation:
 
 class Session:
     def __init__(self) -> None:
-        self.items: Dict[str, Conversation] = {}
+        self.conversations: Dict[str, Conversation] = {}
 
     def add(self, name: str, conv_id: str = "") -> Conversation:
         if not conv_id:
@@ -133,16 +133,16 @@ class Session:
 
         conversation = Conversation(conv_id, name)
         conversation.loaded = True
-        self.items[conv_id] = conversation
+        self.conversations[conv_id] = conversation
         return conversation
 
     def remove(self, conversation_id: str) -> None:
-        if conversation_id in self.items:
-            del self.items[conversation_id]
+        if conversation_id in self.conversations:
+            del self.conversations[conversation_id]
             self.save()
 
     def get_conversation(self, conversation_id: str) -> Optional[Conversation]:
-        return self.items.get(conversation_id)
+        return self.conversations.get(conversation_id)
 
     def get_current_conversation(self) -> Optional[Conversation]:
         tab = display.get_current_tab()
@@ -153,13 +153,13 @@ class Session:
             return None
 
     def change_name(self, conversation_id: str, name: str) -> None:
-        if conversation_id in self.items:
-            self.items[conversation_id].name = name
+        if conversation_id in self.conversations:
+            self.conversations[conversation_id].name = name
             self.save()
 
     def clear(self, conversation_id: str) -> None:
-        if conversation_id in self.items:
-            self.items[conversation_id].clear()
+        if conversation_id in self.conversations:
+            self.conversations[conversation_id].clear()
             self.save()
 
     def save(self) -> None:
@@ -210,7 +210,7 @@ class Session:
             self.reset()
 
     def reset(self) -> None:
-        self.items = {}
+        self.conversations = {}
         display.close_all_tabs(force=True)
 
     def load_items(self, path: Path) -> None:
@@ -231,7 +231,7 @@ class Session:
         for item in items:
             conversation = Conversation(item["id"], item["name"])
             conversation.items = item["items"]
-            self.items[conversation.id] = conversation
+            self.conversations[conversation.id] = conversation
             display.make_tab(conversation.name, conversation.id, select_tab=False)
 
         tab_ids = display.tab_ids()
@@ -292,12 +292,12 @@ class Session:
 
             new_items[conversation.id] = conversation
 
-        self.items = new_items
+        self.conversations = new_items
         self.save()
 
     def to_json(self) -> str:
         sessions_list = [conversation.to_dict() for conversation in
-                         self.items.values() if conversation.items and (conversation.id != "ignore")]
+                         self.conversations.values() if conversation.items and (conversation.id != "ignore")]
         return json.dumps(sessions_list, indent=4)
 
     def menu(self) -> None:

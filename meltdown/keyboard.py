@@ -298,7 +298,7 @@ class Keyboard:
                       ctrl_help="Close tab")
 
         self.register("s",
-                      on_ctrl=lambda: logs.save_log(),
+                      on_ctrl=lambda: logs.log_menu(),
                       ctrl_help="Save log")
 
         self.register("y",
@@ -318,7 +318,7 @@ class Keyboard:
                       ctrl_help="Browse models")
 
         self.register("l",
-                      on_ctrl=lambda: logs.save_log(),
+                      on_ctrl=lambda: logs.log_menu(),
                       on_ctrl_shift=lambda: filemanager.open_logs_dir(),
                       ctrl_help="Save log",
                       ctrl_shift_help="Open logs directory")

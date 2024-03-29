@@ -26,7 +26,7 @@ class Commands:
             "config": {"aliases": ["configuration"], "help": "Show the current configuration", "action": lambda: config.show_config()},
             "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
             "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
-            "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: logs.save_log()},
+            "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: logs.log_menu()},
             "logs": {"aliases": [], "help": "Open the logs directory", "action": lambda: filemanager.open_logs_dir()},
             "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
             "stop": {"aliases": [], "help": "Stop the current stream", "action": lambda: model.stop_stream()},
