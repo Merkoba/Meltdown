@@ -307,9 +307,7 @@ class Book(tk.Frame):
             new_index = self.pages.index(new_page)
             self.pages.insert(new_index, self.pages.pop(old_index))
             self.scroll_to_page(new_page)
-
-            for i, page in enumerate(self.pages):
-                page.tab.frame.grid(row=0, column=i)
+            self.update_tab_columns()
 
     def get_page_at_x(self, x: int) -> Optional[Page]:
         for page in self.pages:
