@@ -3,6 +3,7 @@ from .app import app
 from .buttonbox import ButtonBox
 from .entrybox import EntryBox
 from .output import Output
+from .tooltips import ToolTip
 
 # Standard
 import tkinter as tk
@@ -20,6 +21,7 @@ class Find:
         self.inner.configure(background=app.theme.find_background)
         self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font)
         self.entry.set_name("find")
+        ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
         self.entry.bind("<Return>", lambda e: self.find_next())
         self.entry.bind("<Escape>", lambda e: self.on_esc())
@@ -27,10 +29,13 @@ class Find:
         self.entry.check_placeholder()
         self.current_match: Optional[str] = None
         self.next_i_button = ButtonBox(self.inner, "Next (i)", lambda: self.find_next())
+        ToolTip(self.next_i_button, "Find next match (case insensitive)")
         self.next_i_button.grid(row=0, column=1, sticky="ew", padx=4)
-        self.next_ci_button = ButtonBox(self.inner, "Next (ci)", lambda: self.find_next(False))
+        self.next_ci_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
+        ToolTip(self.next_ci_button, "Find next match (case sensitive)")
         self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=4)
         self.hide_button = ButtonBox(self.inner, "Hide", lambda: self.hide())
+        ToolTip(self.hide_button, "Hide the find bar")
         self.hide_button.grid(row=0, column=3, sticky="ew", padx=4)
         self.inner.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
         self.root.grid(row=2, column=0, sticky="ew")
