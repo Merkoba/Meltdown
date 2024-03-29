@@ -41,7 +41,6 @@ class Find:
         self.root.grid_remove()
 
     def find_next(self, case_insensitive: bool = True, no_match: bool = False) -> None:
-        print(case_insensitive)
         self.clear()
         query = self.entry.get()
 
