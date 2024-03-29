@@ -4,6 +4,7 @@ from .widgets import widgets
 from .display import display
 from .session import session
 from .app import app
+from .args import args
 from . import timeutils
 from . import filemanager
 
@@ -282,6 +283,7 @@ class Model:
 
         now = timeutils.now()
         self.stream_date = now
+        stream = args.stream
 
         if self.model_is_gpt(config.model):
             try:
@@ -289,7 +291,7 @@ class Model:
                     return
 
                 output = self.gpt_client.chat.completions.create(
-                    stream=True,
+                    stream=stream,
                     model=config.model,
                     messages=messages,
                     max_tokens=config.max_tokens,
@@ -308,7 +310,7 @@ class Model:
         else:
             try:
                 output = self.model.create_chat_completion_openai_v1(
-                    stream=True,
+                    stream=stream,
                     messages=messages,
                     max_tokens=config.max_tokens,
                     temperature=config.temperature,
@@ -333,38 +335,48 @@ class Model:
 
             return
 
-        try:
-            for chunk in output:
-                if self.stop_stream_thread.is_set():
-                    break
+        if stream:
+            try:
+                for chunk in output:
+                    if self.stop_stream_thread.is_set():
+                        break
 
-                delta = chunk.choices[0].delta
+                    delta = chunk.choices[0].delta
 
-                if hasattr(delta, "content"):
-                    if not added_name:
-                        display.prompt("ai", tab_id=tab_id)
-                        added_name = True
+                    if hasattr(delta, "content"):
+                        if not added_name:
+                            display.prompt("ai", tab_id=tab_id)
+                            added_name = True
 
-                    token = delta.content
+                        token = delta.content
 
-                    if token == "\n":
-                        if not token_printed:
-                            continue
-                    elif token == " ":
-                        if last_token == " ":
-                            continue
+                        if token == "\n":
+                            if not token_printed:
+                                continue
+                        elif token == " ":
+                            if last_token == " ":
+                                continue
 
-                    last_token = token
+                        last_token = token
 
-                    if token is not None:
-                        if not token_printed:
-                            token = token.lstrip()
-                            token_printed = True
+                        if token is not None:
+                            if not token_printed:
+                                token = token.lstrip()
+                                token_printed = True
 
-                        tokens.append(token)
-                        display.insert(token, tab_id=tab_id)
-        except BaseException as e:
-            print(e)
+                            tokens.append(token)
+                            display.insert(token, tab_id=tab_id)
+            except BaseException as e:
+                print(e)
+        else:
+            try:
+                response = output.choices[0].message.content.strip()
+
+                if response:
+                    display.prompt("ai", tab_id=tab_id)
+                    display.insert(response, tab_id=tab_id)
+            except BaseException as e:
+                print(e)
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()

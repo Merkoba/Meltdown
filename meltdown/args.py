@@ -19,6 +19,7 @@ class Args:
         self.monitor_temp = True
         self.keyboard = True
         self.wrap = True
+        self.stream = True
         self.maximized = False
         self.compact = False
         self.tabs = True
@@ -51,6 +52,7 @@ class Args:
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "no-wrap": {"action": "store_false", "help": "Disable tab and menu wrapping"},
             "no-tabs": {"action": "store_false", "help": "Don't show the tab bar"},
+            "no-stream": {"action": "store_false", "help": "Don't stream responses"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -76,6 +78,7 @@ class Args:
             ("no_cpu", "monitor_cpu"), ("no_ram", "monitor_ram"),
             ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
+            ("no_stream", "stream"),
         ]
 
         for r_item in reversed:

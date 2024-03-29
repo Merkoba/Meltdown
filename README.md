@@ -112,6 +112,8 @@ Perform commands automatically upong saving log files.
 
 Tab list with filterable menu.
 
+Find text, case sensitive and insensitive.
+
 ---
 
 ## GUI Toolkit
@@ -253,6 +255,12 @@ Disable tab and menu wrapping when cycling up/down or left/right.
 >no-tabs
 
 Don't show the tab bar.
+
+---
+
+>no-stream
+
+Show responses once they're ready instead of streaming live.
 
 ---
 
