@@ -119,6 +119,10 @@ class Find:
 
     def show(self, widget: Optional[tk.Text]) -> None:
         from .display import display
+
+        if self.widget:
+            self.clear()
+
         self.root.grid()
         self.entry.set_text("")
         self.entry.focus_set()
