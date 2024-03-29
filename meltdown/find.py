@@ -63,13 +63,13 @@ class Find:
 
         self.clear()
         self.entry.focus_set()
-        query = self.entry.get()
-        widget = self.widget
+        query = self.entry.get().strip()
+        self.entry.set_text(query)
 
         if not query:
             return
 
-        self.widget = widget
+        widget = self.widget
 
         if not widget:
             return
