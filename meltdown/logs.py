@@ -62,7 +62,7 @@ def save_log_file(text: str, name: str, ext: str, all: bool) -> None:
         file.write(text)
 
     if not all:
-        display.print(f"< Log saved as {file_name} >")
+        display.print(f">> Log saved as {file_name}")
 
         if args.on_log:
             app.run_command([args.on_log, str(file_path)])
@@ -92,9 +92,9 @@ def log_to_json(all: bool = False) -> None:
 
     if all:
         if num == 1:
-            s = f"< {num} JSON log saved >"
+            s = f">> {num} JSON log saved"
         else:
-            s = f"< {num} JSON logs saved >"
+            s = f">> {num} JSON logs saved"
 
         display.print(s)
 
@@ -136,9 +136,9 @@ def log_to_text(all: bool = False) -> None:
 
     if all:
         if num == 1:
-            s = f"< {num} text log saved >"
+            s = f">> {num} text log saved"
         else:
-            s = f"< {num} text logs saved >"
+            s = f">> {num} text logs saved"
 
         display.print(s)
 
