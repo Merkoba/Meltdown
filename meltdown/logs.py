@@ -54,32 +54,50 @@ def save_log_file(text: str, ext: str) -> None:
 
 
 def log_to_json() -> None:
+    text = get_json_log()
+
+    if not text:
+        return
+
+    save_log_file(text, "json")
+
+
+def get_json_log() -> str:
     from .session import session
     conversation = session.get_current_conversation()
 
     if not conversation:
-        return
+        return ""
 
     text = conversation.to_dict()
 
     if not text:
-        return
+        return ""
 
     json_text = json.dumps(text, indent=4)
-    save_log_file(json_text, "json")
+    return json_text
 
 
 def log_to_text() -> None:
+    text = get_text_log()
+
+    if not text:
+        return
+
+    save_log_file(text, "txt")
+
+
+def get_text_log() -> str:
     from .session import session
     conversation = session.get_current_conversation()
 
     if not conversation:
-        return
+        return ""
 
     text = conversation.to_log()
 
     if not text:
-        return
+        return ""
 
     lines = text.split("\n")
     lines = [line for line in lines if line.strip()]
@@ -88,5 +106,4 @@ def log_to_text() -> None:
     full_text += conversation.name + "\n"
     full_text += timeutils.date() + "\n\n"
     full_text += "\n\n".join(lines)
-
-    save_log_file(full_text, "txt")
+    return full_text

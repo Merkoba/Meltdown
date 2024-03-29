@@ -308,6 +308,9 @@ class Output(tk.Text):
         if not tab:
             return
 
+        if tab.mode != "normal":
+            return
+
         if not tab.modified:
             return
 

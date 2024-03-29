@@ -18,13 +18,15 @@ import tkinter as tk
 
 class Tab:
     def __init__(self, conversation_id: str, tab_id: str,
-                 output: Output, find: Find, bottom: Bottom) -> None:
+                 output: Output, find: Find, bottom: Bottom,
+                 mode: str) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
         self.output = output
         self.find = find
         self.bottom = bottom
         self.modified = False
+        self.mode = mode
 
 
 class Display:
@@ -49,6 +51,8 @@ class Display:
         self.output_menu.add(text="Find", command=lambda: self.find())
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
+        self.output_menu.add(text="View Text", command=lambda: self.view_text())
+        self.output_menu.add(text="View JSON", command=lambda: self.view_json())
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
@@ -62,7 +66,8 @@ class Display:
         self.book.on_reorder = lambda: self.update_session()
 
     def make_tab(self, name: Optional[str] = None,
-                 conversation_id: Optional[str] = None, select_tab: bool = True) -> str:
+                 conversation_id: Optional[str] = None,
+                 select_tab: bool = True, mode: str = "normal") -> str:
         from .session import session
 
         if not name:
@@ -82,7 +87,7 @@ class Display:
         output_frame.grid(row=1, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
         bottom = Bottom(page.content, tab_id)
-        tab = Tab(conversation_id, tab_id, output, find, bottom)
+        tab = Tab(conversation_id, tab_id, output, find, bottom, mode=mode)
         self.tabs[tab_id] = tab
 
         if select_tab:
@@ -576,6 +581,36 @@ class Display:
             return
 
         tab.find.find_next(case_insensitive)
+
+    def view_text(self) -> None:
+        from . import logs
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        text = logs.get_text_log()
+        name = self.get_tab_name(tab.tab_id)
+
+        if text:
+            new_tab = self.make_tab(name=f"{name} Text", mode="raw")
+            self.print(text, tab_id=new_tab)
+            app.root.after(100, lambda: self.to_bottom(new_tab))
+
+    def view_json(self) -> None:
+        from . import logs
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        text = logs.get_json_log()
+        name = self.get_tab_name(tab.tab_id)
+
+        if text:
+            new_tab = self.make_tab(name=f"{name} JSON", mode="raw")
+            self.print(text, tab_id=new_tab)
+            app.root.after(100, lambda: self.to_bottom(new_tab))
 
 
 display = Display()

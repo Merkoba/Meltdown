@@ -195,6 +195,14 @@ class Model:
             print("(Stream) Slow down!")
             return
 
+        tab = display.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        if tab.mode != "normal":
+            return
+
         if not self.model:
             self.load(prompt, tab_id)
             return
@@ -234,6 +242,9 @@ class Model:
         tab = display.get_tab(tab_id)
 
         if not tab:
+            return
+
+        if tab.mode != "normal":
             return
 
         display.prompt("user", text=prompt, tab_id=tab_id)
