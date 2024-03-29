@@ -546,7 +546,7 @@ class Widgets:
 
     def enable_stop_button(self) -> None:
         if (not self.stop_button_enabled) and app.exists():
-            self.stop_button.set_style("highlight")
+            self.stop_button.set_style("active")
             self.stop_button_enabled = True
 
     def disable_stop_button(self) -> None:

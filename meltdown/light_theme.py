@@ -33,8 +33,11 @@ class LightTheme(Theme):
         self.button_alt_background = "#B1BBBC"
         self.button_alt_hover_background = "#A8BCBE"
 
-        self.button_highlight_hover_background = "#944E63"
         self.button_highlight_background = "#3F9687"
+        self.button_highlight_hover_background = "#5FA086"
+
+        self.button_active_background = "#3F9687"
+        self.button_active_hover_background = "#944E63"
 
         self.button_disabled_background = "#C5C5C5"
 

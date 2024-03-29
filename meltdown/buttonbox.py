@@ -52,6 +52,8 @@ class ButtonBox(tk.Frame):
             self.set_background(app.theme.button_hover_background)
         elif self.style == "highlight":
             self.set_background(app.theme.button_highlight_hover_background)
+        elif self.style == "active":
+            self.set_background(app.theme.button_active_hover_background)
         elif self.style == "alt":
             self.set_background(app.theme.button_alt_hover_background)
 
@@ -60,6 +62,8 @@ class ButtonBox(tk.Frame):
             self.set_background(app.theme.button_background)
         elif self.style == "highlight":
             self.set_background(app.theme.button_highlight_background)
+        elif self.style == "active":
+            self.set_background(app.theme.button_active_background)
         elif self.style == "disabled":
             self.set_background(app.theme.button_disabled_background)
         elif self.style == "alt":
@@ -106,6 +110,9 @@ class ButtonBox(tk.Frame):
             self.configure(cursor="hand2")
         elif style == "highlight":
             self.set_background(app.theme.button_highlight_background)
+            self.configure(cursor="hand2")
+        elif style == "active":
+            self.set_background(app.theme.button_active_background)
             self.configure(cursor="hand2")
         elif style == "disabled":
             self.set_background(app.theme.button_disabled_background)
