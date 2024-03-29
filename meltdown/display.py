@@ -104,12 +104,22 @@ class Display:
         return tab_id
 
     def close_tab(self, tab_id: str = "",
-                  force: bool = False, make_empty: bool = True) -> None:
+                  force: bool = False,
+                  make_empty: bool = True, method: str = "normal") -> None:
         if not tab_id:
             tab_id = self.book.current()
 
         if not tab_id:
             return
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        if method == "middle_click":
+            if tab.mode == "ignore":
+                force = True
 
         def action() -> None:
             self.book.close(tab_id)
@@ -200,7 +210,7 @@ class Display:
         self.tab_menu.show(event)
 
     def on_tab_middle_click(self, tab_id: str) -> None:
-        self.close_tab(tab_id=tab_id)
+        self.close_tab(tab_id=tab_id, method="middle_click")
 
     def on_tabs_click(self) -> None:
         Menu.hide_all()
@@ -590,7 +600,7 @@ class Display:
         if not tab:
             return
 
-        if tab.mode != "normal":
+        if tab.mode == "ignore":
             return
 
         text = logs.get_text_log()
@@ -608,7 +618,7 @@ class Display:
         if not tab:
             return
 
-        if tab.mode != "normal":
+        if tab.mode == "ignore":
             return
 
         text = logs.get_json_log()

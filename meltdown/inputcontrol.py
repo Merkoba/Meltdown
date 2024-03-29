@@ -136,7 +136,7 @@ class InputControl:
             if commands.check(text):
                 return
 
-            if tab.mode != "normal":
+            if tab.mode == "ignore":
                 return
 
             display.to_bottom()

@@ -200,7 +200,7 @@ class Model:
         if not tab:
             return
 
-        if tab.mode != "normal":
+        if tab.mode == "ignore":
             return
 
         if not self.model:
@@ -244,7 +244,7 @@ class Model:
         if not tab:
             return
 
-        if tab.mode != "normal":
+        if tab.mode == "ignore":
             return
 
         display.prompt("user", text=prompt, tab_id=tab_id)

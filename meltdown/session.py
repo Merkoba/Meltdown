@@ -142,7 +142,7 @@ class Session:
             self.save()
 
     def get_conversation(self, conversation_id: str) -> Optional[Conversation]:
-        return self.items[conversation_id]
+        return self.items.get(conversation_id)
 
     def get_current_conversation(self) -> Optional[Conversation]:
         tab = display.get_current_tab()
