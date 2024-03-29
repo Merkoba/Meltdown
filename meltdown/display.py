@@ -553,5 +553,13 @@ class Display:
 
         tab.find.show()
 
+    def find_next(self, case_insensitive: bool = True) -> None:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.find.find_next(case_insensitive)
+
 
 display = Display()

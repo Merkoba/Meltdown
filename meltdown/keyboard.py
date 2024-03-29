@@ -197,13 +197,18 @@ class Keyboard:
     def setup_globals(self) -> None:
         def on_enter() -> None:
             if widgets.find_focused():
-                return
+                display.find_next()
+            else:
+                inputcontrol.focus()
+                inputcontrol.submit()
 
-            inputcontrol.focus()
-            inputcontrol.submit()
+        def on_shift_enter() -> None:
+            if widgets.find_focused():
+                display.find_next(False)
 
         self.register("<Return>",
                       lambda: on_enter(),
+                      on_shift=lambda: on_shift_enter(),
                       on_ctrl=lambda: model.load(),
                       help="Submit prompt",
                       ctrl_help="Load model")

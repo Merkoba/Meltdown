@@ -23,7 +23,6 @@ class Find:
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
-        self.entry.bind("<Return>", lambda e: self.find_next())
         self.entry.bind("<Escape>", lambda e: self.on_esc())
         self.entry.placeholder = "Find..."
         self.entry.check_placeholder()
@@ -42,6 +41,7 @@ class Find:
         self.root.grid_remove()
 
     def find_next(self, case_insensitive: bool = True, no_match: bool = False) -> None:
+        print(case_insensitive)
         self.clear()
         query = self.entry.get()
 
