@@ -2,6 +2,7 @@
 from .app import app
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
+from .args import args
 from . import widgetutils
 
 # Standard
@@ -166,7 +167,10 @@ class Dialog:
         elif self.current_button > 0:
             new_index = self.current_button - 1
         else:
-            return
+            if args.wrap:
+                new_index = len(self.buttons) - 1
+            else:
+                return
 
         self.highlight_button(new_index)
 
@@ -179,7 +183,10 @@ class Dialog:
         elif self.current_button < len(self.buttons) - 1:
             new_index = self.current_button + 1
         else:
-            return
+            if args.wrap:
+                new_index = 0
+            else:
+                return
 
         self.highlight_button(new_index)
 
