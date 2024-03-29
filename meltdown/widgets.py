@@ -225,7 +225,7 @@ class Widgets:
         ToolTip(self.stop_button, "Stop generating the current response")
 
         self.new_button = widgetutils.make_button(self.button_frame, "New", lambda: display.make_tab(), fill=Fill.HORIZONTAL)
-        ToolTip(self.new_button, "Add a new tab")
+        ToolTip(self.new_button, "Make a new tab")
 
         self.close_button = widgetutils.make_button(
             self.button_frame, "Close", lambda: display.close_tab(), fill=Fill.HORIZONTAL)
