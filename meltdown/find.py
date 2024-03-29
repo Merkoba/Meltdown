@@ -103,7 +103,13 @@ class Find:
             widget.tag_add("find", start_index, end_index)
             widget.tag_config("find", background=app.theme.find_match_background)
             widget.tag_config("find", foreground=app.theme.find_match_foreground)
-            widget.see(start_index)
+            end_bbox = widget.bbox(end_index)
+
+            if end_bbox is None:
+                widget.see(end_index)
+            else:
+                widget.see(start_index)
+
             self.current_match = end_index
         else:
             self.current_match = None
