@@ -6,8 +6,8 @@ from .output import Output
 from .tooltips import ToolTip
 
 # Standard
-import tkinter as tk
 import re
+import tkinter as tk
 from typing import Optional
 
 
@@ -104,7 +104,7 @@ class Find:
             widget.tag_config("find", background=app.theme.find_match_background)
             widget.tag_config("find", foreground=app.theme.find_match_foreground)
             widget.see(start_index)
-            self.current_match = start_index
+            self.current_match = end_index
         else:
             self.current_match = None
 
