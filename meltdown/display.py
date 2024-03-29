@@ -13,6 +13,7 @@ import random
 import string
 from typing import List, Dict, Any
 from typing import Optional
+import tkinter as tk
 
 
 class Tab:
@@ -549,13 +550,16 @@ class Display:
         tab_ids = self.tab_ids()
         self.book.select(tab_ids[-1])
 
-    def find(self) -> None:
-        tab = self.get_current_tab()
+    def find(self, tab_id: str = "", widget: Optional[tk.Text] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
 
         if not tab:
             return
 
-        tab.find.show()
+        tab.find.show(widget=widget)
 
     def find_next(self, case_insensitive: bool = True) -> None:
         tab = self.get_current_tab()
