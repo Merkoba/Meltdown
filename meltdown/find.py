@@ -24,11 +24,11 @@ class Find:
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
-        self.entry.bind("<Escape>", lambda e: self.on_esc())
         self.entry.placeholder = "Find..."
         self.entry.check_placeholder()
         self.current_match: Optional[str] = None
         self.widget: Optional[tk.Text] = None
+        self.visible = False
 
         padx_button = 4
 
@@ -58,6 +58,9 @@ class Find:
 
     def find_next(self, case_insensitive: bool = True,
                   bound: bool = False, no_match: bool = False) -> None:
+        if not self.visible:
+            return
+
         if not self.widget:
             return
 
@@ -138,12 +141,16 @@ class Find:
         else:
             self.widget = display.get_output(self.tab_id)
 
+        self.visible = True
+
     def hide(self) -> None:
         from .inputcontrol import inputcontrol
 
         self.clear()
         self.root.grid_remove()
         inputcontrol.focus()
+        self.visible = False
+        self.widget = None
 
     def on_esc(self) -> None:
         if self.entry.get():

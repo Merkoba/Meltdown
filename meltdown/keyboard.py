@@ -206,6 +206,12 @@ class Keyboard:
             if widgets.find_focused():
                 display.find_next(False)
 
+        def on_esc() -> None:
+            if widgets.find_focused():
+                display.hide_find()
+            else:
+                widgets.esckey()
+
         self.register("<Return>",
                       lambda: on_enter(),
                       on_shift=lambda: on_shift_enter(),
@@ -214,7 +220,7 @@ class Keyboard:
                       ctrl_help="Load model")
 
         self.register("<Escape>",
-                      lambda: widgets.esckey(),
+                      lambda: on_esc(),
                       on_ctrl=lambda: model.unload(True),
                       help="Clear input, stop model stream, or go to bottom",
                       ctrl_help="Unload model")

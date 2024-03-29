@@ -588,6 +588,14 @@ class Display:
 
         tab.find.find_next(case_insensitive)
 
+    def hide_find(self) -> None:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.find.on_esc()
+
     def view_text(self) -> None:
         from .session import session
         from . import logs
