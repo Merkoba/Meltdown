@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .args import args
+from .tooltips import ToolTip
 
 # Standard
 import tkinter as tk
@@ -8,10 +9,12 @@ from typing import List, Optional, Any, Callable
 
 
 class TabWidget:
-    def __init__(self, frame: tk.Frame, inner: tk.Frame, label: tk.Label):
+    def __init__(self, frame: tk.Frame,
+                 inner: tk.Frame, label: tk.Label, tooltip: ToolTip):
         self.frame = frame
         self.inner = inner
         self.label = label
+        self.tooltip = tooltip
 
 
 class Page():
@@ -38,7 +41,8 @@ class Page():
         label.configure(foreground=app.theme.tab_normal_foreground)
         label.pack(expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady)
         label.configure(cursor="hand2")
-        return TabWidget(frame, inner, label)
+        tooltip = ToolTip(label, text=text)
+        return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
@@ -49,6 +53,7 @@ class Page():
     def change_name(self, name: str) -> None:
         self.name = name
         self.tab.label.configure(text=name)
+        self.tab.tooltip.set_text(name)
 
 
 class Book(tk.Frame):
@@ -141,7 +146,7 @@ class Book(tk.Frame):
 
     def bind_tab_drag(self, page: Page) -> None:
         self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame)
-        self.bind_recursive("<Leave>", lambda e: self.end_tab_drag(), page.tab.frame)
+        self.bind_recursive("<ButtonRelease-1>", lambda e: self.end_tab_drag(), page.tab.frame)
 
     def add(self, name: str) -> Page:
         page = Page(self, name)
