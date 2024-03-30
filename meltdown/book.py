@@ -54,6 +54,7 @@ class Page():
         self.name = name
         self.tab.label.configure(text=name)
         self.tab.tooltip.set_text(name)
+        self.parent.update_tabs()
 
 
 class Book(tk.Frame):
@@ -115,6 +116,10 @@ class Book(tk.Frame):
         self.discover_debouncer = ""
         self.discover_delay = 250
 
+    def tab_click(self, id: str) -> None:
+        self.end_tab_drag()
+        self.select(id)
+
     def tab_right_click(self, event: Any, id: str) -> None:
         if self.on_tab_right_click:
             self.on_tab_right_click(event, id)
@@ -132,7 +137,7 @@ class Book(tk.Frame):
             self.on_tab_middle_click(page.id)
 
     def bind_tab_click(self, page: Page) -> None:
-        self.bind_recursive("<ButtonRelease-1>", lambda e: self.select(page.id), page.tab.frame)
+        self.bind_recursive("<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame)
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
@@ -146,7 +151,6 @@ class Book(tk.Frame):
 
     def bind_tab_drag(self, page: Page) -> None:
         self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame)
-        self.bind_recursive("<ButtonRelease-1>", lambda e: self.end_tab_drag(), page.tab.frame)
 
     def add(self, name: str) -> Page:
         page = Page(self, name)
