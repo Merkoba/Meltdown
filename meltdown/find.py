@@ -139,7 +139,7 @@ class Find:
             self.change_widget()
 
             if self.widget == output:
-                if iteration > 1:
+                if iteration == 2:
                     return
 
             self.find_next(case_insensitive, bound=bound, no_match=False, iteration=iteration + 1)
