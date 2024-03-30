@@ -64,7 +64,8 @@ class Model:
             return
 
         if self.loaded_model == config.model:
-            return
+            if self.loaded_format == config.format:
+                return
 
         if self.is_loading():
             print("(Load) Slow down!")

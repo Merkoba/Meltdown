@@ -321,8 +321,8 @@ class Config:
     def on_format_change(self, load: bool = True) -> None:
         from .model import model
 
-        if model.loaded_format != self.format:
-            if load:
+        if load and model.loaded_model:
+            if model.loaded_format != self.format:
                 model.load()
 
     def on_output_font_change(self) -> None:
