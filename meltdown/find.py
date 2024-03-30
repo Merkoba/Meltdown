@@ -138,8 +138,9 @@ class Find:
 
             self.change_widget()
 
-            if iteration >= 1 + len(output.snippets):
-                return
+            if self.widget == output:
+                if iteration > 1:
+                    return
 
             self.find_next(case_insensitive, bound=bound, no_match=False, iteration=iteration + 1)
 
