@@ -242,16 +242,19 @@ class Book(tk.Frame):
             return
 
         index = self.index(self.current_page.id)
+        length = len(self.pages)
 
         if index == 0:
-            if args.wrap and (len(self.pages) >= 2):
-                index = len(self.pages) - 1
+            if args.wrap and (length >= 2):
+                index = length - 1
             else:
                 return
         else:
             index -= 1
 
-        self.select(self.pages[index].id)
+        ToolTip.hide_all()
+        page = self.pages[index]
+        self.select(page.id)
 
     def select_right(self) -> None:
         if len(self.pages) == 0:
@@ -271,7 +274,9 @@ class Book(tk.Frame):
         else:
             index += 1
 
-        self.select(self.pages[index].id)
+        ToolTip.hide_all()
+        page = self.pages[index]
+        self.select(page.id)
 
     def get_name(self, id: str) -> str:
         for page in self.pages:
