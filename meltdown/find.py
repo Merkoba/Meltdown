@@ -2,8 +2,8 @@
 from .app import app
 from .buttonbox import ButtonBox
 from .entrybox import EntryBox
-from .output import Output
 from .tooltips import ToolTip
+from .output import Output
 
 # Standard
 import re
@@ -29,6 +29,9 @@ class Find:
         self.current_match: Optional[str] = None
         self.widget: Optional[tk.Text] = None
         self.visible = False
+        self.snippet = -1
+        self.snippet_focused = False
+        self.snippet_index = "1.0"
 
         padx_button = 4
 
@@ -56,8 +59,13 @@ class Find:
         self.root.grid(row=0, column=0, sticky="ew")
         self.root.grid_remove()
 
+    def get_output(self) -> Optional[Output]:
+        from .display import display
+        return display.get_output(self.tab_id)
+
     def find_next(self, case_insensitive: bool = True,
-                  bound: bool = False, no_match: bool = False) -> None:
+                  bound: bool = False, no_match: bool = False,
+                  snippet: int = 0) -> None:
         if not self.visible:
             return
 
@@ -113,6 +121,12 @@ class Find:
             else:
                 widget.see(start_index)
 
+            if (self.snippet >= 0) and (not self.snippet_focused):
+                output = self.get_output()
+                assert (output is not None)
+                output.see(self.snippet_index)
+                self.snippet_focused = True
+
             self.current_match = end_index
         else:
             self.current_match = None
@@ -120,15 +134,36 @@ class Find:
             if no_match:
                 return
 
+            self.change_widget()
             self.find_next(case_insensitive, bound=bound, no_match=True)
+
+    def next_snippet(self) -> bool:
+        self.snippet += 1
+        output = self.get_output()
+        assert (output is not None)
+
+        if self.snippet >= len(output.snippets):
+            return False
+
+        snippets = list(reversed(output.snippets))
+        self.widget = snippets[self.snippet].text
+        self.snippet_index = output.get_snippet_index(self.snippet)
+        self.snippet_focused = False
+        return True
+
+    def change_widget(self) -> None:
+        if not self.next_snippet():
+            self.widget = self.get_output()
+            assert (self.widget is not None)
+            self.snippet = -1
+            self.snippet_focused = False
+            self.snippet_index = "1.0"
 
     def clear(self) -> None:
         if self.widget:
             self.widget.tag_remove("find", "1.0", "end")
 
     def show(self, widget: Optional[tk.Text]) -> None:
-        from .display import display
-
         if self.widget:
             self.clear()
 
@@ -139,7 +174,8 @@ class Find:
         if widget:
             self.widget = widget
         else:
-            self.widget = display.get_output(self.tab_id)
+            self.widget = self.get_output()
+            assert (self.widget is not None)
 
         self.visible = True
 
@@ -151,6 +187,9 @@ class Find:
         inputcontrol.focus()
         self.visible = False
         self.widget = None
+        self.snippet = -1
+        self.snippet_focused = False
+        self.snippet_index = "1.0"
 
     def on_esc(self) -> None:
         if self.entry.get():

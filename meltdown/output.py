@@ -500,3 +500,15 @@ class Output(tk.Text):
 
         self.show_word_menu(event)
         return "break"
+
+    def get_snippet_index(self, index: int) -> str:
+        num = 0
+
+        for element in self.dump("1.0", "end"):
+            if element[0] == "window":
+                if num == index:
+                    return element[2]
+                else:
+                    num += 1
+
+        return "1.0"
