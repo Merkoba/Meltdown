@@ -86,7 +86,9 @@ class Dialog:
             entry.insert(0, value)
 
         entry.bind("<Return>", lambda e: dialog.enter())
-        entry.bind("<Escape>", lambda e: dialog.root.focus_set())
+        entry.bind("<Escape>", lambda e: dialog.hide())
+        app.root.bind("<Up>", lambda e: entry.focus_set())
+        entry.bind("<Down>", lambda e: dialog.root.focus_set())
         entry.pack(padx=6, pady=6)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
