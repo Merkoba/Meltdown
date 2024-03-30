@@ -63,6 +63,9 @@ class Model:
         if not config.model:
             return
 
+        if self.loaded_model == config.model:
+            return
+
         if self.is_loading():
             print("(Load) Slow down!")
             return
@@ -115,9 +118,7 @@ class Model:
             if not self.gpt_key:
                 display.print("Error: API key not found."
                               " You need to export it as OPENAI_API_KEY before running this program.")
-                self.loaded_model = ""
-                self.model_loading = False
-                self.loaded_format = ""
+                self.clear_model()
                 return
 
             self.gpt_client = OpenAI(

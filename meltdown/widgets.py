@@ -680,6 +680,10 @@ class Widgets:
 
         return False
 
+    def model_focused(self) -> bool:
+        focused = app.root.focus_get()
+        return focused == self.model
+
     def esckey(self) -> None:
         from .model import model
         from .display import display

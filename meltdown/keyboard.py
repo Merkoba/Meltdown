@@ -198,6 +198,8 @@ class Keyboard:
         def on_enter() -> None:
             if widgets.find_focused():
                 display.find_next()
+            if widgets.model_focused():
+                model.load()
             else:
                 inputcontrol.focus()
                 inputcontrol.submit()
