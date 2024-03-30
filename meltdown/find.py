@@ -121,9 +121,10 @@ class Find:
             else:
                 widget.see(start_index)
 
-            if (self.snippet >= 0) and (not self.snippet_focused):
-                output = self.get_output()
-                assert (output is not None)
+            output = self.get_output()
+            assert (output is not None)
+
+            if (self.widget != output) and (not self.snippet_focused):
                 output.see(self.snippet_index)
                 self.snippet_focused = True
 
