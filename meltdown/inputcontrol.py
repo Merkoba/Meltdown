@@ -132,6 +132,7 @@ class InputControl:
 
         if text:
             self.clear()
+            filemanager.add_input(text)
 
             if commands.check(text):
                 return
@@ -140,7 +141,6 @@ class InputControl:
                 return
 
             display.to_bottom()
-            filemanager.add_input(text)
 
             if model.model_loading:
                 return

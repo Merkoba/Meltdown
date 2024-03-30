@@ -65,7 +65,7 @@ class Find:
 
     def find_next(self, case_insensitive: bool = True,
                   bound: bool = False, no_match: bool = False,
-                  snippet: int = 0) -> None:
+                  snippet: int = 0, iteration: int = 1) -> None:
         if not self.visible:
             return
 
@@ -93,24 +93,28 @@ class Find:
         if not start_pos:
             return
 
-        if query.startswith("/") and query.endswith("/"):
-            query = query[1:-1]
+        full_query = query
+
+        if full_query.startswith("/") and full_query.endswith("/"):
+            full_query = full_query[1:-1]
         else:
-            query = re.escape(query)
+            full_query = re.escape(full_query)
 
         if bound:
-            query = r"\y" + query + r"\y"
+            full_query = r"\y" + full_query + r"\y"
 
         if case_insensitive:
             nocase = True
         else:
             nocase = False
 
-        match = self.widget.search(query, start_pos, tk.END, regexp=True, nocase=nocase)
+        match = self.widget.search(full_query, start_pos, tk.END, regexp=True, nocase=nocase)
+        output = self.get_output()
+        assert (output is not None)
 
         if match:
             start_index = widget.index(match)
-            end_index = widget.index(f"{start_index} wordend")
+            end_index = widget.index(f"{start_index}+{len(query)}c")
             widget.tag_add("find", start_index, end_index)
             widget.tag_config("find", background=app.theme.find_match_background)
             widget.tag_config("find", foreground=app.theme.find_match_foreground)
@@ -120,9 +124,6 @@ class Find:
                 widget.see(end_index)
             else:
                 widget.see(start_index)
-
-            output = self.get_output()
-            assert (output is not None)
 
             if (self.widget != output) and (not self.snippet_focused):
                 output.see(self.snippet_index)
@@ -136,7 +137,11 @@ class Find:
                 return
 
             self.change_widget()
-            self.find_next(case_insensitive, bound=bound, no_match=True)
+
+            if iteration >= 1 + len(output.snippets):
+                return
+
+            self.find_next(case_insensitive, bound=bound, no_match=False, iteration=iteration + 1)
 
     def next_snippet(self) -> bool:
         self.snippet += 1
