@@ -188,6 +188,7 @@ class Snippet(tk.Frame):
     def on_click(self) -> None:
         from .dialogs import Dialog
         Dialog.hide_all()
+        self.parent.deselect_all()
 
     def scroll_up(self) -> str:
         from .keyboard import keyboard

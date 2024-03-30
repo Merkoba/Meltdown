@@ -164,7 +164,7 @@ class Find:
         if self.widget:
             self.widget.tag_remove("find", "1.0", "end")
 
-    def show(self, widget: Optional[tk.Text]) -> None:
+    def show(self, widget: Optional[tk.Text] = None, query: str = "") -> None:
         if self.widget:
             self.clear()
 
@@ -179,6 +179,10 @@ class Find:
             assert (self.widget is not None)
 
         self.visible = True
+
+        if query:
+            self.entry.set_text(query)
+            self.find_next()
 
     def hide(self) -> None:
         from .inputcontrol import inputcontrol

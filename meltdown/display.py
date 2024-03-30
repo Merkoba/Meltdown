@@ -49,6 +49,7 @@ class Display:
 
         self.output_menu = Menu()
         self.output_menu.add(text="Find", command=lambda: self.find())
+        self.output_menu.add(text="Find All", command=lambda: self.find_all())
         self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
         self.output_menu.add(text="Select All", command=lambda: self.select_output())
         self.output_menu.add(text="View Text", command=lambda: self.view_text())
@@ -167,8 +168,7 @@ class Display:
             conversation = session.get_conversation(tab.conversation_id)
 
             if conversation and (not conversation.loaded):
-                conversation.print()
-                conversation.loaded = True
+                conversation.load()
 
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -526,7 +526,7 @@ class Display:
 
         bottom.hide()
 
-    def prompt(self, who: str, text: str = "", tab_id: str = "") -> None:
+    def prompt(self, who: str, text: str = "", tab_id: str = "", to_bottom: bool = True) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -536,7 +536,8 @@ class Display:
             return
 
         if who == "user":
-            self.to_bottom(tab_id)
+            if to_bottom:
+                self.to_bottom(tab_id)
 
         tab.output.prompt(who)
 
@@ -661,9 +662,42 @@ class Display:
 
     def move_tab_to_start(self, tab_id: str) -> None:
         self.book.move_to_start(tab_id)
+        self.update_session()
 
     def move_tab_to_end(self, tab_id: str) -> None:
         self.book.move_to_end(tab_id)
+        self.update_session()
+
+    def find_all(self, query: str = "") -> None:
+        if query:
+            self.find_all_text(query)
+        else:
+            Dialog.show_input("Find text on all tabs", lambda s: self.find_all_text(s))
+
+    def find_all_text(self, query: str) -> None:
+        from .session import session
+
+        for tab in self.tabs.values():
+            conversation = session.get_conversation(tab.conversation_id)
+
+            if not conversation:
+                continue
+
+            if conversation.id == "ignore":
+                continue
+
+            tab.output.auto_scroll = False
+
+            if not conversation.loaded:
+                conversation.load()
+                app.update()
+
+            start_index = tab.output.find_text(query)
+
+            if start_index:
+                self.select_tab(tab.tab_id)
+                tab.find.show(query=query)
+                break
 
 
 display = Display()

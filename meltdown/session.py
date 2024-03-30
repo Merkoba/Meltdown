@@ -92,11 +92,17 @@ class Conversation:
             for item in self.items:
                 for key in item:
                     if key == "user":
-                        display.prompt("user", item[key], tab_id=tab.tab_id)
+                        display.prompt("user", item[key], tab_id=tab.tab_id, to_bottom=False)
                     elif key == "assistant":
-                        display.prompt("ai", item[key], tab_id=tab.tab_id)
+                        display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
                     else:
                         continue
+
+            tab.output.format_text()
+
+    def load(self) -> None:
+        self.print()
+        self.loaded = True
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -233,8 +239,6 @@ class Session:
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
             display.make_tab(conversation.name, conversation.id, select_tab=False)
-
-        tab_ids = display.tab_ids()
 
     def save_state(self) -> None:
         if not paths.sessions.exists():

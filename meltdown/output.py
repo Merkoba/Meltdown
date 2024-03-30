@@ -512,3 +512,6 @@ class Output(tk.Text):
                     num += 1
 
         return "1.0"
+
+    def find_text(self, query: str) -> str:
+        return self.search(query, "1.0", tk.END, regexp=True, nocase=True)

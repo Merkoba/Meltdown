@@ -22,39 +22,176 @@ class Commands:
         from . import logs
 
         self.commands = {
-            "clear": {"aliases": ["clean", "cls"], "help": "Clear conversation", "action": lambda: display.clear()},
-            "config": {"aliases": ["configuration"], "help": "Show the current configuration", "action": lambda: config.show_config()},
-            "exit": {"aliases": ["quit"], "help": "Exit the application", "action": lambda: app.exit()},
-            "compact": {"aliases": [], "help": "Toggle compact mode", "action": lambda: app.toggle_compact()},
-            "log": {"aliases": ["save"], "help": "Save conversation to a file", "action": lambda: logs.log_menu()},
-            "logs": {"aliases": [], "help": "Open the logs directory", "action": lambda: filemanager.open_logs_dir()},
-            "resize": {"aliases": ["restore"], "help": "Resize the window", "action": lambda: app.resize()},
-            "stop": {"aliases": [], "help": "Stop the current stream", "action": lambda: model.stop_stream()},
-            "sys": {"aliases": ["monitor", "system"], "help": "Open the system task manager", "action": lambda: app.open_task_manager()},
-            "top": {"aliases": ["up"], "help": "Scroll to the top", "action": lambda: display.to_top()},
-            "bottom": {"aliases": ["down"], "help": "Scroll to the bottom", "action": lambda: display.to_bottom()},
-            "maximize": {"aliases": ["max"], "help": "Maximize the window", "action": lambda: app.toggle_maximize()},
-            "unmaximize": {"aliases": ["unmax"], "help": "Unmaximize the window", "action": lambda: app.unmaximize()},
-            "close": {"aliases": [], "help": "Close the current tab", "action": lambda: display.close_tab()},
-            "closeall": {"aliases": [], "help": "Close all tabs", "action": lambda: display.close_all_tabs()},
-            "closeold": {"aliases": ["old", "trim"], "help": "Close old tabs", "action": lambda: display.close_old_tabs()},
-            "tab": {"aliases": ["new"], "help": "Make a new tab", "action": lambda: display.make_tab()},
-            "theme": {"aliases": [], "help": "Change the color theme", "action": lambda: app.toggle_theme()},
-            "about": {"aliases": [], "help": "Show the about window", "action": lambda: app.show_about()},
-            "help": {"aliases": ["info", "information"], "help": "Show help information", "action": lambda: self.help_command()},
-            "commands": {"aliases": ["cmds"], "help": "Show the command line arguments", "action": lambda: app.show_help("commands")},
-            "arguments": {"aliases": ["args"], "help": "Show the command line arguments", "action": lambda: app.show_help("arguments")},
-            "keyboard": {"aliases": ["shortcuts"], "help": "Show the tab list to pick a tab", "action": lambda: app.show_help("keyboard")},
-            "list": {"aliases": ["tabs", "tablist"], "help": "Show the tab list to pick a tab", "action": lambda: display.show_tab_list()},
-            "find": {"aliases": ["search"], "help": "Find a text string", "action": lambda: display.find()},
-            "first": {"aliases": [], "help": "Go to the first tab", "action": lambda: display.select_first_tab()},
-            "last": {"aliases": [], "help": "Go to the last tab", "action": lambda: display.select_last_tab()},
-            "config": {"aliases": ["configuration"], "help": "Show the config menu", "action": lambda: config.menu()},
-            "session": {"aliases": [], "help": "Show the config menu", "action": lambda: session.menu()},
-            "reset": {"aliases": ["restart"], "help": "Reset the config", "action": lambda: config.reset()},
-            "viewtext": {"aliases": ["text"], "help": "View raw text", "action": lambda: display.view_text()},
-            "viewjson": {"aliases": ["json"], "help": "View raw JSON", "action": lambda: display.view_json()},
-            "move": {"aliases": [], "help": "Move tab to start or end", "action": lambda: display.move_tab(True)},
+            "clear": {
+                "aliases": ["clean", "cls"],
+                "help": "Clear conversation",
+                "action": lambda a=None: display.clear(),
+            },
+            "config": {
+                "aliases": ["configuration"],
+                "help": "Show the current configuration",
+                "action": lambda a=None: config.show_config(),
+            },
+            "exit": {
+                "aliases": ["quit"],
+                "help": "Exit the application",
+                "action": lambda a=None: app.exit(),
+            },
+            "compact": {
+                "aliases": [],
+                "help": "Toggle compact mode",
+                "action": lambda a=None: app.toggle_compact(),
+            },
+            "log": {
+                "aliases": ["save"],
+                "help": "Save conversation to a file",
+                "action": lambda a=None: logs.log_menu(),
+            },
+            "logs": {
+                "aliases": [],
+                "help": "Open the logs directory",
+                "action": lambda a=None: filemanager.open_logs_dir(),
+            },
+            "resize": {
+                "aliases": ["restore"],
+                "help": "Resize the window",
+                "action": lambda a=None: app.resize(),
+            },
+            "stop": {
+                "aliases": [],
+                "help": "Stop the current stream",
+                "action": lambda a=None: model.stop_stream(),
+            },
+            "sys": {
+                "aliases": ["monitor", "system"],
+                "help": "Open the system task manager",
+                "action": lambda a=None: app.open_task_manager(),
+            },
+            "top": {
+                "aliases": ["up"],
+                "help": "Scroll to the top",
+                "action": lambda a=None: display.to_top(),
+            },
+            "bottom": {
+                "aliases": ["down"],
+                "help": "Scroll to the bottom",
+                "action": lambda a=None: display.to_bottom(),
+            },
+            "maximize": {
+                "aliases": ["max"],
+                "help": "Maximize the window",
+                "action": lambda a=None: app.toggle_maximize(),
+            },
+            "unmaximize": {
+                "aliases": ["unmax"],
+                "help": "Unmaximize the window",
+                "action": lambda a=None: app.unmaximize(),
+            },
+            "close": {
+                "aliases": [],
+                "help": "Close the current tab",
+                "action": lambda a=None: display.close_tab(),
+            },
+            "closeall": {
+                "aliases": [],
+                "help": "Close all tabs",
+                "action": lambda a=None: display.close_all_tabs(),
+            },
+            "closeold": {
+                "aliases": ["old", "trim"],
+                "help": "Close old tabs",
+                "action": lambda a=None: display.close_old_tabs(),
+            },
+            "tab": {
+                "aliases": ["new"],
+                "help": "Make a new tab",
+                "action": lambda a=None: display.make_tab(),
+            },
+            "theme": {
+                "aliases": [],
+                "help": "Change the color theme",
+                "action": lambda a=None: app.toggle_theme(),
+            },
+            "about": {
+                "aliases": [],
+                "help": "Show the about window",
+                "action": lambda a=None: app.show_about(),
+            },
+            "help": {
+                "aliases": ["info", "information"],
+                "help": "Show help information",
+                "action": lambda a=None: self.help_command(),
+            },
+            "commands": {
+                "aliases": ["cmds"],
+                "help": "Show the command line arguments",
+                "action": lambda a=None: app.show_help("commands"),
+            },
+            "arguments": {
+                "aliases": ["args"],
+                "help": "Show the command line arguments",
+                "action": lambda a=None: app.show_help("arguments"),
+            },
+            "keyboard": {
+                "aliases": ["shortcuts"],
+                "help": "Show the tab list to pick a tab",
+                "action": lambda a=None: app.show_help("keyboard"),
+            },
+            "list": {
+                "aliases": ["tabs", "tablist"],
+                "help": "Show the tab list to pick a tab",
+                "action": lambda a=None: display.show_tab_list(),
+            },
+            "find": {
+                "aliases": ["search"],
+                "help": "Find a text string",
+                "action": lambda a=None: display.find(),
+            },
+            "findall": {
+                "aliases": ["searchall"],
+                "help": "Find a text string among all tabs",
+                "action": lambda a=None: display.find_all(a),
+            },
+            "first": {
+                "aliases": [],
+                "help": "Go to the first tab",
+                "action": lambda a=None: display.select_first_tab(),
+            },
+            "last": {
+                "aliases": [],
+                "help": "Go to the last tab",
+                "action": lambda a=None: display.select_last_tab(),
+            },
+            "config": {
+                "aliases": ["configuration"],
+                "help": "Show the config menu",
+                "action": lambda a=None: config.menu(),
+            },
+            "session": {
+                "aliases": [],
+                "help": "Show the config menu",
+                "action": lambda a=None: session.menu(),
+            },
+            "reset": {
+                "aliases": ["restart"],
+                "help": "Reset the config",
+                "action": lambda a=None: config.reset(),
+            },
+            "viewtext": {
+                "aliases": ["text"],
+                "help": "View raw text",
+                "action": lambda a=None: display.view_text(),
+            },
+            "viewjson": {
+                "aliases": ["json"],
+                "help": "View raw JSON",
+                "action": lambda a=None: display.view_json(),
+            },
+            "move": {
+                "aliases": [],
+                "help": "Move tab to start or end",
+                "action": lambda a=None: display.move_tab(True),
+            },
         }
 
         cmds = []
@@ -73,26 +210,33 @@ class Commands:
                     cmds.append(alias)
 
     def command_format(self, text: str) -> bool:
+        if len(text) < 2:
+            return False
+
         with_prefix = text.startswith(self.prefix)
-        single_word = len(text.split()) == 1
-        return (with_prefix and single_word)
+        second_char = text[1:2]
+        return with_prefix and second_char.isalpha()
 
     def check(self, text: str) -> bool:
+        text = text.strip()
+
         if not self.command_format(text):
             return False
 
-        cmd = text[1:]
+        split = text.split(" ")
+        cmd = split[0][1:]
+        argument = " ".join(split[1:])
 
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
-                value["action"]()
+                value["action"](argument)
                 return True
 
         # Similarity on keys
         for key, value in self.commands.items():
             if self.check_match(cmd, key):
-                value["action"]()
+                value["action"](argument)
                 return True
 
         # Similarity on aliases
@@ -102,7 +246,7 @@ class Commands:
             if aliases:
                 for alias in aliases:
                     if self.check_match(cmd, alias):
-                        value["action"]()
+                        value["action"](argument)
                         return True
 
         return True
