@@ -52,9 +52,28 @@ class Page():
 
     def change_name(self, name: str) -> None:
         self.name = name
-        self.tab.label.configure(text=name)
+        self.set_tab_text()
         self.tab.tooltip.set_text(name)
         self.parent.update_tabs()
+
+    def get_index(self) -> int:
+        for i, page in enumerate(self.parent.pages):
+            if page == self:
+                return i
+
+        return -1
+
+    def set_tab_text(self, index: Optional[int] = None) -> None:
+        text = self.name
+
+        if args.numbers:
+            if index is None:
+                index = self.get_index()
+
+            if index >= 1:
+                text = f"{index + 1}. {text}"
+
+        self.tab.label.configure(text=text)
 
 
 class Book(tk.Frame):
@@ -407,17 +426,8 @@ class Book(tk.Frame):
 
     def update_tab_columns(self) -> None:
         for i, page in enumerate(self.pages):
-            if args.numbers:
-                page.tab.label.configure(text=f"{i + 1}. {page.name}")
-
+            page.set_tab_text(i)
             page.tab.frame.grid(row=0, column=i, sticky="ew")
-
-    def get_tab(self, id: str) -> Optional[tk.Frame]:
-        for page in self.pages:
-            if page.id == id:
-                return page.tab.frame
-
-        return None
 
     def on_tabs_configure(self) -> None:
         if self.discover_debouncer:
