@@ -66,7 +66,8 @@ class Dialog:
         dialog.show()
 
     @staticmethod
-    def show_input(text: str, cmd_ok: Callable[..., Any], value: str = "") -> None:
+    def show_input(text: str, cmd_ok: Callable[..., Any],
+                   cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
         dialog = Dialog(text)
         entry = EntryBox(dialog.top_frame, font=app.theme.font, width=17, justify="center")
 
@@ -75,14 +76,21 @@ class Dialog:
             dialog.hide()
             cmd_ok(text)
 
+        def cancel() -> None:
+            dialog.hide()
+
+            if cmd_cancel:
+                cmd_cancel()
+
         if value:
             entry.insert(0, value)
 
         entry.bind("<Return>", lambda e: dialog.enter())
         entry.bind("<Escape>", lambda e: dialog.hide())
-        app.root.bind("<Up>", lambda e: entry.focus_set())
+        entry.bind("<Down>", lambda e: dialog.root.focus_set())
         entry.bind("<Down>", lambda e: dialog.root.focus_set())
         entry.pack(padx=6, pady=6)
+        dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
         dialog.show()
         dialog.highlight_button(1)

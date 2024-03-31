@@ -677,10 +677,13 @@ class Display:
         if query:
             self.find_all_text(query)
         else:
-            Dialog.show_input("Find text on all tabs", lambda s: self.find_all_text(s))
+            Dialog.show_input("Find text in all tabs", lambda s: self.find_all_text(s))
 
     def find_all_text(self, query: str) -> None:
         from .session import session
+
+        if not query:
+            return
 
         for tab in self.tabs.values():
             conversation = session.get_conversation(tab.conversation_id)

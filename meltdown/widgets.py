@@ -239,8 +239,8 @@ class Widgets:
                                                   fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
 
-        self.output_menu = widgetutils.make_button(self.button_frame, "#", lambda e: display.show_output_menu(e),
-                                                   fill=Fill.HORIZONTAL, right_padding=right_padding, width=3)
+        self.output_menu = widgetutils.make_button(self.button_frame, "More", lambda e: display.show_output_menu(e),
+                                                   fill=Fill.HORIZONTAL, right_padding=right_padding)
         ToolTip(self.output_menu, "Open the output menu")
 
         # Display
