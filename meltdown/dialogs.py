@@ -14,7 +14,8 @@ class Dialog:
     current_dialog: Optional["Dialog"] = None
 
     @staticmethod
-    def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]] = None) -> None:
+    def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]] = None,
+                     cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -23,6 +24,13 @@ class Dialog:
             if cmd_ok:
                 cmd_ok()
 
+        def cancel() -> None:
+            dialog.hide()
+
+            if cmd_cancel:
+                cmd_cancel()
+
+        dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
         dialog.highlight_button(1)
         dialog.show()
