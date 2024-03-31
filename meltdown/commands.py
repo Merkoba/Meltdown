@@ -192,6 +192,12 @@ class Commands:
                 "help": "Move tab to start or end",
                 "action": lambda a=None: display.move_tab(True),
             },
+            "num": {
+                "aliases": [],
+                "help": "Go to a tab by its number",
+                "action": lambda a=None: display.select_tab_by_number(a),
+                "type": int,
+            },
         }
 
         cmds = []
@@ -217,6 +223,16 @@ class Commands:
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
+    def run(self, key: str, argument: str) -> None:
+        item = self.commands[key]
+        action = item["action"]
+        argtype = item.get("type")
+
+        if argtype:
+            argument = argtype(argument)
+
+        action(argument)
+
     def check(self, text: str) -> bool:
         text = text.strip()
 
@@ -230,13 +246,13 @@ class Commands:
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
-                value["action"](argument)
+                self.run(key, argument)
                 return True
 
         # Similarity on keys
         for key, value in self.commands.items():
             if self.check_match(cmd, key):
-                value["action"](argument)
+                self.run(key, argument)
                 return True
 
         # Similarity on aliases
@@ -246,7 +262,7 @@ class Commands:
             if aliases:
                 for alias in aliases:
                     if self.check_match(cmd, alias):
-                        value["action"](argument)
+                        self.run(key, argument)
                         return True
 
         return True

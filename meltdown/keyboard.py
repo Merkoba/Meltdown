@@ -214,6 +214,9 @@ class Keyboard:
             else:
                 widgets.esckey()
 
+        def number(num: int) -> None:
+            display.select_tab_by_number(num)
+
         self.register("<Return>",
                       lambda: on_enter(),
                       on_shift=lambda: on_shift_enter(),
@@ -330,6 +333,46 @@ class Keyboard:
                       on_ctrl_shift=lambda: filemanager.open_logs_dir(),
                       ctrl_help="Save log",
                       ctrl_shift_help="Open logs directory")
+
+        self.register("1",
+                      on_ctrl=lambda: number(1),
+                      ctrl_help="Go to tab 1")
+
+        self.register("2",
+                      on_ctrl=lambda: number(2),
+                      ctrl_help="Go to tab 2")
+
+        self.register("3",
+                      on_ctrl=lambda: number(3),
+                      ctrl_help="Go to tab 3")
+
+        self.register("4",
+                      on_ctrl=lambda: number(4),
+                      ctrl_help="Go to tab 4")
+
+        self.register("5",
+                      on_ctrl=lambda: number(5),
+                      ctrl_help="Go to tab 5")
+
+        self.register("6",
+                      on_ctrl=lambda: number(6),
+                      ctrl_help="Go to tab 6")
+
+        self.register("7",
+                      on_ctrl=lambda: number(7),
+                      ctrl_help="Go to tab 7")
+
+        self.register("8",
+                      on_ctrl=lambda: number(8),
+                      ctrl_help="Go to tab 8")
+
+        self.register("9",
+                      on_ctrl=lambda: number(9),
+                      ctrl_help="Go to tab 9")
+
+        self.register("0",
+                      on_ctrl=lambda: number(0),
+                      ctrl_help="Go to last tab")
 
     def reset(self) -> None:
         self.ctrl = False

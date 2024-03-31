@@ -166,9 +166,9 @@ class Book(tk.Frame):
 
         return self.current_page.id
 
-    def select(self, id: str) -> None:
+    def select(self, id: str) -> bool:
         if len(self.pages) == 0:
-            return
+            return False
 
         page = self.get_page_by_id(id)
 
@@ -181,6 +181,32 @@ class Book(tk.Frame):
                 self.on_change()
 
             self.update_tab_colors()
+            return True
+
+        return False
+
+    def select_first(self) -> None:
+        if len(self.pages) == 0:
+            return
+
+        self.select(self.pages[0].id)
+
+    def select_last(self) -> None:
+        if len(self.pages) == 0:
+            return
+
+        self.select(self.pages[-1].id)
+
+    def select_by_index(self, index: int) -> None:
+        if len(self.pages) == 0:
+            return
+
+        if index < 0:
+            index = 0
+        elif index >= len(self.pages):
+            index = len(self.pages) - 1
+
+        self.select(self.pages[index].id)
 
     def update_tab_colors(self) -> None:
         if not self.current_page:

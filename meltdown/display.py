@@ -151,8 +151,17 @@ class Display:
             Dialog.show_commands("Close tab?", cmds)
 
     def select_tab(self, tab_id: str) -> None:
-        self.book.select(tab_id)
-        app.update()
+        if self.book.select(tab_id):
+            app.update()
+
+    def select_tab_by_number(self, num: int) -> None:
+        if num < 0 or num > 9:
+            return
+
+        if num == 0:
+            self.book.select_last()
+        else:
+            self.book.select_by_index(num - 1)
 
     def update_current_tab(self) -> None:
         tab_id = self.book.current()
@@ -559,16 +568,10 @@ class Display:
         tab.modified = True
 
     def select_first_tab(self) -> None:
-        tab_ids = self.tab_ids()
-
-        if tab_ids:
-            self.book.select(tab_ids[0])
+        self.book.select_first()
 
     def select_last_tab(self) -> None:
-        tab_ids = self.tab_ids()
-
-        if tab_ids:
-            self.book.select(tab_ids[-1])
+        self.book.select_last()
 
     def find(self, tab_id: str = "", widget: Optional[tk.Text] = None) -> None:
         if not tab_id:
