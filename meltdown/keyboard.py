@@ -229,138 +229,106 @@ class Keyboard:
         for num in range(1, 13):
             add_function_key(num)
 
+        def run_command(cmd: str) -> None:
+            commands.check(cmd, direct=True)
+
+        for num in range(0, 10):
+            self.register(str(num),
+                          on_ctrl=lambda: run_command(f"num {num}"),
+                          ctrl_help=f"Go to tab {num}")
+
         self.register("<Return>",
                       lambda: on_enter(),
                       on_shift=lambda: on_shift_enter(),
-                      on_ctrl=lambda: model.load(),
+                      on_ctrl=lambda: run_command("load"),
                       help="Submit prompt",
                       ctrl_help="Load model")
 
         self.register("<Escape>",
                       lambda: on_esc(),
-                      on_ctrl=lambda: model.unload(True),
+                      on_ctrl=lambda: run_command("unload"),
                       help="Clear input, stop model stream, or go to bottom",
                       ctrl_help="Unload model")
 
         self.register("<Page_Up>",
-                      lambda: display.scroll_up(),
+                      lambda: run_command("scrollup"),
                       help="Scroll up")
 
         self.register("<Page_Down>",
-                      lambda: display.scroll_down(),
+                      lambda: run_command("scrolldown"),
                       help="Scroll down")
 
         self.register("<BackSpace>",
-                      on_ctrl=lambda: display.clear(),
+                      on_ctrl=lambda: run_command("clear"),
                       ctrl_help="Clear output")
 
         self.register("<Up>",
                       lambda: inputcontrol.history_up(),
-                      on_ctrl=lambda: display.to_top(),
-                      on_shift=lambda: widgets.show_context(),
+                      on_ctrl=lambda: run_command("top"),
+                      on_shift=lambda: run_command("context"),
                       help="History up",
                       shift_help="Show context",
                       ctrl_help="Scroll to top")
 
         self.register("<Down>",
                       lambda: inputcontrol.history_down(),
-                      on_ctrl=lambda: display.to_bottom(),
+                      on_ctrl=lambda: run_command("bottom"),
                       help="History down",
                       ctrl_help="Scroll to bottom")
 
         self.register("<Left>",
-                      on_ctrl=lambda: display.tab_left(),
+                      on_ctrl=lambda: run_command("left"),
                       ctrl_help="Tab left")
 
         self.register("<Right>",
-                      on_ctrl=lambda: display.tab_right(),
+                      on_ctrl=lambda: run_command("right"),
                       ctrl_help="Tab right")
 
         self.register("<space>",
-                      on_ctrl=lambda: widgets.show_main_menu(),
+                      on_ctrl=lambda: run_command("menu"),
                       ctrl_help="Show main menu")
 
         self.register("f",
-                      on_ctrl=lambda: display.find(),
+                      on_ctrl=lambda: run_command("find"),
                       ctrl_help="Find text")
 
         self.register("t",
-                      on_ctrl=lambda: display.make_tab(),
+                      on_ctrl=lambda: run_command("tab"),
                       ctrl_help="Make tab")
 
         self.register("w",
-                      on_ctrl=lambda: display.close_current_tab(),
+                      on_ctrl=lambda: run_command("close"),
                       ctrl_help="Close tab")
 
         self.register("s",
-                      on_ctrl=lambda: session.save_state(),
+                      on_ctrl=lambda: run_command("savesession"),
                       ctrl_help="Save session")
 
         self.register("o",
-                      on_ctrl=lambda: session.load_state(),
+                      on_ctrl=lambda: run_command("loadsession"),
                       ctrl_help="Load session")
 
         self.register("y",
-                      on_ctrl=lambda: display.copy_output(),
+                      on_ctrl=lambda: run_command("copy"),
                       ctrl_help="Copy conversation")
 
         self.register("p",
-                      on_ctrl=lambda: app.toggle_compact(),
+                      on_ctrl=lambda: run_command("compact"),
                       ctrl_help="Toggle compact")
 
         self.register("r",
-                      on_ctrl=lambda: app.resize(),
+                      on_ctrl=lambda: run_command("resize"),
                       ctrl_help="Resize window")
 
         self.register("m",
-                      on_ctrl=lambda: model.browse_models(),
+                      on_ctrl=lambda: run_command("browse"),
                       ctrl_help="Browse models")
 
         self.register("l",
-                      on_ctrl=lambda: logs.menu(),
-                      on_ctrl_shift=lambda: logs.open(),
+                      on_ctrl=lambda: run_command("log"),
+                      on_ctrl_shift=lambda: run_command("logsdir"),
                       ctrl_help="Save log",
                       ctrl_shift_help="Open logs directory")
-
-        self.register("1",
-                      on_ctrl=lambda: number(1),
-                      ctrl_help="Go to tab 1")
-
-        self.register("2",
-                      on_ctrl=lambda: number(2),
-                      ctrl_help="Go to tab 2")
-
-        self.register("3",
-                      on_ctrl=lambda: number(3),
-                      ctrl_help="Go to tab 3")
-
-        self.register("4",
-                      on_ctrl=lambda: number(4),
-                      ctrl_help="Go to tab 4")
-
-        self.register("5",
-                      on_ctrl=lambda: number(5),
-                      ctrl_help="Go to tab 5")
-
-        self.register("6",
-                      on_ctrl=lambda: number(6),
-                      ctrl_help="Go to tab 6")
-
-        self.register("7",
-                      on_ctrl=lambda: number(7),
-                      ctrl_help="Go to tab 7")
-
-        self.register("8",
-                      on_ctrl=lambda: number(8),
-                      ctrl_help="Go to tab 8")
-
-        self.register("9",
-                      on_ctrl=lambda: number(9),
-                      ctrl_help="Go to tab 9")
-
-        self.register("0",
-                      on_ctrl=lambda: number(0),
-                      ctrl_help="Go to last tab")
 
     def reset(self) -> None:
         self.ctrl = False

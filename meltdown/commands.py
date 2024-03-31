@@ -19,7 +19,7 @@ class Commands:
         from .model import model
         from .session import session
         from .logs import logs
-        from . import filemanager
+        from .widgets import widgets
 
         self.commands = {
             "clear": {
@@ -43,9 +43,14 @@ class Commands:
                 "action": lambda a=None: app.toggle_compact(),
             },
             "log": {
-                "aliases": ["logs", "save"],
+                "aliases": ["logs"],
                 "help": "Save conversation to a file",
                 "action": lambda a=None: logs.menu(),
+            },
+            "logsdir": {
+                "aliases": ["openlogs"],
+                "help": "Open the logs directory",
+                "action": lambda a=None: logs.open(),
             },
             "resize": {
                 "aliases": ["restore"],
@@ -202,6 +207,66 @@ class Commands:
                 "aliases": ["findnext", "match"],
                 "help": "Find next text match",
                 "action": lambda a=None: display.find_next(),
+            },
+            "scrollup": {
+                "aliases": ["moveup"],
+                "help": "Scroll up",
+                "action": lambda a=None: display.scroll_up(),
+            },
+            "scrolldown": {
+                "aliases": ["movedown"],
+                "help": "Scroll down",
+                "action": lambda a=None: display.scroll_down(),
+            },
+            "load": {
+                "aliases": ["loadmodel"],
+                "help": "Load the model",
+                "action": lambda a=None: model.load(),
+            },
+            "unload": {
+                "aliases": ["unloadmodel"],
+                "help": "Unload the model",
+                "action": lambda a=None: model.unload(True),
+            },
+            "context": {
+                "aliases": ["widgetlist", "rightclick"],
+                "help": "Show context list of a widget",
+                "action": lambda a=None: widgets.show_context(),
+            },
+            "left": {
+                "aliases": ["tableft"],
+                "help": "Go to the tab on the left",
+                "action": lambda a=None: display.tab_left(),
+            },
+            "right": {
+                "aliases": ["tabright"],
+                "help": "Go to the tab on the right",
+                "action": lambda a=None: display.tab_right(),
+            },
+            "menu": {
+                "aliases": ["mainmenu"],
+                "help": "Show the main menu",
+                "action": lambda a=None: widgets.show_main_menu(),
+            },
+            "savesession": {
+                "aliases": [],
+                "help": "Save the current session",
+                "action": lambda a=None: session.save_state(),
+            },
+            "loadsession": {
+                "aliases": ["open"],
+                "help": "Load a session",
+                "action": lambda a=None: session.load_state(),
+            },
+            "copy": {
+                "aliases": [],
+                "help": "Copy all the text",
+                "action": lambda a=None: display.copy_output(),
+            },
+            "browse": {
+                "aliases": [],
+                "help": "Browse the models",
+                "action": lambda a=None: model.browse_models(),
             },
         }
 
