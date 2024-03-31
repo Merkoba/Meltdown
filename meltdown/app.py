@@ -28,7 +28,6 @@ class App:
         self.main_frame.configure(background="red")
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
-        self.main_frame.grid_columnconfigure(0, weight=1)
         self.root.minsize(100, 100)
         self.setup_icon()
         self.setup_focus()

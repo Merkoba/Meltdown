@@ -31,6 +31,7 @@ class Widgets:
         right_padding = app.theme.right_padding
 
         # Model
+        app.main_frame.grid_columnconfigure(widgetutils.frame_number, weight=1)
         self.model_frame = widgetutils.make_frame()
 
         self.model_label = widgetutils.make_label(self.model_frame, "Model")
@@ -245,7 +246,6 @@ class Widgets:
 
         # Display
         app.main_frame.grid_rowconfigure(widgetutils.frame_number, weight=1)
-        app.main_frame.grid_columnconfigure(widgetutils.frame_number, weight=1)
         self.display_frame = widgetutils.make_frame()
         self.display_frame.grid_rowconfigure(0, weight=1)
         self.display_frame.grid_columnconfigure(0, weight=1)
