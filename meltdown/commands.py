@@ -193,7 +193,7 @@ class Commands:
                 "action": lambda a=None: display.move_tab(True),
             },
             "num": {
-                "aliases": [],
+                "aliases": ["number", "tabnum", "tabnumber"],
                 "help": "Go to a tab by its number",
                 "action": lambda a=None: display.select_tab_by_number(a),
                 "type": int,

@@ -23,6 +23,7 @@ class Args:
         self.maximized = False
         self.compact = False
         self.tabs = True
+        self.numbers = False
         self.full = False
         self.test = False
         self.width = -1
@@ -56,6 +57,7 @@ class Args:
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
+            "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
             "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
@@ -87,6 +89,7 @@ class Args:
         normals = [
             "maximized", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
+            "numbers",
         ]
 
         for n_item in normals:

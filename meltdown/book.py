@@ -407,6 +407,9 @@ class Book(tk.Frame):
 
     def update_tab_columns(self) -> None:
         for i, page in enumerate(self.pages):
+            if args.numbers:
+                page.tab.label.configure(text=f"{i + 1}. {page.name}")
+
             page.tab.frame.grid(row=0, column=i, sticky="ew")
 
     def get_tab(self, id: str) -> Optional[tk.Frame]:
