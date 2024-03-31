@@ -70,7 +70,7 @@ class Page():
             if index is None:
                 index = self.get_index()
 
-            if index >= 1:
+            if index >= 0:
                 text = f"{index + 1}. {text}"
 
         self.tab.label.configure(text=text)
