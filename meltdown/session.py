@@ -66,7 +66,6 @@ class Conversation:
         self.id = _id
         self.name = name
         self.items: List[Dict[str, str]] = []
-        self.loaded = False
         self.last_modified = 0.0
 
     def add(self, context_dict: Dict[str, str]) -> None:
@@ -99,10 +98,6 @@ class Conversation:
                         continue
 
             tab.output.format_text()
-
-    def load(self) -> None:
-        self.print()
-        self.loaded = True
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -138,7 +133,6 @@ class Session:
             conv_id = str(timeutils.now())
 
         conversation = Conversation(conv_id, name)
-        conversation.loaded = True
         self.conversations[conv_id] = conversation
         return conversation
 

@@ -28,6 +28,7 @@ class Tab:
         self.bottom = bottom
         self.modified = False
         self.mode = mode
+        self.loaded = False
 
 
 class Display:
@@ -175,11 +176,12 @@ class Display:
         self.update_current_tab()
         tab = self.get_current_tab()
 
-        if tab:
+        if tab and not tab.loaded:
             conversation = session.get_conversation(tab.conversation_id)
 
-            if conversation and (not conversation.loaded):
-                conversation.load()
+            if conversation:
+                conversation.print()
+                tab.loaded = True
 
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -696,8 +698,9 @@ class Display:
 
             tab.output.auto_scroll = False
 
-            if not conversation.loaded:
-                conversation.load()
+            if not tab.loaded:
+                conversation.print()
+                tab.loaded = True
                 app.update()
 
             start_index = tab.output.find_text(query)
