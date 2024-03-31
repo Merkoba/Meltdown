@@ -201,9 +201,3 @@ class Find:
         self.snippet = -1
         self.snippet_focused = False
         self.snippet_index = "1.0"
-
-    def on_esc(self) -> None:
-        if self.entry.get():
-            self.entry.clear()
-        else:
-            self.hide()

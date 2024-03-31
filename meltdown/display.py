@@ -601,7 +601,7 @@ class Display:
         if not tab:
             return
 
-        tab.find.on_esc()
+        tab.find.hide()
 
     def view_text(self) -> None:
         from .session import session
