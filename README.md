@@ -120,6 +120,10 @@ Dialog buttons that respond to keyboard.
 
 View text and view json raw modes.
 
+Find across all open tabs.
+
+Select tabs with keyboard numbers.
+
 ---
 
 ## GUI Toolkit
