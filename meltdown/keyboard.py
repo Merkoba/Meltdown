@@ -10,7 +10,7 @@ from .tooltips import ToolTip
 from .args import args
 from .config import config
 from .logs import logs
-from . import filemanager
+from .session import session
 from . import timeutils
 
 # Standard
@@ -311,6 +311,10 @@ class Keyboard:
         self.register("s",
                       on_ctrl=lambda: logs.menu(),
                       ctrl_help="Save log")
+
+        self.register("o",
+                      on_ctrl=lambda: session.load_state(),
+                      ctrl_help="Load session")
 
         self.register("y",
                       on_ctrl=lambda: display.copy_output(),
