@@ -309,8 +309,8 @@ class Keyboard:
                       ctrl_help="Close tab")
 
         self.register("s",
-                      on_ctrl=lambda: logs.menu(),
-                      ctrl_help="Save log")
+                      on_ctrl=lambda: session.save_state(),
+                      ctrl_help="Save session")
 
         self.register("o",
                       on_ctrl=lambda: session.load_state(),
