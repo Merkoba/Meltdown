@@ -232,10 +232,13 @@ class Keyboard:
         def run_command(cmd: str) -> None:
             commands.check(cmd, direct=True)
 
-        for num in range(0, 10):
+        def register_num(num: int) -> None:
             self.register(str(num),
                           on_ctrl=lambda: run_command(f"num {num}"),
                           ctrl_help=f"Go to tab {num}")
+
+        for num in range(0, 10):
+            register_num(num)
 
         self.register("<Return>",
                       lambda: on_enter(),
