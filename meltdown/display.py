@@ -240,14 +240,15 @@ class Display:
 
         self.tab_list_menu.clear()
 
-        def add_item(page: Page) -> None:
+        def add_item(page: Page, num: int) -> None:
             def command() -> None:
                 return self.select_tab(page.id)
 
-            self.tab_list_menu.add(text=page.name, command=command)
+            name = f"{num}. {page.name}"
+            self.tab_list_menu.add(text=name, command=command)
 
-        for page in self.book.pages:
-            add_item(page)
+        for i, page in enumerate(self.book.pages):
+            add_item(page, i + 1)
 
         self.tab_list_menu.show(widget=widget)
 
