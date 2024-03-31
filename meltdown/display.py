@@ -595,6 +595,10 @@ class Display:
         if not tab:
             return
 
+        if not tab.find.visible:
+            tab.find.show()
+            return
+
         tab.find.find_next(case_insensitive)
 
     def hide_find(self) -> None:

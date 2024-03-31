@@ -198,6 +198,11 @@ class Commands:
                 "help": "Toggle fullscreen",
                 "action": lambda a=None: app.toggle_fullscreen(),
             },
+            "next": {
+                "aliases": ["findnext", "match"],
+                "help": "Find next text match",
+                "action": lambda a=None: display.find_next(),
+            },
         }
 
         cmds = []
