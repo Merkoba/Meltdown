@@ -41,7 +41,7 @@ class Page():
         label.configure(foreground=app.theme.tab_normal_foreground)
         label.pack(expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady)
         label.configure(cursor="hand2")
-        tooltip = ToolTip(label, text=text)
+        tooltip = ToolTip(frame, text=text)
         return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
