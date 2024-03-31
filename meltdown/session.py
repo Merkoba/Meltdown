@@ -274,6 +274,7 @@ class Session:
 
         try:
             self.load_items(path)
+            display.select_last_tab()
             self.save()
         except BaseException as e:
             print(e)

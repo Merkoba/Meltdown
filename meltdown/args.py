@@ -28,6 +28,7 @@ class Args:
         self.test = False
         self.width = -1
         self.height = -1
+        self.max_tabs = 0
         self.theme = ""
         self.config = ""
         self.session = ""
@@ -64,6 +65,7 @@ class Args:
             "config": {"type": str, "help": "Name or path of a config file to use"},
             "session": {"type": str, "help": "Name or path of a session file to use"},
             "on-log": {"type": str, "help": "Command to execute when saving a log file"},
+            "max-tabs": {"type": int, "help": "Max number fo tabs to keep open"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -89,7 +91,7 @@ class Args:
         normals = [
             "maximized", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
-            "numbers",
+            "numbers", "max_tabs",
         ]
 
         for n_item in normals:

@@ -6,6 +6,7 @@ from .output import Output
 from .bottom import Bottom
 from .book import Book, Page
 from .find import Find
+from .args import args
 from . import widgetutils
 
 # Standard
@@ -62,6 +63,7 @@ class Display:
         self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
 
         self.tab_number = 1
+        self.max_old_tabs = 5
 
         self.book.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
         self.book.on_tabs_click = lambda: self.on_tabs_click()
@@ -105,6 +107,7 @@ class Display:
         self.tab_number += 1
         app.show_intro(tab_id)
         tab.modified = False
+        self.check_max_tabs()
         return tab_id
 
     def close_tab(self, tab_id: str = "",
@@ -288,7 +291,7 @@ class Display:
             Dialog.show_confirm("Close all tabs?", lambda: action())
 
     def close_old_tabs(self) -> None:
-        if self.num_tabs() <= 5:
+        if self.num_tabs() <= self.max_old_tabs:
             return
 
         def action() -> None:
@@ -702,6 +705,16 @@ class Display:
                 self.select_tab(tab.tab_id)
                 tab.find.show(query=query)
                 break
+
+    def check_max_tabs(self) -> None:
+        if args.max_tabs <= 0:
+            return
+
+        if self.num_tabs() <= args.max_tabs:
+            return
+
+        for tab_id in self.tab_ids()[:-args.max_tabs]:
+            self.close_tab(tab_id=tab_id, force=True)
 
 
 display = Display()

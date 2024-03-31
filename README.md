@@ -341,3 +341,11 @@ It simply passes the file path as an argument to the command/script.
 >numbers
 
 Show numbers in the tab bar.
+
+---
+
+>max-tabs
+
+Max number of tabs to keep. The older ones are closed automatically.
+
+Unlimited by default.
