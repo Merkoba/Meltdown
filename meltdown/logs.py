@@ -17,7 +17,6 @@ from . import timeutils
 class Logs:
     def menu(self) -> None:
         cmds = []
-        cmds.append(("Cancel", lambda: None))
         cmds.append(("Open", lambda: self.open()))
         cmds.append(("Save All", lambda: self.save_all()))
         cmds.append(("To JSON", lambda: self.to_json()))
@@ -26,7 +25,6 @@ class Logs:
 
     def save_all(self) -> None:
         cmds = []
-        cmds.append(("Cancel", lambda: None))
         cmds.append(("To JSON", lambda: self.to_json(True)))
         cmds.append(("To Text", lambda: self.to_text(True)))
         Dialog.show_commands("Save all conversations?", cmds)
