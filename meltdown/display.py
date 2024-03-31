@@ -606,7 +606,7 @@ class Display:
 
     def view_text(self) -> None:
         from .session import session
-        from . import logs
+        from .logs import logs
         tab = self.get_current_tab()
 
         if not tab:
@@ -620,7 +620,7 @@ class Display:
         if not conversation:
             return
 
-        text = logs.get_text_log(conversation)
+        text = logs.get_text(conversation)
         name = self.get_tab_name(tab.tab_id)
 
         if text:
@@ -630,7 +630,7 @@ class Display:
 
     def view_json(self) -> None:
         from .session import session
-        from . import logs
+        from .logs import logs
         tab = self.get_current_tab()
 
         if not tab:
@@ -644,7 +644,7 @@ class Display:
         if not conversation:
             return
 
-        text = logs.get_json_log(conversation)
+        text = logs.get_json(conversation)
         name = self.get_tab_name(tab.tab_id)
 
         if text:

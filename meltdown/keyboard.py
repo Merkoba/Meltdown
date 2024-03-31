@@ -9,8 +9,8 @@ from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
 from .config import config
+from .logs import logs
 from . import filemanager
-from . import logs
 from . import timeutils
 
 # Standard
@@ -309,7 +309,7 @@ class Keyboard:
                       ctrl_help="Close tab")
 
         self.register("s",
-                      on_ctrl=lambda: logs.log_menu(),
+                      on_ctrl=lambda: logs.menu(),
                       ctrl_help="Save log")
 
         self.register("y",
@@ -329,8 +329,8 @@ class Keyboard:
                       ctrl_help="Browse models")
 
         self.register("l",
-                      on_ctrl=lambda: logs.log_menu(),
-                      on_ctrl_shift=lambda: filemanager.open_logs_dir(),
+                      on_ctrl=lambda: logs.menu(),
+                      on_ctrl_shift=lambda: logs.open(),
                       ctrl_help="Save log",
                       ctrl_shift_help="Open logs directory")
 

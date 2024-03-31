@@ -9,8 +9,8 @@ from .entrybox import EntryBox
 from .inputcontrol import inputcontrol
 from .display import display
 from .args import args
+from .logs import logs
 from . import widgetutils
-from . import logs
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -235,10 +235,6 @@ class Widgets:
                                                     lambda: display.clear(), fill=Fill.HORIZONTAL)
         ToolTip(self.clear_button, "Clear the output of the current tab")
 
-        self.log_button = widgetutils.make_button(self.button_frame, "Log",
-                                                  lambda: logs.log_menu(), fill=Fill.HORIZONTAL)
-        ToolTip(self.log_button, "Save the output to a log file")
-
         self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),
                                                   fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top of the output")
@@ -418,7 +414,8 @@ class Widgets:
 
     def setup_main_menu(self) -> None:
         from .model import model
-        from . import filemanager
+        from .config import config
+        from .session import session
 
         self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
@@ -426,9 +423,9 @@ class Widgets:
         self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
         self.main_menu.add(text="Set API Key", command=lambda: model.set_api_key())
         self.main_menu.separator()
-        self.main_menu.add(text="Configs", command=lambda: self.main_menu_configs())
-        self.main_menu.add(text="Sessions", command=lambda: self.main_menu_sessions())
-        self.main_menu.add(text="Logs", command=lambda: filemanager.open_logs_dir())
+        self.main_menu.add(text="Configs", command=lambda: config.menu())
+        self.main_menu.add(text="Sessions", command=lambda: session.menu())
+        self.main_menu.add(text="Logs", command=lambda: logs.menu())
         self.main_menu.separator()
         self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add(text="Resize", command=lambda: app.resize())
@@ -755,14 +752,6 @@ class Widgets:
     def model_icon_click(self) -> None:
         Menu.hide_all()
         Dialog.hide_all()
-
-    def main_menu_configs(self) -> None:
-        from .config import config
-        config.menu()
-
-    def main_menu_sessions(self) -> None:
-        from .session import session
-        session.menu()
 
 
 widgets: Widgets = Widgets()

@@ -18,8 +18,8 @@ class Commands:
         from .display import display
         from .model import model
         from .session import session
+        from .logs import logs
         from . import filemanager
-        from . import logs
 
         self.commands = {
             "clear": {
@@ -43,14 +43,9 @@ class Commands:
                 "action": lambda a=None: app.toggle_compact(),
             },
             "log": {
-                "aliases": ["save"],
+                "aliases": ["logs", "save"],
                 "help": "Save conversation to a file",
-                "action": lambda a=None: logs.log_menu(),
-            },
-            "logs": {
-                "aliases": [],
-                "help": "Open the logs directory",
-                "action": lambda a=None: filemanager.open_logs_dir(),
+                "action": lambda a=None: logs.menu(),
             },
             "resize": {
                 "aliases": ["restore"],
