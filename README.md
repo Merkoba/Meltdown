@@ -349,3 +349,11 @@ Show numbers in the tab bar.
 Max number of tabs to keep. The older ones are closed automatically.
 
 Unlimited by default.
+
+---
+
+>f1 to f12
+
+You can assign commands to every function key.
+
+For example `--f1 "num 1"` or `--f11 fullscreen`.

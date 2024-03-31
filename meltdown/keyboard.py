@@ -8,7 +8,6 @@ from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
-from .config import config
 from .logs import logs
 from .session import session
 from . import timeutils
@@ -217,6 +216,19 @@ class Keyboard:
         def number(num: int) -> None:
             display.select_tab_by_number(num)
 
+        def function_key(num: int) -> None:
+            cmd = getattr(args, f"f{num}")
+
+            if cmd:
+                commands.check(cmd, direct=True)
+
+        def add_function_key(num: int) -> None:
+            self.register(f"<F{num}>",
+                          lambda: function_key(num))
+
+        for num in range(1, 13):
+            add_function_key(num)
+
         self.register("<Return>",
                       lambda: on_enter(),
                       on_shift=lambda: on_shift_enter(),
@@ -267,34 +279,6 @@ class Keyboard:
         self.register("<space>",
                       on_ctrl=lambda: widgets.show_main_menu(),
                       ctrl_help="Show main menu")
-
-        self.register("<F1>",
-                      lambda: commands.help_command(),
-                      help="Show help")
-
-        self.register("<F2>",
-                      lambda: inputcontrol.input.focus(),
-                      help="Focus input")
-
-        self.register("<F3>",
-                      lambda: display.find_next(),
-                      help="Find next string")
-
-        self.register("<F5>",
-                      lambda: config.reset(),
-                      help="Reset config")
-
-        self.register("<F12>",
-                      lambda: display.show_tab_list(),
-                      help="Show tab list")
-
-        self.register("<F8>",
-                      lambda: app.toggle_compact(),
-                      help="Toggle compact")
-
-        self.register("<F11>",
-                      lambda: app.toggle_fullscreen(),
-                      help="Toggle fullscreen")
 
         self.register("f",
                       on_ctrl=lambda: display.find(),

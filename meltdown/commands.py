@@ -193,6 +193,11 @@ class Commands:
                 "action": lambda a=None: display.select_tab_by_number(a),
                 "type": int,
             },
+            "fullscreen": {
+                "aliases": ["full"],
+                "help": "Toggle fullscreen",
+                "action": lambda a=None: app.toggle_fullscreen(),
+            },
         }
 
         cmds = []
@@ -228,14 +233,19 @@ class Commands:
 
         action(argument)
 
-    def check(self, text: str) -> bool:
+    def check(self, text: str, direct: bool = False) -> bool:
         text = text.strip()
 
-        if not self.command_format(text):
-            return False
+        if not direct:
+            if not self.command_format(text):
+                return False
 
         split = text.split(" ")
-        cmd = split[0][1:]
+        cmd = split[0]
+
+        if not direct:
+            cmd = cmd[1:]
+
         argument = " ".join(split[1:])
 
         # Check normal

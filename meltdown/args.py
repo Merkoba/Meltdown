@@ -33,6 +33,18 @@ class Args:
         self.config = ""
         self.session = ""
         self.on_log = ""
+        self.f1 = ""
+        self.f2 = ""
+        self.f3 = ""
+        self.f4 = ""
+        self.f5 = ""
+        self.f6 = ""
+        self.f7 = ""
+        self.f8 = ""
+        self.f9 = ""
+        self.f10 = ""
+        self.f11 = ""
+        self.f12 = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -66,6 +78,18 @@ class Args:
             "session": {"type": str, "help": "Name or path of a session file to use"},
             "on-log": {"type": str, "help": "Command to execute when saving a log file"},
             "max-tabs": {"type": int, "help": "Max number fo tabs to keep open"},
+            "f1": {"type": str, "help": "Command to assign to the F1 key"},
+            "f2": {"type": str, "help": "Command to assign to the F2 key"},
+            "f3": {"type": str, "help": "Command to assign to the F3 key"},
+            "f4": {"type": str, "help": "Command to assign to the F4 key"},
+            "f5": {"type": str, "help": "Command to assign to the F5 key"},
+            "f6": {"type": str, "help": "Command to assign to the F6 key"},
+            "f7": {"type": str, "help": "Command to assign to the F7 key"},
+            "f8": {"type": str, "help": "Command to assign to the F8 key"},
+            "f9": {"type": str, "help": "Command to assign to the F9 key"},
+            "f10": {"type": str, "help": "Command to assign to the F10 key"},
+            "f11": {"type": str, "help": "Command to assign to the F11 key"},
+            "f12": {"type": str, "help": "Command to assign to the F12 key"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -91,7 +115,8 @@ class Args:
         normals = [
             "maximized", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
-            "numbers", "max_tabs",
+            "numbers", "max_tabs", "f1", "f2", "f3", "f4",
+            "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
         ]
 
         for n_item in normals:
