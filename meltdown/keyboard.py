@@ -8,8 +8,6 @@ from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .args import args
-from .logs import logs
-from .session import session
 from . import timeutils
 
 # Standard
@@ -212,9 +210,6 @@ class Keyboard:
                 display.hide_find()
             else:
                 widgets.esckey()
-
-        def number(num: int) -> None:
-            display.select_tab_by_number(num)
 
         def function_key(num: int) -> None:
             cmd = getattr(args, f"f{num}")
