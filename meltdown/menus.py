@@ -161,6 +161,8 @@ class Menu:
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
                 label.bind("<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip))
+                label.bind("<Enter>", lambda e: self.on_enter(i))
+                label.bind("<Leave>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)
