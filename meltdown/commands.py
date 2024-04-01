@@ -29,11 +29,6 @@ class Commands:
                 "help": "Clear conversation",
                 "action": lambda a=None: display.clear(),
             },
-            "config": {
-                "aliases": ["configuration"],
-                "help": "Show the current configuration",
-                "action": lambda a=None: config.show_config(),
-            },
             "exit": {
                 "aliases": ["quit"],
                 "help": "Exit the application",
@@ -88,6 +83,11 @@ class Commands:
                 "aliases": [],
                 "help": "Close the current tab",
                 "action": lambda a=None: display.close_tab(),
+            },
+            "closeothers": {
+                "aliases": ["others"],
+                "help": "Close old tabs",
+                "action": lambda a=None: display.close_other_tabs(),
             },
             "closeall": {
                 "aliases": [],
@@ -259,6 +259,11 @@ class Commands:
                 "aliases": [],
                 "help": "Copy all the text",
                 "action": lambda a=None: display.copy_output(),
+            },
+            "select": {
+                "aliases": [],
+                "help": "Select all text",
+                "action": lambda a=None: display.select_output(),
             },
             "browse": {
                 "aliases": [],

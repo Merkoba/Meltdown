@@ -42,6 +42,8 @@ class Keyboard:
         self.block_date = 0.0
         self.ctrl = False
         self.shift = False
+        self.ctrl_date = 0.0
+        self.double_tap_delay = 0.25
         self.commands: Dict[str, List[KbItem]] = {}
 
     def block(self) -> None:
@@ -63,9 +65,22 @@ class Keyboard:
         return False
 
     def on_key_press(self, event: Any) -> None:
-        if event.keysym == "Control_L" or event.keysym == "Control_R":
+        is_ctrl = event.keysym == "Control_L" or event.keysym == "Control_R"
+        is_shift = event.keysym == "Shift_L" or event.keysym == "Shift_R"
+
+        if not is_ctrl:
+            self.ctrl_date = 0.0
+
+        if is_ctrl:
             self.ctrl = True
-        elif event.keysym == "Shift_L" or event.keysym == "Shift_R":
+            time_now = timeutils.now()
+
+            if self.ctrl_date > 0:
+                if (time_now - self.ctrl_date) < self.double_tap_delay:
+                    self.on_double_ctrl()
+
+            self.ctrl_date = time_now
+        elif is_shift:
             self.shift = True
 
         if self.blocked():
@@ -331,6 +346,7 @@ class Keyboard:
     def reset(self) -> None:
         self.ctrl = False
         self.shift = False
+        self.ctrl_date = 0.0
 
     def show_help(self, tab_id: str = "") -> None:
         from .display import display
@@ -369,6 +385,9 @@ class Keyboard:
 
         text = "\n\n".join(lines)
         display.print(text, tab_id=tab_id)
+
+    def on_double_ctrl(self) -> None:
+        commands.show_palette()
 
 
 keyboard = Keyboard()
