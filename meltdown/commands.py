@@ -231,7 +231,7 @@ class Commands:
             },
             "context": {
                 "aliases": ["widgetlist", "rightclick"],
-                "help": "Show context list of a widget",
+                "help": "Show the context list",
                 "action": lambda a=None: widgets.show_context(),
             },
             "left": {
