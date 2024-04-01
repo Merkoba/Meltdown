@@ -113,14 +113,14 @@ class Widgets:
         detail_button_info = "Scroll this row. Middle click for instant"
 
         frame_1 = widgetutils.make_inner_frame(self.details_frame, 0)
-        self.details_button_left = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt", width=5)
+        self.details_button_left = widgetutils.make_button(frame_1, "<", lambda: widgets.details_left(), style="alt")
         ToolTip(self.details_button_left, detail_button_info)
 
         self.details, self.details_canvas = widgetutils.make_scrollable_frame(self.details_frame, 1)
 
         frame_3 = widgetutils.make_inner_frame(self.details_frame, 2)
         self.details_button_right = widgetutils.make_button(frame_3, ">",
-                                                            lambda: widgets.details_right(), right_padding=right_padding, style="alt", width=5)
+                                                            lambda: widgets.details_right(), right_padding=right_padding, style="alt")
         ToolTip(self.details_button_right, detail_button_info)
 
         self.details_frame.columnconfigure(1, weight=1)
