@@ -359,3 +359,5 @@ You can assign commands to every function key.
 For example `--f1 "num 1"` or `--f11 fullscreen`.
 
 Check /commands to see all available commands.
+
+Some of them have default commands but they can be overridden.
