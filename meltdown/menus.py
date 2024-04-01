@@ -72,7 +72,7 @@ class Menu:
             self.root.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.main_frame, bg=app.theme.menu_background, borderwidth=0, highlightthickness=0)
+        self.root = tk.Canvas(app.main_frame, bg=app.theme.menu_border, borderwidth=0, highlightthickness=0)
         self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.menu_border_width)
         self.container.configure(background=app.theme.menu_border)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
@@ -161,8 +161,6 @@ class Menu:
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
                 label.bind("<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip))
-                label.bind("<Enter>", lambda e: self.on_enter(i))
-                label.bind("<Leave>", lambda e: self.on_leave(i))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)
