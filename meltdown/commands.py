@@ -430,10 +430,10 @@ class Commands:
             def command() -> None:
                 cmd["action"]()
 
-            help = cmd["help"]
             aliases = [key]
             aliases.extend(cmd["aliases"])
-            self.palette.add(text=help, command=command, tooltip=help, aliases=aliases)
+            tooltip = ", ".join(aliases)
+            self.palette.add(text=cmd["help"], command=command, tooltip=tooltip, aliases=aliases)
 
         for key in self.commands:
             add_item(key)
