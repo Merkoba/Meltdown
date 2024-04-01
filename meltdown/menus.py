@@ -454,11 +454,12 @@ class Menu:
                 wy = widget_y()
                 outside_top = abs(min(0, wy))
                 outside_bottom = max(0, (wy + widget_height) - container_height)
+                units = 3
 
                 if outside_top > 0:
-                    self.root.yview_scroll(-5, "units")
+                    self.root.yview_scroll(-units, "units")
                 elif outside_bottom > 0:
-                    self.root.yview_scroll(5, "units")
+                    self.root.yview_scroll(units, "units")
                 else:
                     break
 
