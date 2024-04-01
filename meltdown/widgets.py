@@ -36,6 +36,7 @@ class Widgets:
 
         self.model_label = widgetutils.make_label(self.model_frame, "Model")
         self.model = widgetutils.make_entry(self.model_frame, fill=Fill.HORIZONTAL)
+        self.model.bind_mousewheel()
         tip = "Path to a model file. This should be a file that works with" \
             " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model." \
             " Check the main menu on the right to load the available models"
@@ -67,6 +68,7 @@ class Widgets:
             rpadding = 0
 
         self.system = widgetutils.make_entry(self.system_frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
+        self.system.bind_mousewheel()
         tip = "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date"
         ToolTip(self.system_label, tip)
         ToolTip(self.system, tip)

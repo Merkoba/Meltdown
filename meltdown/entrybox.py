@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .config import config
+from .tooltips import ToolTip
 
 # Standard
 import tkinter as tk
@@ -25,6 +26,20 @@ class EntryBox(ttk.Entry):
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
         self.name = ""
+
+    def bind_mousewheel(self) -> None:
+        self.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
+        self.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
+
+    def on_mousewheel(self, direction: str) -> None:
+        units = 2
+
+        if direction == "up":
+            self.xview_scroll(-units, "units")
+        elif direction == "down":
+            self.xview_scroll(units, "units")
+
+        ToolTip.hide_all()
 
     def set_name(self, name: str) -> None:
         self.name = name
