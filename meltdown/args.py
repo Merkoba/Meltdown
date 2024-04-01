@@ -18,6 +18,7 @@ class Args:
         self.monitor_ram = True
         self.monitor_temp = True
         self.keyboard = True
+        self.taps = True
         self.wrap = True
         self.stream = True
         self.maximized = False
@@ -64,6 +65,7 @@ class Args:
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
+            "no-taps": {"action": "store_false", "help": "Disable double ctrl taps"},
             "no-wrap": {"action": "store_false", "help": "Disable wrapping when selecting items"},
             "no-tabs": {"action": "store_false", "help": "Don't show the tab bar"},
             "no-stream": {"action": "store_false", "help": "Don't stream responses"},
@@ -106,7 +108,7 @@ class Args:
             ("no_cpu", "monitor_cpu"), ("no_ram", "monitor_ram"),
             ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
-            ("no_stream", "stream"),
+            ("no_stream", "stream"), ("no_taps", "taps"),
         ]
 
         for r_item in reversed:

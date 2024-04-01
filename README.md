@@ -230,6 +230,12 @@ Disable keyboard shortcuts.
 
 ---
 
+>no-taps
+
+Disable double ctrl taps.
+
+---
+
 >no-monitors
 
 Don't show the system monitors like CPU.

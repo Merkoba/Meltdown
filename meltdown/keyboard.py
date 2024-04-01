@@ -43,7 +43,7 @@ class Keyboard:
         self.ctrl = False
         self.shift = False
         self.ctrl_date = 0.0
-        self.double_tap_delay = 0.25
+        self.double_tap_delay = 0.28
         self.commands: Dict[str, List[KbItem]] = {}
 
     def block(self) -> None:
@@ -73,13 +73,15 @@ class Keyboard:
 
         if is_ctrl:
             self.ctrl = True
-            time_now = timeutils.now()
 
-            if self.ctrl_date > 0:
-                if (time_now - self.ctrl_date) < self.double_tap_delay:
-                    self.on_double_ctrl()
+            if args.taps:
+                time_now = timeutils.now()
 
-            self.ctrl_date = time_now
+                if self.ctrl_date > 0:
+                    if (time_now - self.ctrl_date) < self.double_tap_delay:
+                        self.on_double_ctrl()
+
+                self.ctrl_date = time_now
         elif is_shift:
             self.shift = True
 
