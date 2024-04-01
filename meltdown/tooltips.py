@@ -1,6 +1,5 @@
 # Modules
 from .app import app
-from .menus import Menu
 from .args import args
 from . import timeutils
 
@@ -27,7 +26,7 @@ class ToolTip:
     def block() -> None:
         ToolTip.block_date = timeutils.now()
 
-    def __init__(self, widget: tk.Widget, text: str) -> None:
+    def __init__(self, widget: tk.Widget, text: str, bind: bool = True) -> None:
         self.debouncer = ""
         self.widget = widget
         self.delay = 600
@@ -35,17 +34,23 @@ class ToolTip:
         self.tooltip: Optional[tk.Frame] = None
         self.current_event: Optional[Any] = None
 
-        self.widget.bind("<Enter>", lambda e: self.schedule())
-        self.widget.bind("<Leave>", lambda e: self.hide())
-        self.widget.bind("<Button-1>", lambda e: self.hide())
+        if bind:
+            self.widget.bind("<Enter>", lambda e: self.schedule())
+            self.widget.bind("<Leave>", lambda e: self.hide())
+            self.widget.bind("<Button-1>", lambda e: self.hide())
 
-        def bind_scroll_events(widget: tk.Widget) -> None:
-            widget.bind("<Motion>", lambda e: self.update_event(e))
+            def bind_scroll_events(widget: tk.Widget) -> None:
+                widget.bind("<Motion>", lambda e: self.update_event(e))
 
-            for child in widget.winfo_children():
-                bind_scroll_events(child)
+                for child in widget.winfo_children():
+                    bind_scroll_events(child)
 
-        bind_scroll_events(self.widget)
+            bind_scroll_events(self.widget)
+
+    def direct(self, event: Any) -> None:
+        self.current_event = event
+        ToolTip.current_tooltip = self
+        self.show()
 
     def update_event(self, event: Any) -> None:
         if not args.tooltips:
@@ -71,17 +76,17 @@ class ToolTip:
         if event is None:
             return
 
-        if Menu.current_menu:
-            return
-
         self.tooltip = tk.Frame(app.main_frame)
+        self.tooltip.configure(background=app.theme.tooltip_border)
         self.tooltip.lift()
         padding = app.theme.tooltip_padding
 
         label = tk.Label(self.tooltip, text=self.text, font=app.theme.font_tooltips,
                          background=app.theme.tooltip_background, foreground=app.theme.tooltip_foreground,
                          wraplength=480, justify=tk.LEFT, padx=padding, pady=padding)
-        label.pack()
+
+        bwidth = app.theme.tooltip_border_width
+        label.pack(padx=bwidth, pady=bwidth)
         label.bind("<Button-1>", lambda e: self.hide())
 
         self.tooltip.update_idletasks()

@@ -2,6 +2,7 @@
 from .app import app
 from .separatorbox import SeparatorBox
 from .args import args
+from .tooltips import ToolTip
 
 # Standard
 import tkinter as tk
@@ -12,11 +13,13 @@ from typing import List, Callable, Any, Optional, Dict
 class MenuItem:
     def __init__(self, text: str,
                  command: Optional[Callable[..., Any]] = None,
-                 separator: bool = False, disabled: bool = False):
+                 separator: bool = False, disabled: bool = False,
+                 tooltip: str = ""):
         self.text = text
         self.command = command
         self.separator = separator
         self.disabled = disabled
+        self.tooltip = tooltip
         self.coords = {"x": 0, "y": 0}
 
 
@@ -32,8 +35,10 @@ class Menu:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
 
-    def add(self, text: str, command: Optional[Callable[..., Any]] = None, disabled: bool = False) -> None:
-        self.items.append(MenuItem(text, command, disabled=disabled))
+    def add(self, text: str,
+            command: Optional[Callable[..., Any]] = None,
+            disabled: bool = False, tooltip: str = "") -> None:
+        self.items.append(MenuItem(text, command, disabled=disabled, tooltip=tooltip))
 
     def separator(self) -> None:
         self.items.append(MenuItem("", lambda: None, separator=True))
@@ -63,8 +68,8 @@ class Menu:
 
     def make(self) -> None:
         self.root = tk.Canvas(app.main_frame, bg=app.theme.menu_background, borderwidth=0, highlightthickness=0)
-        self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.border_width)
-        self.container.configure(background=app.theme.border_color)
+        self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.menu_border_width)
+        self.container.configure(background=app.theme.menu_border)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
         self.root.bind("<FocusOut>", lambda e: self.hide())
         self.root.grid_columnconfigure(0, weight=1)
@@ -124,7 +129,7 @@ class Menu:
         self.elements: Dict[int, Dict[str, Any]] = {}
         self.separators: List[SeparatorBox] = []
 
-        def bind_motion(parent: tk.Widget) -> None:
+        def bind_mouse(parent: tk.Widget) -> None:
             for child in parent.winfo_children():
                 child.bind("<Motion>", lambda e: on_motion(e))
                 child.bind("<B1-Motion>", lambda e: on_motion(e))
@@ -132,7 +137,7 @@ class Menu:
                 child.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
                 child.bind("<ButtonRelease-1>", lambda e: cmd())
                 child.bind("<ButtonRelease-1>", lambda e: cmd())
-                bind_motion(child)
+                bind_mouse(child)
 
         def make_item(item: MenuItem, i: int) -> None:
             if not self.container:
@@ -150,6 +155,7 @@ class Menu:
 
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
+                label.bind("<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip))
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)
@@ -162,8 +168,7 @@ class Menu:
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
         self.no_items.grid_remove()
-
-        bind_motion(self.root)
+        bind_mouse(self.root)
 
     def all_hidden(self) -> bool:
         return self.num_visible() == 0
@@ -286,8 +291,8 @@ class Menu:
             Menu.current_menu = self
 
     def hide(self) -> None:
-        from .tooltips import ToolTip
         from .keyboard import keyboard
+        ToolTip.hide_all()
 
         if self.root:
             self.root.place_forget()
@@ -371,6 +376,8 @@ class Menu:
         self.scroll_to_item()
 
     def on_leave(self, index: int) -> None:
+        ToolTip.hide_all()
+
         if index not in self.elements:
             return
 
@@ -420,3 +427,10 @@ class Menu:
                 break
 
             tries += 1
+
+    def show_tooltip(self, event: Any, widget: tk.Widget, text: str) -> None:
+        if not text:
+            return
+
+        tooltip = ToolTip(widget, text, bind=False)
+        tooltip.direct(event)

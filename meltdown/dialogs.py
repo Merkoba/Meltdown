@@ -116,11 +116,12 @@ class Dialog:
     def make(self, text: str) -> None:
         background = app.theme.dialog_background
         foreground = app.theme.dialog_foreground
-        border = app.theme.border_color
+        border = app.theme.dialog_border
 
         self.root = tk.Frame(app.main_frame, bg=border)
         self.main = tk.Frame(self.root, bg=background)
-        self.main.pack(padx=app.theme.border_width, pady=app.theme.border_width)
+        bwidth = app.theme.dialog_border_width
+        self.main.pack(padx=bwidth, pady=bwidth)
         self.root.lift()
         container = tk.Frame(self.main, padx=10, pady=4, bg=background)
         container.pack()

@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .config import config
+from .menus import Menu
 
 # Standard
 from typing import Any, Dict, List
@@ -13,6 +14,7 @@ class Commands:
         self.prefix = "/"
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
+        self.palette = Menu()
 
     def setup(self) -> None:
         from .display import display
@@ -81,11 +83,6 @@ class Commands:
                 "aliases": ["max"],
                 "help": "Maximize the window",
                 "action": lambda a=None: app.toggle_maximize(),
-            },
-            "unmaximize": {
-                "aliases": ["unmax"],
-                "help": "Unmaximize the window",
-                "action": lambda a=None: app.unmaximize(),
             },
             "close": {
                 "aliases": [],
@@ -268,6 +265,11 @@ class Commands:
                 "help": "Browse the models",
                 "action": lambda a=None: model.browse_models(),
             },
+            "palette": {
+                "aliases": [],
+                "help": "Show the command palette",
+                "action": lambda a=None: self.show_palette(),
+            },
         }
 
         cmds = []
@@ -421,6 +423,24 @@ class Commands:
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
         return matcher.ratio()
+
+    def show_palette(self) -> None:
+        from .widgets import widgets
+        self.palette.clear()
+
+        def add_item(key: str) -> None:
+            cmd = self.commands[key]
+
+            def command() -> None:
+                cmd["action"]()
+
+            help = cmd["help"]
+            self.palette.add(text=key, command=command, tooltip=help)
+
+        for key in self.commands:
+            add_item(key)
+
+        self.palette.show(widget=widgets.main_menu_button)
 
 
 commands = Commands()

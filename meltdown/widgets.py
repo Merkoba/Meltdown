@@ -8,6 +8,7 @@ from .dialogs import Dialog
 from .entrybox import EntryBox
 from .inputcontrol import inputcontrol
 from .display import display
+from .commands import commands
 from .args import args
 from .logs import logs
 from . import widgetutils
@@ -429,6 +430,7 @@ class Widgets:
         self.main_menu.add(text="Sessions", command=lambda: session.menu())
         self.main_menu.add(text="Logs", command=lambda: logs.menu())
         self.main_menu.separator()
+        self.main_menu.add(text="Commands", command=lambda: commands.show_palette())
         self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
         self.main_menu.add(text="Resize", command=lambda: app.resize())
         self.main_menu.add(text="Theme", command=lambda: app.toggle_theme())

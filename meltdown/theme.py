@@ -27,7 +27,6 @@ class Theme:
         self.name_ai = "#98FB98"
 
         self.syntax_style = "monokai"
-        self.dialog_color = "#252933"
 
         self.background_color = "#212121"
         self.foreground_color = "white"
@@ -50,6 +49,7 @@ class Theme:
         self.button_disabled_background = "#2B303B"
         self.button_foreground = "white"
         self.button_padx = 10
+        self.button_width = 8
 
         self.entry_background = "#2B303B"
         self.entry_foreground = "white"
@@ -69,7 +69,8 @@ class Theme:
 
         self.dialog_background = "white"
         self.dialog_foreground = "black"
-        self.dialog_border = "#446CA1"
+        self.dialog_border = "#959595"
+        self.dialog_border_width = 3
 
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
@@ -85,14 +86,14 @@ class Theme:
         self.highlight_background = "#3D4555"
         self.highlight_foreground = "white"
 
-        self.border_color = "#959595"
-
         self.menu_background = "white"
         self.menu_foreground = "black"
         self.menu_hover_background = "#6693C3"
         self.menu_hover_foreground = "white"
         self.menu_disabled_background = "#E0E0E0"
         self.menu_disabled_foreground = "#3D4555"
+        self.menu_border = "#959595"
+        self.menu_border_width = 3
 
         self.entry_selection_background = "#C3C3C3"
         self.entry_selection_foreground = "black"
@@ -113,6 +114,8 @@ class Theme:
         self.tooltip_background = "white"
         self.tooltip_foreground = "black"
         self.tooltip_padding = 4
+        self.tooltip_border = "#959595"
+        self.tooltip_border_width = 3
 
         self.padx = 10
         self.pady = 10
@@ -125,9 +128,6 @@ class Theme:
 
         self.combobox_width = 11
         self.combobox_width_small = 7
-
-        self.border_width = 4
-        self.button_width = 8
 
         self.right_padding = 11
 
