@@ -3,6 +3,7 @@ from .app import app
 from .separatorbox import SeparatorBox
 from .args import args
 from .tooltips import ToolTip
+from . import utils
 
 # Standard
 import tkinter as tk
@@ -14,12 +15,13 @@ class MenuItem:
     def __init__(self, text: str,
                  command: Optional[Callable[..., Any]] = None,
                  separator: bool = False, disabled: bool = False,
-                 tooltip: str = ""):
+                 tooltip: str = "", aliases: Optional[List[str]] = None):
         self.text = text
         self.command = command
         self.separator = separator
         self.disabled = disabled
         self.tooltip = tooltip
+        self.aliases = aliases or []
         self.coords = {"x": 0, "y": 0}
 
 
@@ -37,8 +39,11 @@ class Menu:
 
     def add(self, text: str,
             command: Optional[Callable[..., Any]] = None,
-            disabled: bool = False, tooltip: str = "") -> None:
-        self.items.append(MenuItem(text, command, disabled=disabled, tooltip=tooltip))
+            disabled: bool = False, tooltip: str = "",
+            aliases: Optional[List[str]] = None) -> None:
+
+        self.items.append(MenuItem(text, command,
+                                   disabled=disabled, tooltip=tooltip, aliases=aliases))
 
     def separator(self) -> None:
         self.items.append(MenuItem("", lambda: None, separator=True))
@@ -209,17 +214,40 @@ class Menu:
 
     def setup_keyboard(self) -> None:
         def on_key(event: Any) -> None:
-            if event.keysym == "Escape":
+            if event.keysym == "BackSpace":
                 self.filter = ""
-            elif event.keysym == "BackSpace":
-                self.filter = self.filter[:-1]
             elif event.char:
                 if not self.all_hidden():
                     self.filter += event.char
 
             self.do_filter()
 
-        self.root.bind("<KeyPress>", on_key)
+        self.root.bind("<KeyPress>", lambda e: on_key(e))
+
+    def check_filter(self, filtr: str, item: MenuItem) -> bool:
+        text = item.text.lower()
+
+        if not filtr:
+            return True
+
+        if not text:
+            return False
+
+        # Check normal
+        if filtr in text or (item.aliases and any(filtr in alias.lower() for alias in item.aliases)):
+            return True
+
+        # Similarity on keys
+        if utils.check_match(text, filtr):
+            return True
+
+        # Similarity on aliases
+        if item.aliases:
+            for alias in item.aliases:
+                if utils.check_match(filtr, alias):
+                    return True
+
+        return False
 
     def do_filter(self) -> None:
         if not self.filter:
@@ -229,10 +257,12 @@ class Menu:
             for sep in self.separators:
                 sep.grid()
         else:
+            filtr = self.filter.lower()
+
             for els in self.elements.values():
                 if els["item"].disabled:
                     self.hide_item(els["index"])
-                elif self.filter.lower() in els["item"].text.lower():
+                elif self.check_filter(filtr, els["item"]):
                     self.show_item(els["index"])
                 else:
                     self.hide_item(els["index"])
@@ -402,27 +432,37 @@ class Menu:
                 "hover_background": hover_background, "hover_foreground": hover_foreground}
 
     def scroll_to_item(self) -> None:
+        from . import timeutils
         if self.no_item():
             return
 
         els = self.elements[self.selected_index]
         tries = 0
 
-        while tries < 10:
-            widget_y = els["label"].winfo_rooty() - app.main_frame.winfo_rooty()
-            widget_height = els["label"].winfo_height()
-            window_height = app.main_frame.winfo_height()
+        widget_height = els["label"].winfo_height()
+        container_height = self.root.winfo_height()
 
-            if widget_y + widget_height > window_height or widget_y < 0:
-                outside_top = abs(min(0, widget_y))
-                outside_bottom = max(0, (widget_y + widget_height) - window_height)
+        def widget_y() -> int:
+            return int(els["label"].winfo_rooty() - self.root.winfo_rooty())
+
+        def not_visible() -> bool:
+            wy = widget_y()
+            return (wy + widget_height) > container_height or (wy < 0)
+
+        while tries < 16:
+            if not_visible():
+                wy = widget_y()
+                outside_top = abs(min(0, wy))
+                outside_bottom = max(0, (wy + widget_height) - container_height)
 
                 if outside_top > 0:
-                    self.root.yview_scroll(-1, "units")
+                    self.root.yview_scroll(-5, "units")
                 elif outside_bottom > 0:
-                    self.root.yview_scroll(1, "units")
+                    self.root.yview_scroll(5, "units")
                 else:
                     break
+
+                app.update()
             else:
                 break
 

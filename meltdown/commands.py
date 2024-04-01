@@ -5,7 +5,7 @@ from .menus import Menu
 
 # Standard
 from typing import Any, Dict, List
-from difflib import SequenceMatcher
+from . import utils
 
 
 class Commands:
@@ -14,9 +14,13 @@ class Commands:
         self.prefix = "/"
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
-        self.palette = Menu()
 
     def setup(self) -> None:
+        self.make_commands()
+        self.check_commands()
+        self.make_palette()
+
+    def make_commands(self) -> None:
         from .display import display
         from .model import model
         from .session import session
@@ -81,12 +85,12 @@ class Commands:
             },
             "close": {
                 "aliases": [],
-                "help": "Close the current tab",
+                "help": "Close current tab",
                 "action": lambda a=None: display.close_tab(),
             },
             "closeothers": {
                 "aliases": ["others"],
-                "help": "Close old tabs",
+                "help": "Close other tabs",
                 "action": lambda a=None: display.close_other_tabs(),
             },
             "closeall": {
@@ -277,6 +281,7 @@ class Commands:
             },
         }
 
+    def check_commands(self) -> None:
         cmds = []
 
         # Check for duplicate commands
@@ -333,7 +338,7 @@ class Commands:
 
         # Similarity on keys
         for key, value in self.commands.items():
-            if self.check_match(cmd, key):
+            if utils.check_match(cmd, key):
                 self.run(key, argument)
                 return True
 
@@ -343,20 +348,11 @@ class Commands:
 
             if aliases:
                 for alias in aliases:
-                    if self.check_match(cmd, alias):
+                    if utils.check_match(cmd, alias):
                         self.run(key, argument)
                         return True
 
         return True
-
-    def check_match(self, a: str, b: str) -> bool:
-        if a == b:
-            return True
-
-        if self.similarity(a, b) >= 0.8:
-            return True
-
-        return False
 
     def help_command(self) -> None:
         from .display import display
@@ -425,13 +421,8 @@ class Commands:
                 if alias.startswith(text[1:]):
                     self.autocomplete_matches.append(alias)
 
-    def similarity(self, a: str, b: str) -> float:
-        matcher = SequenceMatcher(None, a, b)
-        return matcher.ratio()
-
-    def show_palette(self) -> None:
-        from .widgets import widgets
-        self.palette.clear()
+    def make_palette(self) -> None:
+        self.palette = Menu()
 
         def add_item(key: str) -> None:
             cmd = self.commands[key]
@@ -440,11 +431,15 @@ class Commands:
                 cmd["action"]()
 
             help = cmd["help"]
-            self.palette.add(text=key, command=command, tooltip=help)
+            aliases = [key]
+            aliases.extend(cmd["aliases"])
+            self.palette.add(text=help, command=command, tooltip=help, aliases=aliases)
 
         for key in self.commands:
             add_item(key)
 
+    def show_palette(self) -> None:
+        from .widgets import widgets
         self.palette.show(widget=widgets.main_menu_button)
 
 
