@@ -138,6 +138,10 @@ Can be started with a prompt to use automatically.
 
 Text can be piped to the program as the input.
 
+Create up to 3 tasks to run commands periodically automatically.
+
+Create command aliases that run other commands.
+
 ---
 
 ## GUI Toolkit
