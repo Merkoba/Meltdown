@@ -138,9 +138,9 @@ Python comes bundled with the `Tkinter` library which is a wrapper around `Tcl`.
 
 This should just work after installing Python normally.
 
-Which means Meltdown is able to run in many environments.
-
 It doesn't depend on a browser engine or a proprietary toolkit.
+
+Which means Meltdown is able to run in many environments.
 
 ---
 
