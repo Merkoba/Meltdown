@@ -335,7 +335,7 @@ class Keyboard:
         self.register("l",
                       on_ctrl=lambda: run_command("log"),
                       on_ctrl_shift=lambda: run_command("logsdir"),
-                      ctrl_help="Save log",
+                      ctrl_help="Show the log menu",
                       ctrl_shift_help="Open logs directory")
 
         for num in range(1, 13):

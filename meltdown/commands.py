@@ -52,7 +52,7 @@ class Commands:
             },
             "log": {
                 "aliases": ["logs"],
-                "help": "Open the logs menu",
+                "help": "Show the log menu",
                 "action": lambda a=None: logs.menu(),
             },
             "logtext": {
