@@ -65,7 +65,7 @@ class Find:
 
     def find_next(self, case_insensitive: bool = True,
                   bound: bool = False, no_match: bool = False,
-                  snippet: int = 0, iteration: int = 1) -> None:
+                  iteration: int = 1) -> None:
         if not self.visible:
             return
 

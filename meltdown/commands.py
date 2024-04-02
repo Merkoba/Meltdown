@@ -109,8 +109,8 @@ class Commands:
                 "help": "Close old tabs",
                 "action": lambda a=None: display.close_old_tabs(),
             },
-            "tab": {
-                "aliases": ["new"],
+            "new": {
+                "aliases": ["make", "maketab", "newtab"],
                 "help": "Make a new tab",
                 "action": lambda a=None: display.make_tab(),
             },
@@ -152,7 +152,7 @@ class Commands:
             "find": {
                 "aliases": ["search"],
                 "help": "Find a text string",
-                "action": lambda a=None: display.find(),
+                "action": lambda a=None: display.find(query=a),
             },
             "findall": {
                 "aliases": ["searchall"],
@@ -199,8 +199,8 @@ class Commands:
                 "help": "Move tab to start or end",
                 "action": lambda a=None: display.move_tab(True),
             },
-            "num": {
-                "aliases": ["number", "tabnum", "tabnumber"],
+            "tab": {
+                "aliases": ["num", "number", "tabnum", "tabnumber"],
                 "help": "Go to a tab by its number",
                 "action": lambda a=None: display.select_tab_by_number(a),
                 "type": int,

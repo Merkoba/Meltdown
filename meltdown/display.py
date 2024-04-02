@@ -587,7 +587,7 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def find(self, tab_id: str = "", widget: Optional[tk.Text] = None) -> None:
+    def find(self, tab_id: str = "", widget: Optional[tk.Text] = None, query: str = "") -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -596,7 +596,10 @@ class Display:
         if not tab:
             return
 
-        tab.find.show(widget=widget)
+        tab.find.show(widget=widget, query=query)
+
+        if query:
+            tab.find.find_next()
 
     def find_next(self, case_insensitive: bool = True) -> None:
         tab = self.get_current_tab()

@@ -425,7 +425,7 @@ This can be done using `&`.
 For example:
 
 ```sh
-/num 1 & /select
+/tab 1 & /select
 ```
 
 ---
@@ -445,7 +445,7 @@ You can specify if it runs instantly.
 For example:
 
 ```sh
---task-1 "/num 1 && /input hello world" --task-1-seconds 30 --task-1-instant
+--task-1 "/tab 1 && /input hello world" --task-1-seconds 30 --task-1-instant
 ```
 
 This will go to the first tab and then prompt the model with "hello world".
@@ -457,7 +457,7 @@ There are 3 tasks you can create.
 For instance to set task 2 you can do:
 
 ```sh
---task-2 "/tab && /about" --task-2-minutes 1 --task-2-instant
+--task-2 "/find stuff" --task-2-minutes 1 --task-2-instant
 ```
 
 Same with 3.
