@@ -13,10 +13,15 @@ def run(num: int) -> None:
 
 
 def check(num: int, seconds: int) -> None:
-    print(f"Running task {num} every {seconds} seconds")
     first_run = False
-    timeutils.sleep(1)
     instant = getattr(args, f"task_{num}_instant")
+    msg = f"Running task {num} every {seconds} seconds"
+
+    if instant:
+        msg += " (instant)"
+
+    print(msg)
+    timeutils.sleep(1)
 
     while True:
         if not first_run:
