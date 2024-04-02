@@ -2,6 +2,7 @@
 from .app import app
 from .config import config
 from .menus import Menu
+from .args import args
 from . import utils
 
 # Standard
@@ -22,6 +23,7 @@ class Commands:
 
     def setup(self) -> None:
         self.make_commands()
+        self.make_aliases()
         self.check_commands()
         self.make_palette()
 
@@ -324,6 +326,19 @@ class Commands:
             },
         }
 
+    def make_aliases(self) -> None:
+        self.aliases = {}
+
+        for alias in args.aliases:
+            split = alias.split("=")
+            key = split[0].strip()
+            value = "=".join(split[1:]).strip()
+
+            if not key or not value:
+                continue
+
+            self.aliases[key] = value
+
     def check_commands(self) -> None:
         cmds = []
 
@@ -385,6 +400,10 @@ class Commands:
         return True
 
     def do_check(self, cmd: str, argument: str) -> None:
+        if self.aliases.get(cmd):
+            self.check(self.aliases[cmd], True)
+            return
+
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
@@ -504,6 +523,10 @@ class Commands:
             for alias in data["aliases"]:
                 if alias.startswith(word):
                     self.autocomplete_matches.append(alias)
+
+        for cmd, value in self.aliases.items():
+            if cmd.startswith(word):
+                self.autocomplete_matches.append(cmd)
 
     def make_palette(self) -> None:
         self.palette = Menu()

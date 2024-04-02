@@ -49,6 +49,7 @@ class Args:
         self.f11 = "fullscreen"
         self.f12 = "list"
         self.input = ""
+        self.aliases: List[str] = []
 
         self.task_1 = ""
         self.task_1_seconds = 0
@@ -133,6 +134,8 @@ class Args:
             "task-3-minutes": {"type": int, "help": "Execute the task every X minutes"},
             "task-3-hours": {"type": int, "help": "Execute the task every X hours"},
             "task-3-instant": {"action": "store_true", "help": "Run the first task as soon as the program starts"},
+
+            "alias": {"type": str, "action": "append", "help": "Define an alias to run commands"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -142,7 +145,7 @@ class Args:
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self.Internal.aliases, self)
 
-        reversed = [
+        other_name = [
             ("no_tooltips", "tooltips"), ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"), ("no_avatars", "avatars"),
             ("no_monitors", "monitors"), ("no_monitor_colors", "monitor_colors"),
@@ -150,10 +153,10 @@ class Args:
             ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
             ("no_stream", "stream"), ("no_taps", "taps"),
-            ("no_empty", "allow_empty"),
+            ("no_empty", "allow_empty"), ("alias", "aliases"),
         ]
 
-        for r_item in reversed:
+        for r_item in other_name:
             ap.normal(*r_item)
 
         normals = [

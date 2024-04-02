@@ -445,7 +445,7 @@ You can specify if it runs instantly.
 For example:
 
 ```sh
---task-1 "/tab 1 & /input hello world" --task-1-seconds 30 --task-1-instant
+--task-1 "tab 1 & input hello world" --task-1-seconds 30 --task-1-instant
 ```
 
 This will go to the first tab and then prompt the model with "hello world".
@@ -457,7 +457,27 @@ There are 3 tasks you can create.
 For instance to set task 2 you can do:
 
 ```sh
---task-2 "/find stuff" --task-2-minutes 1 --task-2-instant
+--task-2 "find stuff" --task-2-minutes 1 --task-2-instant
 ```
 
 Same with 3.
+
+---
+
+## Aliases
+
+You can define one or more command aliases.
+
+The name of the alias is at the start and the value is after `=`.
+
+For example:
+
+```sh
+--alias "grab = tab 1 & select --alias "destroy = close true"
+```
+
+Or maybe a prompt alias:
+
+```sh
+--alias "history = input what happened on this day?"
+```

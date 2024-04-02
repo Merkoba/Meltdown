@@ -9,7 +9,7 @@ import threading
 def run(num: int) -> None:
     from .commands import commands
     task = getattr(args, f"task_{num}")
-    commands.check(task)
+    commands.check(task, True)
 
 
 def check(num: int, seconds: int) -> None:
