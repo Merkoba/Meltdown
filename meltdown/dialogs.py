@@ -118,17 +118,17 @@ class Dialog:
         foreground = app.theme.dialog_foreground
         border = app.theme.dialog_border
 
-        self.root = tk.Frame(app.main_frame, bg=border)
-        self.main = tk.Frame(self.root, bg=background)
+        self.root = tk.Frame(app.main_frame, background=border)
+        self.main = tk.Frame(self.root, background=background)
         bwidth = app.theme.dialog_border_width
         self.main.pack(padx=bwidth, pady=bwidth)
         self.root.lift()
-        container = tk.Frame(self.main, padx=10, pady=4, bg=background)
+        container = tk.Frame(self.main, padx=10, pady=4, background=background)
         container.pack()
-        tk.Label(container, text=text, font=app.theme.font, wraplength=500, bg=background, fg=foreground).pack(padx=6)
+        tk.Label(container, text=text, font=app.theme.font, wraplength=500, background=background, foreground=foreground).pack(padx=6)
         self.top_frame = tk.Frame(container)
         self.top_frame.pack()
-        self.button_frame = tk.Frame(container, bg=background)
+        self.button_frame = tk.Frame(container, background=background)
         self.button_frame.pack()
         self.root.bind("<Escape>", lambda e: self.hide())
         self.root.bind("<FocusOut>", lambda e: self.hide())

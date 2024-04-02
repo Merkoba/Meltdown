@@ -72,8 +72,8 @@ class Menu:
             self.root.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.main_frame, bg=app.theme.menu_border, borderwidth=0, highlightthickness=0)
-        self.container = tk.Frame(self.root, bg=app.theme.menu_background, borderwidth=app.theme.menu_border_width)
+        self.root = tk.Canvas(app.main_frame, background=app.theme.menu_border, borderwidth=0, highlightthickness=0)
+        self.container = tk.Frame(self.root, background=app.theme.menu_background, borderwidth=app.theme.menu_border_width)
         self.container.configure(background=app.theme.menu_border)
         self.root.create_window((0, 0), window=self.container, anchor="nw")
         self.root.bind("<FocusOut>", lambda e: self.hide())
