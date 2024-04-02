@@ -142,13 +142,17 @@ Text can be piped to the program as the input.
 
 ## GUI Toolkit
 
-Python comes bundled with the `Tkinter` library which is a wrapper around `Tcl`.
+Python comes bundled with the `tkinter` library which is a wrapper around `Tcl`.
 
-This should just work after installing Python normally.
+This should just-work after installing Python normally.
+
+It should work in different operating systems (cross-platform).
 
 It doesn't depend on a browser engine or a proprietary toolkit.
 
-Which means Meltdown is able to run in many environments.
+This means Meltdown is able to run in many environments in a lightweight manner.
+
+(Only tested on Linux for now)
 
 ---
 
