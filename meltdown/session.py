@@ -232,7 +232,8 @@ class Session:
             conversation = Conversation(item["id"], item["name"])
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
-            display.make_tab(conversation.name, conversation.id, select_tab=False)
+            display.make_tab(conversation.name, conversation.id,
+                             select_tab=False, save=False)
 
     def save_state(self) -> None:
         if not paths.sessions.exists():

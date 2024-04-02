@@ -74,7 +74,8 @@ class Display:
 
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None,
-                 select_tab: bool = True, mode: str = "normal") -> str:
+                 select_tab: bool = True, mode: str = "normal",
+                 save: bool = True) -> str:
         from .session import session
 
         if not name:
@@ -109,6 +110,10 @@ class Display:
         app.show_intro(tab_id)
         tab.modified = False
         self.check_max_tabs()
+
+        if save:
+            session.save()
+
         return tab_id
 
     def close_tab(self, tab_id: str = "",
