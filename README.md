@@ -395,3 +395,9 @@ Some of them have default commands but they can be overridden.
 >input
 
 Use this input automatically at startup.
+
+It will load and ask the model automatically.
+
+Commands are also supported.
+
+It simulates a normal input submit.
