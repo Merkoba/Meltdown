@@ -473,7 +473,7 @@ The name of the alias is at the start and the value is after `=`.
 For example:
 
 ```sh
---alias "grab = tab 1 & select --alias "destroy = close true"
+--alias "grab = tab 1 & select" --alias "destroy = close true"
 ```
 
 Or maybe a prompt alias:
