@@ -136,6 +136,8 @@ Save logs of all conversations at once.
 
 Can be started with a prompt to use automatically.
 
+Text can be piped to the program as the input.
+
 ---
 
 ## GUI Toolkit
@@ -401,3 +403,9 @@ It will load and ask the model automatically.
 Commands are also supported.
 
 It simulates a normal input submit.
+
+This can also be piped:
+
+```sh
+echo "hello world" | meltdown
+```

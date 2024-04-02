@@ -3,6 +3,7 @@ from .app import app
 from .argparser import ArgParser
 
 # Standard
+import sys
 from typing import Any, Dict, List
 
 
@@ -129,6 +130,9 @@ class Args:
 
         for n_item in normals:
             ap.normal(n_item)
+
+        if not sys.stdin.isatty():
+            self.input = sys.stdin.read()
 
         self.parser = ap.parser
 

@@ -162,13 +162,14 @@ class InputControl:
         from .inputcontrol import inputcontrol
         from .commands import commands
         text = args.input.strip()
-        is_command = commands.is_command(text)
 
         if text:
-            if (not is_command) and display.has_conversations():
-                tab_id = display.make_tab()
-            else:
-                tab_id = display.current_tab
+            is_command = commands.is_command(text)
+            tab_id = display.current_tab
+
+            if not is_command:
+                if not display.tab_is_empty(tab_id):
+                    tab_id = display.make_tab()
 
             inputcontrol.submit(tab_id=tab_id, text=text)
 

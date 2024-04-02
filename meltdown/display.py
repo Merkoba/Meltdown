@@ -728,19 +728,22 @@ class Display:
         for tab_id in self.tab_ids()[:-args.max_tabs]:
             self.close_tab(tab_id=tab_id, force=True)
 
-    def has_conversations(self) -> bool:
+    def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
+        tab = self.get_tab(tab_id)
 
-        for tab in self.tabs.values():
-            conversation = session.get_conversation(tab.conversation_id)
+        if not tab:
+            return True
 
-            if not conversation:
-                continue
+        conversation = session.get_conversation(tab.conversation_id)
 
-            if conversation.items:
-                return True
+        if not conversation:
+            return False
 
-        return False
+        if conversation.items:
+            return False
+
+        return True
 
 
 display = Display()
