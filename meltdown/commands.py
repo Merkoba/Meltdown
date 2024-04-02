@@ -36,8 +36,9 @@ class Commands:
         self.commands = {
             "clear": {
                 "aliases": ["clean", "cls"],
-                "help": "Clear conversation",
-                "action": lambda a=None: display.clear(),
+                "help": "Clear conversation. Use 'true' to foce",
+                "action": lambda a=None: display.clear(force=a),
+                "type": bool,
             },
             "exit": {
                 "aliases": ["quit"],
@@ -51,8 +52,28 @@ class Commands:
             },
             "log": {
                 "aliases": ["logs"],
-                "help": "Save conversation to a file",
+                "help": "Open the logs menu",
                 "action": lambda a=None: logs.menu(),
+            },
+            "logtext": {
+                "aliases": [],
+                "help": "Save conversation to a text file",
+                "action": lambda a=None: logs.to_text(),
+            },
+            "logjson": {
+                "aliases": [],
+                "help": "Save conversation to a JSON file",
+                "action": lambda a=None: logs.to_json(),
+            },
+            "logtextall": {
+                "aliases": [],
+                "help": "Save all conversations to text files",
+                "action": lambda a=None: logs.to_text(True),
+            },
+            "logjsonall": {
+                "aliases": [],
+                "help": "Save all conversations to JSON files",
+                "action": lambda a=None: logs.to_json(True),
             },
             "logsdir": {
                 "aliases": ["openlogs"],
@@ -91,23 +112,24 @@ class Commands:
             },
             "close": {
                 "aliases": [],
-                "help": "Close current tab",
-                "action": lambda a=None: display.close_tab(),
+                "help": "Close current tab. Use 'true' to force",
+                "action": lambda a=None: display.close_tab(force=a),
+                "type": bool,
             },
             "closeothers": {
                 "aliases": ["others"],
-                "help": "Close other tabs",
-                "action": lambda a=None: display.close_other_tabs(),
+                "help": "Close other tabs. Use 'true' to force",
+                "action": lambda a=None: display.close_other_tabs(force=a),
             },
             "closeall": {
                 "aliases": [],
-                "help": "Close all tabs",
-                "action": lambda a=None: display.close_all_tabs(),
+                "help": "Close all tabs. Use 'true' to force",
+                "action": lambda a=None: display.close_all_tabs(force=a),
             },
             "closeold": {
                 "aliases": ["old", "trim"],
-                "help": "Close old tabs",
-                "action": lambda a=None: display.close_old_tabs(),
+                "help": "Close old tabs. Use 'true' to force",
+                "action": lambda a=None: display.close_old_tabs(force=a),
             },
             "new": {
                 "aliases": ["make", "maketab", "newtab"],
@@ -153,11 +175,13 @@ class Commands:
                 "aliases": ["search"],
                 "help": "Find a text string",
                 "action": lambda a=None: display.find(query=a),
+                "type": str,
             },
             "findall": {
                 "aliases": ["searchall"],
                 "help": "Find a text string among all tabs",
                 "action": lambda a=None: display.find_all(a),
+                "type": str,
             },
             "first": {
                 "aliases": [],
@@ -181,8 +205,8 @@ class Commands:
             },
             "reset": {
                 "aliases": ["restart"],
-                "help": "Reset the config",
-                "action": lambda a=None: config.reset(),
+                "help": "Reset the config. Use 'true' to force",
+                "action": lambda a=None: config.reset(force=a),
             },
             "viewtext": {
                 "aliases": ["text"],
@@ -204,6 +228,7 @@ class Commands:
                 "help": "Go to a tab by its number",
                 "action": lambda a=None: display.select_tab_by_number(a),
                 "type": int,
+                "arg_req": True,
             },
             "fullscreen": {
                 "aliases": ["full"],
@@ -294,6 +319,8 @@ class Commands:
                 "aliases": ["prompt", "ask"],
                 "help": "Prompt the AI with this input",
                 "action": lambda a=None: inputcontrol.submit(text=a),
+                "type": str,
+                "arg_req": True,
             },
         }
 
@@ -324,12 +351,14 @@ class Commands:
     def run(self, key: str, argument: str) -> None:
         item = self.commands[key]
         action = item["action"]
+        arg_req = item.get("arg_req")
+
+        if (not argument) and arg_req:
+            return
+
         argtype = item.get("type")
 
-        if argtype:
-            if not argument:
-                return
-
+        if argtype and argument:
             argument = argtype(argument)
 
         action(argument)

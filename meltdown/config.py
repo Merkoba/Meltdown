@@ -273,7 +273,7 @@ class Config:
 
         return True
 
-    def reset(self) -> None:
+    def reset(self, force: bool = False) -> None:
         from .app import app
         from .model import model
         from .widgets import widgets
@@ -298,6 +298,10 @@ class Config:
             app.check_compact()
             self.save()
             model.unload(True)
+
+        if force:
+            action()
+            return
 
         Dialog.show_confirm("This will remove your custom configs"
                             "\nand refresh the widgets", action)

@@ -145,18 +145,19 @@ class Display:
 
         if force:
             action()
-        else:
-            cmds = []
+            return
 
-            if self.num_tabs() > 1:
-                if self.num_tabs() > 5:
-                    cmds.append(("Old", lambda: self.close_old_tabs()))
+        cmds = []
 
-                cmds.append(("Others", lambda: self.close_other_tabs()))
-                cmds.append(("All", lambda: self.close_all_tabs()))
+        if self.num_tabs() > 1:
+            if self.num_tabs() > 5:
+                cmds.append(("Old", lambda: self.close_old_tabs()))
 
-            cmds.append(("Ok", lambda: action()))
-            Dialog.show_commands("Close tab?", cmds)
+            cmds.append(("Others", lambda: self.close_other_tabs()))
+            cmds.append(("All", lambda: self.close_all_tabs()))
+
+        cmds.append(("Ok", lambda: action()))
+        Dialog.show_commands("Close tab?", cmds)
 
     def select_tab(self, tab_id: str) -> None:
         if self.book.select(tab_id):
@@ -297,10 +298,11 @@ class Display:
 
         if force:
             action()
-        else:
-            Dialog.show_confirm("Close all tabs?", lambda: action())
+            return
 
-    def close_old_tabs(self) -> None:
+        Dialog.show_confirm("Close all tabs?", lambda: action())
+
+    def close_old_tabs(self, force: bool = False) -> None:
         if self.num_tabs() <= self.max_old_tabs:
             return
 
@@ -308,9 +310,13 @@ class Display:
             for tab_id in self.tab_ids()[:-5]:
                 self.close_tab(tab_id=tab_id, force=True)
 
+        if force:
+            action()
+            return
+
         Dialog.show_confirm("Close old tabs?", lambda: action())
 
-    def close_other_tabs(self) -> None:
+    def close_other_tabs(self, force: bool = False) -> None:
         if self.num_tabs() <= 1:
             return
 
@@ -320,6 +326,10 @@ class Display:
             for tab_id in self.tab_ids():
                 if tab_id != current:
                     self.close_tab(tab_id=tab_id, force=True)
+
+        if force:
+            action()
+            return
 
         Dialog.show_confirm("Close other tabs?", lambda: action())
 
@@ -363,7 +373,7 @@ class Display:
 
         output.copy_all()
 
-    def clear(self, tab_id: str = "") -> None:
+    def clear(self, tab_id: str = "", force: bool = False) -> None:
         from .session import session
 
         if not tab_id:
@@ -385,6 +395,10 @@ class Display:
             session.clear(tab.conversation_id)
             app.show_intro(tab_id)
             tab.modified = False
+
+        if force:
+            action()
+            return
 
         Dialog.show_confirm("Clear conversation?", lambda: action())
 

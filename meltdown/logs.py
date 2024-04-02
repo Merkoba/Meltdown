@@ -71,7 +71,7 @@ class Logs:
             text = self.get_json(conversation)
 
             if not text:
-                return
+                continue
 
             num += 1
             self.save_file(text, conversation.name, "json", all)
@@ -116,7 +116,7 @@ class Logs:
             text = self.get_text(conversation)
 
             if not text:
-                return
+                continue
 
             num += 1
             self.save_file(text, conversation.name, "txt", all)
