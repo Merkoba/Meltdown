@@ -44,7 +44,7 @@ class Display:
         self.tabs: Dict[str, Tab] = {}
 
         self.tab_menu = Menu()
-        self.tab_menu.add(text="Rename", command=lambda: self.tab_menu_rename())
+        self.tab_menu.add(text="Rename", command=lambda: self.rename_tab())
         self.tab_menu.add(text="Move", command=lambda: self.move_tab())
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
@@ -256,12 +256,16 @@ class Display:
 
         self.tab_list_menu.show(widget=widget)
 
-    def tab_menu_rename(self) -> None:
-        tab_id = self.tab_menu_id
-        name = self.get_tab_name(tab_id)
-        Dialog.show_input("Pick a name", lambda s: self.rename_tab(tab_id, s), value=name)
+    def rename_tab(self, current: bool = False) -> None:
+        if current:
+            tab_id = self.current_tab
+        else:
+            tab_id = self.tab_menu_id
 
-    def rename_tab(self, tab_id: str, name: str) -> None:
+        name = self.get_tab_name(tab_id)
+        Dialog.show_input("Pick a name", lambda s: self.do_rename_tab(tab_id, s), value=name)
+
+    def do_rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
 
         if name:

@@ -279,6 +279,11 @@ class Commands:
                 "help": "Show the command palette",
                 "action": lambda a=None: self.show_palette(),
             },
+            "rename": {
+                "aliases": ["name"],
+                "help": "Rename the tab",
+                "action": lambda a=None: display.rename_tab(True),
+            },
         }
 
     def check_commands(self) -> None:
