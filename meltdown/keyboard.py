@@ -228,6 +228,9 @@ class Keyboard:
             else:
                 widgets.esckey()
 
+        def run_command(cmd: str) -> None:
+            commands.check(cmd, direct=True)
+
         def function_key(num: int) -> None:
             cmd = getattr(args, f"f{num}")
 
@@ -238,19 +241,9 @@ class Keyboard:
             self.register(f"<F{num}>",
                           lambda: function_key(num))
 
-        for num in range(1, 13):
-            add_function_key(num)
-
-        def run_command(cmd: str) -> None:
-            commands.check(cmd, direct=True)
-
         def register_num(num: int) -> None:
             self.register(str(num),
-                          on_ctrl=lambda: run_command(f"num {num}"),
-                          ctrl_help=f"Go to tab {num}")
-
-        for num in range(0, 10):
-            register_num(num)
+                          on_ctrl=lambda: run_command(f"num {num}"))
 
         self.register("<Return>",
                       lambda: on_enter(),
@@ -345,6 +338,12 @@ class Keyboard:
                       ctrl_help="Save log",
                       ctrl_shift_help="Open logs directory")
 
+        for num in range(1, 13):
+            add_function_key(num)
+
+        for num in range(0, 10):
+            register_num(num)
+
     def reset(self) -> None:
         self.ctrl = False
         self.shift = False
@@ -365,6 +364,14 @@ class Keyboard:
                 continue
 
             keys.append(upkey)
+
+            if all([(not value.help) and
+                    (not value.ctrl_help) and
+                    (not value.shift_help) and
+                    (not value.ctrl_shift_help)
+                    for value in values]):
+                continue
+
             upkey = upkey.replace("<", "< ").replace(">", " >")
             upkey.replace("_", " ")
             items = [separator]
@@ -384,6 +391,11 @@ class Keyboard:
                     items.append(f" Ctrl+Shift: {value.ctrl_shift_help}")
 
                 lines.append("\n\n".join(items))
+
+        lines.append(separator)
+        lines.append("1 to 0 to jump to tabs")
+        lines.append(separator)
+        lines.append("F1 to F12 to run functions (configurable through arguments)")
 
         text = "\n\n".join(lines)
         display.print(text, tab_id=tab_id)
