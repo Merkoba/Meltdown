@@ -130,6 +130,10 @@ Command palette.
 
 Double ctrl tap (to open the palette).
 
+Run a program upon saving a log.
+
+Save logs of all conversations at once.
+
 ---
 
 ## GUI Toolkit
