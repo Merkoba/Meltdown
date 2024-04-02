@@ -15,7 +15,10 @@ class Commands:
         self.prefix = "/"
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
+        self.autocomplete_match = ""
         self.autocomplete_word = ""
+        self.autocomplete_pos = 0
+        self.autocomplete_missing = ""
 
     def setup(self) -> None:
         self.make_commands()
@@ -342,24 +345,22 @@ class Commands:
                 cmd = cmd[1:]
 
             argument = " ".join(split[1:])
-
-            if self.do_check(cmd, argument):
-                break
+            self.do_check(cmd, argument)
 
         return True
 
-    def do_check(self, cmd: str, argument: str) -> bool:
+    def do_check(self, cmd: str, argument: str) -> None:
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
                 self.run(key, argument)
-                return True
+                return
 
         # Similarity on keys
         for key, value in self.commands.items():
             if utils.check_match(cmd, key):
                 self.run(key, argument)
-                return True
+                return
 
         # Similarity on aliases
         for key, value in self.commands.items():
@@ -369,9 +370,9 @@ class Commands:
                 for alias in aliases:
                     if utils.check_match(cmd, alias):
                         self.run(key, argument)
-                        return True
+                        return
 
-        return False
+        return
 
     def help_command(self) -> None:
         from .display import display
@@ -419,16 +420,25 @@ class Commands:
                 check()
                 return
 
-            missing = match.replace(self.autocomplete_word[1:], "")
-            inputcontrol.input.insert_text(missing)
+            missing = match[len(self.autocomplete_word[1:]):]
+
+            if self.autocomplete_match:
+                inputcontrol.input.delete_text(self.autocomplete_pos, len(self.autocomplete_missing))
+
+            inputcontrol.input.insert_text(missing, index=str(self.autocomplete_pos))
             self.autocomplete_index += 1
+            self.autocomplete_match = match
+            self.autocomplete_missing = missing
 
         if self.autocomplete_matches:
             check()
 
     def reset(self) -> None:
         self.autocomplete_matches = []
+        self.autocomplete_match = ""
+        self.autocomplete_missing = ""
         self.autocomplete_index = 0
+        self.autocomplete_pos = 0
 
     def get_matches(self, text: str) -> None:
         from .inputcontrol import inputcontrol
@@ -449,6 +459,7 @@ class Commands:
             return
 
         self.autocomplete_word = word
+        self.autocomplete_pos = inputcontrol.input.index(caret_pos)
         word = word[1:]
 
         for cmd, data in self.commands.items():

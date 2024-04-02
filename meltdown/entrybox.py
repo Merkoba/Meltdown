@@ -79,14 +79,22 @@ class EntryBox(ttk.Entry):
         if check_placeholder:
             self.check_placeholder()
 
-    def insert_text(self, text: str, check_placeholder: bool = True) -> None:
+    def insert_text(self, text: str,
+                    check_placeholder: bool = True,
+                    index: str = "") -> None:
         if self.placeholder_active:
             self.delete(0, tk.END)
 
-        self.insert(tk.INSERT, text)
+        if not index:
+            index = tk.INSERT
+
+        self.insert(index, text)
 
         if check_placeholder:
             self.check_placeholder()
+
+    def delete_text(self, start: int, chars: int) -> None:
+        self.delete(start, (start + chars))
 
     def on_focus_change(self, mode: str) -> None:
         if mode == "out":
