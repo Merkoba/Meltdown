@@ -445,7 +445,7 @@ You can specify if it runs instantly.
 For example:
 
 ```sh
---task-1 "/tab 1 && /input hello world" --task-1-seconds 30 --task-1-instant
+--task-1 "/tab 1 & /input hello world" --task-1-seconds 30 --task-1-instant
 ```
 
 This will go to the first tab and then prompt the model with "hello world".
