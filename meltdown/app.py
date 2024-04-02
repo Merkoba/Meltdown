@@ -268,7 +268,17 @@ class App:
         self.run_command(cmd)
 
     def setup_focus(self) -> None:
+        self.root.bind("<FocusIn>", lambda e: self.on_focus_in(e))
         self.root.bind("<FocusOut>", lambda e: self.on_focus_out(e))
+
+    def on_focus_in(self, event: Any) -> None:
+        from .dialogs import Dialog
+        from .menus import Menu
+        what = str(event.widget)
+
+        if what == ".":
+            Dialog.focus()
+            Menu.focus()
 
     def on_focus_out(self, event: Any) -> None:
         from .keyboard import keyboard

@@ -33,6 +33,11 @@ class Menu:
         if Menu.current_menu:
             Menu.current_menu.hide()
 
+    @staticmethod
+    def focus() -> None:
+        if Menu.current_menu:
+            Menu.current_menu.canvas.focus_set()
+
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []

@@ -14,8 +14,15 @@ class Dialog:
     current_dialog: Optional["Dialog"] = None
 
     @staticmethod
+    def open() -> bool:
+        return Dialog.current_dialog is not None
+
+    @staticmethod
     def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]] = None,
                      cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+        if Dialog.open():
+            return
+
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -38,6 +45,9 @@ class Dialog:
     @staticmethod
     def show_commands(text: str,
                       commands: List[Tuple[str, Callable[..., Any]]]) -> None:
+        if Dialog.open():
+            return
+
         dialog = Dialog(text)
 
         def generic(func: Callable[..., Any]) -> None:
@@ -56,6 +66,9 @@ class Dialog:
 
     @staticmethod
     def show_message(text: str) -> None:
+        if Dialog.open():
+            return
+
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -68,6 +81,9 @@ class Dialog:
     @staticmethod
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+        if Dialog.open():
+            return
+
         dialog = Dialog(text)
         entry = EntryBox(dialog.top_frame, font=app.theme.font, width=17, justify="center")
 
@@ -100,6 +116,11 @@ class Dialog:
     def hide_all() -> None:
         if Dialog.current_dialog:
             Dialog.current_dialog.hide()
+
+    @staticmethod
+    def focus() -> None:
+        if Dialog.current_dialog:
+            Dialog.current_dialog.root.focus_set()
 
     def __init__(self, text: str) -> None:
         self.buttons: List[ButtonBox] = []
