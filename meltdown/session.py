@@ -295,8 +295,19 @@ class Session:
         self.save()
 
     def to_json(self) -> str:
+        def check(conversation: Conversation) -> bool:
+            if conversation.id == "ignore":
+                return False
+
+            if not args.allow_empty:
+                if not conversation.items:
+                    return False
+
+            return True
+
         sessions_list = [conversation.to_dict() for conversation in
-                         self.conversations.values() if conversation.items and (conversation.id != "ignore")]
+                         self.conversations.values() if check(conversation)]
+
         return json.dumps(sessions_list, indent=4)
 
     def menu(self) -> None:

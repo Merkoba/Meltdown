@@ -284,11 +284,19 @@ Show responses once they're ready instead of streaming live.
 
 ---
 
+>no-empty
+
+Don't save empty conversations.
+
+---
+
 >maximized
 
 Start the window maximized.
 
 Aliases: `--maximize` and `--max`
+
+---
 
 >compact
 

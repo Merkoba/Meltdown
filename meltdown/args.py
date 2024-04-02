@@ -24,6 +24,7 @@ class Args:
         self.maximized = False
         self.compact = False
         self.tabs = True
+        self.allow_empty = True
         self.numbers = False
         self.full = False
         self.test = False
@@ -69,6 +70,7 @@ class Args:
             "no-wrap": {"action": "store_false", "help": "Disable wrapping when selecting items"},
             "no-tabs": {"action": "store_false", "help": "Don't show the tab bar"},
             "no-stream": {"action": "store_false", "help": "Don't stream responses"},
+            "no-empty": {"action": "store_false", "help": "Don't save empty conversations"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -109,6 +111,7 @@ class Args:
             ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
             ("no_stream", "stream"), ("no_taps", "taps"),
+            ("no_empty", "allow_empty"),
         ]
 
         for r_item in reversed:
