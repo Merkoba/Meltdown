@@ -119,6 +119,7 @@ class InputControl:
         self.input.full_focus()
 
     def submit(self, tab_id: str = "", text: str = "") -> None:
+        print(text)
         from .model import model
         from .display import display
         from . import filemanager

@@ -66,6 +66,8 @@ def get_info() -> None:
 
 
 def check() -> None:
+    timeutils.sleep(1)
+
     while True:
         if not config.compact:
             try:

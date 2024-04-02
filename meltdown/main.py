@@ -10,6 +10,7 @@ from .keyboard import keyboard
 from .inputcontrol import inputcontrol
 from . import filemanager
 from . import system
+from . import tasks
 
 
 def main() -> None:
@@ -24,6 +25,7 @@ def main() -> None:
     keyboard.setup()
     commands.setup()
     system.start()
+    tasks.setup()
     app.setup()
     inputcontrol.setup()
 

@@ -31,6 +31,7 @@ class Commands:
         from .session import session
         from .logs import logs
         from .widgets import widgets
+        from .inputcontrol import inputcontrol
 
         self.commands = {
             "clear": {
@@ -288,6 +289,11 @@ class Commands:
                 "aliases": ["name"],
                 "help": "Rename the tab",
                 "action": lambda a=None: display.rename_tab(True),
+            },
+            "input": {
+                "aliases": ["prompt", "ask"],
+                "help": "Prompt the AI with this input",
+                "action": lambda a=None: inputcontrol.submit(text=a),
             },
         }
 

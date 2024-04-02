@@ -49,6 +49,11 @@ class Args:
         self.f11 = "fullscreen"
         self.f12 = "list"
         self.input = ""
+        self.task = ""
+        self.task_seconds = 0
+        self.task_minutes = 0
+        self.task_hours = 0
+        self.task_instant = False
 
     class Internal:
         title = app.manifest["title"]
@@ -97,6 +102,11 @@ class Args:
             "f11": {"type": str, "help": "Command to assign to the F11 key"},
             "f12": {"type": str, "help": "Command to assign to the F12 key"},
             "input": {"type": str, "help": "Prompt the AI automatically with this input when starting the program"},
+            "task": {"type": str, "help": "Task to execute automatically"},
+            "task-seconds": {"type": int, "help": "Execute the task every X seconds"},
+            "task-minutes": {"type": int, "help": "Execute the task every X minutes"},
+            "task-hours": {"type": int, "help": "Execute the task every X hours"},
+            "task-instant": {"action": "store_true", "help": "Run the first task as soon as the program starts"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -125,7 +135,8 @@ class Args:
             "theme", "test", "config", "session", "on_log",
             "numbers", "max_tabs", "f1", "f2", "f3", "f4",
             "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
-            "input",
+            "input", "task", "task_seconds", "task_minutes",
+            "task_hours", "task_instant"
         ]
 
         for n_item in normals:

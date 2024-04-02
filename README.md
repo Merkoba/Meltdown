@@ -423,3 +423,27 @@ For example:
 ```sh
 /num 1 & /select
 ```
+
+---
+
+## Tasks
+
+You can run automated tasks.
+
+These are commands.
+
+Commands can be chained.
+
+You can specify the delay in several ways.
+
+You can specify if it runs instantly.
+
+For example:
+
+```sh
+--task "/num 1 && /input hello world" --task-seconds 30 --task-instant
+```
+
+This will go to the first tab and then prompt the model with "hello world".
+
+It will run the first task instantly and then wait 30 seconds.
