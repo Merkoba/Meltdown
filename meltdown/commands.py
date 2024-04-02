@@ -302,7 +302,7 @@ class Commands:
                 else:
                     cmds.append(alias)
 
-    def command_format(self, text: str) -> bool:
+    def is_command(self, text: str) -> bool:
         if len(text) < 2:
             return False
 
@@ -324,7 +324,7 @@ class Commands:
         text = text.strip()
 
         if not direct:
-            if not self.command_format(text):
+            if not self.is_command(text):
                 return False
 
         split = text.split(" ")
@@ -384,7 +384,7 @@ class Commands:
         from .inputcontrol import inputcontrol
         text = inputcontrol.input.get()
 
-        if not self.command_format(text):
+        if not self.is_command(text):
             return
 
         if not self.autocomplete_matches:

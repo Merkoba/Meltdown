@@ -7,6 +7,7 @@ from .session import session
 from .args import args
 from .commands import commands
 from .keyboard import keyboard
+from .inputcontrol import inputcontrol
 from . import filemanager
 from . import system
 
@@ -24,6 +25,7 @@ def main() -> None:
     commands.setup()
     system.start()
     app.setup()
+    inputcontrol.setup()
 
     try:
         app.run()

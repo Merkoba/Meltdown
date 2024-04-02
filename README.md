@@ -134,6 +134,8 @@ Run a program upon saving a log.
 
 Save logs of all conversations at once.
 
+Can be started with a prompt to use automatically.
+
 ---
 
 ## GUI Toolkit
@@ -387,3 +389,9 @@ For example `--f1 "num 1"` or `--f11 fullscreen`.
 Check /commands to see all available commands.
 
 Some of them have default commands but they can be overridden.
+
+---
+
+>input
+
+Use this input automatically at startup.

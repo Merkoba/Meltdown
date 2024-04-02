@@ -47,6 +47,7 @@ class Args:
         self.f10 = ""
         self.f11 = "fullscreen"
         self.f12 = "list"
+        self.input = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -94,6 +95,7 @@ class Args:
             "f10": {"type": str, "help": "Command to assign to the F10 key"},
             "f11": {"type": str, "help": "Command to assign to the F11 key"},
             "f12": {"type": str, "help": "Command to assign to the F12 key"},
+            "input": {"type": str, "help": "Prompt the AI automatically with this input when starting the program"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -122,6 +124,7 @@ class Args:
             "theme", "test", "config", "session", "on_log",
             "numbers", "max_tabs", "f1", "f2", "f3", "f4",
             "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
+            "input",
         ]
 
         for n_item in normals:

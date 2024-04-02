@@ -118,17 +118,21 @@ class InputControl:
 
         self.input.full_focus()
 
-    def submit(self) -> None:
+    def submit(self, tab_id: str = "", text: str = "") -> None:
         from .model import model
         from .display import display
         from . import filemanager
 
-        tab = display.get_current_tab()
+        if not tab_id:
+            tab_id = display.current_tab
+
+        tab = display.get_tab(tab_id)
 
         if not tab:
             return
 
-        text = self.input.get().strip()
+        if not text:
+            text = self.input.get().strip()
 
         if text:
             self.clear()
@@ -148,6 +152,25 @@ class InputControl:
             model.stream(text, tab.tab_id)
         else:
             display.to_bottom()
+
+    def setup(self) -> None:
+        self.check()
+
+    def check(self) -> None:
+        from .args import args
+        from .display import display
+        from .inputcontrol import inputcontrol
+        from .commands import commands
+        text = args.input.strip()
+        is_command = commands.is_command(text)
+
+        if text:
+            if (not is_command) and display.has_conversations():
+                tab_id = display.make_tab()
+            else:
+                tab_id = display.current_tab
+
+            inputcontrol.submit(tab_id=tab_id, text=text)
 
 
 inputcontrol = InputControl()
