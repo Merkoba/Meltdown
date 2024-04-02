@@ -336,7 +336,7 @@ class Keyboard:
                       on_ctrl=lambda: run_command("log"),
                       on_ctrl_shift=lambda: run_command("logsdir"),
                       ctrl_help="Show the log menu",
-                      ctrl_shift_help="Open logs directory")
+                      ctrl_shift_help="Open the logs directory")
 
         for num in range(1, 13):
             add_function_key(num)
