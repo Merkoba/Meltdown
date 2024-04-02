@@ -2,10 +2,11 @@
 from .app import app
 from .config import config
 from .menus import Menu
+from . import utils
 
 # Standard
 from typing import Any, Dict, List
-from . import utils
+import tkinter as tk
 
 
 class Commands:
@@ -14,6 +15,7 @@ class Commands:
         self.prefix = "/"
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
+        self.autocomplete_word = ""
 
     def setup(self) -> None:
         self.make_commands()
@@ -316,6 +318,9 @@ class Commands:
         argtype = item.get("type")
 
         if argtype:
+            if not argument:
+                return
+
             argument = argtype(argument)
 
         action(argument)
@@ -327,14 +332,23 @@ class Commands:
             if not self.is_command(text):
                 return False
 
-        split = text.split(" ")
-        cmd = split[0]
+        cmds = text.split("&")
 
-        if not direct:
-            cmd = cmd[1:]
+        for item in cmds:
+            split = item.strip().split(" ")
+            cmd = split[0]
 
-        argument = " ".join(split[1:])
+            if not direct:
+                cmd = cmd[1:]
 
+            argument = " ".join(split[1:])
+
+            if self.do_check(cmd, argument):
+                break
+
+        return True
+
+    def do_check(self, cmd: str, argument: str) -> bool:
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
@@ -357,7 +371,7 @@ class Commands:
                         self.run(key, argument)
                         return True
 
-        return True
+        return False
 
     def help_command(self) -> None:
         from .display import display
@@ -405,7 +419,8 @@ class Commands:
                 check()
                 return
 
-            inputcontrol.input.set_text(self.prefix + match)
+            missing = match.replace(self.autocomplete_word[1:], "")
+            inputcontrol.input.insert_text(missing)
             self.autocomplete_index += 1
 
         if self.autocomplete_matches:
@@ -416,14 +431,32 @@ class Commands:
         self.autocomplete_index = 0
 
     def get_matches(self, text: str) -> None:
+        from .inputcontrol import inputcontrol
+
+        if not text:
+            return
+
         self.reset()
+        caret_pos = inputcontrol.input.index(tk.INSERT)
+        text_to_caret = text[:caret_pos]
+        last_space_pos = text_to_caret.rfind(" ")
+        word = text_to_caret[last_space_pos + 1:caret_pos]
+
+        if not word:
+            return
+
+        if not self.is_command(word):
+            return
+
+        self.autocomplete_word = word
+        word = word[1:]
 
         for cmd, data in self.commands.items():
-            if cmd.startswith(text[1:]):
+            if cmd.startswith(word):
                 self.autocomplete_matches.append(cmd)
 
             for alias in data["aliases"]:
-                if alias.startswith(text[1:]):
+                if alias.startswith(word):
                     self.autocomplete_matches.append(alias)
 
     def make_palette(self) -> None:

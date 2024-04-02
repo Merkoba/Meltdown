@@ -409,3 +409,17 @@ This can also be piped:
 ```sh
 echo "hello world" | meltdown
 ```
+
+---
+
+## Command Chains
+
+Commands can be chained to execute multiple commands at once.
+
+This can be done using `&`.
+
+For example:
+
+```sh
+/num 1 & /select
+```
