@@ -159,9 +159,10 @@ class Args:
         normals = [
             "maximized", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
-            "numbers", "max_tabs", "f1", "f2", "f3", "f4",
-            "f5", "f6", "f7", "f8", "f9", "f10", "f11", "f12",
-            "input",
+            "numbers", "max_tabs", "input",
+
+            "f1", "f2", "f3", "f4", "f5", "f6", "f7",
+            "f8", "f9", "f10", "f11", "f12",
 
             "task_1", "task_1_seconds", "task_1_minutes",
             "task_1_hours", "task_1_instant",
