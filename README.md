@@ -441,9 +441,19 @@ You can specify if it runs instantly.
 For example:
 
 ```sh
---task "/num 1 && /input hello world" --task-seconds 30 --task-instant
+--task-1 "/num 1 && /input hello world" --task-1-seconds 30 --task-1-instant
 ```
 
 This will go to the first tab and then prompt the model with "hello world".
 
 It will run the first task instantly and then wait 30 seconds.
+
+There are 3 tasks you can create.
+
+For instance to set task 2 you can do:
+
+```sh
+--task-2 "/tab && /about" --task-2-minutes 1 --task-2-instant
+```
+
+Same with 3.
