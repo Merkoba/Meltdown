@@ -57,27 +57,27 @@ class Menu:
 
         y_top = self.container.winfo_y()
         y_bottom = y_top + self.container.winfo_height()
-        height = self.root.winfo_height()
+        height = self.canvas.winfo_height()
         distance = height - y_bottom
 
         if direction == "up":
             if y_top >= 0:
                 return
 
-            self.root.yview_scroll(-1, "units")
+            self.canvas.yview_scroll(-1, "units")
         elif direction == "down":
             if distance >= 0:
                 return
 
-            self.root.yview_scroll(1, "units")
+            self.canvas.yview_scroll(1, "units")
 
     def make(self) -> None:
-        self.root = tk.Canvas(app.main_frame, background=app.theme.menu_border, borderwidth=0, highlightthickness=0)
-        self.container = tk.Frame(self.root, background=app.theme.menu_background, borderwidth=app.theme.menu_border_width)
-        self.container.configure(background=app.theme.menu_border)
-        self.root.create_window((0, 0), window=self.container, anchor="nw")
-        self.root.bind("<FocusOut>", lambda e: self.hide())
-        self.root.grid_columnconfigure(0, weight=1)
+        self.root = tk.Frame(app.main_frame, background=app.theme.menu_border)
+        self.canvas = tk.Canvas(self.root, borderwidth=0, highlightthickness=0, background=app.theme.menu_canvas_background)
+        self.container = tk.Frame(self.canvas, background=app.theme.menu_background, borderwidth=0, highlightthickness=0)
+        self.canvas.create_window((0, 0), window=self.container, anchor="nw")
+        self.canvas.bind("<FocusOut>", lambda e: self.hide())
+        self.canvas.grid_columnconfigure(0, weight=1)
         self.container.grid_columnconfigure(0, weight=1)
         self.current_widget = None
         self.selected_index = -1
@@ -85,6 +85,7 @@ class Menu:
         self.select_first_item()
         self.configure_geometry()
         self.setup_keyboard()
+        self.canvas.grid(padx=app.theme.menu_border_width, pady=app.theme.menu_border_width)
         self.filter = ""
 
     def make_items(self) -> None:
@@ -127,10 +128,10 @@ class Menu:
 
         self.container.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
         self.container.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
-        self.root.bind("<Escape>", lambda e: self.hide())
-        self.root.bind("<Return>", lambda e: cmd())
-        self.root.bind("<Up>", lambda e: self.arrow_up())
-        self.root.bind("<Down>", lambda e: self.arrow_down())
+        self.canvas.bind("<Escape>", lambda e: self.hide())
+        self.canvas.bind("<Return>", lambda e: cmd())
+        self.canvas.bind("<Up>", lambda e: self.arrow_up())
+        self.canvas.bind("<Down>", lambda e: self.arrow_down())
         self.elements: Dict[int, Dict[str, Any]] = {}
         self.separators: List[SeparatorBox] = []
 
@@ -173,30 +174,34 @@ class Menu:
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
         self.no_items.grid_remove()
-        bind_mouse(self.root)
+        bind_mouse(self.canvas)
 
     def all_hidden(self) -> bool:
         return self.num_visible() == 0
 
     def configure_geometry(self) -> None:
-        if not self.root or not self.container:
+        if not self.canvas or not self.container:
             return
 
-        self.root.update_idletasks()
+        self.canvas.update_idletasks()
         self.container.update_idletasks()
 
         window_width = app.main_frame.winfo_width()
         window_height = app.main_frame.winfo_height()
 
-        # Limit width to fit the container
-        self.root.configure(width=self.container.winfo_reqwidth())
+        cwidth = self.container.winfo_reqwidth()
 
         # Limit height to 500 or window height if smaller
-        h = min(window_height, min(500, self.container.winfo_reqheight()))
-        self.root.configure(height=h)
+        cheight = min(500, self.container.winfo_reqheight())
 
-        menu_width = self.root.winfo_reqwidth()
-        menu_height = self.root.winfo_reqheight()
+        # Limit width to fit the container
+        self.canvas.configure(width=cwidth)
+
+        h = min(window_height, cheight)
+        self.canvas.configure(height=h)
+
+        menu_width = self.canvas.winfo_reqwidth()
+        menu_height = self.canvas.winfo_reqheight()
         x = self.coords["x"] - app.main_frame.winfo_rootx()
         y = self.coords["y"] - app.main_frame.winfo_rooty()
 
@@ -210,6 +215,7 @@ class Menu:
         elif y + menu_height > window_height:
             y = window_height - menu_height
 
+        x -= app.theme.menu_border_width * 2
         self.root.place(x=x, y=y)
 
     def setup_keyboard(self) -> None:
@@ -222,7 +228,7 @@ class Menu:
 
             self.do_filter()
 
-        self.root.bind("<KeyPress>", lambda e: on_key(e))
+        self.canvas.bind("<KeyPress>", lambda e: on_key(e))
 
     def check_filter(self, filtr: str, item: MenuItem) -> bool:
         text = item.text.lower()
@@ -316,8 +322,8 @@ class Menu:
         self.make()
 
         if self.root:
-            self.root.update_idletasks()
-            self.root.focus_set()
+            self.canvas.update_idletasks()
+            self.canvas.focus_set()
             Menu.current_menu = self
 
     def hide(self) -> None:
@@ -440,10 +446,10 @@ class Menu:
         tries = 0
 
         widget_height = els["label"].winfo_height()
-        container_height = self.root.winfo_height()
+        container_height = self.canvas.winfo_height()
 
         def widget_y() -> int:
-            return int(els["label"].winfo_rooty() - self.root.winfo_rooty())
+            return int(els["label"].winfo_rooty() - self.canvas.winfo_rooty())
 
         def not_visible() -> bool:
             wy = widget_y()
@@ -457,9 +463,9 @@ class Menu:
                 units = 3
 
                 if outside_top > 0:
-                    self.root.yview_scroll(-units, "units")
+                    self.canvas.yview_scroll(-units, "units")
                 elif outside_bottom > 0:
-                    self.root.yview_scroll(units, "units")
+                    self.canvas.yview_scroll(units, "units")
                 else:
                     break
 

@@ -94,6 +94,7 @@ class Theme:
         self.menu_disabled_foreground = "#3D4555"
         self.menu_border = "#959595"
         self.menu_border_width = 3
+        self.menu_canvas_background = "#6A7B83"
 
         self.entry_selection_background = "#C3C3C3"
         self.entry_selection_foreground = "black"
