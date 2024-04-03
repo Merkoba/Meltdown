@@ -170,9 +170,14 @@ class Keyboard:
             self.on_key_press(event)
             return ""
 
+        def add_cmd(key: str) -> None:
+            def action(event: Any) -> None:
+                run_command(event, key)
+
+            app.root.bind(key, lambda e: action(e))
+
         for key in self.commands:
-            command: Callable[..., Any] = lambda e, key=key: run_command(e, key)
-            app.root.bind(key, command)
+            add_cmd(key)
 
     def register(self, key: str,
                  command: Optional[Callable[..., Any]] = None,

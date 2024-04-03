@@ -401,7 +401,7 @@ class Book(tk.Frame):
             self.on_reorder()
 
     def bind_recursive(self, what: str, action: Callable[..., Any], widget: tk.Widget) -> None:
-        widget.bind(what, action)
+        widget.bind(what, lambda e: action(e))
 
         for child in widget.winfo_children():
             self.bind_recursive(what, action, child)
