@@ -5,6 +5,7 @@ from .dialogs import Dialog
 from .menus import Menu
 from .args import args
 from . import utils
+from . import timeutils
 
 # Standard
 import re
@@ -44,7 +45,6 @@ class Commands:
         self.make_commands()
         self.make_aliases()
         self.check_commands()
-        self.make_palette()
         self.start_loop()
 
     def start_loop(self) -> None:
@@ -410,6 +410,9 @@ class Commands:
             },
         }
 
+        for key in self.commands:
+            self.commands[key]["date"] = 0.0
+
     def make_aliases(self) -> None:
         self.aliases = {}
 
@@ -472,7 +475,7 @@ class Commands:
 
         return True
 
-    def run(self, cmd: str, argument: str) -> None:
+    def run(self, cmd: str, argument: str = "") -> None:
         item = self.commands.get(cmd)
 
         if not item:
@@ -494,6 +497,7 @@ class Commands:
 
         item = self.commands[cmd]
         item["action"](new_argument)
+        item["date"] = timeutils.now()
 
     def try_to_run(self, cmd: str, argument: str) -> None:
         # Check normal
@@ -626,20 +630,23 @@ class Commands:
 
             def command() -> None:
                 if cmd.get("arg_req"):
-                    Dialog.show_input("Argument", lambda a: cmd["action"](a))
+                    Dialog.show_input("Argument", lambda a: self.run(key, a))
                 else:
-                    cmd["action"]()
+                    self.run(key)
 
             aliases = [key]
             aliases.extend(cmd["aliases"])
             tooltip = ", ".join(aliases)
             self.palette.add(text=cmd["help"], command=command, tooltip=tooltip, aliases=aliases)
 
-        for key in self.commands:
+        keys = sorted(self.commands, key=lambda x: self.commands[x]["date"], reverse=True)
+
+        for key in keys:
             add_item(key)
 
     def show_palette(self) -> None:
         from .widgets import widgets
+        self.make_palette()
         self.palette.show(widget=widgets.main_menu_button)
 
     def clean(self, text: str) -> str:
