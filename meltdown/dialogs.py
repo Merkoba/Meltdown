@@ -8,7 +8,8 @@ from . import widgetutils
 # Standard
 from typing import Any, Callable, List, Optional, Tuple
 import tkinter as tk
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk  # type: ignore
+from pathlib import Path
 
 
 class Dialog:
@@ -46,7 +47,7 @@ class Dialog:
     @staticmethod
     def show_commands(text: str,
                       commands: List[Tuple[str, Callable[..., Any]]],
-                      image: str = "") -> None:
+                      image: Optional[Path] = None) -> None:
         if Dialog.open():
             return
 
@@ -60,7 +61,7 @@ class Dialog:
             img = img.resize((new_width, new_height))
             photo = ImageTk.PhotoImage(img)
             label = tk.Label(dialog.image_frame, image=photo)
-            label.image = photo
+            label.mlt_image = photo  # type: ignore
             label.pack(side=tk.LEFT, padx=0, pady=8)
 
         def generic(func: Callable[..., Any]) -> None:
