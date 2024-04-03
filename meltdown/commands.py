@@ -623,10 +623,9 @@ class Commands:
 
         def add_item(key: str) -> None:
             cmd = self.commands[key]
-            argtype = cmd.get("type")
 
             def command() -> None:
-                if argtype and argtype in [str, int, float]:
+                if cmd.get("arg_req"):
                     Dialog.show_input("Argument", lambda a: cmd["action"](a))
                 else:
                     cmd["action"]()
