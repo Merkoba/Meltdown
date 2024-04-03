@@ -56,6 +56,7 @@ class Args:
         self.input = ""
         self.aliases: List[str] = []
         self.tasks: List[str] = []
+        self.max_tab_width = 0
 
     class Internal:
         title = app.manifest["title"]
@@ -92,6 +93,7 @@ class Args:
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
             "max-tabs": {"type": int, "help": "Max number fo tabs to keep open"},
+            "max-tab-width": {"type": int, "help": "Max number of characters to show in a tab name"},
             "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
             "config": {"type": str, "help": "Name or path of a config file to use"},
             "session": {"type": str, "help": "Name or path of a session file to use"},
@@ -144,7 +146,7 @@ class Args:
             "f1", "f2", "f3", "f4", "f5", "f6", "f7",
             "f8", "f9", "f10", "f11", "f12",
 
-            "alt_palette",
+            "alt_palette", "max_tab_width",
         ]
 
         for n_item in normals:

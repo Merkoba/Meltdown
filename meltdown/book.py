@@ -66,6 +66,9 @@ class Page():
     def set_tab_text(self, index: Optional[int] = None) -> None:
         text = self.name
 
+        if args.max_tab_width:
+            text = text[:args.max_tab_width]
+
         if args.numbers:
             if index is None:
                 index = self.get_index()

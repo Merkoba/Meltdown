@@ -448,6 +448,12 @@ Instead it just disables it.
 
 ---
 
+>max-tab-width
+
+Max number of characters to show in tab names.
+
+---
+
 ## Command Chains
 
 Commands can be chained to execute multiple commands at once.
