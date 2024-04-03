@@ -22,16 +22,18 @@ import tempfile
 def main() -> None:
     title = app.manifest["title"]
     program = app.manifest["program"]
+    args.parse()
+
     pid_file = os.path.join(tempfile.gettempdir(), f"mlt_{program}.pid")
     fp = open(pid_file, "w")
 
     try:
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except IOError:
-        print(f"{title} is already running.")
-        sys.exit(0)
+        if not args.force:
+            print(f"{title} is already running.")
+            sys.exit(0)
 
-    args.parse()
     filemanager.load()
     app.prepare()
     widgets.make()

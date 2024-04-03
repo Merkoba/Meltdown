@@ -9,6 +9,7 @@ from typing import Any, Dict, List
 
 class Args:
     def __init__(self) -> None:
+        self.force = False
         self.tooltips = True
         self.scrollbars = True
         self.colors = True
@@ -76,6 +77,7 @@ class Args:
 
         arguments: Dict[str, Any] = {
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
+            "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "version": {"action": "version", "help": "Check the version of the program", "version": vinfo},
             "no-tooltips": {"action": "store_false", "help": "Don't show tooltips"},
             "no-scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
@@ -162,7 +164,7 @@ class Args:
         normals = [
             "maximized", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
-            "numbers", "max_tabs", "input",
+            "numbers", "max_tabs", "input", "force",
 
             "f1", "f2", "f3", "f4", "f5", "f6", "f7",
             "f8", "f9", "f10", "f11", "f12",
