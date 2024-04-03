@@ -61,7 +61,7 @@ class Commands:
                             queue.wait = float(item.argument) * 1000.0
                     else:
                         if self.aliases.get(item.cmd):
-                            self.check(self.aliases[item.cmd], queue)
+                            self.exec(self.aliases[item.cmd], queue)
                         else:
                             self.try_to_run(item.cmd, item.argument)
 
@@ -422,7 +422,7 @@ class Commands:
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
-    def check(self, text: str, queue: Optional[Queue] = None) -> bool:
+    def exec(self, text: str, queue: Optional[Queue] = None) -> bool:
         text = text.strip()
 
         if not self.is_command(text):
