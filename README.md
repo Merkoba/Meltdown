@@ -82,7 +82,7 @@ Autocomplete commands with Tab.
 
 Scrollable config panel to pack more configs.
 
-Close single tabs, all tabs, or old tabs.
+Close single tabs, all tabs, old tabs, to the left, to the right, or others.
 
 Horizontally-scrollable snippet text areas to show code.
 

@@ -62,11 +62,11 @@ test_conversation = {
 
 
 class Conversation:
-    def __init__(self, _id: str, name: str) -> None:
+    def __init__(self, _id: str, name: str, last_modified: float = 0.0) -> None:
         self.id = _id
         self.name = name
         self.items: List[Dict[str, str]] = []
-        self.last_modified = 0.0
+        self.last_modified = last_modified
 
     def add(self, context_dict: Dict[str, str]) -> None:
         self.last_modified = timeutils.now()
@@ -133,6 +133,7 @@ class Session:
             conv_id = str(timeutils.now())
 
         conversation = Conversation(conv_id, name)
+        conversation.last_modified = timeutils.now()
         self.conversations[conv_id] = conversation
         return conversation
 
@@ -229,7 +230,7 @@ class Session:
             return
 
         for item in items:
-            conversation = Conversation(item["id"], item["name"])
+            conversation = Conversation(item["id"], item["name"], item["last_modified"])
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
             display.make_tab(conversation.name, conversation.id,

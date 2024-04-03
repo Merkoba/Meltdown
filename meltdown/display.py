@@ -7,6 +7,7 @@ from .bottom import Bottom
 from .book import Book, Page
 from .find import Find
 from .args import args
+from . import timeutils
 from . import widgetutils
 
 # Standard
@@ -148,9 +149,10 @@ class Display:
             return
 
         cmds = []
+        num_tabs = self.num_tabs()
 
-        if self.num_tabs() > 1:
-            if self.num_tabs() > 5:
+        if num_tabs > 1:
+            if num_tabs > 5:
                 cmds.append(("Old", lambda: self.close_old_tabs()))
 
             cmds.append(("Others", lambda: self.close_other_tabs()))
@@ -315,12 +317,30 @@ class Display:
         Dialog.show_confirm("Close all tabs?", lambda: action())
 
     def close_old_tabs(self, force: bool = False) -> None:
-        if self.num_tabs() <= self.max_old_tabs:
+        from .session import session
+        from .config import config
+        ids = self.tab_ids()
+
+        if len(ids) <= 1:
             return
 
+        max_minutes = config.old_tabs_max_minutes
+        max_date = timeutils.now() - (60 * max_minutes)
+
         def action() -> None:
-            for tab_id in self.tab_ids()[:-5]:
-                self.close_tab(tab_id=tab_id, force=True)
+            for tab_id in ids:
+                tab = self.get_tab(tab_id)
+
+                if not tab:
+                    continue
+
+                conversation = session.get_conversation(tab.conversation_id)
+
+                if not conversation:
+                    continue
+
+                if conversation.last_modified < max_date:
+                    self.close_tab(tab_id=tab_id, force=True, make_empty=True)
 
         if force:
             action()
@@ -329,13 +349,15 @@ class Display:
         Dialog.show_confirm("Close old tabs?", lambda: action())
 
     def close_other_tabs(self, force: bool = False) -> None:
-        if self.num_tabs() <= 1:
+        ids = self.tab_ids()
+
+        if len(ids) <= 1:
             return
 
         current = self.current_tab
 
         def action() -> None:
-            for tab_id in self.tab_ids():
+            for tab_id in ids:
                 if tab_id != current:
                     self.close_tab(tab_id=tab_id, force=True)
 
@@ -794,10 +816,12 @@ class Display:
         if args.max_tabs <= 0:
             return
 
-        if self.num_tabs() <= args.max_tabs:
+        ids = self.tab_ids()
+
+        if len(ids) <= args.max_tabs:
             return
 
-        for tab_id in self.tab_ids()[:-args.max_tabs]:
+        for tab_id in ids[:-args.max_tabs]:
             self.close_tab(tab_id=tab_id, force=True)
 
     def tab_is_empty(self, tab_id: str) -> bool:
