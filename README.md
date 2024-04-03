@@ -420,6 +420,12 @@ echo "hello world" | meltdown
 
 ---
 
+>force
+
+Allow opening multiple instances.
+
+---
+
 ## Command Chains
 
 Commands can be chained to execute multiple commands at once.
