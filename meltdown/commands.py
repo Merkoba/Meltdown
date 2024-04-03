@@ -6,7 +6,7 @@ from .args import args
 from . import utils
 
 # Standard
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List
 import tkinter as tk
 
 
