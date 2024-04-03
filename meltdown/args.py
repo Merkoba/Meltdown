@@ -27,6 +27,8 @@ class Args:
         self.compact = False
         self.tabs = True
         self.allow_empty = True
+        self.bottom = True
+        self.bottom_autohide = True
         self.numbers = False
         self.full = False
         self.test = False
@@ -78,6 +80,8 @@ class Args:
             "no-tabs": {"action": "store_false", "help": "Don't show the tab bar"},
             "no-stream": {"action": "store_false", "help": "Don't stream responses"},
             "no-empty": {"action": "store_false", "help": "Don't save empty conversations"},
+            "no-bottom": {"action": "store_false", "help": "Don't show the Bottom button"},
+            "no-bottom-autohide": {"action": "store_false", "help": "Don't autohide the Bottom button"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -123,7 +127,8 @@ class Args:
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
             ("no_stream", "stream"), ("no_taps", "taps"),
             ("no_empty", "allow_empty"), ("alias", "aliases"),
-            ("task", "tasks"),
+            ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
+            ("no_bottom", "bottom"),
         ]
 
         for r_item in other_name:

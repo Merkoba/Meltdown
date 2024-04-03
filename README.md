@@ -432,6 +432,22 @@ Show the commands instead of the descriptions in the command palette.
 
 ---
 
+>no-bottom
+
+Don't show the Go To Bottom bar.
+
+---
+
+>no-bottom-autohide
+
+Don't autohide the Go To Bottom bar.
+
+Always reserve the space.
+
+Instead it just disables it.
+
+---
+
 ## Command Chains
 
 Commands can be chained to execute multiple commands at once.

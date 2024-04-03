@@ -1,6 +1,7 @@
 # Modules
 from .buttonbox import ButtonBox
 from .app import app
+from .args import args
 
 # Standard
 import tkinter as tk
@@ -21,10 +22,12 @@ class Bottom(tk.Frame):
         self.delay = 500
         self.show_debouncer = ""
         self.grid(row=2, column=0, sticky="nsew")
-        self.grid_remove()
+
+        if args.bottom_autohide:
+            self.grid_remove()
 
     def do_show(self) -> None:
-        if not self.visible:
+        if (not args.bottom) or (not self.visible):
             return
 
         self.grid()
@@ -37,13 +40,23 @@ class Bottom(tk.Frame):
         self.show_debouncer = ""
 
     def show(self) -> None:
-        if self.visible or (not app.exists()):
+        if not args.bottom_autohide:
+            self.button.set_style("normal")
+            self.button.set_text("Go To Bottom")
+            return
+
+        if (not args.bottom) or self.visible or (not app.exists()):
             return
 
         self.visible = True
         self.show_debouncer = app.root.after(self.delay, self.do_show)
 
     def hide(self) -> None:
+        if not args.bottom_autohide:
+            self.button.set_style("disabled")
+            self.button.set_text("")
+            return
+
         if (not self.visible) or (not app.exists()):
             return
 
