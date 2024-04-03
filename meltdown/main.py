@@ -31,7 +31,7 @@ def main() -> None:
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except IOError:
         if not args.force:
-            print(f"{title} is already running.")
+            print(f"{title} is already running.\nUse --force to launch multiple instances.")
             sys.exit(0)
 
     filemanager.load()
