@@ -6,6 +6,7 @@ from .args import args
 from . import utils
 
 # Standard
+import re
 from typing import Any, Dict, List, Optional
 import tkinter as tk
 
@@ -34,6 +35,9 @@ class Commands:
         self.autocomplete_missing = ""
         self.loop_delay = 25
         self.queues: List[Queue] = []
+
+        prefix = utils.escape_regex(self.prefix)
+        self.cmd_pattern = fr"&(?= {prefix}\w+)"
 
     def setup(self) -> None:
         self.make_commands()
@@ -443,7 +447,7 @@ class Commands:
         if not self.is_command(text):
             return False
 
-        cmds = text.split("&")
+        cmds = re.split(self.cmd_pattern, text)
         items = []
 
         for item in cmds:

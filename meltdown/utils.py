@@ -1,4 +1,5 @@
 # Standard
+import re
 from difflib import SequenceMatcher
 
 
@@ -15,3 +16,8 @@ def check_match(a: str, b: str) -> bool:
         return True
 
     return False
+
+
+def escape_regex(chars: str) -> str:
+    escaped_chars = [re.escape(char) for char in chars]
+    return "".join(escaped_chars)

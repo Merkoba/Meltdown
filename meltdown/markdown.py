@@ -1,5 +1,6 @@
 # Modules
 from .output import Output
+from . import utils
 
 # Standard
 import re
@@ -26,10 +27,10 @@ class Markdown():
         self.end_stoppers = ["", " ", "!", ".", "?", "\n", ",", ";"]
         self.protocols = ("http://", "https://", "ftp://", "www.")
 
-        chars_left = self.escape_regex("([")
+        chars_left = utils.escape_regex("([")
         left_side = fr"[{chars_left}]?"
 
-        chars_right = self.escape_regex(".,;!?:)")
+        chars_right = utils.escape_regex(".,;!?:)")
         right_side = fr"[{chars_right}]?"
 
         # Bold with two *
@@ -46,10 +47,6 @@ class Markdown():
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
-
-    def escape_regex(self, chars: str) -> str:
-        escaped_chars = [re.escape(char) for char in chars]
-        return "".join(escaped_chars)
 
     def format(self) -> None:
         self.format_snippets()
