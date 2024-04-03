@@ -154,6 +154,8 @@ class Display:
                 cmds.append(("Old", lambda: self.close_old_tabs()))
 
             cmds.append(("Others", lambda: self.close_other_tabs()))
+            cmds.append(("Left", lambda: self.close_tabs_left()))
+            cmds.append(("Right", lambda: self.close_tabs_right()))
             cmds.append(("All", lambda: self.close_all_tabs()))
 
         cmds.append(("Ok", lambda: action()))
@@ -332,6 +334,44 @@ class Display:
             return
 
         Dialog.show_confirm("Close other tabs?", lambda: action())
+
+    def close_tabs_left(self, force: bool = False) -> None:
+        tab_ids = self.tab_ids()
+
+        if len(tab_ids) <= 1:
+            return
+
+        index = self.index(self.current_tab)
+        tabs = tab_ids[:index]
+
+        def action() -> None:
+            for tab_id in tabs:
+                self.close_tab(tab_id=tab_id, force=True)
+
+        if force:
+            action()
+            return
+
+        Dialog.show_confirm("Close tabs to the left?", lambda: action())
+
+    def close_tabs_right(self, force: bool = False) -> None:
+        tab_ids = self.tab_ids()
+
+        if len(tab_ids) <= 1:
+            return
+
+        index = self.index(self.current_tab)
+        tabs = tab_ids[index + 1:]
+
+        def action() -> None:
+            for tab_id in tabs:
+                self.close_tab(tab_id=tab_id, force=True)
+
+        if force:
+            action()
+            return
+
+        Dialog.show_confirm("Close tabs to the right?", lambda: action())
 
     def tab_ids(self) -> List[str]:
         return self.book.ids()

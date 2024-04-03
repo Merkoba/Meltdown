@@ -167,16 +167,31 @@ class Commands:
                 "aliases": ["others"],
                 "help": "Close other tabs. Use 'true' to force",
                 "action": lambda a=None: display.close_other_tabs(force=a),
+                "type": bool,
             },
             "closeall": {
                 "aliases": [],
                 "help": "Close all tabs. Use 'true' to force",
                 "action": lambda a=None: display.close_all_tabs(force=a),
+                "type": bool,
             },
             "closeold": {
                 "aliases": ["old", "trim"],
                 "help": "Close old tabs. Use 'true' to force",
                 "action": lambda a=None: display.close_old_tabs(force=a),
+                "type": bool,
+            },
+            "closeleft": {
+                "aliases": [],
+                "help": "Close tabs to the left. Use 'true' to force",
+                "action": lambda a=None: display.close_tabs_left(force=a),
+                "type": bool,
+            },
+            "closeright": {
+                "aliases": [],
+                "help": "Close tabs to the right. Use 'true' to force",
+                "action": lambda a=None: display.close_tabs_right(force=a),
+                "type": bool,
             },
             "new": {
                 "aliases": ["make", "maketab", "newtab"],

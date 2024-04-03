@@ -32,7 +32,7 @@ class ButtonBox(tk.Frame):
         pady = 2 if self.bigger else 0
 
         if (not self.custom_width) and (len(self.text) < 4):
-            space = "   "
+            space = "  "
             text = f"{space}{self.text}{space}"
         else:
             text = self.text
