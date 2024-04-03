@@ -488,6 +488,8 @@ It will run the first task instantly and then wait 30 seconds for the next itera
 
 You can define multiple tasks like this.
 
+---
+
 ## Aliases
 
 You can define one or more command aliases.
