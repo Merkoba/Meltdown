@@ -243,7 +243,7 @@ class Keyboard:
 
         def register_num(num: int) -> None:
             self.register(str(num),
-                          on_ctrl=lambda: run_command(f"num {num}"))
+                          on_ctrl=lambda: run_command(f"tab {num}"))
 
         self.register("<Return>",
                       lambda: on_enter(),
@@ -301,7 +301,7 @@ class Keyboard:
                       ctrl_help="Find text")
 
         self.register("t",
-                      on_ctrl=lambda: run_command("tab"),
+                      on_ctrl=lambda: run_command("new"),
                       ctrl_help="Make tab")
 
         self.register("w",

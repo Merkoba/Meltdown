@@ -365,6 +365,7 @@ class Book(tk.Frame):
                 self.select(self.pages[index].id)
 
         self.update_tab_columns()
+        self.discover()
 
     def do_tab_drag(self, event: Any, page: Page) -> None:
         if not self.dragging:
