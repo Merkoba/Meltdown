@@ -57,11 +57,6 @@ class Config:
         self.theme = self.default_theme
         self.input = self.default_input
 
-        self.intro = [
-            "Type a prompt and press Enter.",
-            "A model must be configured first.",
-        ]
-
         self.clearables = [
             "system",
             "prepend",

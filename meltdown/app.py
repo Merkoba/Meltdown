@@ -21,8 +21,9 @@ class App:
         with open(Path(self.here, "manifest.json"), "r") as file:
             self.manifest = json.load(file)
 
+        title = self.manifest["title"]
         self.root = tk.Tk(className=self.manifest["program"])
-        self.root.title(self.manifest["title"])
+        self.root.title(title)
         self.main_frame = tk.Frame(self.root)
         self.main_frame.grid(row=0, column=0, sticky="nsew")
         self.main_frame.configure(background="red")
@@ -33,6 +34,12 @@ class App:
         self.setup_focus()
         self.setup_binds()
         self.theme: Theme
+
+        self.intro = [
+            f"Welcome to {title}.",
+            "Write a prompt and press Enter.",
+            "Use /help to learn more.",
+        ]
 
     def setup_icon(self) -> None:
         icon_path = Path(self.here, "icon.png")
@@ -308,7 +315,7 @@ class App:
 
     def show_intro(self, tab_id: str = "") -> None:
         from .display import display
-        text = "\n".join(config.intro)
+        text = "\n".join(self.intro)
         display.print(text, tab_id=tab_id)
 
     def toggle_theme(self) -> None:

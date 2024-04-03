@@ -61,6 +61,10 @@ class Model:
 
     def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
+            display.print("You must configure a model first."
+                          " It can be a local model which you can download"
+                          " from the HuggingFace website (or elsewhere), or a remote ChatGPT model by"
+                          " using your API key. Check the main menu on the top right.", tab_id=tab_id)
             return
 
         if self.loaded_model == config.model:
