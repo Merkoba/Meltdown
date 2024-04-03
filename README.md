@@ -1,6 +1,6 @@
 ## An interface for llama.cpp and ChatGPT
 
-<img src="media/image.jpg" width="380">
+<img src="meltdown/image.jpg" width="380">
 
 ---
 

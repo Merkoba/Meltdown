@@ -8,6 +8,7 @@ from . import widgetutils
 # Standard
 from typing import Any, Callable, List, Optional, Tuple
 import tkinter as tk
+from PIL import Image, ImageTk
 
 
 class Dialog:
@@ -44,11 +45,23 @@ class Dialog:
 
     @staticmethod
     def show_commands(text: str,
-                      commands: List[Tuple[str, Callable[..., Any]]]) -> None:
+                      commands: List[Tuple[str, Callable[..., Any]]],
+                      image: str = "") -> None:
         if Dialog.open():
             return
 
         dialog = Dialog(text)
+
+        if image:
+            img = Image.open(image)
+            width, height = img.size
+            new_width = 270
+            new_height = int(new_width * height / width)
+            img = img.resize((new_width, new_height))
+            photo = ImageTk.PhotoImage(img)
+            label = tk.Label(dialog.image_frame, image=photo)
+            label.image = photo
+            label.pack(side=tk.LEFT, padx=0, pady=8)
 
         def generic(func: Callable[..., Any]) -> None:
             dialog.hide()
@@ -149,6 +162,8 @@ class Dialog:
         tk.Label(container, text=text, font=app.theme.font, wraplength=500, background=background, foreground=foreground).pack(padx=6)
         self.top_frame = tk.Frame(container)
         self.top_frame.pack()
+        self.image_frame = tk.Frame(container, background=background)
+        self.image_frame.pack()
         self.button_frame = tk.Frame(container, background=background)
         self.button_frame.pack()
         self.root.bind("<Escape>", lambda e: self.hide())

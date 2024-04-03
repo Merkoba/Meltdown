@@ -50,7 +50,7 @@ with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
 package_data = {}
-package_data[program] = ["*.png", "*.json"]
+package_data[program] = ["*.png", "*.jpg", "*.json"]
 
 setup(
     name=title,

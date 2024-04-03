@@ -30,7 +30,7 @@ class App:
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.minsize(100, 100)
-        self.setup_icon()
+        self.setup_images()
         self.setup_focus()
         self.setup_binds()
         self.theme: Theme
@@ -41,9 +41,10 @@ class App:
             "Use /help to learn more.",
         ]
 
-    def setup_icon(self) -> None:
-        icon_path = Path(self.here, "icon.png")
-        self.root.iconphoto(False, tk.PhotoImage(file=icon_path))
+    def setup_images(self) -> None:
+        self.icon_path = Path(self.here, "icon.png")
+        self.root.iconphoto(False, tk.PhotoImage(file=self.icon_path))
+        self.image_path = Path(self.here, "image.jpg")
 
     def set_style(self) -> None:
         style = ttk.Style()
@@ -130,7 +131,7 @@ class App:
         cmds.append(("Keyboard", lambda: self.show_help("keyboard")))
         cmds.append(("Ok", lambda: None))
 
-        Dialog.show_commands("\n".join(lines), cmds)
+        Dialog.show_commands("\n".join(lines), cmds, image=self.image_path)
 
     def toggle_maximize(self) -> None:
         if self.root.attributes("-zoomed"):
