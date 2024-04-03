@@ -533,6 +533,9 @@ class Commands:
         from .inputcontrol import inputcontrol
         text = inputcontrol.input.get()
 
+        if not self.is_command(text):
+            return
+
         if not self.autocomplete_matches:
             self.get_matches(text)
 
@@ -584,6 +587,9 @@ class Commands:
         word = text_to_caret[last_space_pos + 1:caret_pos]
 
         if not word:
+            return
+
+        if not self.is_command(word):
             return
 
         self.autocomplete_word = word
