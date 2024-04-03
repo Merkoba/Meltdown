@@ -159,8 +159,8 @@ class Book(tk.Frame):
         self.bind_recursive("<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame)
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
-        self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
-        self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
+        self.bind_recursive("<Button-4>", lambda e: self.mousewheel_up(e), widget)
+        self.bind_recursive("<Button-5>", lambda e: self.mousewheel_down(e), widget)
 
     def bind_tab_right_click(self, page: Page) -> None:
         self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e, page.id), page.tab.frame)
@@ -368,9 +368,14 @@ class Book(tk.Frame):
         self.discover()
 
     def do_tab_drag(self, event: Any, page: Page) -> None:
+        if not args.reorder:
+            return
+
         if not self.dragging:
             self.dragging = True
             self.drag_page = page
+            self.drag_index = self.pages.index(page)
+            self.drag_direction = ""
             self.select(page.id)
             return
 
@@ -379,6 +384,22 @@ class Book(tk.Frame):
         if new_page and self.drag_page and (new_page != self.drag_page):
             old_index = self.pages.index(self.drag_page)
             new_index = self.pages.index(new_page)
+
+            if self.drag_direction:
+                if self.drag_direction == "left":
+                    if new_index >= self.drag_index:
+                        return
+
+                elif self.drag_direction == "right":
+                    if new_index <= self.drag_index:
+                        return
+            else:
+                if new_index < self.drag_index:
+                    self.drag_direction = "left"
+                else:
+                    self.drag_direction = "right"
+
+            self.drag_index = new_index
             self.pages.insert(new_index, self.pages.pop(old_index))
             self.scroll_to_page(new_page)
             self.update_tab_columns()
@@ -467,3 +488,51 @@ class Book(tk.Frame):
                 self.update_tab_columns()
                 self.select(id)
                 return
+
+    def move_left(self, page: Optional[Page] = None) -> None:
+        if not page:
+            page = self.current_page
+
+        if not page:
+            return
+
+        index = self.pages.index(page)
+
+        if index == 0:
+            return
+
+        self.pages.insert(index - 1, self.pages.pop(index))
+        self.update_tab_columns()
+        self.select(page.id)
+
+    def move_right(self, page: Optional[Page] = None) -> None:
+        if not page:
+            page = self.current_page
+
+        if not page:
+            return
+
+        index = self.pages.index(page)
+
+        if index == len(self.pages) - 1:
+            return
+
+        self.pages.insert(index + 1, self.pages.pop(index))
+        self.update_tab_columns()
+        self.select(page.id)
+
+    def mousewheel_up(self, event: Any) -> None:
+        from .keyboard import keyboard
+
+        if keyboard.ctrl or keyboard.shift:
+            self.move_left()
+        else:
+            self.select_left()
+
+    def mousewheel_down(self, event: Any) -> None:
+        from .keyboard import keyboard
+
+        if keyboard.ctrl or keyboard.shift:
+            self.move_right()
+        else:
+            self.select_right()

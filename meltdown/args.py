@@ -29,6 +29,7 @@ class Args:
         self.allow_empty = True
         self.bottom = True
         self.bottom_autohide = True
+        self.reorder = True
         self.numbers = False
         self.full = False
         self.test = False
@@ -82,6 +83,7 @@ class Args:
             "no-empty": {"action": "store_false", "help": "Don't save empty conversations"},
             "no-bottom": {"action": "store_false", "help": "Don't show the Bottom button"},
             "no-bottom-autohide": {"action": "store_false", "help": "Don't autohide the Bottom button"},
+            "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -128,7 +130,7 @@ class Args:
             ("no_stream", "stream"), ("no_taps", "taps"),
             ("no_empty", "allow_empty"), ("alias", "aliases"),
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
-            ("no_bottom", "bottom"),
+            ("no_bottom", "bottom"), ("no_reorder", "reorder"),
         ]
 
         for r_item in other_name:

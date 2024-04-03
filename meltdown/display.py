@@ -287,20 +287,23 @@ class Display:
 
     def do_rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
+        name = name.strip()
 
-        if name:
-            tab = self.get_tab(tab_id)
+        if not name:
+            return
 
-            if not tab:
-                return
+        tab = self.get_tab(tab_id)
 
-            o_name = self.get_tab_name(tab_id)
+        if not tab:
+            return
 
-            if name == o_name:
-                return
+        o_name = self.get_tab_name(tab_id)
 
-            self.book.change_name(tab_id, name)
-            session.change_name(tab.conversation_id, name)
+        if name == o_name:
+            return
+
+        self.book.change_name(tab_id, name)
+        session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
         self.close_tab(tab_id=self.tab_menu_id)
