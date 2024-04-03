@@ -144,7 +144,7 @@ class Widgets:
         self.context_label = widgetutils.make_label(self.details, "Context")
         self.context = widgetutils.make_entry(self.details, width=app.theme.entry_width_small)
         tip = "The number of previous messages to include as the context." \
-            " The computation will take longer with more context" \
+            " The computation will take longer with more context." \
             " 0 means context is not used at all"
         ToolTip(self.context_label, tip)
         ToolTip(self.context, tip)
