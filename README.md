@@ -126,7 +126,7 @@ Find across all open tabs.
 
 Select tabs with keyboard numbers.
 
-Command palette.
+Command palette with recent usage remembered.
 
 Double ctrl tap (to open the palette).
 
