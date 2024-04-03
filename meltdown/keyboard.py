@@ -171,8 +171,8 @@ class Keyboard:
             return ""
 
         def add_cmd(key: str) -> None:
-            def action(event: Any) -> None:
-                run_command(event, key)
+            def action(event: Any) -> str:
+                return run_command(event, key)
 
             app.root.bind(key, lambda e: action(e))
 
