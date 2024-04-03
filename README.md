@@ -444,35 +444,21 @@ For example:
 
 You can run automated tasks.
 
-These are commands.
+These are commands. Commands can be chained.
 
-Commands can be chained.
-
-You can specify the delay in several ways.
-
-You can specify if it runs instantly.
+The format is [seconds] [commands] [/now (optional)]
 
 For example:
 
 ```sh
---task-1 "/tab 1 & /input hello world" --task-1-seconds 30 --task-1-instant
+--task "30 /tab 1 & /input hello world /now"
 ```
 
 This will go to the first tab and then prompt the model with "hello world".
 
-It will run the first task instantly and then wait 30 seconds.
+It will run the first task instantly and then wait 30 seconds for the next iteration.
 
-There are 3 tasks you can create.
-
-For instance to set task 2 you can do:
-
-```sh
---task-2 "/find stuff" --task-2-minutes 1 --task-2-instant
-```
-
-Same with 3.
-
----
+You can define multiple tasks like this.
 
 ## Aliases
 

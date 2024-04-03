@@ -1,65 +1,60 @@
 # Modules
 from .args import args
+from .commands import commands
 from . import timeutils
 
 # Standard
+import re
 import threading
 
 
-def run(num: int) -> None:
-    from .commands import commands
-    task = getattr(args, f"task_{num}")
-    commands.exec(task)
+def run(cmds: str) -> None:
+    commands.exec(cmds)
 
 
-def check(num: int, seconds: int) -> None:
+def check(seconds: float, cmds: str, now: bool) -> None:
     first_run = False
-    instant = getattr(args, f"task_{num}_instant")
-    msg = f"Running task {num} every {seconds} seconds"
-
-    if instant:
-        msg += " (instant)"
-
+    msg = f"Running a task every {seconds} seconds"
     print(msg)
     timeutils.sleep(1)
 
     while True:
         if not first_run:
-            if instant:
-                run(num)
+            if now:
+                run(cmds)
 
             first_run = True
 
         timeutils.sleep(seconds)
-        run(num)
+        run(cmds)
 
 
 def start() -> None:
-    for num in range(1, 4):
-        do_start(num)
+    for task in args.tasks:
+        do_start(task)
 
 
-def do_start(num: int) -> None:
-    task = getattr(args, f"task_{num}")
-
+def do_start(task: str) -> None:
     if not task:
         return
 
-    seconds = 0
-    secs = getattr(args, f"task_{num}_seconds")
-    mins = getattr(args, f"task_{num}_minutes")
-    hrs = getattr(args, f"task_{num}_hours")
+    match = re.match(r"^((?:\d.)?\d+)\s+(.*?)(\/now)?$", task)
 
-    if secs:
-        seconds = secs
-    elif mins:
-        seconds = mins * 60
-    elif hrs:
-        seconds = hrs * 60 * 60
-
-    if not seconds:
+    if not match:
         return
 
-    thread = threading.Thread(target=lambda: check(num, seconds), args=())
+    try:
+        seconds = float(match.group(1))
+    except BaseException as e:
+        return
+
+    cmds = match.group(2)
+
+    if match.group(3):
+        now = True
+    else:
+        now = False
+
+    thread = threading.Thread(target=lambda: check(seconds, cmds, now), args=())
     thread.daemon = True
     thread.start()

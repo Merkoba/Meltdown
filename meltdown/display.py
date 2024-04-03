@@ -174,6 +174,16 @@ class Display:
         else:
             self.book.select_by_index(num - 1)
 
+    def select_tab_by_string(self, what: str) -> None:
+        try:
+            num = int(what)
+            self.select_tab_by_number(num)
+            return
+        except BaseException:
+            pass
+
+        self.book.select_by_name(what)
+
     def update_current_tab(self) -> None:
         tab_id = self.book.current()
         self.current_tab = tab_id

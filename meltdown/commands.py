@@ -1,6 +1,7 @@
 # Modules
 from .app import app
 from .config import config
+from .dialogs import Dialog
 from .menus import Menu
 from .args import args
 from . import utils
@@ -291,9 +292,9 @@ class Commands:
             },
             "tab": {
                 "aliases": ["num", "number", "tabnum", "tabnumber"],
-                "help": "Go to a tab by its number",
-                "action": lambda a=None: display.select_tab_by_number(a),
-                "type": int,
+                "help": "Go to a tab by its number or by its name",
+                "action": lambda a=None: display.select_tab_by_string(a),
+                "type": str,
                 "arg_req": True,
             },
             "fullscreen": {
@@ -401,6 +402,11 @@ class Commands:
                 "action": lambda a=None: None,
                 "type": int,
                 "arg_req": True,
+            },
+            "hide": {
+                "aliases": [],
+                "help": "Close dialogs and menus",
+                "action": lambda a=None: self.hide_cmd(),
             },
         }
 
@@ -641,6 +647,10 @@ class Commands:
 
     def cmd(self, text: str) -> str:
         return self.prefix + text
+
+    def hide_cmd(self) -> None:
+        Dialog.hide_all()
+        Menu.hide_all()
 
 
 commands = Commands()

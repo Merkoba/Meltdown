@@ -227,6 +227,14 @@ class Book(tk.Frame):
 
         self.select(self.pages[index].id)
 
+    def select_by_name(self, name: str) -> None:
+        name = name.lower()
+
+        for page in self.pages:
+            if page.name.lower() == name:
+                self.select(page.id)
+                return
+
     def update_tab_colors(self) -> None:
         if not self.current_page:
             return
