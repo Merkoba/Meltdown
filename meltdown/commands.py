@@ -83,9 +83,9 @@ class Commands:
         self.commands = {
             "clear": {
                 "aliases": ["clean", "cls"],
-                "help": "Clear conversation. Use 'true' to foce",
+                "help": "Clear conversation. Use 'force' to force",
                 "action": lambda a=None: display.clear(force=a),
-                "type": bool,
+                "type": "force",
             },
             "exit": {
                 "aliases": ["quit"],
@@ -159,39 +159,39 @@ class Commands:
             },
             "close": {
                 "aliases": [],
-                "help": "Close current tab. Use 'true' to force",
+                "help": "Close current tab. Use 'force' to force",
                 "action": lambda a=None: display.close_tab(force=a),
-                "type": bool,
+                "type": "force",
             },
             "closeothers": {
                 "aliases": ["others"],
-                "help": "Close other tabs. Use 'true' to force",
+                "help": "Close other tabs. Use 'force' to force",
                 "action": lambda a=None: display.close_other_tabs(force=a),
-                "type": bool,
+                "type": "force",
             },
             "closeall": {
                 "aliases": [],
-                "help": "Close all tabs. Use 'true' to force",
+                "help": "Close all tabs. Use 'force' to force",
                 "action": lambda a=None: display.close_all_tabs(force=a),
-                "type": bool,
+                "type": "force",
             },
             "closeold": {
                 "aliases": ["old", "trim"],
-                "help": "Close old tabs. Use 'true' to force",
+                "help": "Close old tabs. Use 'force' to force",
                 "action": lambda a=None: display.close_old_tabs(force=a),
-                "type": bool,
+                "type": "force",
             },
             "closeleft": {
                 "aliases": [],
-                "help": "Close tabs to the left. Use 'true' to force",
+                "help": "Close tabs to the left. Use 'force' to force",
                 "action": lambda a=None: display.close_tabs_left(force=a),
-                "type": bool,
+                "type": "force",
             },
             "closeright": {
                 "aliases": [],
-                "help": "Close tabs to the right. Use 'true' to force",
+                "help": "Close tabs to the right. Use 'force' to force",
                 "action": lambda a=None: display.close_tabs_right(force=a),
-                "type": bool,
+                "type": "force",
             },
             "new": {
                 "aliases": ["make", "maketab", "newtab"],
@@ -267,7 +267,7 @@ class Commands:
             },
             "reset": {
                 "aliases": ["restart"],
-                "help": "Reset the config. Use 'true' to force",
+                "help": "Reset the config. Use 'force' to force",
                 "action": lambda a=None: config.reset(force=a),
             },
             "viewtext": {
@@ -474,12 +474,16 @@ class Commands:
             return
 
         argtype = item.get("type")
+        new_argument: Any = None
 
         if argtype and argument:
-            argument = argtype(argument)
+            if argtype == "force":
+                new_argument = True if argument.lower() == "force" else False
+            else:
+                new_argument = argtype(argument)
 
         item = self.commands[cmd]
-        item["action"](argument)
+        item["action"](new_argument)
 
     def try_to_run(self, cmd: str, argument: str) -> None:
         # Check normal
