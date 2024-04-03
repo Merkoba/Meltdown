@@ -23,6 +23,7 @@ class MenuItem:
         self.tooltip = tooltip
         self.aliases = aliases or []
         self.coords = {"x": 0, "y": 0}
+        self.filter_text = text.lower().replace(" ", "")
 
 
 class Menu:
@@ -236,7 +237,7 @@ class Menu:
         self.canvas.bind("<KeyPress>", lambda e: on_key(e))
 
     def check_filter(self, filtr: str, item: MenuItem) -> bool:
-        text = item.text.lower()
+        text = item.filter_text
 
         if not filtr:
             return True
@@ -268,7 +269,7 @@ class Menu:
             for sep in self.separators:
                 sep.grid()
         else:
-            filtr = self.filter.lower()
+            filtr = self.filter.lower().replace(" ", "")
 
             for els in self.elements.values():
                 if els["item"].disabled:

@@ -232,17 +232,17 @@ class Commands:
             },
             "commands": {
                 "aliases": ["cmds"],
-                "help": "Show the command line arguments",
+                "help": "Show the commands help",
                 "action": lambda a=None: app.show_help("commands"),
             },
             "arguments": {
                 "aliases": ["args"],
-                "help": "Show the command line arguments",
+                "help": "Show the arguments help",
                 "action": lambda a=None: app.show_help("arguments"),
             },
             "keyboard": {
                 "aliases": ["shortcuts"],
-                "help": "Show the tab list to pick a tab",
+                "help": "Show the keyboard help",
                 "action": lambda a=None: app.show_help("keyboard"),
             },
             "list": {
@@ -279,7 +279,7 @@ class Commands:
             },
             "session": {
                 "aliases": [],
-                "help": "Show the config menu",
+                "help": "Show the session menu",
                 "action": lambda a=None: session.menu(),
             },
             "reset": {
