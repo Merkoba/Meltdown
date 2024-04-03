@@ -304,6 +304,10 @@ class Keyboard:
                       on_ctrl=lambda: run_command("new"),
                       ctrl_help="Make tab")
 
+        self.register("n",
+                      on_ctrl=lambda: run_command("new"),
+                      ctrl_help="Make tab")
+
         self.register("w",
                       on_ctrl=lambda: run_command("close"),
                       ctrl_help="Close tab")
