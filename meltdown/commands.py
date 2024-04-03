@@ -623,9 +623,13 @@ class Commands:
 
         def add_item(key: str) -> None:
             cmd = self.commands[key]
+            argtype = cmd.get("type")
 
             def command() -> None:
-                cmd["action"]()
+                if argtype and argtype in [str, int, float]:
+                    Dialog.show_input("Argument", lambda a: cmd["action"](a))
+                else:
+                    cmd["action"]()
 
             aliases = [key]
             aliases.extend(cmd["aliases"])

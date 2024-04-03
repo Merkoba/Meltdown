@@ -289,6 +289,7 @@ class Menu:
             self.select_first_item()
 
         self.configure_geometry()
+        self.canvas.yview_moveto(0.0)
 
     def show_item(self, index: int) -> None:
         els = self.elements[index]
