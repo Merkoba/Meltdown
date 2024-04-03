@@ -415,7 +415,11 @@ class Menu:
         els["label"]["background"] = colors["hover_background"]
         els["label"]["foreground"] = colors["hover_foreground"]
         self.selected_index = index
-        self.scroll_to_item()
+
+        if index <= 1:
+            self.canvas.yview_moveto(0.0)
+        else:
+            self.scroll_to_item()
 
     def on_leave(self, index: int) -> None:
         ToolTip.hide_all()
@@ -444,7 +448,6 @@ class Menu:
                 "hover_background": hover_background, "hover_foreground": hover_foreground}
 
     def scroll_to_item(self) -> None:
-        from . import timeutils
         if self.no_item():
             return
 
