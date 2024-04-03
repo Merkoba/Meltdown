@@ -90,7 +90,7 @@ class Config:
         else:
             return None
 
-    def show_config(self) -> None:
+    def print_config(self) -> None:
         from .display import display
         display.print("Config:")
         text = []

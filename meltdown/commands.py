@@ -421,6 +421,11 @@ class Commands:
                 "help": "Close dialogs and menus",
                 "action": lambda a=None: self.hide_cmd(),
             },
+            "printconfig": {
+                "aliases": ["showconfig"],
+                "help": "Print all the config settings",
+                "action": lambda a=None: config.print_config(),
+            },
         }
 
         for key in self.commands:
