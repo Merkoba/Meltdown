@@ -58,9 +58,8 @@ class Config:
         self.input = self.default_input
 
         self.intro = [
-            "Welcome to Meltdown.",
-            "Type a prompt and press Enter to continue.",
-            "The specified model will load automatically.",
+            "Type a prompt and press Enter.",
+            "A model must be configured first.",
         ]
 
         self.clearables = [
