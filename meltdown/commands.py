@@ -6,7 +6,7 @@ from .args import args
 from . import utils
 
 # Standard
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 import tkinter as tk
 
 
@@ -45,10 +45,10 @@ class Commands:
     def start_loop(self) -> None:
         def loop() -> None:
             for queue in self.queues:
-                if queue.wait:
+                if queue.wait > 0.0:
                     queue.wait -= self.loop_delay
 
-                    if queue.wait <= 0:
+                    if queue.wait <= 0.0:
                         queue.wait = 0.0
 
                     continue
@@ -60,7 +60,10 @@ class Commands:
                         if item.argument and queue.items:
                             queue.wait = float(item.argument) * 1000.0
                     else:
-                        self.try_to_run(item.cmd, item.argument)
+                        if self.aliases.get(item.cmd):
+                            self.check(self.aliases[item.cmd], queue)
+                        else:
+                            self.try_to_run(item.cmd, item.argument)
 
                     if not queue.items:
                         self.queues.remove(queue)
@@ -366,6 +369,13 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "write": {
+                "aliases": ["fill"],
+                "help": "Set the input without submitting",
+                "action": lambda a=None: inputcontrol.set(text=a),
+                "type": str,
+                "arg_req": True,
+            },
             "sleep": {
                 "aliases": ["wait"],
                 "help": "Wait X seconds before running the next command",
@@ -412,30 +422,28 @@ class Commands:
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
-    def check(self, text: str, direct: bool = False) -> bool:
+    def check(self, text: str, queue: Optional[Queue] = None) -> bool:
         text = text.strip()
 
-        if not direct:
-            if not self.is_command(text):
-                return False
+        if not self.is_command(text):
+            return False
 
         cmds = text.split("&")
         items = []
 
         for item in cmds:
             split = item.strip().split(" ")
-            cmd = split[0]
-
-            if not direct:
-                cmd = cmd[1:]
-
+            cmd = split[0][1:]
             argument = " ".join(split[1:])
             queue_item = QueueItem(cmd, argument)
             items.append(queue_item)
 
         if items:
-            queue = Queue(items)
-            self.queues.append(queue)
+            if queue:
+                queue.items = items + queue.items
+            else:
+                queue = Queue(items)
+                self.queues.append(queue)
 
         return True
 
@@ -459,10 +467,6 @@ class Commands:
         item["action"](argument)
 
     def try_to_run(self, cmd: str, argument: str) -> None:
-        if self.aliases.get(cmd):
-            self.check(self.aliases[cmd], True)
-            return
-
         # Check normal
         for key, value in self.commands.items():
             if cmd == key or (value.get("aliases") and cmd in value["aliases"]):
@@ -484,8 +488,6 @@ class Commands:
                     if utils.check_match(cmd, alias):
                         self.run(key, argument)
                         return
-
-        return
 
     def help_command(self) -> None:
         from .display import display
@@ -512,9 +514,6 @@ class Commands:
         from .inputcontrol import inputcontrol
         text = inputcontrol.input.get()
 
-        if not self.is_command(text):
-            return
-
         if not self.autocomplete_matches:
             self.get_matches(text)
 
@@ -533,7 +532,7 @@ class Commands:
                 check()
                 return
 
-            missing = match[len(self.autocomplete_word[1:]):]
+            missing = match[len(self.clean(self.autocomplete_word)):]
 
             if self.autocomplete_match:
                 inputcontrol.input.delete_text(self.autocomplete_pos, len(self.autocomplete_missing))
@@ -568,12 +567,9 @@ class Commands:
         if not word:
             return
 
-        if not self.is_command(word):
-            return
-
         self.autocomplete_word = word
         self.autocomplete_pos = inputcontrol.input.index(caret_pos)
-        word = word[1:]
+        word = self.clean(word)
 
         for cmd, data in self.commands.items():
             if cmd.startswith(word):
@@ -607,6 +603,15 @@ class Commands:
     def show_palette(self) -> None:
         from .widgets import widgets
         self.palette.show(widget=widgets.main_menu_button)
+
+    def clean(self, text: str) -> str:
+        if text.startswith(self.prefix):
+            return text[1:]
+
+        return text
+
+    def cmd(self, text: str) -> str:
+        return self.prefix + text
 
 
 commands = Commands()

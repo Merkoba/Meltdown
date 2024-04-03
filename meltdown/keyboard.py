@@ -229,13 +229,13 @@ class Keyboard:
                 widgets.esckey()
 
         def run_command(cmd: str) -> None:
-            commands.check(cmd, direct=True)
+            commands.check(commands.cmd(cmd))
 
         def function_key(num: int) -> None:
             cmd = getattr(args, f"f{num}")
 
             if cmd:
-                commands.check(cmd, direct=True)
+                commands.check(commands.cmd(cmd))
 
         def add_function_key(num: int) -> None:
             self.register(f"<F{num}>",
