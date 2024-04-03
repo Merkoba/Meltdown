@@ -10,9 +10,9 @@ from typing import Any
 from pathlib import Path
 
 
-def save(path: Path, obj: Any) -> None:
+def save(path: Path, dictionary: Any) -> None:
     with open(path, "w") as file:
-        json.dump(obj, file, indent=4)
+        json.dump(dictionary, file, indent=4)
 
 
 def load() -> None:

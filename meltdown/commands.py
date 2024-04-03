@@ -4,11 +4,14 @@ from .config import config
 from .dialogs import Dialog
 from .menus import Menu
 from .args import args
+from .paths import paths
 from . import utils
 from . import timeutils
+from . import filemanager
 
 # Standard
 import re
+import json
 from typing import Any, Dict, List, Optional
 import tkinter as tk
 
@@ -45,6 +48,7 @@ class Commands:
         self.make_commands()
         self.make_aliases()
         self.check_commands()
+        self.load_file()
         self.start_loop()
 
     def start_loop(self) -> None:
@@ -84,11 +88,13 @@ class Commands:
         from .logs import logs
         from .widgets import widgets
         from .inputcontrol import inputcontrol
+        force = "Use 'force' to force"
 
         self.commands = {
             "clear": {
                 "aliases": ["clean", "cls"],
-                "help": "Clear conversation. Use 'force' to force",
+                "help": "Clear conversation",
+                "extra": force,
                 "action": lambda a=None: display.clear(force=a),
                 "type": "force",
             },
@@ -164,37 +170,43 @@ class Commands:
             },
             "close": {
                 "aliases": [],
-                "help": "Close current tab. Use 'force' to force",
+                "help": "Close current tab",
+                "extra": force,
                 "action": lambda a=None: display.close_tab(force=a),
                 "type": "force",
             },
             "closeothers": {
                 "aliases": ["others"],
-                "help": "Close other tabs. Use 'force' to force",
+                "help": "Close other tabs",
+                "extra": force,
                 "action": lambda a=None: display.close_other_tabs(force=a),
                 "type": "force",
             },
             "closeall": {
                 "aliases": [],
-                "help": "Close all tabs. Use 'force' to force",
+                "help": "Close all tabs",
+                "extra": force,
                 "action": lambda a=None: display.close_all_tabs(force=a),
                 "type": "force",
             },
             "closeold": {
                 "aliases": ["old", "trim"],
-                "help": "Close old tabs. Use 'force' to force",
+                "help": "Close old tabs",
+                "extra": force,
                 "action": lambda a=None: display.close_old_tabs(force=a),
                 "type": "force",
             },
             "closeleft": {
                 "aliases": [],
-                "help": "Close tabs to the left. Use 'force' to force",
+                "help": "Close tabs to the left",
+                "extra": force,
                 "action": lambda a=None: display.close_tabs_left(force=a),
                 "type": "force",
             },
             "closeright": {
                 "aliases": [],
-                "help": "Close tabs to the right. Use 'force' to force",
+                "help": "Close tabs to the right",
+                "extra": force,
                 "action": lambda a=None: display.close_tabs_right(force=a),
                 "type": "force",
             },
@@ -272,7 +284,8 @@ class Commands:
             },
             "reset": {
                 "aliases": ["restart"],
-                "help": "Reset the config. Use 'force' to force",
+                "help": "Reset the config",
+                "extra": force,
                 "action": lambda a=None: config.reset(force=a),
             },
             "viewtext": {
@@ -498,6 +511,15 @@ class Commands:
         item = self.commands[cmd]
         item["action"](new_argument)
         item["date"] = timeutils.now()
+        self.save_commands()
+
+    def save_commands(self) -> None:
+        cmds = {}
+
+        for key in self.commands:
+            cmds[key] = {"date": self.commands[key]["date"]}
+
+        filemanager.save(paths.commands, cmds)
 
     def try_to_run(self, cmd: str, argument: str) -> None:
         # Check normal
@@ -539,7 +561,12 @@ class Commands:
         text = []
 
         for cmd, data in self.commands.items():
-            text.append(f"{self.prefix}{cmd} = {data['help']}")
+            msg = data['help']
+
+            if data.get("extra"):
+                msg += f" ({data['extra']})"
+
+            text.append(f"{self.prefix}{cmd} = {msg}")
 
         display.print("\n".join(text), tab_id=tab_id)
 
@@ -661,6 +688,20 @@ class Commands:
     def hide_cmd(self) -> None:
         Dialog.hide_all()
         Menu.hide_all()
+
+    def load_file(self) -> None:
+        if (not paths.commands.exists()) or (not paths.commands.is_file()):
+            return
+
+        with open(paths.commands, "r") as file:
+            try:
+                cmds = json.load(file)
+            except BaseException:
+                cmds = {}
+
+        for key in cmds:
+            if key in self.commands:
+                self.commands[key]["date"] = cmds[key].get("date", 0.0)
 
 
 commands = Commands()
