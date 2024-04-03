@@ -30,6 +30,7 @@ class Args:
         self.numbers = False
         self.full = False
         self.test = False
+        self.alt_palette = False
         self.width = -1
         self.height = -1
         self.max_tabs = 0
@@ -81,6 +82,7 @@ class Args:
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
             "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
+            "alt-palette": {"action": "store_true", "help": "Show commands instead of descriptions in the palette"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
             "max-tabs": {"type": int, "help": "Max number fo tabs to keep open"},
@@ -134,6 +136,8 @@ class Args:
 
             "f1", "f2", "f3", "f4", "f5", "f6", "f7",
             "f8", "f9", "f10", "f11", "f12",
+
+            "alt_palette",
         ]
 
         for n_item in normals:

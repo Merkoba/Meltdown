@@ -426,6 +426,12 @@ Allow opening multiple instances.
 
 ---
 
+>alt-palette
+
+Show the commands instead of the descriptions in the command palette.
+
+---
+
 ## Command Chains
 
 Commands can be chained to execute multiple commands at once.

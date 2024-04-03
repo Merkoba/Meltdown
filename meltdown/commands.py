@@ -661,10 +661,17 @@ class Commands:
                 else:
                     self.run(key)
 
-            aliases = [key]
+            if args.alt_palette:
+                text = key
+                aliases = []
+                tooltip = cmd["help"]
+            else:
+                text = cmd["help"]
+                aliases = [key]
+                tooltip = ", ".join(aliases)
+
             aliases.extend(cmd["aliases"])
-            tooltip = ", ".join(aliases)
-            self.palette.add(text=cmd["help"], command=command, tooltip=tooltip, aliases=aliases)
+            self.palette.add(text=text, command=command, tooltip=tooltip, aliases=aliases)
 
         keys = sorted(self.commands, key=lambda x: self.commands[x]["date"], reverse=True)
 
