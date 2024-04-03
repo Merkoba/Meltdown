@@ -6,8 +6,20 @@ from .args import args
 from . import utils
 
 # Standard
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 import tkinter as tk
+
+
+class QueueItem:
+    def __init__(self, cmd: str, argument: str) -> None:
+        self.cmd = cmd
+        self.argument = argument
+
+
+class Queue:
+    def __init__(self, items: List[QueueItem], wait: float = 0.0) -> None:
+        self.items = items
+        self.wait = wait
 
 
 class Commands:
@@ -20,12 +32,42 @@ class Commands:
         self.autocomplete_word = ""
         self.autocomplete_pos = 0
         self.autocomplete_missing = ""
+        self.loop_delay = 25
+        self.queues: List[Queue] = []
 
     def setup(self) -> None:
         self.make_commands()
         self.make_aliases()
         self.check_commands()
         self.make_palette()
+        self.start_loop()
+
+    def start_loop(self) -> None:
+        def loop() -> None:
+            for queue in self.queues:
+                if queue.wait:
+                    queue.wait -= self.loop_delay
+
+                    if queue.wait <= 0:
+                        queue.wait = 0.0
+
+                    continue
+
+                if queue.items:
+                    item = queue.items.pop(0)
+
+                    if item.cmd == "sleep":
+                        if item.argument and queue.items:
+                            queue.wait = float(item.argument) * 1000.0
+                    else:
+                        self.try_to_run(item.cmd, item.argument)
+
+                    if not queue.items:
+                        self.queues.remove(queue)
+
+            app.root.after(self.loop_delay, lambda: loop())
+
+        loop()
 
     def make_commands(self) -> None:
         from .display import display
@@ -324,6 +366,13 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "sleep": {
+                "aliases": ["wait"],
+                "help": "Wait X seconds before running the next command",
+                "action": lambda a=None: None,
+                "type": int,
+                "arg_req": True,
+            },
         }
 
     def make_aliases(self) -> None:
@@ -363,9 +412,39 @@ class Commands:
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
-    def run(self, key: str, argument: str) -> None:
-        item = self.commands[key]
-        action = item["action"]
+    def check(self, text: str, direct: bool = False) -> bool:
+        text = text.strip()
+
+        if not direct:
+            if not self.is_command(text):
+                return False
+
+        cmds = text.split("&")
+        items = []
+
+        for item in cmds:
+            split = item.strip().split(" ")
+            cmd = split[0]
+
+            if not direct:
+                cmd = cmd[1:]
+
+            argument = " ".join(split[1:])
+            queue_item = QueueItem(cmd, argument)
+            items.append(queue_item)
+
+        if items:
+            queue = Queue(items)
+            self.queues.append(queue)
+
+        return True
+
+    def run(self, cmd: str, argument: str) -> None:
+        item = self.commands.get(cmd)
+
+        if not item:
+            return
+
         arg_req = item.get("arg_req")
 
         if (not argument) and arg_req:
@@ -376,30 +455,10 @@ class Commands:
         if argtype and argument:
             argument = argtype(argument)
 
-        action(argument)
+        item = self.commands[cmd]
+        item["action"](argument)
 
-    def check(self, text: str, direct: bool = False) -> bool:
-        text = text.strip()
-
-        if not direct:
-            if not self.is_command(text):
-                return False
-
-        cmds = text.split("&")
-
-        for item in cmds:
-            split = item.strip().split(" ")
-            cmd = split[0]
-
-            if not direct:
-                cmd = cmd[1:]
-
-            argument = " ".join(split[1:])
-            self.do_check(cmd, argument)
-
-        return True
-
-    def do_check(self, cmd: str, argument: str) -> None:
+    def try_to_run(self, cmd: str, argument: str) -> None:
         if self.aliases.get(cmd):
             self.check(self.aliases[cmd], True)
             return

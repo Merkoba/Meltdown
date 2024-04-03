@@ -485,3 +485,35 @@ Or maybe a prompt alias:
 ```sh
 --alias "history = input what happened on this day?"
 ```
+
+---
+
+## Command Queues
+
+Every command chain is stored in its own queue.
+
+Every command is ran every 25ms in an event loop.
+
+Command chains can be paused with `sleep` (seconds).
+
+For example:
+
+```sh
+/tab 1 & /sleep 1 & /select
+```
+
+This will select tab 1, then wait 1 second, then select all.
+
+Or with decimals:
+
+```sh
+/tab 1 & /sleep 2.4 & /select
+```
+
+This will wait 2.4 seconds.
+
+```sh
+/tab 1 & /sleep 0.5 & /select
+```
+
+This will wait 500 ms.
