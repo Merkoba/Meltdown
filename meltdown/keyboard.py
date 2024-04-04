@@ -347,6 +347,18 @@ class Keyboard:
                       ctrl_help="Show the log menu",
                       ctrl_shift_help="Open the logs directory")
 
+        self.register("<KP_Add>",
+                      on_ctrl=lambda: run_command("bigger"),
+                      on_ctrl_shift=lambda: run_command("resetfont"),
+                      ctrl_help="Increase the font size",
+                      ctrl_shift_help="Reset the font size")
+
+        self.register("<KP_Subtract>",
+                      on_ctrl=lambda: run_command("smaller"),
+                      on_ctrl_shift=lambda: run_command("resetfont"),
+                      ctrl_help="Decrease the font size",
+                      ctrl_shift_help="Reset the font size")
+
         for num in range(1, 13):
             add_function_key(num)
 
