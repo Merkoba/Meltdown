@@ -141,6 +141,7 @@ class Output(tk.Text):
         from .inputcontrol import inputcontrol
         from .display import display
         from .markdown import Markdown
+        from .keyboard import keyboard
 
         self.display = display
         self.markdown = Markdown(self)
@@ -165,6 +166,22 @@ class Output(tk.Text):
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
+        def mousewheel_up() -> str:
+            if keyboard.ctrl:
+                self.display.increase_font()
+            else:
+                self.scroll_up(True)
+
+            return "break"
+
+        def mousewheel_down() -> str:
+            if keyboard.ctrl:
+                self.display.decrease_font()
+            else:
+                self.scroll_down(True)
+
+            return "break"
+
         def scroll_up() -> str:
             self.scroll_up(True)
             return "break"
@@ -183,8 +200,8 @@ class Output(tk.Text):
 
         self.bind("<ButtonRelease-3>", lambda e: self.show_word_menu(e))
         self.bind("<Button-1>", lambda e: self.deselect_all())
-        self.bind("<Button-4>", lambda e: scroll_up())
-        self.bind("<Button-5>", lambda e: scroll_down())
+        self.bind("<Button-4>", lambda e: mousewheel_up())
+        self.bind("<Button-5>", lambda e: mousewheel_down())
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<KeyPress-Home>", lambda e: home())
