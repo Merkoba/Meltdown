@@ -14,11 +14,11 @@ class Args:
         self.scrollbars = True
         self.colors = True
         self.avatars = True
-        self.monitors = True
-        self.monitor_colors = True
-        self.monitor_cpu = True
-        self.monitor_ram = True
-        self.monitor_temp = True
+        self.system = True
+        self.system_colors = True
+        self.system_cpu = True
+        self.system_ram = True
+        self.system_temp = True
         self.keyboard = True
         self.taps = True
         self.wrap = True
@@ -75,8 +75,8 @@ class Args:
             "no-scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
             "no-colors": {"action": "store_false", "help": "Don't show user colors"},
             "no-avatars": {"action": "store_false", "help": "Don't show user avatars"},
-            "no-monitors": {"action": "store_false", "help": "Don't show system monitors"},
-            "no-monitor-colors": {"action": "store_false", "help": "Disable system monitor colors"},
+            "no-system": {"action": "store_false", "help": "Don't show system monitors"},
+            "no-system-colors": {"action": "store_false", "help": "Disable system monitor colors"},
             "no-cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
@@ -133,9 +133,9 @@ class Args:
         other_name = [
             ("no_tooltips", "tooltips"), ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"), ("no_avatars", "avatars"),
-            ("no_monitors", "monitors"), ("no_monitor_colors", "monitor_colors"),
-            ("no_cpu", "monitor_cpu"), ("no_ram", "monitor_ram"),
-            ("no_temp", "monitor_temp"), ("no_keyboard", "keyboard"),
+            ("no_system", "system"), ("no_system_colors", "system_colors"),
+            ("no_cpu", "system_cpu"), ("no_ram", "system_ram"),
+            ("no_temp", "system_temp"), ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"), ("no_tabs", "tabs"),
             ("no_stream", "stream"), ("no_taps", "taps"),
             ("no_empty", "allow_empty"), ("alias", "aliases"),

@@ -31,8 +31,8 @@ class Theme:
         self.background_color = "#212121"
         self.foreground_color = "white"
 
-        self.monitor_normal = "#44B3A1"
-        self.monitor_heavy = "#FF6B6B"
+        self.system_normal = "#44B3A1"
+        self.system_heavy = "#FF6B6B"
 
         self.button_background = "#446CA1"
         self.button_hover_background = "#387ADF"

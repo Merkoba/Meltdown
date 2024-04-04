@@ -55,9 +55,6 @@ class LightTheme(Theme):
 
         self.menu_hover_background = "#6A7B83"
 
-        self.monitor_normal = "#44B3A1"
-        self.monitor_heavy = "#FF6B6B"
-
         self.button_highlight_background = "#44B3A1"
 
         self.output_selection_background = "#677577"

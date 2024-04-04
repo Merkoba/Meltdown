@@ -60,10 +60,10 @@ class Widgets:
 
         self.system_label = widgetutils.make_label(self.system_frame, "System")
 
-        monitors_disabled = (not args.monitors) or \
-            ((not args.monitor_cpu) and (not args.monitor_ram) and (not args.monitor_temp))
+        self.system_disabled = (not args.system) or \
+            ((not args.system_cpu) and (not args.system_ram) and (not args.system_temp))
 
-        if monitors_disabled:
+        if self.system_disabled:
             rpadding = right_padding
         else:
             rpadding = 0
@@ -74,12 +74,28 @@ class Widgets:
         ToolTip(self.system_label, tip)
         ToolTip(self.system, tip)
 
-        if not monitors_disabled:
-            if args.monitor_cpu:
+        if not self.system_disabled:
+            monitors = []
+
+            if args.system_cpu:
+                monitors.append("cpu")
+
+            if args.system_ram:
+                monitors.append("ram")
+
+            if args.system_temp:
+                monitors.append("tmp")
+
+            if args.system_cpu:
+                if "cpu" == monitors[-1]:
+                    rightpad = right_padding
+                else:
+                    rightpad = 0
+
                 self.cpu_label = widgetutils.make_label(self.system_frame, "CPU")
                 self.cpu_label.configure(cursor="hand2")
                 self.cpu = tk.StringVar()
-                self.cpu_text = widgetutils.make_label(self.system_frame, "", padx=0)
+                self.cpu_text = widgetutils.make_label(self.system_frame, "", padx=0, right_padding=rightpad)
                 self.cpu_text.configure(textvariable=self.cpu)
                 self.cpu_text.configure(cursor="hand2")
                 tip = "Current CPU usage"
@@ -87,11 +103,16 @@ class Widgets:
                 ToolTip(self.cpu_text, tip)
                 self.cpu.set("000%")
 
-            if args.monitor_ram:
+            if args.system_ram:
+                if "ram" == monitors[-1]:
+                    rightpad = right_padding
+                else:
+                    rightpad = 0
+
                 self.ram_label = widgetutils.make_label(self.system_frame, "RAM")
                 self.ram_label.configure(cursor="hand2")
                 self.ram = tk.StringVar()
-                self.ram_text = widgetutils.make_label(self.system_frame, "", padx=0)
+                self.ram_text = widgetutils.make_label(self.system_frame, "", padx=0, right_padding=rightpad)
                 self.ram_text.configure(textvariable=self.ram)
                 self.ram_text.configure(cursor="hand2")
                 tip = "Current RAM usage"
@@ -99,11 +120,16 @@ class Widgets:
                 ToolTip(self.ram_text, tip)
                 self.ram.set("000%")
 
-            if args.monitor_temp:
+            if args.system_temp:
+                if "tmp" == monitors[-1]:
+                    rightpad = right_padding
+                else:
+                    rightpad = 0
+
                 self.temp_label = widgetutils.make_label(self.system_frame, "TMP")
                 self.temp_label.configure(cursor="hand2")
                 self.temp = tk.StringVar()
-                self.temp_text = widgetutils.make_label(self.system_frame, "", padx=0, right_padding=right_padding)
+                self.temp_text = widgetutils.make_label(self.system_frame, "", padx=0, right_padding=rightpad)
                 self.temp_text.configure(textvariable=self.temp)
                 self.temp_text.configure(cursor="hand2")
                 tip = "Current CPU temperature"
@@ -321,7 +347,7 @@ class Widgets:
         self.setup_binds()
         self.setup_widgets()
         self.add_generic_menus()
-        self.setup_monitors()
+        self.setup_system()
         self.start_checks()
         self.check_details_buttons()
 
@@ -354,16 +380,19 @@ class Widgets:
             child.bind("<Button-4>", lambda e: widgets.details_left())
             child.bind("<Button-5>", lambda e: widgets.details_right())
 
-    def setup_monitors(self) -> None:
-        if args.monitor_cpu:
+    def setup_system(self) -> None:
+        if self.system_disabled:
+            return
+
+        if args.system_cpu:
             self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
             self.cpu_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
-        if args.monitor_ram:
+        if args.system_ram:
             self.ram_label.bind("<Button-1>", lambda e: app.open_task_manager())
             self.ram_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
-        if args.monitor_temp:
+        if args.system_temp:
             self.temp_label.bind("<Button-1>", lambda e: app.open_task_manager())
             self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
 

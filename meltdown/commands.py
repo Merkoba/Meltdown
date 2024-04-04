@@ -148,8 +148,8 @@ class Commands:
                 "help": "Stop the current stream",
                 "action": lambda a=None: model.stop_stream(),
             },
-            "sys": {
-                "aliases": ["monitor", "system"],
+            "system": {
+                "aliases": ["sys", "monitor"],
                 "help": "Open the system task manager",
                 "action": lambda a=None: app.open_task_manager(),
             },

@@ -54,13 +54,13 @@ Disable double ctrl taps.
 
 ---
 
->no-monitors
+>no-system
 
 Don't show the system monitors like CPU.
 
 ---
 
->no-monitor-colors
+>no-system-colors
 
 Don't use colors on the system monitors.
 

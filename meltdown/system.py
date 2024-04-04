@@ -18,15 +18,15 @@ def padnum(num: int) -> str:
 
 
 def get_info() -> None:
-    if args.monitor_cpu:
+    if args.system_cpu:
         cpu = int(psutil.cpu_percent(interval=1))
         widgets.cpu.set(padnum(cpu) + "%")
 
-    if args.monitor_ram:
+    if args.system_ram:
         ram = int(psutil.virtual_memory().percent)
         widgets.ram.set(padnum(ram) + "%")
 
-    if args.monitor_temp:
+    if args.system_temp:
         temps = psutil.sensors_temperatures()
         temp: Optional[int] = None
 
@@ -44,27 +44,27 @@ def get_info() -> None:
         else:
             widgets.temp.set("N/A")
 
-    if args.monitor_colors:
+    if args.system_colors:
         threshold = args.system_threshold
 
-        if args.monitor_cpu:
+        if args.system_cpu:
             if cpu >= threshold:
-                widgets.cpu_text.configure(foreground=app.theme.monitor_heavy)
+                widgets.cpu_text.configure(foreground=app.theme.system_heavy)
             else:
-                widgets.cpu_text.configure(foreground=app.theme.monitor_normal)
+                widgets.cpu_text.configure(foreground=app.theme.system_normal)
 
-        if args.monitor_ram:
+        if args.system_ram:
             if ram >= threshold:
-                widgets.ram_text.configure(foreground=app.theme.monitor_heavy)
+                widgets.ram_text.configure(foreground=app.theme.system_heavy)
             else:
-                widgets.ram_text.configure(foreground=app.theme.monitor_normal)
+                widgets.ram_text.configure(foreground=app.theme.system_normal)
 
-        if args.monitor_temp:
+        if args.system_temp:
             if temp:
                 if temp >= threshold:
-                    widgets.temp_text.configure(foreground=app.theme.monitor_heavy)
+                    widgets.temp_text.configure(foreground=app.theme.system_heavy)
                 else:
-                    widgets.temp_text.configure(foreground=app.theme.monitor_normal)
+                    widgets.temp_text.configure(foreground=app.theme.system_normal)
 
 
 def check() -> None:
@@ -81,7 +81,7 @@ def check() -> None:
 
 
 def start() -> None:
-    if not args.monitors:
+    if not args.system:
         return
 
     thread = threading.Thread(target=check, args=())
