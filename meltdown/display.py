@@ -327,7 +327,7 @@ class Display:
         if len(ids) <= 1:
             return
 
-        max_minutes = config.old_tabs_max_minutes
+        max_minutes = args.old_tabs_minutes
         max_date = timeutils.now() - (60 * max_minutes)
 
         def action() -> None:

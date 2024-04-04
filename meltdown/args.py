@@ -57,6 +57,8 @@ class Args:
         self.aliases: List[str] = []
         self.tasks: List[str] = []
         self.max_tab_width = 0
+        self.old_tabs_minutes = 30
+        self.max_list_items = 10
 
     class Internal:
         title = app.manifest["title"]
@@ -113,6 +115,8 @@ class Args:
             "input": {"type": str, "help": "Prompt the AI automatically with this input when starting the program"},
             "alias": {"type": str, "action": "append", "help": "Define an alias to run commands"},
             "task": {"type": str, "action": "append", "help": "Define a task to run periodically"},
+            "old-tabs-minutes": {"type": int, "help": "Consider a tab old after these minutes (using last modified date)"},
+            "max-list-items": {"type": int, "help": "Max number of items in context menu lists"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -146,7 +150,8 @@ class Args:
             "f1", "f2", "f3", "f4", "f5", "f6", "f7",
             "f8", "f9", "f10", "f11", "f12",
 
-            "alt_palette", "max_tab_width",
+            "alt_palette", "max_tab_width", "old_tabs_minutes",
+            "max_list_items",
         ]
 
         for n_item in normals:

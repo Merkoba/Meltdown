@@ -467,7 +467,7 @@ class Widgets:
                         event: Optional[Any] = None, require_items: bool = False) -> None:
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
-        items = getattr(config, key_list)[:config.max_list_items]
+        items = getattr(config, key_list)[:args.max_list_items]
 
         if require_items:
             if not items:

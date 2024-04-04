@@ -8,12 +8,10 @@ from pathlib import Path
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
-        self.max_list_items = 10
         self.system_delay = 3
         self.system_threshold = 70
-        self.printlogs = False
         self.list_item_width = 100
-        self.old_tabs_max_minutes = 30
+        self.printlogs = False
 
         self.models: List[str] = []
         self.inputs: List[str] = []
