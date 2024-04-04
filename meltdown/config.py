@@ -130,21 +130,24 @@ class Config:
         with open(file_path, "w") as file:
             file.write(conf)
 
-    def load_state(self) -> None:
+    def load_state(self, name: str = "") -> None:
         from .paths import paths
         from .widgets import widgets
 
         if not paths.configs.exists():
             paths.configs.mkdir(parents=True, exist_ok=True)
 
-        file_path = filedialog.askopenfilename(
-            initialdir=paths.configs,
-        )
+        if name:
+            path = Path(paths.configs, f"{name}.json")
+        else:
+            file_path = filedialog.askopenfilename(
+                initialdir=paths.configs,
+            )
 
-        if not file_path:
-            return
+            if not file_path:
+                return
 
-        path = Path(file_path)
+            path = Path(file_path)
 
         if (not path.exists()) or (not path.is_file()):
             return

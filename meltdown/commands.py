@@ -89,6 +89,7 @@ class Commands:
         from .widgets import widgets
         from .inputcontrol import inputcontrol
         force = "Use 'force' to force"
+        file_name = "You can provide the file name"
 
         self.commands = {
             "clear": {
@@ -366,9 +367,18 @@ class Commands:
                 "action": lambda a=None: session.save_state(),
             },
             "loadsession": {
-                "aliases": ["open"],
+                "aliases": ["open", "sessionload"],
                 "help": "Load a session",
-                "action": lambda a=None: session.load_state(),
+                "extra": file_name,
+                "action": lambda a=None: session.load_state(name=a),
+                "type": str,
+            },
+            "loadconfig": {
+                "aliases": ["configload"],
+                "help": "Load a session",
+                "extra": file_name,
+                "action": lambda a=None: config.load_state(name=a),
+                "type": str,
             },
             "copy": {
                 "aliases": [],

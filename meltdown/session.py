@@ -230,7 +230,7 @@ class Session:
             return
 
         for item in items:
-            conversation = Conversation(item["id"], item["name"], item["last_modified"])
+            conversation = Conversation(item["id"], item["name"], item.get("last_modified", 0.0))
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
             display.make_tab(conversation.name, conversation.id,
@@ -252,18 +252,21 @@ class Session:
         with open(file_path, "w") as file:
             file.write(self.to_json())
 
-    def load_state(self) -> None:
+    def load_state(self, name: str = "") -> None:
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
-        file_path = filedialog.askopenfilename(
-            initialdir=paths.sessions,
-        )
+        if name:
+            path = Path(paths.sessions, f"{name}.json")
+        else:
+            file_path = filedialog.askopenfilename(
+                initialdir=paths.sessions,
+            )
 
-        if not file_path:
-            return
+            if not file_path:
+                return
 
-        path = Path(file_path)
+            path = Path(file_path)
 
         if (not path.exists()) or (not path.is_file()):
             return
