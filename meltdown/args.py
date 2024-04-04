@@ -120,7 +120,7 @@ class Args:
             "old-tabs-minutes": {"type": int, "help": "Consider a tab old after these minutes (using last modified date)"},
             "max-list-items": {"type": int, "help": "Max number of items in context menu lists"},
             "list-item-width": {"type": int, "help": "Max characters for the text of list items"},
-            "system-threshold": {"type": int, "help": "Show system monitors as critical after this % threshold"},
+            "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
         }
 
         aliases: Dict[str, List[str]] = {
