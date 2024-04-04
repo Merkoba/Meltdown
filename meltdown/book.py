@@ -75,10 +75,10 @@ class Page():
 
             if index >= 0:
                 text = f"{index + 1}. {text}"
-        else:
-            if len(text) < 4:
-                space = "  "
-                text = f"{space}{text}{space}"
+
+        if len(text) < 4:
+            space = "  "
+            text = f"{space}{text}{space}"
 
         self.tab.label.configure(text=text)
 
