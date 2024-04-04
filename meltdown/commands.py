@@ -288,6 +288,7 @@ class Commands:
                 "help": "Reset the config",
                 "extra": force,
                 "action": lambda a=None: config.reset(force=a),
+                "type": "force",
             },
             "viewtext": {
                 "aliases": ["text"],
