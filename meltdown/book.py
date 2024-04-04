@@ -180,7 +180,20 @@ class Book(tk.Frame):
         self.current_page = page
         self.add_tab(page)
         self.add_content(page.content)
+        self.check_max_tabs()
         return page
+
+    def check_max_tabs(self) -> None:
+        if args.max_tabs <= 0:
+            return
+
+        ids = self.ids()
+
+        if len(ids) <= args.max_tabs:
+            return
+
+        for id in ids[:-args.max_tabs]:
+            self.close(id)
 
     def current(self) -> str:
         if not self.current_page:

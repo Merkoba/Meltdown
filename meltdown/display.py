@@ -110,7 +110,6 @@ class Display:
         self.tab_number += 1
         app.show_intro(tab_id)
         tab.modified = False
-        self.check_max_tabs()
 
         if save:
             session.save()
@@ -814,18 +813,6 @@ class Display:
                 self.select_tab(tab.tab_id)
                 tab.find.show(query=query)
                 break
-
-    def check_max_tabs(self) -> None:
-        if args.max_tabs <= 0:
-            return
-
-        ids = self.tab_ids()
-
-        if len(ids) <= args.max_tabs:
-            return
-
-        for tab_id in ids[:-args.max_tabs]:
-            self.close_tab(tab_id=tab_id, force=True)
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
