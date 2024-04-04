@@ -90,7 +90,7 @@ class Widgets:
                 if "cpu" == monitors[-1]:
                     rightpad = right_padding
                 else:
-                    rightpad = 0
+                    rightpad = None
 
                 self.cpu_label = widgetutils.make_label(self.system_frame, "CPU")
                 self.cpu_label.configure(cursor="hand2")
@@ -107,7 +107,7 @@ class Widgets:
                 if "ram" == monitors[-1]:
                     rightpad = right_padding
                 else:
-                    rightpad = 0
+                    rightpad = None
 
                 self.ram_label = widgetutils.make_label(self.system_frame, "RAM")
                 self.ram_label.configure(cursor="hand2")
@@ -124,7 +124,7 @@ class Widgets:
                 if "tmp" == monitors[-1]:
                     rightpad = right_padding
                 else:
-                    rightpad = 0
+                    rightpad = None
 
                 self.temp_label = widgetutils.make_label(self.system_frame, "TMP")
                 self.temp_label.configure(cursor="hand2")
