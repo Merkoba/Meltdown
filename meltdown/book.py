@@ -422,11 +422,13 @@ class Book(tk.Frame):
 
         old_index = self.pages.index(self.drag_page)
         new_index = self.pages.index(new_page)
+
         self.drag_index = new_index
+        self.drag_x = event.x_root
+
         self.pages.insert(new_index, self.pages.pop(old_index))
         self.scroll_to_page(new_page)
         self.update_tab_columns()
-        self.drag_x = event.x_root
 
     def get_center_x(self, page: Page) -> int:
         return page.tab.frame.winfo_rootx() + page.tab.frame.winfo_width() // 2
