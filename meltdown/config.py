@@ -13,6 +13,7 @@ class Config:
         self.list_item_width = 100
         self.printlogs = False
 
+        # Added for mypy
         self.models: List[str] = []
         self.inputs: List[str] = []
 
