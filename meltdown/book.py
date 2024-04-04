@@ -410,11 +410,10 @@ class Book(tk.Frame):
 
         x = event.x_root - self.drag_x
         new_page = None
-        threshold = 80
 
-        if x >= threshold:
+        if x >= args.drag_threshold:
             new_page = self.get_page_by_index(self.drag_index + 1)
-        elif x <= 0 - threshold:
+        elif x <= 0 - args.drag_threshold:
             new_page = self.get_page_by_index(self.drag_index - 1)
 
         if not new_page:

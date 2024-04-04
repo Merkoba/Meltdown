@@ -61,6 +61,7 @@ class Args:
         self.max_list_items = 10
         self.list_item_width = 100
         self.system_threshold = 70
+        self.drag_threshold = 88
 
     class Internal:
         title = app.manifest["title"]
@@ -121,6 +122,7 @@ class Args:
             "max-list-items": {"type": int, "help": "Max number of items in context menu lists"},
             "list-item-width": {"type": int, "help": "Max characters for the text of list items"},
             "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
+            "drag-threshold": {"type": int, "help": "The higher the number the less sensitive the tab dragging will be"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -156,6 +158,7 @@ class Args:
 
             "alt_palette", "max_tab_width", "old_tabs_minutes",
             "max_list_items", "list_item_width", "system_threshold",
+            "drag_threshold",
         ]
 
         for n_item in normals:

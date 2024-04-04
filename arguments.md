@@ -275,3 +275,9 @@ Max number of characters to show in tab names.
 >system-threshold
 
 Show system monitors as critical after this % threshold.
+
+---
+
+>drag-threshold
+
+The higher the number the less sensitive the tab dragging will be.
