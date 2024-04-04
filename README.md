@@ -217,7 +217,7 @@ You must first set the API key for it to work.
 
 This can be done using the main menu: `Set API Key`.
 
-Then pick the model you want, also in the main menu.
+Then pick the model you want: `Use GPT Model`.
 
 ---
 
