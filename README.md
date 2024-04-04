@@ -211,9 +211,13 @@ You can find more in that site.
 
 ## ChatGPT <a name="chatgpt"></a>
 
-You must first set the API key for ChatGPT to work.
+ChatGPT is also supported.
+
+You must first set the API key for it to work.
 
 This can be done using the main menu: `Set API Key`.
+
+Then pick the model you want, also in the main menu.
 
 ---
 
