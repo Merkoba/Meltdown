@@ -75,6 +75,10 @@ class Page():
 
             if index >= 0:
                 text = f"{index + 1}. {text}"
+        else:
+            if len(text) < 4:
+                space = "  "
+                text = f"{space}{text}{space}"
 
         self.tab.label.configure(text=text)
 
@@ -391,34 +395,42 @@ class Book(tk.Frame):
             self.dragging = True
             self.drag_page = page
             self.drag_index = self.pages.index(page)
-            self.drag_direction = ""
+            self.drag_center = self.get_center_x(page)
+            self.drag_x = event.x_root
             self.select(page.id)
             return
 
-        new_page = self.get_page_at_x(event.x_root)
+        if not self.drag_page:
+            return
 
-        if new_page and self.drag_page and (new_page != self.drag_page):
-            old_index = self.pages.index(self.drag_page)
-            new_index = self.pages.index(new_page)
+        if event.x_root > self.drag_x:
+            x = event.x_root - self.drag_x
+            x = self.drag_center + x
+        else:
+            x = self.drag_x - event.x_root
+            x = self.drag_center - x
 
-            if self.drag_direction:
-                if self.drag_direction == "left":
-                    if new_index >= self.drag_index:
-                        return
+        new_page = self.get_page_at_x(x)
 
-                elif self.drag_direction == "right":
-                    if new_index <= self.drag_index:
-                        return
-            else:
-                if new_index < self.drag_index:
-                    self.drag_direction = "left"
-                else:
-                    self.drag_direction = "right"
+        if not new_page:
+            return
 
-            self.drag_index = new_index
-            self.pages.insert(new_index, self.pages.pop(old_index))
-            self.scroll_to_page(new_page)
-            self.update_tab_columns()
+        if new_page == self.drag_page:
+            return
+
+        old_index = self.pages.index(self.drag_page)
+        new_index = self.pages.index(new_page)
+        self.drag_index = new_index
+        self.pages.insert(new_index, self.pages.pop(old_index))
+        self.scroll_to_page(new_page)
+        self.update_tab_columns()
+
+        app.update()
+        self.drag_center = self.get_center_x(self.drag_page)
+        self.drag_x = event.x_root
+
+    def get_center_x(self, page: Page) -> int:
+        return page.tab.frame.winfo_rootx() + page.tab.frame.winfo_width() // 2
 
     def get_page_at_x(self, x: int) -> Optional[Page]:
         for page in self.pages:
