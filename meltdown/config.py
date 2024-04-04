@@ -9,8 +9,6 @@ class Config:
     def __init__(self) -> None:
         self.max_log = 50
         self.system_delay = 3
-        self.system_threshold = 70
-        self.list_item_width = 100
         self.printlogs = False
 
         # Added for mypy

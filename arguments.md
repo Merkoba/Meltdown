@@ -260,6 +260,18 @@ Like the Recent items when you right click the Input.
 
 ---
 
+>list-item-width
+
+How many characters the list items can have.
+
+---
+
 >max-tab-width
 
 Max number of characters to show in tab names.
+
+---
+
+>system-threshold
+
+Show system monitors as critical after this % threshold.

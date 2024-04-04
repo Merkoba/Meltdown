@@ -59,6 +59,8 @@ class Args:
         self.max_tab_width = 0
         self.old_tabs_minutes = 30
         self.max_list_items = 10
+        self.list_item_width = 100
+        self.system_threshold = 70
 
     class Internal:
         title = app.manifest["title"]
@@ -117,6 +119,8 @@ class Args:
             "task": {"type": str, "action": "append", "help": "Define a task to run periodically"},
             "old-tabs-minutes": {"type": int, "help": "Consider a tab old after these minutes (using last modified date)"},
             "max-list-items": {"type": int, "help": "Max number of items in context menu lists"},
+            "list-item-width": {"type": int, "help": "Max characters for the text of list items"},
+            "system-threshold": {"type": int, "help": "Show system monitors as critical after this % threshold"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -151,7 +155,7 @@ class Args:
             "f8", "f9", "f10", "f11", "f12",
 
             "alt_palette", "max_tab_width", "old_tabs_minutes",
-            "max_list_items",
+            "max_list_items", "list_item_width", "system_threshold",
         ]
 
         for n_item in normals:
