@@ -426,6 +426,21 @@ class Commands:
                 "help": "Print all the config settings",
                 "action": lambda a=None: config.print_config(),
             },
+            "bigger": {
+                "aliases": ["biggerfont"],
+                "help": "Increase the font size",
+                "action": lambda a=None: display.increase_font(),
+            },
+            "smaller": {
+                "aliases": ["smallerfont"],
+                "help": "Decrease the font size",
+                "action": lambda a=None: display.decrease_font(),
+            },
+            "resetfont": {
+                "aliases": [],
+                "help": "Reset the font size",
+                "action": lambda a=None: display.reset_font(),
+            },
         }
 
         for key in self.commands:
