@@ -405,6 +405,7 @@ class Keyboard:
         lines.append("1 to 0 to jump to tabs")
         lines.append(separator)
         lines.append("F1 to F12 to run functions (configurable through arguments)")
+        lines.append(separator)
 
         text = "\n\n".join(lines)
         display.print(text, tab_id=tab_id)
