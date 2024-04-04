@@ -167,10 +167,10 @@ class Display:
             app.update()
 
     def select_tab_by_number(self, num: int) -> None:
-        if num < 0 or num > 9:
+        if num < 1 or num > 9:
             return
 
-        if num == 0:
+        if num == 9:
             self.book.select_last()
         else:
             self.book.select_by_index(num - 1)

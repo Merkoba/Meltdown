@@ -367,10 +367,14 @@ class Keyboard:
                       on_ctrl=lambda: run_command("smaller"),
                       ctrl_help="Decrease the font size")
 
+        self.register("0",
+                      on_ctrl=lambda: run_command("resetfont"),
+                      ctrl_help="Reset the font size")
+
         for num in range(1, 13):
             add_function_key(num)
 
-        for num in range(0, 10):
+        for num in range(1, 10):
             register_num(num)
 
     def reset(self) -> None:
@@ -422,7 +426,7 @@ class Keyboard:
                 lines.append("\n\n".join(items))
 
         lines.append(separator)
-        lines.append("1 to 0 to jump to tabs")
+        lines.append("1 to 9 to jump to tabs")
         lines.append(separator)
         lines.append("F1 to F12 to run functions (configurable through arguments)")
         lines.append(separator)
