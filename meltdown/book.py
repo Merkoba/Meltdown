@@ -285,6 +285,12 @@ class Book(tk.Frame):
 
         return None
 
+    def get_page_by_index(self, index: int) -> Optional[Page]:
+        if index < 0 or index >= len(self.pages):
+            return None
+
+        return self.pages[index]
+
     def ids(self) -> List[str]:
         return [page.id for page in self.pages]
 
@@ -395,7 +401,6 @@ class Book(tk.Frame):
             self.dragging = True
             self.drag_page = page
             self.drag_index = self.pages.index(page)
-            self.drag_center = self.get_center_x(page)
             self.drag_x = event.x_root
             self.select(page.id)
             return
@@ -403,19 +408,16 @@ class Book(tk.Frame):
         if not self.drag_page:
             return
 
-        if event.x_root > self.drag_x:
-            x = event.x_root - self.drag_x
-            x = self.drag_center + x
-        else:
-            x = self.drag_x - event.x_root
-            x = self.drag_center - x
+        x = event.x_root - self.drag_x
+        new_page = None
+        threshold = 80
 
-        new_page = self.get_page_at_x(x)
+        if x >= threshold:
+            new_page = self.get_page_by_index(self.drag_index + 1)
+        elif x <= 0 - threshold:
+            new_page = self.get_page_by_index(self.drag_index - 1)
 
         if not new_page:
-            return
-
-        if new_page == self.drag_page:
             return
 
         old_index = self.pages.index(self.drag_page)
@@ -424,9 +426,6 @@ class Book(tk.Frame):
         self.pages.insert(new_index, self.pages.pop(old_index))
         self.scroll_to_page(new_page)
         self.update_tab_columns()
-
-        app.update()
-        self.drag_center = self.get_center_x(self.drag_page)
         self.drag_x = event.x_root
 
     def get_center_x(self, page: Page) -> int:
