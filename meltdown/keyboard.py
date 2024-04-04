@@ -359,6 +359,14 @@ class Keyboard:
                       ctrl_help="Decrease the font size",
                       ctrl_shift_help="Reset the font size")
 
+        self.register("<equal>",
+                      on_ctrl=lambda: run_command("bigger"),
+                      ctrl_help="Increase the font size")
+
+        self.register("<minus>",
+                      on_ctrl=lambda: run_command("smaller"),
+                      ctrl_help="Decrease the font size")
+
         for num in range(1, 13):
             add_function_key(num)
 
