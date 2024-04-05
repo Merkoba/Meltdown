@@ -254,7 +254,8 @@ class Session:
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(self.to_json())
 
-        display.print(f"{config.disk} Session saved")
+        if not args.quiet:
+            display.print(f"{config.disk} Session saved")
 
     def load_state(self, name: str = "") -> None:
         if not paths.sessions.exists():

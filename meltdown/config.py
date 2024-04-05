@@ -111,6 +111,7 @@ class Config:
     def save_state(self, name: str = "") -> None:
         from .display import display
         from .paths import paths
+        from .args import args
 
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
@@ -132,7 +133,8 @@ class Config:
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(conf)
 
-        display.print(f"{config.disk} Config saved")
+        if not args.quiet:
+            display.print(f"{config.disk} Config saved")
 
     def load_state(self, name: str = "") -> None:
         from .paths import paths

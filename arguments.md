@@ -295,3 +295,9 @@ The higher the number the less sensitive the tab dragging will be.
 >no-tab-highlight
 
 Don't highlight the tab when streaming.
+
+---
+
+>quiet
+
+Don't show some messages.

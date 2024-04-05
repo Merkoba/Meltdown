@@ -50,7 +50,8 @@ class Logs:
             file.write(text)
 
         if not all:
-            display.print(f"{config.disk} Log saved as {file_name}")
+            if not args.quiet:
+                display.print(f"{config.disk} Log saved as {file_name}")
 
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
@@ -78,6 +79,9 @@ class Logs:
             self.save_file(text, conversation.name, "json", all)
 
         if all:
+            if args.quiet:
+                return
+
             if num == 1:
                 s = f"{config.disk} {num} JSON log saved"
             else:
@@ -123,6 +127,9 @@ class Logs:
             self.save_file(text, conversation.name, "txt", all)
 
         if all:
+            if args.quiet:
+                return
+
             if num == 1:
                 s = f"{config.disk} {num} text log saved"
             else:
