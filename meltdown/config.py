@@ -33,7 +33,6 @@ class Config:
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
-        self.default_input: str = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -53,7 +52,6 @@ class Config:
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.theme = self.default_theme
-        self.input = self.default_input
 
         self.clearables = [
             "system",

@@ -5,6 +5,7 @@ from .commands import commands
 from .config import config
 from .entrybox import EntryBox
 from .app import app
+from .args import args
 from . import widgetutils
 
 # Standard
@@ -157,10 +158,7 @@ class InputControl:
         self.check()
 
     def check(self) -> None:
-        from .args import args
         from .display import display
-        from .inputcontrol import inputcontrol
-        from .commands import commands
         text = args.input.strip()
 
         if text:
@@ -171,7 +169,7 @@ class InputControl:
                 if not display.tab_is_empty(tab_id):
                     tab_id = display.make_tab()
 
-            inputcontrol.submit(tab_id=tab_id, text=text)
+            self.submit(tab_id=tab_id, text=text)
 
 
 inputcontrol = InputControl()
