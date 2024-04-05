@@ -180,6 +180,11 @@ class Args:
 
         if not sys.stdin.isatty():
             self.input = sys.stdin.read()
+        else:
+            string_arg = ap.string_arg()
+
+            if string_arg:
+                self.input = string_arg
 
         self.parser = ap.parser
 

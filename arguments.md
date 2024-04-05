@@ -230,6 +230,12 @@ This can also be piped:
 echo "hello world" | meltdown
 ```
 
+This can also be used without the flag:
+
+```sh
+meltdown "hello world"
+```
+
 ---
 
 >force

@@ -33,6 +33,7 @@ class ArgParser:
 
             tail = {key: value for key,
                     value in item.items() if value is not None}
+
             parser.add_argument(*names, **tail)
 
         self.parser = parser
