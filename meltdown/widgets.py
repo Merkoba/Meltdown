@@ -631,6 +631,7 @@ class Widgets:
             self.enable_stop_button()
         else:
             self.disable_stop_button()
+            display.stream_stopped()
 
         model_empty = self.model.get() == ""
 

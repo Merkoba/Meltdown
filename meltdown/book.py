@@ -564,3 +564,14 @@ class Book(tk.Frame):
             self.move_right()
         else:
             self.select_right()
+
+    def highlight(self, id: str) -> None:
+        for page in self.pages:
+            if page.id == id:
+                page.tab.label.configure(font=app.theme.font_tab_highlight)
+            else:
+                page.tab.label.configure(font=app.theme.font_tab)
+
+    def remove_highlights(self) -> None:
+        for page in self.pages:
+            page.tab.label.configure(font=app.theme.font_tab)

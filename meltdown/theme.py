@@ -17,6 +17,7 @@ class Theme:
         self.font_button = (self.font_family, 12)
         self.font_combobox = (self.font_family, 13)
         self.font_tab = (self.font_family, 12)
+        self.font_tab_highlight = (self.font_family, 12, "underline")
         self.font_menu = (self.font_family, 13)
         self.font_tooltips = (self.font_family, 12)
 

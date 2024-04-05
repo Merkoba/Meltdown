@@ -301,6 +301,7 @@ class Model:
         now = timeutils.now()
         self.stream_date = now
         stream = args.stream
+        display.stream_started(tab_id)
 
         if self.model_is_gpt(config.model):
             try:
