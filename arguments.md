@@ -4,8 +4,6 @@ These are flags you can use when running the program.
 
 For example: `meltdown --no-tooltips --width 800 --height 900`
 
-Check [args.py](meltdown/args.py) to see the default values.
-
 There are some keywords you can use.
 
 These are replaced in the argument:
@@ -268,11 +266,15 @@ Instead it just disables it.
 
 >old-tabs-minutes
 
+Default: 30
+
 Consider tabs old after these minutes.
 
 ---
 
 >max_list_items
+
+Default: 10
 
 Max number to keep in lists.
 
@@ -281,6 +283,8 @@ Like the Recent items when you right click the Input.
 ---
 
 >list-item-width
+
+Default: 100
 
 How many characters the list items can have.
 
@@ -294,17 +298,23 @@ Max number of characters to show in tab names.
 
 >system-threshold
 
+Default: 70
+
 Show system monitors as critical after this % threshold.
 
 ---
 
 >system-delay
 
+Default: 3
+
 Delay in seconds for system monitor updates.
 
 ---
 
 >drag-threshold
+
+Default: 88
 
 The higher the number the less sensitive the tab dragging will be.
 
@@ -324,6 +334,8 @@ Don't show some messages.
 
 >buffer
 
+Default: 2
+
 Accumulate these tokens before printing.
 
 This is to adjust how the stream is printed when streaming live.
@@ -333,6 +345,8 @@ If 0, the buffer is not used and prints immediately.
 ---
 
 >delay
+
+Default: 0.15
 
 Delay in seconds between each print when streaming.
 
