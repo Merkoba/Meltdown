@@ -4,7 +4,7 @@ These are flags you can use when running the program.
 
 For example: `meltdown --no-tooltips --width 800 --height 900`
 
-Check `args.py` to see the default values.
+Check [args.py](meltdown/args.py) to see the default values.
 
 ---
 
