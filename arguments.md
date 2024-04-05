@@ -321,3 +321,5 @@ Don't show some messages.
 Accumulate these tokens before printing.
 
 This is to adjust how the stream is printed when streaming live.
+
+If 0, the buffer is not used and prints immediately.

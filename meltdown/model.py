@@ -354,6 +354,7 @@ class Model:
         last_token = " "
         tokens: List[str] = []
         buffer: List[str] = []
+        broken = False
 
         def print_buffer() -> None:
             if not len(buffer):
@@ -366,6 +367,7 @@ class Model:
             try:
                 for chunk in output:
                     if self.stop_stream_thread.is_set():
+                        broken = True
                         break
 
                     delta = chunk.choices[0].delta
@@ -412,7 +414,8 @@ class Model:
             except BaseException as e:
                 utils.error(e)
 
-        print_buffer()
+        if not broken:
+            print_buffer()
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()
