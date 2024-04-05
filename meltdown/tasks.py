@@ -10,54 +10,64 @@ import re
 import threading
 
 
-def run(cmds: str) -> None:
-    commands.exec(cmds)
+class Task:
+    prefix = utils.escape_regex(app.prefix)
+    pattern = fr"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
+
+    def __init__(self, seconds: float, cmds: str, now: bool) -> None:
+        self.seconds = seconds
+        self.cmds = cmds
+        self.now = now
+        self.start()
+
+    def start(self) -> None:
+        thread = threading.Thread(target=lambda: self.check())
+        thread.daemon = True
+        thread.start()
+
+    def run(self, cmds: str) -> None:
+        commands.exec(cmds)
+
+    def check(self) -> None:
+        first_run = False
+
+        if not args.quiet:
+            msg = f"Running a task every {self.seconds} seconds"
+            utils.msg(msg)
+
+        timeutils.sleep(1)
+
+        while True:
+            if not first_run:
+                if self.now:
+                    self.run(self.cmds)
+
+                first_run = True
+
+            timeutils.sleep(self.seconds)
+            self.run(self.cmds)
 
 
-def check(seconds: float, cmds: str, now: bool) -> None:
-    first_run = False
-    msg = f"Running a task every {seconds} seconds"
-    utils.msg(msg)
-    timeutils.sleep(1)
-
-    while True:
-        if not first_run:
-            if now:
-                run(cmds)
-
-            first_run = True
-
-        timeutils.sleep(seconds)
-        run(cmds)
-
-
-def start() -> None:
+def start_all() -> None:
     for task in args.tasks:
-        do_start(task)
+        if not task:
+            continue
 
+        match = re.match(Task.pattern, task)
 
-def do_start(task: str) -> None:
-    if not task:
-        return
+        if not match:
+            return
 
-    p = utils.escape_regex(app.prefix)
-    match = re.match(fr"^((?:\d.)?\d+)\s+(.*?)({p}now)?$", task)
+        try:
+            seconds = float(match.group(1))
+        except BaseException:
+            return
 
-    if not match:
-        return
+        cmds = match.group(2)
 
-    try:
-        seconds = float(match.group(1))
-    except BaseException:
-        return
+        if match.group(3):
+            now = True
+        else:
+            now = False
 
-    cmds = match.group(2)
-
-    if match.group(3):
-        now = True
-    else:
-        now = False
-
-    thread = threading.Thread(target=lambda: check(seconds, cmds, now), args=())
-    thread.daemon = True
-    thread.start()
+        Task(seconds, cmds, now)

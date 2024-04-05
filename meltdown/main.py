@@ -45,7 +45,7 @@ def main() -> None:
     keyboard.setup()
     commands.setup()
     system.start()
-    tasks.start()
+    tasks.start_all()
     app.setup()
     inputcontrol.setup()
 
