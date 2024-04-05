@@ -30,8 +30,8 @@ class Queue:
 
 class Commands:
     def __init__(self) -> None:
+        self.prefix = app.prefix
         self.commands: Dict[str, Dict[str, Any]] = {}
-        self.prefix = "/"
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
         self.autocomplete_match = ""
@@ -589,11 +589,12 @@ class Commands:
 
     def help_command(self) -> None:
         from .display import display
+        p = self.prefix
 
         items = []
-        items.append("Use /commands to see commands")
-        items.append("Use /arguments to see command line arguments")
-        items.append("Use /keyboard to see keyboard shortcuts")
+        items.append(f"Use {p}commands to see commands")
+        items.append(f"Use {p}arguments to see command line arguments")
+        items.append(f"Use {p}keyboard to see keyboard shortcuts")
 
         text = "\n".join(items)
         display.print(text)

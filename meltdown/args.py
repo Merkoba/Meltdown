@@ -9,6 +9,8 @@ from typing import Any, Dict, List
 
 class Args:
     def __init__(self) -> None:
+        p = app.prefix
+
         self.force = False
         self.tooltips = True
         self.scrollbars = True
@@ -43,18 +45,18 @@ class Args:
         self.config = ""
         self.session = ""
         self.on_log = ""
-        self.f1 = "/help"
+        self.f1 = f"{p}help"
         self.f2 = ""
-        self.f3 = "/next"
+        self.f3 = f"{p}next"
         self.f4 = ""
-        self.f5 = "/reset"
+        self.f5 = f"{p}reset"
         self.f6 = ""
         self.f7 = ""
-        self.f8 = "/compact"
+        self.f8 = f"{p}compact"
         self.f9 = ""
         self.f10 = ""
-        self.f11 = "/fullscreen"
-        self.f12 = "/list"
+        self.f11 = f"{p}fullscreen"
+        self.f12 = f"{p}list"
         self.input = ""
         self.aliases: List[str] = []
         self.tasks: List[str] = []
