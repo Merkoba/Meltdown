@@ -6,6 +6,18 @@ For example: `meltdown --no-tooltips --width 800 --height 900`
 
 Check [args.py](meltdown/args.py) to see the default values.
 
+There are some keywords you can use.
+
+These are replaced in the argument:
+
+>@now
+
+This is replaced with the current unix time in seconds.
+
+You might want to use this when saving files.
+
+For example `/saveconfig @now` might save `1712344148.json`.
+
 ---
 
 >width
