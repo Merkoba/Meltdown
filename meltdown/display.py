@@ -320,7 +320,6 @@ class Display:
 
     def close_old_tabs(self, force: bool = False) -> None:
         from .session import session
-        from .config import config
         ids = self.tab_ids()
 
         if len(ids) <= 1:

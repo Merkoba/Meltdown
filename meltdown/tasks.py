@@ -45,7 +45,7 @@ def do_start(task: str) -> None:
 
     try:
         seconds = float(match.group(1))
-    except BaseException as e:
+    except BaseException:
         return
 
     cmds = match.group(2)

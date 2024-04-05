@@ -76,7 +76,6 @@ class Output(tk.Text):
         if not Output.current_output:
             return
 
-        from .dialogs import Dialog
         text = Output.get_words()
         Output.current_output.deselect_all()
 

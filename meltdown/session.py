@@ -187,8 +187,7 @@ class Session:
                 self.load()
                 return
 
-            with open(path, "r", encoding="utf-8") as file:
-                self.load_items(path)
+            self.load_items(path)
         except BaseException as e:
             print(e)
             args.session = ""
@@ -220,7 +219,7 @@ class Session:
         with open(path, "r", encoding="utf-8") as file:
             try:
                 items = json.load(file)
-            except BaseException as e:
+            except BaseException:
                 items = []
 
         if args.test:

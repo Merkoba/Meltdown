@@ -111,12 +111,12 @@ def open_logs_dir() -> None:
 
     if os_name == "posix":
         # Linux
-        app.run_command([f"xdg-open", str(path)])
+        app.run_command(["xdg-open", str(path)])
     elif os_name == "nt":
         # Windows
-        app.run_command([f"start", str(path)])
+        app.run_command(["start", str(path)])
     elif os_name == "darwin":
         # macOS
-        app.run_command([f"open", str(path)])
+        app.run_command(["open", str(path)])
     else:
         print(f"Unrecognized OS: {os_name}")

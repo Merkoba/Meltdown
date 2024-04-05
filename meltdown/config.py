@@ -232,13 +232,13 @@ class Config:
         elif vtype == int:
             try:
                 value = int(value)
-            except BaseException as e:
+            except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == float:
             try:
                 value = float(value)
-            except BaseException as e:
+            except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == bool:

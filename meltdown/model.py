@@ -113,7 +113,7 @@ class Model:
         try:
             with open(paths.apikey, "r", encoding="utf-8") as file:
                 self.gpt_key = file.read().strip()
-        except BaseException as e:
+        except BaseException:
             self.gpt_key = ""
 
     def load_gpt(self, prompt: str, tab_id: str) -> None:
@@ -140,7 +140,7 @@ class Model:
 
             if prompt:
                 self.stream(prompt, tab_id)
-        except BaseException as e:
+        except BaseException:
             display.print("Error: GPT model failed to load.")
             self.clear_model()
 
@@ -316,8 +316,8 @@ class Model:
                     top_p=config.top_p,
                     seed=config.seed,
                 )
-            except BaseException as e:
-                display.print(f"Error: GPT model failed to stream."
+            except BaseException:
+                display.print("Error: GPT model failed to stream."
                               " You might not have access to this particular model,"
                               " not enough credits, invalid API key,"
                               " or there is no internet connection.")

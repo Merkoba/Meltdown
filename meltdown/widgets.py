@@ -19,7 +19,6 @@ from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as fo
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any
 from typing import Optional, Any, Callable
 
 
