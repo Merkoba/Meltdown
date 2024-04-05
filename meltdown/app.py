@@ -18,7 +18,7 @@ class App:
     def __init__(self) -> None:
         self.here = Path(__file__).parent.expanduser().resolve()
 
-        with open(Path(self.here, "manifest.json"), "r") as file:
+        with open(Path(self.here, "manifest.json", encoding="utf-8"), "r") as file:
             self.manifest = json.load(file)
 
         title = self.manifest["title"]

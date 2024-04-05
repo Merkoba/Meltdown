@@ -111,7 +111,7 @@ class Model:
         from .paths import paths
 
         try:
-            with open(paths.apikey, "r") as file:
+            with open(paths.apikey, "r", encoding="utf-8") as file:
                 self.gpt_key = file.read().strip()
         except BaseException as e:
             self.gpt_key = ""
@@ -455,7 +455,7 @@ class Model:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 Path.touch(paths.apikey, exist_ok=True)
 
-            with open(path, "w") as file:
+            with open(path, "w", encoding="utf-8") as file:
                 file.write(key)
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text))

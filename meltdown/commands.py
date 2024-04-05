@@ -731,7 +731,7 @@ class Commands:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):
             return
 
-        with open(paths.commands, "r") as file:
+        with open(paths.commands, "r", encoding="utf-8") as file:
             try:
                 cmds = json.load(file)
             except BaseException:

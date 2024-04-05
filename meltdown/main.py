@@ -25,7 +25,7 @@ def main() -> None:
     args.parse()
 
     pid_file = os.path.join(tempfile.gettempdir(), f"mlt_{program}.pid")
-    fp = open(pid_file, "w")
+    fp = open(pid_file, "w", encoding="utf-8")
 
     try:
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)

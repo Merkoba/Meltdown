@@ -124,7 +124,7 @@ class Config:
 
         conf = self.get_string()
 
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(conf)
 
     def load_state(self, name: str = "") -> None:
@@ -149,7 +149,7 @@ class Config:
         if (not path.exists()) or (not path.is_file()):
             return
 
-        with open(path, "r") as file:
+        with open(path, "r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
 
@@ -169,7 +169,7 @@ class Config:
             paths.config.parent.mkdir(parents=True, exist_ok=True)
             paths.config.touch(exist_ok=True)
 
-        with open(paths.config, "r") as file:
+        with open(paths.config, "r", encoding="utf-8") as file:
             self.apply(file)
 
     def load_arg(self) -> None:
@@ -192,7 +192,7 @@ class Config:
                 self.load_file()
                 return
 
-            with open(path, "r") as file:
+            with open(path, "r", encoding="utf-8") as file:
                 self.apply(file)
         except BaseException as e:
             print(e)

@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 def save(path: Path, dictionary: Any) -> None:
-    with open(path, "w") as file:
+    with open(path, "w", encoding="utf-8") as file:
         json.dump(dictionary, file, indent=4)
 
 
@@ -55,7 +55,7 @@ def load_list_file(path: Path, key: str, list_key: str) -> None:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.touch(exist_ok=True)
 
-    with open(path, "r") as file:
+    with open(path, "r", encoding="utf-8") as file:
         try:
             items = json.load(file)
         except BaseException:

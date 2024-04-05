@@ -45,7 +45,7 @@ class Logs:
             if num > 9999:
                 break
 
-        with open(file_path, "w") as file:
+        with open(file_path, "w", encoding="utf-8") as file:
             file.write(text)
 
         if not all:
