@@ -603,6 +603,7 @@ class Display:
             tab.output.update_font()
 
     def scroll_up(self, tab_id: str = "") -> None:
+        app.hide_all()
 
         if not tab_id:
             tab_id = self.current_tab
@@ -613,6 +614,8 @@ class Display:
             output.scroll_up()
 
     def scroll_down(self, tab_id: str = "") -> None:
+        app.hide_all()
+
         if not tab_id:
             tab_id = self.current_tab
 

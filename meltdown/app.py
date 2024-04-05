@@ -374,8 +374,9 @@ class App:
     def hide_all(self) -> None:
         from .dialogs import Dialog
         from .menus import Menu
+        from .tooltips import ToolTip
         Dialog.hide_all()
         Menu.hide_all()
-
+        ToolTip.hide_all()
 
 app = App()
