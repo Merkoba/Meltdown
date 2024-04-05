@@ -273,7 +273,7 @@ class Keyboard:
 
         self.register("<BackSpace>",
                       on_ctrl=lambda: run_command("clear"),
-                      ctrl_help="Clear all the text")
+                      ctrl_help="Clear the conversation")
 
         self.register("<Up>",
                       lambda: inputcontrol.history_up(),

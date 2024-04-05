@@ -262,7 +262,7 @@ class Widgets:
 
         self.clear_button = widgetutils.make_button(self.button_frame, "Clear",
                                                     lambda: display.clear(), fill=Fill.HORIZONTAL)
-        ToolTip(self.clear_button, "Clear all the text")
+        ToolTip(self.clear_button, "Clear the conversation")
 
         self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),
                                                   fill=Fill.HORIZONTAL)

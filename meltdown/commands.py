@@ -94,7 +94,7 @@ class Commands:
         self.commands = {
             "clear": {
                 "aliases": ["clean", "cls"],
-                "help": "Clear conversation",
+                "help": "Clear the conversation",
                 "extra": force,
                 "action": lambda a=None: display.clear(force=a),
                 "type": "force",
