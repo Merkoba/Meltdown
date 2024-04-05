@@ -290,11 +290,6 @@ class Model:
         content = self.replace_content(content)
         messages.append({"role": "user", "content": content})
 
-        added_name = False
-        token_printed = False
-        last_token = " "
-        tokens = []
-
         filemanager.add_system(config.system)
         filemanager.add_prepends(config.prepend)
         filemanager.add_appends(config.append)
@@ -354,6 +349,19 @@ class Model:
 
             return
 
+        added_name = False
+        token_printed = False
+        last_token = " "
+        tokens: List[str] = []
+        buffer: List[str] = []
+
+        def print_buffer() -> None:
+            if not len(buffer):
+                return
+
+            display.insert("".join(buffer), tab_id=tab_id)
+            buffer.clear()
+
         if stream:
             try:
                 for chunk in output:
@@ -384,7 +392,14 @@ class Model:
                                 token_printed = True
 
                             tokens.append(token)
-                            display.insert(token, tab_id=tab_id)
+
+                            if args.buffer > 0:
+                                buffer.append(token)
+
+                                if len(buffer) >= args.buffer:
+                                    print_buffer()
+                            else:
+                                display.insert(token, tab_id=tab_id)
             except BaseException as e:
                 utils.error(e)
         else:
@@ -396,6 +411,8 @@ class Model:
                     display.insert(response, tab_id=tab_id)
             except BaseException as e:
                 utils.error(e)
+
+        print_buffer()
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()

@@ -313,3 +313,11 @@ Don't highlight the tab when streaming.
 >quiet
 
 Don't show some messages.
+
+---
+
+>buffer
+
+Accumulate these tokens before printing.
+
+This is to adjust how the stream is printed when streaming live.

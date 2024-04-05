@@ -354,7 +354,7 @@ class App:
     def unfullscreen(self) -> None:
         self.root.attributes("-fullscreen", False)
 
-    def show_help(self, what: str) -> None:
+    def show_help(self, what: str, mode: str = "") -> None:
         from .display import display
         from .commands import commands
         from .keyboard import keyboard
@@ -362,13 +362,13 @@ class App:
 
         if what == "commands":
             tab_id = display.make_tab("Commands", mode="ignore")
-            commands.show_help(tab_id=tab_id)
+            commands.show_help(tab_id=tab_id, mode=mode)
         elif what == "arguments":
             tab_id = display.make_tab("Arguments", mode="ignore")
             args.show_help(tab_id=tab_id)
         elif what == "keyboard":
             tab_id = display.make_tab("Keyboard", mode="ignore")
-            keyboard.show_help(tab_id=tab_id)
+            keyboard.show_help(tab_id=tab_id, mode=mode)
 
         display.to_top(tab_id=tab_id)
 

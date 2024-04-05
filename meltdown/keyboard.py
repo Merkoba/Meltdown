@@ -382,27 +382,32 @@ class Keyboard:
         self.shift = False
         self.ctrl_date = 0.0
 
-    def show_help(self, tab_id: str = "") -> None:
+    def show_help(self, tab_id: str = "", mode: str = "") -> None:
         from .display import display
+
+        keys = list(self.commands.keys())
+
+        if mode == "sort":
+            keys = list(sorted(keys))
 
         separator = "--------------------------------"
         lines = ["Keyboard Shortcuts:"]
-        keys = []
+        used_keys = []
 
-        for key in self.commands:
-            values = self.commands[key]
+        for key in keys:
+            data = self.commands[key]
             upkey = key.upper()
 
-            if upkey in keys:
+            if upkey in used_keys:
                 continue
 
-            keys.append(upkey)
+            used_keys.append(upkey)
 
             if all([(not value.help) and
                     (not value.ctrl_help) and
                     (not value.shift_help) and
                     (not value.ctrl_shift_help)
-                    for value in values]):
+                    for value in data]):
                 continue
 
             upkey = upkey.replace("<", "< ").replace(">", " >")
@@ -410,18 +415,18 @@ class Keyboard:
             items = [separator]
             items.append(f"{upkey}")
 
-            for value in values:
+            for value in data:
                 if value.help:
                     items.append(f"{value.help}")
 
                 if value.ctrl_help:
-                    items.append(f" Ctrl: {value.ctrl_help}")
+                    items.append(f"Ctrl: {value.ctrl_help}")
 
                 if value.shift_help:
-                    items.append(f" Shift: {value.shift_help}")
+                    items.append(f"Shift: {value.shift_help}")
 
                 if value.ctrl_shift_help:
-                    items.append(f" Ctrl+Shift: {value.ctrl_shift_help}")
+                    items.append(f"Ctrl+Shift: {value.ctrl_shift_help}")
 
                 lines.append("\n\n".join(items))
 

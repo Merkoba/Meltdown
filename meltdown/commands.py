@@ -234,17 +234,20 @@ class Commands:
             "commands": {
                 "aliases": ["cmds"],
                 "help": "Show the commands help",
-                "action": lambda a=None: app.show_help("commands"),
+                "action": lambda a=None: app.show_help("commands", mode=a),
+                "type": str,
             },
             "arguments": {
                 "aliases": ["args"],
                 "help": "Show the arguments help",
-                "action": lambda a=None: app.show_help("arguments"),
+                "action": lambda a=None: app.show_help("arguments", mode=a),
+                "type": str,
             },
             "keyboard": {
                 "aliases": ["shortcuts"],
                 "help": "Show the keyboard help",
-                "action": lambda a=None: app.show_help("keyboard"),
+                "action": lambda a=None: app.show_help("keyboard", mode=a),
+                "type": str,
             },
             "list": {
                 "aliases": ["tabs", "tablist"],
@@ -599,18 +602,24 @@ class Commands:
         text = "\n".join(items)
         display.print(text)
 
-    def show_help(self, tab_id: str = "") -> None:
+    def show_help(self, tab_id: str = "", mode: str = "") -> None:
         from .display import display
         display.print("Commands:", tab_id=tab_id)
         text = []
 
-        for cmd, data in self.commands.items():
+        keys = list(self.commands.keys())
+
+        if mode == "sort":
+            keys = list(sorted(keys))
+
+        for key in keys:
+            data = self.commands[key]
             msg = data['help']
 
             if data.get("extra"):
                 msg += f" ({data['extra']})"
 
-            text.append(f"{self.prefix}{cmd} = {msg}")
+            text.append(f"{self.prefix}{key} = {msg}")
 
         display.print("\n".join(text), tab_id=tab_id)
 

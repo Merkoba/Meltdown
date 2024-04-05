@@ -68,6 +68,7 @@ class Args:
         self.tab_highlight = True
         self.quiet = False
         self.debug = False
+        self.buffer = 2
 
     class Internal:
         title = app.manifest["title"]
@@ -133,6 +134,7 @@ class Args:
             "drag-threshold": {"type": int, "help": "The higher the number the less sensitive the tab dragging will be"},
             "quiet": {"action": "store_true", "help": "Don't show some messages"},
             "debug": {"action": "store_true", "help": "Show some information for debugging"},
+            "buffer": {"type": int, "help": "When streaming, accumulate these number of words before printing"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -170,6 +172,7 @@ class Args:
             "alt_palette", "max_tab_width", "old_tabs_minutes",
             "max_list_items", "list_item_width", "system_threshold",
             "drag_threshold", "system_delay", "quiet", "debug",
+            "buffer",
         ]
 
         for n_item in normals:
