@@ -344,7 +344,7 @@ Accumulate these tokens before printing.
 
 This is to adjust how the stream is printed when streaming live.
 
-If 0, the buffer is not used and prints immediately.
+If lower than 2, it prints immediately as tokens arrive.
 
 ---
 
