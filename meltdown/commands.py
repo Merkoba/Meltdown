@@ -249,7 +249,9 @@ class Commands:
             "keyboard": {
                 "aliases": ["shortcuts"],
                 "help": "Show the keyboard help",
-                "action": lambda a=None: app.show_help("keyboard"),
+                "action": lambda a=None: app.show_help("keyboard", mode=a),
+                "extra": sortfilter,
+                "type": str,
             },
             "list": {
                 "aliases": ["tabs", "tablist"],
@@ -619,7 +621,7 @@ class Commands:
 
         for key in keys:
             data = self.commands[key]
-            msg = data['help']
+            msg = data["help"]
             extra = data.get("extra")
 
             if extra:

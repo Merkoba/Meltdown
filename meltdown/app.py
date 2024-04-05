@@ -365,7 +365,7 @@ class App:
             commands.show_help(tab_id=tab_id, mode=mode)
         elif what == "arguments":
             tab_id = display.make_tab("Arguments", mode="ignore")
-            args.show_help(tab_id=tab_id)
+            args.show_help(tab_id=tab_id, mode=mode)
         elif what == "keyboard":
             tab_id = display.make_tab("Keyboard", mode="ignore")
             keyboard.show_help(tab_id=tab_id, mode=mode)

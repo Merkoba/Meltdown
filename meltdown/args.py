@@ -190,11 +190,38 @@ class Args:
 
         self.parser = ap.parser
 
-    def show_help(self, tab_id: str = "") -> None:
+    def show_help(self, tab_id: str = "", mode: str = "") -> None:
         from .display import display
-        text = self.parser.format_help().strip()
-        display.print("Command Line Arguments:", tab_id=tab_id)
-        display.print(text, tab_id=tab_id)
+        keys = list(self.Internal.arguments.keys())
+
+        if mode:
+            if mode == "sort":
+                keys = list(sorted(keys))
+            else:
+                keys = [key for key in keys if mode in key]
+
+        text = []
+
+        for key in keys:
+            data = self.Internal.arguments[key]
+            msg = data.get("help")
+
+            if not msg:
+                continue
+
+            argtype = data.get("type", "")
+            action = data.get("action", "")
+
+            if argtype:
+                extra = f" ({str(argtype.__name__)})"
+            elif action:
+                extra = " (flag)"
+            else:
+                extra = ""
+
+            text.append(f"{key}{extra} = {msg}")
+
+        display.print("\n".join(text), tab_id=tab_id)
 
 
 args = Args()
