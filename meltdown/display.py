@@ -134,6 +134,9 @@ class Display:
             if tab.mode == "ignore":
                 force = True
 
+            if self.tab_is_empty(tab_id):
+                force = True
+
         def action() -> None:
             self.book.close(tab_id)
             self.update_current_tab()
