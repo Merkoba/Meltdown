@@ -206,7 +206,7 @@ Unlimited by default.
 
 You can assign commands to every function key.
 
-For example `--f1 "/tab 1"` or `--f11 /fullscreen`.
+For example `--f1 "/tab 1"` or `--f11 "/fullscreen & /sleep 1 & /about"`.
 
 Check /commands to see all available commands.
 
