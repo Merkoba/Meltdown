@@ -316,6 +316,10 @@ Delay in seconds for system monitor updates.
 
 Default: 88
 
+This controls re-ordering tabs when dragging with the mouse.
+
+This is the amount of pixels that must be traveled by the mouse.
+
 The higher the number the less sensitive the tab dragging will be.
 
 ---
