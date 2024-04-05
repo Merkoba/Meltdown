@@ -358,12 +358,12 @@ class Commands:
                 "action": lambda a=None: display.tab_right(),
             },
             "menu": {
-                "aliases": ["mainmenu"],
+                "aliases": ["mainmenu", "main"],
                 "help": "Show the main menu",
                 "action": lambda a=None: widgets.show_main_menu(),
             },
             "savesession": {
-                "aliases": [],
+                "aliases": ["sessionsave"],
                 "help": "Save the current session",
                 "action": lambda a=None: session.save_state(name=a),
                 "type": str,
@@ -376,7 +376,7 @@ class Commands:
                 "type": str,
             },
             "saveconfig": {
-                "aliases": [],
+                "aliases": ["configsave"],
                 "help": "Save the current config",
                 "action": lambda a=None: config.save_state(name=a),
                 "type": str,
@@ -543,6 +543,8 @@ class Commands:
         if argtype and argument:
             if argtype == "force":
                 new_argument = True if argument.lower() == "force" else False
+            elif argtype == str:
+                new_argument = self.argument_replace(argument)
             else:
                 new_argument = argtype(argument)
 
@@ -550,6 +552,9 @@ class Commands:
         item["action"](new_argument)
         item["date"] = timeutils.now()
         self.save_commands()
+
+    def argument_replace(self, argument: str) -> str:
+        return argument.replace("@now", str(timeutils.now_int()))
 
     def save_commands(self) -> None:
         cmds = {}

@@ -256,7 +256,8 @@ class Session:
             file.write(self.to_json())
 
         if not args.quiet:
-            display.print(f"{config.disk} Session saved")
+            name = Path(file_path).name
+            display.print(f"{config.disk} Session saved ({name})")
 
     def load_state(self, name: str = "") -> None:
         if not paths.sessions.exists():

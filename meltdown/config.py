@@ -136,7 +136,8 @@ class Config:
             file.write(conf)
 
         if not args.quiet:
-            display.print(f"{config.disk} Config saved")
+            name = Path(file_path).name
+            display.print(f"{config.disk} Config saved ({name})")
 
     def load_state(self, name: str = "") -> None:
         from .paths import paths

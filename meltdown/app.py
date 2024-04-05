@@ -379,4 +379,5 @@ class App:
         Menu.hide_all()
         ToolTip.hide_all()
 
+
 app = App()
