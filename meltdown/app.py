@@ -339,10 +339,7 @@ class App:
         self.main_frame.bind("<Button-1>", lambda e: self.on_frame_click())
 
     def on_frame_click(self) -> None:
-        from .dialogs import Dialog
-        from .menus import Menu
-        Dialog.hide_all()
-        Menu.hide_all()
+        self.hide_all()
 
     def toggle_fullscreen(self) -> None:
         if self.root.attributes("-fullscreen"):
@@ -373,6 +370,12 @@ class App:
             keyboard.show_help(tab_id=tab_id)
 
         display.to_top(tab_id=tab_id)
+
+    def hide_all(self) -> None:
+        from .dialogs import Dialog
+        from .menus import Menu
+        Dialog.hide_all()
+        Menu.hide_all()
 
 
 app = App()

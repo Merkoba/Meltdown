@@ -240,7 +240,7 @@ class Keyboard:
             cmd = getattr(args, f"f{num}")
 
             if cmd:
-                commands.exec(commands.cmd(cmd))
+                commands.exec(cmd)
 
         def add_function_key(num: int) -> None:
             self.register(f"<F{num}>",

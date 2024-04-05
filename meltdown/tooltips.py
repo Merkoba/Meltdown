@@ -37,7 +37,7 @@ class ToolTip:
         if bind:
             self.widget.bind("<Enter>", lambda e: self.schedule())
             self.widget.bind("<Leave>", lambda e: self.hide())
-            self.widget.bind("<Button-1>", lambda e: self.hide())
+            self.widget.bind("<Button>", lambda e: self.hide())
 
             def bind_scroll_events(widget: tk.Widget) -> None:
                 widget.bind("<Motion>", lambda e: self.update_event(e))

@@ -437,7 +437,7 @@ class Commands:
             "hide": {
                 "aliases": [],
                 "help": "Close dialogs and menus",
-                "action": lambda a=None: self.hide_cmd(),
+                "action": lambda a=None: app.hide_all(),
             },
             "printconfig": {
                 "aliases": ["showconfig"],
@@ -729,10 +729,6 @@ class Commands:
 
     def cmd(self, text: str) -> str:
         return self.prefix + text
-
-    def hide_cmd(self) -> None:
-        Dialog.hide_all()
-        Menu.hide_all()
 
     def load_file(self) -> None:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):

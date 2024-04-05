@@ -248,8 +248,7 @@ class Display:
         self.close_tab(tab_id=tab_id, method="middle_click")
 
     def on_tabs_click(self) -> None:
-        Menu.hide_all()
-        Dialog.hide_all()
+        app.hide_all()
 
     def on_tabs_double_click(self) -> None:
         self.make_tab()
@@ -604,6 +603,7 @@ class Display:
             tab.output.update_font()
 
     def scroll_up(self, tab_id: str = "") -> None:
+
         if not tab_id:
             tab_id = self.current_tab
 
