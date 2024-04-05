@@ -443,8 +443,6 @@ class Widgets:
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
-        self.top_button.set_bind("<Button-4>", lambda e: display.scroll_up())
-        self.top_button.set_bind("<Button-5>", lambda e: display.scroll_down())
         inputcontrol.bind()
 
     def setup_main_menu(self) -> None:
