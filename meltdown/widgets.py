@@ -262,7 +262,7 @@ class Widgets:
 
         self.clear_button = widgetutils.make_button(self.button_frame, "Clear",
                                                     lambda: display.clear(), fill=Fill.HORIZONTAL)
-        ToolTip(self.clear_button, "Clear the output of the current tab")
+        ToolTip(self.clear_button, "Clear all the text")
 
         self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),
                                                   fill=Fill.HORIZONTAL)
@@ -270,7 +270,7 @@ class Widgets:
 
         self.output_menu = widgetutils.make_button(self.button_frame, "More", lambda e: display.show_output_menu(e),
                                                    fill=Fill.HORIZONTAL, right_padding=right_padding)
-        ToolTip(self.output_menu, "Open the output menu")
+        ToolTip(self.output_menu, "Show more options")
 
         # Display
         app.main_frame.grid_rowconfigure(widgetutils.frame_number, weight=1)
