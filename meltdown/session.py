@@ -6,6 +6,7 @@ from .args import args
 from .dialogs import Dialog
 from .output import Output
 from . import timeutils
+from . import utils
 
 # Standard
 import json
@@ -189,7 +190,7 @@ class Session:
 
             self.load_items(path)
         except BaseException as e:
-            print(e)
+            utils.error(e)
             args.session = ""
             self.load()
 
@@ -206,7 +207,7 @@ class Session:
         try:
             self.load_items(path)
         except BaseException as e:
-            print(e)
+            utils.error(e)
             self.reset()
 
     def reset(self) -> None:
@@ -281,7 +282,7 @@ class Session:
             display.select_last_tab()
             self.save()
         except BaseException as e:
-            print(e)
+            utils.error(e)
             self.reset()
 
     def update(self) -> None:

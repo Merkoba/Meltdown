@@ -1,3 +1,6 @@
+# Modules
+from . import utils
+
 # Standard
 import json
 from typing import List, Any, Dict, Optional, Callable, IO
@@ -8,7 +11,6 @@ from pathlib import Path
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
-        self.printlogs = False
         self.disk = "💾"
 
         # Added for mypy
@@ -204,7 +206,7 @@ class Config:
             with open(path, "r", encoding="utf-8") as file:
                 self.apply(file)
         except BaseException as e:
-            print(e)
+            utils.error(e)
             args.config = ""
             self.load_file()
 

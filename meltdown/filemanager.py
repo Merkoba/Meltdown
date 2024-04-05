@@ -2,6 +2,7 @@
 from .paths import paths
 from .config import config
 from .args import args
+from . import utils
 
 # Standard
 import os
@@ -119,4 +120,4 @@ def open_logs_dir() -> None:
         # macOS
         app.run_command(["open", str(path)])
     else:
-        print(f"Unrecognized OS: {os_name}")
+        utils.error(f"Unrecognized OS: {os_name}")

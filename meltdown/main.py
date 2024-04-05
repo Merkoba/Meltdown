@@ -11,6 +11,7 @@ from .inputcontrol import inputcontrol
 from . import filemanager
 from . import system
 from . import tasks
+from . import utils
 
 # Standard
 import os
@@ -31,7 +32,7 @@ def main() -> None:
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except IOError:
         if not args.force:
-            print(f"{title} is already running.\nUse --force to launch multiple instances.")
+            utils.msg(f"{title} is already running.\nUse --force to launch multiple instances.")
             sys.exit(0)
 
     filemanager.load()

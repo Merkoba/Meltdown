@@ -7,6 +7,7 @@ from .app import app
 from .args import args
 from . import timeutils
 from . import filemanager
+from . import utils
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
@@ -72,7 +73,7 @@ class Model:
                 return
 
         if self.is_loading():
-            print("(Load) Slow down!")
+            utils.error("(Load) Slow down!")
             return
 
         if self.model_is_gpt(config.model):
@@ -169,7 +170,7 @@ class Model:
                 verbose=False,
             )
         except BaseException as e:
-            print(e)
+            utils.error(e)
             display.print("Error: Model failed to load.")
             self.clear_model()
             self.lock.release()
@@ -198,7 +199,7 @@ class Model:
 
     def stream(self, prompt: str, tab_id: str) -> None:
         if self.is_loading():
-            print("(Stream) Slow down!")
+            utils.error("(Stream) Slow down!")
             return
 
         tab = display.get_tab(tab_id)
@@ -232,11 +233,11 @@ class Model:
         prompt = prompt.strip()
 
         if not self.model:
-            print("Model not loaded")
+            utils.error("Model not loaded")
             return
 
         if not prompt:
-            print("Empty prompt")
+            utils.error("Empty prompt")
             return
 
         if config.prepend:
@@ -274,16 +275,16 @@ class Model:
 
                     messages.append({"role": key, "content": content})
 
-        if config.printlogs:
-            print("-----")
-            print("prompt:", prompt)
-            print("messages:", len(messages))
-            print("context:", config.context)
-            print("max_tokens:", config.max_tokens)
-            print("temperature:", config.temperature)
-            print("top_k:", config.top_k)
-            print("top_p:", config.top_p)
-            print("seed:", config.seed)
+        if args.debug:
+            utils.msg("-----")
+            utils.msg(f"prompt: {prompt}")
+            utils.msg(f"messages: {len(messages)}")
+            utils.msg(f"context: {config.context}")
+            utils.msg(f"max_tokens: {config.max_tokens}")
+            utils.msg(f"temperature: {config.temperature}")
+            utils.msg(f"top_k: {config.top_k}")
+            utils.msg(f"top_p: {config.top_p}")
+            utils.msg(f"seed: {config.seed}")
 
         content = prompt
         content = self.replace_content(content)
@@ -337,7 +338,7 @@ class Model:
                     seed=config.seed,
                 )
             except BaseException as e:
-                print(e)
+                utils.error(e)
                 self.stream_loading = False
                 self.lock.release()
                 return
@@ -385,7 +386,7 @@ class Model:
                             tokens.append(token)
                             display.insert(token, tab_id=tab_id)
             except BaseException as e:
-                print(e)
+                utils.error(e)
         else:
             try:
                 response = output.choices[0].message.content.strip()
@@ -394,7 +395,7 @@ class Model:
                     display.prompt("ai", tab_id=tab_id)
                     display.insert(response, tab_id=tab_id)
             except BaseException as e:
-                print(e)
+                utils.error(e)
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()

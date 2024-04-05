@@ -2,6 +2,7 @@
 from .args import args
 from .commands import commands
 from . import timeutils
+from . import utils
 
 # Standard
 import re
@@ -15,7 +16,7 @@ def run(cmds: str) -> None:
 def check(seconds: float, cmds: str, now: bool) -> None:
     first_run = False
     msg = f"Running a task every {seconds} seconds"
-    print(msg)
+    utils.msg(msg)
     timeutils.sleep(1)
 
     while True:

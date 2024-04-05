@@ -1,6 +1,7 @@
 # Modules
 from .config import config
 from .theme import Theme
+from . import utils
 
 # Standard
 import json
@@ -239,7 +240,7 @@ class App:
             subprocess.Popen(cmd, start_new_session=True,
                              stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
         except BaseException as e:
-            print(e)
+            utils.error(e)
 
     def open_url(self, url: str) -> None:
         if not url:
