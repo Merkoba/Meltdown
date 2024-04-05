@@ -115,22 +115,22 @@ class Commands:
                 "action": lambda a=None: logs.menu(),
             },
             "logtext": {
-                "aliases": ["savetext"],
+                "aliases": ["savetext", "savelogtext"],
                 "help": "Save conversation to a text file",
                 "action": lambda a=None: logs.to_text(),
             },
             "logjson": {
-                "aliases": ["savejson"],
+                "aliases": ["savejson", "savelogjson"],
                 "help": "Save conversation to a JSON file",
                 "action": lambda a=None: logs.to_json(),
             },
             "logtextall": {
-                "aliases": ["savetextall"],
+                "aliases": ["savetextall", "savelogtextall"],
                 "help": "Save all conversations to text files",
                 "action": lambda a=None: logs.to_text(True),
             },
             "logjsonall": {
-                "aliases": ["savejsonall"],
+                "aliases": ["savejsonall", "savelogjsonall"],
                 "help": "Save all conversations to JSON files",
                 "action": lambda a=None: logs.to_json(True),
             },
