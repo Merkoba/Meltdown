@@ -780,7 +780,9 @@ class Widgets:
             self.details_button_right.set_style("alt")
 
     def use_gpt(self, name: str) -> None:
+        from .model import model
         config.set("model", name)
+        model.load()
 
     def show_gpt_menu(self) -> None:
         self.gpt_menu.show(widget=self.main_menu_button)

@@ -122,8 +122,8 @@ class Model:
             self.read_gpt_key()
 
             if not self.gpt_key:
-                display.print("Error: API key not found."
-                              " You need to export it as OPENAI_API_KEY before running this program.")
+                display.print("Error: OpenAI API key not found."
+                              " Use the main menu to set it.")
                 self.clear_model()
                 return
 
