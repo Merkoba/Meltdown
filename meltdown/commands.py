@@ -90,6 +90,7 @@ class Commands:
         from .inputcontrol import inputcontrol
         force = "Use 'force' to force"
         file_name = "You can provide the file name"
+        sortfilter = "Use 'sort' or a word to filter"
 
         self.commands = {
             "clear": {
@@ -235,19 +236,20 @@ class Commands:
                 "aliases": ["cmds"],
                 "help": "Show the commands help",
                 "action": lambda a=None: app.show_help("commands", mode=a),
+                "extra": sortfilter,
                 "type": str,
             },
             "arguments": {
                 "aliases": ["args"],
                 "help": "Show the arguments help",
                 "action": lambda a=None: app.show_help("arguments", mode=a),
+                "extra": sortfilter,
                 "type": str,
             },
             "keyboard": {
                 "aliases": ["shortcuts"],
                 "help": "Show the keyboard help",
-                "action": lambda a=None: app.show_help("keyboard", mode=a),
-                "type": str,
+                "action": lambda a=None: app.show_help("keyboard"),
             },
             "list": {
                 "aliases": ["tabs", "tablist"],
@@ -609,15 +611,19 @@ class Commands:
 
         keys = list(self.commands.keys())
 
-        if mode == "sort":
-            keys = list(sorted(keys))
+        if mode:
+            if mode == "sort":
+                keys = list(sorted(keys))
+            else:
+                keys = [key for key in keys if mode in key]
 
         for key in keys:
             data = self.commands[key]
             msg = data['help']
+            extra = data.get("extra")
 
-            if data.get("extra"):
-                msg += f" ({data['extra']})"
+            if extra:
+                msg += f" ({extra})"
 
             text.append(f"{self.prefix}{key} = {msg}")
 

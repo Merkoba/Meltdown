@@ -387,8 +387,11 @@ class Keyboard:
 
         keys = list(self.commands.keys())
 
-        if mode == "sort":
-            keys = list(sorted(keys))
+        if mode:
+            if mode == "sort":
+                keys = list(sorted(keys))
+            else:
+                keys = [key for key in keys if mode in key]
 
         separator = "--------------------------------"
         lines = ["Keyboard Shortcuts:"]
