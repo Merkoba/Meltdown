@@ -18,6 +18,7 @@ class Task:
         self.seconds = seconds
         self.cmds = cmds
         self.now = now
+        self.first = False
         self.start()
 
     def start(self) -> None:
@@ -25,12 +26,10 @@ class Task:
         thread.daemon = True
         thread.start()
 
-    def run(self, cmds: str) -> None:
-        commands.exec(cmds)
+    def run(self) -> None:
+        commands.exec(self.cmds)
 
     def check(self) -> None:
-        first_run = False
-
         if not args.quiet:
             msg = f"Running a task every {self.seconds} seconds"
             utils.msg(msg)
@@ -38,14 +37,14 @@ class Task:
         timeutils.sleep(1)
 
         while True:
-            if not first_run:
+            if not self.first:
                 if self.now:
-                    self.run(self.cmds)
+                    self.run()
 
-                first_run = True
+                self.first = True
 
             timeutils.sleep(self.seconds)
-            self.run(self.cmds)
+            self.run()
 
 
 def start_all() -> None:
