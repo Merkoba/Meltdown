@@ -831,9 +831,15 @@ class Display:
         return True
 
     def stream_started(self, tab_id: str) -> None:
+        if not args.tab_highlight:
+            return
+
         self.book.highlight(tab_id)
 
     def stream_stopped(self) -> None:
+        if not args.tab_highlight:
+            return
+
         self.book.remove_highlights()
 
 

@@ -289,3 +289,9 @@ Delay in seconds for system monitor updates.
 >drag-threshold
 
 The higher the number the less sensitive the tab dragging will be.
+
+---
+
+>no-tab-highlight
+
+Don't highlight the tab when streaming.

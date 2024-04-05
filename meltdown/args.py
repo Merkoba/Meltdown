@@ -63,6 +63,7 @@ class Args:
         self.max_list_items = 10
         self.list_item_width = 100
         self.drag_threshold = 88
+        self.tab_highlight = True
 
     class Internal:
         title = app.manifest["title"]
@@ -93,6 +94,7 @@ class Args:
             "no-bottom": {"action": "store_false", "help": "Don't show the Bottom button"},
             "no-bottom-autohide": {"action": "store_false", "help": "Don't autohide the Bottom button"},
             "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
+            "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -145,6 +147,7 @@ class Args:
             ("no_empty", "allow_empty"), ("alias", "aliases"),
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
+            ("no_tab_highlight", "tab_highlight"),
         ]
 
         for r_item in other_name:
