@@ -354,12 +354,25 @@ class Model:
         last_token = " "
         tokens: List[str] = []
         buffer: List[str] = []
+        buffer_date = 0.0
         broken = False
 
-        def print_buffer() -> None:
+        def print_buffer(force: bool = False) -> None:
+            nonlocal buffer_date
+
             if not len(buffer):
                 return
 
+            datenow = timeutils.now()
+
+            if not force:
+                if len(buffer) < args.buffer:
+                    return
+
+                if (datenow - buffer_date) < args.delay:
+                    return
+
+            buffer_date = datenow
             display.insert("".join(buffer), tab_id=tab_id)
             buffer.clear()
 
@@ -394,14 +407,8 @@ class Model:
                                 token_printed = True
 
                             tokens.append(token)
-
-                            if args.buffer > 0:
-                                buffer.append(token)
-
-                                if len(buffer) >= args.buffer:
-                                    print_buffer()
-                            else:
-                                display.insert(token, tab_id=tab_id)
+                            buffer.append(token)
+                            print_buffer()
             except BaseException as e:
                 utils.error(e)
         else:
@@ -415,7 +422,7 @@ class Model:
                 utils.error(e)
 
         if not broken:
-            print_buffer()
+            print_buffer(True)
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()

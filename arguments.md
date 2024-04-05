@@ -329,3 +329,15 @@ Accumulate these tokens before printing.
 This is to adjust how the stream is printed when streaming live.
 
 If 0, the buffer is not used and prints immediately.
+
+---
+
+>delay
+
+Delay in seconds between each print when streaming.
+
+For example `--delay 0.25` would print more frequently compared to `--delay 1.0`.
+
+This might be useful if you don't want to overwhelm the interface with very frequent prints.
+
+You can use this and `buffer` to control the printing process.
