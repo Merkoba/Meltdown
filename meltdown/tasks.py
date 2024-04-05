@@ -1,4 +1,5 @@
 # Modules
+from .app import app
 from .args import args
 from .commands import commands
 from . import timeutils
@@ -39,7 +40,8 @@ def do_start(task: str) -> None:
     if not task:
         return
 
-    match = re.match(r"^((?:\d.)?\d+)\s+(.*?)(\/now)?$", task)
+    p = utils.escape_regex(app.prefix)
+    match = re.match(fr"^((?:\d.)?\d+)\s+(.*?)({p}now)?$", task)
 
     if not match:
         return
