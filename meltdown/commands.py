@@ -115,22 +115,22 @@ class Commands:
                 "action": lambda a=None: logs.menu(),
             },
             "logtext": {
-                "aliases": [],
+                "aliases": ["savetext"],
                 "help": "Save conversation to a text file",
                 "action": lambda a=None: logs.to_text(),
             },
             "logjson": {
-                "aliases": [],
+                "aliases": ["savejson"],
                 "help": "Save conversation to a JSON file",
                 "action": lambda a=None: logs.to_json(),
             },
             "logtextall": {
-                "aliases": [],
+                "aliases": ["savetextall"],
                 "help": "Save all conversations to text files",
                 "action": lambda a=None: logs.to_text(True),
             },
             "logjsonall": {
-                "aliases": [],
+                "aliases": ["savejsonall"],
                 "help": "Save all conversations to JSON files",
                 "action": lambda a=None: logs.to_json(True),
             },
@@ -365,13 +365,20 @@ class Commands:
             "savesession": {
                 "aliases": [],
                 "help": "Save the current session",
-                "action": lambda a=None: session.save_state(),
+                "action": lambda a=None: session.save_state(name=a),
+                "type": str,
             },
             "loadsession": {
                 "aliases": ["open", "sessionload"],
                 "help": "Load a session",
                 "extra": file_name,
                 "action": lambda a=None: session.load_state(name=a),
+                "type": str,
+            },
+            "saveconfig": {
+                "aliases": [],
+                "help": "Save the current config",
+                "action": lambda a=None: config.save_state(name=a),
                 "type": str,
             },
             "loadconfig": {

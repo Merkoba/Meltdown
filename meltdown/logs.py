@@ -4,6 +4,7 @@ from .display import display
 from .args import args
 from .session import session
 from .session import Conversation
+from .config import config
 from . import filemanager
 
 # Standard
@@ -49,7 +50,7 @@ class Logs:
             file.write(text)
 
         if not all:
-            display.print(f">> Log saved as {file_name}")
+            display.print(f"{config.disk} Log saved as {file_name}")
 
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
@@ -78,9 +79,9 @@ class Logs:
 
         if all:
             if num == 1:
-                s = f">> {num} JSON log saved"
+                s = f"{config.disk} {num} JSON log saved"
             else:
-                s = f">> {num} JSON logs saved"
+                s = f"{config.disk} {num} JSON logs saved"
 
             display.print(s)
 
@@ -123,9 +124,9 @@ class Logs:
 
         if all:
             if num == 1:
-                s = f">> {num} text log saved"
+                s = f"{config.disk} {num} text log saved"
             else:
-                s = f">> {num} text logs saved"
+                s = f"{config.disk} {num} text logs saved"
 
             display.print(s)
 

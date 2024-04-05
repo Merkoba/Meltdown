@@ -9,6 +9,7 @@ class Config:
     def __init__(self) -> None:
         self.max_log = 50
         self.printlogs = False
+        self.disk = "💾"
 
         # Added for mypy
         self.models: List[str] = []
@@ -107,25 +108,31 @@ class Config:
 
         return json.dumps(conf)
 
-    def save_state(self) -> None:
+    def save_state(self, name: str = "") -> None:
+        from .display import display
         from .paths import paths
 
-        if not paths.configs.exists():
-            paths.configs.mkdir(parents=True, exist_ok=True)
+        if name:
+            file_path = str(Path(paths.configs, f"{name}.json"))
+        else:
+            if not paths.configs.exists():
+                paths.configs.mkdir(parents=True, exist_ok=True)
 
-        file_path = filedialog.asksaveasfilename(
-            initialdir=paths.configs,
-            defaultextension=".json",
-            filetypes=[("Config Files", "*.json")],
-        )
+            file_path = filedialog.asksaveasfilename(
+                initialdir=paths.configs,
+                defaultextension=".json",
+                filetypes=[("Config Files", "*.json")],
+            )
 
-        if not file_path:
-            return
+            if not file_path:
+                return
 
         conf = self.get_string()
 
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(conf)
+
+        display.print(f"{config.disk} Config saved")
 
     def load_state(self, name: str = "") -> None:
         from .paths import paths

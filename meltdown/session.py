@@ -235,21 +235,26 @@ class Session:
             display.make_tab(conversation.name, conversation.id,
                              select_tab=False, save=False)
 
-    def save_state(self) -> None:
+    def save_state(self, name: str = "") -> None:
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
-        file_path = filedialog.asksaveasfilename(
-            initialdir=paths.sessions,
-            defaultextension=".json",
-            filetypes=[("Session Files", "*.json")],
-        )
+        if name:
+            file_path = str(Path(paths.sessions, f"{name}.json"))
+        else:
+            file_path = filedialog.asksaveasfilename(
+                initialdir=paths.sessions,
+                defaultextension=".json",
+                filetypes=[("Session Files", "*.json")],
+            )
 
-        if not file_path:
-            return
+            if not file_path:
+                return
 
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(self.to_json())
+
+        display.print(f"{config.disk} Session saved")
 
     def load_state(self, name: str = "") -> None:
         if not paths.sessions.exists():
