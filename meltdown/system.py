@@ -77,7 +77,7 @@ def check() -> None:
             except BaseException:
                 pass
 
-        timeutils.sleep(config.system_delay)
+        timeutils.sleep(args.system_delay)
 
 
 def start() -> None:

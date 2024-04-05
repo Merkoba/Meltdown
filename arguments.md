@@ -4,6 +4,8 @@ These are flags you can use when running the program.
 
 For example: `meltdown --no-tooltips --width 800 --height 900`
 
+Check `args.py` to see the default values.
+
 ---
 
 >width
@@ -275,6 +277,12 @@ Max number of characters to show in tab names.
 >system-threshold
 
 Show system monitors as critical after this % threshold.
+
+---
+
+>system-delay
+
+Delay in seconds for system monitor updates.
 
 ---
 

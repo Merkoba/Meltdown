@@ -8,7 +8,6 @@ from pathlib import Path
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
-        self.system_delay = 3
         self.printlogs = False
 
         # Added for mypy

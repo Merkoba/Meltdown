@@ -19,6 +19,8 @@ class Args:
         self.system_cpu = True
         self.system_ram = True
         self.system_temp = True
+        self.system_threshold = 70
+        self.system_delay = 3
         self.keyboard = True
         self.taps = True
         self.wrap = True
@@ -60,7 +62,6 @@ class Args:
         self.old_tabs_minutes = 30
         self.max_list_items = 10
         self.list_item_width = 100
-        self.system_threshold = 70
         self.drag_threshold = 88
 
     class Internal:
@@ -81,6 +82,8 @@ class Args:
             "no-cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
+            "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
+            "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "no-taps": {"action": "store_false", "help": "Disable double ctrl taps"},
             "no-wrap": {"action": "store_false", "help": "Disable wrapping when selecting items"},
@@ -121,7 +124,6 @@ class Args:
             "old-tabs-minutes": {"type": int, "help": "Consider a tab old after these minutes (using last modified date)"},
             "max-list-items": {"type": int, "help": "Max number of items in context menu lists"},
             "list-item-width": {"type": int, "help": "Max characters for the text of list items"},
-            "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
             "drag-threshold": {"type": int, "help": "The higher the number the less sensitive the tab dragging will be"},
         }
 
@@ -158,7 +160,7 @@ class Args:
 
             "alt_palette", "max_tab_width", "old_tabs_minutes",
             "max_list_items", "list_item_width", "system_threshold",
-            "drag_threshold",
+            "drag_threshold", "system_delay",
         ]
 
         for n_item in normals:
