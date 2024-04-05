@@ -546,9 +546,8 @@ class Widgets:
     def set_model(self, m: str) -> None:
         from .model import model
         self.model.set_text(m)
-
-        if config.update("model"):
-            model.load()
+        config.update("model")
+        model.load()
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
