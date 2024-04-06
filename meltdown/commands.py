@@ -44,7 +44,6 @@ class Commands:
         prefix = utils.escape_regex(args.prefix)
         andchar = utils.escape_regex(args.andchar)
         self.cmd_pattern = fr"{andchar}(?= {prefix}\w+)"
-        print(self.cmd_pattern)
 
         self.make_commands()
         self.make_aliases()
