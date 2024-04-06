@@ -30,7 +30,6 @@ class Queue:
 
 class Commands:
     def __init__(self) -> None:
-        self.prefix = app.prefix
         self.commands: Dict[str, Dict[str, Any]] = {}
         self.autocomplete_index = 0
         self.autocomplete_matches: List[str] = []
@@ -41,10 +40,12 @@ class Commands:
         self.loop_delay = 25
         self.queues: List[Queue] = []
 
-        prefix = utils.escape_regex(self.prefix)
-        self.cmd_pattern = fr"&(?= {prefix}\w+)"
-
     def setup(self) -> None:
+        prefix = utils.escape_regex(args.prefix)
+        andchar = utils.escape_regex(args.andchar)
+        self.cmd_pattern = fr"{andchar}(?= {prefix}\w+)"
+        print(self.cmd_pattern)
+
         self.make_commands()
         self.make_aliases()
         self.check_commands()
@@ -66,6 +67,9 @@ class Commands:
                     item = queue.items.pop(0)
 
                     if item.cmd == "sleep":
+                        if not item.argument:
+                            item.argument = "1"
+
                         if item.argument and queue.items:
                             queue.wait = float(item.argument) * 1000.0
                     else:
@@ -504,7 +508,7 @@ class Commands:
         if len(text) < 2:
             return False
 
-        with_prefix = text.startswith(self.prefix)
+        with_prefix = text.startswith(args.prefix)
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
@@ -561,7 +565,7 @@ class Commands:
         self.save_commands()
 
     def argument_replace(self, argument: str) -> str:
-        return argument.replace("@now", str(timeutils.now_int()))
+        return argument.replace(f"{args.keychar}now", str(timeutils.now_int()))
 
     def save_commands(self) -> None:
         cmds = {}
@@ -596,7 +600,7 @@ class Commands:
 
     def help_command(self) -> None:
         from .display import display
-        p = self.prefix
+        p = args.prefix
 
         items = []
         items.append(f"Use {p}commands to see commands")
@@ -627,7 +631,7 @@ class Commands:
             if extra:
                 msg += f" ({extra})"
 
-            text.append(f"{self.prefix}{key} = {msg}")
+            text.append(f"{args.prefix}{key} = {msg}")
 
         display.print("\n".join(text), tab_id=tab_id)
 
@@ -745,13 +749,13 @@ class Commands:
         self.palette.show(widget=widgets.main_menu_button)
 
     def clean(self, text: str) -> str:
-        if text.startswith(self.prefix):
+        if text.startswith(args.prefix):
             return text[1:]
 
         return text
 
     def cmd(self, text: str) -> str:
-        return self.prefix + text
+        return args.prefix + text
 
     def load_file(self) -> None:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):

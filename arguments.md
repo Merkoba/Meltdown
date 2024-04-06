@@ -345,3 +345,31 @@ Delay in seconds between each print when streaming.
 For example `--delay 0.25` would print more frequently compared to `--delay 1.0`.
 
 This might be useful if you don't want to overwhelm the interface with very frequent prints.
+
+---
+
+>prefix
+
+Default: "/"
+
+The command prefix for all commands.
+
+Like `/` in `/about`
+
+---
+
+>andchar
+
+Default: "&"
+
+The command used to join commands.
+
+Like `&` in `/tab 1 & /select`
+
+---
+
+>keychar
+
+Default: "@"
+
+Character to use for keywords like `@date`.

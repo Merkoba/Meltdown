@@ -25,7 +25,6 @@ class App:
         title = self.manifest["title"]
         self.root = tk.Tk(className=self.manifest["program"])
         self.root.title(title)
-        self.prefix: str = self.manifest["prefix"]
         self.main_frame = tk.Frame(self.root)
         self.main_frame.grid(row=0, column=0, sticky="nsew")
         self.main_frame.configure(background="red")

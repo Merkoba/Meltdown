@@ -67,9 +67,10 @@ class Widgets:
         else:
             rpadding = 0
 
+        kc = args.keychar
         self.system = widgetutils.make_entry(self.system_frame, fill=Fill.HORIZONTAL, right_padding=rpadding)
         self.system.bind_mousewheel()
-        tip = "This sets the system prompt. You can use keywords like @name_user, @name_ai, and @date"
+        tip = f"This sets the system prompt. You can use keywords like {kc}name_user, {kc}name_ai, and {kc}date"
         ToolTip(self.system_label, tip)
         ToolTip(self.system, tip)
 

@@ -9,8 +9,6 @@ from typing import Any, Dict, List
 
 class Args:
     def __init__(self) -> None:
-        p = app.prefix
-
         self.force = False
         self.tooltips = True
         self.scrollbars = True
@@ -45,18 +43,18 @@ class Args:
         self.config = ""
         self.session = ""
         self.on_log = ""
-        self.f1 = f"{p}help"
+        self.f1 = ""
         self.f2 = ""
-        self.f3 = f"{p}next"
+        self.f3 = ""
         self.f4 = ""
-        self.f5 = f"{p}reset"
+        self.f5 = ""
         self.f6 = ""
         self.f7 = ""
-        self.f8 = f"{p}compact"
+        self.f8 = ""
         self.f9 = ""
         self.f10 = ""
-        self.f11 = f"{p}fullscreen"
-        self.f12 = f"{p}list"
+        self.f11 = ""
+        self.f12 = ""
         self.input = ""
         self.aliases: List[str] = []
         self.tasks: List[str] = []
@@ -69,6 +67,9 @@ class Args:
         self.quiet = False
         self.debug = False
         self.delay = 0.15
+        self.prefix = "/"
+        self.andchar = "&"
+        self.keychar = "@"
 
     class Internal:
         title = app.manifest["title"]
@@ -135,6 +136,9 @@ class Args:
             "quiet": {"action": "store_true", "help": "Don't show some messages"},
             "debug": {"action": "store_true", "help": "Show some information for debugging"},
             "delay": {"type": float, "help": "Delay in seconds between each print when streaming"},
+            "prefix": {"type": str, "help": "Character used to prefix commands like /"},
+            "andchar": {"type": str, "help": "Character used to join commands like &"},
+            "keychar": {"type": str, "help": "Character used for keywords like @"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -172,7 +176,7 @@ class Args:
             "alt_palette", "max_tab_width", "old_tabs_minutes",
             "max_list_items", "list_item_width", "system_threshold",
             "drag_threshold", "system_delay", "quiet", "debug",
-            "delay",
+            "delay", "prefix", "keychar", "andchar",
         ]
 
         for n_item in normals:
@@ -186,7 +190,27 @@ class Args:
             if string_arg:
                 self.input = string_arg
 
+        self.fill_functions()
         self.parser = ap.parser
+
+    def fill_functions(self) -> None:
+        if not self.f1:
+            self.f1 = f"{self.prefix}help"
+
+        if not self.f3:
+            self.f3 = f"{self.prefix}next"
+
+        if not self.f5:
+            self.f5 = f"{self.prefix}reset"
+
+        if not self.f8:
+            self.f8 = f"{self.prefix}compact"
+
+        if not self.f11:
+            self.f11 = f"{self.prefix}fullscreen"
+
+        if not self.f12:
+            self.f12 = f"{self.prefix}list"
 
     def show_help(self, tab_id: str = "", mode: str = "") -> None:
         from .display import display

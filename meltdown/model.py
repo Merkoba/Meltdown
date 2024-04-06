@@ -488,12 +488,12 @@ class Model:
 
     def replace_content(self, content: str) -> str:
         if config.name_user:
-            content = content.replace("@name_user", config.name_user)
+            content = content.replace(f"{args.keychar}name_user", config.name_user)
 
         if config.name_ai:
-            content = content.replace("@name_ai", config.name_ai)
+            content = content.replace(f"{args.keychar}name_ai", config.name_ai)
 
-        content = content.replace("@date", timeutils.today())
+        content = content.replace(f"{args.keychar}date", timeutils.today())
         return content
 
     def check_dot(self, text: str) -> str:

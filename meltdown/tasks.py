@@ -1,5 +1,4 @@
 # Modules
-from .app import app
 from .args import args
 from .commands import commands
 from . import timeutils
@@ -11,7 +10,7 @@ import threading
 
 
 class Task:
-    prefix = utils.escape_regex(app.prefix)
+    prefix = utils.escape_regex(args.prefix)
     pattern = fr"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
 
     def __init__(self, seconds: float, cmds: str, now: bool) -> None:

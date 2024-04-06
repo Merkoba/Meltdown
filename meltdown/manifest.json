@@ -1,7 +1,6 @@
 {
-    "version": "52.3.0",
+    "version": "52.5.0",
     "title": "Meltdown",
     "program": "meltdown",
-    "author": "Merkoba",
-    "prefix": "/"
+    "author": "Merkoba"
 }
