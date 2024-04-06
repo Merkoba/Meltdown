@@ -71,10 +71,12 @@ class Args:
         self.andchar = "&"
         self.keychar = "@"
         self.commands = True
-        self.compact_system = True
-        self.compact_details = True
-        self.compact_addons = True
-        self.compact_buttons = True
+        self.compact_model = False
+        self.compact_system = False
+        self.compact_details = False
+        self.compact_addons = False
+        self.compact_buttons = False
+        self.compact_input = False
 
     class Internal:
         title = app.manifest["title"]
@@ -107,10 +109,12 @@ class Args:
             "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
             "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
             "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
+            "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
             "compact-buttons": {"action": "store_true", "help": "Hide the buttons frame in compact mode"},
             "compact-addons": {"action": "store_true", "help": "Hide the addons frame in compact mode"},
+            "compact-input": {"action": "store_true", "help": "Hide the input frame in compact mode"},
             "maximize": {"action": "store_true", "help": "Maximize the window on start"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -189,7 +193,7 @@ class Args:
             "delay", "prefix", "keychar", "andchar",
 
             "compact_system", "compact_details", "compact_addons",
-            "compact_buttons",
+            "compact_buttons", "compact_model", "compact_input",
         ]
 
         for n_item in normals:

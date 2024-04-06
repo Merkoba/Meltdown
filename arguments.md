@@ -381,3 +381,23 @@ Character to use for keywords like `@date`.
 Disable commands when submitting the input.
 
 Treat all text as the prompt, don't check for commands.
+
+---
+
+>compact-model
+
+>compact-system
+
+>compact-details
+
+>compact-buttons
+
+>compact-addons
+
+>compact-input
+
+If any of these are set, compact mode will be customized.
+
+If customized, it will compact/hide exactly what you defined.
+
+Else it hides by default: system, details, and addons.

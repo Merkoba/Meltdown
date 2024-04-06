@@ -190,26 +190,45 @@ class App:
         from .widgets import widgets
         from .args import args
 
-        if args.compact_system:
+        confs = [args.compact_model, args.compact_system,
+                 args.compact_details, args.compact_buttons,
+                 args.compact_addons, args.compact_input]
+
+        custom = any(confs)
+
+        if custom:
+            if args.compact_model:
+                widgets.model_frame.grid_remove()
+
+            if args.compact_system:
+                widgets.system_frame.grid_remove()
+
+            if args.compact_details:
+                widgets.details_frame.grid_remove()
+
+            if args.compact_buttons:
+                widgets.buttons_frame.grid_remove()
+
+            if args.compact_addons:
+                widgets.addons_frame.grid_remove()
+
+            if args.compact_input:
+                widgets.input_frame.grid_remove()
+        else:
             widgets.system_frame.grid_remove()
-
-        if args.compact_details:
             widgets.details_frame.grid_remove()
-
-        if args.compact_buttons:
-            widgets.buttons_frame.grid_remove()
-
-        if args.compact_addons:
             widgets.addons_frame.grid_remove()
 
         self.after_compact(True)
 
     def disable_compact(self) -> None:
         from .widgets import widgets
+        widgets.model_frame.grid()
         widgets.system_frame.grid()
         widgets.details_frame.grid()
         widgets.buttons_frame.grid()
         widgets.addons_frame.grid()
+        widgets.input_frame.grid()
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:
