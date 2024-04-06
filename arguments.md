@@ -401,3 +401,7 @@ If any of these are set, compact mode will be customized.
 If customized, it will compact/hide exactly what you defined.
 
 Else it hides by default: system, details, and addons.
+
+For example: `--compact-model --compact buttons`
+
+In compact mode only the model frame and the buttons frame will be hidden.
