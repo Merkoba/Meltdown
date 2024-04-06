@@ -306,3 +306,7 @@ This will wait 2.4 seconds.
 ```
 
 This will wait 500 ms.
+
+If you use sleep without an argument like `/sleep`
+
+it will use 1 second as default.
