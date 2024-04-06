@@ -25,7 +25,7 @@ class Args:
         self.taps = True
         self.wrap = True
         self.stream = True
-        self.maximized = False
+        self.maximize = False
         self.compact = False
         self.tabs = True
         self.allow_empty = True
@@ -71,6 +71,10 @@ class Args:
         self.andchar = "&"
         self.keychar = "@"
         self.commands = True
+        self.compact_system = True
+        self.compact_details = True
+        self.compact_addons = True
+        self.compact_buttons = True
 
     class Internal:
         title = app.manifest["title"]
@@ -103,7 +107,11 @@ class Args:
             "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
             "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
             "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
-            "maximized": {"action": "store_true", "help": "Start in maximized mode"},
+            "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
+            "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
+            "compact-buttons": {"action": "store_true", "help": "Hide the buttons frame in compact mode"},
+            "compact-addons": {"action": "store_true", "help": "Hide the addons frame in compact mode"},
+            "maximize": {"action": "store_true", "help": "Maximize the window on start"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
             "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
@@ -144,7 +152,7 @@ class Args:
         }
 
         aliases: Dict[str, List[str]] = {
-            "maximized": ["--maximize", "-maximize", "--max", "-max"],
+            "maximize": ["--max", "-max"],
         }
 
     def parse(self) -> None:
@@ -168,7 +176,7 @@ class Args:
             ap.normal(*r_item)
 
         normals = [
-            "maximized", "compact", "full", "width", "height",
+            "maximize", "compact", "full", "width", "height",
             "theme", "test", "config", "session", "on_log",
             "numbers", "max_tabs", "input", "force",
 
@@ -179,6 +187,9 @@ class Args:
             "max_list_items", "list_item_width", "system_threshold",
             "drag_threshold", "system_delay", "quiet", "debug",
             "delay", "prefix", "keychar", "andchar",
+
+            "compact_system", "compact_details", "compact_addons",
+            "compact_buttons",
         ]
 
         for n_item in normals:

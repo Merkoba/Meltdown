@@ -124,7 +124,7 @@ Don't save empty conversations.
 
 Start the window maximized.
 
-Aliases: `--maximize` and `--max`
+Alias: `--max`
 
 ---
 

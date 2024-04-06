@@ -158,7 +158,7 @@ class App:
         height = args.height if args.height != -1 else self.theme.height
         self.root.geometry(f"{width}x{height}")
 
-        if args.maximized:
+        if args.maximize:
             app.update()
             self.maximize(False)
 
@@ -188,15 +188,27 @@ class App:
 
     def enable_compact(self) -> None:
         from .widgets import widgets
-        widgets.system_frame.grid_remove()
-        widgets.details_frame.grid_remove()
-        widgets.addons_frame.grid_remove()
+        from .args import args
+
+        if args.compact_system:
+            widgets.system_frame.grid_remove()
+
+        if args.compact_details:
+            widgets.details_frame.grid_remove()
+
+        if args.compact_buttons:
+            widgets.buttons_frame.grid_remove()
+
+        if args.compact_addons:
+            widgets.addons_frame.grid_remove()
+
         self.after_compact(True)
 
     def disable_compact(self) -> None:
         from .widgets import widgets
         widgets.system_frame.grid()
         widgets.details_frame.grid()
+        widgets.buttons_frame.grid()
         widgets.addons_frame.grid()
         self.after_compact(False)
 

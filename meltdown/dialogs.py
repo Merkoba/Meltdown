@@ -165,8 +165,8 @@ class Dialog:
         self.top_frame.pack()
         self.image_frame = tk.Frame(container, background=background)
         self.image_frame.pack()
-        self.button_frame = tk.Frame(container, background=background)
-        self.button_frame.pack()
+        self.buttons_frame = tk.Frame(container, background=background)
+        self.buttons_frame.pack()
         self.root.bind("<Escape>", lambda e: self.hide())
         self.root.bind("<FocusOut>", lambda e: self.hide())
 
@@ -192,7 +192,7 @@ class Dialog:
         Dialog.current_dialog = None
 
     def make_button(self, text: str, command: Callable[..., Any]) -> None:
-        button = widgetutils.get_button(self.button_frame, text, command, bigger=True)
+        button = widgetutils.get_button(self.buttons_frame, text, command, bigger=True)
         button.pack(side=tk.LEFT, padx=6, pady=8)
         self.buttons.append(button)
         num = len(self.buttons)

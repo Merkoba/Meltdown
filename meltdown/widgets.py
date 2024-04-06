@@ -249,27 +249,27 @@ class Widgets:
         ToolTip(self.mlock, tip)
 
         # Buttons
-        self.button_frame = widgetutils.make_frame()
+        self.buttons_frame = widgetutils.make_frame()
 
-        self.stop_button = widgetutils.make_button(self.button_frame, "Stop", lambda: self.stop(), fill=Fill.HORIZONTAL)
+        self.stop_button = widgetutils.make_button(self.buttons_frame, "Stop", lambda: self.stop(), fill=Fill.HORIZONTAL)
         ToolTip(self.stop_button, "Stop generating the current response")
 
-        self.new_button = widgetutils.make_button(self.button_frame, "New", lambda: display.make_tab(), fill=Fill.HORIZONTAL)
+        self.new_button = widgetutils.make_button(self.buttons_frame, "New", lambda: display.make_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.new_button, "Make a new tab")
 
         self.close_button = widgetutils.make_button(
-            self.button_frame, "Close", lambda: display.close_tab(), fill=Fill.HORIZONTAL)
+            self.buttons_frame, "Close", lambda: display.close_tab(), fill=Fill.HORIZONTAL)
         ToolTip(self.close_button, "Close the current tab")
 
-        self.clear_button = widgetutils.make_button(self.button_frame, "Clear",
+        self.clear_button = widgetutils.make_button(self.buttons_frame, "Clear",
                                                     lambda: display.clear(), fill=Fill.HORIZONTAL)
         ToolTip(self.clear_button, "Clear the conversation")
 
-        self.top_button = widgetutils.make_button(self.button_frame, "Top", lambda: display.to_top(),
+        self.top_button = widgetutils.make_button(self.buttons_frame, "Top", lambda: display.to_top(),
                                                   fill=Fill.HORIZONTAL)
         ToolTip(self.top_button, "Scroll to the top")
 
-        self.output_menu = widgetutils.make_button(self.button_frame, "More", lambda e: display.show_output_menu(e),
+        self.output_menu = widgetutils.make_button(self.buttons_frame, "More", lambda e: display.show_output_menu(e),
                                                    fill=Fill.HORIZONTAL, right_padding=right_padding)
         ToolTip(self.output_menu, "Show more options")
 
