@@ -139,8 +139,9 @@ class InputControl:
             self.clear()
             filemanager.add_input(text)
 
-            if commands.exec(text):
-                return
+            if args.commands:
+                if commands.exec(text):
+                    return
 
             if tab.mode == "ignore":
                 return

@@ -70,6 +70,7 @@ class Args:
         self.prefix = "/"
         self.andchar = "&"
         self.keychar = "@"
+        self.commands = True
 
     class Internal:
         title = app.manifest["title"]
@@ -101,6 +102,7 @@ class Args:
             "no-bottom-autohide": {"action": "store_false", "help": "Don't autohide the Bottom button"},
             "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
             "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
+            "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
             "maximized": {"action": "store_true", "help": "Start in maximized mode"},
             "compact": {"action": "store_true", "help": "Start in compact mode"},
             "full": {"action": "store_true", "help": "Start in full mode"},
@@ -159,7 +161,7 @@ class Args:
             ("no_empty", "allow_empty"), ("alias", "aliases"),
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
-            ("no_tab_highlight", "tab_highlight"),
+            ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
         ]
 
         for r_item in other_name:

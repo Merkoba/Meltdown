@@ -373,3 +373,11 @@ Like `&` in `/tab 1 & /select`
 Default: "@"
 
 Character to use for keywords like `@date`.
+
+---
+
+>no-commands
+
+Disable commands when submitting the input.
+
+Treat all text as the prompt, don't check for commands.
