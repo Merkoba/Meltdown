@@ -116,12 +116,12 @@ class Commands:
                 "action": lambda a=None: logs.menu(),
             },
             "logtext": {
-                "aliases": ["savetext", "savelogtext"],
+                "aliases": ["savetext", "savelogtext", "textlog"],
                 "help": "Save conversation to a text file",
                 "action": lambda a=None: logs.to_text(),
             },
             "logjson": {
-                "aliases": ["savejson", "savelogjson"],
+                "aliases": ["savejson", "savelogjson", "jsonlog"],
                 "help": "Save conversation to a JSON file",
                 "action": lambda a=None: logs.to_json(),
             },
@@ -298,12 +298,12 @@ class Commands:
                 "type": "force",
             },
             "viewtext": {
-                "aliases": ["text"],
+                "aliases": ["textview"],
                 "help": "View raw text",
                 "action": lambda a=None: display.view_text(),
             },
             "viewjson": {
-                "aliases": ["json"],
+                "aliases": ["jsonview"],
                 "help": "View raw JSON",
                 "action": lambda a=None: display.view_json(),
             },
@@ -335,7 +335,7 @@ class Commands:
                 "action": lambda a=None: display.scroll_up(),
             },
             "scrolldown": {
-                "aliases": ["movedown"],
+                "aliases": ["movedown", "downscroll"],
                 "help": "Scroll down",
                 "action": lambda a=None: display.scroll_down(),
             },
@@ -442,27 +442,27 @@ class Commands:
                 "arg_req": True,
             },
             "hide": {
-                "aliases": [],
+                "aliases": ["hideall"],
                 "help": "Close dialogs and menus",
                 "action": lambda a=None: app.hide_all(),
             },
             "printconfig": {
-                "aliases": ["showconfig"],
+                "aliases": ["showconfig", "configprint"],
                 "help": "Print all the config settings",
                 "action": lambda a=None: config.print_config(),
             },
             "bigger": {
-                "aliases": ["biggerfont"],
+                "aliases": ["biggerfont", "fontbigger"],
                 "help": "Increase the font size",
                 "action": lambda a=None: display.increase_font(),
             },
             "smaller": {
-                "aliases": ["smallerfont"],
+                "aliases": ["smallerfont", "fontsmaller"],
                 "help": "Decrease the font size",
                 "action": lambda a=None: display.decrease_font(),
             },
             "resetfont": {
-                "aliases": [],
+                "aliases": ["fontreset"],
                 "help": "Reset the font size",
                 "action": lambda a=None: display.reset_font(),
             },
