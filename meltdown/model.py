@@ -366,9 +366,6 @@ class Model:
             datenow = timeutils.now()
 
             if not force:
-                if len(buffer) < args.buffer:
-                    return
-
                 if (datenow - buffer_date) < args.delay:
                     return
 

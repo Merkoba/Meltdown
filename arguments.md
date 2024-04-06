@@ -336,18 +336,6 @@ Don't show some messages.
 
 ---
 
->buffer
-
-Default: 2
-
-Accumulate these tokens before printing.
-
-This is to adjust how the stream is printed when streaming live.
-
-If lower than 2, it prints immediately as tokens arrive.
-
----
-
 >delay
 
 Default: 0.15
@@ -357,5 +345,3 @@ Delay in seconds between each print when streaming.
 For example `--delay 0.25` would print more frequently compared to `--delay 1.0`.
 
 This might be useful if you don't want to overwhelm the interface with very frequent prints.
-
-You can use this and `buffer` to control the printing process.

@@ -68,7 +68,6 @@ class Args:
         self.tab_highlight = True
         self.quiet = False
         self.debug = False
-        self.buffer = 2
         self.delay = 0.15
 
     class Internal:
@@ -135,7 +134,6 @@ class Args:
             "drag-threshold": {"type": int, "help": "The higher the number the less sensitive the tab dragging will be"},
             "quiet": {"action": "store_true", "help": "Don't show some messages"},
             "debug": {"action": "store_true", "help": "Show some information for debugging"},
-            "buffer": {"type": int, "help": "When streaming, accumulate these number of words before printing"},
             "delay": {"type": float, "help": "Delay in seconds between each print when streaming"},
         }
 
@@ -174,7 +172,7 @@ class Args:
             "alt_palette", "max_tab_width", "old_tabs_minutes",
             "max_list_items", "list_item_width", "system_threshold",
             "drag_threshold", "system_delay", "quiet", "debug",
-            "buffer", "delay",
+            "delay",
         ]
 
         for n_item in normals:

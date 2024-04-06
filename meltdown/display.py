@@ -592,7 +592,7 @@ class Display:
         from .config import config
         new_size = config.output_font_size + 1
 
-        if new_size > 48:
+        if new_size > 36:
             return
 
         config.set("output_font_size", new_size)
