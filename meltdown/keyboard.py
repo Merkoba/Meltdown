@@ -220,6 +220,9 @@ class Keyboard:
             elif widgets.model_focused():
                 model.load()
             else:
+                if args.display:
+                    return
+
                 inputcontrol.focus()
                 inputcontrol.submit()
 
