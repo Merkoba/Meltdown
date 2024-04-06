@@ -125,6 +125,9 @@ class InputControl:
         from .display import display
         from . import filemanager
 
+        if args.display:
+            return
+
         if not tab_id:
             tab_id = display.current_tab
 

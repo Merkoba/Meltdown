@@ -77,6 +77,7 @@ class Args:
         self.compact_addons = False
         self.compact_buttons = False
         self.compact_input = False
+        self.display = False
 
     class Internal:
         title = app.manifest["title"]
@@ -153,6 +154,7 @@ class Args:
             "prefix": {"type": str, "help": "Character used to prefix commands like /"},
             "andchar": {"type": str, "help": "Character used to join commands like &"},
             "keychar": {"type": str, "help": "Character used for keywords like @"},
+            "display": {"action": "store_true", "help": "Only show the output and tabs"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -194,6 +196,8 @@ class Args:
 
             "compact_system", "compact_details", "compact_addons",
             "compact_buttons", "compact_model", "compact_input",
+
+            "display",
         ]
 
         for n_item in normals:

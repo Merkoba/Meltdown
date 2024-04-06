@@ -190,6 +190,10 @@ class App:
         from .widgets import widgets
         from .args import args
 
+        if args.display:
+            self.hide_frames()
+            return
+
         confs = [args.compact_model, args.compact_system,
                  args.compact_details, args.compact_buttons,
                  args.compact_addons, args.compact_input]
@@ -223,6 +227,12 @@ class App:
 
     def disable_compact(self) -> None:
         from .widgets import widgets
+        from .args import args
+
+        if args.display:
+            self.hide_frames()
+            return
+
         widgets.model_frame.grid()
         widgets.system_frame.grid()
         widgets.details_frame.grid()
@@ -409,6 +419,15 @@ class App:
         Dialog.hide_all()
         Menu.hide_all()
         ToolTip.hide_all()
+
+    def hide_frames(self) -> None:
+        from .widgets import widgets
+        widgets.model_frame.grid_remove()
+        widgets.system_frame.grid_remove()
+        widgets.details_frame.grid_remove()
+        widgets.buttons_frame.grid_remove()
+        widgets.addons_frame.grid_remove()
+        widgets.input_frame.grid_remove()
 
 
 app = App()

@@ -405,3 +405,15 @@ Else it hides by default: system, details, and addons.
 For example: `--compact-model --compact buttons`
 
 In compact mode only the model frame and the buttons frame will be hidden.
+
+---
+
+>display
+
+Activate display mode.
+
+This hides all frames except the display and tabs.
+
+Input submit is also disabled.
+
+Commands and keyboard shortcuts still work.
