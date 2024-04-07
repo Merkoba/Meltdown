@@ -114,7 +114,7 @@ class App:
 
     def exit(self) -> None:
         self.active = False
-        self.root.destroy()
+        self.root.after(100, lambda: self.root.destroy())
 
     def exists(self) -> bool:
         try:

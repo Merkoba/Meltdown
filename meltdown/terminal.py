@@ -43,7 +43,13 @@ class SlashCompleter(Completer):  # type:ignore
             self.words.append(name)
 
 
-def get_input() -> None:
+def start_terminal() -> None:
+    thread = threading.Thread(target=lambda: do_start_terminal())
+    thread.daemon = True
+    thread.start()
+
+
+def do_start_terminal() -> None:
     history = InMemoryHistory()
     cmdlist = [f"/{key}" for key in commands.cmdkeys]
     completer = SlashCompleter(cmdlist)
@@ -76,9 +82,7 @@ def get_input() -> None:
 
 def start() -> None:
     if args.terminal:
-        thread = threading.Thread(target=lambda: get_input())
-        thread.daemon = True
-        thread.start()
+        start_terminal()
 
     if args.listener:
         start_listener()
@@ -88,12 +92,12 @@ def start_listener() -> None:
     if args.listener_delay < 0.1:
         return
 
-    thread = threading.Thread(target=lambda: listener())
+    thread = threading.Thread(target=lambda: do_start_listener())
     thread.daemon = True
     thread.start()
 
 
-def listener() -> None:
+def do_start_listener() -> None:
     program = app.manifest["program"]
     file_name = f"mlt_{program}.input"
 
