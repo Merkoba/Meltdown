@@ -507,3 +507,11 @@ Default: 0.5
 Delay in seconds for the listener loop check.
 
 If this is lower than 0.1 the listener won't start.
+
+---
+
+>on-top
+
+Make the window always on top.
+
+This means clicking outside the window won't hide it.

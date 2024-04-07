@@ -507,6 +507,11 @@ class Commands:
                 "help": "Show some internal information",
                 "action": lambda a=None: app.stats()
             },
+            "ontop": {
+                "aliases": ["toggleontop", "toggletop", "alwaysontop"],
+                "help": "Make the window stay at the top or not",
+                "action": lambda a=None: app.toggle_on_top()
+            },
         }
 
         for key in self.commands:

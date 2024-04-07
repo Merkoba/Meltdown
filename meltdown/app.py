@@ -36,6 +36,7 @@ class App:
         self.setup_focus()
         self.setup_binds()
         self.theme: Theme
+        self.on_top = False
 
         self.intro = [
             f"Welcome to {title}.",
@@ -101,6 +102,7 @@ class App:
     def setup(self) -> None:
         self.check_compact()
         self.check_display()
+        self.check_on_top()
 
     def check_display(self) -> None:
         from .args import args
@@ -467,5 +469,24 @@ class App:
 
         display.print("\n".join(lines))
 
+    def toggle_on_top(self) -> None:
+        if self.on_top:
+            self.disable_on_top()
+        else:
+            self.enable_on_top()
+
+    def enable_on_top(self) -> None:
+        self.on_top = True
+        self.root.attributes("-topmost", True)
+
+    def disable_on_top(self) -> None:
+        self.on_top = False
+        self.root.attributes("-topmost", False)
+
+    def check_on_top(self) -> None:
+        from .args import args
+
+        if args.on_top:
+            self.enable_on_top()
 
 app = App()
