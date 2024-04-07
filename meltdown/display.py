@@ -492,6 +492,12 @@ class Display:
         if output:
             output.select_all()
 
+    def deselect_output(self) -> None:
+        output = self.get_current_output()
+
+        if output:
+            output.deselect_all()
+
     def print(self, text: str, tab_id: str = "") -> None:
         if not app.exists():
             return

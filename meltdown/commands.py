@@ -401,6 +401,11 @@ class Commands:
                 "help": "Select all text",
                 "action": lambda a=None: display.select_output(),
             },
+            "deselect": {
+                "aliases": ["unselect"],
+                "help": "Deselect all text",
+                "action": lambda a=None: display.deselect_output(),
+            },
             "browse": {
                 "aliases": [],
                 "help": "Browse the models",
