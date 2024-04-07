@@ -425,3 +425,9 @@ Commands and keyboard shortcuts still work.
 >no-intro
 
 Don't print the intro in conversations.
+
+---
+
+>no-terminal
+
+Don't enable the terminal to input prompts and commands.

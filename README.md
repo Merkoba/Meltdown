@@ -159,6 +159,8 @@ Create up to 3 tasks to run commands periodically automatically.
 
 Create command aliases that run other commands.
 
+Send prompt input and commands through the terminal.
+
 ---
 
 ## GUI Toolkit <a name="toolkit"></a>

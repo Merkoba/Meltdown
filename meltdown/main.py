@@ -8,6 +8,7 @@ from .args import args
 from .commands import commands
 from .keyboard import keyboard
 from .inputcontrol import inputcontrol
+from . import terminal
 from . import filemanager
 from . import system
 from . import tasks
@@ -48,6 +49,7 @@ def main() -> None:
     tasks.start_all()
     app.setup()
     inputcontrol.setup()
+    terminal.start()
 
     # Create singleton
     fp.write(str(os.getpid()))

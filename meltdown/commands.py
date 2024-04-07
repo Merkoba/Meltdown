@@ -149,7 +149,7 @@ class Commands:
                 "action": lambda a=None: app.resize(),
             },
             "stop": {
-                "aliases": [],
+                "aliases": ["stopstream", "streamstop"],
                 "help": "Stop the current stream",
                 "action": lambda a=None: model.stop_stream(),
             },

@@ -80,6 +80,7 @@ class Args:
         self.display = False
         self.intro = True
         self.monospace = False
+        self.terminal = True
 
     class Internal:
         title = app.manifest["title"]
@@ -111,6 +112,7 @@ class Args:
             "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
             "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
             "no-intro": {"action": "store_false", "help": "Don't print the intro in conversations"},
+            "no-terminal": {"action": "store_false", "help": "Don't enable the interactive terminal"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -181,7 +183,7 @@ class Args:
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
-            ("no_intro", "intro"),
+            ("no_intro", "intro"), ("no_terminal", "terminal"),
         ]
 
         for r_item in other_name:
