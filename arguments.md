@@ -453,3 +453,19 @@ There is an autocomplete menu that needs some lines to be displayed.
 >terminal-vi
 
 Enable vi mode on the terminal.
+
+---
+
+>no-terminal-memory
+
+Don't remember words when using the terminal.
+
+These are added to the autocomplete list.
+
+---
+
+>terminal-memory-min
+
+Default: 4
+
+Minimum number of characters words need to have to be remembered.

@@ -84,6 +84,8 @@ class Args:
         self.autorun = ""
         self.terminal_height = 3
         self.terminal_vi = False
+        self.terminal_memory = True
+        self.terminal_memory_min = 4
 
     class Internal:
         title = app.manifest["title"]
@@ -116,6 +118,7 @@ class Args:
             "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
             "no-intro": {"action": "store_false", "help": "Don't print the intro in conversations"},
             "no-terminal": {"action": "store_false", "help": "Don't enable the interactive terminal"},
+            "no-terminal-memory": {"action": "store_false", "help": "Don't remember words in the terminal"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -167,6 +170,7 @@ class Args:
             "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
             "autorun": {"type": str, "help": "Run this command at startup"},
+            "terminal-memory-min": {"type": int, "help": "Minimum number of characters for remembered words"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -190,6 +194,7 @@ class Args:
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
             ("no_intro", "intro"), ("no_terminal", "terminal"),
+            ("no_terminal_memory", "terminal_memory"),
         ]
 
         for r_item in other_name:
@@ -212,7 +217,7 @@ class Args:
             "compact_buttons", "compact_model", "compact_input",
 
             "display", "monospace", "autorun", "terminal_height",
-            "terminal_vi",
+            "terminal_vi", "terminal_memory_min",
         ]
 
         for n_item in normals:

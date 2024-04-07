@@ -20,12 +20,23 @@ class SlashCompleter(Completer):  # type:ignore
         self.words = words
 
     def get_completions(self, document: Document, event: Any) -> Generator[Completion, None, None]:
-        text = document.text_before_cursor
+        text = document.get_word_before_cursor(WORD=True).strip()
+
+        if not text:
+            return
 
         if text.startswith(args.prefix):
             for word in self.words:
                 if word.startswith(text):
                     yield Completion(word, start_position=-len(text))
+        else:
+            for word in self.words:
+                if word.startswith(text):
+                    yield Completion(word, start_position=-len(text))
+
+    def add_word(self, name: str) -> None:
+        if name not in self.words:
+            self.words.append(name)
 
 
 def get_input() -> None:
@@ -43,18 +54,23 @@ def get_input() -> None:
 
     while True:
         try:
-            user_input = prompt("Input: ", history=history, completer=completer,
-                                reserve_space_for_menu=args.terminal_height,
-                                vi_mode=args.terminal_vi)
+            text = prompt("Input: ", history=history, completer=completer,
+                          reserve_space_for_menu=args.terminal_height,
+                          vi_mode=args.terminal_vi)
 
         except KeyboardInterrupt:
             app.exit()
             return
 
-        if not user_input:
+        if not text:
             continue
 
-        inputcontrol.submit(text=user_input)
+        if args.terminal_memory:
+            for word in text.split(" "):
+                if len(word) >= args.terminal_memory_min:
+                    completer.add_word(word)
+
+        inputcontrol.submit(text=text)
 
 
 def start() -> None:

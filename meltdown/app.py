@@ -452,5 +452,13 @@ class App:
 
         self.root.after(self.autorun_delay, lambda: action())
 
+    def stats(self) -> None:
+        from .display import display
+        from .commands import commands
+        from .args import args
+
+        display.print(f"Commands: {len(commands.commands)}")
+        display.print(f"Arguments: {len(vars(args))}")
+
 
 app = App()

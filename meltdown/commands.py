@@ -488,6 +488,11 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "stats": {
+                "aliases": ["statistics", "internal"],
+                "help": "Show some internal information",
+                "action": lambda a=None: app.stats()
+            },
         }
 
         for key in self.commands:
