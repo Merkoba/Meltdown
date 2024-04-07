@@ -158,7 +158,10 @@ class Model:
             name = Path(model).name
             mlock = True if (config.mlock == "yes") else False
             display.to_bottom(tab_id)
-            display.print(f"🫠 Loading {name}", tab_id=tab_id)
+
+            if not args.quiet:
+                display.print(f"🫠 Loading {name}", tab_id=tab_id)
+
             app.update()
 
             self.model = Llama(
@@ -180,9 +183,12 @@ class Model:
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
-        msg, now = timeutils.check_time("Model loaded", now)
         self.update_icon()
-        display.print(msg)
+
+        if not args.quiet:
+            msg, now = timeutils.check_time("Model loaded", now)
+            display.print(msg)
+
         self.lock.release()
 
     def is_loading(self) -> bool:
