@@ -77,6 +77,9 @@ class Display:
         self.book.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
         self.book.on_reorder = lambda: self.update_session()
 
+        self.min_font_size = 6
+        self.max_font_size = 36
+
     def make_tab(self, name: Optional[str] = None,
                  conversation_id: Optional[str] = None,
                  select_tab: bool = True, mode: str = "normal",
@@ -585,23 +588,36 @@ class Display:
     def close_current_tab(self) -> None:
         self.close_tab(tab_id=self.current_tab)
 
+    def apply_font_size(self, size: int) -> None:
+        from .config import config
+        config.set("output_font_size", size)
+
+    def set_font_size(self, size: int) -> None:
+        if size < self.min_font_size:
+            return
+
+        if size > self.max_font_size:
+            return
+
+        self.apply_font_size(size)
+
     def decrease_font(self) -> None:
         from .config import config
         new_size = config.output_font_size - 1
 
-        if new_size < 6:
+        if new_size < self.min_font_size:
             return
 
-        config.set("output_font_size", new_size)
+        self.apply_font_size(new_size)
 
     def increase_font(self) -> None:
         from .config import config
         new_size = config.output_font_size + 1
 
-        if new_size > 36:
+        if new_size > self.max_font_size:
             return
 
-        config.set("output_font_size", new_size)
+        self.apply_font_size(new_size)
 
     def reset_font(self) -> None:
         from .config import config

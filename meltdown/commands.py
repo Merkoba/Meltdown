@@ -457,6 +457,13 @@ class Commands:
                 "help": "Decrease the font size",
                 "action": lambda a=None: display.decrease_font(),
             },
+            "font": {
+                "aliases": ["fontsize", "size", "sizefont"],
+                "help": "Set an exact font size",
+                "action": lambda a=None: display.set_font_size(a),
+                "type": int,
+                "arg_req": True,
+            },
             "resetfont": {
                 "aliases": ["fontreset"],
                 "help": "Reset the font size",
