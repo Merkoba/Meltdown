@@ -850,5 +850,18 @@ class Display:
 
         self.book.remove_highlights()
 
+    def toggle_scroll(self) -> None:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        yview = tab.output.yview()
+
+        if yview[1] >= 0.9999:
+            tab.output.to_top()
+        else:
+            tab.output.to_bottom()
+
 
 display = Display()

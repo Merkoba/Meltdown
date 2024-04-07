@@ -469,6 +469,11 @@ class Commands:
                 "help": "Reset the font size",
                 "action": lambda a=None: display.reset_font(),
             },
+            "togglescroll": {
+                "aliases": ["scrolltoggle"],
+                "help": "Scroll to the bottom or to the top",
+                "action": lambda a=None: display.toggle_scroll(),
+            },
         }
 
         for key in self.commands:

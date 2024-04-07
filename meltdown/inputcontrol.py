@@ -127,7 +127,7 @@ class InputControl:
 
         if args.display:
             if not text:
-                display.to_bottom()
+                display.toggle_scroll()
                 return
 
         if not text:
@@ -159,7 +159,7 @@ class InputControl:
 
             model.stream(text, tab.tab_id)
         else:
-            display.to_bottom()
+            display.toggle_scroll()
 
     def setup(self) -> None:
         self.check()
