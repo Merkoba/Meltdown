@@ -428,15 +428,15 @@ Don't print the intro in conversations.
 
 ---
 
->no-terminal
-
-Don't enable the terminal to input prompts and commands.
-
----
-
 >autorun
 
 A command or chain of commands to run at startup automatically.
+
+---
+
+>no-terminal
+
+Don't enable the terminal to input prompts and commands.
 
 ---
 
