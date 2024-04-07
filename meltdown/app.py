@@ -363,6 +363,11 @@ class App:
 
     def show_intro(self, tab_id: str = "") -> None:
         from .display import display
+        from .args import args
+
+        if not args.intro:
+            return
+
         text = "\n".join(self.intro)
         display.print(text, tab_id=tab_id)
 
