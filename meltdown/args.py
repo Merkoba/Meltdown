@@ -87,6 +87,8 @@ class Args:
         self.terminal_memory = True
         self.terminal_memory_min = 4
         self.autocomplete_memory_min = 4
+        self.listener = False
+        self.listener_delay = 0.5
 
     class Internal:
         title = app.manifest["title"]
@@ -173,6 +175,8 @@ class Args:
             "autorun": {"type": str, "help": "Run this command at startup"},
             "terminal-memory-min": {"type": int, "help": "Minimum number of characters for remembered words in the terminal"},
             "autocomplete-memory-min": {"type": int, "help": "Minimum number of characters for remembered words in the input"},
+            "listener": {"action": "store_true", "help": "Listen for changes to the stdin file"},
+            "listener-delay": {"type": float, "help": "Delay for the listener checks"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -220,6 +224,7 @@ class Args:
 
             "display", "monospace", "autorun", "terminal_height",
             "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
+            "listener", "listener_delay",
         ]
 
         for n_item in normals:

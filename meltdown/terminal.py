@@ -3,16 +3,20 @@ from .inputcontrol import inputcontrol
 from .args import args
 from .commands import commands
 from .app import app
+from . import timeutils
+from . import utils
 
 # Standard
 import threading
 from typing import Any, Generator, List
+from pathlib import Path
 
 # Libraries
 from prompt_toolkit import prompt  # type:ignore
 from prompt_toolkit.history import InMemoryHistory  # type:ignore
 from prompt_toolkit.completion import Completer, Completion  # type:ignore
 from prompt_toolkit.document import Document  # type:ignore
+import tempfile
 
 
 class SlashCompleter(Completer):  # type:ignore
@@ -74,9 +78,42 @@ def get_input() -> None:
 
 
 def start() -> None:
-    if not args.terminal:
+    if args.terminal:
+        thread = threading.Thread(target=get_input, args=())
+        thread.daemon = True
+        thread.start()
+
+    if args.listener:
+        start_listener()
+
+
+def start_listener() -> None:
+    if args.listener_delay < 0.1:
         return
 
-    thread = threading.Thread(target=get_input, args=())
+    thread = threading.Thread(target=lambda: listener())
     thread.daemon = True
     thread.start()
+
+
+def listener() -> None:
+    program = app.manifest["program"]
+    file_name = f"mlt_{program}.input"
+
+    if not args.quiet:
+        utils.msg(f"Listening to {file_name}")
+
+    path = Path(tempfile.gettempdir(), file_name)
+
+    while True:
+        if path.exists() and path.is_file():
+            with open(path, "r") as file:
+                text = file.read().strip()
+
+                if text:
+                    with open(path, "w") as file:
+                        file.write("")
+
+                    inputcontrol.submit(text=text)
+
+        timeutils.sleep(args.listener_delay)

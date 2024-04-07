@@ -477,3 +477,33 @@ Minimum number of characters words need to have to be remembered in the terminal
 Default: 4
 
 Minimum number of characters words need to have to be remembered in the input.
+
+---
+
+>listener
+
+Enable the stdin listener.
+
+This reads a file located in a temp directory.
+
+The file is called `mlt_meltdown.input`.
+
+In Linux it would be located inside `/tmp`
+
+This file is read, and if it has content it used for the input.
+
+The file is then emptied.
+
+So for instance you can trigger an input by doing this:
+
+`echo "hello world" > /tmp/mlt_meltdown.input`
+
+---
+
+>listener-delay
+
+Default: 0.5
+
+Delay in seconds for the listener loop check.
+
+If this is lower than 0.1 the listener won't start.
