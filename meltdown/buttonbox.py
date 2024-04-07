@@ -13,6 +13,7 @@ class ButtonBox(tk.Frame):
                  command: Optional[Callable[..., Any]] = None,
                  when: Optional[str] = None, style: Optional[str] = None,
                  width: Optional[int] = None, bigger: bool = False) -> None:
+
         super().__init__(parent)
         self.text = text
         self.bigger = bigger

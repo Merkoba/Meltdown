@@ -16,6 +16,7 @@ class MenuItem:
                  command: Optional[Callable[..., Any]] = None,
                  separator: bool = False, disabled: bool = False,
                  tooltip: str = "", aliases: Optional[List[str]] = None):
+
         self.text = text
         self.command = command
         self.separator = separator

@@ -494,6 +494,7 @@ class Widgets:
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
                         event: Optional[Any] = None, require_items: bool = False) -> None:
+
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
         items = getattr(config, key_list)[:args.max_list_items]

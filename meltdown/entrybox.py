@@ -82,6 +82,7 @@ class EntryBox(ttk.Entry):
     def insert_text(self, text: str,
                     check_placeholder: bool = True,
                     index: str = "") -> None:
+
         if self.placeholder_active:
             self.delete(0, tk.END)
 

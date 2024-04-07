@@ -25,6 +25,7 @@ class KbItem:
                  widget: Optional[tk.Widget], return_break: bool,
                  help: KbHelp, shift_help: KbHelp,
                  ctrl_help: KbHelp, ctrl_shift_help: KbHelp) -> None:
+
         self.command = command
         self.on_ctrl = on_ctrl
         self.on_shift = on_shift

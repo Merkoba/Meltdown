@@ -81,6 +81,7 @@ class Display:
                  conversation_id: Optional[str] = None,
                  select_tab: bool = True, mode: str = "normal",
                  save: bool = True) -> str:
+
         from .session import session
 
         if not name:
@@ -123,6 +124,7 @@ class Display:
     def close_tab(self, tab_id: str = "",
                   force: bool = False,
                   make_empty: bool = True, method: str = "normal") -> None:
+
         if not tab_id:
             tab_id = self.book.current()
 

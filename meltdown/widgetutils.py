@@ -21,6 +21,7 @@ def do_pack(widget: tk.Widget,
             bottom_padding: Optional[int] = None,
             padx: Optional[int] = None,
             pady: Optional[int] = None) -> None:
+
     if padx is not None:
         if right_padding:
             px = (padx, right_padding)
@@ -43,11 +44,10 @@ def do_pack(widget: tk.Widget,
 
 def make_frame(parent: Optional[tk.Frame] = None,
                bottom_padding: Optional[int] = None) -> tk.Frame:
-    global frame_number
 
+    global frame_number
     p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
-
     padx = (app.theme.frame_padx, app.theme.frame_padx)
 
     if bottom_padding is not None:
@@ -86,6 +86,7 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
 def make_entry(parent: tk.Frame, value: str = "",
                width: Optional[int] = None, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None) -> EntryBox:
+
     w = width if width else app.theme.entry_width
     widget = EntryBox(parent, font=app.theme.font, width=w, style="Normal.TEntry")
     do_pack(widget, fill=fill, right_padding=right_padding)
@@ -99,6 +100,7 @@ def make_entry(parent: tk.Frame, value: str = "",
 def get_button(parent: tk.Frame, text: str,
                command: Optional[Callable[..., Any]] = None,
                style: Optional[str] = None, width: Optional[int] = None, bigger: bool = False) -> ButtonBox:
+
     return ButtonBox(parent, text, command, style=style, width=width, bigger=bigger)
 
 
@@ -106,6 +108,7 @@ def make_button(parent: tk.Frame, text: str,
                 command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
                 right_padding: Optional[int] = None, bottom_padding: Optional[int] = None, bigger: bool = False,
                 pady: Optional[int] = None, style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
+
     widget = get_button(parent, text, command, style=style, width=width, bigger=bigger)
     do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
     return widget
@@ -114,6 +117,7 @@ def make_button(parent: tk.Frame, text: str,
 def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
                right_padding: Optional[int] = None, padx: Optional[int] = None,
                pady: Optional[int] = None, colons: bool = True) -> tk.Label:
+
     text = f"{text}:" if colons else text
     widget = tk.Label(parent, text=text, font=app.theme.font)
     widget.configure(background=app.theme.background_color, foreground=app.theme.foreground_color)
@@ -124,6 +128,7 @@ def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
 def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
                   fill: Optional[Fill] = None, width: Optional[int] = None,
                   right_padding: Optional[int] = None) -> ttk.Combobox:
+
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
     widget = ttk.Combobox(parent, values=v, state="readonly",
