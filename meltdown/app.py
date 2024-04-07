@@ -455,10 +455,15 @@ class App:
     def stats(self) -> None:
         from .display import display
         from .commands import commands
+        from .keyboard import keyboard
         from .args import args
 
-        display.print(f"Commands: {len(commands.commands)}")
-        display.print(f"Arguments: {len(vars(args))}")
+        lines = []
+        lines.append(f"Commands: {len(commands.commands)}")
+        lines.append(f"Arguments: {len(vars(args))}")
+        lines.append(f"Keyboard: {len(keyboard.commands)}")
+
+        display.print("\n".join(lines))
 
 
 app = App()
