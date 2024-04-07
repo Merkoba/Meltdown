@@ -338,7 +338,7 @@ Don't show some messages.
 
 >delay
 
-Default: 0.15
+Default: 0.1
 
 Delay in seconds between each print when streaming.
 

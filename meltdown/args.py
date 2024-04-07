@@ -66,7 +66,7 @@ class Args:
         self.tab_highlight = True
         self.quiet = False
         self.debug = False
-        self.delay = 0.15
+        self.delay = 0.1
         self.prefix = "/"
         self.andchar = "&"
         self.keychar = "@"
