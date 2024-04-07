@@ -165,6 +165,8 @@ Over 70 commands and 80 arguments.
 
 Powerful input line prompt for the terminal, with autocomplete, memory, and vi mode.
 
+Optional listener that checks a file periodically to use as input.
+
 ---
 
 ## GUI Toolkit <a name="toolkit"></a>
