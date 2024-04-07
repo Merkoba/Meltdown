@@ -99,6 +99,13 @@ class App:
 
     def setup(self) -> None:
         self.check_compact()
+        self.check_display()
+
+    def check_display(self) -> None:
+        from .args import args
+
+        if args.display:
+            self.hide_frames()
 
     def run(self) -> None:
         self.root.mainloop()
@@ -191,7 +198,6 @@ class App:
         from .args import args
 
         if args.display:
-            self.hide_frames()
             return
 
         confs = [args.compact_model, args.compact_system,
@@ -230,7 +236,6 @@ class App:
         from .args import args
 
         if args.display:
-            self.hide_frames()
             return
 
         widgets.model_frame.grid()
