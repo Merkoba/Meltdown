@@ -296,8 +296,12 @@ class Output(tk.Text):
         return self.get("1.0", "end-1c").strip()
 
     def get_fraction(self, num_lines: int = 1) -> float:
-        total_lines = self.count("1.0", "end-1c lineend", "displaylines")[0]  # type: ignore
-        fraction = float(num_lines / total_lines)
+        lines = self.count("1.0", "end-1c lineend", "displaylines")  # type: ignore
+
+        if not lines:
+            return 0.0
+
+        fraction = float(num_lines / lines[0])
         return fraction
 
     def scroll_up(self, check: bool = False) -> None:
