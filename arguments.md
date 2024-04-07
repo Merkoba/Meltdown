@@ -482,7 +482,7 @@ Minimum number of characters words need to have to be remembered in the input.
 
 >listener
 
-Enable the stdin listener.
+Enable the input listener.
 
 This reads a file located in a temp directory.
 
