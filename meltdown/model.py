@@ -195,7 +195,9 @@ class Model:
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
-            display.print("< Interrupted >")
+
+            if not args.quiet:
+                display.print("< Interrupted >")
 
     def stream(self, prompt: str, tab_id: str) -> None:
         if self.is_loading():
