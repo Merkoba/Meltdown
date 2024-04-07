@@ -81,6 +81,7 @@ class Args:
         self.intro = True
         self.monospace = False
         self.terminal = True
+        self.autorun = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -161,6 +162,7 @@ class Args:
             "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
             "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
+            "autorun": {"type": str, "help": "Run this command at startup"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -205,7 +207,7 @@ class Args:
             "compact_system", "compact_details", "compact_addons",
             "compact_buttons", "compact_model", "compact_input",
 
-            "display", "monospace",
+            "display", "monospace", "autorun",
         ]
 
         for n_item in normals:

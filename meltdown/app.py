@@ -439,5 +439,12 @@ class App:
         widgets.addons_frame.grid_remove()
         widgets.input_frame.grid_remove()
 
+    def autorun(self) -> None:
+        from .args import args
+        from .commands import commands
+
+        if args.autorun:
+            commands.exec(args.autorun)
+
 
 app = App()

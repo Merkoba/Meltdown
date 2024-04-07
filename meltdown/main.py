@@ -50,6 +50,7 @@ def main() -> None:
     app.setup()
     inputcontrol.setup()
     terminal.start()
+    app.autorun()
 
     # Create singleton
     fp.write(str(os.getpid()))
