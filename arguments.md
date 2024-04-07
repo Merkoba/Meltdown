@@ -419,3 +419,9 @@ This hides all frames except the display and tabs.
 Input submit is also disabled.
 
 Commands and keyboard shortcuts still work.
+
+---
+
+>no-intro
+
+Don't print the intro in conversations.

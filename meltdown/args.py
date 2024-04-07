@@ -78,6 +78,7 @@ class Args:
         self.compact_buttons = False
         self.compact_input = False
         self.display = False
+        self.intro = True
 
     class Internal:
         title = app.manifest["title"]
@@ -97,8 +98,6 @@ class Args:
             "no-cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
             "no-ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no-temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
-            "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
-            "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "no-keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
             "no-taps": {"action": "store_false", "help": "Disable double ctrl taps"},
             "no-wrap": {"action": "store_false", "help": "Disable wrapping when selecting items"},
@@ -110,6 +109,7 @@ class Args:
             "no-reorder": {"action": "store_false", "help": "Disable tab reordering by dragging"},
             "no-tab-highlight": {"action": "store_false", "help": "Don't highlight the tab when streaming"},
             "no-commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
+            "no-intro": {"action": "store_false", "help": "Don't print the intro in conversations"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -155,6 +155,8 @@ class Args:
             "andchar": {"type": str, "help": "Character used to join commands like &"},
             "keychar": {"type": str, "help": "Character used for keywords like @"},
             "display": {"action": "store_true", "help": "Only show the output and tabs"},
+            "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
+            "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -176,6 +178,7 @@ class Args:
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
+            ("no_intro", "intro"),
         ]
 
         for r_item in other_name:

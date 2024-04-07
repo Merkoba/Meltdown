@@ -113,7 +113,10 @@ class Display:
         page.content.grid_rowconfigure(2, weight=0)
 
         self.tab_number += 1
-        app.show_intro(tab_id)
+
+        if args.intro:
+            app.show_intro(tab_id)
+
         tab.modified = False
 
         if save:
