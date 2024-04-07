@@ -342,9 +342,11 @@ Default: 0.1
 
 Delay in seconds between each print when streaming.
 
-For example `--delay 0.25` would print more frequently compared to `--delay 1.0`.
+For example `--delay 0.25` would print more frequently compared to `--delay 1`.
 
 This might be useful if you don't want to overwhelm the interface with very frequent prints.
+
+Use `0` to not have a delay at all.
 
 ---
 
