@@ -474,6 +474,20 @@ class Commands:
                 "help": "Scroll to the bottom or to the top",
                 "action": lambda a=None: display.toggle_scroll(),
             },
+            "setconfig": {
+                "aliases": ["set", "configset"],
+                "help": "Set a config: [key] [value]",
+                "action": lambda a=None: config.set_command(a),
+                "type": str,
+                "arg_req": True,
+            },
+            "resetconfig": {
+                "aliases": ["configreset"],
+                "help": "Reset a config: [key]",
+                "action": lambda a=None: config.reset_one(a),
+                "type": str,
+                "arg_req": True,
+            },
         }
 
         for key in self.commands:

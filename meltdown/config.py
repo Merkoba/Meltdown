@@ -348,5 +348,18 @@ class Config:
         cmds.append(("Save", lambda: self.save_state()))
         Dialog.show_commands("Config Menu", commands=cmds)
 
+    def set_command(self, command: str) -> None:
+        if not command:
+            return
+
+        parts = command.split(" ")
+
+        if len(parts) < 2:
+            return
+
+        key = parts[0]
+        value = " ".join(parts[1:])
+        self.set(key, value)
+
 
 config = Config()

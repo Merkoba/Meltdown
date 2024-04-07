@@ -8,7 +8,7 @@ import threading
 
 def get_input() -> None:
     while True:
-        user_input = input("Prompt: ")
+        user_input = input("Input: ")
         inputcontrol.submit(text=user_input)
 
 
