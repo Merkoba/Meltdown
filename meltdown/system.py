@@ -84,6 +84,6 @@ def start() -> None:
     if not args.system:
         return
 
-    thread = threading.Thread(target=check, args=())
+    thread = threading.Thread(target=lambda: check())
     thread.daemon = True
     thread.start()

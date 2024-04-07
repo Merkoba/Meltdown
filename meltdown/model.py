@@ -97,7 +97,7 @@ class Model:
                 self.stream(prompt, tab_id)
 
         self.unload()
-        self.load_thread = threading.Thread(target=wrapper, args=())
+        self.load_thread = threading.Thread(target=lambda: wrapper())
         self.load_thread.daemon = True
         self.load_thread.start()
 
@@ -229,7 +229,7 @@ class Model:
             self.streaming = False
 
         self.stop_stream()
-        self.stream_thread = threading.Thread(target=wrapper, args=(prompt, tab_id))
+        self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
 

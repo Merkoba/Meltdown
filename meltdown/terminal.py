@@ -79,7 +79,7 @@ def get_input() -> None:
 
 def start() -> None:
     if args.terminal:
-        thread = threading.Thread(target=get_input, args=())
+        thread = threading.Thread(target=lambda: get_input())
         thread.daemon = True
         thread.start()
 
