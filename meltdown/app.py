@@ -31,6 +31,7 @@ class App:
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.minsize(100, 100)
+        self.autorun_delay = 250
         self.setup_images()
         self.setup_focus()
         self.setup_binds()
@@ -449,7 +450,7 @@ class App:
         def action() -> None:
             commands.exec(args.autorun)
 
-        self.root.after(100, lambda: action())
+        self.root.after(self.autorun_delay, lambda: action())
 
 
 app = App()
