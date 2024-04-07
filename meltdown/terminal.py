@@ -45,15 +45,7 @@ class SlashCompleter(Completer):  # type:ignore
 
 def get_input() -> None:
     history = InMemoryHistory()
-    cmdkeys = commands.commands.keys()
-    names = []
-
-    for key in cmdkeys:
-        cmd = commands.commands[key]
-        names.append(key)
-        names.extend(cmd["aliases"])
-
-    cmdlist = [f"/{name}" for name in names]
+    cmdlist = [f"/{key}" for key in commands.cmdkeys]
     completer = SlashCompleter(cmdlist)
 
     while True:
@@ -65,8 +57,13 @@ def get_input() -> None:
         except KeyboardInterrupt:
             app.exit()
             return
+        except Exception:
+            continue
 
         if not text:
+            continue
+
+        if not app.active:
             continue
 
         if args.terminal_memory:

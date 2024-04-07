@@ -43,6 +43,15 @@ class Commands:
         self.check_commands()
         self.load_file()
         self.start_loop()
+        self.get_cmdkeys()
+
+    def get_cmdkeys(self) -> None:
+        self.cmdkeys = []
+
+        for key in self.commands:
+            cmd = self.commands[key]
+            self.cmdkeys.append(key)
+            self.cmdkeys.extend(cmd["aliases"])
 
     def start_loop(self) -> None:
         def loop() -> None:

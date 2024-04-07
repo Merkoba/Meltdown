@@ -43,7 +43,8 @@ class AutoComplete:
             if self.match:
                 inputcontrol.input.delete_text(self.pos, len(self.missing))
 
-            inputcontrol.input.insert_text(missing, index=str(self.pos))
+            inputcontrol.input.insert_text(missing, index=self.pos)
+
             self.index += 1
             self.match = match
             self.missing = missing
@@ -79,17 +80,13 @@ class AutoComplete:
         if commands.is_command(word):
             word = self.clean(word)
 
-            for cmd, data in commands.commands.items():
-                if cmd.startswith(word):
-                    self.matches.append(cmd)
+            for key in commands.cmdkeys:
+                if key.startswith(word):
+                    self.matches.append(key)
 
-                for alias in data["aliases"]:
-                    if alias.startswith(word):
-                        self.matches.append(alias)
-
-            for cmd, value in commands.aliases.items():
-                if cmd.startswith(word):
-                    self.matches.append(cmd)
+            for key in commands.aliases.keys():
+                if key.startswith(word):
+                    self.matches.append(key)
         else:
             for w in inputcontrol.autocomplete:
                 if w.startswith(word):
