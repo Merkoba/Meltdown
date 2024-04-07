@@ -184,6 +184,7 @@ class Args:
         aliases: Dict[str, List[str]] = {
             "maximize": ["--max", "-max"],
             "monospace": ["--mono", "-mono"],
+            "numbers": ["--nums", "-nums"],
         }
 
     def parse(self) -> None:
