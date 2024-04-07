@@ -6,9 +6,12 @@ from .config import config
 from .entrybox import EntryBox
 from .app import app
 from .args import args
+from .paths import paths
 from . import widgetutils
+from . import filemanager
 
 # Standard
+import json
 from typing import Any, Optional, List
 
 
@@ -164,6 +167,17 @@ class InputControl:
             display.toggle_scroll()
 
     def setup(self) -> None:
+        path = paths.autocomplete
+
+        if path.exists() and path.is_file():
+            with open(path, "r", encoding="utf-8") as file:
+                try:
+                    self.autocomplete = json.load(file)
+                except BaseException:
+                    self.autocomplete = []
+        else:
+            self.autocomplete = []
+
         self.check()
 
     def check(self) -> None:
@@ -182,6 +196,7 @@ class InputControl:
 
     def add_words(self, text: str) -> None:
         words = text.split()
+        added = False
 
         for word in words:
             if len(word) < args.autocomplete_memory_min:
@@ -189,6 +204,10 @@ class InputControl:
 
             if word not in self.autocomplete:
                 self.autocomplete.append(word)
+                added = True
+
+        if added:
+            filemanager.save(paths.autocomplete, self.autocomplete)
 
 
 inputcontrol = InputControl()

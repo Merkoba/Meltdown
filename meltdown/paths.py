@@ -21,6 +21,7 @@ class Paths:
         self.appends = Path(config_dir, program, "appends.json")
         self.session = Path(config_dir, program, "session.json")
         self.commands = Path(config_dir, program, "commands.json")
+        self.autocomplete = Path(config_dir, program, "autocomplete.json")
 
         data_dir = appdirs.user_data_dir()
         self.configs = Path(data_dir, program, "configs")
