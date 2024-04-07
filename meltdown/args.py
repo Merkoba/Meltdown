@@ -86,6 +86,7 @@ class Args:
         self.terminal_vi = False
         self.terminal_memory = True
         self.terminal_memory_min = 4
+        self.autocomplete_memory_min = 4
 
     class Internal:
         title = app.manifest["title"]
@@ -170,7 +171,8 @@ class Args:
             "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
             "autorun": {"type": str, "help": "Run this command at startup"},
-            "terminal-memory-min": {"type": int, "help": "Minimum number of characters for remembered words"},
+            "terminal-memory-min": {"type": int, "help": "Minimum number of characters for remembered words in the terminal"},
+            "autocomplete-memory-min": {"type": int, "help": "Minimum number of characters for remembered words in the input"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -217,7 +219,7 @@ class Args:
             "compact_buttons", "compact_model", "compact_input",
 
             "display", "monospace", "autorun", "terminal_height",
-            "terminal_vi", "terminal_memory_min",
+            "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
         ]
 
         for n_item in normals:

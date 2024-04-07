@@ -9,13 +9,14 @@ from .args import args
 from . import widgetutils
 
 # Standard
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 
 class InputControl:
     def __init__(self) -> None:
         self.history_index = -1
         self.input: EntryBox
+        self.autocomplete: List[str] = []
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -157,6 +158,7 @@ class InputControl:
             if model.model_loading:
                 return
 
+            self.add_words(text)
             model.stream(text, tab.tab_id)
         else:
             display.toggle_scroll()
@@ -177,6 +179,16 @@ class InputControl:
                     tab_id = display.make_tab()
 
             self.submit(tab_id=tab_id, text=text)
+
+    def add_words(self, text: str) -> None:
+        words = text.split()
+
+        for word in words:
+            if len(word) < args.autocomplete_memory_min:
+                continue
+
+            if word not in self.autocomplete:
+                self.autocomplete.append(word)
 
 
 inputcontrol = InputControl()

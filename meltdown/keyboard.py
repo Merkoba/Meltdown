@@ -7,6 +7,7 @@ from .model import model
 from .commands import commands
 from .entrybox import EntryBox
 from .tooltips import ToolTip
+from .autocomplete import autocomplete
 from .args import args
 from . import timeutils
 
@@ -103,7 +104,7 @@ class Keyboard:
                 inputcontrol.focus()
         else:
             if event.keysym != "Tab":
-                commands.reset()
+                autocomplete.reset()
 
     def on_key_release(self, event: Any) -> None:
         if event.keysym == "Control_L" or event.keysym == "Control_R":
@@ -210,7 +211,7 @@ class Keyboard:
 
     def setup_input(self) -> None:
         self.register("<Tab>",
-                      lambda: commands.check_autocomplete(),
+                      lambda: autocomplete.check(),
                       widget=inputcontrol.input, return_break=True,
                       help="Autocomplete commands")
 

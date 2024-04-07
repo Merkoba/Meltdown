@@ -13,7 +13,6 @@ from . import filemanager
 import re
 import json
 from typing import Any, Dict, List, Optional
-import tkinter as tk
 
 
 class QueueItem:
@@ -31,12 +30,6 @@ class Queue:
 class Commands:
     def __init__(self) -> None:
         self.commands: Dict[str, Dict[str, Any]] = {}
-        self.autocomplete_index = 0
-        self.autocomplete_matches: List[str] = []
-        self.autocomplete_match = ""
-        self.autocomplete_word = ""
-        self.autocomplete_pos = 0
-        self.autocomplete_missing = ""
         self.loop_delay = 25
         self.queues: List[Queue] = []
 
@@ -658,85 +651,6 @@ class Commands:
 
         display.print("\n".join(text), tab_id=tab_id)
 
-    def check_autocomplete(self) -> None:
-        from .inputcontrol import inputcontrol
-        text = inputcontrol.input.get()
-
-        if not self.is_command(text):
-            return
-
-        if not self.autocomplete_matches:
-            self.get_matches(text)
-
-        def check() -> None:
-            if self.autocomplete_index >= len(self.autocomplete_matches):
-                self.autocomplete_index = 0
-
-            match = self.autocomplete_matches[self.autocomplete_index]
-            input_text = inputcontrol.input.get()[1:]
-
-            if match == input_text:
-                if len(self.autocomplete_matches) == 1:
-                    return
-
-                self.autocomplete_index += 1
-                check()
-                return
-
-            missing = match[len(self.clean(self.autocomplete_word)):]
-
-            if self.autocomplete_match:
-                inputcontrol.input.delete_text(self.autocomplete_pos, len(self.autocomplete_missing))
-
-            inputcontrol.input.insert_text(missing, index=str(self.autocomplete_pos))
-            self.autocomplete_index += 1
-            self.autocomplete_match = match
-            self.autocomplete_missing = missing
-
-        if self.autocomplete_matches:
-            check()
-
-    def reset(self) -> None:
-        self.autocomplete_matches = []
-        self.autocomplete_match = ""
-        self.autocomplete_missing = ""
-        self.autocomplete_index = 0
-        self.autocomplete_pos = 0
-
-    def get_matches(self, text: str) -> None:
-        from .inputcontrol import inputcontrol
-
-        if not text:
-            return
-
-        self.reset()
-        caret_pos = inputcontrol.input.index(tk.INSERT)
-        text_to_caret = text[:caret_pos]
-        last_space_pos = text_to_caret.rfind(" ")
-        word = text_to_caret[last_space_pos + 1:caret_pos]
-
-        if not word:
-            return
-
-        if not self.is_command(word):
-            return
-
-        self.autocomplete_word = word
-        self.autocomplete_pos = inputcontrol.input.index(caret_pos)
-        word = self.clean(word)
-
-        for cmd, data in self.commands.items():
-            if cmd.startswith(word):
-                self.autocomplete_matches.append(cmd)
-
-            for alias in data["aliases"]:
-                if alias.startswith(word):
-                    self.autocomplete_matches.append(alias)
-
-        for cmd, value in self.aliases.items():
-            if cmd.startswith(word):
-                self.autocomplete_matches.append(cmd)
-
     def make_palette(self) -> None:
         self.palette = Menu()
 
@@ -770,12 +684,6 @@ class Commands:
         from .widgets import widgets
         self.make_palette()
         self.palette.show(widget=widgets.main_menu_button)
-
-    def clean(self, text: str) -> str:
-        if text.startswith(args.prefix):
-            return text[1:]
-
-        return text
 
     def cmd(self, text: str) -> str:
         return args.prefix + text

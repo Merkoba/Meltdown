@@ -468,4 +468,12 @@ These are added to the autocomplete list.
 
 Default: 4
 
-Minimum number of characters words need to have to be remembered.
+Minimum number of characters words need to have to be remembered in the terminal.
+
+---
+
+>autocomplete-memory-min
+
+Default: 4
+
+Minimum number of characters words need to have to be remembered in the input.
