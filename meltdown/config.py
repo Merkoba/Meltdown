@@ -312,6 +312,10 @@ class Config:
 
     def reset_one(self, key: str) -> None:
         from .widgets import widgets
+
+        if not hasattr(self, key):
+            return
+
         default = self.get_default(key)
 
         if getattr(self, key) == default:
@@ -358,6 +362,10 @@ class Config:
             return
 
         key = parts[0]
+
+        if not hasattr(self, key):
+            return
+
         value = " ".join(parts[1:])
         self.set(key, value)
 
