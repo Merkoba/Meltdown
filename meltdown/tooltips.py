@@ -6,7 +6,7 @@ from . import timeutils
 # Standard
 import re
 import tkinter as tk
-from typing import Any, Optional
+from typing import Any, Optional, List
 
 
 def clean_string(text: str) -> str:
@@ -14,6 +14,7 @@ def clean_string(text: str) -> str:
 
 
 class ToolTip:
+    tooltips: List["ToolTip"] = []
     current_tooltip: Optional["ToolTip"] = None
     block_date = 0.0
 
@@ -25,6 +26,14 @@ class ToolTip:
     @staticmethod
     def block() -> None:
         ToolTip.block_date = timeutils.now()
+
+    @staticmethod
+    def get_tooltip(widget: tk.Widget) -> Optional["ToolTip"]:
+        for tooltip in ToolTip.tooltips:
+            if tooltip.widget == widget:
+                return tooltip
+
+        return None
 
     def __init__(self, widget: tk.Widget, text: str, bind: bool = True) -> None:
         self.debouncer = ""
@@ -46,6 +55,8 @@ class ToolTip:
                     bind_scroll_events(child)
 
             bind_scroll_events(self.widget)
+
+        ToolTip.tooltips.append(self)
 
     def direct(self, event: Any) -> None:
         self.current_event = event
@@ -122,3 +133,6 @@ class ToolTip:
 
     def set_text(self, text: str) -> None:
         self.text = clean_string(text)
+
+    def append_text(self, text: str) -> None:
+        self.text += f" {clean_string(text)}"

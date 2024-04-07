@@ -350,6 +350,7 @@ class Widgets:
         self.setup_system()
         self.start_checks()
         self.check_details_buttons()
+        self.setup_tooltips()
 
         inputcontrol.focus()
 
@@ -357,6 +358,20 @@ class Widgets:
             display.make_tab()
         else:
             display.select_last_tab()
+
+    def setup_tooltips(self) -> None:
+        for key in config.defaults():
+            widget = self.get_widget(key)
+
+            if not widget:
+                continue
+
+            tooltip = ToolTip.get_tooltip(widget)
+
+            if not tooltip:
+                continue
+
+            tooltip.append_text(f"({key})")
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
