@@ -10,3 +10,4 @@ main.spec
 run.spec
 decomp/
 *.tar.gz
+*.zip
