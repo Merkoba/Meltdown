@@ -477,7 +477,10 @@ class Display:
 
             tab.output.clear_text()
             session.clear(tab.conversation_id)
-            app.show_intro(tab_id)
+
+            if args.intro:
+                app.show_intro(tab_id)
+
             tab.modified = False
 
         if force:
