@@ -109,10 +109,12 @@ class App:
             self.hide_frames()
 
     def run(self) -> None:
+        self.active = True
         self.root.mainloop()
 
     def exit(self) -> None:
-        self.root.quit()
+        self.active = False
+        self.root.destroy()
 
     def exists(self) -> bool:
         try:
