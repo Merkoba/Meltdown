@@ -125,6 +125,14 @@ class InputControl:
         from .display import display
         from . import filemanager
 
+        if args.display:
+            if not text:
+                display.to_bottom()
+                return
+
+        if not text:
+            text = self.input.get().strip()
+
         if not tab_id:
             tab_id = display.current_tab
 
@@ -132,9 +140,6 @@ class InputControl:
 
         if not tab:
             return
-
-        if not text:
-            text = self.input.get().strip()
 
         if text:
             self.clear()
