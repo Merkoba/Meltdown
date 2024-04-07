@@ -161,6 +161,8 @@ Create command aliases that run other commands.
 
 Send prompt input and commands through the terminal.
 
+Over 70 commands.
+
 ---
 
 ## GUI Toolkit <a name="toolkit"></a>
