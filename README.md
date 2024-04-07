@@ -161,7 +161,7 @@ Create command aliases that run other commands.
 
 Send prompt input and commands through the terminal.
 
-Over 70 commands and 77 arguments.
+Over 70 commands and 80 arguments.
 
 Powerful input line prompt for the terminal, with autocomplete, memory, and vi mode.
 
