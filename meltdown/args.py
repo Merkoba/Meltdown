@@ -79,6 +79,7 @@ class Args:
         self.compact_input = False
         self.display = False
         self.intro = True
+        self.monospace = False
 
     class Internal:
         title = app.manifest["title"]
@@ -157,10 +158,12 @@ class Args:
             "display": {"action": "store_true", "help": "Only show the output and tabs"},
             "system-threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
             "system-delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
+            "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
         }
 
         aliases: Dict[str, List[str]] = {
             "maximize": ["--max", "-max"],
+            "monospace": ["--mono", "-mono"],
         }
 
     def parse(self) -> None:
@@ -200,7 +203,7 @@ class Args:
             "compact_system", "compact_details", "compact_addons",
             "compact_buttons", "compact_model", "compact_input",
 
-            "display",
+            "display", "monospace",
         ]
 
         for n_item in normals:

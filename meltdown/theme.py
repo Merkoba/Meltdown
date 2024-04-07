@@ -11,7 +11,7 @@ class Theme:
         self.height = 752
 
         self.font_family = "sans"
-        self.snippet_font_family = "monospace"
+        self.monospace_family = "monospace"
 
         self.font = (self.font_family, 14)
         self.font_button = (self.font_family, 12)
@@ -138,8 +138,13 @@ class Theme:
         self.find_match_foreground = "black"
         self.find_entry_width = 12
 
+    def get_font_family(self) -> str:
+        from .args import args
+        return self.monospace_family if args.monospace else self.font_family
+
     def get_output_font(self) -> Tuple[str, int]:
-        return (self.font_family, config.output_font_size)
+        ff = self.get_font_family()
+        return (ff, config.output_font_size)
 
     def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
         size = config.output_font_size
@@ -147,10 +152,12 @@ class Theme:
         if smaller:
             size -= self.snippet_header_minus
 
-        return (self.snippet_font_family, size)
+        return (self.monospace_family, size)
 
     def get_bold_font(self) -> Tuple[str, int, str]:
-        return (self.font_family, config.output_font_size, "bold")
+        ff = self.get_font_family()
+        return (ff, config.output_font_size, "bold")
 
     def get_italic_font(self) -> Tuple[str, int, str]:
-        return (self.font_family, config.output_font_size, "italic")
+        ff = self.get_font_family()
+        return (ff, config.output_font_size, "italic")

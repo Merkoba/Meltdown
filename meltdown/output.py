@@ -222,13 +222,8 @@ class Output(tk.Text):
 
         self.tag_configure("highlight", underline=True)
         self.tag_configure("url", underline=True)
-
-        if args.test:
-            self.tag_configure("bold", font=app.theme.get_bold_font(), underline=True)
-            self.tag_configure("italic", font=app.theme.get_italic_font(), underline=True)
-        else:
-            self.tag_configure("bold", font=app.theme.get_bold_font())
-            self.tag_configure("italic", font=app.theme.get_italic_font())
+        self.tag_configure("bold", font=app.theme.get_bold_font())
+        self.tag_configure("italic", font=app.theme.get_italic_font())
 
         for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
             self.tag_lower(tag)
