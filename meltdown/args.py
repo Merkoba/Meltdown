@@ -82,6 +82,8 @@ class Args:
         self.monospace = False
         self.terminal = True
         self.autorun = ""
+        self.terminal_height = 3
+        self.terminal_vi = False
 
     class Internal:
         title = app.manifest["title"]
@@ -125,6 +127,8 @@ class Args:
             "full": {"action": "store_true", "help": "Start in full mode"},
             "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
             "alt-palette": {"action": "store_true", "help": "Show commands instead of descriptions in the palette"},
+            "terminal-vi": {"action": "store_true", "help": "Use vi mode in the terminal"},
+            "terminal-height": {"type": int, "help": "Reserve these number of rows for the terminal"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
             "max-tabs": {"type": int, "help": "Max number fo tabs to keep open"},
@@ -207,7 +211,8 @@ class Args:
             "compact_system", "compact_details", "compact_addons",
             "compact_buttons", "compact_model", "compact_input",
 
-            "display", "monospace", "autorun",
+            "display", "monospace", "autorun", "terminal_height",
+            "terminal_vi",
         ]
 
         for n_item in normals:

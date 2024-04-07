@@ -112,7 +112,7 @@ class App:
         self.root.mainloop()
 
     def exit(self) -> None:
-        self.root.destroy()
+        self.root.quit()
 
     def exists(self) -> bool:
         try:

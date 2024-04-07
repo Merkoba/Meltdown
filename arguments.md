@@ -437,3 +437,19 @@ Don't enable the terminal to input prompts and commands.
 >autorun
 
 A command or chain of commands to run at startup automatically.
+
+---
+
+>terminal-height
+
+Default: 3
+
+Reserve these number of lines for the prompt.
+
+There is an autocomplete menu that needs some lines to be displayed.
+
+---
+
+>terminal-vi
+
+Enable vi mode on the terminal.
