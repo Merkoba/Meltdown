@@ -122,8 +122,14 @@ class Book(tk.Frame):
         self.drag_page: Optional[Page] = None
         self.dragging = False
 
-        padx = ((app.theme.padx, app.theme.right_padding))
-        self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=(app.theme.pady, 0))
+        if args.display:
+            padx = (0, 0)
+            pady = (0, 0)
+        else:
+            padx = ((app.theme.padx, app.theme.right_padding))
+            pady = (app.theme.pady, 0)
+
+        self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
         self.grid_columnconfigure(0, weight=1)
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
