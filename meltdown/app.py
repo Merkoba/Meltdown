@@ -443,8 +443,13 @@ class App:
         from .args import args
         from .commands import commands
 
-        if args.autorun:
+        if not args.autorun:
+            return
+
+        def action() -> None:
             commands.exec(args.autorun)
+
+        self.root.after(100, lambda: action())
 
 
 app = App()
