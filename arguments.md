@@ -543,10 +543,10 @@ Execute this command after streaming a response.
 For example:
 
 ```sh
---after-stream "/logjson & /exit 3" "Hello World"
+--after-stream "/logjson & /exit 3" "What is math?"
 ```
 
-It will use `Hello World` as the prompt automatically.
+It will use `What is math?` as the prompt automatically.
 
 After it's done, it will save the conversation to a JSON file and exit in 3 seconds.
 
@@ -558,6 +558,6 @@ Don't make a new tab when starting with an input.
 
 By default when you start the program with an input
 
-it will smartly check if it should re-use and empty tab or make a new one.
+it will smartly check if it should re-use an empty tab or make a new one.
 
-If you disable this, it will always use the last tab.
+If you disable this, it will always use the last tab even if not empty.
