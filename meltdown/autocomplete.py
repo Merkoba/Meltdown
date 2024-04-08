@@ -83,10 +83,6 @@ class AutoComplete:
             for key in commands.cmdkeys:
                 if key.startswith(word):
                     self.matches.append(key)
-
-            for key in commands.aliases.keys():
-                if key.startswith(word):
-                    self.matches.append(key)
         else:
             for w in inputcontrol.autocomplete:
                 if w.startswith(word):

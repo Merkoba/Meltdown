@@ -8,23 +8,17 @@ These are all the available commands.
 
 Clear the conversation
 
-Aliases: clean, cls
-
 ---
 
 >exit
 
 Exit the application. Optional seconds delay
 
-Aliases: quit
-
 ---
 
 >cancelexit
 
 Cancel the exit if you had set a delay
-
-Aliases: exitcancel, cancelquit, quitcancel
 
 ---
 
@@ -38,15 +32,11 @@ Toggle compact mode
 
 Show the log menu
 
-Aliases: logmenu, menulog
-
 ---
 
 >logtext
 
 Save conversation to a text file
-
-Aliases: savetext, savelogtext, textlog
 
 ---
 
@@ -54,15 +44,11 @@ Aliases: savetext, savelogtext, textlog
 
 Save conversation to a JSON file
 
-Aliases: savejson, savelogjson, jsonlog
-
 ---
 
 >logtextall
 
 Save all conversations to text files
-
-Aliases: savetextall, savelogtextall
 
 ---
 
@@ -70,15 +56,11 @@ Aliases: savetextall, savelogtextall
 
 Save all conversations to JSON files
 
-Aliases: savejsonall, savelogjsonall
-
 ---
 
 >logsdir
 
 Open the logs directory
-
-Aliases: openlogs, logs, dirlogs
 
 ---
 
@@ -86,15 +68,11 @@ Aliases: openlogs, logs, dirlogs
 
 Resize the window
 
-Aliases: restore
-
 ---
 
 >stop
 
 Stop the current stream
-
-Aliases: streamstop, interrupt, endstream
 
 ---
 
@@ -102,15 +80,11 @@ Aliases: streamstop, interrupt, endstream
 
 Open the system task manager
 
-Aliases: sys, monitor
-
 ---
 
 >top
 
 Scroll to the top
-
-Aliases: up
 
 ---
 
@@ -118,15 +92,11 @@ Aliases: up
 
 Scroll to the bottom
 
-Aliases: down
-
 ---
 
 >maximize
 
 Maximize the window
-
-Aliases: max
 
 ---
 
@@ -134,15 +104,11 @@ Aliases: max
 
 Close current tab
 
-Aliases: closetab, tabclose
-
 ---
 
 >closeothers
 
 Close other tabs
-
-Aliases: others, othersclose
 
 ---
 
@@ -150,15 +116,11 @@ Aliases: others, othersclose
 
 Close all tabs
 
-Aliases: allclose, all
-
 ---
 
 >closeold
 
 Close old tabs
-
-Aliases: old, trim, oldclose
 
 ---
 
@@ -166,15 +128,11 @@ Aliases: old, trim, oldclose
 
 Close tabs to the left
 
-Aliases: leftclose
-
 ---
 
 >closeright
 
 Close tabs to the right
-
-Aliases: rightclose
 
 ---
 
@@ -182,15 +140,11 @@ Aliases: rightclose
 
 Make a new tab
 
-Aliases: make, maketab, newtab
-
 ---
 
 >theme
 
 Change the color theme
-
-Aliases: changetheme, themechange
 
 ---
 
@@ -198,15 +152,11 @@ Aliases: changetheme, themechange
 
 Show the about window
 
-Aliases: credits
-
 ---
 
 >help
 
 Show help information
-
-Aliases: info, information
 
 ---
 
@@ -214,15 +164,11 @@ Aliases: info, information
 
 Show the commands help
 
-Aliases: cmds
-
 ---
 
 >arguments
 
 Show the arguments help
-
-Aliases: args
 
 ---
 
@@ -230,15 +176,11 @@ Aliases: args
 
 Show the keyboard help
 
-Aliases: shortcuts
-
 ---
 
 >list
 
 Show the tab list to pick a tab
-
-Aliases: tabs, tablist
 
 ---
 
@@ -246,15 +188,11 @@ Aliases: tabs, tablist
 
 Find a text string
 
-Aliases: search
-
 ---
 
 >findall
 
 Find a text string among all tabs
-
-Aliases: searchall, allfind
 
 ---
 
@@ -262,15 +200,11 @@ Aliases: searchall, allfind
 
 Go to the first tab
 
-Aliases: firsttab, tabfirst
-
 ---
 
 >last
 
 Go to the last tab
-
-Aliases: lasttab, tablast
 
 ---
 
@@ -278,15 +212,11 @@ Aliases: lasttab, tablast
 
 Show the config menu
 
-Aliases: configuration, configmenu, menuconfig
-
 ---
 
 >session
 
 Show the session menu
-
-Aliases: sessionmenu, menusession
 
 ---
 
@@ -294,15 +224,11 @@ Aliases: sessionmenu, menusession
 
 Reset the config
 
-Aliases: restart
-
 ---
 
 >viewtext
 
 View raw text
-
-Aliases: textview
 
 ---
 
@@ -310,15 +236,11 @@ Aliases: textview
 
 View raw JSON
 
-Aliases: jsonview
-
 ---
 
 >move
 
 Move tab to start or end
-
-Aliases: movetab, tabmove
 
 ---
 
@@ -326,15 +248,11 @@ Aliases: movetab, tabmove
 
 Go to a tab by its number or by its name
 
-Aliases: num, number, tabnumber
-
 ---
 
 >fullscreen
 
 Toggle fullscreen
-
-Aliases: full
 
 ---
 
@@ -342,15 +260,11 @@ Aliases: full
 
 Find next text match
 
-Aliases: findnext, match
-
 ---
 
 >scrollup
 
 Scroll up
-
-Aliases: moveup, upscroll
 
 ---
 
@@ -358,15 +272,11 @@ Aliases: moveup, upscroll
 
 Scroll down
 
-Aliases: movedown, downscroll
-
 ---
 
 >load
 
 Load the model
-
-Aliases: loadmodel, modelload
 
 ---
 
@@ -374,15 +284,11 @@ Aliases: loadmodel, modelload
 
 Unload the model
 
-Aliases: unloadmodel, modelunload
-
 ---
 
 >context
 
 Show the context list
-
-Aliases: widgetlist, rightclick
 
 ---
 
@@ -390,15 +296,11 @@ Aliases: widgetlist, rightclick
 
 Go to the tab on the left
 
-Aliases: tableft, lefttab
-
 ---
 
 >right
 
 Go to the tab on the right
-
-Aliases: tabright, righttab
 
 ---
 
@@ -406,15 +308,11 @@ Aliases: tabright, righttab
 
 Show the main menu
 
-Aliases: mainmenu, main, showmain
-
 ---
 
 >savesession
 
 Save the current session
-
-Aliases: sessionsave, store, backup
 
 ---
 
@@ -422,15 +320,11 @@ Aliases: sessionsave, store, backup
 
 Load a session
 
-Aliases: open, sessionload
-
 ---
 
 >saveconfig
 
 Save the current config
-
-Aliases: configsave
 
 ---
 
@@ -438,15 +332,11 @@ Aliases: configsave
 
 Load a session
 
-Aliases: configload
-
 ---
 
 >copy
 
 Copy all the text
-
-Aliases: copyall, allcopy
 
 ---
 
@@ -454,15 +344,11 @@ Aliases: copyall, allcopy
 
 Select all text
 
-Aliases: selectall, allselect
-
 ---
 
 >deselect
 
 Deselect all text
-
-Aliases: unselect, unselectall, deselectall
 
 ---
 
@@ -470,15 +356,11 @@ Aliases: unselect, unselectall, deselectall
 
 Browse the models
 
-Aliases: findmodel, pickmodel, modelbrowse
-
 ---
 
 >palette
 
 Show the command palette
-
-Aliases: showcommands, commandlist, showcmds
 
 ---
 
@@ -486,15 +368,11 @@ Aliases: showcommands, commandlist, showcmds
 
 Rename the tab
 
-Aliases: name, tabname, nametab
-
 ---
 
 >input
 
 Prompt the AI with this input
-
-Aliases: prompt, ask, text
 
 ---
 
@@ -502,15 +380,11 @@ Aliases: prompt, ask, text
 
 Set the input without submitting
 
-Aliases: fill, setinput, inputset
-
 ---
 
 >sleep
 
 Wait X seconds before running the next command
-
-Aliases: wait, pause, timeout
 
 ---
 
@@ -518,15 +392,11 @@ Aliases: wait, pause, timeout
 
 Close dialogs and menus
 
-Aliases: hidewindow, windowhide, hideall
-
 ---
 
 >printconfig
 
 Print all the config settings
-
-Aliases: showconfig, configprint, configshow
 
 ---
 
@@ -534,15 +404,11 @@ Aliases: showconfig, configprint, configshow
 
 Increase the font size
 
-Aliases: biggerfont, fontbigger
-
 ---
 
 >smaller
 
 Decrease the font size
-
-Aliases: smallerfont, fontsmaller
 
 ---
 
@@ -550,15 +416,11 @@ Aliases: smallerfont, fontsmaller
 
 Set an exact font size
 
-Aliases: fontsize, size, sizefont
-
 ---
 
 >resetfont
 
 Reset the font size
-
-Aliases: fontreset, defaultfont, fontdefault
 
 ---
 
@@ -566,15 +428,11 @@ Aliases: fontreset, defaultfont, fontdefault
 
 Scroll to the bottom or to the top
 
-Aliases: scrolltoggle, topbottom, bottomtop
-
 ---
 
 >setconfig
 
 Set a config: [key] [value]
-
-Aliases: set, configset
 
 ---
 
@@ -582,23 +440,17 @@ Aliases: set, configset
 
 Reset a config: [key]
 
-Aliases: configreset, default
-
 ---
 
 >stats
 
 Show some internal information
 
-Aliases: statistics, internal
-
 ---
 
 >sticky
 
 Make the window stay at the top
-
-Aliases: ontop, togglesticky, alwaysontop
 
 ---
 
@@ -611,5 +463,3 @@ Make a file with all the commands. Provide a path
 >active
 
 Go to the tab that is currently streaming
-
-Aliases: streaming, activetab, tabactive
