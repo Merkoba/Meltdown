@@ -10,9 +10,7 @@ Except configs that tweak the model/stream. Those are in the interface.
 
 ---
 
-There are some keywords you can use.
-
-These are replaced in the argument:
+There are some keywords you can use in the command arguments:
 
 >@now
 
