@@ -364,6 +364,10 @@ class Commands:
                 "help": "Deselect all text",
                 "action": lambda a=None: display.deselect_output(),
             },
+            "recent": {
+                "help": "Show the recent models",
+                "action": lambda a=None: widgets.show_recent_models(),
+            },
             "browse": {
                 "help": "Browse the models",
                 "action": lambda a=None: model.browse_models(),

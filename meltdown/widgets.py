@@ -505,7 +505,7 @@ class Widgets:
         from .config import config
         from .session import session
 
-        self.main_menu.add(text="Recent Models", command=lambda: self.show_model_menu(require_items=True))
+        self.main_menu.add(text="Recent Models", command=lambda: self.show_recent_models())
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
         self.main_menu.separator()
         self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
@@ -547,22 +547,22 @@ class Widgets:
             menu.add(text="Reset", command=lambda: config.reset_one(key))
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
-                        event: Optional[Any] = None, require_items: bool = False) -> None:
+                        event: Optional[Any] = None, only_items: bool = False) -> None:
 
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
         items = getattr(config, key_list)[:args.max_list_items]
 
-        if require_items:
+        if only_items:
             if not items:
                 Dialog.show_message("No items yet")
                 return
-
-        self.add_common_commands(menu, key_config)
-        num_common = len(menu.items)
+        else:
+            self.add_common_commands(menu, key_config)
 
         if items:
-            menu.add(text="--- Recent ---", disabled=True)
+            if not only_items:
+                menu.add(text="--- Recent ---", disabled=True)
 
             for item in items:
                 def proc(item: str = item) -> None:
@@ -578,17 +578,14 @@ class Widgets:
             if widget:
                 menu.show(widget=widget)
 
-                if items:
-                    menu.select_item(num_common + 1)
-
-    def show_model_menu(self, event: Optional[Any] = None, require_items: bool = False) -> None:
+    def show_model_menu(self, event: Optional[Any] = None, only_items: bool = False) -> None:
         from .model import model
 
         if model.model_loading:
             return
 
         self.show_menu_items("model", "models",
-                             lambda m: self.set_model(m), event, require_items=require_items)
+                             lambda m: self.set_model(m), event, only_items=only_items)
 
     def show_system_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
@@ -809,6 +806,9 @@ class Widgets:
 
     def model_icon_click(self) -> None:
         app.hide_all()
+
+    def show_recent_models(self) -> None:
+        self.show_model_menu(only_items=True)
 
 
 widgets: Widgets = Widgets()
