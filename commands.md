@@ -605,3 +605,11 @@ Aliases: toggleontop, toggletop, alwaysontop
 >commandoc
 
 Make a file with all the commands. Provide a path
+
+---
+
+>active
+
+Go to the tab that is currently streaming
+
+Aliases: streaming, activetab, streamtab, streamingtab, tabstreaming

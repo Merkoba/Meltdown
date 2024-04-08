@@ -526,6 +526,11 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "active": {
+                "aliases": ["streaming", "activetab", "streamtab", "streamingtab", "tabstreaming"],
+                "help": "Go to the tab that is currently streaming",
+                "action": lambda a=None: display.select_active_tab(),
+            },
         }
 
         for key in self.commands:

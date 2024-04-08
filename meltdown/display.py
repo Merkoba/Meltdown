@@ -30,6 +30,7 @@ class Tab:
         self.modified = False
         self.mode = mode
         self.loaded = False
+        self.streaming = False
 
 
 class Display:
@@ -63,6 +64,7 @@ class Display:
         self.output_menu.add(text="Tab List", command=lambda: self.show_tab_list())
         self.output_menu.add(text="First Tab", command=lambda: self.select_first_tab())
         self.output_menu.add(text="Last Tab", command=lambda: self.select_last_tab())
+        self.output_menu.add(text="Active Tab", command=lambda: self.select_active_tab())
         self.output_menu.separator()
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
@@ -865,12 +867,25 @@ class Display:
             return
 
         self.book.highlight(tab_id)
+        self.set_tab_streaming(tab_id)
 
     def stream_stopped(self) -> None:
         if not args.tab_highlight:
             return
 
         self.book.remove_highlights()
+        self.clear_tab_streaming()
+
+    def set_tab_streaming(self, tab_id: str) -> None:
+        for key, values in self.tabs.items():
+            if values.tab_id == tab_id:
+                self.tabs[key].streaming = True
+            else:
+                self.tabs[key].streaming = False
+
+    def clear_tab_streaming(self) -> None:
+        for key in self.tabs.keys():
+            self.tabs[key].streaming = False
 
     def toggle_scroll(self) -> None:
         tab = self.get_current_tab()
@@ -884,6 +899,12 @@ class Display:
             tab.output.to_top()
         else:
             tab.output.to_bottom()
+
+    def select_active_tab(self) -> None:
+        for key, value in self.tabs.items():
+            if value.streaming:
+                self.select_tab(key)
+                break
 
 
 display = Display()
