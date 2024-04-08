@@ -10,6 +10,20 @@ Except configs that tweak the model/stream. Those are in the interface.
 
 ---
 
+There are some keywords you can use.
+
+These are replaced in the argument:
+
+>@now
+
+This is replaced with the current unix time in seconds.
+
+You might want to use this when saving files.
+
+For example `/saveconfig @now` might save `1712344148.json`.
+
+---
+
 >alias
 
 You can define one or more command aliases.
@@ -47,20 +61,6 @@ This will go to the first tab and then prompt the model with "hello world".
 It will run the first task instantly and then wait 30 seconds for the next iteration.
 
 You can define multiple tasks like this.
-
----
-
-There are some keywords you can use.
-
-These are replaced in the argument:
-
->@now
-
-This is replaced with the current unix time in seconds.
-
-You might want to use this when saving files.
-
-For example `/saveconfig @now` might save `1712344148.json`.
 
 ---
 
