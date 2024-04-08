@@ -15,14 +15,13 @@ class MenuItem:
     def __init__(self, text: str,
                  command: Optional[Callable[..., Any]] = None,
                  separator: bool = False, disabled: bool = False,
-                 tooltip: str = "", aliases: Optional[List[str]] = None):
+                 tooltip: str = ""):
 
         self.text = text
         self.command = command
         self.separator = separator
         self.disabled = disabled
         self.tooltip = tooltip
-        self.aliases = aliases or []
         self.coords = {"x": 0, "y": 0}
         self.filter_text = text.lower().replace(" ", "")
 
@@ -46,11 +45,10 @@ class Menu:
 
     def add(self, text: str,
             command: Optional[Callable[..., Any]] = None,
-            disabled: bool = False, tooltip: str = "",
-            aliases: Optional[List[str]] = None) -> None:
+            disabled: bool = False, tooltip: str = "") -> None:
 
         self.items.append(MenuItem(text, command,
-                                   disabled=disabled, tooltip=tooltip, aliases=aliases))
+                                   disabled=disabled, tooltip=tooltip))
 
     def separator(self) -> None:
         self.items.append(MenuItem("", lambda: None, separator=True))
@@ -247,18 +245,12 @@ class Menu:
             return False
 
         # Check normal
-        if filtr in text or (item.aliases and any(filtr in alias.lower() for alias in item.aliases)):
+        if filtr in text:
             return True
 
         # Similarity on keys
         if utils.check_match(text, filtr):
             return True
-
-        # Similarity on aliases
-        if item.aliases:
-            for alias in item.aliases:
-                if utils.check_match(filtr, alias):
-                    return True
 
         return False
 
