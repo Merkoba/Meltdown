@@ -69,9 +69,6 @@ def do_start_terminal() -> None:
         if not text:
             continue
 
-        if not app.active:
-            continue
-
         if args.terminal_memory:
             for word in text.split(" "):
                 if len(word) >= args.terminal_memory_min:

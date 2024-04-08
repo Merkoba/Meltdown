@@ -113,8 +113,8 @@ class Commands:
             },
             "cancelexit": {
                 "aliases": ["exitcancel", "cancelquit", "quitcancel"],
-                "help": "Cancel the exit if you had set one",
-                "action": lambda a=None: app.cancel_exit(),
+                "help": "Cancel the exit if you had set a delay",
+                "action": lambda a=None: app.cancel_exit(True),
             },
             "compact": {
                 "aliases": [],

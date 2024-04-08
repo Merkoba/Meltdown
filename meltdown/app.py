@@ -38,7 +38,7 @@ class App:
         self.theme: Theme
         self.on_top = False
         self.exit_delay = 100
-        self.exit_after: Optional[str] = None
+        self.exit_after: str = ""
 
         self.intro = [
             f"Welcome to {title}.",
@@ -113,19 +113,25 @@ class App:
             self.hide_frames()
 
     def run(self) -> None:
-        self.active = True
         self.root.mainloop()
 
     def exit(self, delay: Optional[float] = None) -> None:
         self.cancel_exit()
-        self.active = False
         d = int((delay * 1000)) if delay else self.exit_delay
         d = d if d >= self.exit_delay else self.exit_delay
         self.exit_after = self.root.after(d, lambda: self.root.destroy())
 
-    def cancel_exit(self) -> None:
+    def cancel_exit(self, feedback: bool = False) -> None:
+        from .display import display
+
         if self.exit_after:
             self.root.after_cancel(self.exit_after)
+            self.exit_after = ""
+
+            if feedback:
+                display.print("Exit cancelled")
+        elif feedback:
+            display.print("No exit to cancel")
 
     def exists(self) -> bool:
         try:
