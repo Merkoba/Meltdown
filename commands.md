@@ -612,4 +612,4 @@ Make a file with all the commands. Provide a path
 
 Go to the tab that is currently streaming
 
-Aliases: streaming, activetab, streamtab, streamingtab, tabstreaming
+Aliases: streaming, activetab, tabactive, streamtab, streamingtab, tabstreaming

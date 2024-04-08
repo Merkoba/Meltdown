@@ -527,7 +527,7 @@ class Commands:
                 "arg_req": True,
             },
             "active": {
-                "aliases": ["streaming", "activetab", "streamtab", "streamingtab", "tabstreaming"],
+                "aliases": ["streaming", "activetab", "tabactive", "streamtab", "streamingtab", "tabstreaming"],
                 "help": "Go to the tab that is currently streaming",
                 "action": lambda a=None: display.select_active_tab(),
             },
