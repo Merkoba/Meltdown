@@ -25,7 +25,7 @@ from . import widgetutils
 class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
-        pass
+        self.canvas_scroll = 1
 
     def make(self) -> None:
         right_padding = app.theme.right_padding
@@ -770,11 +770,11 @@ class Widgets:
             self.show_system_menu()
 
     def details_left(self) -> None:
-        self.details_canvas.xview_scroll(-2, "units")
+        self.details_canvas.xview_scroll(-self.canvas_scroll, "units")
         self.check_details_buttons()
 
     def details_right(self) -> None:
-        self.details_canvas.xview_scroll(2, "units")
+        self.details_canvas.xview_scroll(self.canvas_scroll, "units")
         self.check_details_buttons()
 
     def details_start(self) -> None:
