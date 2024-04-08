@@ -17,19 +17,17 @@
 
 Screenshots <a name="screenshots"></a>
 
-![](https://i.imgur.com/IWlH7Ss.jpg)
+### Dark Theme:
 
-### Compact Mode:
-
-![](https://i.imgur.com/4paAA7B.jpg)
-
-### Markdown Support:
-
-![](https://i.imgur.com/i9eJ9OJ.jpg)
+![](https://i.imgur.com/Mkz3nZe.jpg)
 
 ### Light Theme:
 
-![](https://i.imgur.com/nUzsEVu.jpg)
+![](https://i.imgur.com/Z0HCYbJ.jpg)
+
+### Markdown Support:
+
+![](https://i.imgur.com/tFUkptg.jpg)
 
 ---
 
