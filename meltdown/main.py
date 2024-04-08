@@ -20,9 +20,11 @@ from . import system
 from . import tasks
 from . import utils
 from . import listener
+from . import timeutils
 
 
 def main() -> None:
+    now = timeutils.now()
     title = app.manifest["title"]
     program = app.manifest["program"]
     args.parse()
@@ -58,6 +60,10 @@ def main() -> None:
     # Create singleton
     fp.write(str(os.getpid()))
     fp.flush()
+
+    if args.time:
+        msg, now = timeutils.check_time("Program loaded", now)
+        utils.msg(msg)
 
     try:
         app.run()

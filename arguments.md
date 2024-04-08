@@ -633,3 +633,9 @@ This will go to the first tab and then prompt the model with "hello world".
 It will run the first task instantly and then wait 30 seconds for the next iteration.
 
 You can define multiple tasks like this.
+
+---
+
+>time
+
+Show the loading time at startup.
