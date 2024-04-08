@@ -219,7 +219,7 @@ class Args:
         ]
 
         for r_item in other_name:
-            ap.normal(*r_item)
+            ap.get_value(*r_item)
 
         normals = [
             "maximize", "compact", "full", "width", "height",
@@ -244,7 +244,7 @@ class Args:
         ]
 
         for n_item in normals:
-            ap.normal(n_item)
+            ap.get_value(n_item)
 
         if not sys.stdin.isatty():
             self.input = sys.stdin.read()

@@ -1,9 +1,6 @@
 # Standard
-import re
-import sys
 import argparse
-from typing import List, Any, Dict, Union
-from pathlib import Path
+from typing import Any, Dict
 
 
 class ArgParser:
@@ -32,15 +29,7 @@ class ArgParser:
     def string_arg(self) -> str:
         return " ".join(self.args.string_arg)
 
-    def get_list(self, attr: str, value: str, vtype: Any, separator: str) -> List[Any]:
-        try:
-            lst = list(map(vtype, map(str.strip, value.split(separator))))
-        except BaseException:
-            sys.exit(f"Failed to parse '--{attr}'")
-
-        return lst
-
-    def normal(self, attr: str, key: str = "") -> None:
+    def get_value(self, attr: str, key: str = "") -> None:
         value = getattr(self.args, attr)
 
         if value is not None:
@@ -49,92 +38,11 @@ class ArgParser:
             else:
                 self.set(attr, value)
 
-    def commas(self, attr: str, vtype: Any, allow_string: bool = False, is_tuple: bool = False) -> None:
-        value = getattr(self.args, attr)
-
-        if value is not None:
-            if ("," in value) or (not allow_string):
-                lst = self.get_list(attr, value, vtype, ",")
-
-                if is_tuple:
-                    self.set(attr, tuple(lst))
-                else:
-                    self.set(attr, lst)
-            else:
-                self.set(attr, value)
-
-    def path(self, attr: str) -> None:
-        value = getattr(self.args, attr)
-
-        if value is not None:
-            self.set(attr, ArgParser.resolve_path(value))
-
-    # Allow p1 and m1 formats
-    def number(self, attr: str, vtype: Any, allow_zero: bool = False, duration: bool = False) -> None:
-        value = getattr(self.args, attr)
-
-        if value is None:
-            return
-
-        value = str(value)
-        num = value
-        op = ""
-
-        if value.startswith("p") or value.startswith("m"):
-            op = value[0]
-            num = value[1:]
-
-        if duration:
-            num = self.parse_duration(num)
-
-        try:
-            if vtype == int:
-                num = int(num)
-            elif vtype == float:
-                num = float(num)
-        except BaseException:
-            sys.exit(f"Failed to parse '{attr}'")
-
-        default = self.get(attr)
-
-        if op == "p":
-            num = default + num
-        elif op == "m":
-            num = default - num
-
-        err = f"Value for '{attr}' is too low"
-
-        if num == 0:
-            if not allow_zero:
-                sys.exit(err)
-        elif num < 0:
-            sys.exit(err)
-
-        self.set(attr, num)
-
     def get(self, attr: str) -> Any:
         return getattr(self.obj, attr)
 
     def set(self, attr: str, value: Any) -> None:
         setattr(self.obj, attr, value)
-
-    def parse_duration(self, time_string: str) -> str:
-        match = re.match(r"(\d+(\.\d+)?)([smh]+)", time_string)
-
-        if match:
-            value, _, unit = match.groups()
-            value = float(value)
-
-            if unit == "ms":
-                time_string = str(int(value))
-            elif unit == "s":
-                time_string = str(int(value * 1000))
-            elif unit == "m":
-                time_string = str(int(value * 60 * 1000))
-            elif unit == "h":
-                time_string = str(int(value * 60 * 60 * 1000))
-
-        return time_string
 
     @staticmethod
     def dash_to_under(s: str) -> str:
@@ -143,16 +51,3 @@ class ArgParser:
     @staticmethod
     def under_to_dash(s: str) -> str:
         return s.replace("_", "-")
-
-    @staticmethod
-    def full_path(path: Union[Path, str]) -> Path:
-        return Path(path).expanduser().resolve()
-
-    @staticmethod
-    def resolve_path(path: Union[Path, str]) -> Path:
-        path = ArgParser.full_path(path)
-
-        if path.is_absolute():
-            return ArgParser.full_path(path)
-        else:
-            return ArgParser.full_path(Path(Path.cwd(), path))
