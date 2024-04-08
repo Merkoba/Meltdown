@@ -521,7 +521,7 @@ class Commands:
             },
             "cmdoc": {
                 "aliases": [],
-                "help": "Make a markdown file with all the commands",
+                "help": "Make a file with all the commands. Provide a path",
                 "action": lambda a=None: self.to_markdown(a),
                 "type": str,
                 "arg_req": True,
