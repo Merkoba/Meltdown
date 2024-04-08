@@ -23,25 +23,26 @@ class InputControl:
 
     def fill(self) -> None:
         from .widgets import widgets
-        frame = widgets.input_frame
 
-        self.input_label = widgetutils.make_label(frame, "Input")
-        self.input = widgetutils.make_entry(frame, fill=Fill.HORIZONTAL)
+        frame_data = widgets.frame_data_input
+        self.input_label = widgetutils.make_label(frame_data, "Input")
+        self.input = widgetutils.make_entry(frame_data)
+        frame_data.expand()
         widgets.input = self.input
-        widgets.input_frame = frame
+        widgets.input_frame = frame_data.frame
         tip = "The prompt for the AI." \
             " The prompt is a message that the AI will respond to." \
             " Use the mousewheel to cycle input history"
         ToolTip(self.input_label, tip)
         ToolTip(self.input, tip)
 
-        prev_button = widgetutils.make_button(frame, "< Prev", lambda: self.history_up())
+        prev_button = widgetutils.make_button(frame_data, "< Prev", lambda: self.history_up())
         ToolTip(prev_button, "Previous item in the input history")
 
-        next_button = widgetutils.make_button(frame, "Next >", lambda: self.history_down())
+        next_button = widgetutils.make_button(frame_data, "Next >", lambda: self.history_down())
         ToolTip(next_button, "Next item in the input history")
 
-        submit_button = widgetutils.make_button(frame, "Submit",
+        submit_button = widgetutils.make_button(frame_data, "Submit",
                                                 lambda: self.submit(), right_padding=app.theme.right_padding)
         ToolTip(submit_button, "Send the prompt to the AI")
 

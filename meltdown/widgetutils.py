@@ -11,9 +11,7 @@ from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
-
-
-frame_number = 0
+from .framedata import FrameData
 
 
 def do_pack(widget: tk.Widget,
@@ -42,10 +40,34 @@ def do_pack(widget: tk.Widget,
     widget.pack(side="left", padx=px, pady=py, fill=fillmode.value, expand=expand)
 
 
-def make_frame(parent: Optional[tk.Frame] = None,
-               bottom_padding: Optional[int] = None) -> tk.Frame:
+def do_grid(widget: tk.Widget,
+            col: int,
+            right_padding: Optional[int] = None,
+            bottom_padding: Optional[int] = None,
+            padx: Optional[int] = None,
+            pady: Optional[int] = None) -> None:
 
-    global frame_number
+    if padx is not None:
+        if right_padding:
+            px = (padx, right_padding)
+        else:
+            px = (padx, padx)
+    else:
+        padx_right = right_padding if right_padding else 0
+        px = (app.theme.padx, padx_right)
+
+    if pady is not None:
+        py = (pady, pady)
+    else:
+        pady_bottom = bottom_padding if bottom_padding else 0
+        py = (app.theme.pady, pady_bottom)
+
+    widget.grid(row=0, column=col, padx=px, pady=py, sticky="ew")
+
+
+def make_frame(parent: Optional[tk.Frame] = None,
+               col: int = 0, row: Optional[int] = None,
+               bottom_padding: Optional[int] = None) -> FrameData:
     p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
     padx = (app.theme.frame_padx, app.theme.frame_padx)
@@ -55,20 +77,14 @@ def make_frame(parent: Optional[tk.Frame] = None,
     else:
         pady = (app.theme.frame_pady, 0)
 
-    frame.grid(row=frame_number, column=0, padx=padx,
+    row = row if (row is not None) else FrameData.frame_number
+
+    frame.grid(row=row, column=col, padx=padx,
                pady=pady, sticky="nsew")
 
     frame.bind("<Button-1>", lambda e: app.on_frame_click())
-
     frame.configure(background=app.theme.background_color)
-    frame_number += 1
-    return frame
-
-
-def make_inner_frame(parent: tk.Frame, col: int) -> tk.Frame:
-    frame = tk.Frame(parent, background=app.theme.background_color)
-    frame.grid(sticky="ew", column=col, row=0)
-    return frame
+    return FrameData(frame)
 
 
 def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canvas]:
@@ -83,13 +99,14 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     return frame, canvas
 
 
-def make_entry(parent: tk.Frame, value: str = "",
-               width: Optional[int] = None, fill: Optional[Fill] = None,
+def make_entry(frame_data: FrameData, value: str = "",
+               width: Optional[int] = None,
                right_padding: Optional[int] = None) -> EntryBox:
 
     w = width if width else app.theme.entry_width
-    widget = EntryBox(parent, font=app.theme.font, width=w, style="Normal.TEntry")
-    do_pack(widget, fill=fill, right_padding=right_padding)
+    widget = EntryBox(frame_data.frame, font=app.theme.font, width=w, style="Normal.TEntry")
+    do_grid(widget, col=frame_data.col, right_padding=right_padding)
+    frame_data.col += 1
 
     if value:
         widget.set_text(value)
@@ -104,34 +121,36 @@ def get_button(parent: tk.Frame, text: str,
     return ButtonBox(parent, text, command, style=style, width=width, bigger=bigger)
 
 
-def make_button(parent: tk.Frame, text: str,
-                command: Optional[Callable[..., Any]] = None, fill: Optional[Fill] = None,
+def make_button(frame_data: FrameData, text: str,
+                command: Optional[Callable[..., Any]] = None,
                 right_padding: Optional[int] = None, bottom_padding: Optional[int] = None, bigger: bool = False,
                 pady: Optional[int] = None, style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
 
-    widget = get_button(parent, text, command, style=style, width=width, bigger=bigger)
-    do_pack(widget, fill=fill, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
+    widget = get_button(frame_data.frame, text, command, style=style, width=width, bigger=bigger)
+    do_grid(widget, col=frame_data.col, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
+    frame_data.col += 1
     return widget
 
 
-def make_label(parent: tk.Frame, text: str, fill: Optional[Fill] = None,
+def make_label(frame_data: FrameData, text: str,
                right_padding: Optional[int] = None, padx: Optional[int] = None,
                pady: Optional[int] = None, colons: bool = True) -> tk.Label:
 
     text = f"{text}:" if colons else text
-    widget = tk.Label(parent, text=text, font=app.theme.font)
+    widget = tk.Label(frame_data.frame, text=text, font=app.theme.font)
     widget.configure(background=app.theme.background_color, foreground=app.theme.foreground_color)
-    do_pack(widget, fill=fill, right_padding=right_padding, padx=padx, pady=pady)
+    do_grid(widget, col=frame_data.col, right_padding=right_padding, padx=padx, pady=pady)
+    frame_data.col += 1
     return widget
 
 
-def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
-                  fill: Optional[Fill] = None, width: Optional[int] = None,
+def make_combobox(frame_data: FrameData, values: Optional[List[Any]] = None,
+                  width: Optional[int] = None,
                   right_padding: Optional[int] = None) -> ttk.Combobox:
 
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
-    widget = ttk.Combobox(parent, values=v, state="readonly",
+    widget = ttk.Combobox(frame_data.frame, values=v, state="readonly",
                           font=app.theme.font_combobox, style="Normal.TCombobox", width=w)
 
     # Remove mousewheel events
@@ -139,7 +158,8 @@ def make_combobox(parent: tk.Frame, values: Optional[List[Any]] = None,
     widget.bind_class("TCombobox", "<Button-4>", lambda e: "break")
     widget.bind_class("TCombobox", "<Button-5>", lambda e: "break")
 
-    do_pack(widget, fill=fill, right_padding=right_padding)
+    do_grid(widget, col=frame_data.col, right_padding=right_padding)
+    frame_data.col += 1
     return widget
 
 

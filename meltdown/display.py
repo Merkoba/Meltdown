@@ -15,7 +15,6 @@ from .book import Book, Page
 from .find import Find
 from .args import args
 from . import timeutils
-from . import widgetutils
 
 
 class Tab:
@@ -103,7 +102,7 @@ class Display:
         page = self.book.add(name)
         tab_id = page.id
         find = Find(page.content, tab_id)
-        output_frame = widgetutils.make_frame(page.content)
+        output_frame = tk.Frame(page.content)
         output_frame.grid(row=1, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
         bottom = Bottom(page.content, tab_id)

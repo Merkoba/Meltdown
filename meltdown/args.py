@@ -94,6 +94,8 @@ class Args:
         self.after_stream = ""
         self.clean_slate = True
         self.tabs_always = False
+        self.more_button = True
+        self.model_icon = True
 
     class Internal:
         title = app.manifest["title"]
@@ -128,6 +130,8 @@ class Args:
             "no-terminal": {"action": "store_false", "help": "Don't enable the interactive terminal"},
             "no-terminal-memory": {"action": "store_false", "help": "Don't remember words in the terminal"},
             "no-clean-slate": {"action": "store_false", "help": "Don't make a new tab when starting with an input"},
+            "no-more-button": {"action": "store_false", "help": "Don't show the More button"},
+            "no-model-icon": {"action": "store_false", "help": "Don't show the model icon"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -212,6 +216,7 @@ class Args:
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
             ("no_intro", "intro"), ("no_terminal", "terminal"),
             ("no_terminal_memory", "terminal_memory"), ("no_clean_slate", "clean_slate"),
+            ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
         ]
 
         for r_item in other_name:
