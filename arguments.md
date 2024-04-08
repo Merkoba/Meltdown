@@ -638,6 +638,6 @@ Show the loading time at startup.
 
 ---
 
->model-verbose
+>verbose
 
 Output messages from llama.cpp when streaming.
