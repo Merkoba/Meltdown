@@ -367,12 +367,12 @@ class Commands:
                 "action": lambda a=None: widgets.show_context(),
             },
             "left": {
-                "aliases": ["tableft"],
+                "aliases": ["tableft", "lefttab"],
                 "help": "Go to the tab on the left",
                 "action": lambda a=None: display.tab_left(),
             },
             "right": {
-                "aliases": ["tabright"],
+                "aliases": ["tabright", "righttab"],
                 "help": "Go to the tab on the right",
                 "action": lambda a=None: display.tab_right(),
             },

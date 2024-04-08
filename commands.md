@@ -390,7 +390,7 @@ Aliases: widgetlist, rightclick
 
 Go to the tab on the left
 
-Aliases: tableft
+Aliases: tableft, lefttab
 
 ---
 
@@ -398,7 +398,7 @@ Aliases: tableft
 
 Go to the tab on the right
 
-Aliases: tabright
+Aliases: tabright, righttab
 
 ---
 
