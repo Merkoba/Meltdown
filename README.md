@@ -188,26 +188,6 @@ This means Meltdown is able to run in many environments in a lightweight manner.
 
 ---
 
-## Installation <a name="installation"></a>
-
-You can install it with [pipx](https://pypi.org/project/pipx/):
-
-```sh
-pipx install git+https://github.com/Merkoba/Meltdown --force
-```
-
-Which provides the `meltdown` command.
-
----
-
-To install manually use a virtual env and `requirements.txt`.
-
-You can use `scripts/venv.sh` to automate this.
-
-To run it use `run.sh` in the root dir.
-
----
-
 ## Models <a name="models"></a>
 
 You will need some models to play with.
@@ -229,3 +209,23 @@ You must first set the API key for it to work.
 This can be done using the main menu: `Set API Key`.
 
 Then pick the model you want: `Use GPT Model`.
+
+---
+
+## Installation <a name="installation"></a>
+
+You can install it with [pipx](https://pypi.org/project/pipx/):
+
+```sh
+pipx install git+https://github.com/Merkoba/Meltdown --force
+```
+
+Which provides the `meltdown` command.
+
+---
+
+To install manually use a virtual env and `requirements.txt`.
+
+You can use `scripts/venv.sh` to automate this.
+
+To run it use `run.sh` in the root dir.
