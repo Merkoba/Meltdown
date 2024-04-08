@@ -267,7 +267,7 @@ class Commands:
                 "action": lambda a=None: session.menu(),
             },
             "reset": {
-                "help": "Reset the config",
+                "help": "Reset all configs",
                 "extra": force,
                 "action": lambda a=None: config.reset(force=a),
                 "type": "force",
