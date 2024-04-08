@@ -29,9 +29,13 @@
 
 ![](https://i.imgur.com/tFUkptg.jpg)
 
-### Another Screenshot
+### Another Screenshot:
 
 ![](https://i.imgur.com/ih0V7lx.jpg)
+
+### A Gif Demo:
+
+![](https://i.imgur.com/10V4yDR.gif)
 
 ---
 
