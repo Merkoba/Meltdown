@@ -4,6 +4,12 @@ These are flags you can use when running the program.
 
 For example: `meltdown --no-tooltips --width 800 --height 900`
 
+This is how the program is configured. There is no settings window.
+
+Except configs that tweak the model/stream. Those are in the interface.
+
+---
+
 There are some keywords you can use.
 
 These are replaced in the argument:
