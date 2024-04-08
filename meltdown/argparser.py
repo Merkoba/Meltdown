@@ -7,7 +7,6 @@ from pathlib import Path
 
 
 class ArgParser:
-    # Generic class to get arguments from the terminal
     def __init__(self, title: str, argdefs: Dict[str, Any], obj: Any):
         parser = argparse.ArgumentParser(description=title)
         argdefs["string_arg"] = {"nargs": "*"}
