@@ -159,7 +159,7 @@ class Model:
             mlock = True if (config.mlock == "yes") else False
             display.to_bottom(tab_id)
 
-            if not args.quiet:
+            if args.model_feedback and (not args.quiet):
                 display.print(f"🫠 Loading {name}", tab_id=tab_id)
 
             app.update()
@@ -185,7 +185,7 @@ class Model:
         self.loaded_format = chat_format
         self.update_icon()
 
-        if not args.quiet:
+        if args.model_feedback and (not args.quiet):
             msg, now = timeutils.check_time("Model loaded", now)
             display.print(msg)
 
@@ -202,7 +202,7 @@ class Model:
             self.stop_stream_thread.set()
             self.stream_thread.join(timeout=3)
 
-            if not args.quiet:
+            if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
     def stream(self, prompt: str, tab_id: str) -> None:

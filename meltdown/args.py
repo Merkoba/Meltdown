@@ -96,6 +96,7 @@ class Args:
         self.tabs_always = False
         self.more_button = True
         self.model_icon = True
+        self.model_feedback = True
 
     class Internal:
         title = app.manifest["title"]
@@ -132,6 +133,7 @@ class Args:
             "no-clean-slate": {"action": "store_false", "help": "Don't make a new tab when starting with an input"},
             "no-more-button": {"action": "store_false", "help": "Don't show the More button"},
             "no-model-icon": {"action": "store_false", "help": "Don't show the model icon"},
+            "no-model-feedback": {"action": "store_false", "help": "Don't show model feedback when loading"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -217,6 +219,7 @@ class Args:
             ("no_intro", "intro"), ("no_terminal", "terminal"),
             ("no_terminal_memory", "terminal_memory"), ("no_clean_slate", "clean_slate"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
+            ("no_model_feedback", "model_feedback"),
         ]
 
         for r_item in other_name:

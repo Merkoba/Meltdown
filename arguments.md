@@ -591,3 +591,9 @@ This is the icon on the top right that reflect model status.
 >no-more-button
 
 Don't show the More button at the right of the buttons frame.
+
+---
+
+>no-model-feedback
+
+Don't show feedback when the model is loading.
