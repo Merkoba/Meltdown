@@ -515,7 +515,7 @@ class Commands:
                 "action": lambda a=None: app.stats()
             },
             "ontop": {
-                "aliases": ["toggleontop", "toggletop", "alwaysontop"],
+                "aliases": ["toggleontop", "toggletop", "alwaysontop", "sticky"],
                 "help": "Make the window stay at the top or not",
                 "action": lambda a=None: app.toggle_on_top()
             },

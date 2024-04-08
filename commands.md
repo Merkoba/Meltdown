@@ -598,7 +598,7 @@ Aliases: statistics, internal
 
 Make the window stay at the top or not
 
-Aliases: toggleontop, toggletop, alwaysontop
+Aliases: toggleontop, toggletop, alwaysontop, sticky
 
 ---
 
