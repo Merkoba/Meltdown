@@ -14,7 +14,7 @@ class ArgParser:
             if key == "string_arg":
                 name = key
             else:
-                name = ArgParser.under_to_dash(key)
+                name = self.under_to_dash(key)
                 name = f"--{name}"
 
             tail = {key: value for key,
@@ -38,16 +38,8 @@ class ArgParser:
             else:
                 self.set(attr, value)
 
-    def get(self, attr: str) -> Any:
-        return getattr(self.obj, attr)
-
     def set(self, attr: str, value: Any) -> None:
         setattr(self.obj, attr, value)
 
-    @staticmethod
-    def dash_to_under(s: str) -> str:
-        return s.replace("-", "_")
-
-    @staticmethod
-    def under_to_dash(s: str) -> str:
+    def under_to_dash(self, s: str) -> str:
         return s.replace("_", "-")
