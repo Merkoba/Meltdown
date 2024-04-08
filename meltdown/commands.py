@@ -454,6 +454,14 @@ class Commands:
                 "help": "Go to the tab that is currently streaming",
                 "action": lambda a=None: display.select_active_tab(),
             },
+            "gpt": {
+                "help": "Show the GPT menu",
+                "action": lambda a=None: widgets.show_gpt_menu(),
+            },
+            "apikey": {
+                "help": "Set the OpenAI API key",
+                "action": lambda a=None: model.set_api_key(),
+            },
         }
 
         for key in self.commands:
