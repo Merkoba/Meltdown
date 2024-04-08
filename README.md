@@ -7,7 +7,6 @@
 ## Index
 1. [Screenshots](#screenshots)
 1. [Features](#features)
-1. [Toolkit](#toolkit)
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Installation](#installation)
