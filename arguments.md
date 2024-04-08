@@ -10,6 +10,46 @@ Except configs that tweak the model/stream. Those are in the interface.
 
 ---
 
+>alias
+
+You can define one or more command aliases.
+
+The name of the alias is at the start and the value is after `=`.
+
+For example:
+
+```sh
+--alias "grab = /tab 1 & /select" --alias "destroy = /close force"
+```
+
+Or maybe a prompt alias:
+
+```sh
+--alias "history = /input what happened on this day?"
+```
+
+---
+
+>task
+
+You can run automated tasks.
+
+The format is [seconds] [commands] [/now (optional)]
+
+For example:
+
+```sh
+--task "30 /tab 1 & /input hello world /now"
+```
+
+This will go to the first tab and then prompt the model with "hello world".
+
+It will run the first task instantly and then wait 30 seconds for the next iteration.
+
+You can define multiple tasks like this.
+
+---
+
 There are some keywords you can use.
 
 These are replaced in the argument:
@@ -591,48 +631,6 @@ Don't show the More button at the right of the buttons frame.
 >no-model-feedback
 
 Don't show feedback when the model is loading.
-
----
-
->alias
-
-You can define one or more command aliases.
-
-The name of the alias is at the start and the value is after `=`.
-
-For example:
-
-```sh
---alias "grab = /tab 1 & /select" --alias "destroy = /close force"
-```
-
-Or maybe a prompt alias:
-
-```sh
---alias "history = /input what happened on this day?"
-```
-
----
-
->task
-
-You can run automated tasks.
-
-These are commands. Commands can be chained.
-
-The format is [seconds] [commands] [/now (optional)]
-
-For example:
-
-```sh
---task "30 /tab 1 & /input hello world /now"
-```
-
-This will go to the first tab and then prompt the model with "hello world".
-
-It will run the first task instantly and then wait 30 seconds for the next iteration.
-
-You can define multiple tasks like this.
 
 ---
 
