@@ -126,11 +126,9 @@ Don't save empty conversations.
 
 ---
 
->maximized
+>maximize
 
 Start the window maximized.
-
-Alias: `max`
 
 ---
 
@@ -195,8 +193,6 @@ It simply passes the file path as an argument to the command/script.
 >numbers
 
 Show numbers in the tab bar.
-
-Alias: `nums`
 
 ---
 
@@ -529,8 +525,6 @@ This means clicking outside the window won't hide it.
 >monospace
 
 Use monospace font for the output.
-
-Alias: `mono`
 
 ---
 

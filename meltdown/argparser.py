@@ -8,7 +8,7 @@ from pathlib import Path
 
 class ArgParser:
     # Generic class to get arguments from the terminal
-    def __init__(self, title: str, argdefs: Dict[str, Any], aliases: Dict[str, List[str]], obj: Any):
+    def __init__(self, title: str, argdefs: Dict[str, Any], obj: Any):
         parser = argparse.ArgumentParser(description=title)
         argdefs["string_arg"] = {"nargs": "*"}
 
@@ -16,25 +16,15 @@ class ArgParser:
             item = argdefs[key]
 
             if key == "string_arg":
-                names = [key]
+                name = key
             else:
                 name = ArgParser.under_to_dash(key)
-
-                # Add -- and - formats
-                names = [f"--{name}", f"-{name}"]
-                name2 = key.replace("-", "")
-
-                # Check without dashes
-                if name2 != name:
-                    names.extend([f"--{name2}", f"-{name2}"])
-
-            if key in aliases:
-                names += aliases[key]
+                name = f"--{name}"
 
             tail = {key: value for key,
                     value in item.items() if value is not None}
 
-            parser.add_argument(*names, **tail)
+            parser.add_argument(name, **tail)
 
         self.parser = parser
         self.args = parser.parse_args()
