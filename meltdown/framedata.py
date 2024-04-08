@@ -1,6 +1,7 @@
 # Standard
 import tkinter as tk
 
+
 class FrameData:
     frame_number = 0
 
@@ -10,4 +11,4 @@ class FrameData:
         self.col = 0
 
     def expand(self) -> None:
-        self.frame.grid_columnconfigure(self.col-1, weight=1)
+        self.frame.grid_columnconfigure(self.col - 1, weight=1)

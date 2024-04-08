@@ -577,3 +577,17 @@ Always show the tab bar even if only one tab is open.
 Else it will auto-hide the tab bar when only 1 tab.
 
 And show the tab bar when more tabs are opened.
+
+---
+
+>no-model-icon
+
+Don't show the model icon.
+
+This is the icon on the top right that reflect model status.
+
+---
+
+>no-more-button
+
+Don't show the More button at the right of the buttons frame.

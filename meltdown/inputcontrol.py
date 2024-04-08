@@ -4,7 +4,6 @@ from typing import Any, Optional, List
 
 # Modules
 from .tooltips import ToolTip
-from .enums import Fill
 from .commands import commands
 from .config import config
 from .entrybox import EntryBox

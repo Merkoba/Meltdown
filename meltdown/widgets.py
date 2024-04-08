@@ -11,7 +11,6 @@ from .args import args
 from .app import app
 from .config import config
 from .tooltips import ToolTip
-from .enums import Fill
 from .menus import Menu
 from .dialogs import Dialog
 from .entrybox import EntryBox
@@ -159,6 +158,7 @@ class Widgets:
         frame_3 = widgetutils.make_frame(self.details_frame, col=2, row=0)
         self.details_button_right = widgetutils.make_button(frame_3, ">",
                                                             lambda: widgets.details_right(), right_padding=right_padding, style="alt")
+
         ToolTip(self.details_button_right, detail_button_info)
 
         self.details_frame.columnconfigure(1, weight=1)
@@ -272,25 +272,31 @@ class Widgets:
 
         self.close_button = widgetutils.make_button(
             frame_data_buttons, "Close", lambda: display.close_tab())
+
         frame_data_buttons.expand()
         ToolTip(self.close_button, "Close the current tab")
 
         self.clear_button = widgetutils.make_button(frame_data_buttons, "Clear",
                                                     lambda: display.clear())
+
         frame_data_buttons.expand()
         ToolTip(self.clear_button, "Clear the conversation")
 
-        self.top_button = widgetutils.make_button(frame_data_buttons, "Top", lambda: display.to_top())
+        rpadding = right_padding if (not args.more_button) else 0
+        self.top_button = widgetutils.make_button(frame_data_buttons, "Top", lambda: display.to_top(), right_padding=rpadding)
         frame_data_buttons.expand()
         ToolTip(self.top_button, "Scroll to the top")
 
+        rpadding = right_padding if args.more_button else 0
         self.output_menu = widgetutils.make_button(frame_data_buttons, "More", lambda e: display.show_output_menu(e),
-                                                   right_padding=right_padding)
-        frame_data_buttons.expand()
+                                                   right_padding=rpadding)
+
         ToolTip(self.output_menu, "Show more options")
 
         if not args.more_button:
             self.output_menu.grid_remove()
+        else:
+            frame_data_buttons.expand()
 
         # Display
         app.main_frame.grid_rowconfigure(FrameData.frame_number, weight=1)

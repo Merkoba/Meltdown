@@ -8,36 +8,9 @@ import pyperclip  # type: ignore
 
 # Modules
 from .app import app
-from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .framedata import FrameData
-
-
-def do_pack(widget: tk.Widget,
-            fill: Optional[Fill] = None, right_padding: Optional[int] = None,
-            bottom_padding: Optional[int] = None,
-            padx: Optional[int] = None,
-            pady: Optional[int] = None) -> None:
-
-    if padx is not None:
-        if right_padding:
-            px = (padx, right_padding)
-        else:
-            px = (padx, padx)
-    else:
-        padx_right = right_padding if right_padding else 0
-        px = (app.theme.padx, padx_right)
-
-    if pady is not None:
-        py = (pady, pady)
-    else:
-        pady_bottom = bottom_padding if bottom_padding else 0
-        py = (app.theme.pady, pady_bottom)
-
-    expand = True if fill else False
-    fillmode: FillLiteral = fill if fill else Fill.NONE
-    widget.pack(side="left", padx=px, pady=py, fill=fillmode.value, expand=expand)
 
 
 def do_grid(widget: tk.Widget,
