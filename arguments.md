@@ -591,3 +591,23 @@ Don't show the More button at the right of the buttons frame.
 >no-model-feedback
 
 Don't show feedback when the model is loading.
+
+---
+
+>alias
+
+You can define one or more command aliases.
+
+The name of the alias is at the start and the value is after `=`.
+
+For example:
+
+```sh
+--alias "grab = /tab 1 & /select" --alias "destroy = /close force"
+```
+
+Or maybe a prompt alias:
+
+```sh
+--alias "history = /input what happened on this day?"
+```

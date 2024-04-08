@@ -268,26 +268,6 @@ You can define multiple tasks like this.
 
 ---
 
-## Aliases <a name="aliases"></a>
-
-You can define one or more command aliases.
-
-The name of the alias is at the start and the value is after `=`.
-
-For example:
-
-```sh
---alias "grab = /tab 1 & /select" --alias "destroy = /close force"
-```
-
-Or maybe a prompt alias:
-
-```sh
---alias "history = /input what happened on this day?"
-```
-
----
-
 ## Command Queues <a name="queues"></a>
 
 Every command chain is stored in its own queue.
