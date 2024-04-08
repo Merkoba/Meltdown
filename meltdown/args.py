@@ -89,7 +89,7 @@ class Args:
         self.autocomplete_memory_min = 4
         self.listener = False
         self.listener_delay = 0.5
-        self.on_top = False
+        self.sticky = False
         self.commandoc = ""
         self.after_stream = ""
         self.clean_slate = True
@@ -190,7 +190,7 @@ class Args:
             "autocomplete-memory-min": {"type": int, "help": "Minimum number of characters for remembered words in the input"},
             "listener": {"action": "store_true", "help": "Listen for changes to the stdin file"},
             "listener-delay": {"type": float, "help": "Delay for the listener checks"},
-            "on-top": {"action": "store_true", "help": "Make the window always on top"},
+            "sticky": {"action": "store_true", "help": "Make the window always on top"},
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
             "after-stream": {"type": str, "help": "Execute this command after streaming a response"},
         }
@@ -243,7 +243,7 @@ class Args:
 
             "display", "monospace", "autorun", "terminal_height",
             "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
-            "listener", "listener_delay", "on_top", "commandoc",
+            "listener", "listener_delay", "sticky", "commandoc",
             "after_stream", "tabs_always",
         ]
 

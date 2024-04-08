@@ -158,7 +158,7 @@ class Commands:
                 "action": lambda a=None: app.resize(),
             },
             "stop": {
-                "aliases": ["stopstream", "streamstop", "streamend", "interrupt", "endstream"],
+                "aliases": ["streamstop", "interrupt", "endstream"],
                 "help": "Stop the current stream",
                 "action": lambda a=None: model.stop_stream(),
             },
@@ -225,7 +225,7 @@ class Commands:
                 "type": "force",
             },
             "new": {
-                "aliases": ["make", "maketab", "newtab", "tabmake", "tabnew"],
+                "aliases": ["make", "maketab", "newtab"],
                 "help": "Make a new tab",
                 "action": lambda a=None: display.make_tab(),
             },
@@ -325,7 +325,7 @@ class Commands:
                 "action": lambda a=None: display.move_tab(True),
             },
             "tab": {
-                "aliases": ["num", "number", "tabnum", "tabnumber"],
+                "aliases": ["num", "number", "tabnumber"],
                 "help": "Go to a tab by its number or by its name",
                 "action": lambda a=None: display.select_tab_by_string(a),
                 "type": str,
@@ -377,12 +377,12 @@ class Commands:
                 "action": lambda a=None: display.tab_right(),
             },
             "menu": {
-                "aliases": ["mainmenu", "main", "showmain", "mainshow", "menumain"],
+                "aliases": ["mainmenu", "main", "showmain"],
                 "help": "Show the main menu",
                 "action": lambda a=None: widgets.show_main_menu(),
             },
             "savesession": {
-                "aliases": ["sessionsave", "store", "backup", "persist"],
+                "aliases": ["sessionsave", "store", "backup"],
                 "help": "Save the current session",
                 "action": lambda a=None: session.save_state(name=a),
                 "type": str,
@@ -423,7 +423,7 @@ class Commands:
                 "action": lambda a=None: display.deselect_output(),
             },
             "browse": {
-                "aliases": ["modellist", "findmodel", "pickmodel", "openmodel"],
+                "aliases": ["findmodel", "pickmodel", "modelbrowse"],
                 "help": "Browse the models",
                 "action": lambda a=None: model.browse_models(),
             },
@@ -433,33 +433,33 @@ class Commands:
                 "action": lambda a=None: self.show_palette(),
             },
             "rename": {
-                "aliases": ["name", "renametab", "nametab", "tabname"],
+                "aliases": ["name", "tabname", "nametab"],
                 "help": "Rename the tab",
                 "action": lambda a=None: display.rename_tab(True),
             },
             "input": {
-                "aliases": ["prompt", "ask", "submit", "text"],
+                "aliases": ["prompt", "ask", "text"],
                 "help": "Prompt the AI with this input",
                 "action": lambda a=None: inputcontrol.submit(text=a),
                 "type": str,
                 "arg_req": True,
             },
             "write": {
-                "aliases": ["fill", "setinput", "inputset", "fillinput", "inputfill"],
+                "aliases": ["fill", "setinput", "inputset"],
                 "help": "Set the input without submitting",
                 "action": lambda a=None: inputcontrol.set(text=a),
                 "type": str,
                 "arg_req": True,
             },
             "sleep": {
-                "aliases": ["wait", "pause", "freeze", "time", "timeout"],
+                "aliases": ["wait", "pause", "timeout"],
                 "help": "Wait X seconds before running the next command",
                 "action": lambda a=None: None,
                 "type": int,
                 "arg_req": True,
             },
             "hide": {
-                "aliases": ["hidewindow", "windowhide", "hideall", "hidemenu", "menuhude"],
+                "aliases": ["hidewindow", "windowhide", "hideall"],
                 "help": "Close dialogs and menus",
                 "action": lambda a=None: app.hide_all(),
             },
@@ -469,12 +469,12 @@ class Commands:
                 "action": lambda a=None: config.print_config(),
             },
             "bigger": {
-                "aliases": ["biggerfont", "fontbigger", "biggersize", "sizebigger"],
+                "aliases": ["biggerfont", "fontbigger"],
                 "help": "Increase the font size",
                 "action": lambda a=None: display.increase_font(),
             },
             "smaller": {
-                "aliases": ["smallerfont", "fontsmaller", "smallersize", "sizesmaller"],
+                "aliases": ["smallerfont", "fontsmaller"],
                 "help": "Decrease the font size",
                 "action": lambda a=None: display.decrease_font(),
             },
@@ -514,10 +514,10 @@ class Commands:
                 "help": "Show some internal information",
                 "action": lambda a=None: app.stats()
             },
-            "ontop": {
-                "aliases": ["toggleontop", "toggletop", "alwaysontop", "sticky"],
-                "help": "Make the window stay at the top or not",
-                "action": lambda a=None: app.toggle_on_top()
+            "sticky": {
+                "aliases": ["ontop", "togglesticky", "alwaysontop"],
+                "help": "Make the window stay at the top",
+                "action": lambda a=None: app.toggle_sticky()
             },
             "commandoc": {
                 "aliases": [],
@@ -527,7 +527,7 @@ class Commands:
                 "arg_req": True,
             },
             "active": {
-                "aliases": ["streaming", "activetab", "tabactive", "streamtab", "streamingtab", "tabstreaming"],
+                "aliases": ["streaming", "activetab", "tabactive"],
                 "help": "Go to the tab that is currently streaming",
                 "action": lambda a=None: display.select_active_tab(),
             },

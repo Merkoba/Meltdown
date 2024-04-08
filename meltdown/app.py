@@ -37,7 +37,7 @@ class App:
         self.setup_focus()
         self.setup_binds()
         self.theme: Theme
-        self.on_top = False
+        self.sticky = False
         self.exit_delay = 100
         self.exit_after: str = ""
         self.streaming = False
@@ -110,7 +110,7 @@ class App:
         self.check_commandoc()
         self.check_compact()
         self.check_display()
-        self.check_on_top()
+        self.check_sticky()
 
     def check_display(self) -> None:
         from .args import args
@@ -490,25 +490,25 @@ class App:
 
         display.print("\n".join(lines))
 
-    def toggle_on_top(self) -> None:
-        if self.on_top:
-            self.disable_on_top()
+    def toggle_sticky(self) -> None:
+        if self.sticky:
+            self.disable_sticky()
         else:
-            self.enable_on_top()
+            self.enable_sticky()
 
-    def enable_on_top(self) -> None:
-        self.on_top = True
+    def enable_sticky(self) -> None:
+        self.sticky = True
         self.root.attributes("-topmost", True)
 
-    def disable_on_top(self) -> None:
-        self.on_top = False
+    def disable_sticky(self) -> None:
+        self.sticky = False
         self.root.attributes("-topmost", False)
 
-    def check_on_top(self) -> None:
+    def check_sticky(self) -> None:
         from .args import args
 
-        if args.on_top:
-            self.enable_on_top()
+        if args.sticky:
+            self.enable_sticky()
 
     def check_commandoc(self) -> None:
         from .args import args
