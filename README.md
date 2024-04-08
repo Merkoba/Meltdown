@@ -11,8 +11,8 @@
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Installation](#installation)
-1. [Arguments](arguments.md)
 1. [Commands](commands.md)
+1. [Arguments](arguments.md)
 
 ---
 
