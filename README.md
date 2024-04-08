@@ -16,6 +16,7 @@
 1. [Aliases](#aliases)
 1. [Queues](#queues)
 1. [Arguments](arguments.md)
+1. [Commands](commands.md)
 
 ---
 

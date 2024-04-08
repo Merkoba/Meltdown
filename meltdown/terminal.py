@@ -5,10 +5,12 @@ from pathlib import Path
 import tempfile
 
 # Libraries
-from prompt_toolkit import prompt  # type:ignore
+from prompt_toolkit import PromptSession  # type:ignore
 from prompt_toolkit.history import InMemoryHistory  # type:ignore
 from prompt_toolkit.completion import Completer, Completion  # type:ignore
 from prompt_toolkit.document import Document  # type:ignore
+from prompt_toolkit.key_binding import KeyBindings  # type:ignore
+import pyperclip  # type: ignore
 
 # Modules
 from .args import args
@@ -50,15 +52,24 @@ def start_terminal() -> None:
 
 
 def do_start_terminal() -> None:
+    kb = KeyBindings()
+
+    @kb.add("c-v")  # type:ignore
+    def _(event: Any) -> None:
+        clipboard_data = pyperclip.paste().strip()
+        event.current_buffer.insert_text(clipboard_data)
+
     history = InMemoryHistory()
     cmdlist = [f"/{key}" for key in commands.cmdkeys]
     completer = SlashCompleter(cmdlist)
 
+    session = PromptSession(history=history, completer=completer,
+                            reserve_space_for_menu=args.terminal_height,
+                            vi_mode=args.terminal_vi, key_bindings=kb)
+
     while True:
         try:
-            text = prompt("Input: ", history=history, completer=completer,
-                          reserve_space_for_menu=args.terminal_height,
-                          vi_mode=args.terminal_vi)
+            text = session.prompt("Input: ")
 
         except KeyboardInterrupt:
             app.exit()

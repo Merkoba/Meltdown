@@ -2,6 +2,7 @@
 import re
 import json
 from typing import Any, Dict, List, Optional
+from pathlib import Path
 
 # Modules
 from .app import app
@@ -518,6 +519,13 @@ class Commands:
                 "help": "Make the window stay at the top or not",
                 "action": lambda a=None: app.toggle_on_top()
             },
+            "cmdoc": {
+                "aliases": [],
+                "help": "Make a markdown file with all the commands",
+                "action": lambda a=None: self.to_markdown(a),
+                "type": str,
+                "arg_req": True,
+            },
         }
 
         for key in self.commands:
@@ -733,6 +741,35 @@ class Commands:
         for key in cmds:
             if key in self.commands:
                 self.commands[key]["date"] = cmds[key].get("date", 0.0)
+
+    def to_markdown(self, pathstr: str) -> None:
+        from .display import display
+        path = Path(pathstr)
+
+        if (not path.parent.exists()) or (not path.parent.is_dir()):
+            utils.error(f"Invalid path: {pathstr}")
+            return
+
+        text = "## Commands\n\n"
+        text += "These are all the available commands."
+        sep = "\n\n---\n\n"
+
+        for key in self.commands:
+            cmd = self.commands[key]
+            info = cmd["help"]
+            aliases = cmd["aliases"]
+            text += sep
+            text += f">{key}\n\n"
+            text += info
+
+            if aliases:
+                alias_string = ", ".join(aliases)
+                text += f"\n\nAliases: {alias_string}"
+
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(text)
+
+        display.print(f"Saved to {path}")
 
 
 commands = Commands()
