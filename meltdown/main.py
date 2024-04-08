@@ -19,6 +19,7 @@ from . import filemanager
 from . import system
 from . import tasks
 from . import utils
+from . import listener
 
 
 def main() -> None:
@@ -51,6 +52,7 @@ def main() -> None:
     app.setup()
     inputcontrol.setup()
     terminal.start()
+    listener.start()
     app.autorun()
 
     # Create singleton

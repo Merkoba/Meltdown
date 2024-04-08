@@ -1,8 +1,6 @@
 # Standard
 import threading
 from typing import Any, Generator, List
-from pathlib import Path
-import tempfile
 
 # Libraries
 from prompt_toolkit import PromptSession  # type:ignore
@@ -17,8 +15,6 @@ from .args import args
 from .app import app
 from .commands import commands
 from .inputcontrol import inputcontrol
-from . import timeutils
-from . import utils
 
 
 class SlashCompleter(Completer):  # type:ignore
@@ -45,13 +41,16 @@ class SlashCompleter(Completer):  # type:ignore
             self.words.append(name)
 
 
-def start_terminal() -> None:
-    thread = threading.Thread(target=lambda: do_start_terminal())
+def start() -> None:
+    if not args.terminal:
+        return
+
+    thread = threading.Thread(target=lambda: do_start())
     thread.daemon = True
     thread.start()
 
 
-def do_start_terminal() -> None:
+def do_start() -> None:
     kb = KeyBindings()
 
     @kb.add("c-v")  # type:ignore
@@ -86,43 +85,3 @@ def do_start_terminal() -> None:
                     completer.add_word(word)
 
         inputcontrol.submit(text=text)
-
-
-def start() -> None:
-    if args.terminal:
-        start_terminal()
-
-    if args.listener:
-        start_listener()
-
-
-def start_listener() -> None:
-    if args.listener_delay < 0.1:
-        return
-
-    thread = threading.Thread(target=lambda: do_start_listener())
-    thread.daemon = True
-    thread.start()
-
-
-def do_start_listener() -> None:
-    program = app.manifest["program"]
-    file_name = f"mlt_{program}.input"
-
-    if not args.quiet:
-        utils.msg(f"Listening to {file_name}")
-
-    path = Path(tempfile.gettempdir(), file_name)
-
-    while True:
-        if path.exists() and path.is_file():
-            with open(path, "r") as file:
-                text = file.read().strip()
-
-                if text:
-                    with open(path, "w") as file:
-                        file.write("")
-
-                    inputcontrol.submit(text=text)
-
-        timeutils.sleep(args.listener_delay)
