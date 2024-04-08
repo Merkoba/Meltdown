@@ -525,3 +525,27 @@ This means clicking outside the window won't hide it.
 Use monospace font for the output.
 
 Alias: `mono`
+
+---
+
+>commandoc
+
+Make the commandoc and save it on this path.
+
+This is meant for the developer to make the documentation.
+
+---
+
+>afterstream
+
+Execute this command after streaming a response.
+
+For example:
+
+```sh
+--after-stream "/logjson & /exit 3" "Hello World"
+```
+
+It will use `Hello World` as the prompt automatically.
+
+After it's done, it will save the conversation to a JSON file and exit in 3 seconds.

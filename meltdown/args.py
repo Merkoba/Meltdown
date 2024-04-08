@@ -91,6 +91,7 @@ class Args:
         self.listener_delay = 0.5
         self.on_top = False
         self.commandoc = ""
+        self.after_stream = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -181,6 +182,7 @@ class Args:
             "listener-delay": {"type": float, "help": "Delay for the listener checks"},
             "on-top": {"action": "store_true", "help": "Make the window always on top"},
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
+            "after-stream": {"type": str, "help": "Execute this command after streaming a response"},
         }
 
         aliases: Dict[str, List[str]] = {
@@ -230,6 +232,7 @@ class Args:
             "display", "monospace", "autorun", "terminal_height",
             "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
             "listener", "listener_delay", "on_top", "commandoc",
+            "after_stream",
         ]
 
         for n_item in normals:

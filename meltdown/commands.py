@@ -778,5 +778,9 @@ class Commands:
         display.print(msg)
         utils.msg(msg)
 
+    def after_stream(self) -> None:
+        if args.after_stream:
+            app.root.after(100, lambda: self.exec(args.after_stream))
+
 
 commands = Commands()

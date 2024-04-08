@@ -304,10 +304,6 @@ class Widgets:
         self.prepends_menu = Menu()
         self.appends_menu = Menu()
         self.inputs_menu = Menu()
-        self.stop_button_enabled = True
-        self.load_button_enabled = True
-        self.format_select_enabled = True
-        self.top_button_enabled = True
         self.current_details = 1
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
@@ -348,7 +344,6 @@ class Widgets:
         self.setup_widgets()
         self.add_generic_menus()
         self.setup_system()
-        self.start_checks()
         self.check_details_buttons()
         self.setup_tooltips()
 
@@ -593,79 +588,44 @@ class Widgets:
             add_menu("input")
 
     def enable_stop_button(self) -> None:
-        if (not self.stop_button_enabled) and app.exists():
+        if app.exists():
             self.stop_button.set_style("active")
-            self.stop_button_enabled = True
 
     def disable_stop_button(self) -> None:
-        if self.stop_button_enabled and app.exists():
+        if app.exists():
             self.stop_button.set_style("disabled")
-            self.stop_button_enabled = False
 
     def enable_load_button(self) -> None:
-        if (not self.load_button_enabled) and app.exists():
+        if app.exists():
             self.load_button.set_style("normal")
-            self.load_button_enabled = True
 
     def disable_load_button(self) -> None:
-        if self.load_button_enabled and app.exists():
+        if app.exists():
             self.load_button.set_style("disabled")
-            self.load_button_enabled = False
 
     def enable_format_select(self) -> None:
-        if (not self.format_select_enabled) and app.exists():
+        if app.exists():
             self.format.configure(style="Normal.TCombobox")
             self.enable_widget(self.format)
-            self.format_select_enabled = True
 
     def disable_format_select(self) -> None:
-        if self.format_select_enabled and app.exists():
+        if app.exists():
             self.format.configure(style="Disabled.TCombobox")
             self.disable_widget(self.format)
-            self.format_select_enabled = False
 
     def enable_top_button(self) -> None:
-        if (not self.top_button_enabled) and app.exists():
+        if app.exists():
             self.top_button.set_style("normal")
-            self.top_button_enabled = True
 
     def disable_top_button(self) -> None:
-        if self.top_button_enabled and app.exists():
+        if app.exists():
             self.top_button.set_style("disabled")
-            self.top_button_enabled = False
 
     def enable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["!disabled"])
 
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
-
-    def do_checks(self) -> None:
-        from .model import model
-
-        if model.streaming:
-            self.enable_stop_button()
-        else:
-            self.disable_stop_button()
-            display.stream_stopped()
-
-        model_empty = self.model.get() == ""
-
-        if model.model_loading or (model_empty and (not model.loaded_model)):
-            self.disable_load_button()
-            self.disable_format_select()
-        else:
-            self.enable_load_button()
-            self.enable_format_select()
-
-        if model.loaded_model:
-            self.load_button.set_text("Unload")
-        else:
-            self.load_button.set_text("Load")
-
-    def start_checks(self) -> None:
-        self.do_checks()
-        app.root.after(200, self.start_checks)
 
     def set_system(self, text: str) -> None:
         self.system.set_text(text)

@@ -40,6 +40,10 @@ class App:
         self.on_top = False
         self.exit_delay = 100
         self.exit_after: str = ""
+        self.streaming = False
+        self.loading = False
+        self.loaded = False
+        self.checks_delay = 200
 
         self.intro = [
             f"Welcome to {title}.",
@@ -513,6 +517,49 @@ class App:
         if args.commandoc:
             commands.run("commandoc", args.commandoc)
             sys.exit(0)
+
+    def do_checks(self) -> None:
+        from .model import model
+        from .commands import commands
+        from .widgets import widgets
+        from .display import display
+
+        if model.streaming:
+            if not self.streaming:
+                self.streaming = True
+                widgets.enable_stop_button()
+        else:
+            if self.streaming:
+                self.streaming = False
+                widgets.disable_stop_button()
+                display.stream_stopped()
+                commands.after_stream()
+
+        model_empty = widgets.model.get() == ""
+
+        if model.model_loading or (model_empty and (not model.loaded_model)):
+            if not self.loading:
+                self.loading = True
+                widgets.disable_load_button()
+                widgets.disable_format_select()
+        else:
+            if self.loading:
+                self.loading = False
+                widgets.enable_load_button()
+                widgets.enable_format_select()
+
+        if model.loaded_model:
+            if not self.loaded:
+                self.loaded = True
+                widgets.load_button.set_text("Unload")
+        else:
+            if self.loaded:
+                self.loaded = False
+                widgets.load_button.set_text("Load")
+
+    def start_checks(self) -> None:
+        self.do_checks()
+        app.root.after(self.checks_delay, self.start_checks)
 
 
 app = App()
