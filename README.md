@@ -5,7 +5,7 @@
 ---
 
 ## Index
-1. [Images](#images)
+1. [Screenshots](#screenshots)
 1. [Features](#features)
 1. [Toolkit](#toolkit)
 1. [Installation](#installation)
@@ -20,7 +20,7 @@
 
 ---
 
-Images <a name="images"></a>
+Screenshots <a name="screenshots"></a>
 
 ![](https://i.imgur.com/IWlH7Ss.jpg)
 
