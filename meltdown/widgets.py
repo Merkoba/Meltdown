@@ -235,11 +235,23 @@ class Widgets:
         ToolTip(self.top_k_label, tip)
         ToolTip(self.top_k, tip)
 
+        self.ctx_label = widgetutils.make_label(details_data, "CTX")
+        self.ctx = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "Text context, 0 = from model"
+        ToolTip(self.ctx_label, tip)
+        ToolTip(self.ctx, tip)
+
         self.threads_label = widgetutils.make_label(details_data, "Threads")
         self.threads = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
         tip = "The number of CPU threads to use"
         ToolTip(self.threads_label, tip)
         ToolTip(self.threads, tip)
+
+        self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
+        self.gpu_layers = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "Number of layers to offload to GPU. If -1, all layers are offloaded"
+        ToolTip(self.gpu_layers_label, tip)
+        ToolTip(self.gpu_layers, tip)
 
         self.format_label = widgetutils.make_label(details_data, "Format")
         values = ["auto"]
@@ -472,6 +484,8 @@ class Widgets:
         setup_entrybox("prepend", "Add before")
         setup_entrybox("append", "Add after")
         setup_entrybox("threads", "Int")
+        setup_entrybox("gpu_layers", "Int")
+        setup_entrybox("ctx", "Int")
 
         setup_combobox("format")
         setup_combobox("mlock")

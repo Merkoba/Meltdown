@@ -166,10 +166,11 @@ class Model:
 
             self.model = Llama(
                 model_path=str(model),
-                chat_format=fmt,
-                n_ctx=2048,
-                use_mlock=mlock,
+                n_ctx=config.ctx,
                 n_threads=config.threads,
+                n_gpu_layers=config.gpu_layers,
+                use_mlock=mlock,
+                chat_format=fmt,
                 verbose=False,
             )
         except BaseException as e:

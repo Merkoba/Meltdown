@@ -35,6 +35,8 @@ class Config:
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
+        self.default_gpu_layers = 0
+        self.default_ctx = 2048
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -54,6 +56,8 @@ class Config:
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.theme = self.default_theme
+        self.gpu_layers = self.default_gpu_layers
+        self.ctx = self.default_ctx
 
         self.clearables = [
             "system",
@@ -62,6 +66,15 @@ class Config:
             "input",
             "name_user",
             "name_ai",
+        ]
+
+        self.model_keys = [
+            "model",
+            "ctx",
+            "threads",
+            "gpu_layers",
+            "mlock",
+            "format",
         ]
 
         self.validations: Dict[str, Callable[..., Any]] = {
@@ -237,7 +250,9 @@ class Config:
             return False
 
     def set(self, key: str, value: Any) -> bool:
+        from .model import model
         from .widgets import widgets
+
         vtype = self.get_default(key).__class__
 
         if vtype == str:
@@ -271,10 +286,11 @@ class Config:
 
         if key == "model":
             self.on_model_change()
-        elif key == "format":
-            self.on_format_change()
         elif key == "output_font_size":
             self.on_output_font_change()
+
+        if key in self.model_keys:
+            model.unload()
 
         return True
 
@@ -296,8 +312,7 @@ class Config:
                 if default is not None:
                     setattr(self, key, default)
 
-            self.on_model_change(False)
-            self.on_format_change(False)
+            self.on_model_change()
             self.on_output_font_change()
             widgets.fill()
             app.check_compact()
@@ -325,20 +340,9 @@ class Config:
         self.set(key, default)
         widgets.fill_widget(key, getattr(self, key), focus=True)
 
-    def on_model_change(self, unload: bool = True) -> None:
+    def on_model_change(self) -> None:
         from .model import model
         model.check_config(False)
-
-        if model.loaded_model != self.model:
-            if unload:
-                model.unload()
-
-    def on_format_change(self, load: bool = True) -> None:
-        from .model import model
-
-        if load and model.loaded_model:
-            if model.loaded_format != self.format:
-                model.load()
 
     def on_output_font_change(self) -> None:
         from .display import display
