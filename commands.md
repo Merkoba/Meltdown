@@ -360,6 +360,12 @@ Deselect all text
 
 ---
 
+>recent
+
+Show the recent models
+
+---
+
 >browse
 
 Browse the models
