@@ -92,6 +92,7 @@ class Args:
         self.on_top = False
         self.commandoc = ""
         self.after_stream = ""
+        self.clean_slate = True
 
     class Internal:
         title = app.manifest["title"]
@@ -125,6 +126,7 @@ class Args:
             "no-intro": {"action": "store_false", "help": "Don't print the intro in conversations"},
             "no-terminal": {"action": "store_false", "help": "Don't enable the interactive terminal"},
             "no-terminal-memory": {"action": "store_false", "help": "Don't remember words in the terminal"},
+            "no-clean-slate": {"action": "store_false", "help": "Don't make a new tab when starting with an input"},
             "compact-model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact-system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact-details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -207,7 +209,7 @@ class Args:
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
             ("no_intro", "intro"), ("no_terminal", "terminal"),
-            ("no_terminal_memory", "terminal_memory"),
+            ("no_terminal_memory", "terminal_memory"), ("no_clean_slate", "clean_slate"),
         ]
 
         for r_item in other_name:

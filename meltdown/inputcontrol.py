@@ -184,15 +184,19 @@ class InputControl:
         from .display import display
         text = args.input.strip()
 
-        if text:
+        if not text:
+            return
+
+        tab_id = display.current_tab
+
+        if args.clean_slate:
             is_command = commands.is_command(text)
-            tab_id = display.current_tab
 
             if not is_command:
                 if not display.tab_is_empty(tab_id):
                     tab_id = display.make_tab()
 
-            self.submit(tab_id=tab_id, text=text)
+        self.submit(tab_id=tab_id, text=text)
 
     def add_words(self, text: str) -> None:
         words = text.split()

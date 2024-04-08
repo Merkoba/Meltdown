@@ -549,3 +549,15 @@ For example:
 It will use `Hello World` as the prompt automatically.
 
 After it's done, it will save the conversation to a JSON file and exit in 3 seconds.
+
+---
+
+>no-clean-slate
+
+Don't make a new tab when starting with an input.
+
+By default when you start the program with an input
+
+it will smartly check if it should re-use and empty tab or make a new one.
+
+If you disable this, it will always use the last tab.
