@@ -168,22 +168,6 @@ And more.
 
 ---
 
-## GUI Toolkit <a name="toolkit"></a>
-
-Python comes bundled with the `tkinter` library which is a wrapper around `Tcl`.
-
-This should just-work after installing Python normally.
-
-It should work in different operating systems (cross-platform).
-
-It doesn't depend on a browser engine or a proprietary toolkit.
-
-This means Meltdown is able to run in many environments in a lightweight manner.
-
-(Only tested on Linux for now)
-
----
-
 ## Models <a name="models"></a>
 
 You will need some models to play with.
