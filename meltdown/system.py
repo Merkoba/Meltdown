@@ -1,16 +1,16 @@
+# Libraries
+import psutil  # type: ignore
+from typing import Optional
+
+# Standard
+import threading
+
 # Modules
 from .config import config
 from .widgets import widgets
 from .args import args
 from .app import app
 from . import timeutils
-
-# Standard
-import threading
-
-# Libraries
-import psutil  # type: ignore
-from typing import Optional
 
 
 def padnum(num: int) -> str:

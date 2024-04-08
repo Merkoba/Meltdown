@@ -1,3 +1,7 @@
+# Standard
+import json
+from typing import Any, Optional, List
+
 # Modules
 from .tooltips import ToolTip
 from .enums import Fill
@@ -9,10 +13,6 @@ from .args import args
 from .paths import paths
 from . import widgetutils
 from . import filemanager
-
-# Standard
-import json
-from typing import Any, Optional, List
 
 
 class InputControl:

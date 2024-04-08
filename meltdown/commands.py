@@ -1,3 +1,8 @@
+# Standard
+import re
+import json
+from typing import Any, Dict, List, Optional
+
 # Modules
 from .app import app
 from .config import config
@@ -8,11 +13,6 @@ from .paths import paths
 from . import utils
 from . import timeutils
 from . import filemanager
-
-# Standard
-import re
-import json
-from typing import Any, Dict, List, Optional
 
 
 class QueueItem:
@@ -107,8 +107,14 @@ class Commands:
             },
             "exit": {
                 "aliases": ["quit"],
-                "help": "Exit the application",
-                "action": lambda a=None: app.exit(),
+                "help": "Exit the application. Optional seconds delay",
+                "action": lambda a=None: app.exit(a),
+                "type": float,
+            },
+            "cancelexit": {
+                "aliases": ["exitcancel", "cancelquit", "quitcancel"],
+                "help": "Cancel the exit if you had set one",
+                "action": lambda a=None: app.cancel_exit(),
             },
             "compact": {
                 "aliases": [],

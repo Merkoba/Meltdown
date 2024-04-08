@@ -1,10 +1,10 @@
-# Modules
-from .output import Output
-from . import utils
-
 # Standard
 import re
 from typing import List, Any
+
+# Modules
+from .output import Output
+from . import utils
 
 
 class MatchItem:

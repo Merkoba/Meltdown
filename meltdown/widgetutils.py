@@ -1,16 +1,16 @@
+# Standard
+import tkinter as tk
+from tkinter import ttk
+from typing import Any, Union, Callable, Optional, List, Tuple
+
+# Libraries
+import pyperclip  # type: ignore
+
 # Modules
 from .app import app
 from .enums import Fill, FillLiteral
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
-
-# Libraries
-import pyperclip  # type: ignore
-
-# Standard
-import tkinter as tk
-from tkinter import ttk
-from typing import Any, Union, Callable, Optional, List, Tuple
 
 
 frame_number = 0

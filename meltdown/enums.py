@@ -1,7 +1,5 @@
-# Modules
-import tkinter as tk
-
 # Standard
+import tkinter as tk
 from enum import Enum
 from typing import Literal
 

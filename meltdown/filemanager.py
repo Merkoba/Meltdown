@@ -1,14 +1,14 @@
-# Modules
-from .paths import paths
-from .config import config
-from .args import args
-from . import utils
-
 # Standard
 import os
 import json
 from typing import Any
 from pathlib import Path
+
+# Modules
+from .paths import paths
+from .config import config
+from .args import args
+from . import utils
 
 
 def save(path: Path, dictionary: Any) -> None:

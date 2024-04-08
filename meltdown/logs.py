@@ -1,18 +1,18 @@
+# Standard
+import json
+from pathlib import Path
+
 # Modules
+from .app import app
+from .config import config
 from .dialogs import Dialog
 from .display import display
 from .args import args
 from .session import session
 from .session import Conversation
-from .config import config
-from . import filemanager
-
-# Standard
-import json
-from pathlib import Path
 from .paths import paths
-from .app import app
 from . import timeutils
+from . import filemanager
 
 
 class Logs:

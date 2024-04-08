@@ -1,3 +1,10 @@
+# Standard
+import random
+import string
+import tkinter as tk
+from typing import List, Dict, Any
+from typing import Optional
+
 # Modules
 from .app import app
 from .menus import Menu
@@ -9,13 +16,6 @@ from .find import Find
 from .args import args
 from . import timeutils
 from . import widgetutils
-
-# Standard
-import random
-import string
-from typing import List, Dict, Any
-from typing import Optional
-import tkinter as tk
 
 
 class Tab:

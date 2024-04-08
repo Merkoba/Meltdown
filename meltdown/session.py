@@ -1,3 +1,9 @@
+# Standard
+import json
+from typing import List, Dict, Any, Optional
+from tkinter import filedialog
+from pathlib import Path
+
 # Modules
 from .config import config
 from .display import display
@@ -7,12 +13,6 @@ from .dialogs import Dialog
 from .output import Output
 from . import timeutils
 from . import utils
-
-# Standard
-import json
-from typing import List, Dict, Any, Optional
-from tkinter import filedialog
-from pathlib import Path
 
 
 test_conversation = {

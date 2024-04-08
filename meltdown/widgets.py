@@ -1,6 +1,15 @@
+# Standard
+import tkinter as tk
+from tkinter import ttk
+from typing import Optional, Any, Callable
+
+# Libraries
+from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
+
 # Modules
-from .config import config
+from .args import args
 from .app import app
+from .config import config
 from .tooltips import ToolTip
 from .enums import Fill
 from .menus import Menu
@@ -9,17 +18,8 @@ from .entrybox import EntryBox
 from .inputcontrol import inputcontrol
 from .display import display
 from .commands import commands
-from .args import args
 from .logs import logs
 from . import widgetutils
-
-# Libraries
-from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
-
-# Standard
-import tkinter as tk
-from tkinter import ttk
-from typing import Optional, Any, Callable
 
 
 class Widgets:

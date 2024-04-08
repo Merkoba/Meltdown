@@ -1,15 +1,15 @@
+# Standard
+import tkinter as tk
+from typing import Any, Callable, List, Optional, Tuple
+from PIL import Image, ImageTk  # type: ignore
+from pathlib import Path
+
 # Modules
 from .app import app
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .args import args
 from . import widgetutils
-
-# Standard
-from typing import Any, Callable, List, Optional, Tuple
-import tkinter as tk
-from PIL import Image, ImageTk  # type: ignore
-from pathlib import Path
 
 
 class Dialog:

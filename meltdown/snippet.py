@@ -1,17 +1,17 @@
-# Modules
-from .output import Output
-from .args import args
-from .app import app
+# Standard
+import tkinter as tk
+from tkinter import ttk
+from typing import Any
 
 # Libraries
 import pyperclip  # type: ignore
 from pygments.lexers import get_lexer_by_name  # type: ignore
 from pygments.styles import get_style_by_name  # type: ignore
 
-# Standard
-import tkinter as tk
-from tkinter import ttk
-from typing import Any
+# Modules
+from .output import Output
+from .args import args
+from .app import app
 
 
 class Snippet(tk.Frame):

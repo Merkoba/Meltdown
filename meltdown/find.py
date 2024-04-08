@@ -1,14 +1,14 @@
+# Standard
+import re
+import tkinter as tk
+from typing import Optional
+
 # Modules
 from .app import app
 from .buttonbox import ButtonBox
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .output import Output
-
-# Standard
-import re
-import tkinter as tk
-from typing import Optional
 
 
 class Find:

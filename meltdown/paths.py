@@ -1,11 +1,11 @@
-# Modules
-from .app import app
+# Standard
+from pathlib import Path
 
 # Libaries
 import appdirs  # type: ignore
 
-# Standard
-from pathlib import Path
+# Modules
+from .app import app
 
 
 class Paths:

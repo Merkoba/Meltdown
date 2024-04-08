@@ -1,12 +1,12 @@
+# Standard
+import re
+import threading
+
 # Modules
 from .args import args
 from .commands import commands
 from . import timeutils
 from . import utils
-
-# Standard
-import re
-import threading
 
 
 class Task:

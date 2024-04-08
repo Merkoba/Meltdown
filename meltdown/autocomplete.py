@@ -1,11 +1,11 @@
+# Standard
+import tkinter as tk
+from typing import List
+
 # Modules
 from .inputcontrol import inputcontrol
 from .commands import commands
 from .args import args
-
-# Standard
-from typing import List
-import tkinter as tk
 
 
 class AutoComplete:

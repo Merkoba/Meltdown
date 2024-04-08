@@ -1,22 +1,22 @@
-# Modules
-from .inputcontrol import inputcontrol
-from .args import args
-from .commands import commands
-from .app import app
-from . import timeutils
-from . import utils
-
 # Standard
 import threading
 from typing import Any, Generator, List
 from pathlib import Path
+import tempfile
 
 # Libraries
 from prompt_toolkit import prompt  # type:ignore
 from prompt_toolkit.history import InMemoryHistory  # type:ignore
 from prompt_toolkit.completion import Completer, Completion  # type:ignore
 from prompt_toolkit.document import Document  # type:ignore
-import tempfile
+
+# Modules
+from .args import args
+from .app import app
+from .commands import commands
+from .inputcontrol import inputcontrol
+from . import timeutils
+from . import utils
 
 
 class SlashCompleter(Completer):  # type:ignore

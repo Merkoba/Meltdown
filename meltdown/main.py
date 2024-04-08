@@ -1,3 +1,9 @@
+# Standard
+import os
+import sys
+import fcntl
+import tempfile
+
 # Modules
 from .app import app
 from .widgets import widgets
@@ -13,12 +19,6 @@ from . import filemanager
 from . import system
 from . import tasks
 from . import utils
-
-# Standard
-import os
-import sys
-import fcntl
-import tempfile
 
 
 def main() -> None:

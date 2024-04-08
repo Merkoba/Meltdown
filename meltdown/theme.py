@@ -1,8 +1,8 @@
-# Modules
-from .config import config
-
 # Standard
 from typing import Tuple
+
+# Modules
+from .config import config
 
 
 class Theme:

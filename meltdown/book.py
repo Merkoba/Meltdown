@@ -1,11 +1,11 @@
+# Standard
+import tkinter as tk
+from typing import List, Optional, Any, Callable
+
 # Modules
 from .app import app
 from .args import args
 from .tooltips import ToolTip
-
-# Standard
-import tkinter as tk
-from typing import List, Optional, Any, Callable
 
 
 class TabWidget:

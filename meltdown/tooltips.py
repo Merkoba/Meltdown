@@ -1,12 +1,12 @@
-# Modules
-from .app import app
-from .args import args
-from . import timeutils
-
 # Standard
 import re
 import tkinter as tk
 from typing import Any, Optional, List
+
+# Modules
+from .app import app
+from .args import args
+from . import timeutils
 
 
 def clean_string(text: str) -> str:

@@ -1,3 +1,14 @@
+# Standard
+import threading
+from pathlib import Path
+from typing import Optional
+from tkinter import filedialog
+from typing import List, Tuple
+
+# Libraries
+from llama_cpp import Llama  # type: ignore
+from openai import OpenAI  # type: ignore
+
 # Modules
 from .config import config
 from .widgets import widgets
@@ -8,17 +19,6 @@ from .args import args
 from . import timeutils
 from . import filemanager
 from . import utils
-
-# Libraries
-from llama_cpp import Llama  # type: ignore
-from openai import OpenAI  # type: ignore
-
-# Standard
-import threading
-from pathlib import Path
-from typing import Optional
-from tkinter import filedialog
-from typing import List, Tuple
 
 
 class Model:

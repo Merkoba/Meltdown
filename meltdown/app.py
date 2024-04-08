@@ -1,18 +1,18 @@
+# Standard
+import json
+import subprocess
+import shutil
+import platform
+import urllib.parse
+import tkinter as tk
+from tkinter import ttk
+from pathlib import Path
+from typing import List, Any, Optional
+
 # Modules
 from .config import config
 from .theme import Theme
 from . import utils
-
-# Standard
-import json
-import tkinter as tk
-from tkinter import ttk
-from pathlib import Path
-import subprocess
-from typing import List, Any
-import shutil
-import platform
-import urllib.parse
 
 
 class App:
@@ -37,6 +37,8 @@ class App:
         self.setup_binds()
         self.theme: Theme
         self.on_top = False
+        self.exit_delay = 100
+        self.exit_after: Optional[str] = None
 
         self.intro = [
             f"Welcome to {title}.",
@@ -114,9 +116,16 @@ class App:
         self.active = True
         self.root.mainloop()
 
-    def exit(self) -> None:
+    def exit(self, delay: Optional[float] = None) -> None:
+        self.cancel_exit()
         self.active = False
-        self.root.after(100, lambda: self.root.destroy())
+        d = int((delay * 1000)) if delay else self.exit_delay
+        d = d if d >= self.exit_delay else self.exit_delay
+        self.exit_after = self.root.after(d, lambda: self.root.destroy())
+
+    def cancel_exit(self) -> None:
+        if self.exit_after:
+            self.root.after_cancel(self.exit_after)
 
     def exists(self) -> bool:
         try:
@@ -488,5 +497,6 @@ class App:
 
         if args.on_top:
             self.enable_on_top()
+
 
 app = App()

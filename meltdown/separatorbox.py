@@ -1,8 +1,8 @@
-# Modules
-from .app import app
-
 # Standard
 import tkinter as tk
+
+# Modules
+from .app import app
 
 
 class SeparatorBox(tk.Frame):

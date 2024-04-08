@@ -1,11 +1,11 @@
-# Modules
-from . import utils
-
 # Standard
 import json
 from typing import List, Any, Dict, Optional, Callable, IO
 from tkinter import filedialog
 from pathlib import Path
+
+# Modules
+from . import utils
 
 
 class Config:

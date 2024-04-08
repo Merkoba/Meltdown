@@ -1,3 +1,7 @@
+# Standard
+import tkinter as tk
+from typing import Any, Callable, Optional, Dict, List
+
 # Modules
 from .app import app
 from .widgets import widgets
@@ -10,10 +14,6 @@ from .tooltips import ToolTip
 from .autocomplete import autocomplete
 from .args import args
 from . import timeutils
-
-# Standard
-import tkinter as tk
-from typing import Any, Callable, Optional, Dict, List
 
 
 KbCmd = Optional[Callable[..., Any]]

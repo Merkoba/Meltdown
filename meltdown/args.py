@@ -1,10 +1,10 @@
-# Modules
-from .app import app
-from .argparser import ArgParser
-
 # Standard
 import sys
 from typing import Any, Dict, List
+
+# Modules
+from .app import app
+from .argparser import ArgParser
 
 
 class Args:

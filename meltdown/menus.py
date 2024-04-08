@@ -1,14 +1,14 @@
+# Standard
+import tkinter as tk
+from tkinter import ttk
+from typing import List, Callable, Any, Optional, Dict
+
 # Modules
 from .app import app
 from .separatorbox import SeparatorBox
 from .args import args
 from .tooltips import ToolTip
 from . import utils
-
-# Standard
-import tkinter as tk
-from tkinter import ttk
-from typing import List, Callable, Any, Optional, Dict
 
 
 class MenuItem:

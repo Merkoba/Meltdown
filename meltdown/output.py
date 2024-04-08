@@ -1,16 +1,16 @@
+# Standard
+import tkinter as tk
+from tkinter import ttk
+from typing import Any, List, Optional
+
+# Libraries
+import pyperclip  # type: ignore
+
 # Modules
 from .config import config
 from .app import app
 from .menus import Menu
 from .args import args
-
-# Libraries
-import pyperclip  # type: ignore
-
-# Standard
-import tkinter as tk
-from tkinter import ttk
-from typing import Any, List, Optional
 
 
 class Output(tk.Text):

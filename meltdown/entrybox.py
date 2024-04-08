@@ -1,12 +1,12 @@
-# Modules
-from .app import app
-from .config import config
-from .tooltips import ToolTip
-
 # Standard
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
+
+# Modules
+from .app import app
+from .config import config
+from .tooltips import ToolTip
 
 
 class EntryBox(ttk.Entry):

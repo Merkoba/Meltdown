@@ -1,10 +1,12 @@
+# Standard
+import tkinter as tk
+
 # Modules
-from .buttonbox import ButtonBox
 from .app import app
 from .args import args
 
-# Standard
-import tkinter as tk
+# Modules
+from .buttonbox import ButtonBox
 
 
 class Bottom(tk.Frame):

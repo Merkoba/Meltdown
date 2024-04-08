@@ -1,11 +1,11 @@
-# Modules
-from .app import app
-from .menus import Menu
-
 # Standard
 import inspect
 import tkinter as tk
 from typing import Any, Callable, Optional
+
+# Modules
+from .app import app
+from .menus import Menu
 
 
 class ButtonBox(tk.Frame):
