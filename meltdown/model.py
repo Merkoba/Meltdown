@@ -171,7 +171,7 @@ class Model:
                 n_gpu_layers=config.gpu_layers,
                 use_mlock=mlock,
                 chat_format=fmt,
-                verbose=False,
+                verbose=args.model_verbose,
             )
         except BaseException as e:
             utils.error(e)

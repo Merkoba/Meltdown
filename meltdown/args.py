@@ -98,6 +98,7 @@ class Args:
         self.model_icon = True
         self.model_feedback = True
         self.time = False
+        self.model_verbose = False
 
     class Internal:
         title = app.manifest["title"]
@@ -149,6 +150,7 @@ class Args:
             "terminal_vi": {"action": "store_true", "help": "Use vi mode in the terminal"},
             "tabs_always": {"action": "store_true", "help": "Always show the tab bar even if only one tab"},
             "time": {"action": "store_true", "help": "Show the loading time at startup"},
+            "model_verbose": {"action": "store_true", "help": "Make the model verbose"},
             "terminal_height": {"type": int, "help": "Reserve these number of rows for the terminal"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
@@ -240,7 +242,7 @@ class Args:
             "display", "monospace", "autorun", "terminal_height",
             "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
             "listener", "listener_delay", "sticky", "commandoc",
-            "after_stream", "tabs_always", "time",
+            "after_stream", "tabs_always", "time", "model_verbose"
         ]
 
         for n_item in normals:

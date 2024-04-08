@@ -635,3 +635,9 @@ Don't show feedback when the model is loading.
 >time
 
 Show the loading time at startup.
+
+---
+
+>model-verbose
+
+Output messages from llama.cpp when streaming.
