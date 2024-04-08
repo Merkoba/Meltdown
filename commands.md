@@ -94,7 +94,7 @@ Aliases: restore
 
 Stop the current stream
 
-Aliases: stopstream, streamstop, streamend, interrupt, endstream
+Aliases: streamstop, interrupt, endstream
 
 ---
 
@@ -182,7 +182,7 @@ Aliases: rightclose
 
 Make a new tab
 
-Aliases: make, maketab, newtab, tabmake, tabnew
+Aliases: make, maketab, newtab
 
 ---
 
@@ -326,7 +326,7 @@ Aliases: movetab, tabmove
 
 Go to a tab by its number or by its name
 
-Aliases: num, number, tabnum, tabnumber
+Aliases: num, number, tabnumber
 
 ---
 
@@ -406,7 +406,7 @@ Aliases: tabright, righttab
 
 Show the main menu
 
-Aliases: mainmenu, main, showmain, mainshow, menumain
+Aliases: mainmenu, main, showmain
 
 ---
 
@@ -414,7 +414,7 @@ Aliases: mainmenu, main, showmain, mainshow, menumain
 
 Save the current session
 
-Aliases: sessionsave, store, backup, persist
+Aliases: sessionsave, store, backup
 
 ---
 
@@ -470,7 +470,7 @@ Aliases: unselect, unselectall, deselectall
 
 Browse the models
 
-Aliases: modellist, findmodel, pickmodel, openmodel
+Aliases: findmodel, pickmodel, modelbrowse
 
 ---
 
@@ -486,7 +486,7 @@ Aliases: showcommands, commandlist, showcmds
 
 Rename the tab
 
-Aliases: name, renametab, nametab, tabname
+Aliases: name, tabname, nametab
 
 ---
 
@@ -494,7 +494,7 @@ Aliases: name, renametab, nametab, tabname
 
 Prompt the AI with this input
 
-Aliases: prompt, ask, submit, text
+Aliases: prompt, ask, text
 
 ---
 
@@ -502,7 +502,7 @@ Aliases: prompt, ask, submit, text
 
 Set the input without submitting
 
-Aliases: fill, setinput, inputset, fillinput, inputfill
+Aliases: fill, setinput, inputset
 
 ---
 
@@ -510,7 +510,7 @@ Aliases: fill, setinput, inputset, fillinput, inputfill
 
 Wait X seconds before running the next command
 
-Aliases: wait, pause, freeze, time, timeout
+Aliases: wait, pause, timeout
 
 ---
 
@@ -518,7 +518,7 @@ Aliases: wait, pause, freeze, time, timeout
 
 Close dialogs and menus
 
-Aliases: hidewindow, windowhide, hideall, hidemenu, menuhude
+Aliases: hidewindow, windowhide, hideall
 
 ---
 
@@ -534,7 +534,7 @@ Aliases: showconfig, configprint, configshow
 
 Increase the font size
 
-Aliases: biggerfont, fontbigger, biggersize, sizebigger
+Aliases: biggerfont, fontbigger
 
 ---
 
@@ -542,7 +542,7 @@ Aliases: biggerfont, fontbigger, biggersize, sizebigger
 
 Decrease the font size
 
-Aliases: smallerfont, fontsmaller, smallersize, sizesmaller
+Aliases: smallerfont, fontsmaller
 
 ---
 
@@ -594,11 +594,11 @@ Aliases: statistics, internal
 
 ---
 
->ontop
+>sticky
 
-Make the window stay at the top or not
+Make the window stay at the top
 
-Aliases: toggleontop, toggletop, alwaysontop, sticky
+Aliases: ontop, togglesticky, alwaysontop
 
 ---
 
@@ -612,4 +612,4 @@ Make a file with all the commands. Provide a path
 
 Go to the tab that is currently streaming
 
-Aliases: streaming, activetab, tabactive, streamtab, streamingtab, tabstreaming
+Aliases: streaming, activetab, tabactive
