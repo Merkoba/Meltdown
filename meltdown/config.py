@@ -206,6 +206,7 @@ class Config:
 
             with open(path, "r", encoding="utf-8") as file:
                 self.apply(file)
+                self.save()
         except BaseException as e:
             utils.error(e)
             args.config = ""
