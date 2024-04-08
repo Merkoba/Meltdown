@@ -611,3 +611,25 @@ Or maybe a prompt alias:
 ```sh
 --alias "history = /input what happened on this day?"
 ```
+
+---
+
+>task
+
+You can run automated tasks.
+
+These are commands. Commands can be chained.
+
+The format is [seconds] [commands] [/now (optional)]
+
+For example:
+
+```sh
+--task "30 /tab 1 & /input hello world /now"
+```
+
+This will go to the first tab and then prompt the model with "hello world".
+
+It will run the first task instantly and then wait 30 seconds for the next iteration.
+
+You can define multiple tasks like this.
