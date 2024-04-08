@@ -1,6 +1,14 @@
 ## Commands
 
-These are all the available commands.
+Commands can be chained:
+
+```sh
+/tab 2 & /sleep 0.5 & /select
+```
+
+This will select tab 2, then wait 500ms, then select all.
+
+Here are all the available commands:
 
 ---
 

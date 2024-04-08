@@ -446,7 +446,7 @@ class Commands:
             },
             "commandoc": {
                 "help": "Make a file with all the commands. Provide a path",
-                "action": lambda a=None: self.to_markdown(a),
+                "action": lambda a=None: self.make_commandoc(a),
                 "type": str,
                 "arg_req": True,
             },
@@ -641,7 +641,7 @@ class Commands:
             if key in self.commands:
                 self.commands[key]["date"] = cmds[key].get("date", 0.0)
 
-    def to_markdown(self, pathstr: str) -> None:
+    def make_commandoc(self, pathstr: str) -> None:
         from .display import display
         path = Path(pathstr)
 
@@ -649,9 +649,19 @@ class Commands:
             utils.error(f"Invalid path: {pathstr}")
             return
 
-        text = "## Commands\n\n"
-        text += "These are all the available commands."
         sep = "\n\n---\n\n"
+
+        text = "## Commands\n\n"
+
+        text += "Commands can be chained:\n\n"
+
+        text += "```sh\n"
+        text += "/tab 2 & /sleep 0.5 & /select\n"
+        text += "```\n\n"
+
+        text += "This will select tab 2, then wait 500ms, then select all.\n\n"
+
+        text += "Here are all the available commands:"
 
         for key in self.commands:
             cmd = self.commands[key]
