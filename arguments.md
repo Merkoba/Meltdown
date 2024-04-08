@@ -561,3 +561,13 @@ By default when you start the program with an input
 it will smartly check if it should re-use an empty tab or make a new one.
 
 If you disable this, it will always use the last tab even if not empty.
+
+---
+
+>tabs-always
+
+Always show the tab bar even if only one tab is open.
+
+Else it will auto-hide the tab bar when only 1 tab.
+
+And show the tab bar when more tabs are opened.

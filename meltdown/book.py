@@ -89,11 +89,11 @@ class Book(tk.Frame):
         self.parent = parent
         self.pages: List[Page] = []
 
-        tabs_frame = tk.Frame(self)
-        self.tabs_canvas = tk.Canvas(tabs_frame, borderwidth=0, highlightthickness=0)
+        self.tabs_frame = tk.Frame(self)
+        self.tabs_canvas = tk.Canvas(self.tabs_frame, borderwidth=0, highlightthickness=0)
         self.tabs_canvas.configure(background=app.theme.tabs_container_color)
 
-        tabs_scrollbar = tk.Scrollbar(tabs_frame, orient="horizontal")
+        tabs_scrollbar = tk.Scrollbar(self.tabs_frame, orient="horizontal")
         self.tabs_canvas.configure(xscrollcommand=tabs_scrollbar.set)
         tabs_scrollbar.configure(command=self.tabs_canvas.xview)
 
@@ -106,12 +106,12 @@ class Book(tk.Frame):
             self.tabs_canvas.grid(row=0, column=0, sticky="ew")
 
         # tabs_scrollbar.grid(row=1, column=0, sticky="ew")
-        tabs_frame.grid(row=0, column=0, sticky="ew")
+        self.tabs_frame.grid(row=0, column=0, sticky="ew")
 
-        tabs_frame.configure(background=app.theme.tabs_container_color)
-        tabs_frame.grid_rowconfigure(0, weight=0)
-        tabs_frame.grid_columnconfigure(0, weight=1)
-        tabs_frame.bind("<Configure>", lambda e: self.on_tabs_configure())
+        self.tabs_frame.configure(background=app.theme.tabs_container_color)
+        self.tabs_frame.grid_rowconfigure(0, weight=0)
+        self.tabs_frame.grid_columnconfigure(0, weight=1)
+        self.tabs_frame.bind("<Configure>", lambda e: self.on_tabs_configure())
 
         self.content_container = tk.Frame(self)
         self.content_container.grid(row=1, column=0, sticky="nsew")
@@ -307,6 +307,7 @@ class Book(tk.Frame):
         self.bind_tab_middle_click(page)
         self.bind_tab_drag(page)
         self.update_tab_columns()
+        self.check_hide_tabs()
 
     def add_content(self, content: tk.Frame) -> None:
         content.grid(row=0, column=0, sticky="nsew")
@@ -398,6 +399,7 @@ class Book(tk.Frame):
 
         self.update_tab_columns()
         self.discover()
+        self.check_hide_tabs()
 
     def do_tab_drag(self, event: Any, page: Page) -> None:
         if not args.reorder:
@@ -581,3 +583,10 @@ class Book(tk.Frame):
     def remove_highlights(self) -> None:
         for page in self.pages:
             page.tab.label.configure(font=app.theme.font_tab)
+
+    def check_hide_tabs(self) -> None:
+        if not args.tabs_always:
+            if len(self.pages) <= 1:
+                self.tabs_frame.grid_remove()
+            else:
+                self.tabs_frame.grid()
