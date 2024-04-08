@@ -230,7 +230,7 @@ Show the session menu
 
 >reset
 
-Reset the config
+Reset all configs
 
 ---
 
@@ -471,3 +471,15 @@ Make a file with all the commands. Provide a path
 >active
 
 Go to the tab that is currently streaming
+
+---
+
+>gpt
+
+Show the GPT menu
+
+---
+
+>apikey
+
+Set the OpenAI API key
