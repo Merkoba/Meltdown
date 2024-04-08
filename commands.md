@@ -94,7 +94,7 @@ Aliases: restore
 
 Stop the current stream
 
-Aliases: stopstream, streamstop
+Aliases: stopstream, streamstop, streamend, interrupt, endstream
 
 ---
 
