@@ -519,7 +519,7 @@ class Commands:
                 "help": "Make the window stay at the top or not",
                 "action": lambda a=None: app.toggle_on_top()
             },
-            "cmdoc": {
+            "commandoc": {
                 "aliases": [],
                 "help": "Make a file with all the commands. Provide a path",
                 "action": lambda a=None: self.to_markdown(a),
@@ -769,7 +769,9 @@ class Commands:
         with open(path, "w", encoding="utf-8") as file:
             file.write(text)
 
-        display.print(f"Saved to {path}")
+        msg = f"Saved to {path}"
+        display.print(msg)
+        utils.msg(msg)
 
 
 commands = Commands()

@@ -602,6 +602,6 @@ Aliases: toggleontop, toggletop, alwaysontop
 
 ---
 
->cmdoc
+>commandoc
 
-Make a markdown file with all the commands
+Make a file with all the commands. Provide a path

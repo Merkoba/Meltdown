@@ -1,4 +1,5 @@
 # Standard
+import sys
 import json
 import subprocess
 import shutil
@@ -102,6 +103,7 @@ class App:
                   borderwidth=[("disabled", 0)])
 
     def setup(self) -> None:
+        self.check_commandoc()
         self.check_compact()
         self.check_display()
         self.check_on_top()
@@ -503,6 +505,14 @@ class App:
 
         if args.on_top:
             self.enable_on_top()
+
+    def check_commandoc(self) -> None:
+        from .args import args
+        from .commands import commands
+
+        if args.commandoc:
+            commands.run("commandoc", args.commandoc)
+            sys.exit(0)
 
 
 app = App()
