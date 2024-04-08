@@ -168,6 +168,8 @@ Powerful input line prompt for the terminal, with autocomplete, memory, and vi m
 
 Optional listener that checks a file periodically to use as input.
 
+And more.
+
 ---
 
 ## GUI Toolkit <a name="toolkit"></a>
