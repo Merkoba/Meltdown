@@ -15,7 +15,7 @@
 
 ---
 
-Screenshots <a name="screenshots"></a>
+## Screenshots <a name="screenshots"></a>
 
 ### Dark Theme:
 
