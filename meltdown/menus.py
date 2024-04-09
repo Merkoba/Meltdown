@@ -25,6 +25,9 @@ class MenuItem:
         self.coords = {"x": 0, "y": 0}
         self.filter_text = text.lower().replace(" ", "")
 
+        if tooltip:
+            self.filter_text += tooltip.lower().replace(" ", "")
+
 
 class Menu:
     current_menu: Optional["Menu"] = None
