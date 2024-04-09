@@ -641,3 +641,9 @@ Show the loading time at startup.
 >verbose
 
 Output messages from llama.cpp when streaming.
+
+---
+
+>no-emojis
+
+Don't use emojis on messages or the interface.
