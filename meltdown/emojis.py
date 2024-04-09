@@ -5,11 +5,12 @@ from typing import Dict
 from .args import args
 
 
-emojis: Dict[str, str] = {}
-emojis["storage"] = "💾"
-emojis["unloaded"] = "👻"
-emojis["local"] = "🫠"
-emojis["remote"] = "🌐"
+emojis: Dict[str, str] = {
+    "storage": "💾",
+    "unloaded": "👻",
+    "local": "🫠",
+    "remote": "🌐"
+}
 
 
 def text(text: str, name: str) -> str:
