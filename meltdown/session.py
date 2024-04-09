@@ -259,7 +259,7 @@ class Session:
             name = Path(file_path).name
 
             if args.emojis:
-                msg = f"{config.disk} Session saved as {name}"
+                msg = f"{config.emoji_storage} Session saved as {name}"
             else:
                 msg = f"Session saved as {name}"
 

@@ -11,7 +11,10 @@ from . import utils
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
-        self.disk = "💾"
+        self.emoji_storage = "💾"
+        self.emoji_unloaded = "👻"
+        self.emoji_local = "🫠"
+        self.emoji_remote = "🌐"
 
         # Added for mypy
         self.models: List[str] = []
@@ -152,7 +155,7 @@ class Config:
             name = Path(file_path).name
 
             if args.emojis:
-                msg = f"{config.disk} Config saved as {name}"
+                msg = f"{config.emoji_storage} Config saved as {name}"
             else:
                 msg = f"Config saved as {name}"
 

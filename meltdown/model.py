@@ -54,7 +54,7 @@ class Model:
 
         if self.model and announce:
             if args.emojis:
-                msg = "👻 Model unloaded"
+                msg = f"{config.emoji_unloaded} Model unloaded"
             else:
                 msg = "Model unloaded"
 
@@ -143,7 +143,7 @@ class Model:
             filemanager.add_model(config.model)
 
             if args.emojis:
-                msg = f"🌐 {config.model} is ready to use"
+                msg = f"{config.emoji_remote} {config.model} is ready to use"
             else:
                 msg = f"{config.model} is ready to use"
 
@@ -172,7 +172,7 @@ class Model:
 
             if args.model_feedback and (not args.quiet):
                 if args.emojis:
-                    msg = f"🫠 Loading {name}"
+                    msg = f"{config.emoji_local} Loading {name}"
                 else:
                     msg = f"Loading {name}"
 
@@ -483,7 +483,7 @@ class Model:
 
         if not self.loaded_model:
             if args.emojis:
-                text = "👻"
+                text = config.emoji_unloaded
             else:
                 text = "Not Loaded"
 
@@ -491,7 +491,7 @@ class Model:
             tooltip.set_text("No model is loaded. Pick a local or GPT model to start chatting")
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
-                text = "🌐"
+                text = config.emoji_remote
             else:
                 text = "Remote"
 
@@ -500,7 +500,7 @@ class Model:
                              " Its usage might cost money. Internet connection is required")
         else:
             if args.emojis:
-                text = "🫠"
+                text = config.emoji_local
             else:
                 text = "Local"
 

@@ -52,7 +52,7 @@ class Logs:
         if not all:
             if not args.quiet:
                 if args.emojis:
-                    msg = f"{config.disk} Log saved as {file_name}"
+                    msg = f"{config.emoji_storage} Log saved as {file_name}"
                 else:
                     msg = f"Log saved as {file_name}"
 
@@ -89,9 +89,9 @@ class Logs:
 
             if args.emojis:
                 if num == 1:
-                    msg = f"{config.disk} {num} JSON log saved"
+                    msg = f"{config.emoji_storage} {num} JSON log saved"
                 else:
-                    msg = f"{config.disk} {num} JSON logs saved"
+                    msg = f"{config.emoji_storage} {num} JSON logs saved"
             else:
                 if num == 1:
                     msg = f"{num} JSON log saved"
@@ -143,9 +143,9 @@ class Logs:
 
             if args.emojis:
                 if num == 1:
-                    msg = f"{config.disk} {num} text log saved"
+                    msg = f"{config.emoji_storage} {num} text log saved"
                 else:
-                    msg = f"{config.disk} {num} text logs saved"
+                    msg = f"{config.emoji_storage} {num} text logs saved"
             else:
                 if num == 1:
                     msg = f"{num} text log saved"
