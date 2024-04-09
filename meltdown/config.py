@@ -11,10 +11,6 @@ from . import utils
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
-        self.emoji_storage = "💾"
-        self.emoji_unloaded = "👻"
-        self.emoji_local = "🫠"
-        self.emoji_remote = "🌐"
 
         # Added for mypy
         self.models: List[str] = []
@@ -130,6 +126,7 @@ class Config:
         from .display import display
         from .paths import paths
         from .args import args
+        from . import emojis
 
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
@@ -153,13 +150,8 @@ class Config:
 
         if not args.quiet:
             name = Path(file_path).name
-
-            if args.emojis:
-                msg = f"{config.emoji_storage} Config saved as {name}"
-            else:
-                msg = f"Config saved as {name}"
-
-            display.print(msg)
+            msg = f"Config saved as {name}"
+            display.print(emojis.text(msg, "storage"))
 
     def load_state(self, name: str = "") -> None:
         from .paths import paths

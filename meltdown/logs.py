@@ -4,7 +4,6 @@ from pathlib import Path
 
 # Modules
 from .app import app
-from .config import config
 from .dialogs import Dialog
 from .display import display
 from .args import args
@@ -13,6 +12,7 @@ from .session import Conversation
 from .paths import paths
 from . import timeutils
 from . import filemanager
+from . import emojis
 
 
 class Logs:
@@ -51,12 +51,8 @@ class Logs:
 
         if not all:
             if not args.quiet:
-                if args.emojis:
-                    msg = f"{config.emoji_storage} Log saved as {file_name}"
-                else:
-                    msg = f"Log saved as {file_name}"
-
-                display.print(msg)
+                msg = f"Log saved as {file_name}"
+                display.print(emojis.text(msg, "storage"))
 
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
@@ -87,18 +83,12 @@ class Logs:
             if args.quiet:
                 return
 
-            if args.emojis:
-                if num == 1:
-                    msg = f"{config.emoji_storage} {num} JSON log saved"
-                else:
-                    msg = f"{config.emoji_storage} {num} JSON logs saved"
+            if num == 1:
+                msg = f"{num} JSON log saved"
             else:
-                if num == 1:
-                    msg = f"{num} JSON log saved"
-                else:
-                    msg = f"{num} JSON logs saved"
+                msg = f"{num} JSON logs saved"
 
-            display.print(msg)
+            display.print(emojis.text(msg, "storage"))
 
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
@@ -141,18 +131,12 @@ class Logs:
             if args.quiet:
                 return
 
-            if args.emojis:
-                if num == 1:
-                    msg = f"{config.emoji_storage} {num} text log saved"
-                else:
-                    msg = f"{config.emoji_storage} {num} text logs saved"
+            if num == 1:
+                msg = f"{num} text log saved"
             else:
-                if num == 1:
-                    msg = f"{num} text log saved"
-                else:
-                    msg = f"{num} text logs saved"
+                msg = f"{num} text logs saved"
 
-            display.print(msg)
+            display.print(emojis.text(msg, "storage"))
 
     def get_text(self, conversation: Conversation) -> str:
         if not conversation:

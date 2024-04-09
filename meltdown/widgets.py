@@ -603,10 +603,8 @@ class Widgets:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
     def set_model(self, m: str) -> None:
-        from .model import model
         self.model.set_text(m)
         config.update("model")
-        model.load()
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -803,9 +801,7 @@ class Widgets:
             self.details_button_right.set_style("alt")
 
     def use_gpt(self, name: str) -> None:
-        from .model import model
         config.set("model", name)
-        model.load()
 
     def show_gpt_menu(self) -> None:
         self.gpt_menu.show(widget=self.main_menu_button)

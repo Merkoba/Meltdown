@@ -19,6 +19,7 @@ from .args import args
 from . import timeutils
 from . import filemanager
 from . import utils
+from . import emojis
 
 
 class Model:
@@ -53,12 +54,8 @@ class Model:
         self.stop_stream()
 
         if self.model and announce:
-            if args.emojis:
-                msg = f"{config.emoji_unloaded} Model unloaded"
-            else:
-                msg = "Model unloaded"
-
-            display.print(msg)
+            msg = "Model unloaded"
+            display.print(emojis.text(msg, "unloaded"))
 
         self.clear_model()
 
@@ -141,13 +138,8 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
             filemanager.add_model(config.model)
-
-            if args.emojis:
-                msg = f"{config.emoji_remote} {config.model} is ready to use"
-            else:
-                msg = f"{config.model} is ready to use"
-
-            display.print(msg)
+            msg = f"{config.model} is ready to use"
+            display.print(emojis.text(msg, "remote"))
             self.update_icon()
 
             if prompt:
@@ -171,12 +163,8 @@ class Model:
             display.to_bottom(tab_id)
 
             if args.model_feedback and (not args.quiet):
-                if args.emojis:
-                    msg = f"{config.emoji_local} Loading {name}"
-                else:
-                    msg = f"Loading {name}"
-
-                display.print(msg, tab_id=tab_id)
+                msg = f"Loading {name}"
+                display.print(emojis.text(msg, "local"), tab_id=tab_id)
 
             app.update()
 
@@ -483,7 +471,7 @@ class Model:
 
         if not self.loaded_model:
             if args.emojis:
-                text = config.emoji_unloaded
+                text = emojis.unloaded
             else:
                 text = "Not Loaded"
 
@@ -491,7 +479,7 @@ class Model:
             tooltip.set_text("No model is loaded. Pick a local or GPT model to start chatting")
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
-                text = config.emoji_remote
+                text = emojis.remote
             else:
                 text = "Remote"
 
@@ -500,7 +488,7 @@ class Model:
                              " Its usage might cost money. Internet connection is required")
         else:
             if args.emojis:
-                text = config.emoji_local
+                text = emojis.local
             else:
                 text = "Local"
 
