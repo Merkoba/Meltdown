@@ -1,28 +1,28 @@
+# Standard
+from typing import Dict
+
 # Modules
 from .args import args
 
-storage = "💾"
-unloaded = "👻"
-local = "🫠"
-remote = "🌐"
+
+emojis: Dict[str, str] = {}
+emojis["storage"] = "💾"
+emojis["unloaded"] = "👻"
+emojis["local"] = "🫠"
+emojis["remote"] = "🌐"
 
 
 def text(text: str, name: str) -> str:
-    if args.emojis:
-        if name == "storage":
-            emoji = storage
-        elif name == "unloaded":
-            emoji = unloaded
-        elif name == "local":
-            emoji = local
-        elif name == "remote":
-            emoji = remote
-        else:
-            emoji = ""
-    else:
-        emoji = ""
+    if not args.emojis:
+        return text
+
+    emoji = emojis.get(name, "")
 
     if emoji:
         return f"{emoji} {text}"
     else:
         return text
+
+
+def get(name: str) -> str:
+    return emojis.get(name, "")

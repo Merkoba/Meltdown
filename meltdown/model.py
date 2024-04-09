@@ -471,7 +471,7 @@ class Model:
 
         if not self.loaded_model:
             if args.emojis:
-                text = emojis.unloaded
+                text = emojis.get("unloaded")
             else:
                 text = "Not Loaded"
 
@@ -479,7 +479,7 @@ class Model:
             tooltip.set_text("No model is loaded. Pick a local or GPT model to start chatting")
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
-                text = emojis.remote
+                text = emojis.get("remote")
             else:
                 text = "Remote"
 
@@ -488,7 +488,7 @@ class Model:
                              " Its usage might cost money. Internet connection is required")
         else:
             if args.emojis:
-                text = emojis.local
+                text = emojis.get("local")
             else:
                 text = "Local"
 
