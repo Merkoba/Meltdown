@@ -150,7 +150,13 @@ class Config:
 
         if not args.quiet:
             name = Path(file_path).name
-            display.print(f"{config.disk} Config saved ({name})")
+
+            if args.emojis:
+                msg = f"{config.disk} Config saved as {name}"
+            else:
+                msg = f"Config saved as {name}"
+
+            display.print(msg)
 
     def load_state(self, name: str = "") -> None:
         from .paths import paths

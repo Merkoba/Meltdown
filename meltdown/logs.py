@@ -51,7 +51,12 @@ class Logs:
 
         if not all:
             if not args.quiet:
-                display.print(f"{config.disk} Log saved as {file_name}")
+                if args.emojis:
+                    msg = f"{config.disk} Log saved as {file_name}"
+                else:
+                    msg = f"Log saved as {file_name}"
+
+                display.print(msg)
 
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
@@ -82,12 +87,18 @@ class Logs:
             if args.quiet:
                 return
 
-            if num == 1:
-                s = f"{config.disk} {num} JSON log saved"
+            if args.emojis:
+                if num == 1:
+                    msg = f"{config.disk} {num} JSON log saved"
+                else:
+                    msg = f"{config.disk} {num} JSON logs saved"
             else:
-                s = f"{config.disk} {num} JSON logs saved"
+                if num == 1:
+                    msg = f"{num} JSON log saved"
+                else:
+                    msg = f"{num} JSON logs saved"
 
-            display.print(s)
+            display.print(msg)
 
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
@@ -130,12 +141,18 @@ class Logs:
             if args.quiet:
                 return
 
-            if num == 1:
-                s = f"{config.disk} {num} text log saved"
+            if args.emojis:
+                if num == 1:
+                    msg = f"{config.disk} {num} text log saved"
+                else:
+                    msg = f"{config.disk} {num} text logs saved"
             else:
-                s = f"{config.disk} {num} text logs saved"
+                if num == 1:
+                    msg = f"{num} text log saved"
+                else:
+                    msg = f"{num} text logs saved"
 
-            display.print(s)
+            display.print(msg)
 
     def get_text(self, conversation: Conversation) -> str:
         if not conversation:

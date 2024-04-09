@@ -53,7 +53,12 @@ class Model:
         self.stop_stream()
 
         if self.model and announce:
-            display.print("👻 Model unloaded")
+            if args.emojis:
+                msg = "👻 Model unloaded"
+            else:
+                msg = "Model unloaded"
+
+            display.print(msg)
 
         self.clear_model()
 
@@ -136,7 +141,13 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
             filemanager.add_model(config.model)
-            display.print(f"🌐 {config.model} is ready to use")
+
+            if args.emojis:
+                msg = f"🌐 {config.model} is ready to use"
+            else:
+                msg = f"{config.model} is ready to use"
+
+            display.print(msg)
             self.update_icon()
 
             if prompt:
@@ -160,7 +171,12 @@ class Model:
             display.to_bottom(tab_id)
 
             if args.model_feedback and (not args.quiet):
-                display.print(f"🫠 Loading {name}", tab_id=tab_id)
+                if args.emojis:
+                    msg = f"🫠 Loading {name}"
+                else:
+                    msg = f"Loading {name}"
+
+                display.print(msg, tab_id=tab_id)
 
             app.update()
 
@@ -466,14 +482,29 @@ class Model:
         tooltip = widgets.model_icon_tooltip
 
         if not self.loaded_model:
-            icon.configure(text="👻")
+            if args.emojis:
+                text = "👻"
+            else:
+                text = "Not Loaded"
+
+            icon.configure(text=text)
             tooltip.set_text("No model is loaded. Pick a local or GPT model to start chatting")
         elif self.model_is_gpt(self.loaded_model):
-            icon.configure(text="🌐")
+            if args.emojis:
+                text = "🌐"
+            else:
+                text = "Remote"
+
+            icon.configure(text=text)
             tooltip.set_text("You are using a remote service."
                              " Its usage might cost money. Internet connection is required")
         else:
-            icon.configure(text="🫠")
+            if args.emojis:
+                text = "🫠"
+            else:
+                text = "Local"
+
+            icon.configure(text=text)
             tooltip.set_text("You are using a local model. No network requests are made")
 
     def set_api_key(self) -> None:

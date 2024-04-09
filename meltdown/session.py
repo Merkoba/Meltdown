@@ -257,7 +257,13 @@ class Session:
 
         if not args.quiet:
             name = Path(file_path).name
-            display.print(f"{config.disk} Session saved ({name})")
+
+            if args.emojis:
+                msg = f"{config.disk} Session saved as {name}"
+            else:
+                msg = f"Session saved as {name}"
+
+            display.print(msg)
 
     def load_state(self, name: str = "") -> None:
         if not paths.sessions.exists():

@@ -99,6 +99,7 @@ class Args:
         self.model_feedback = True
         self.time = False
         self.verbose = False
+        self.emojis = True
 
     class Internal:
         title = app.manifest["title"]
@@ -106,8 +107,6 @@ class Args:
         vinfo = f"{title} {version}"
 
         arguments: Dict[str, Any] = {
-            "test": {"action": "store_true", "help": "Make a test tab for debugging"},
-            "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "version": {"action": "version", "help": "Check the version of the program", "version": vinfo},
             "no_tooltips": {"action": "store_false", "help": "Don't show tooltips"},
             "no_scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
@@ -136,6 +135,9 @@ class Args:
             "no_more_button": {"action": "store_false", "help": "Don't show the More button"},
             "no_model_icon": {"action": "store_false", "help": "Don't show the model icon"},
             "no_model_feedback": {"action": "store_false", "help": "Don't show model feedback when loading"},
+            "no_emojis": {"action": "store_false", "help": "Don't use emojis"},
+            "test": {"action": "store_true", "help": "Make a test tab for debugging"},
+            "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "compact_model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
             "compact_system": {"action": "store_true", "help": "Hide the system frame in compactm ode"},
             "compact_details": {"action": "store_true", "help": "Hide the details frame in compact mode"},
@@ -151,6 +153,12 @@ class Args:
             "tabs_always": {"action": "store_true", "help": "Always show the tab bar even if only one tab"},
             "time": {"action": "store_true", "help": "Show the loading time at startup"},
             "verbose": {"action": "store_true", "help": "Make the model verbose when streaming"},
+            "quiet": {"action": "store_true", "help": "Don't show some messages"},
+            "debug": {"action": "store_true", "help": "Show some information for debugging"},
+            "display": {"action": "store_true", "help": "Only show the output and tabs"},
+            "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
+            "listener": {"action": "store_true", "help": "Listen for changes to the stdin file"},
+            "sticky": {"action": "store_true", "help": "Make the window always on top"},
             "terminal_height": {"type": int, "help": "Reserve these number of rows for the terminal"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
@@ -179,22 +187,16 @@ class Args:
             "max_list_items": {"type": int, "help": "Max number of items in context menu lists"},
             "list_item_width": {"type": int, "help": "Max characters for the text of list items"},
             "drag_threshold": {"type": int, "help": "The higher the number the less sensitive the tab dragging will be"},
-            "quiet": {"action": "store_true", "help": "Don't show some messages"},
-            "debug": {"action": "store_true", "help": "Show some information for debugging"},
             "delay": {"type": float, "help": "Delay in seconds between each print when streaming"},
             "prefix": {"type": str, "help": "Character used to prefix commands like /"},
             "andchar": {"type": str, "help": "Character used to join commands like &"},
             "keychar": {"type": str, "help": "Character used for keywords like @"},
-            "display": {"action": "store_true", "help": "Only show the output and tabs"},
             "system_threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
             "system_delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
-            "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
             "autorun": {"type": str, "help": "Run this command at startup"},
             "terminal_memory_min": {"type": int, "help": "Minimum number of characters for remembered words in the terminal"},
             "autocomplete_memory_min": {"type": int, "help": "Minimum number of characters for remembered words in the input"},
-            "listener": {"action": "store_true", "help": "Listen for changes to the stdin file"},
             "listener_delay": {"type": float, "help": "Delay for the listener checks"},
-            "sticky": {"action": "store_true", "help": "Make the window always on top"},
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
             "after_stream": {"type": str, "help": "Execute this command after streaming a response"},
         }
@@ -217,7 +219,7 @@ class Args:
             ("no_intro", "intro"), ("no_terminal", "terminal"),
             ("no_terminal_memory", "terminal_memory"), ("no_clean_slate", "clean_slate"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
-            ("no_model_feedback", "model_feedback"),
+            ("no_model_feedback", "model_feedback"), ("no_emojis", "emojis"),
         ]
 
         for r_item in other_name:
