@@ -397,9 +397,6 @@ class Widgets:
             display.select_last_tab()
 
     def append_tooltip(self, widget: tk.Widget, text: str) -> None:
-        if not widget:
-            return
-
         tooltip = ToolTip.get_tooltip(widget)
 
         if not tooltip:
@@ -410,9 +407,14 @@ class Widgets:
     def setup_tooltips(self) -> None:
         for key in config.defaults():
             widget = self.get_widget(key)
-            self.append_tooltip(widget, key)
+
+            if widget:
+                self.append_tooltip(widget, key)
+
             label = self.get_widget(f"{key}_label")
-            self.append_tooltip(label, key)
+
+            if label:
+                self.append_tooltip(label, key)
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
