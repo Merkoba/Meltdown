@@ -6,10 +6,10 @@ from .args import args
 
 
 emojis: Dict[str, str] = {
-    "storage": "💾",
     "unloaded": "👻",
     "local": "🫠",
-    "remote": "🌐"
+    "remote": "🌐",
+    "storage": "💾",
 }
 
 
