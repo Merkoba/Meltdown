@@ -121,9 +121,9 @@ class Conversation:
                 else:
                     continue
 
-                log += item[key] + "\n"
+                log += item[key] + "\n\n"
 
-        return log
+        return log.strip()
 
 
 class Session:

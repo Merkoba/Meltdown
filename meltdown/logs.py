@@ -150,13 +150,10 @@ class Logs:
         if not text:
             return ""
 
-        lines = text.split("\n")
-        lines = [line for line in lines if line.strip()]
-
         full_text = ""
         full_text += conversation.name + "\n"
         full_text += timeutils.date() + "\n\n"
-        full_text += "\n\n".join(lines)
+        full_text += text
         return full_text
 
     def open(self) -> None:
