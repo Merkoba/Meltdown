@@ -63,25 +63,20 @@ class Markdown():
             start_ln = 1
             end_ln = self.widget.num_lines + 1
             add()
-        elif args.markdown == "user":
-            for i, item in enumerate(self.widget.indices):
-                if item["who"] == "ai":
-                    if start_ln:
-                        end_ln = item["line"] - 1
-                        add()
-                elif item["who"] == "user":
-                    start_ln = item["line"]
+        else:
+            if args.markdown == "user":
+                name_a = "ai"
+                name_b = "user"
+            elif args.markdown == "ai":
+                name_a = "user"
+                name_b = "ai"
 
-                    if i == len(self.widget.indices) - 1:
-                        end_ln = self.widget.num_lines + 1
-                        add()
-        elif args.markdown == "ai":
             for i, item in enumerate(self.widget.indices):
-                if item["who"] == "user":
+                if item["who"] == name_a:
                     if start_ln:
                         end_ln = item["line"] - 1
                         add()
-                elif item["who"] == "ai":
+                elif item["who"] == name_b:
                     start_ln = item["line"]
 
                     if i == len(self.widget.indices) - 1:
