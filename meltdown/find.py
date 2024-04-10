@@ -117,8 +117,8 @@ class Find:
             start_index = widget.index(match)
             end_index = widget.index(f"{start_index}+{len(query)}c")
             widget.tag_add("find", start_index, end_index)
-            widget.tag_config("find", background=app.theme.find_match_background)
-            widget.tag_config("find", foreground=app.theme.find_match_foreground)
+            widget.tag_configure("find", background=app.theme.find_match_background)
+            widget.tag_configure("find", foreground=app.theme.find_match_foreground)
             end_bbox = widget.bbox(end_index)
 
             if end_bbox is None:

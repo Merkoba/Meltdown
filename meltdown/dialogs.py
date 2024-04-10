@@ -95,6 +95,7 @@ class Dialog:
     @staticmethod
     def show_input(text: str, cmd_ok: Callable[..., Any],
                    cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
+
         if Dialog.open():
             return
 
@@ -102,9 +103,9 @@ class Dialog:
         entry = EntryBox(dialog.top_frame, font=app.theme.font, width=17, justify="center")
 
         def ok() -> None:
-            text = entry.get()
+            ans = entry.get()
             dialog.hide()
-            cmd_ok(text)
+            cmd_ok(ans)
 
         def cancel() -> None:
             dialog.hide()
@@ -125,6 +126,53 @@ class Dialog:
         dialog.show()
         dialog.highlight_button(1)
         entry.full_focus()
+
+    @staticmethod
+    def show_text_box(text: str, cmd_ok: Callable[..., Any],
+                      cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+
+        from .keyboard import keyboard
+
+        if Dialog.open():
+            return
+
+        dialog = Dialog(text)
+
+        scrollbar_y = tk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL)
+        scrollbar_x = tk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL)
+
+        text_box = tk.Text(dialog.top_frame, font=app.theme.font, width=30, height=5, wrap="none")
+        text_box.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
+        text_box.configure(highlightthickness=0)
+        scrollbar_y.configure(command=text_box.yview)
+        scrollbar_x.configure(command=text_box.xview)
+
+        def get() -> str:
+            return text_box.get("1.0", tk.END).strip()
+
+        def ok() -> None:
+            ans = get()
+            dialog.hide()
+            cmd_ok(ans)
+
+        def cancel() -> None:
+            dialog.hide()
+
+            if cmd_cancel:
+                cmd_cancel()
+
+        def on_enter() -> None:
+            if keyboard.ctrl:
+                ok()
+
+        text_box.bind("<Return>", lambda e: on_enter())
+        text_box.bind("<Escape>", lambda e: dialog.hide())
+        text_box.pack(padx=6, pady=6)
+        dialog.make_button("Cancel", cancel)
+        dialog.make_button("Ok", ok)
+        dialog.show()
+        dialog.highlight_button(1)
+        text_box.focus_set()
 
     @staticmethod
     def hide_all() -> None:

@@ -382,9 +382,8 @@ class Commands:
             },
             "input": {
                 "help": "Prompt the AI with this input",
-                "action": lambda a=None: inputcontrol.submit(text=a),
+                "action": lambda a=None: inputcontrol.input_command(a),
                 "type": str,
-                "arg_req": True,
             },
             "write": {
                 "help": "Set the input without submitting",

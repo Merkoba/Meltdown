@@ -169,6 +169,8 @@ Optional listener that checks a file periodically to use as input.
 
 GPU support for faster responses.
 
+Dialog text box window for longer inputs.
+
 And more.
 
 ---

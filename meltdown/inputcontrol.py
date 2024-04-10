@@ -10,6 +10,7 @@ from .entrybox import EntryBox
 from .app import app
 from .args import args
 from .paths import paths
+from .dialogs import Dialog
 from . import widgetutils
 from . import filemanager
 
@@ -25,6 +26,10 @@ class InputControl:
 
         frame_data = widgets.frame_data_input
         self.input_label = widgetutils.make_label(frame_data, "Input")
+
+        text_box_button = widgetutils.make_button(frame_data, "#", lambda: self.show_text_box())
+        ToolTip(text_box_button, "Show a text box for longer inputs")
+
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
         widgets.input = self.input
@@ -218,6 +223,18 @@ class InputControl:
 
         if added:
             filemanager.save(paths.autocomplete, self.autocomplete)
+
+    def show_text_box(self) -> None:
+        def action(ans: str) -> None:
+            self.submit(text=ans)
+
+        Dialog.show_text_box("Write an input", lambda a: action(a))
+
+    def input_command(self, arg: str) -> None:
+        if arg:
+            self.submit(text=arg)
+        else:
+            self.show_text_box()
 
 
 inputcontrol = InputControl()
