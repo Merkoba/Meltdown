@@ -438,8 +438,7 @@ class Keyboard:
         lines.append(separator)
         lines.append("1 to 9 to jump to tabs")
         lines.append(separator)
-        lines.append("F1 to F12 to run functions (configurable through arguments)")
-        lines.append(separator)
+        lines.append("F1 to F12 to run functions (configurable through arguments)\n")
 
         text = "\n\n".join(lines)
         display.print(text, tab_id=tab_id)
