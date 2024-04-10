@@ -37,7 +37,9 @@ test_conversation = {
         {"user": "Italic Test 3"},
         {"assistant": "*This is an italic sentence*\n*This is an italic sentence*"},
         {"user": "Italic Test 4"},
-        {"assistant": "_This is an italic sentence_ 2\n_This is an italic sentence_ 2"},
+        {"assistant": "_This is an italic sentence_\n_This is an italic sentence_"},
+        {"user": "Italic Test 5"},
+        {"assistant": "*This is an italic sentence*\n*This is an italic sentence*"},
         {"user": "Snippet Test"},
         {"assistant":
             "```python\na = 123\nprint('Hello, World!')\n```\n\n" +

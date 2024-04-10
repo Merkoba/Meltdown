@@ -35,16 +35,25 @@ class Markdown():
         right_side = fr"[{chars_right}]?"
 
         # Bold with two *
-        self.pattern_bold = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
+        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
+
+        # Bold with one *
+        self.pattern_bold_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right_side}(?=\s|$)"
 
         # Italic with one *
-        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*(?P<content>.*?)\*){right_side}(?=\s|$)"
+        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right_side}(?=\s|$)"
 
         # Italic with one _
-        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\_(?P<content>.*?)\_){right_side}(?=\s|$)"
+        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\_{{1}}(?P<content>.*?)\_{{1}}){right_side}(?=\s|$)"
+
+        # Highlight with three `
+        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{3}}(?P<content>.*?)\`{{3}}){right_side}(?=\s|$)"
+
+        # Highlight with two `
+        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{2}}(?P<content>.*?)\`{{2}}){right_side}(?=\s|$)"
 
         # Highlight with one `
-        self.pattern_highlight = fr"(?:(?<=\s)|^){left_side}(?P<all>\`(?P<content>.*?)\`){right_side}(?=\s|$)"
+        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{1}}(?P<content>.*?)\`{{1}}){right_side}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
@@ -88,10 +97,13 @@ class Markdown():
 
     def format_all(self, start_ln: int, end_ln: int) -> None:
         self.format_snippets(start_ln, end_ln)
-        self.do_format(start_ln, end_ln, self.pattern_bold, "bold")
+        self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
+        self.do_format(start_ln, end_ln, self.pattern_bold_2, "italic")
         self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
         self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
-        self.do_format(start_ln, end_ln, self.pattern_highlight, "highlight")
+        self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
+        self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
+        self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
         self.do_format(start_ln, end_ln, self.pattern_url, "url")
 
     def do_format(self, start_ln: int, end_ln: int, pattern: str, tag: str) -> None:
