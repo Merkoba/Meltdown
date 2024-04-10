@@ -199,15 +199,21 @@ class InputControl:
         self.submit(tab_id=tab_id, text=text)
 
     def add_words(self, text: str) -> None:
+        from . import terminal
+
+        if not args.input_memory:
+            return
+
         words = text.split()
         added = False
 
         for word in words:
-            if len(word) < args.autocomplete_memory_min:
+            if len(word) < args.input_memory_min:
                 continue
 
             if word not in self.autocomplete:
                 self.autocomplete.append(word)
+                terminal.add_word(word)
                 added = True
 
         if added:

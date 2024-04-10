@@ -498,23 +498,17 @@ Enable vi mode on the terminal.
 
 ---
 
->no-terminal-memory
+>input-memory
 
-Don't remember words when using the terminal.
+Remember words for autocomplete.
 
-These are added to the autocomplete list.
+The words must be at least x characters long.
 
----
-
->terminal-memory-min
-
-Default: 4
-
-Minimum number of characters words need to have to be remembered in the terminal.
+Check next argument.
 
 ---
 
->autocomplete-memory-min
+>input-memory-min
 
 Default: 4
 

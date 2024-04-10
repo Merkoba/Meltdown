@@ -24,7 +24,7 @@ class Config:
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
-        self.default_history: int = 2
+        self.default_history: int = 1
         self.default_seed: int = 326
         self.default_format: str = "auto"
         self.default_prepend: str = ""

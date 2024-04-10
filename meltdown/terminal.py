@@ -17,10 +17,11 @@ from .commands import commands
 from .inputcontrol import inputcontrol
 
 
-class SlashCompleter(Completer):  # type:ignore
-    def __init__(self, words: List[str]) -> None:
-        self.words = words
+completer: Completer
+words: List[str] = []
 
+
+class SlashCompleter(Completer):  # type:ignore
     def get_completions(self, document: Document, event: Any) -> Generator[Completion, None, None]:
         text = document.get_word_before_cursor(WORD=True).strip()
 
@@ -28,17 +29,18 @@ class SlashCompleter(Completer):  # type:ignore
             return
 
         if text.startswith(args.prefix):
-            for word in self.words:
+            for word in words:
                 if word.startswith(text):
                     yield Completion(word, start_position=-len(text))
         else:
-            for word in self.words:
+            for word in words:
                 if word.startswith(text):
                     yield Completion(word, start_position=-len(text))
 
-    def add_word(self, name: str) -> None:
-        if name not in self.words:
-            self.words.append(name)
+
+def add_word(word: str) -> None:
+    if word not in words:
+        words.append(word)
 
 
 def start() -> None:
@@ -59,8 +61,11 @@ def do_start() -> None:
         event.current_buffer.insert_text(clipboard_data)
 
     history = InMemoryHistory()
-    cmdlist = [f"/{key}" for key in commands.cmdkeys]
-    completer = SlashCompleter(cmdlist)
+
+    words.extend([f"/{key}" for key in commands.cmdkeys])
+    words.extend(inputcontrol.autocomplete)
+
+    completer = SlashCompleter()
 
     session = PromptSession(history=history, completer=completer,
                             reserve_space_for_menu=args.terminal_height,
@@ -78,10 +83,5 @@ def do_start() -> None:
 
         if not text:
             continue
-
-        if args.terminal_memory:
-            for word in text.split(" "):
-                if len(word) >= args.terminal_memory_min:
-                    completer.add_word(word)
 
         inputcontrol.submit(text=text)

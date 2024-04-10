@@ -84,9 +84,8 @@ class Args:
         self.autorun = ""
         self.terminal_height = 3
         self.terminal_vi = False
-        self.terminal_memory = True
-        self.terminal_memory_min = 4
-        self.autocomplete_memory_min = 4
+        self.input_memory = True
+        self.input_memory_min = 4
         self.listener = False
         self.listener_delay = 0.5
         self.sticky = False
@@ -131,12 +130,12 @@ class Args:
             "no_commands": {"action": "store_false", "help": "Disable commands when typing on the input"},
             "no_intro": {"action": "store_false", "help": "Don't print the intro in conversations"},
             "no_terminal": {"action": "store_false", "help": "Don't enable the interactive terminal"},
-            "no_terminal_memory": {"action": "store_false", "help": "Don't remember words in the terminal"},
             "no_clean_slate": {"action": "store_false", "help": "Don't make a new tab when starting with an input"},
             "no_more_button": {"action": "store_false", "help": "Don't show the More button"},
             "no_model_icon": {"action": "store_false", "help": "Don't show the model icon"},
             "no_model_feedback": {"action": "store_false", "help": "Don't show model feedback when loading"},
             "no_emojis": {"action": "store_false", "help": "Don't use emojis"},
+            "no_input_memory": {"action": "store_false", "help": "Don't remember input words"},
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "compact_model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
@@ -195,8 +194,7 @@ class Args:
             "system_threshold": {"type": int, "help": "Show system monitors as critical after this percentage threshold"},
             "system_delay": {"type": int, "help": "Delay in seconds for system monitor updates"},
             "autorun": {"type": str, "help": "Run this command at startup"},
-            "terminal_memory_min": {"type": int, "help": "Minimum number of characters for remembered words in the terminal"},
-            "autocomplete_memory_min": {"type": int, "help": "Minimum number of characters for remembered words in the input"},
+            "input_memory_min": {"type": int, "help": "Minimum number of characters for input words to be remembered"},
             "listener_delay": {"type": float, "help": "Delay for the listener checks"},
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
             "after_stream": {"type": str, "help": "Execute this command after streaming a response"},
@@ -219,9 +217,9 @@ class Args:
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
             ("no_intro", "intro"), ("no_terminal", "terminal"),
-            ("no_terminal_memory", "terminal_memory"), ("no_clean_slate", "clean_slate"),
+            ("no_clean_slate", "clean_slate"), ("no_emojis", "emojis"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
-            ("no_model_feedback", "model_feedback"), ("no_emojis", "emojis"),
+            ("no_model_feedback", "model_feedback"), ("no_input_memory", "input_memory"),
         ]
 
         for r_item in other_name:
@@ -244,9 +242,9 @@ class Args:
             "compact_buttons", "compact_model", "compact_input",
 
             "display", "monospace", "autorun", "terminal_height",
-            "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
+            "terminal_vi", "time", "verbose", "markdown",
             "listener", "listener_delay", "sticky", "commandoc",
-            "after_stream", "tabs_always", "time", "verbose", "markdown",
+            "after_stream", "tabs_always", "input_memory_min",
         ]
 
         for n_item in normals:
