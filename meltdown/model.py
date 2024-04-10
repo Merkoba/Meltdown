@@ -170,7 +170,7 @@ class Model:
 
             self.model = Llama(
                 model_path=str(model),
-                n_ctx=config.ctx,
+                n_ctx=config.context,
                 n_threads=config.threads,
                 n_gpu_layers=config.gpu_layers,
                 use_mlock=mlock,
@@ -279,7 +279,7 @@ class Model:
         messages = [{"role": "system", "content": system}]
 
         if conversation.items:
-            for item in conversation.items[-abs(config.context):]:
+            for item in conversation.items[-abs(config.history):]:
                 for key in item:
                     content = item[key]
 
@@ -292,7 +292,7 @@ class Model:
             utils.msg("-----")
             utils.msg(f"prompt: {prompt}")
             utils.msg(f"messages: {len(messages)}")
-            utils.msg(f"context: {config.context}")
+            utils.msg(f"history: {config.history}")
             utils.msg(f"max_tokens: {config.max_tokens}")
             utils.msg(f"temperature: {config.temperature}")
             utils.msg(f"top_k: {config.top_k}")

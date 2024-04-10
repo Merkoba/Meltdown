@@ -177,13 +177,13 @@ class Widgets:
         ToolTip(self.name_ai_label, tip)
         ToolTip(self.name_ai, tip)
 
-        self.context_label = widgetutils.make_label(details_data, "Context")
-        self.context = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "The number of previous messages to include as the context." \
-            " The computation will take longer with more context." \
-            " 0 means context is not used at all"
-        ToolTip(self.context_label, tip)
-        ToolTip(self.context, tip)
+        self.history_label = widgetutils.make_label(details_data, "History")
+        self.history = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "The number of previous messages to include in the prompt." \
+            " The computation will take longer with more history." \
+            " 0 means history is not used at all"
+        ToolTip(self.history_label, tip)
+        ToolTip(self.history, tip)
 
         self.max_tokens_label = widgetutils.make_label(details_data, "Tokens")
         self.max_tokens = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
@@ -235,11 +235,11 @@ class Widgets:
         ToolTip(self.top_k_label, tip)
         ToolTip(self.top_k, tip)
 
-        self.ctx_label = widgetutils.make_label(details_data, "CTX")
-        self.ctx = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        self.context_label = widgetutils.make_label(details_data, "Context")
+        self.context = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
         tip = "Text context, 0 = from model"
-        ToolTip(self.ctx_label, tip)
-        ToolTip(self.ctx, tip)
+        ToolTip(self.context_label, tip)
+        ToolTip(self.context, tip)
 
         self.threads_label = widgetutils.make_label(details_data, "Threads")
         self.threads = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
@@ -491,7 +491,7 @@ class Widgets:
         setup_entrybox("append", "Add after")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
-        setup_entrybox("ctx", "Int")
+        setup_entrybox("context", "Int")
 
         setup_combobox("format")
         setup_combobox("mlock")

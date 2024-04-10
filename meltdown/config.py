@@ -24,7 +24,7 @@ class Config:
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
-        self.default_context: int = 1
+        self.default_history: int = 1
         self.default_seed: int = 326
         self.default_format: str = "auto"
         self.default_prepend: str = ""
@@ -35,7 +35,7 @@ class Config:
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
         self.default_gpu_layers = 33
-        self.default_ctx = 2048
+        self.default_context = 2048
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -45,7 +45,7 @@ class Config:
         self.system = self.default_system
         self.top_k = self.default_top_k
         self.top_p = self.default_top_p
-        self.context = self.default_context
+        self.history = self.default_history
         self.seed = self.default_seed
         self.format = self.default_format
         self.prepend = self.default_prepend
@@ -56,7 +56,7 @@ class Config:
         self.mlock = self.default_mlock
         self.theme = self.default_theme
         self.gpu_layers = self.default_gpu_layers
-        self.ctx = self.default_ctx
+        self.context = self.default_context
 
         self.clearables = [
             "system",
@@ -69,7 +69,7 @@ class Config:
 
         self.model_keys = [
             "model",
-            "ctx",
+            "context",
             "threads",
             "gpu_layers",
             "mlock",
@@ -77,7 +77,7 @@ class Config:
         ]
 
         self.validations: Dict[str, Callable[..., Any]] = {
-            "context": lambda x: max(0, x),
+            "history": lambda x: max(0, x),
         }
 
     def defaults(self) -> Dict[str, Any]:
