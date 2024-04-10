@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, List, Optional, Dict
+from typing import Any, List, Optional, Dict, Tuple
 
 # Libraries
 import pyperclip  # type: ignore
@@ -20,6 +20,8 @@ class Output(tk.Text):
     word_menu.add(text="Search", command=lambda: Output.search_words())
     word_menu.add(text="New", command=lambda: Output.new_tab())
     current_output: Optional["Output"] = None
+    marker_user = "\u200B\u200B\u200B"
+    marker_ai = "\u200C\u200C\u200C"
     words = ""
 
     @staticmethod
@@ -96,7 +98,7 @@ class Output(tk.Text):
         Dialog.show_confirm("Open this URL?", lambda: action())
 
     @staticmethod
-    def get_prompt(who: str) -> str:
+    def get_prompt(who: str, mark: bool = False) -> str:
         name = getattr(config, f"name_{who}")
 
         if args.avatars:
@@ -112,6 +114,13 @@ class Output(tk.Text):
             else:
                 prompt = "Anon : "
 
+        if mark:
+            # Add invisible markers
+            if who == "user":
+                prompt = f"{Output.marker_user}{prompt}"
+            elif who == "ai":
+                prompt = f"{Output.marker_ai}{prompt}"
+
         return prompt
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
@@ -125,8 +134,6 @@ class Output(tk.Text):
         self.format_debouncer_delay = 250
         self.format_debouncer = ""
         self.format_tokens = ("`", ":", "*", "_")
-        self.indices: List[Dict[str, Any]] = []
-        self.num_lines = 0
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -246,7 +253,6 @@ class Output(tk.Text):
         self.insert(tk.END, text)
         self.disable()
         self.to_bottom(True)
-        self.num_lines += text.count("\n")
 
         if any(token in text for token in self.format_tokens):
             self.start_format_debouncer()
@@ -385,12 +391,11 @@ class Output(tk.Text):
         return conversation.to_log()
 
     def prompt(self, who: str) -> None:
-        prompt = Output.get_prompt(who)
+        prompt = Output.get_prompt(who, mark=True)
         self.print(prompt)
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
-        self.indices.append({"who": who, "line": int(start_index.split(".")[0])})
 
     def print(self, text: str) -> None:
         left = ""
@@ -534,3 +539,15 @@ class Output(tk.Text):
 
     def find_text(self, query: str) -> str:
         return self.search(query, "1.0", tk.END, regexp=True, nocase=True)
+
+    def get_markers(self) -> Tuple[List[Dict[str, Any]], int]:
+        markers = []
+        lines = self.get_text().split("\n")
+
+        for i, line in enumerate(lines):
+            if line.startswith(Output.marker_user):
+                markers.append({"who": "user", "line": i + 1})
+            elif line.startswith(Output.marker_ai):
+                markers.append({"who": "ai", "line": i + 1})
+
+        return (markers, len(lines))

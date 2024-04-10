@@ -56,18 +56,19 @@ class Markdown():
         self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
 
     def format(self) -> None:
-        indices: List[Tuple[int, int]] = []
+        markers, num_lines = self.widget.get_markers()
+        ranges: List[Tuple[int, int]] = []
         start_ln = 0
         end_ln = 0
 
         def add() -> None:
-            indices.append((start_ln, end_ln))
+            ranges.append((start_ln, end_ln))
 
         if args.markdown == "none":
             return
         elif args.markdown == "all":
             start_ln = 1
-            end_ln = self.widget.num_lines + 1
+            end_ln = num_lines + 1
             add()
         else:
             if args.markdown == "user":
@@ -77,7 +78,7 @@ class Markdown():
                 name_a = "user"
                 name_b = "ai"
 
-            for i, item in enumerate(self.widget.indices):
+            for i, item in enumerate(markers):
                 if item["who"] == name_a:
                     if start_ln:
                         end_ln = item["line"] - 1
@@ -85,11 +86,11 @@ class Markdown():
                 elif item["who"] == name_b:
                     start_ln = item["line"]
 
-                    if i == len(self.widget.indices) - 1:
-                        end_ln = self.widget.num_lines + 1
+                    if i == len(markers) - 1:
+                        end_ln = num_lines + 1
                         add()
 
-        for start, end in reversed(indices):
+        for start, end in reversed(ranges):
             self.format_all(start, end)
 
     def format_all(self, start_ln: int, end_ln: int) -> None:
