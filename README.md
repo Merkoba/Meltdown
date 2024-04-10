@@ -219,7 +219,7 @@ CMAKE_ARGS="-DLLAMA_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltd
 
 ---
 
-To install manually use a virtual env and `requirements.txt`.
+To install manually, use a virtual env and `requirements.txt`.
 
 You can use `scripts/venv.sh` to automate this.
 
