@@ -27,10 +27,6 @@ class InputControl:
         frame_data = widgets.frame_data_input
         self.input_label = widgetutils.make_label(frame_data, "Input")
 
-        if args.textbox_button:
-            textbox_button = widgetutils.make_button(frame_data, "#", lambda: self.show_textbox())
-            ToolTip(textbox_button, "Show a textbox for longer inputs")
-
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
         widgets.input = self.input
@@ -46,6 +42,10 @@ class InputControl:
 
         next_button = widgetutils.make_button(frame_data, "Next >", lambda: self.history_down())
         ToolTip(next_button, "Next item in the input history")
+
+        if args.textbox_button:
+            textbox_button = widgetutils.make_button(frame_data, "Write", lambda: self.show_textbox())
+            ToolTip(textbox_button, "Show a textbox for longer inputs")
 
         submit_button = widgetutils.make_button(frame_data, "Submit",
                                                 lambda: self.submit(scroll=False), right_padding=app.theme.right_padding)
