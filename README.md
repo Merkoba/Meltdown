@@ -167,6 +167,8 @@ Powerful input line prompt for the terminal, with autocomplete, memory, and vi m
 
 Optional listener that checks a file periodically to use as input.
 
+GPU support for faster responses.
+
 And more.
 
 ---
