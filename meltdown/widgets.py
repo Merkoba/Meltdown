@@ -185,20 +185,21 @@ class Widgets:
         ToolTip(self.history_label, tip)
         ToolTip(self.history, tip)
 
-        self.max_tokens_label = widgetutils.make_label(details_data, "Tokens")
-        self.max_tokens = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "Maximum number of tokens to generate." \
-            " Higher values will result in longer output, but will" \
-            " also take longer to compute"
-        ToolTip(self.max_tokens_label, tip)
-        ToolTip(self.max_tokens, tip)
-
         self.context_label = widgetutils.make_label(details_data, "Context")
         self.context = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
         tip = "The context size is the maximum number of tokens that the model can account for" \
             " when processing a response. This includes the prompt, and the response itself"
         ToolTip(self.context_label, tip)
         ToolTip(self.context, tip)
+
+        self.max_tokens_label = widgetutils.make_label(details_data, "Max Tokens")
+        self.max_tokens = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "Maximum number of tokens to generate." \
+            " If 0, it will generate to the end of the context window." \
+            " Higher values will result in longer output, but will" \
+            " also take longer to compute"
+        ToolTip(self.max_tokens_label, tip)
+        ToolTip(self.max_tokens, tip)
 
         self.threads_label = widgetutils.make_label(details_data, "Threads")
         self.threads = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
@@ -552,7 +553,7 @@ class Widgets:
             if key in config.clearables:
                 menu.add(text="Clear", command=lambda: self.clear(key))
 
-        if config.get_default(key):
+        if config.get_default(key) is not None:
             menu.add(text="Reset", command=lambda: config.reset_one(key))
 
     def show_menu_items(self, key_config: str, key_list: str, command: Callable[..., Any],
