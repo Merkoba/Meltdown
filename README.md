@@ -223,7 +223,7 @@ To install manually, use a virtual env and `requirements.txt`.
 
 You can use `scripts/venv.sh` to automate this.
 
-To run it use `run.sh` in the root dir.
+To run it, use `run.sh` in the root dir.
 
 ---
 
