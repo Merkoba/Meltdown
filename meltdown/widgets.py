@@ -208,7 +208,9 @@ class Widgets:
 
         self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
         self.gpu_layers = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "Number of layers to offload to GPU. If -1, all layers are offloaded"
+        tip = "Number of layers to offload to GPU. If -1, all layers are offloaded."\
+            " More layers should speed up response time significantly."\
+            " Use enough layers to almost fill the GPU memory but no more"
         ToolTip(self.gpu_layers_label, tip)
         ToolTip(self.gpu_layers, tip)
 
