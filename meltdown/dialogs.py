@@ -129,7 +129,8 @@ class Dialog:
 
     @staticmethod
     def show_textbox(text: str, cmd_ok: Callable[..., Any],
-                     cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+                     cmd_cancel: Optional[Callable[..., Any]] = None,
+                     value: str = "") -> None:
 
         from .keyboard import keyboard
 
@@ -172,6 +173,7 @@ class Dialog:
         dialog.make_button("Ok", ok)
         dialog.show()
         dialog.highlight_button(1)
+        textbox.insert(tk.END, value)
         textbox.focus_set()
 
     @staticmethod

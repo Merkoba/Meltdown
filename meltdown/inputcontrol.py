@@ -229,7 +229,9 @@ class InputControl:
         def action(ans: str) -> None:
             self.submit(text=ans)
 
-        Dialog.show_textbox("Write an input", lambda a: action(a))
+        text = self.input.get().strip()
+        self.clear()
+        Dialog.show_textbox("Write an input", lambda a: action(a), value=text)
 
     def input_command(self, arg: str) -> None:
         if arg:
