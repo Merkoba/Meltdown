@@ -440,18 +440,19 @@ class Model:
 
         self.lock.release()
 
-    def browse_models(self) -> None:
-        from .config import config
+    def set_model(self, m: str) -> None:
+        from .widgets import widgets
+        widgets.model.set_text(m)
+        config.update("model")
 
+    def browse_models(self) -> None:
         if self.model_loading:
             return
 
         file = filedialog.askopenfilename(initialdir=self.get_dir())
 
         if file:
-            widgets.model.set_text(file)
-            config.update("model")
-            self.load()
+            self.set_model(file)
 
     def load_or_unload(self) -> None:
         if self.model_loading:

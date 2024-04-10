@@ -34,7 +34,7 @@ class Config:
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
-        self.default_gpu_layers = 0
+        self.default_gpu_layers = 33
         self.default_ctx = 2048
 
         self.model = self.default_model

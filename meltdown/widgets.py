@@ -591,7 +591,7 @@ class Widgets:
             return
 
         self.show_menu_items("model", "models",
-                             lambda m: self.set_model(m), event, only_items=only_items)
+                             lambda m: model.set_model(m), event, only_items=only_items)
 
     def show_system_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
@@ -601,10 +601,6 @@ class Widgets:
 
     def show_append_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
-
-    def set_model(self, m: str) -> None:
-        self.model.set_text(m)
-        config.update("model")
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
