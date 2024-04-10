@@ -647,3 +647,13 @@ Output messages from llama.cpp when streaming.
 >no-emojis
 
 Don't use emojis on messages or the interface.
+
+---
+
+>markdown
+
+Define the markdown mode.
+
+Either `user`, `ai`, `all`, `none`.
+
+This specifies if markdown formatting is applied to the user, to the AI, to both, or none.

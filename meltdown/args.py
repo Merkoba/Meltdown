@@ -100,6 +100,7 @@ class Args:
         self.time = False
         self.verbose = False
         self.emojis = True
+        self.markdown = "ai"
 
     class Internal:
         title = app.manifest["title"]
@@ -199,6 +200,7 @@ class Args:
             "listener_delay": {"type": float, "help": "Delay for the listener checks"},
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
             "after_stream": {"type": str, "help": "Execute this command after streaming a response"},
+            "markdown": {"type": str, "choices": ["user", "ai", "all", "none"], "help": "Define where to apply markdown formatting"},
         }
 
     def parse(self) -> None:
@@ -244,7 +246,7 @@ class Args:
             "display", "monospace", "autorun", "terminal_height",
             "terminal_vi", "terminal_memory_min", "autocomplete_memory_min",
             "listener", "listener_delay", "sticky", "commandoc",
-            "after_stream", "tabs_always", "time", "verbose"
+            "after_stream", "tabs_always", "time", "verbose", "markdown",
         ]
 
         for n_item in normals:

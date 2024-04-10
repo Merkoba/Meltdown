@@ -1,8 +1,9 @@
 # Standard
 import re
-from typing import List, Any
+from typing import List, Any, Tuple
 
 # Modules
+from .args import args
 from .output import Output
 from . import utils
 
@@ -49,22 +50,65 @@ class Markdown():
         self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
 
     def format(self) -> None:
-        self.format_snippets()
-        lines = self.widget.get("1.0", "end-1c").split("\n")
-        self.do_format(lines, self.pattern_bold, "bold")
-        self.do_format(lines, self.pattern_italic_1, "italic")
-        self.do_format(lines, self.pattern_italic_2, "italic")
-        self.do_format(lines, self.pattern_highlight, "highlight")
-        self.do_format(lines, self.pattern_url, "url")
+        indices: List[Tuple[int, int]] = []
+        start_ln = 0
+        end_ln = 0
 
-    def do_format(self, lines: List[str], pattern: str, tag: str) -> None:
+        def add() -> None:
+            indices.append((start_ln, end_ln))
+
+        if args.markdown == "none":
+            return
+        elif args.markdown == "all":
+            start_ln = 1
+            end_ln = self.widget.num_lines + 1
+            add()
+        elif args.markdown == "user":
+            for i, item in enumerate(self.widget.indices):
+                if item["who"] == "ai":
+                    if start_ln:
+                        end_ln = item["line"] - 1
+                        add()
+                elif item["who"] == "user":
+                    start_ln = item["line"]
+
+                    if i == len(self.widget.indices) - 1:
+                        end_ln = self.widget.num_lines + 1
+                        add()
+        elif args.markdown == "ai":
+            for i, item in enumerate(self.widget.indices):
+                if item["who"] == "user":
+                    if start_ln:
+                        end_ln = item["line"] - 1
+                        add()
+                elif item["who"] == "ai":
+                    start_ln = item["line"]
+
+                    if i == len(self.widget.indices) - 1:
+                        end_ln = self.widget.num_lines + 1
+                        add()
+
+        for start, end in reversed(indices):
+            self.format_all(start, end)
+
+    def format_all(self, start_ln: int, end_ln: int) -> None:
+        self.format_snippets(start_ln, end_ln)
+        self.do_format(start_ln, end_ln, self.pattern_bold, "bold")
+        self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
+        self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
+        self.do_format(start_ln, end_ln, self.pattern_highlight, "highlight")
+        self.do_format(start_ln, end_ln, self.pattern_url, "url")
+
+    def do_format(self, start_ln: int, end_ln: int, pattern: str, tag: str) -> None:
         matches: List[MatchItem] = []
 
-        for i, line in enumerate(lines):
+        for ln in range(start_ln, end_ln + 1):
+            line = self.widget.get(f"{ln}.0", f"{ln}.end")
+
             if not line.strip():
                 continue
 
-            match = MatchItem(i + 1, list(re.finditer(pattern, line)))
+            match = MatchItem(ln, list(re.finditer(pattern, line)))
             matches.append(match)
 
         for match in reversed(matches):
@@ -106,9 +150,9 @@ class Markdown():
                 self.widget.insert(index_item.start, index_item.content)
                 self.widget.tag_add(tag, index_item.start, f"{index_item.start} + {len(index_item.content)}c")
 
-    def format_snippets(self) -> None:
+    def format_snippets(self, start_ln: int, end_ln: int) -> None:
         from .snippet import Snippet
-        text = self.widget.get("1.0", "end-1c")
+        text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         pattern = r"```([-\w.#]*)\n(.*?)\n```$"
         matches = []
 
@@ -116,10 +160,12 @@ class Markdown():
             language = match.group(1)
 
             content_start = match.start(2)
-            start_line = f"{self.get_line_number(text, content_start)}.0"
+            line_1 = self.get_line_number(text, content_start)
+            start_line = f"{start_ln + line_1}.0"
 
             content_end = match.end(2)
-            end_line = f"{self.get_line_number(text, content_end)}.0"
+            line_2 = self.get_line_number(text, content_end)
+            end_line = f"{start_ln + line_2}.0"
 
             matches.append((start_line, end_line, language))
 
@@ -145,4 +191,4 @@ class Markdown():
             self.widget.snippets.append(snippet)
 
     def get_line_number(self, text: str, index: int) -> int:
-        return text.count("\n", 0, index) + 1
+        return text.count("\n", 0, index)

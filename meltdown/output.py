@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Dict
 
 # Libraries
 import pyperclip  # type: ignore
@@ -125,6 +125,8 @@ class Output(tk.Text):
         self.format_debouncer_delay = 250
         self.format_debouncer = ""
         self.format_tokens = ("`", ":", "*", "_")
+        self.indices: List[Dict[str, Any]] = []
+        self.num_lines = 0
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -244,6 +246,7 @@ class Output(tk.Text):
         self.insert(tk.END, text)
         self.disable()
         self.to_bottom(True)
+        self.num_lines += text.count("\n")
 
         if any(token in text for token in self.format_tokens):
             self.start_format_debouncer()
@@ -387,6 +390,7 @@ class Output(tk.Text):
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)
+        self.indices.append({"who": who, "line": int(start_index.split(".")[0])})
 
     def print(self, text: str) -> None:
         left = ""
