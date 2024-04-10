@@ -216,9 +216,6 @@ To install it with `Vulkan` support (GPU), you can do this:
 ```sh
 CMAKE_ARGS="-DLLAMA_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
 ```
----
-
-More information [here](https://github.com/abetlen/llama-cpp-python).
 
 ---
 
@@ -227,3 +224,7 @@ To install manually use a virtual env and `requirements.txt`.
 You can use `scripts/venv.sh` to automate this.
 
 To run it use `run.sh` in the root dir.
+
+---
+
+More information [here](https://github.com/abetlen/llama-cpp-python).
