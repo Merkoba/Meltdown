@@ -100,6 +100,7 @@ class Args:
         self.verbose = False
         self.emojis = True
         self.markdown = "ai"
+        self.textbox_button = True
 
     class Internal:
         title = app.manifest["title"]
@@ -136,6 +137,7 @@ class Args:
             "no_model_feedback": {"action": "store_false", "help": "Don't show model feedback when loading"},
             "no_emojis": {"action": "store_false", "help": "Don't use emojis"},
             "no_input_memory": {"action": "store_false", "help": "Don't remember input words"},
+            "no_textbox_button": {"action": "store_false", "help": "Don't show the textbox button"},
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "compact_model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
@@ -220,6 +222,7 @@ class Args:
             ("no_clean_slate", "clean_slate"), ("no_emojis", "emojis"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"), ("no_input_memory", "input_memory"),
+            ("no_textbox_button", "textbox_button"),
         ]
 
         for r_item in other_name:

@@ -651,3 +651,9 @@ Define the markdown mode.
 Either `user`, `ai`, `all`, or `none`.
 
 This specifies if markdown formatting is applied to the user, to the AI, to both, or to none.
+
+---
+
+>no-textbox-button
+
+Don't show the button to show the textbox input.
