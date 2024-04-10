@@ -193,6 +193,25 @@ class Widgets:
         ToolTip(self.max_tokens_label, tip)
         ToolTip(self.max_tokens, tip)
 
+        self.context_label = widgetutils.make_label(details_data, "Context")
+        self.context = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "The context size is the maximum number of tokens that the model can account for" \
+            " when processing a response. This includes the prompt, and the response itself"
+        ToolTip(self.context_label, tip)
+        ToolTip(self.context, tip)
+
+        self.threads_label = widgetutils.make_label(details_data, "Threads")
+        self.threads = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "The number of CPU threads to use"
+        ToolTip(self.threads_label, tip)
+        ToolTip(self.threads, tip)
+
+        self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
+        self.gpu_layers = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
+        tip = "Number of layers to offload to GPU. If -1, all layers are offloaded"
+        ToolTip(self.gpu_layers_label, tip)
+        ToolTip(self.gpu_layers, tip)
+
         self.temperature_label = widgetutils.make_label(details_data, "Temp")
         self.temperature = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
         tip = "The temperature parameter is used to control" \
@@ -234,24 +253,6 @@ class Widgets:
             " ensuring it adheres to specific patterns or constraints"
         ToolTip(self.top_k_label, tip)
         ToolTip(self.top_k, tip)
-
-        self.context_label = widgetutils.make_label(details_data, "Context")
-        self.context = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "Text context, 0 = from model"
-        ToolTip(self.context_label, tip)
-        ToolTip(self.context, tip)
-
-        self.threads_label = widgetutils.make_label(details_data, "Threads")
-        self.threads = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "The number of CPU threads to use"
-        ToolTip(self.threads_label, tip)
-        ToolTip(self.threads, tip)
-
-        self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
-        self.gpu_layers = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
-        tip = "Number of layers to offload to GPU. If -1, all layers are offloaded"
-        ToolTip(self.gpu_layers_label, tip)
-        ToolTip(self.gpu_layers, tip)
 
         self.format_label = widgetutils.make_label(details_data, "Format")
         values = ["auto"]
