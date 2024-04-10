@@ -37,9 +37,6 @@ class Markdown():
         # Bold with two *
         self.pattern_bold_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
 
-        # Bold with one *
-        self.pattern_bold_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right_side}(?=\s|$)"
-
         # Italic with one *
         self.pattern_italic_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right_side}(?=\s|$)"
 
@@ -98,7 +95,6 @@ class Markdown():
     def format_all(self, start_ln: int, end_ln: int) -> None:
         self.format_snippets(start_ln, end_ln)
         self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
-        self.do_format(start_ln, end_ln, self.pattern_bold_2, "italic")
         self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
         self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
         self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
