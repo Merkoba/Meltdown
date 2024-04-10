@@ -255,9 +255,9 @@ class Keyboard:
         self.register("<Return>",
                       lambda: on_enter(),
                       on_shift=lambda: on_shift_enter(),
-                      on_ctrl=lambda: run_command("load"),
+                      on_ctrl=lambda: inputcontrol.show_textbox(),
                       help="Submit prompt",
-                      ctrl_help="Load model")
+                      ctrl_help="Show input textbox")
 
         self.register("<Escape>",
                       lambda: on_esc(),
