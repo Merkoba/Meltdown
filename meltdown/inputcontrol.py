@@ -48,7 +48,8 @@ class InputControl:
         ToolTip(next_button, "Next item in the input history")
 
         submit_button = widgetutils.make_button(frame_data, "Submit",
-                                                lambda: self.submit(), right_padding=app.theme.right_padding)
+                                                lambda: self.submit(scroll=False), right_padding=app.theme.right_padding)
+
         ToolTip(submit_button, "Send the prompt to the AI")
 
     def wheel_up(self) -> None:
@@ -130,14 +131,16 @@ class InputControl:
 
         self.input.full_focus()
 
-    def submit(self, tab_id: str = "", text: str = "") -> None:
+    def submit(self, tab_id: str = "", text: str = "", scroll: bool = True) -> None:
         from .model import model
         from .display import display
         from . import filemanager
 
         if args.display:
             if not text:
-                display.toggle_scroll()
+                if scroll:
+                    display.toggle_scroll()
+
                 return
 
         if not text:
@@ -169,7 +172,7 @@ class InputControl:
 
             self.add_words(text)
             model.stream(text, tab.tab_id)
-        else:
+        elif scroll:
             display.toggle_scroll()
 
     def setup(self) -> None:
