@@ -165,7 +165,7 @@ class Menu:
                 self.separators.append(separator)
             else:
                 label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font_menu, borderwidth=0, padding=(4, 2, 4, 2))
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font("menu"), borderwidth=0, padding=(4, 2, 4, 2))
 
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
                 self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
@@ -178,7 +178,7 @@ class Menu:
             make_item(item, i)
 
         self.no_items = ttk.Label(self.container, text="No Items", background=app.theme.menu_background, foreground=app.theme.menu_foreground,
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font, borderwidth=0, padding=(4, 2, 4, 2))
+                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font(), borderwidth=0, padding=(4, 2, 4, 2))
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
         self.no_items.grid_remove()

@@ -13,13 +13,13 @@ class Theme:
         self.font_family = "sans"
         self.monospace_family = "monospace"
 
-        self.font = (self.font_family, 14)
-        self.font_button = (self.font_family, 12)
-        self.font_combobox = (self.font_family, 13)
-        self.font_tab = (self.font_family, 12)
-        self.font_tab_highlight = (self.font_family, 12, "underline")
-        self.font_menu = (self.font_family, 13)
-        self.font_tooltips = (self.font_family, 12)
+        self.font_size = 14
+        self.font_button_size = 12
+        self.font_combobox_size = 13
+        self.font_tab_size = 12
+        self.font_tab_highlight_size = 12
+        self.font_menu_size = 13
+        self.font_tooltips_size = 12
 
         self.avatar_user = "👽"
         self.avatar_ai = "😎"
@@ -161,3 +161,24 @@ class Theme:
     def get_italic_font(self) -> Tuple[str, int, str]:
         ff = self.get_font_family()
         return (ff, config.output_font_size, "italic")
+
+    def font(self, name: str = "font") -> Tuple[str, int, str]:
+        from .args import args
+        diff = args.font_diff
+
+        if name == "font":
+            return (self.font_family, self.font_size + diff, "normal")
+        elif name == "button":
+            return (self.font_family, self.font_button_size + diff, "normal")
+        elif name == "combobox":
+            return (self.font_family, self.font_combobox_size + diff, "normal")
+        elif name == "tab":
+            return (self.font_family, self.font_tab_size + diff, "normal")
+        elif name == "tab_highlight":
+            return (self.font_family, self.font_tab_highlight_size + diff, "underline")
+        elif name == "menu":
+            return (self.font_family, self.font_menu_size + diff, "normal")
+        elif name == "tooltips":
+            return (self.font_family, self.font_tooltips_size + diff, "normal")
+        else:
+            return (self.font_family, self.font_size + diff, "normal")

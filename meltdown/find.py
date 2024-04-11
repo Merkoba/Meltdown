@@ -20,7 +20,7 @@ class Find:
         self.root.configure(background=app.theme.find_background)
         self.inner.configure(background=app.theme.find_background)
         w = app.theme.find_entry_width
-        self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font, width=w)
+        self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font(), width=w)
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)

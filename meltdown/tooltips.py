@@ -92,7 +92,7 @@ class ToolTip:
         self.tooltip.lift()
         padding = app.theme.tooltip_padding
 
-        label = tk.Label(self.tooltip, text=self.text, font=app.theme.font_tooltips,
+        label = tk.Label(self.tooltip, text=self.text, font=app.theme.font("tooltips"),
                          background=app.theme.tooltip_background, foreground=app.theme.tooltip_foreground,
                          wraplength=480, justify=tk.LEFT, padx=padding, pady=padding)
 

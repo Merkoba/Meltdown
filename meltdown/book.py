@@ -36,7 +36,7 @@ class Page():
         inner.configure(cursor="hand2")
         inner.configure(background=app.theme.tab_normal_background)
         inner.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
-        label = tk.Label(inner, text=text, font=app.theme.font_tab)
+        label = tk.Label(inner, text=text, font=app.theme.font("tab"))
         label.configure(background=app.theme.tab_normal_background)
         label.configure(foreground=app.theme.tab_normal_foreground)
         label.pack(expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady)
@@ -576,13 +576,13 @@ class Book(tk.Frame):
     def highlight(self, id: str) -> None:
         for page in self.pages:
             if page.id == id:
-                page.tab.label.configure(font=app.theme.font_tab_highlight)
+                page.tab.label.configure(font=app.theme.font("tab_highlight"))
             else:
-                page.tab.label.configure(font=app.theme.font_tab)
+                page.tab.label.configure(font=app.theme.font("tab"))
 
     def remove_highlights(self) -> None:
         for page in self.pages:
-            page.tab.label.configure(font=app.theme.font_tab)
+            page.tab.label.configure(font=app.theme.font("tab"))
 
     def check_hide_tabs(self) -> None:
         if not args.tabs_always:

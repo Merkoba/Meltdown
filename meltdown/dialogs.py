@@ -101,7 +101,7 @@ class Dialog:
             return
 
         dialog = Dialog(text)
-        entry = EntryBox(dialog.top_frame, font=app.theme.font, width=17, justify="center")
+        entry = EntryBox(dialog.top_frame, font=app.theme.font(), width=17, justify="center")
 
         def ok() -> None:
             ans = entry.get()
@@ -143,7 +143,7 @@ class Dialog:
         scrollbar_y = tk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL)
         scrollbar_x = tk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL)
 
-        textbox = tk.Text(dialog.top_frame, font=app.theme.font, width=30, height=5)
+        textbox = tk.Text(dialog.top_frame, font=app.theme.font(), width=30, height=5)
         textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
         textbox.configure(highlightthickness=0)
 
@@ -237,7 +237,7 @@ class Dialog:
         self.root.lift()
         container = tk.Frame(self.main, padx=10, pady=4, background=background)
         container.pack()
-        tk.Label(container, text=text, font=app.theme.font, wraplength=500, background=background, foreground=foreground).pack(padx=6)
+        tk.Label(container, text=text, font=app.theme.font(), wraplength=500, background=background, foreground=foreground).pack(padx=6)
         self.top_frame = tk.Frame(container)
         self.top_frame.pack()
         self.image_frame = tk.Frame(container, background=background)

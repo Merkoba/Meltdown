@@ -105,6 +105,7 @@ class Args:
         self.avatars_in_logs = False
         self.browser = ""
         self.wrap_textbox = True
+        self.font_diff = 0
 
     class Internal:
         title = app.manifest["title"]
@@ -209,6 +210,7 @@ class Args:
             "after_stream": {"type": str, "help": "Execute this command after streaming a response"},
             "markdown": {"type": str, "choices": ["user", "ai", "all", "none"], "help": "Define where to apply markdown formatting"},
             "browser": {"type": str, "help": "Open links with this browser"},
+            "font_diff": {"type": int, "help": "Add or subtract this from font sizes"},
         }
 
     def parse(self) -> None:
@@ -257,7 +259,7 @@ class Args:
             "terminal_vi", "time", "verbose", "markdown",
             "listener", "listener_delay", "sticky", "commandoc",
             "after_stream", "tabs_always", "input_memory_min",
-            "avatars_in_logs", "browser",
+            "avatars_in_logs", "browser", "font_diff",
         ]
 
         for n_item in normals:

@@ -687,3 +687,9 @@ Show the avatars in text logs.
 >browser
 
 Open links with this program.
+
+---
+
+>font_diff
+
+Add or subtract this from font sizes.

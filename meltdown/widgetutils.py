@@ -77,7 +77,7 @@ def make_entry(frame_data: FrameData, value: str = "",
                right_padding: Optional[int] = None) -> EntryBox:
 
     w = width if width else app.theme.entry_width
-    widget = EntryBox(frame_data.frame, font=app.theme.font, width=w, style="Normal.TEntry")
+    widget = EntryBox(frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry")
     do_grid(widget, col=frame_data.col, right_padding=right_padding)
     frame_data.col += 1
 
@@ -110,7 +110,7 @@ def make_label(frame_data: FrameData, text: str,
                pady: Optional[int] = None, colons: bool = True) -> tk.Label:
 
     text = f"{text}:" if colons else text
-    widget = tk.Label(frame_data.frame, text=text, font=app.theme.font)
+    widget = tk.Label(frame_data.frame, text=text, font=app.theme.font())
     widget.configure(background=app.theme.background_color, foreground=app.theme.foreground_color)
     do_grid(widget, col=frame_data.col, right_padding=right_padding, padx=padx, pady=pady)
     frame_data.col += 1
@@ -124,7 +124,7 @@ def make_combobox(frame_data: FrameData, values: Optional[List[Any]] = None,
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
     widget = ttk.Combobox(frame_data.frame, values=v, state="readonly",
-                          font=app.theme.font_combobox, style="Normal.TCombobox", width=w)
+                          font=app.theme.font("combobox"), style="Normal.TCombobox", width=w)
 
     # Remove mousewheel events
     widget.bind_class("TCombobox", "<MouseWheel>", lambda e: "break")

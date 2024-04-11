@@ -39,7 +39,7 @@ class ButtonBox(tk.Frame):
             text = self.text
 
         self.label = tk.Label(self, text=text,
-                              font=app.theme.font_button,
+                              font=app.theme.font("button"),
                               padx=padx, pady=pady)
 
         self.label.grid(sticky="nsew")
