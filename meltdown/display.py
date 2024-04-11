@@ -902,11 +902,14 @@ class Display:
         else:
             tab.output.to_bottom()
 
-    def select_active_tab(self) -> None:
+    def select_active_tab(self) -> bool:
         for key, value in self.tabs.items():
             if value.streaming:
-                self.select_tab(key)
-                break
+                if key != self.current_tab:
+                    self.select_tab(key)
+                    return True
+
+        return False
 
 
 display = Display()

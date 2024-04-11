@@ -750,10 +750,16 @@ class Widgets:
 
         if self.input.get():
             inputcontrol.clear()
-        elif model.streaming:
+            return
+
+        if display.select_active_tab():
+            return
+
+        if model.streaming:
             self.stop()
-        else:
-            display.to_bottom()
+            return
+
+        display.to_bottom()
 
     def show_context(self) -> None:
         widget = app.root.focus_get()

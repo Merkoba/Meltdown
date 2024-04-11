@@ -262,7 +262,7 @@ class Keyboard:
         self.register("<Escape>",
                       lambda: on_esc(),
                       on_ctrl=lambda: run_command("unload"),
-                      help="Clear input, stop model stream, or go to bottom",
+                      help="Clear input, select active, stop model stream, go to bottom",
                       ctrl_help="Unload model")
 
         self.register("<Page_Up>",
