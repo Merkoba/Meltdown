@@ -65,20 +65,30 @@ class Widgets:
         self.system_frame = frame_data_system.frame
 
         avatar_width = 3
-        self.name_user_label = widgetutils.make_label(frame_data_system, "User")
+        self.user_label = widgetutils.make_label(frame_data_system, "User")
+        tip = "Personalize yourself"
+        ToolTip(self.user_label, tip)
+
         self.avatar_user = widgetutils.make_entry(frame_data_system, width=avatar_width)
+        tip = "The avatar of the user (You)"
+        ToolTip(self.avatar_user, tip)
+
         self.name_user = widgetutils.make_entry(frame_data_system)
         frame_data_system.expand()
         tip = "The name of the user (You)"
-        ToolTip(self.name_user_label, tip)
         ToolTip(self.name_user, tip)
 
-        self.name_ai_label = widgetutils.make_label(frame_data_system, "AI")
+        self.ai_label = widgetutils.make_label(frame_data_system, "AI")
+        tip = "Personalize the AI"
+        ToolTip(self.ai_label, tip)
+
         self.avatar_ai = widgetutils.make_entry(frame_data_system, width=avatar_width)
+        tip = "The avatar of the assistant (AI)"
+        ToolTip(self.avatar_ai, tip)
+
         self.name_ai = widgetutils.make_entry(frame_data_system)
         frame_data_system.expand()
         tip = "The name of the assistant (AI)"
-        ToolTip(self.name_ai_label, tip)
         ToolTip(self.name_ai, tip)
 
         self.system_disabled = (not args.system) or \
@@ -832,7 +842,7 @@ class Widgets:
             if not widget:
                 return
 
-            if type(widget) != EntryBox:
+            if not isinstance(widget, EntryBox):
                 return
 
             widget.move_to_end()
