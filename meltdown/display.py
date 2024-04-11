@@ -526,7 +526,10 @@ class Display:
         tab.output.insert_text(text)
         tab.modified = True
 
-    def get_tab_name(self, tab_id: str) -> str:
+    def get_tab_name(self, tab_id: str = "") -> str:
+        if not tab_id:
+            tab_id = self.current_tab
+
         return self.book.get_name(tab_id)
 
     def get_current_tab_name(self) -> str:

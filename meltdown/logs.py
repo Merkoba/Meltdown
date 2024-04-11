@@ -30,7 +30,7 @@ class Logs:
         cmds.append(("To Text", lambda: self.to_text(True)))
         Dialog.show_commands("Save all conversations?", cmds)
 
-    def save_file(self, text: str, name: str, ext: str, all: bool) -> None:
+    def save_file(self, text: str, name: str, ext: str, all: bool, overwrite: bool) -> None:
         text = text.strip()
         name = name.replace(" ", "_").lower()
         paths.logs.mkdir(parents=True, exist_ok=True)
@@ -38,13 +38,14 @@ class Logs:
         file_path = Path(paths.logs, file_name)
         num = 2
 
-        while file_path.exists():
-            file_name = f"{name}_{num}.{ext}"
-            file_path = Path(paths.logs, file_name)
-            num += 1
+        if not overwrite:
+            while file_path.exists():
+                file_name = f"{name}_{num}.{ext}"
+                file_path = Path(paths.logs, file_name)
+                num += 1
 
-            if num > 9999:
-                break
+                if num > 9999:
+                    break
 
         with open(file_path, "w", encoding="utf-8") as file:
             file.write(text)
@@ -57,7 +58,7 @@ class Logs:
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
 
-    def to_json(self, all: bool = False) -> None:
+    def to_json(self, all: bool = False, name: str = "") -> None:
         conversations = []
         num = 0
 
@@ -76,8 +77,14 @@ class Logs:
             if not text:
                 continue
 
+            if not name:
+                name = conversation.name
+                overwrite = False
+            else:
+                overwrite = True
+
             num += 1
-            self.save_file(text, conversation.name, "json", all)
+            self.save_file(text, name, "json", all, overwrite=overwrite)
 
         if all:
             if args.quiet:
@@ -105,7 +112,7 @@ class Logs:
         json_text = json.dumps(text, indent=4)
         return json_text
 
-    def to_text(self, all: bool = False) -> None:
+    def to_text(self, all: bool = False, name: str = "") -> None:
         conversations = []
         num = 0
 
@@ -125,7 +132,14 @@ class Logs:
                 continue
 
             num += 1
-            self.save_file(text, conversation.name, "txt", all)
+
+            if not name:
+                name = conversation.name
+                overwrite = False
+            else:
+                overwrite = True
+
+            self.save_file(text, name, "txt", all, overwrite=overwrite)
 
         if all:
             if args.quiet:

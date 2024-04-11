@@ -115,9 +115,9 @@ class Conversation:
         for item in self.items:
             for key in item:
                 if key == "user":
-                    log += Output.get_prompt("user")
+                    log += Output.get_prompt("user", avatar=False, space=False)
                 elif key == "assistant":
-                    log += Output.get_prompt("ai")
+                    log += Output.get_prompt("ai", avatar=False, space=False)
                 else:
                     continue
 

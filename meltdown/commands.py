@@ -124,11 +124,13 @@ class Commands:
             },
             "logtext": {
                 "help": "Save conversation to a text file",
-                "action": lambda a=None: logs.to_text(),
+                "action": lambda a=None: logs.to_text(name=a),
+                "type": str,
             },
             "logjson": {
                 "help": "Save conversation to a JSON file",
-                "action": lambda a=None: logs.to_json(),
+                "action": lambda a=None: logs.to_json(name=a),
+                "type": str,
             },
             "logtextall": {
                 "help": "Save all conversations to text files",
@@ -544,7 +546,10 @@ class Commands:
         self.save_commands()
 
     def argument_replace(self, argument: str) -> str:
-        return argument.replace(f"{args.keychar}now", str(timeutils.now_int()))
+        from .display import display
+        argument = argument.replace(f"{args.keychar}now", str(timeutils.now_int()))
+        argument = argument.replace(f"{args.keychar}name", display.get_tab_name())
+        return argument
 
     def save_commands(self) -> None:
         cmds = {}

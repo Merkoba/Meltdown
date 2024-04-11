@@ -98,21 +98,24 @@ class Output(tk.Text):
         Dialog.show_confirm("Open this URL?", lambda: action())
 
     @staticmethod
-    def get_prompt(who: str, mark: bool = False) -> str:
-        name = getattr(config, f"name_{who}")
+    def get_prompt(who: str, mark: bool = False,
+                   avatar: bool = True, space: bool = True) -> str:
 
-        if args.avatars:
+        name = getattr(config, f"name_{who}")
+        colons = " : " if space else ": "
+
+        if args.avatars and avatar:
             avatar = getattr(app.theme, f"avatar_{who}")
 
             if name:
-                prompt = f"{avatar} {name} : "
+                prompt = f"{avatar} {name}{colons}"
             else:
-                prompt = f"{avatar} : "
+                prompt = f"{avatar}{colons}"
         else:
             if name:
-                prompt = f"{name} : "
+                prompt = f"{name}{colons}"
             else:
-                prompt = "Anon : "
+                prompt = f"Anon{colons}"
 
         if mark:
             # Add invisible markers
