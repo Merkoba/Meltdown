@@ -18,6 +18,19 @@ def padnum(num: int) -> str:
     return str(num).zfill(3)
 
 
+def check_color(name: str, var: Optional[int]) -> None:
+    if var is None:
+        return
+
+    if getattr(args, f"system_{name}"):
+        label = getattr(widgets, f"{name}_text")
+
+        if var >= args.system_threshold:
+            label.configure(foreground=app.theme.system_heavy)
+        else:
+            label.configure(foreground=app.theme.system_normal)
+
+
 def get_info() -> None:
     if args.system_cpu:
         cpu = int(psutil.cpu_percent(interval=1))
@@ -57,56 +70,24 @@ def get_info() -> None:
                 gpu_data = ans["card0"]
 
                 if args.system_gpu:
-                    gpu_use = float(gpu_data.get("GPU use (%)", 0))
+                    gpu_use = int(float(gpu_data.get("GPU use (%)", 0)))
                     widgets.gpu.set(padnum(int(gpu_use)) + "%")
 
                 if args.system_gpu_ram:
-                    gpu_ram = float(gpu_data.get("GPU memory use (%)", 0))
+                    gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
                     widgets.gpu_ram.set(padnum(int(gpu_ram)) + "%")
 
                 if args.system_gpu_temp:
-                    gpu_temp = float(gpu_data.get("Temperature (Sensor junction) (C)", 0))
+                    gpu_temp = int(float(gpu_data.get("Temperature (Sensor junction) (C)", 0)))
                     widgets.gpu_temp.set(padnum(int(gpu_temp)) + "°C")
 
     if args.system_colors:
-        threshold = args.system_threshold
-
-        if args.system_cpu:
-            if cpu >= threshold:
-                widgets.cpu_text.configure(foreground=app.theme.system_heavy)
-            else:
-                widgets.cpu_text.configure(foreground=app.theme.system_normal)
-
-        if args.system_ram:
-            if ram >= threshold:
-                widgets.ram_text.configure(foreground=app.theme.system_heavy)
-            else:
-                widgets.ram_text.configure(foreground=app.theme.system_normal)
-
-        if args.system_temp:
-            if temp:
-                if temp >= threshold:
-                    widgets.temp_text.configure(foreground=app.theme.system_heavy)
-                else:
-                    widgets.temp_text.configure(foreground=app.theme.system_normal)
-
-        if args.system_gpu:
-            if gpu_use >= threshold:
-                widgets.gpu_text.configure(foreground=app.theme.system_heavy)
-            else:
-                widgets.gpu_text.configure(foreground=app.theme.system_normal)
-
-        if args.system_gpu_ram:
-            if gpu_ram >= threshold:
-                widgets.gpu_ram_text.configure(foreground=app.theme.system_heavy)
-            else:
-                widgets.gpu_ram_text.configure(foreground=app.theme.system_normal)
-
-        if args.system_gpu_temp:
-            if gpu_temp >= threshold:
-                widgets.gpu_temp_text.configure(foreground=app.theme.system_heavy)
-            else:
-                widgets.gpu_temp_text.configure(foreground=app.theme.system_normal)
+        check_color("cpu", cpu)
+        check_color("ram", ram)
+        check_color("temp", temp)
+        check_color("gpu", gpu_use)
+        check_color("gpu_ram", gpu_ram)
+        check_color("gpu_temp", gpu_temp)
 
 
 def check() -> None:
