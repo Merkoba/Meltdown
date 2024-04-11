@@ -102,6 +102,7 @@ class Args:
         self.markdown = "ai"
         self.textbox_button = True
         self.log_feedback = True
+        self.avatars_in_logs = False
 
     class Internal:
         title = app.manifest["title"]
@@ -163,6 +164,7 @@ class Args:
             "monospace": {"action": "store_true", "help": "Use monospace font on the output"},
             "listener": {"action": "store_true", "help": "Listen for changes to the stdin file"},
             "sticky": {"action": "store_true", "help": "Make the window always on top"},
+            "avatars_in_logs": {"action": "store_true", "help": "Show avatars in text logs"},
             "terminal_height": {"type": int, "help": "Reserve these number of rows for the terminal"},
             "width": {"type": int, "help": "Width of the window"},
             "height": {"type": int, "help": "Height of the window"},
@@ -250,6 +252,7 @@ class Args:
             "terminal_vi", "time", "verbose", "markdown",
             "listener", "listener_delay", "sticky", "commandoc",
             "after_stream", "tabs_always", "input_memory_min",
+            "avatars_in_logs",
         ]
 
         for n_item in normals:

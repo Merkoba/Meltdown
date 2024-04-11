@@ -675,3 +675,9 @@ Don't show the button to show the textbox input.
 >no-log-feedback
 
 Don't show feedback when saving logs.
+
+---
+
+>avatars-in-logs
+
+Show the avatars in text logs.
