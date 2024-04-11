@@ -21,9 +21,6 @@ class Theme:
         self.font_menu_size = 13
         self.font_tooltips_size = 12
 
-        self.avatar_user = "👽"
-        self.avatar_ai = "😎"
-
         self.name_user = "#87CEEB"
         self.name_ai = "#98FB98"
 

@@ -105,7 +105,7 @@ class Output(tk.Text):
         colons = " : " if space else ": "
 
         if args.avatars and avatar:
-            avatar = getattr(app.theme, f"avatar_{who}")
+            avatar = getattr(config, f"avatar_{who}")
 
             if name:
                 prompt = f"{avatar} {name}{colons}"

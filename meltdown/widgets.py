@@ -64,7 +64,9 @@ class Widgets:
         frame_data_system = widgetutils.make_frame()
         self.system_frame = frame_data_system.frame
 
+        avatar_width = 3
         self.name_user_label = widgetutils.make_label(frame_data_system, "User")
+        self.avatar_user = widgetutils.make_entry(frame_data_system, width=avatar_width)
         self.name_user = widgetutils.make_entry(frame_data_system)
         frame_data_system.expand()
         tip = "The name of the user (You)"
@@ -72,6 +74,7 @@ class Widgets:
         ToolTip(self.name_user, tip)
 
         self.name_ai_label = widgetutils.make_label(frame_data_system, "AI")
+        self.avatar_ai = widgetutils.make_entry(frame_data_system, width=avatar_width)
         self.name_ai = widgetutils.make_entry(frame_data_system)
         frame_data_system.expand()
         tip = "The name of the assistant (AI)"
@@ -475,7 +478,9 @@ class Widgets:
             widget.bind("<<ComboboxSelected>>", lambda e: config.update(key))
 
         setup_entrybox("input", "Ask something to the AI")
+        setup_entrybox("avatar_user", "")
         setup_entrybox("name_user", "Name")
+        setup_entrybox("avatar_ai", "")
         setup_entrybox("name_ai", "Name")
         setup_entrybox("history", "Int")
         setup_entrybox("context", "Int")

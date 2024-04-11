@@ -36,6 +36,8 @@ class Config:
         self.default_theme: str = "dark"
         self.default_gpu_layers = 33
         self.default_context = 2048
+        self.default_avatar_user = "👽"
+        self.default_avatar_ai = "😎"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -57,6 +59,8 @@ class Config:
         self.theme = self.default_theme
         self.gpu_layers = self.default_gpu_layers
         self.context = self.default_context
+        self.avatar_user = self.default_avatar_user
+        self.avatar_ai = self.default_avatar_ai
 
         self.clearables = [
             "system",
@@ -65,6 +69,8 @@ class Config:
             "input",
             "name_user",
             "name_ai",
+            "avatar_user",
+            "avatar_ai",
         ]
 
         self.model_keys = [
