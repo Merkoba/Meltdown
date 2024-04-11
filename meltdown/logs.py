@@ -58,9 +58,9 @@ class Logs:
             if args.on_log:
                 app.run_command([args.on_log, str(file_path)])
 
-    def to_json(self, all: bool = False, name: str = "") -> None:
-        conversations = []
+    def save(self, mode: str, all: bool, name: str) -> None:
         num = 0
+        conversations = []
 
         if all:
             for key in session.conversations:
@@ -68,14 +68,24 @@ class Logs:
         else:
             conversations.append(session.get_current_conversation())
 
+        if mode == "text":
+            ext = "txt"
+        elif mode == "json":
+            ext = "json"
+
         for conversation in conversations:
             if not conversation:
                 continue
 
-            text = self.get_json(conversation)
+            if mode == "text":
+                text = self.get_text(conversation)
+            elif mode == "json":
+                text = self.get_json(conversation)
 
             if not text:
                 continue
+
+            num += 1
 
             if not name:
                 name = conversation.name
@@ -83,19 +93,26 @@ class Logs:
             else:
                 overwrite = True
 
-            num += 1
-            self.save_file(text, name, "json", all, overwrite=overwrite)
+            self.save_file(text, name, ext, all, overwrite=overwrite)
 
         if all:
             if args.quiet:
                 return
 
+            if mode == "text":
+                s = "text"
+            elif mode == "json":
+                s = "JSON"
+
             if num == 1:
-                msg = f"{num} JSON log saved"
+                msg = f"{num} {s} log saved"
             else:
-                msg = f"{num} JSON logs saved"
+                msg = f"{num} {s} logs saved"
 
             display.print(emojis.text(msg, "storage"))
+
+    def to_json(self, all: bool = False, name: str = "") -> None:
+        self.save("json", all, name)
 
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
@@ -113,44 +130,7 @@ class Logs:
         return json_text
 
     def to_text(self, all: bool = False, name: str = "") -> None:
-        conversations = []
-        num = 0
-
-        if all:
-            for key in session.conversations:
-                conversations.append(session.get_conversation(key))
-        else:
-            conversations.append(session.get_current_conversation())
-
-        for conversation in conversations:
-            if not conversation:
-                continue
-
-            text = self.get_text(conversation)
-
-            if not text:
-                continue
-
-            num += 1
-
-            if not name:
-                name = conversation.name
-                overwrite = False
-            else:
-                overwrite = True
-
-            self.save_file(text, name, "txt", all, overwrite=overwrite)
-
-        if all:
-            if args.quiet:
-                return
-
-            if num == 1:
-                msg = f"{num} text log saved"
-            else:
-                msg = f"{num} text logs saved"
-
-            display.print(emojis.text(msg, "storage"))
+        self.save("text", all, name)
 
     def get_text(self, conversation: Conversation) -> str:
         if not conversation:
