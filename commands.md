@@ -66,9 +66,9 @@ Save all conversations to JSON files
 
 ---
 
->logsdir
+>openlog
 
-Open the logs directory
+Open a log file by name
 
 ---
 
