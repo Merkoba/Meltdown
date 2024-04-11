@@ -230,7 +230,7 @@ class InputControl:
 
     def show_textbox(self) -> None:
         def action(ans: str) -> None:
-            self.submit(text=ans)
+            self.submit(text=ans, scroll=False)
 
         text = self.input.get().strip()
         self.clear()
