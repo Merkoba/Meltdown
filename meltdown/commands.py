@@ -140,9 +140,10 @@ class Commands:
                 "help": "Save all conversations to JSON files",
                 "action": lambda a=None: logs.to_json(True),
             },
-            "logsdir": {
-                "help": "Open the logs directory",
-                "action": lambda a=None: logs.open(),
+            "openlog": {
+                "help": "Open a log file by name",
+                "action": lambda a=None: logs.open(a),
+                "type": str,
             },
             "resize": {
                 "help": "Resize the window",

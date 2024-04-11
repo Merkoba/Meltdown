@@ -104,20 +104,25 @@ def add_to_list(key: str, text: str) -> None:
     save(path, new_items)
 
 
-def open_logs_dir() -> None:
+def open_log(name: str = "") -> None:
     from .app import app
     path = paths.logs
     path.mkdir(parents=True, exist_ok=True)
     os_name = os.name.lower()
 
+    if name:
+        path = Path(path, name)
+
+    spath = str(path)
+
     if os_name == "posix":
         # Linux
-        app.run_command(["xdg-open", str(path)])
+        app.run_command(["xdg-open", spath])
     elif os_name == "nt":
         # Windows
-        app.run_command(["start", str(path)])
+        app.run_command(["start", spath])
     elif os_name == "darwin":
         # macOS
-        app.run_command(["open", str(path)])
+        app.run_command(["open", spath])
     else:
         utils.error(f"Unrecognized OS: {os_name}")

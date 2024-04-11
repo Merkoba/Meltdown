@@ -150,8 +150,8 @@ class Logs:
         full_text += text
         return full_text
 
-    def open(self) -> None:
-        filemanager.open_logs_dir()
+    def open(self, name: str = "") -> None:
+        filemanager.open_log(name)
 
 
 logs = Logs()
