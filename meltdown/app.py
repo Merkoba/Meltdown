@@ -44,6 +44,7 @@ class App:
         self.loading = False
         self.loaded = False
         self.checks_delay = 200
+        self.system_frame_visible = True
 
         self.intro = [
             f"Welcome to {title}.",
@@ -238,6 +239,7 @@ class App:
 
             if args.compact_system:
                 widgets.system_frame.grid_remove()
+                self.system_frame_visible = False
 
             if args.compact_details:
                 widgets.details_frame.grid_remove()
@@ -254,6 +256,7 @@ class App:
             widgets.system_frame.grid_remove()
             widgets.details_frame.grid_remove()
             widgets.addons_frame.grid_remove()
+            self.system_frame_visible = False
 
         self.after_compact(True)
 
@@ -270,6 +273,7 @@ class App:
         widgets.buttons_frame.grid()
         widgets.addons_frame.grid()
         widgets.input_frame.grid()
+        self.system_frame_visible = True
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:

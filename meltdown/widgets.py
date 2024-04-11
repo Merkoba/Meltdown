@@ -27,6 +27,20 @@ class Widgets:
         self.input: EntryBox
         self.canvas_scroll = 1
 
+        self.cpu: tk.StringVar
+        self.ram: tk.StringVar
+        self.temp: tk.StringVar
+        self.gpu: tk.StringVar
+        self.gpu_ram: tk.StringVar
+        self.gpu_temp: tk.StringVar
+
+        self.cpu_text: tk.Label
+        self.ram_text: tk.Label
+        self.temp_text: tk.Label
+        self.gpu_text: tk.Label
+        self.gpu_ram_text: tk.Label
+        self.gpu_temp_text: tk.Label
+
     def make(self) -> None:
         right_padding = app.theme.right_padding
 
@@ -64,35 +78,10 @@ class Widgets:
         frame_data_system = widgetutils.make_frame()
         self.system_frame = frame_data_system.frame
 
-        avatar_width = 3
-        self.user_label = widgetutils.make_label(frame_data_system, "User")
-        tip = "Personalize yourself"
-        ToolTip(self.user_label, tip)
+        monitor_args = [args.system_cpu, args.system_ram, args.system_temp,
+                        args.system_gpu, args.system_gpu_ram, args.system_gpu_temp]
 
-        self.avatar_user = widgetutils.make_entry(frame_data_system, width=avatar_width)
-        tip = "The avatar of the user (You)"
-        ToolTip(self.avatar_user, tip)
-
-        self.name_user = widgetutils.make_entry(frame_data_system)
-        frame_data_system.expand()
-        tip = "The name of the user (You)"
-        ToolTip(self.name_user, tip)
-
-        self.ai_label = widgetutils.make_label(frame_data_system, "AI")
-        tip = "Personalize the AI"
-        ToolTip(self.ai_label, tip)
-
-        self.avatar_ai = widgetutils.make_entry(frame_data_system, width=avatar_width)
-        tip = "The avatar of the assistant (AI)"
-        ToolTip(self.avatar_ai, tip)
-
-        self.name_ai = widgetutils.make_entry(frame_data_system)
-        frame_data_system.expand()
-        tip = "The name of the assistant (AI)"
-        ToolTip(self.name_ai, tip)
-
-        self.system_disabled = (not args.system) or \
-            ((not args.system_cpu) and (not args.system_ram) and (not args.system_temp))
+        self.system_disabled = (not args.system) or (not any(monitor_args))
 
         if self.system_disabled:
             rpadding = right_padding
@@ -109,58 +98,54 @@ class Widgets:
                 monitors.append("ram")
 
             if args.system_temp:
-                monitors.append("tmp")
+                monitors.append("temp")
+
+            if args.system_gpu:
+                monitors.append("gpu")
+
+            if args.system_gpu_ram:
+                monitors.append("gpu_ram")
+
+            if args.system_gpu_temp:
+                monitors.append("gpu_temp")
+
+            def make_monitor(name: str, label_text: str, tip: str) -> None:
+                if name == monitors[-1]:
+                    rightpad = right_padding
+                else:
+                    rightpad = None
+
+                label = widgetutils.make_label(frame_data_system, label_text)
+                label.configure(cursor="hand2")
+                setattr(self, name, tk.StringVar())
+                monitor_text = widgetutils.make_label(frame_data_system, "", padx=0, right_padding=rightpad)
+                monitor_text.configure(textvariable=getattr(self, name))
+                monitor_text.configure(cursor="hand2")
+                setattr(self, f"{name}_text", monitor_text)
+                ToolTip(label, tip)
+                ToolTip(monitor_text, tip)
+                getattr(self, name).set("000%")
+
+                label.bind("<Button-1>", lambda e: app.open_task_manager())
+                monitor_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
             if args.system_cpu:
-                if "cpu" == monitors[-1]:
-                    rightpad = right_padding
-                else:
-                    rightpad = None
-
-                self.cpu_label = widgetutils.make_label(frame_data_system, "CPU")
-                self.cpu_label.configure(cursor="hand2")
-                self.cpu = tk.StringVar()
-                self.cpu_text = widgetutils.make_label(frame_data_system, "", padx=0, right_padding=rightpad)
-                self.cpu_text.configure(textvariable=self.cpu)
-                self.cpu_text.configure(cursor="hand2")
-                tip = "Current CPU usage"
-                ToolTip(self.cpu_label, tip)
-                ToolTip(self.cpu_text, tip)
-                self.cpu.set("000%")
+                make_monitor("cpu", "CPU", "Current CPU usage")
 
             if args.system_ram:
-                if "ram" == monitors[-1]:
-                    rightpad = right_padding
-                else:
-                    rightpad = None
-
-                self.ram_label = widgetutils.make_label(frame_data_system, "RAM")
-                self.ram_label.configure(cursor="hand2")
-                self.ram = tk.StringVar()
-                self.ram_text = widgetutils.make_label(frame_data_system, "", padx=0, right_padding=rightpad)
-                self.ram_text.configure(textvariable=self.ram)
-                self.ram_text.configure(cursor="hand2")
-                tip = "Current RAM usage"
-                ToolTip(self.ram_label, tip)
-                ToolTip(self.ram_text, tip)
-                self.ram.set("000%")
+                make_monitor("ram", "RAM", "Current RAM usage")
 
             if args.system_temp:
-                if "tmp" == monitors[-1]:
-                    rightpad = right_padding
-                else:
-                    rightpad = None
+                make_monitor("temp", "TMP", "Current CPU temperature")
 
-                self.temp_label = widgetutils.make_label(frame_data_system, "TMP")
-                self.temp_label.configure(cursor="hand2")
-                self.temp = tk.StringVar()
-                self.temp_text = widgetutils.make_label(frame_data_system, "", padx=0, right_padding=rightpad)
-                self.temp_text.configure(textvariable=self.temp)
-                self.temp_text.configure(cursor="hand2")
-                tip = "Current CPU temperature"
-                ToolTip(self.temp_label, tip)
-                ToolTip(self.temp_text, tip)
-                self.temp.set("000°")
+            if args.system_gpu:
+                make_monitor("gpu", "GPU", "Current GPU usage")
+
+            if args.system_gpu_ram:
+                make_monitor("gpu_ram", "GPU RAM", "Current GPU memory usage")
+
+            if args.system_gpu_temp:
+                make_monitor("gpu_temp", "GPU TMP", "Current GPU temperature")
 
         # Details Container
         frame_data_details = widgetutils.make_frame()
@@ -183,6 +168,31 @@ class Widgets:
 
         # Details Widgets
         details_data = FrameData(self.details)
+
+        avatar_width = 3
+        self.user_label = widgetutils.make_label(details_data, "User", padx=0)
+        tip = "Personalize yourself"
+        ToolTip(self.user_label, tip)
+
+        self.avatar_user = widgetutils.make_entry(details_data, width=avatar_width)
+        tip = "The avatar of the user (You)"
+        ToolTip(self.avatar_user, tip)
+
+        self.name_user = widgetutils.make_entry(details_data)
+        tip = "The name of the user (You)"
+        ToolTip(self.name_user, tip)
+
+        self.ai_label = widgetutils.make_label(details_data, "AI")
+        tip = "Personalize the AI"
+        ToolTip(self.ai_label, tip)
+
+        self.avatar_ai = widgetutils.make_entry(details_data, width=avatar_width)
+        tip = "The avatar of the assistant (AI)"
+        ToolTip(self.avatar_ai, tip)
+
+        self.name_ai = widgetutils.make_entry(details_data)
+        tip = "The name of the assistant (AI)"
+        ToolTip(self.name_ai, tip)
 
         self.history_label = widgetutils.make_label(details_data, "History")
         self.history = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
@@ -397,9 +407,9 @@ class Widgets:
         self.setup_binds()
         self.setup_widgets()
         self.add_generic_menus()
-        self.setup_system()
         self.check_details_buttons()
         self.setup_tooltips()
+        self.disable_stop_button()
 
         inputcontrol.focus()
 
@@ -449,22 +459,6 @@ class Widgets:
         for child in self.details.winfo_children():
             child.bind("<Button-4>", lambda e: widgets.details_left())
             child.bind("<Button-5>", lambda e: widgets.details_right())
-
-    def setup_system(self) -> None:
-        if self.system_disabled:
-            return
-
-        if args.system_cpu:
-            self.cpu_label.bind("<Button-1>", lambda e: app.open_task_manager())
-            self.cpu_text.bind("<Button-1>", lambda e: app.open_task_manager())
-
-        if args.system_ram:
-            self.ram_label.bind("<Button-1>", lambda e: app.open_task_manager())
-            self.ram_text.bind("<Button-1>", lambda e: app.open_task_manager())
-
-        if args.system_temp:
-            self.temp_label.bind("<Button-1>", lambda e: app.open_task_manager())
-            self.temp_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
     def setup_widgets(self) -> None:
         def setup_entrybox(key: str, placeholder: str) -> None:

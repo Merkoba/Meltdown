@@ -67,7 +67,7 @@ Save and load config files.
 
 Prepend and append text automatically to your prompts.
 
-Show system CPU, RAM, and temperature. Click to open `btop` etc.
+Show system CPU, RAM, and temperature. GPU info as well. Click to open `btop` etc.
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 

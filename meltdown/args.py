@@ -17,6 +17,9 @@ class Args:
         self.system = True
         self.system_colors = True
         self.system_cpu = True
+        self.system_gpu = True
+        self.system_gpu_ram = True
+        self.system_gpu_temp = True
         self.system_ram = True
         self.system_temp = True
         self.system_threshold = 70
@@ -121,6 +124,9 @@ class Args:
             "no_system": {"action": "store_false", "help": "Don't show system monitors"},
             "no_system_colors": {"action": "store_false", "help": "Disable system monitor colors"},
             "no_cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
+            "no_gpu": {"action": "store_false", "help": "Don't show the GPU monitor"},
+            "no_gpu_ram": {"action": "store_false", "help": "Don't show the GPU memory monitor"},
+            "no_gpu_temp": {"action": "store_false", "help": "Don't show the GPU temperature monitor"},
             "no_ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
             "no_temp": {"action": "store_false", "help": "Don't show the temperature monitor"},
             "no_keyboard": {"action": "store_false", "help": "Disable keyboard shortcuts"},
@@ -233,7 +239,8 @@ class Args:
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"), ("no_input_memory", "input_memory"),
             ("no_textbox_button", "textbox_button"), ("no_log_feedback", "log_feedback"),
-            ("no_wrap_textbox", "wrap_textbox"),
+            ("no_wrap_textbox", "wrap_textbox"), ("no_gpu", "system_gpu"),
+            ("no_gpu_ram", "system_gpu"), ("no_gpu_temp", "system_gpu"),
         ]
 
         for r_item in other_name:

@@ -152,6 +152,24 @@ Don't show the temperature monitor.
 
 ---
 
+>no-gpu
+
+Don't show the GPU monitor.
+
+---
+
+>no-gpu-ram
+
+Don't show the GPU RAM monitor.
+
+---
+
+>no-gpu-temp
+
+Don't show the GPU temperature monitor.
+
+---
+
 >no-wrap
 
 Disable wrapping when selecting items.
