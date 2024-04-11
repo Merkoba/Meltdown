@@ -369,6 +369,7 @@ class Widgets:
 
         if isinstance(widget, EntryBox):
             widget.set_text(value)
+            self.check_move_to_end(key)
 
             if focus:
                 widget.focus_set()
@@ -468,6 +469,7 @@ class Widgets:
             widget.key = key
             widget.placeholder = placeholder
             widget.check_placeholder()
+            self.check_move_to_end(key)
 
         def setup_combobox(key: str) -> None:
             widget = self.get_widget(key)
@@ -822,6 +824,18 @@ class Widgets:
 
         Dialog.show_textbox("System Prompt", lambda a: action(a),
                             value=config.system, commands=cmds)
+
+    def check_move_to_end(self, key: str) -> None:
+        if key in ["model"]:
+            widget = widgets.get_widget(key)
+
+            if not widget:
+                return
+
+            if type(widget) != EntryBox:
+                return
+
+            widget.move_to_end()
 
 
 widgets: Widgets = Widgets()
