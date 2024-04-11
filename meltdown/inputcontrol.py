@@ -234,7 +234,7 @@ class InputControl:
 
         text = self.input.get().strip()
         self.clear()
-        Dialog.show_textbox("Write an input (Ctrl+Enter)", lambda a: action(a), value=text)
+        Dialog.show_textbox("Write an input", lambda a: action(a), value=text)
 
     def input_command(self, arg: str) -> None:
         if arg:

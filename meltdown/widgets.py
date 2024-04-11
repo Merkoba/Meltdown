@@ -57,13 +57,26 @@ class Widgets:
         self.main_menu_button = widgetutils.make_button(frame_data_model, "Menu",
                                                         lambda e: self.show_main_menu(e),
                                                         right_padding=right_padding)
+
         ToolTip(self.main_menu_button, "Open the main menu")
 
         # System
         frame_data_system = widgetutils.make_frame()
         self.system_frame = frame_data_system.frame
 
-        self.system_label = widgetutils.make_label(frame_data_system, "System")
+        self.name_user_label = widgetutils.make_label(frame_data_system, "User")
+        self.name_user = widgetutils.make_entry(frame_data_system)
+        frame_data_system.expand()
+        tip = "The name of the user (You)"
+        ToolTip(self.name_user_label, tip)
+        ToolTip(self.name_user, tip)
+
+        self.name_ai_label = widgetutils.make_label(frame_data_system, "AI")
+        self.name_ai = widgetutils.make_entry(frame_data_system)
+        frame_data_system.expand()
+        tip = "The name of the assistant (AI)"
+        ToolTip(self.name_ai_label, tip)
+        ToolTip(self.name_ai, tip)
 
         self.system_disabled = (not args.system) or \
             ((not args.system_cpu) and (not args.system_ram) and (not args.system_temp))
@@ -72,14 +85,6 @@ class Widgets:
             rpadding = right_padding
         else:
             rpadding = 0
-
-        kc = args.keychar
-        self.system = widgetutils.make_entry(frame_data_system, right_padding=rpadding)
-        frame_data_system.expand()
-        self.system.bind_mousewheel()
-        tip = f"This sets the system prompt. You can use keywords like {kc}name_user, {kc}name_ai, and {kc}date"
-        ToolTip(self.system_label, tip)
-        ToolTip(self.system, tip)
 
         if not self.system_disabled:
             monitors = []
@@ -165,17 +170,6 @@ class Widgets:
 
         # Details Widgets
         details_data = FrameData(self.details)
-        self.name_user_label = widgetutils.make_label(details_data, "User", padx=0)
-        self.name_user = widgetutils.make_entry(details_data)
-        tip = "The name of the user (You)"
-        ToolTip(self.name_user_label, tip)
-        ToolTip(self.name_user, tip)
-
-        self.name_ai_label = widgetutils.make_label(details_data, "AI")
-        self.name_ai = widgetutils.make_entry(details_data)
-        tip = "The name of the assistant (AI)"
-        ToolTip(self.name_ai_label, tip)
-        ToolTip(self.name_ai, tip)
 
         self.history_label = widgetutils.make_label(details_data, "History")
         self.history = widgetutils.make_entry(details_data, width=app.theme.entry_width_small)
@@ -485,7 +479,6 @@ class Widgets:
         setup_entrybox("name_ai", "Name")
         setup_entrybox("history", "Int")
         setup_entrybox("context", "Int")
-        setup_entrybox("system", "Instructions to the AI")
         setup_entrybox("max_tokens", "Int")
         setup_entrybox("temperature", "Float")
         setup_entrybox("seed", "Int")
@@ -502,7 +495,6 @@ class Widgets:
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
-        self.system.bind("<Button-3>", lambda e: self.show_system_menu(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
@@ -515,6 +507,8 @@ class Widgets:
         from .config import config
         from .session import session
 
+        self.main_menu.add(text="System Prompt", command=lambda: self.write_system_prompt())
+        self.main_menu.separator()
         self.main_menu.add(text="Recent Models", command=lambda: self.show_recent_models())
         self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
         self.main_menu.separator()
@@ -597,9 +591,6 @@ class Widgets:
         self.show_menu_items("model", "models",
                              lambda m: model.set_model(m), event, only_items=only_items)
 
-    def show_system_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("system", "systems", lambda s: self.set_system(s), event)
-
     def show_prepend_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("prepend", "prepends", lambda s: self.set_prepend(s), event)
 
@@ -625,7 +616,7 @@ class Widgets:
             menu = Menu()
             self.add_common_commands(menu, key)
 
-            if key not in ["model", "system", "prepend", "append", "input"]:
+            if key not in ["model", "prepend", "append", "input"]:
                 widget.bind("<Button-3>", lambda e: menu.show(e))
 
         for key in config.defaults():
@@ -671,10 +662,6 @@ class Widgets:
 
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
-
-    def set_system(self, text: str) -> None:
-        self.system.set_text(text)
-        config.update("system")
 
     def set_prepend(self, text: str) -> None:
         self.prepend.set_text(text)
@@ -772,8 +759,6 @@ class Widgets:
             self.show_append_menu()
         elif widget == self.model:
             self.show_model_menu()
-        elif widget == self.system:
-            self.show_system_menu()
 
     def details_left(self) -> None:
         self.details_canvas.xview_scroll(-self.canvas_scroll, "units")
@@ -817,6 +802,21 @@ class Widgets:
 
     def show_recent_models(self) -> None:
         self.show_model_menu(only_items=True)
+
+    def write_system_prompt(self) -> None:
+        def action(ans: str) -> None:
+            config.set("system", ans)
+
+        def reset() -> None:
+            config.reset_one("system")
+            self.write_system_prompt()
+            return
+
+        cmds = []
+        cmds.append(("Reset", lambda a: reset()))
+
+        Dialog.show_textbox("System Prompt", lambda a: action(a),
+                            value=config.system, commands=cmds)
 
 
 widgets: Widgets = Widgets()

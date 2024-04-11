@@ -48,6 +48,7 @@ class Dialog:
     def show_commands(text: str,
                       commands: List[Tuple[str, Callable[..., Any]]],
                       image: Optional[Path] = None) -> None:
+
         if Dialog.open():
             return
 
@@ -64,18 +65,18 @@ class Dialog:
             label.mlt_image = photo  # type: ignore
             label.pack(side=tk.LEFT, padx=0, pady=8)
 
-        def generic(func: Callable[..., Any]) -> None:
-            dialog.hide()
-            func()
+        def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
+            def generic(func: Callable[..., Any]) -> None:
+                dialog.hide()
+                func()
 
-        def make_button(cmd: Tuple[str, Callable[..., Any]]) -> None:
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
         if commands:
             for cmd in commands:
-                make_button(cmd)
+                make_cmd(cmd)
 
-        dialog.highlight_button(len(dialog.buttons) - 1)
+        dialog.highlight_last_button()
         dialog.show()
 
     @staticmethod
@@ -129,8 +130,8 @@ class Dialog:
 
     @staticmethod
     def show_textbox(text: str, cmd_ok: Callable[..., Any],
-                     cmd_cancel: Optional[Callable[..., Any]] = None,
-                     value: str = "") -> None:
+                     cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "",
+                     commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
 
         from .keyboard import keyboard
 
@@ -142,14 +143,24 @@ class Dialog:
         scrollbar_y = tk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL)
         scrollbar_x = tk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL)
 
-        textbox = tk.Text(dialog.top_frame, font=app.theme.font, width=30, height=5, wrap="none")
+        textbox = tk.Text(dialog.top_frame, font=app.theme.font, width=30, height=5)
         textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
         textbox.configure(highlightthickness=0)
+
+        if args.wrap_textbox:
+            textbox.configure(wrap=tk.WORD)
+        else:
+            textbox.configure(wrap=tk.NONE)
+
         scrollbar_y.configure(command=textbox.yview)
         scrollbar_x.configure(command=textbox.xview)
 
         def get() -> str:
             return textbox.get("1.0", tk.END).strip()
+
+        def select_all() -> str:
+            textbox.tag_add("sel", "1.0", tk.END)
+            return "break"
 
         def ok() -> None:
             ans = get()
@@ -168,11 +179,27 @@ class Dialog:
 
         textbox.bind("<Return>", lambda e: on_enter())
         textbox.bind("<Escape>", lambda e: dialog.hide())
+        textbox.bind("<Control-KeyPress-a>", lambda e: select_all())
+
         textbox.pack(padx=6, pady=6)
+
+        def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
+            def generic(func: Callable[..., Any]) -> None:
+                ans = get()
+                dialog.hide()
+                func(ans)
+
+            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
+
+        if commands:
+            for cmd in commands:
+                make_cmd(cmd)
+
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
+
         dialog.show()
-        dialog.highlight_button(1)
+        dialog.highlight_last_button()
         textbox.insert(tk.END, value)
         textbox.focus_set()
 
@@ -290,6 +317,9 @@ class Dialog:
                 button.set_style("normal")
 
         self.highlighted = True
+
+    def highlight_last_button(self) -> None:
+        self.highlight_button(len(self.buttons) - 1)
 
     def enter(self) -> None:
         if self.current_button is not None:

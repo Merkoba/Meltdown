@@ -104,6 +104,7 @@ class Args:
         self.log_feedback = True
         self.avatars_in_logs = False
         self.browser = ""
+        self.wrap_textbox = True
 
     class Internal:
         title = app.manifest["title"]
@@ -142,6 +143,7 @@ class Args:
             "no_emojis": {"action": "store_false", "help": "Don't use emojis"},
             "no_input_memory": {"action": "store_false", "help": "Don't remember input words"},
             "no_textbox_button": {"action": "store_false", "help": "Don't show the textbox button"},
+            "no_wrap_textbox": {"action": "store_false", "help": "Don't wrap the textbox text"},
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "compact_model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
@@ -228,7 +230,8 @@ class Args:
             ("no_clean_slate", "clean_slate"), ("no_emojis", "emojis"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"), ("no_input_memory", "input_memory"),
-            ("no_textbox_button", "textbox_button"), ("no_log_feedback", "log_feedback")
+            ("no_textbox_button", "textbox_button"), ("no_log_feedback", "log_feedback"),
+            ("no_wrap_textbox", "wrap_textbox"),
         ]
 
         for r_item in other_name:
