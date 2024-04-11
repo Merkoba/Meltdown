@@ -326,7 +326,7 @@ Consider tabs old after these minutes.
 
 ---
 
->max_list_items
+>max-list-items
 
 Default: 10
 
@@ -690,6 +690,6 @@ Open links with this program.
 
 ---
 
->font_diff
+>font-diff
 
 Add or subtract this from font sizes.
