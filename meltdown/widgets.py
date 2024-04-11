@@ -483,6 +483,7 @@ class Widgets:
         setup_entrybox("input", "Ask something to the AI")
         setup_entrybox("name_user", "Name")
         setup_entrybox("name_ai", "Name")
+        setup_entrybox("history", "Int")
         setup_entrybox("context", "Int")
         setup_entrybox("system", "Instructions to the AI")
         setup_entrybox("max_tokens", "Int")
@@ -495,7 +496,6 @@ class Widgets:
         setup_entrybox("append", "Add after")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
-        setup_entrybox("context", "Int")
 
         setup_combobox("format")
         setup_combobox("mlock")
