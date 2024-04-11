@@ -103,6 +103,7 @@ class Args:
         self.textbox_button = True
         self.log_feedback = True
         self.avatars_in_logs = False
+        self.browser = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -205,6 +206,7 @@ class Args:
             "commandoc": {"type": str, "help": "Make the commandoc and save it on this path"},
             "after_stream": {"type": str, "help": "Execute this command after streaming a response"},
             "markdown": {"type": str, "choices": ["user", "ai", "all", "none"], "help": "Define where to apply markdown formatting"},
+            "browser": {"type": str, "help": "Open links with this browser"},
         }
 
     def parse(self) -> None:
@@ -252,7 +254,7 @@ class Args:
             "terminal_vi", "time", "verbose", "markdown",
             "listener", "listener_delay", "sticky", "commandoc",
             "after_stream", "tabs_always", "input_memory_min",
-            "avatars_in_logs",
+            "avatars_in_logs", "browser",
         ]
 
         for n_item in normals:

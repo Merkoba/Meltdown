@@ -681,3 +681,9 @@ Don't show feedback when saving logs.
 >avatars-in-logs
 
 Show the avatars in text logs.
+
+---
+
+>browser
+
+Open links with this program.

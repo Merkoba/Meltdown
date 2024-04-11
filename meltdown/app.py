@@ -315,10 +315,16 @@ class App:
             utils.error(e)
 
     def open_url(self, url: str) -> None:
+        from .args import args
+
         if not url:
             return
 
-        cmd = [self.get_opener(), url]
+        if args.browser:
+            cmd = [args.browser, url]
+        else:
+            cmd = [self.get_opener(), url]
+
         self.run_command(cmd)
 
     def search_text(self, text: str) -> None:
