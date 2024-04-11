@@ -51,7 +51,7 @@ class Logs:
             file.write(text)
 
         if not all:
-            if not args.quiet:
+            if not args.quiet and args.log_feedback:
                 msg = f"Log saved as {file_name}"
                 display.print(emojis.text(msg, "storage"))
 
@@ -96,7 +96,7 @@ class Logs:
             self.save_file(text, name, ext, all, overwrite=overwrite)
 
         if all:
-            if args.quiet:
+            if args.quiet or (not args.log_feedback):
                 return
 
             if mode == "text":

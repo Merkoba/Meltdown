@@ -669,3 +669,9 @@ This specifies if markdown formatting is applied to the user, to the AI, to both
 >no-textbox-button
 
 Don't show the button to show the textbox input.
+
+---
+
+>no-log-feedback
+
+Don't show feedback when saving logs.
