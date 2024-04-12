@@ -61,9 +61,14 @@ def get_info() -> None:
     # This works with AMD GPUs | rocm-smi must be installed
     if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
         cmd = ["/opt/rocm/bin/rocm-smi", "--showtemp", "--showuse", "--showmemuse", "--json"]
-        result = subprocess.run(cmd, capture_output=True, text=True)
+        result = None
 
-        if result.returncode == 0:
+        try:
+            result = subprocess.run(cmd, capture_output=True, text=True)
+        except BaseException:
+            pass
+
+        if result and result.returncode == 0:
             ans = json.loads(result.stdout)
 
             if "card0" in ans:
