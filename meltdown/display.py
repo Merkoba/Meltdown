@@ -35,6 +35,7 @@ class Tab:
 class Display:
     def __init__(self) -> None:
         self.current_tab: str = "none"
+        self.tab_streaming: str = "none"
 
     def make(self) -> None:
         from .widgets import widgets
@@ -870,6 +871,7 @@ class Display:
 
         self.book.highlight(tab_id)
         self.set_tab_streaming(tab_id)
+        self.tab_streaming = tab_id
 
     def stream_stopped(self) -> None:
         if not args.tab_highlight:
@@ -877,6 +879,7 @@ class Display:
 
         self.book.remove_highlights()
         self.clear_tab_streaming()
+        self.format_text(self.tab_streaming)
 
     def set_tab_streaming(self, tab_id: str) -> None:
         for key, values in self.tabs.items():

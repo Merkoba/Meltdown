@@ -133,9 +133,6 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.format_debouncer_delay = 250
-        self.format_debouncer = ""
-        self.format_tokens = ("`", ":", "*", "_")
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -256,18 +253,6 @@ class Output(tk.Text):
         self.disable()
         self.to_bottom(True)
 
-        if any(token in text for token in self.format_tokens):
-            self.start_format_debouncer()
-
-    def start_format_debouncer(self) -> None:
-        self.clear_format_debouncer()
-        self.format_debouncer = self.after(self.format_debouncer_delay, lambda: self.format_text())
-
-    def clear_format_debouncer(self) -> None:
-        if self.format_debouncer:
-            self.after_cancel(self.format_debouncer)
-            self.format_debouncer = ""
-
     def clear_text(self) -> None:
         self.set_text("")
 
@@ -328,7 +313,6 @@ class Output(tk.Text):
         return self.display.get_tab(self.tab_id)
 
     def format_text(self) -> None:
-        self.clear_format_debouncer()
         tab = self.get_tab()
 
         if not tab:

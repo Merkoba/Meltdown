@@ -99,7 +99,7 @@ class Conversation:
                     else:
                         continue
 
-            tab.output.format_text()
+            display.format_text(tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
