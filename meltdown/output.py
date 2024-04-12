@@ -99,14 +99,13 @@ class Output(tk.Text):
 
     @staticmethod
     def get_prompt(who: str, mark: bool = False,
-                   avatar: bool = True, space: bool = True) -> str:
+                   show_avatar: bool = True, colon_space: bool = True) -> str:
 
         name = getattr(config, f"name_{who}")
-        colons = " : " if space else ": "
+        avatar = getattr(config, f"avatar_{who}")
+        colons = " : " if colon_space else ": "
 
-        if args.avatars and avatar:
-            avatar = getattr(config, f"avatar_{who}")
-
+        if args.avatars and show_avatar and avatar:
             if name:
                 prompt = f"{avatar} {name}{colons}"
             else:

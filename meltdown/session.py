@@ -118,12 +118,14 @@ class Conversation:
                     if args.avatars_in_logs:
                         log += Output.get_prompt("user")
                     else:
-                        log += Output.get_prompt("user", avatar=False, space=False)
+                        log += Output.get_prompt("user",
+                                                 show_avatar=False, colon_space=False)
                 elif key == "assistant":
                     if args.avatars_in_logs:
                         log += Output.get_prompt("ai")
                     else:
-                        log += Output.get_prompt("ai", avatar=False, space=False)
+                        log += Output.get_prompt("ai",
+                                                 show_avatar=False, colon_space=False)
                 else:
                     continue
 
