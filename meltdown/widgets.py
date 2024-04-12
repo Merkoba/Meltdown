@@ -818,13 +818,17 @@ class Widgets:
     def show_recent_models(self) -> None:
         self.show_model_menu(only_items=True)
 
-    def write_system_prompt(self) -> None:
+    def write_system_prompt(self, text: str = "") -> None:
         def action(ans: str) -> None:
             config.set("system", ans)
 
         def reset() -> None:
             config.reset_one("system")
             self.write_system_prompt()
+            return
+
+        if text:
+            action(text)
             return
 
         cmds = []

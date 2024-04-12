@@ -84,7 +84,7 @@ Stop the current stream
 
 ---
 
->system
+>taskmanager
 
 Open the system task manager
 
@@ -392,7 +392,7 @@ Prompt the AI with this input
 
 >write
 
-Set the input without submitting
+Write the input prompt
 
 ---
 
@@ -489,3 +489,9 @@ Show the GPT menu
 >apikey
 
 Set the OpenAI API key
+
+---
+
+>system
+
+Write the system prompt

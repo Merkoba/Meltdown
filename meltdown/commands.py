@@ -153,7 +153,7 @@ class Commands:
                 "help": "Stop the current stream",
                 "action": lambda a=None: model.stop_stream(),
             },
-            "system": {
+            "taskmanager": {
                 "help": "Open the system task manager",
                 "action": lambda a=None: app.open_task_manager(),
             },
@@ -389,7 +389,7 @@ class Commands:
                 "type": str,
             },
             "write": {
-                "help": "Set the input without submitting",
+                "help": "Write the input prompt",
                 "action": lambda a=None: inputcontrol.set(text=a),
                 "type": str,
                 "arg_req": True,
@@ -467,6 +467,11 @@ class Commands:
             "apikey": {
                 "help": "Set the OpenAI API key",
                 "action": lambda a=None: model.set_api_key(),
+            },
+            "system": {
+                "help": "Write the system prompt",
+                "action": lambda a=None: widgets.write_system_prompt(a),
+                "type": str,
             },
         }
 
