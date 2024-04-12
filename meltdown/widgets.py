@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Optional, Any, Callable
+from typing import Optional, Any, Callable, Dict
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -818,24 +818,25 @@ class Widgets:
     def show_recent_models(self) -> None:
         self.show_model_menu(only_items=True)
 
-    def write_system_prompt(self, text: str = "") -> None:
-        def action(ans: str) -> None:
-            config.set("system", ans)
+    def write_system_prompt(self, text: str = "", max: bool = False) -> None:
+        def action(ans: Dict[str, Any]) -> None:
+            config.set("system", ans["text"])
 
-        def reset() -> None:
+        def reset(ans: Dict[str, Any]) -> None:
             config.reset_one("system")
-            self.write_system_prompt()
+            self.write_system_prompt(max=ans["maxed"])
             return
 
         if text:
-            action(text)
+            config.set("system", text)
             return
 
-        cmds = []
-        cmds.append(("Reset", lambda a: reset()))
+        cmds = [
+            ("Reset", lambda a: reset(a))
+        ]
 
         Dialog.show_textbox("System Prompt", lambda a: action(a),
-                            value=config.system, commands=cmds)
+                            value=config.system, commands=cmds, start_maximized=max)
 
     def check_move_to_end(self, key: str) -> None:
         if key in ["model"]:

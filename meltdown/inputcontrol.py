@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import Any, Optional, List
+from typing import Any, Optional, List, Dict
 
 # Modules
 from .tooltips import ToolTip
@@ -229,8 +229,8 @@ class InputControl:
             filemanager.save(paths.autocomplete, self.autocomplete)
 
     def show_textbox(self) -> None:
-        def action(ans: str) -> None:
-            self.submit(text=ans, scroll=False)
+        def action(ans: Dict[str, Any]) -> None:
+            self.submit(text=ans["text"], scroll=False)
 
         text = self.input.get().strip()
         self.clear()

@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple, Dict
 from PIL import Image, ImageTk  # type: ignore
 from pathlib import Path
 
@@ -131,7 +131,8 @@ class Dialog:
     @staticmethod
     def show_textbox(text: str, cmd_ok: Callable[..., Any],
                      cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "",
-                     commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+                     commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
+                     start_maximized: bool = False) -> None:
 
         from .keyboard import keyboard
 
@@ -155,6 +156,11 @@ class Dialog:
         scrollbar_y.configure(command=textbox.yview)
         scrollbar_x.configure(command=textbox.xview)
 
+        maxed = False
+
+        def get_ans() -> Dict[str, Any]:
+            return {"text": get(), "maxed": maxed}
+
         def get() -> str:
             return textbox.get("1.0", tk.END).strip()
 
@@ -163,17 +169,16 @@ class Dialog:
             return "break"
 
         def ok() -> None:
-            ans = get()
+            ans = get_ans()
             dialog.hide()
             cmd_ok(ans)
 
         def cancel() -> None:
+            ans = get_ans()
             dialog.hide()
 
             if cmd_cancel:
-                cmd_cancel()
-
-        maxed = False
+                cmd_cancel(ans)
 
         def max() -> None:
             nonlocal maxed
@@ -203,6 +208,8 @@ class Dialog:
             dialog.top_frame.grid_columnconfigure(0, weight=1)
             dialog.top_frame.grid_rowconfigure(0, weight=1)
 
+            textbox.focus_set()
+
         def on_enter() -> None:
             if keyboard.ctrl:
                 ok()
@@ -215,7 +222,7 @@ class Dialog:
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
-                ans = get()
+                ans = get_ans()
                 dialog.hide()
                 func(ans)
 
@@ -233,6 +240,9 @@ class Dialog:
         dialog.highlight_last_button()
         textbox.insert(tk.END, value)
         textbox.focus_set()
+
+        if start_maximized:
+            max()
 
     @staticmethod
     def hide_all() -> None:
@@ -278,7 +288,7 @@ class Dialog:
         self.top_frame.grid(row=1, column=0, sticky="nsew")
 
         self.image_frame = tk.Frame(self.container, background=background)
-        self.image_frame.grid(row=2, column=0, sticky="nsew")
+        self.image_frame.grid(row=2, column=0)
 
         self.buttons_frame = tk.Frame(self.container, background=background)
         self.buttons_frame.grid(row=3, column=0)
