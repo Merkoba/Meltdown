@@ -30,7 +30,7 @@ This is replaced with the name of the current tab in a file-friendly format.
 
 For instance `Maguko Tom` would be replaced to `maguko_tom` if `@name` is used.
 
-You can use this to save logs: `/logtext @name`
+You can use this to save logs: `/logtext @name`.
 
 ---
 
@@ -58,7 +58,7 @@ Or maybe a prompt alias:
 
 You can run automated tasks.
 
-The format is [seconds] [commands] [/now (optional)]
+The format is [seconds] [commands] [/now (optional)].
 
 For example:
 
@@ -428,7 +428,7 @@ Default: "/"
 
 The command prefix for all commands.
 
-Like `/` in `/about`
+Like `/` in `/about`.
 
 ---
 
@@ -438,7 +438,7 @@ Default: "&"
 
 The command used to join commands.
 
-Like `&` in `/tab 1 & /select`
+Like `&` in `/tab 1 & /select`.
 
 ---
 
@@ -476,7 +476,7 @@ If customized, it will compact/hide exactly what you defined.
 
 Else it hides by default: system, details, and addons.
 
-For example: `--compact-model --compact buttons`
+For example: `--compact-model --compact buttons`.
 
 In compact mode only the model frame and the buttons frame will be hidden.
 
@@ -554,7 +554,7 @@ This reads a file located in a temp directory.
 
 The file is called `mlt_meltdown.input`.
 
-In Linux it would be located inside `/tmp`
+In Linux it would be located inside `/tmp`.
 
 This file is read, and if it has content it used for the input.
 
@@ -562,7 +562,9 @@ The file is then emptied.
 
 So for instance you can trigger an input by doing this:
 
-`echo "hello world" > /tmp/mlt_meltdown.input`
+```sh
+echo "hello world" > /tmp/mlt_meltdown.input
+```
 
 ---
 
@@ -730,7 +732,7 @@ What task manager to use when clicking the system monitors.
 
 What terminal to use for programs like the task manager.
 
-For example: `--terminal urxvt --task-manager htop`
+For example: `--terminal urxvt --task-manager htop`.
 
 ---
 
