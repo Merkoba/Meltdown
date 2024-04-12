@@ -61,6 +61,11 @@ def get_info() -> None:
     # This works with AMD GPUs | rocm-smi must be installed
     if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
         cmd = ["/opt/rocm/bin/rocm-smi", "--showtemp", "--showuse", "--showmemuse", "--json"]
+
+        gpu_use: Optional[int] = None
+        gpu_ram: Optional[int] = None
+        gpu_temp: Optional[int] = None
+
         result = None
 
         try:
