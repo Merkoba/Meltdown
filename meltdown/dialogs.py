@@ -173,6 +173,36 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
+        maxed = False
+
+        def max() -> None:
+            nonlocal maxed
+
+            if maxed:
+                value = get()
+                dialog.hide()
+                Dialog.show_textbox(text, cmd_ok,
+                                    cmd_cancel, value=value, commands=commands)
+            else:
+                maximize()
+                maxed = True
+
+        def maximize() -> None:
+            dialog.root.place(x=0, y=0, width=app.main_frame.winfo_width(),
+                              height=app.main_frame.winfo_height())
+
+            dialog.root.grid_columnconfigure(0, weight=1)
+            dialog.root.grid_rowconfigure(0, weight=1)
+
+            dialog.main.grid_columnconfigure(0, weight=1)
+            dialog.main.grid_rowconfigure(0, weight=1)
+
+            dialog.container.grid_columnconfigure(0, weight=1)
+            dialog.container.grid_rowconfigure(1, weight=1)
+
+            dialog.top_frame.grid_columnconfigure(0, weight=1)
+            dialog.top_frame.grid_rowconfigure(0, weight=1)
+
         def on_enter() -> None:
             if keyboard.ctrl:
                 ok()
@@ -181,7 +211,7 @@ class Dialog:
         textbox.bind("<Escape>", lambda e: dialog.hide())
         textbox.bind("<Control-KeyPress-a>", lambda e: select_all())
 
-        textbox.pack(padx=6, pady=6)
+        textbox.grid(padx=6, pady=6, sticky="nsew")
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
@@ -195,6 +225,7 @@ class Dialog:
             for cmd in commands:
                 make_cmd(cmd)
 
+        dialog.make_button("Max", max)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
 
@@ -233,17 +264,25 @@ class Dialog:
         self.root = tk.Frame(app.main_frame, background=border)
         self.main = tk.Frame(self.root, background=background)
         bwidth = app.theme.dialog_border_width
-        self.main.pack(padx=bwidth, pady=bwidth)
+        self.main.grid(row=0, column=0, padx=bwidth, pady=bwidth, sticky="nsew")
         self.root.lift()
-        container = tk.Frame(self.main, padx=10, pady=4, background=background)
-        container.pack()
-        tk.Label(container, text=text, font=app.theme.font(), wraplength=500, background=background, foreground=foreground).pack(padx=6)
-        self.top_frame = tk.Frame(container)
-        self.top_frame.pack()
-        self.image_frame = tk.Frame(container, background=background)
-        self.image_frame.pack()
-        self.buttons_frame = tk.Frame(container, background=background)
-        self.buttons_frame.pack()
+
+        self.container = tk.Frame(self.main, padx=10, pady=4, background=background)
+        self.container.grid(row=0, column=0, sticky="nsew")
+
+        text_label = tk.Label(self.container, text=text, font=app.theme.font())
+        text_label.configure(wraplength=500, background=background, foreground=foreground)
+        text_label.grid(row=0, column=0, sticky="nsew")
+
+        self.top_frame = tk.Frame(self.container)
+        self.top_frame.grid(row=1, column=0, sticky="nsew")
+
+        self.image_frame = tk.Frame(self.container, background=background)
+        self.image_frame.grid(row=2, column=0, sticky="nsew")
+
+        self.buttons_frame = tk.Frame(self.container, background=background)
+        self.buttons_frame.grid(row=3, column=0)
+
         self.root.bind("<Escape>", lambda e: self.hide())
         self.root.bind("<FocusOut>", lambda e: self.hide())
 
