@@ -711,3 +711,9 @@ Open links with this program.
 >font-diff
 
 Add or subtract this from font sizes.
+
+---
+
+>no-wrap-textbox
+
+Don't wrap the textbox text.
