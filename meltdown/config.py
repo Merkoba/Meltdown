@@ -16,11 +16,17 @@ class Config:
         self.models: List[str] = []
         self.inputs: List[str] = []
 
+        system_lines = [
+            "Your name is @name_ai.",
+            "You are talking to @name_user.",
+            "The current date is @date.",
+        ]
+
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
         self.default_max_tokens: int = 0
         self.default_temperature: float = 0.8
-        self.default_system: str = "Your name is @name_ai.\nYou are talking to @name_user.\nThe current date is @date"
+        self.default_system: str = "\n".join(system_lines)
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
