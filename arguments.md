@@ -731,3 +731,17 @@ What task manager to use when clicking the system monitors.
 What terminal to use for programs like the task manager.
 
 For example: `--terminal urxvt --task-manager htop`
+
+---
+
+>no_markdown_snippets
+
+>no_markdown_italic
+
+>no_markdown_bold
+
+>no_markdown_highlights
+
+>no_markdown_urls
+
+Disable specific markdown formatters.
