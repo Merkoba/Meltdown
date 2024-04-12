@@ -717,3 +717,17 @@ Add or subtract this from font sizes.
 >no-wrap-textbox
 
 Don't wrap the textbox text.
+
+---
+
+>task-manager
+
+What task manager to use when clicking the system monitors.
+
+---
+
+>terminal
+
+What terminal to use for programs like the task manager.
+
+For example: `--terminal urxvt --task-manager htop`

@@ -354,23 +354,35 @@ class App:
         self.open_url(url)
 
     def open_task_manager(self) -> None:
-        if shutil.which("alacritty"):
-            cmd = ["alacritty", "-e"]
-        elif shutil.which("konsole"):
-            cmd = ["konsole", "-e"]
-        elif shutil.which("xterm"):
-            cmd = ["xterm", "-e"]
-        else:
-            return
+        from .args import args
 
-        if shutil.which("btop"):
-            cmd.extend(["btop"])
-        elif shutil.which("htop"):
-            cmd.extend(["htop"])
-        elif shutil.which("top"):
-            cmd.extend(["top"])
+        if args.terminal == "auto":
+            if shutil.which("alacritty"):
+                cmd = ["alacritty", "-e"]
+            elif shutil.which("terminator"):
+                cmd = ["terminator", "-e"]
+            elif shutil.which("konsole"):
+                cmd = ["konsole", "-e"]
+            elif shutil.which("xterm"):
+                cmd = ["urxvt", "-e"]
+            elif shutil.which("xterm"):
+                cmd = ["xterm", "-e"]
+            else:
+                return
         else:
-            return
+            cmd = [args.terminal, "-e"]
+
+        if args.task_manager == "auto":
+            if shutil.which("btop"):
+                cmd.extend(["btop"])
+            elif shutil.which("htop"):
+                cmd.extend(["htop"])
+            elif shutil.which("top"):
+                cmd.extend(["top"])
+            else:
+                return
+        else:
+            cmd.extend([args.task_manager])
 
         self.run_command(cmd)
 

@@ -44,7 +44,7 @@ def add_word(word: str) -> None:
 
 
 def start() -> None:
-    if not args.terminal:
+    if not args.show_terminal:
         return
 
     thread = threading.Thread(target=lambda: do_start())

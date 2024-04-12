@@ -83,8 +83,8 @@ class Args:
         self.display = False
         self.intro = True
         self.monospace = False
-        self.terminal = True
         self.autorun = ""
+        self.show_terminal = True
         self.terminal_height = 3
         self.terminal_vi = False
         self.input_memory = True
@@ -109,6 +109,8 @@ class Args:
         self.browser = ""
         self.wrap_textbox = True
         self.font_diff = 0
+        self.task_manager = "auto"
+        self.terminal = "auto"
 
     class Internal:
         title = app.manifest["title"]
@@ -217,6 +219,8 @@ class Args:
             "markdown": {"type": str, "choices": ["user", "ai", "all", "none"], "help": "Define where to apply markdown formatting"},
             "browser": {"type": str, "help": "Open links with this browser"},
             "font_diff": {"type": int, "help": "Add or subtract this from font sizes"},
+            "task_manager": {"type": str, "help": "Which task manager to use"},
+            "terminal": {"type": str, "help": "Which terminal to use"},
         }
 
     def parse(self) -> None:
@@ -234,7 +238,7 @@ class Args:
             ("task", "tasks"), ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"), ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"), ("no_commands", "commands"),
-            ("no_intro", "intro"), ("no_terminal", "terminal"),
+            ("no_intro", "intro"), ("no_terminal", "show_terminal"),
             ("no_clean_slate", "clean_slate"), ("no_emojis", "emojis"),
             ("no_more_button", "more_button"), ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"), ("no_input_memory", "input_memory"),
@@ -267,6 +271,7 @@ class Args:
             "listener", "listener_delay", "sticky", "commandoc",
             "after_stream", "tabs_always", "input_memory_min",
             "avatars_in_logs", "browser", "font_diff",
+            "task_manager", "terminal",
         ]
 
         for n_item in normals:
