@@ -107,6 +107,22 @@ class App:
                   troughcolor=[("disabled", self.theme.scrollbar_1)],
                   borderwidth=[("disabled", 0)])
 
+        style.configure("Dialog.Vertical.TScrollbar", gripcount=0,
+                        background=self.theme.scrollbar_dialog_2, troughcolor=self.theme.scrollbar_dialog_1, borderwidth=0)
+
+        style.map("Dialog.Vertical.TScrollbar",
+                  background=[("disabled", self.theme.scrollbar_dialog_1)],
+                  troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
+                  borderwidth=[("disabled", 0)])
+
+        style.configure("Dialog.Horizontal.TScrollbar", gripcount=0,
+                        background=self.theme.scrollbar_dialog_2, troughcolor=self.theme.scrollbar_dialog_1, borderwidth=0)
+
+        style.map("Dialog.Horizontal.TScrollbar",
+                  background=[("disabled", self.theme.scrollbar_dialog_1)],
+                  troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
+                  borderwidth=[("disabled", 0)])
+
     def setup(self) -> None:
         self.check_commandoc()
         self.check_compact()

@@ -69,6 +69,7 @@ class Theme:
         self.dialog_foreground = "black"
         self.dialog_border = "#959595"
         self.dialog_border_width = 3
+        self.dialog_top_frame = "#C6C6C6"
 
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
@@ -97,10 +98,10 @@ class Theme:
         self.entry_selection_background = "#C3C3C3"
         self.entry_selection_foreground = "black"
 
-        self.tab_selected_background = "#494D62"
         self.tab_normal_background = "#2B303B"
-        self.tab_selected_foreground = "white"
         self.tab_normal_foreground = "#C9C9C9"
+        self.tab_selected_background = "#494D62"
+        self.tab_selected_foreground = "white"
         self.tab_border = "#6A7B83"
         self.tab_border_with = 1
         self.tabs_container_color = "#2B303B"
@@ -109,6 +110,9 @@ class Theme:
 
         self.scrollbar_1 = "#333B4B"
         self.scrollbar_2 = "#98A1A3"
+
+        self.scrollbar_dialog_2 = "#949494"
+        self.scrollbar_dialog_1 = "#B0B0B0"
 
         self.tooltip_background = "white"
         self.tooltip_foreground = "black"

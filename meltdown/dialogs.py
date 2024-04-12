@@ -102,7 +102,7 @@ class Dialog:
             return
 
         dialog = Dialog(text)
-        entry = EntryBox(dialog.top_frame, font=app.theme.font(), width=17, justify="center")
+        entry = EntryBox(dialog.top_frame, font=app.theme.font(), width=20, justify="center")
 
         def ok() -> None:
             ans = entry.get()
@@ -122,7 +122,7 @@ class Dialog:
         entry.bind("<Escape>", lambda e: dialog.hide())
         entry.bind("<Down>", lambda e: dialog.root.focus_set())
         dialog.root.bind("<Up>", lambda e: entry.focus_set())
-        entry.pack(padx=6, pady=6)
+        entry.pack(padx=3, pady=3)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
         dialog.show()
@@ -142,8 +142,8 @@ class Dialog:
 
         dialog = Dialog(text)
 
-        scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Normal.Vertical.TScrollbar")
-        scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Normal.Horizontal.TScrollbar")
+        scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar")
+        scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar")
 
         textbox = tk.Text(dialog.top_frame, font=app.theme.font(), width=30, height=5)
         textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
@@ -219,7 +219,7 @@ class Dialog:
         textbox.bind("<Escape>", lambda e: dialog.hide())
         textbox.bind("<Control-KeyPress-a>", lambda e: select_all())
 
-        textbox.grid(row=0, column=0, padx=6, pady=6, sticky="nsew")
+        textbox.grid(row=0, column=0, padx=3, pady=3, sticky="nsew")
 
         if args.scrollbars:
             scrollbar_y.grid(row=0, column=1, sticky="ns")
@@ -293,6 +293,7 @@ class Dialog:
 
         self.top_frame = tk.Frame(self.container)
         self.top_frame.grid(row=1, column=0, sticky="nsew")
+        self.top_frame.configure(background=app.theme.dialog_top_frame)
 
         self.image_frame = tk.Frame(self.container, background=background)
         self.image_frame.grid(row=2, column=0)
