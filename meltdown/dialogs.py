@@ -218,7 +218,13 @@ class Dialog:
         textbox.bind("<Escape>", lambda e: dialog.hide())
         textbox.bind("<Control-KeyPress-a>", lambda e: select_all())
 
-        textbox.grid(padx=6, pady=6, sticky="nsew")
+        textbox.grid(row=0, column= 0, padx=6, pady=6, sticky="nsew")
+
+        if args.scrollbars:
+            scrollbar_y.grid(row=0, column=1, sticky="ns")
+
+            if not args.wrap_textbox:
+                scrollbar_x.grid(row=1, column=0, sticky="ew")
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
