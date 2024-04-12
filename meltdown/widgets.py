@@ -173,7 +173,7 @@ class Widgets:
         # Details Widgets
         details_data = FrameData(self.details)
 
-        avatar_width = 3
+        avatar_width = 4
         self.user_label = widgetutils.make_label(details_data, "User", padx=0)
         tip = "Personalize yourself"
         ToolTip(self.user_label, tip)
