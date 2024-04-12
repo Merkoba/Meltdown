@@ -46,6 +46,8 @@ class Args:
         self.config = ""
         self.session = ""
         self.on_log = ""
+        self.on_log_text = ""
+        self.on_log_json = ""
         self.f1 = ""
         self.f2 = ""
         self.f3 = ""
@@ -195,7 +197,9 @@ class Args:
             "theme": {"type": str, "help": "The color theme to use, either dark or light", "choices": ["dark", "light"]},
             "config": {"type": str, "help": "Name or path of a config file to use"},
             "session": {"type": str, "help": "Name or path of a session file to use"},
-            "on_log": {"type": str, "help": "Command to execute when saving a log file"},
+            "on_log": {"type": str, "help": "Command to execute when saving any log file"},
+            "on_log_text": {"type": str, "help": "Command to execute when saving a text log file"},
+            "on_log_json": {"type": str, "help": "Command to execute when saving a JSON log file"},
             "f1": {"type": str, "help": "Command to assign to the F1 key"},
             "f2": {"type": str, "help": "Command to assign to the F2 key"},
             "f3": {"type": str, "help": "Command to assign to the F3 key"},
@@ -268,7 +272,7 @@ class Args:
 
         normals = [
             "maximize", "compact", "full", "width", "height",
-            "theme", "test", "config", "session", "on_log",
+            "theme", "test", "config", "session",
             "numbers", "max_tabs", "input", "force",
 
             "f1", "f2", "f3", "f4", "f5", "f6", "f7",
@@ -288,6 +292,8 @@ class Args:
             "after_stream", "tabs_always", "input_memory_min",
             "avatars_in_logs", "browser", "font_diff",
             "task_manager", "terminal",
+
+            "on_log", "on_log_text", "on_log_json",
         ]
 
         for n_item in normals:

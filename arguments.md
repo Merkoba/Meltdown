@@ -248,6 +248,10 @@ It can also be a direct path.
 
 >on-log
 
+>on-log-text
+
+>on-log-json
+
 This is a command to run after saving a log file.
 
 For example you can use `--on-log geany` to automatically
@@ -255,6 +259,12 @@ For example you can use `--on-log geany` to automatically
 open the file on the Geany text editor after it is saved.
 
 It simply passes the file path as an argument to the command/script.
+
+`on-log-text` triggers after text log saves.
+
+`on-log-json` triggers after JSON log saves.
+
+`on-log` triggers if those are not defined.
 
 ---
 

@@ -30,7 +30,9 @@ class Logs:
         cmds.append(("To Text", lambda: self.to_text(True)))
         Dialog.show_commands("Save all conversations?", cmds)
 
-    def save_file(self, text: str, name: str, ext: str, all: bool, overwrite: bool) -> None:
+    def save_file(self, text: str, name: str,
+                  ext: str, all: bool, overwrite: bool, mode: str) -> None:
+
         text = text.strip()
         name = name.replace(" ", "_").lower()
         paths.logs.mkdir(parents=True, exist_ok=True)
@@ -55,8 +57,19 @@ class Logs:
                 msg = f"Log saved as {file_name}"
                 display.print(emojis.text(msg, "storage"))
 
-            if args.on_log:
-                app.run_command([args.on_log, str(file_path)])
+            cmd = ""
+
+            if (mode == "text") and args.on_log_text:
+                cmd = args.on_log_text
+            elif (mode == "json") and args.on_log_json:
+                cmd = args.on_log_json
+            elif args.on_log:
+                cmd = args.on_log
+
+            print(cmd)
+
+            if cmd:
+                app.run_command([cmd, str(file_path)])
 
     def save(self, mode: str, all: bool, name: str) -> None:
         num = 0
@@ -93,7 +106,7 @@ class Logs:
             else:
                 overwrite = True
 
-            self.save_file(text, name, ext, all, overwrite=overwrite)
+            self.save_file(text, name, ext, all, overwrite=overwrite, mode=mode)
 
         if all:
             if args.quiet or (not args.log_feedback):
