@@ -101,7 +101,7 @@ class Dialog:
         if Dialog.open():
             return
 
-        dialog = Dialog(text)
+        dialog = Dialog(text, top_frame=True)
         entry = EntryBox(dialog.top_frame, font=app.theme.font(), width=20, justify="center")
 
         def ok() -> None:
@@ -140,7 +140,7 @@ class Dialog:
         if Dialog.open():
             return
 
-        dialog = Dialog(text)
+        dialog = Dialog(text, top_frame=True)
 
         scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar")
         scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar")
@@ -261,9 +261,9 @@ class Dialog:
         if Dialog.current_dialog:
             Dialog.current_dialog.root.focus_set()
 
-    def __init__(self, text: str) -> None:
+    def __init__(self, text: str, top_frame: bool = False) -> None:
         self.buttons: List[ButtonBox] = []
-        self.make(text)
+        self.make(text, with_top_frame=top_frame)
 
         self.highlighted = False
         self.current_button: Optional[int] = None
@@ -273,7 +273,7 @@ class Dialog:
 
         Dialog.current_dialog = self
 
-    def make(self, text: str) -> None:
+    def make(self, text: str, with_top_frame: bool = False) -> None:
         background = app.theme.dialog_background
         foreground = app.theme.dialog_foreground
         border = app.theme.dialog_border
@@ -291,9 +291,10 @@ class Dialog:
         text_label.configure(wraplength=500, background=background, foreground=foreground)
         text_label.grid(row=0, column=0, sticky="nsew")
 
-        self.top_frame = tk.Frame(self.container)
-        self.top_frame.grid(row=1, column=0, sticky="nsew")
-        self.top_frame.configure(background=app.theme.dialog_top_frame)
+        if with_top_frame:
+            self.top_frame = tk.Frame(self.container)
+            self.top_frame.grid(row=1, column=0, sticky="nsew")
+            self.top_frame.configure(background=app.theme.dialog_top_frame)
 
         self.image_frame = tk.Frame(self.container, background=background)
         self.image_frame.grid(row=2, column=0)
