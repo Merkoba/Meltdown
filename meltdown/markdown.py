@@ -94,14 +94,23 @@ class Markdown():
             self.format_all(start, end)
 
     def format_all(self, start_ln: int, end_ln: int) -> None:
-        self.format_snippets(start_ln, end_ln)
-        self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
-        self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
-        self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
-        self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
-        self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
-        self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
-        self.do_format(start_ln, end_ln, self.pattern_url, "url")
+        if args.markdown_snippets:
+            self.format_snippets(start_ln, end_ln)
+
+        if args.markdown_bold:
+            self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
+
+        if args.markdown_italic:
+            self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
+            self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
+
+        if args.markdown_highlights:
+            self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
+            self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
+            self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
+
+        if args.markdown_urls:
+            self.do_format(start_ln, end_ln, self.pattern_url, "url")
 
     def do_format(self, start_ln: int, end_ln: int, pattern: str, tag: str) -> None:
         matches: List[MatchItem] = []

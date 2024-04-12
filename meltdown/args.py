@@ -102,7 +102,6 @@ class Args:
         self.time = False
         self.verbose = False
         self.emojis = True
-        self.markdown = "ai"
         self.textbox_button = True
         self.log_feedback = True
         self.avatars_in_logs = False
@@ -111,6 +110,12 @@ class Args:
         self.font_diff = 0
         self.task_manager = "auto"
         self.terminal = "auto"
+        self.markdown = "ai"
+        self.markdown_snippets = True
+        self.markdown_italic = True
+        self.markdown_bold = True
+        self.markdown_highlights = True
+        self.markdown_urls = True
 
     class Internal:
         title = app.manifest["title"]
@@ -153,6 +158,11 @@ class Args:
             "no_input_memory": {"action": "store_false", "help": "Don't remember input words"},
             "no_textbox_button": {"action": "store_false", "help": "Don't show the textbox button"},
             "no_wrap_textbox": {"action": "store_false", "help": "Don't wrap the textbox text"},
+            "no_markdown_snippets": {"action": "store_false", "help": "Don't do snippet markdown"},
+            "no_markdown_italic": {"action": "store_false", "help": "Don't do italic markdown"},
+            "no_markdown_bold": {"action": "store_false", "help": "Don't do bold markdown"},
+            "no_markdown_highlights": {"action": "store_false", "help": "Don't do highlight markdown"},
+            "no_markdown_urls": {"action": "store_false", "help": "Don't do URL markdown"},
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {"action": "store_true", "help": "Allow opening multiple instances"},
             "compact_model": {"action": "store_true", "help": "Hide the model frame in compact mode"},
@@ -245,6 +255,12 @@ class Args:
             ("no_textbox_button", "textbox_button"), ("no_log_feedback", "log_feedback"),
             ("no_wrap_textbox", "wrap_textbox"), ("no_gpu", "system_gpu"),
             ("no_gpu_ram", "system_gpu"), ("no_gpu_temp", "system_gpu"),
+
+            ("no_markdown_snippets", "markdown_snippets"),
+            ("no_markdown_italic", "markdown_italic"),
+            ("no_markdown_bold", "markdown_bold"),
+            ("no_markdown_highlights", "markdown_highlights"),
+            ("no_markdown_urls", "markdown_urls"),
         ]
 
         for r_item in other_name:
