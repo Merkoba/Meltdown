@@ -1,5 +1,6 @@
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from typing import Any, Callable, List, Optional, Tuple, Dict
 from PIL import Image, ImageTk  # type: ignore
 from pathlib import Path
@@ -141,8 +142,8 @@ class Dialog:
 
         dialog = Dialog(text)
 
-        scrollbar_y = tk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL)
-        scrollbar_x = tk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL)
+        scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Normal.Vertical.TScrollbar")
+        scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Normal.Horizontal.TScrollbar")
 
         textbox = tk.Text(dialog.top_frame, font=app.theme.font(), width=30, height=5)
         textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
