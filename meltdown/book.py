@@ -254,12 +254,20 @@ class Book(tk.Frame):
         self.select(self.pages[index].id)
 
     def select_by_name(self, name: str) -> None:
+        closest = ""
         name = name.lower()
 
         for page in self.pages:
-            if page.name.lower() == name:
-                self.select(page.id)
-                return
+            page_name = page.name.lower()
+
+            if page_name == name:
+                closest = page.id
+                break
+            elif page_name.startswith(name):
+                closest = page.id
+
+        if closest:
+            self.select(closest)
 
     def update_tab_colors(self) -> None:
         if not self.current_page:
