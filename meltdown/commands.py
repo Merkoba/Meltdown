@@ -262,8 +262,9 @@ class Commands:
                 "action": lambda a=None: display.select_last_tab(),
             },
             "config": {
-                "help": "Show the config menu",
-                "action": lambda a=None: config.menu(),
+                "help": "Show the config menu or view or set or reset a config",
+                "action": lambda a=None: config.command(a),
+                "type": str,
             },
             "session": {
                 "help": "Show the session menu",
@@ -429,18 +430,6 @@ class Commands:
             "togglescroll": {
                 "help": "Scroll to the bottom or to the top",
                 "action": lambda a=None: display.toggle_scroll(),
-            },
-            "setconfig": {
-                "help": "Set a config: [key] [value]",
-                "action": lambda a=None: config.set_command(a),
-                "type": str,
-                "arg_req": True,
-            },
-            "resetconfig": {
-                "help": "Reset a config: [key]",
-                "action": lambda a=None: config.reset_one(a),
-                "type": str,
-                "arg_req": True,
             },
             "stats": {
                 "help": "Show some internal information",

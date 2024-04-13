@@ -371,6 +371,9 @@ class Config:
         Dialog.show_commands("Config Menu", commands=cmds)
 
     def set_command(self, command: str) -> None:
+        from .display import display
+        from .args import args
+
         if not command:
             return
 
@@ -385,7 +388,34 @@ class Config:
             return
 
         value = " ".join(parts[1:])
+
+        if value == "reset":
+            self.reset_one(key)
+
+            if not args.quiet:
+                display.print(f"{key}: {getattr(self, key)}")
+
+            return
+
         self.set(key, value)
+
+        if not args.quiet:
+            display.print(f"{key}: {value}")
+
+    def command(self, text: str = "") -> None:
+        from .display import display
+
+        if not text:
+            self.menu()
+            return
+
+        if " " in text:
+            self.set_command(text)
+            return
+
+        if hasattr(self, text):
+            value = getattr(self, text)
+            display.print(f"{text}: {value}")
 
 
 config = Config()
