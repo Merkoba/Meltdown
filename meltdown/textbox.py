@@ -45,7 +45,7 @@ class TextBox(tk.Text):
 
         self.bind("<Control-v>", lambda e: self.paste())
         self.bind("<Return>", lambda e: self.on_enter())
-        self.bind("<Escape>", lambda e: dialog.hide())
+        self.bind("<Escape>", lambda e: self.dialog.hide())
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
 
         self.grid(row=0, column=0, padx=3, pady=3, sticky="nsew")
