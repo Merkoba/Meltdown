@@ -145,7 +145,7 @@ class Dialog:
         scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar")
         scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar")
 
-        textbox = tk.Text(dialog.top_frame, font=app.theme.font(), width=30, height=5)
+        textbox = tk.Text(dialog.top_frame, font=app.theme.font("textbox"), width=30, height=5)
         textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
         textbox.configure(highlightthickness=0)
 
@@ -215,6 +215,15 @@ class Dialog:
             if keyboard.ctrl:
                 ok()
 
+        def paste() -> None:
+            try:
+                start = textbox.index(tk.SEL_FIRST)
+                end = textbox.index(tk.SEL_LAST)
+                textbox.delete(start, end)
+            except tk.TclError:
+                pass
+
+        textbox.bind("<Control-v>", lambda e: paste())
         textbox.bind("<Return>", lambda e: on_enter())
         textbox.bind("<Escape>", lambda e: dialog.hide())
         textbox.bind("<Control-KeyPress-a>", lambda e: select_all())

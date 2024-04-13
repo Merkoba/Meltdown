@@ -20,6 +20,7 @@ class Theme:
         self.font_tab_highlight_size = 12
         self.font_menu_size = 13
         self.font_tooltips_size = 12
+        self.font_textbox = 13
 
         self.name_user = "#87CEEB"
         self.name_ai = "#98FB98"
@@ -166,20 +167,23 @@ class Theme:
     def font(self, name: str = "font") -> Tuple[str, int, str]:
         from .args import args
         diff = args.font_diff
+        fam = self.font_family
 
         if name == "font":
-            return (self.font_family, self.font_size + diff, "normal")
+            return (fam, self.font_size + diff, "normal")
         elif name == "button":
-            return (self.font_family, self.font_button_size + diff, "normal")
+            return (fam, self.font_button_size + diff, "normal")
         elif name == "combobox":
-            return (self.font_family, self.font_combobox_size + diff, "normal")
+            return (fam, self.font_combobox_size + diff, "normal")
         elif name == "tab":
-            return (self.font_family, self.font_tab_size + diff, "normal")
+            return (fam, self.font_tab_size + diff, "normal")
         elif name == "tab_highlight":
-            return (self.font_family, self.font_tab_highlight_size + diff, "underline")
+            return (fam, self.font_tab_highlight_size + diff, "underline")
         elif name == "menu":
-            return (self.font_family, self.font_menu_size + diff, "normal")
+            return (fam, self.font_menu_size + diff, "normal")
         elif name == "tooltips":
-            return (self.font_family, self.font_tooltips_size + diff, "normal")
+            return (fam, self.font_tooltips_size + diff, "normal")
+        elif name == "textbox":
+            return (fam, self.font_textbox + diff, "normal")
         else:
-            return (self.font_family, self.font_size + diff, "normal")
+            return (fam, self.font_size + diff, "normal")
