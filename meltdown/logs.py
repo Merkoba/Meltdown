@@ -66,8 +66,6 @@ class Logs:
             elif args.on_log:
                 cmd = args.on_log
 
-            print(cmd)
-
             if cmd:
                 app.run_command([cmd, str(file_path)])
 
