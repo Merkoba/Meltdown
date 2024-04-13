@@ -340,7 +340,7 @@ class Config:
         Dialog.show_confirm("This will remove your custom configs"
                             "\nand refresh the widgets", action)
 
-    def reset_one(self, key: str) -> None:
+    def reset_one(self, key: str, focus: bool = True) -> None:
         from .widgets import widgets
 
         if not hasattr(self, key):
@@ -352,7 +352,7 @@ class Config:
             return
 
         self.set(key, default)
-        widgets.fill_widget(key, getattr(self, key), focus=True)
+        widgets.fill_widget(key, getattr(self, key), focus=focus)
 
     def on_model_change(self) -> None:
         from .model import model
@@ -391,7 +391,7 @@ class Config:
         value = " ".join(parts[1:])
 
         if value == "reset":
-            self.reset_one(key)
+            self.reset_one(key, focus=False)
 
             if not args.quiet:
                 display.print(f"{key}: {getattr(self, key)}")
