@@ -218,7 +218,7 @@ Go to the last tab
 
 >config
 
-Show the config menu
+Show the config menu or view or set or reset a config
 
 ---
 
@@ -441,18 +441,6 @@ Reset the font size
 >togglescroll
 
 Scroll to the bottom or to the top
-
----
-
->setconfig
-
-Set a config: [key] [value]
-
----
-
->resetconfig
-
-Reset a config: [key]
 
 ---
 
