@@ -61,6 +61,9 @@ class Changes:
                                             lambda: self.do_on_change())
 
     def do_on_change(self) -> None:
+        if not self.widget.winfo_exists():
+            return
+
         text = self.widget.change_value()
 
         if self.changes[-1] == text:
