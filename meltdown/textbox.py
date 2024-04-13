@@ -18,7 +18,7 @@ class TextBox(tk.Text):
 
         from .changes import Changes
 
-        super().__init__(dialog.top_frame)
+        super().__init__(dialog.top_frame, undo=False)
         self.configure(font=app.theme.font("textbox"))
         self.configure(width=30, height=5)
         self.configure(highlightthickness=0)
