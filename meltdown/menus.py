@@ -38,9 +38,9 @@ class Menu:
             Menu.current_menu.hide()
 
     @staticmethod
-    def focus() -> None:
+    def focus_all() -> None:
         if Menu.current_menu:
-            Menu.current_menu.canvas.focus_set()
+            Menu.current_menu.focus()
 
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
@@ -325,9 +325,9 @@ class Menu:
         self.make()
 
         if self.root:
-            self.canvas.update_idletasks()
-            self.canvas.focus_set()
             Menu.current_menu = self
+            self.canvas.update_idletasks()
+            self.focus()
 
     def hide(self) -> None:
         from .keyboard import keyboard
@@ -487,3 +487,6 @@ class Menu:
 
         tooltip = ToolTip(widget, text, bind=False)
         tooltip.direct(event)
+
+    def focus(self) -> None:
+        self.canvas.focus_set()

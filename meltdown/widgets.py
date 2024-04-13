@@ -819,6 +819,8 @@ class Widgets:
         self.show_model_menu(only_items=True)
 
     def write_system_prompt(self, text: str = "", max: bool = False) -> None:
+        from .textbox import TextBox
+
         def action(ans: Dict[str, Any]) -> None:
             config.set("system", ans["text"])
 
@@ -826,6 +828,16 @@ class Widgets:
             config.reset_one("system")
             self.write_system_prompt(max=ans["maxed"])
             return
+
+        def right_click_action(text: str, textbox: TextBox) -> None:
+            config.set("system", text)
+            textbox.set_text(text)
+            textbox.dialog.focus()
+
+        def on_right_click(event: Any, textbox: TextBox) -> None:
+            self.show_menu_items("system", "systems",
+                                 lambda a: right_click_action(a, textbox),
+                                 only_items=True, event=event)
 
         if text:
             config.set("system", text)
@@ -836,7 +848,8 @@ class Widgets:
         ]
 
         Dialog.show_textbox("System Prompt", lambda a: action(a),
-                            value=config.system, commands=cmds, start_maximized=max)
+                            value=config.system, commands=cmds,
+                            start_maximized=max, on_right_click=on_right_click)
 
     def check_move_to_end(self, key: str) -> None:
         if key in ["model"]:

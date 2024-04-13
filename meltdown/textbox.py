@@ -14,7 +14,8 @@ class TextBox(tk.Text):
     def __init__(self, dialog: Dialog, text: str,
                  cmd_ok: Callable[..., Any],
                  cmd_cancel: Optional[Callable[..., Any]] = None,
-                 commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None) -> None:
+                 commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
+                 on_right_click: Optional[Callable[..., Any]] = None) -> None:
 
         from .changes import Changes
 
@@ -40,13 +41,15 @@ class TextBox(tk.Text):
         self.dialog = dialog
         self.cmd_ok = cmd_ok
         self.cmd_cancel = cmd_cancel
-        self.text = text
         self.commands = commands
+        self.on_right_click = on_right_click
+        self.text = text
 
         self.bind("<Control-v>", lambda e: self.paste())
         self.bind("<Return>", lambda e: self.on_enter())
         self.bind("<Escape>", lambda e: self.dialog.hide())
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
+        self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
 
         self.grid(row=0, column=0, padx=3, pady=3, sticky="nsew")
 
@@ -57,6 +60,12 @@ class TextBox(tk.Text):
                 scrollbar_x.grid(row=1, column=0, sticky="ew")
 
         self.changes = Changes(self)
+
+    def right_click(self, event: Any) -> None:
+        if not self.on_right_click:
+            return
+
+        self.on_right_click(event, self)
 
     def get_ans(self) -> Dict[str, Any]:
         return {"text": self.get_text(), "maxed": self.maxed}
@@ -89,7 +98,8 @@ class TextBox(tk.Text):
             self.dialog.hide()
 
             Dialog.show_textbox(self.text, self.cmd_ok,
-                                self.cmd_cancel, value=value, commands=self.commands)
+                                self.cmd_cancel, value=value,
+                                commands=self.commands)
         else:
             self.maximize()
             self.maxed = True

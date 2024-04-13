@@ -132,7 +132,8 @@ class Dialog:
     def show_textbox(text: str, cmd_ok: Callable[..., Any],
                      cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "",
                      commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
-                     start_maximized: bool = False) -> None:
+                     start_maximized: bool = False,
+                     on_right_click: Optional[Callable[..., Any]] = None) -> None:
 
         from .textbox import TextBox
 
@@ -142,7 +143,8 @@ class Dialog:
         dialog = Dialog(text, top_frame=True)
 
         textbox = TextBox(dialog, text=text, cmd_ok=cmd_ok,
-                          cmd_cancel=cmd_cancel, commands=commands)
+                          cmd_cancel=cmd_cancel, commands=commands,
+                          on_right_click=on_right_click)
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
@@ -174,9 +176,9 @@ class Dialog:
             Dialog.current_dialog.hide()
 
     @staticmethod
-    def focus() -> None:
+    def focus_all() -> None:
         if Dialog.current_dialog:
-            Dialog.current_dialog.root.focus_set()
+            Dialog.current_dialog.focus()
 
     def __init__(self, text: str, top_frame: bool = False) -> None:
         self.buttons: List[ButtonBox] = []
@@ -237,6 +239,11 @@ class Dialog:
         from .tooltips import ToolTip
         from .inputcontrol import inputcontrol
         from .keyboard import keyboard
+        from .menus import Menu
+
+        if Menu.current_menu:
+            return
+
         ToolTip.block()
         keyboard.block()
         inputcontrol.focus()
@@ -302,3 +309,6 @@ class Dialog:
 
             if button and button.command:
                 button.command()
+
+    def focus(self) -> None:
+        self.root.focus_set()

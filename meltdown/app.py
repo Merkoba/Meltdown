@@ -396,8 +396,8 @@ class App:
         what = str(event.widget)
 
         if what == ".":
-            Dialog.focus()
-            Menu.focus()
+            Dialog.focus_all()
+            Menu.focus_all()
 
     def on_focus_out(self, event: Any) -> None:
         from .keyboard import keyboard
