@@ -106,7 +106,7 @@ class Commands:
                 "type": "force",
             },
             "exit": {
-                "help": "Exit the application. Optional seconds delay",
+                "help": "Exit the application. Optional delay",
                 "action": lambda a=None: app.exit(a),
                 "type": float,
             },
@@ -262,7 +262,7 @@ class Commands:
                 "action": lambda a=None: display.select_last_tab(),
             },
             "config": {
-                "help": "Show the config menu or view or set or reset a config",
+                "help": "Config menu or view, set, reset a config",
                 "action": lambda a=None: config.command(a),
                 "type": str,
             },
@@ -396,7 +396,7 @@ class Commands:
                 "arg_req": True,
             },
             "sleep": {
-                "help": "Wait X seconds before running the next command",
+                "help": "Wait x seconds before the next command",
                 "action": lambda a=None: None,
                 "type": int,
                 "arg_req": True,
@@ -440,7 +440,7 @@ class Commands:
                 "action": lambda a=None: app.toggle_sticky()
             },
             "commandoc": {
-                "help": "Make a file with all the commands. Provide a path",
+                "help": "Make a file with all the commands",
                 "action": lambda a=None: self.make_commandoc(a),
                 "type": str,
                 "arg_req": True,
