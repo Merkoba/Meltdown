@@ -67,8 +67,16 @@ class Keyboard:
         return False
 
     def on_key_press(self, event: Any) -> None:
+        from .textbox import TextBox
+
         is_ctrl = event.keysym == "Control_L" or event.keysym == "Control_R"
         is_shift = event.keysym == "Shift_L" or event.keysym == "Shift_R"
+        is_entrybox = isinstance(event.widget, EntryBox)
+        is_textbox = isinstance(event.widget, TextBox)
+
+        if is_entrybox or is_textbox:
+            if not self.ctrl:
+                event.widget.changes.on_change()
 
         if not is_ctrl:
             self.ctrl_date = 0.0
@@ -92,7 +100,7 @@ class Keyboard:
 
         ToolTip.hide_all()
 
-        if (event.widget != inputcontrol.input) and (not isinstance(event.widget, EntryBox)):
+        if (event.widget != inputcontrol.input) and (not is_entrybox):
             chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
             syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 

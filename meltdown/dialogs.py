@@ -1,7 +1,6 @@
 # Standard
 import tkinter as tk
-from tkinter import ttk
-from typing import Any, Callable, List, Optional, Tuple, Dict
+from typing import Any, Callable, List, Optional, Tuple
 from PIL import Image, ImageTk  # type: ignore
 from pathlib import Path
 
@@ -135,110 +134,19 @@ class Dialog:
                      commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
                      start_maximized: bool = False) -> None:
 
-        from .keyboard import keyboard
+        from .textbox import TextBox
 
         if Dialog.open():
             return
 
         dialog = Dialog(text, top_frame=True)
 
-        scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar")
-        scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar")
-
-        textbox = tk.Text(dialog.top_frame, font=app.theme.font("textbox"), width=30, height=5)
-        textbox.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
-        textbox.configure(highlightthickness=0)
-
-        if args.wrap_textbox:
-            textbox.configure(wrap=tk.WORD)
-        else:
-            textbox.configure(wrap=tk.NONE)
-
-        scrollbar_y.configure(command=textbox.yview)
-        scrollbar_x.configure(command=textbox.xview)
-
-        maxed = False
-
-        def get_ans() -> Dict[str, Any]:
-            return {"text": get(), "maxed": maxed}
-
-        def get() -> str:
-            return textbox.get("1.0", tk.END).strip()
-
-        def select_all() -> str:
-            textbox.tag_add("sel", "1.0", tk.END)
-            return "break"
-
-        def ok() -> None:
-            ans = get_ans()
-            dialog.hide()
-            cmd_ok(ans)
-
-        def cancel() -> None:
-            ans = get_ans()
-            dialog.hide()
-
-            if cmd_cancel:
-                cmd_cancel(ans)
-
-        def max() -> None:
-            nonlocal maxed
-
-            if maxed:
-                value = get()
-                dialog.hide()
-                Dialog.show_textbox(text, cmd_ok,
-                                    cmd_cancel, value=value, commands=commands)
-            else:
-                maximize()
-                maxed = True
-
-        def maximize() -> None:
-            dialog.root.place(x=0, y=0, width=app.main_frame.winfo_width(),
-                              height=app.main_frame.winfo_height())
-
-            dialog.root.grid_columnconfigure(0, weight=1)
-            dialog.root.grid_rowconfigure(0, weight=1)
-
-            dialog.main.grid_columnconfigure(0, weight=1)
-            dialog.main.grid_rowconfigure(0, weight=1)
-
-            dialog.container.grid_columnconfigure(0, weight=1)
-            dialog.container.grid_rowconfigure(1, weight=1)
-
-            dialog.top_frame.grid_columnconfigure(0, weight=1)
-            dialog.top_frame.grid_rowconfigure(0, weight=1)
-
-            textbox.focus_set()
-
-        def on_enter() -> None:
-            if keyboard.ctrl:
-                ok()
-
-        def paste() -> None:
-            try:
-                start = textbox.index(tk.SEL_FIRST)
-                end = textbox.index(tk.SEL_LAST)
-                textbox.delete(start, end)
-            except tk.TclError:
-                pass
-
-        textbox.bind("<Control-v>", lambda e: paste())
-        textbox.bind("<Return>", lambda e: on_enter())
-        textbox.bind("<Escape>", lambda e: dialog.hide())
-        textbox.bind("<Control-KeyPress-a>", lambda e: select_all())
-
-        textbox.grid(row=0, column=0, padx=3, pady=3, sticky="nsew")
-
-        if args.scrollbars:
-            scrollbar_y.grid(row=0, column=1, sticky="ns")
-
-            if not args.wrap_textbox:
-                scrollbar_x.grid(row=1, column=0, sticky="ew")
+        textbox = TextBox(dialog, text=text, cmd_ok=cmd_ok,
+                          cmd_cancel=cmd_cancel, commands=commands)
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
-                ans = get_ans()
+                ans = textbox.get_ans()
                 dialog.hide()
                 func(ans)
 
@@ -248,9 +156,9 @@ class Dialog:
             for cmd in commands:
                 make_cmd(cmd)
 
-        dialog.make_button("Max", max)
-        dialog.make_button("Cancel", cancel)
-        dialog.make_button("Ok", ok)
+        dialog.make_button("Max", textbox.max)
+        dialog.make_button("Cancel", textbox.cancel)
+        dialog.make_button("Ok", textbox.ok)
 
         dialog.show()
         dialog.highlight_last_button()
@@ -258,7 +166,7 @@ class Dialog:
         textbox.focus_set()
 
         if start_maximized:
-            max()
+            textbox.max()
 
     @staticmethod
     def hide_all() -> None:

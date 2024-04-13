@@ -11,21 +11,26 @@ from .tooltips import ToolTip
 
 class EntryBox(ttk.Entry):
     def __init__(self, *args: Any, **kwargs: Any) -> None:
+        from .changes import Changes
+
         super().__init__(*args, **kwargs)
         self.focused = False
         self.placeholder = ""
         self.key = ""
-
-        self.bind("<FocusIn>", lambda e: self.on_focus_change("in"))
-        self.bind("<FocusOut>", lambda e: self.on_focus_change("out"))
-        self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
-
         self.text_var = tk.StringVar()
         self.text_var.set("")
         self.trace_id = self.text_var.trace_add("write", self.on_write)
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
         self.name = ""
+        self.last_text = ""
+        self.do_binds()
+        self.changes = Changes(self)
+
+    def do_binds(self) -> None:
+        self.bind("<FocusIn>", lambda e: self.on_focus_change("in"))
+        self.bind("<FocusOut>", lambda e: self.on_focus_change("out"))
+        self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
 
     def bind_mousewheel(self) -> None:
         self.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
@@ -51,6 +56,9 @@ class EntryBox(ttk.Entry):
         else:
             return self.text_var.get()
 
+    def change_value(self) -> str:
+        return self.get()
+
     def clear(self) -> None:
         self.set_text("")
         self.focus_set()
@@ -70,7 +78,9 @@ class EntryBox(ttk.Entry):
 
         self.after_idle(lambda: do_select())
 
-    def set_text(self, text: str, check_placeholder: bool = True) -> None:
+    def set_text(self, text: str, check_placeholder: bool = True,
+                 on_change: bool = True) -> None:
+
         self.text_var.trace_remove("write", self.trace_id)
         self.delete(0, tk.END)
         self.insert(0, text)
@@ -78,6 +88,9 @@ class EntryBox(ttk.Entry):
 
         if check_placeholder:
             self.check_placeholder()
+
+        if on_change and (not self.placeholder_active):
+            self.changes.on_change()
 
     def insert_text(self, text: str,
                     check_placeholder: bool = True,
@@ -101,6 +114,9 @@ class EntryBox(ttk.Entry):
 
         if check_placeholder:
             self.check_placeholder()
+
+        if not self.placeholder_active:
+            self.changes.on_change()
 
     def delete_text(self, start: int, chars: int) -> None:
         self.delete(start, (start + chars))
