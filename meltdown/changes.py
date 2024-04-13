@@ -69,6 +69,6 @@ class Changes:
         self.changes.append(text)
 
         if len(self.changes) > 50:
-            self.changes = self.changes[-50:]
+            self.changes = self.changes[-config.max_changes:]
 
         self.changes_index = len(self.changes) - 1

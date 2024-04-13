@@ -13,6 +13,7 @@ class Config:
         self.max_log = 50
         self.input_memory_max = 30
         self.changes_delay = 250
+        self.max_changes = 50
 
         # Added for mypy
         self.models: List[str] = []

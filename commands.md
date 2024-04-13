@@ -20,7 +20,7 @@ Clear the conversation
 
 >exit
 
-Exit the application. Optional seconds delay
+Exit the application. Optional delay
 
 ---
 
@@ -218,7 +218,7 @@ Go to the last tab
 
 >config
 
-Show the config menu or view or set or reset a config
+Config menu or view, set, reset a config
 
 ---
 
@@ -398,7 +398,7 @@ Write the input prompt
 
 >sleep
 
-Wait X seconds before running the next command
+Wait x seconds before the next command
 
 ---
 
@@ -458,7 +458,7 @@ Make the window stay at the top
 
 >commandoc
 
-Make a file with all the commands. Provide a path
+Make a file with all the commands
 
 ---
 
