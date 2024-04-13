@@ -11,6 +11,7 @@ from . import utils
 class Config:
     def __init__(self) -> None:
         self.max_log = 50
+        self.input_memory_max = 30
 
         # Added for mypy
         self.models: List[str] = []

@@ -157,6 +157,7 @@ class InputControl:
         if text:
             self.clear()
             filemanager.add_input(text)
+            self.add_words(text)
 
             if args.commands:
                 if commands.exec(text):
@@ -170,7 +171,6 @@ class InputControl:
             if model.model_loading:
                 return
 
-            self.add_words(text)
             model.stream(text, tab.tab_id)
         elif scroll:
             display.toggle_scroll()
@@ -217,7 +217,15 @@ class InputControl:
         added = False
 
         for word in words:
-            if len(word) < args.input_memory_min:
+            len_words = len(word)
+
+            if len_words < args.input_memory_min:
+                continue
+
+            if len_words > config.input_memory_max:
+                continue
+
+            if commands.is_command(word):
                 continue
 
             if word not in self.autocomplete:
