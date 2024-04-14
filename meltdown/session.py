@@ -54,7 +54,8 @@ test_conversation = {
          },
         {"user": "Snippet Test 4"},
         {"assistant":
-            "Last snippet:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
+            "Last snippet 1:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```\n\n" +
+            "Last snippet 2:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
          },
         {"user": "URL Test"},
         {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n" +
