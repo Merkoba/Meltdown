@@ -208,8 +208,17 @@ class Markdown():
                 self.widget.delete(start_line, f"{end_line} +1 line lineend")
                 self.widget.window_create(f"{start_line} +1 line", window=snippet)
             else:
-                self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
-                self.widget.window_create(f"{start_line} -1 line", window=snippet)
+                start_of_line_above = f"{start_line} -2 line linestart"
+                end_of_line_above = f"{start_line} -2 line lineend"
+                line_above = self.widget.get(start_of_line_above, end_of_line_above).strip()
+
+                if line_above:
+                    self.widget.insert(end_of_line_above, "\n")
+                    self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
+                    self.widget.window_create(start_line, window=snippet)
+                else:
+                    self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
+                    self.widget.window_create(f"{start_line} -1 line", window=snippet)
 
             self.widget.snippets.append(snippet)
 
