@@ -41,6 +41,9 @@ class Markdown():
         under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
 
+        # Code snippets / fences
+        self.pattern_snippets = fr"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
+
         # Bold with two asterisks
         self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
 
@@ -173,10 +176,9 @@ class Markdown():
     def format_snippets(self, start_ln: int, end_ln: int) -> None:
         from .snippet import Snippet
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
-        pattern = r"```([-\w.#]*)\n(.*?)\n```$"
         matches = []
 
-        for match in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
+        for match in re.finditer(self.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL):
             language = match.group(1)
 
             content_start = match.start(2)
@@ -187,9 +189,9 @@ class Markdown():
             line_2 = self.get_line_number(text, content_end)
             end_line = f"{start_ln + line_2}.0"
 
-            matches.append((start_line, end_line, language))
+            matches.append((start_line, end_line, language, line_1))
 
-        for start_line, end_line, language in reversed(matches):
+        for start_line, end_line, language, line_1 in reversed(matches):
             snippet_text = self.widget.get(f"{start_line} linestart", f"{end_line} lineend")
             content_above = self.widget.get(f"{start_line} -1 line linestart", f"{start_line} -1 line lineend").strip()
             snippet = Snippet(self.widget, snippet_text, language)
@@ -201,12 +203,13 @@ class Markdown():
             if len(content_above) > numchars:
                 end_of_line_above = f"{start_line} -1 line lineend"
                 right_bit = f"{end_of_line_above} -{numchars} chars"
+                self.widget.insert(end_of_line_above, "\n")
                 self.widget.delete(right_bit, end_of_line_above)
                 self.widget.delete(start_line, f"{end_line} +1 line lineend")
-                self.widget.window_create(start_line, window=snippet)
+                self.widget.window_create(f"{start_line} +1 line", window=snippet)
             else:
                 self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
-                self.widget.window_create(f"{start_line} - 1 lines", window=snippet)
+                self.widget.window_create(f"{start_line} - 1 line", window=snippet)
 
             self.widget.snippets.append(snippet)
 
