@@ -37,23 +37,27 @@ class Markdown():
         protocols_string = self.escape_chars(protocols_list, "|")
         protocols = fr"({protocols_string})"
 
-        # Bold with two *
-        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right}(?=\s|$)"
+        aster = self.escape_chars("*")
+        under = self.escape_chars("_")
+        tick = self.escape_chars("`")
 
-        # Italic with one *
-        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right}(?=\s|$)"
+        # Bold with two asterisks
+        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
 
-        # Italic with one _
-        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left}(?P<all>\_{{1}}(?P<content>.*?)\_{{1}}){right}(?=\s|$)"
+        # Italic with one asterisk
+        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}(?=\s|$)"
 
-        # Highlight with three `
-        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{3}}(?P<content>.*?)\`{{3}}){right}(?=\s|$)"
+        # Italic with one underscore
+        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}(?=\s|$)"
 
-        # Highlight with two `
-        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{2}}(?P<content>.*?)\`{{2}}){right}(?=\s|$)"
+        # Highlight with three backticks
+        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}(?=\s|$)"
 
-        # Highlight with one `
-        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{1}}(?P<content>.*?)\`{{1}}){right}(?=\s|$)"
+        # Highlight with two backticks
+        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}(?=\s|$)"
+
+        # Highlight with one backtick
+        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = fr"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
