@@ -189,9 +189,9 @@ class Markdown():
             line_2 = self.get_line_number(text, content_end)
             end_line = f"{start_ln + line_2}.0"
 
-            matches.append((start_line, end_line, language, line_1))
+            matches.append((start_line, end_line, language))
 
-        for start_line, end_line, language, line_1 in reversed(matches):
+        for start_line, end_line, language in reversed(matches):
             snippet_text = self.widget.get(f"{start_line} linestart", f"{end_line} lineend")
             content_above = self.widget.get(f"{start_line} -1 line linestart", f"{start_line} -1 line lineend").strip()
             snippet = Snippet(self.widget, snippet_text, language)
