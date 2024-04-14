@@ -24,15 +24,18 @@ class IndexItem:
 class Markdown():
     def __init__(self, widget: Output) -> None:
         self.widget = widget
-        self.start_stopppers = ["", " "]
-        self.end_stoppers = ["", " ", "!", ".", "?", "\n", ",", ";"]
-        self.protocols = ("http://", "https://", "ftp://", "www.")
 
-        chars_left = utils.escape_regex("([")
-        left_side = fr"[{chars_left}]?"
+        chars_left = ["(", "["]
+        left_side_string = self.escape_chars(chars_left)
+        left_side = fr"[{left_side_string}]?"
 
-        chars_right = utils.escape_regex(".,;!?:)")
-        right_side = fr"[{chars_right}]?"
+        chars_right = [".", ",", ";", "!", "?", ":"]
+        right_side_string = self.escape_chars(chars_right)
+        right_side = fr"[{right_side_string}]?"
+
+        protocols_list = ["http://", "https://", "ftp://", "www."]
+        protocols_string = self.escape_chars(protocols_list, "|")
+        protocols = fr"({protocols_string})"
 
         # Bold with two *
         self.pattern_bold_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
@@ -53,7 +56,7 @@ class Markdown():
         self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{1}}(?P<content>.*?)\`{{1}}){right_side}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
-        self.pattern_url = r"(?:(?<=\s)|^)(?P<all>(?P<content>(http:\/\/|https:\/\/|ftp:\/\/|www\.)([^\s]+?)))(?=\s|$)"
+        self.pattern_url = fr"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
 
     def format(self) -> None:
         markers, num_lines = self.widget.get_markers()
@@ -205,3 +208,7 @@ class Markdown():
 
     def get_line_number(self, text: str, index: int) -> int:
         return text.count("\n", 0, index)
+
+    def escape_chars(self, chars: List[str], separator: str = "") -> str:
+        clean = [utils.escape_regex(c) for c in chars]
+        return separator.join(clean)
