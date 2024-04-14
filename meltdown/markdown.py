@@ -234,7 +234,7 @@ class Markdown:
                 if line_above:
                     self.widget.insert(end_of_line_above, "\n")
                     self.widget.delete(
-                        f"{start_line} -1 line linestart", f"{end_line} +1 line lineend"
+                        f"{start_line} -0 line linestart", f"{end_line} +2 line lineend"
                     )
                     self.widget.window_create(start_line, window=snippet)
                 else:
