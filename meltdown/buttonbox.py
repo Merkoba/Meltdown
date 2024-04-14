@@ -9,11 +9,16 @@ from .menus import Menu
 
 
 class ButtonBox(tk.Frame):
-    def __init__(self, parent: tk.Frame, text: str,
-                 command: Optional[Callable[..., Any]] = None,
-                 when: Optional[str] = None, style: Optional[str] = None,
-                 width: Optional[int] = None, bigger: bool = False) -> None:
-
+    def __init__(
+        self,
+        parent: tk.Frame,
+        text: str,
+        command: Optional[Callable[..., Any]] = None,
+        when: Optional[str] = None,
+        style: Optional[str] = None,
+        width: Optional[int] = None,
+        bigger: bool = False,
+    ) -> None:
         super().__init__(parent)
         self.text = text
         self.bigger = bigger
@@ -38,9 +43,9 @@ class ButtonBox(tk.Frame):
         else:
             text = self.text
 
-        self.label = tk.Label(self, text=text,
-                              font=app.theme.font("button"),
-                              padx=padx, pady=pady)
+        self.label = tk.Label(
+            self, text=text, font=app.theme.font("button"), padx=padx, pady=pady
+        )
 
         self.label.grid(sticky="nsew")
         self.grid_columnconfigure(0, weight=1)

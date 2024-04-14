@@ -66,20 +66,25 @@ class App:
 
         style.configure("Normal.TCombobox", foreground=self.theme.combobox_foreground)
         style.map(
-            "Normal.TCombobox", fieldbackground=[
-                ("readonly", self.theme.combobox_background)], fieldforeground=[
-                ("readonly", self.theme.combobox_foreground)])
-        style.map("Normal.TCombobox", selectbackground=[("readonly", "transparent")],
-                  selectforeground=[("readonly", self.theme.combobox_foreground)])
+            "Normal.TCombobox",
+            fieldbackground=[("readonly", self.theme.combobox_background)],
+            fieldforeground=[("readonly", self.theme.combobox_foreground)],
+        )
+        style.map(
+            "Normal.TCombobox",
+            selectbackground=[("readonly", "transparent")],
+            selectforeground=[("readonly", self.theme.combobox_foreground)],
+        )
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
         style.map(
-            "Disabled.TCombobox", fieldbackground=[
-                ("readonly", self.theme.combobox_background)], fieldforeground=[
-                ("readonly", self.theme.combobox_foreground)])
+            "Disabled.TCombobox",
+            fieldbackground=[("readonly", self.theme.combobox_background)],
+            fieldforeground=[("readonly", self.theme.combobox_foreground)],
+        )
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
@@ -88,40 +93,72 @@ class App:
         style.configure("Normal.TEntry", borderwidth=0)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor=self.theme.entry_insert)
-        style.configure("Normal.TEntry", selectbackground=self.theme.entry_selection_background)
-        style.configure("Normal.TEntry", selectforeground=self.theme.entry_selection_foreground)
+        style.configure(
+            "Normal.TEntry", selectbackground=self.theme.entry_selection_background
+        )
+        style.configure(
+            "Normal.TEntry", selectforeground=self.theme.entry_selection_foreground
+        )
 
-        style.configure("Normal.Vertical.TScrollbar", gripcount=0,
-                        background=self.theme.scrollbar_2, troughcolor=self.theme.scrollbar_1, borderwidth=0)
+        style.configure(
+            "Normal.Vertical.TScrollbar",
+            gripcount=0,
+            background=self.theme.scrollbar_2,
+            troughcolor=self.theme.scrollbar_1,
+            borderwidth=0,
+        )
 
-        style.map("Normal.Vertical.TScrollbar",
-                  background=[("disabled", self.theme.scrollbar_1)],
-                  troughcolor=[("disabled", self.theme.scrollbar_1)],
-                  borderwidth=[("disabled", 0)])
+        style.map(
+            "Normal.Vertical.TScrollbar",
+            background=[("disabled", self.theme.scrollbar_1)],
+            troughcolor=[("disabled", self.theme.scrollbar_1)],
+            borderwidth=[("disabled", 0)],
+        )
 
-        style.configure("Normal.Horizontal.TScrollbar", gripcount=0,
-                        background=self.theme.scrollbar_2, troughcolor=self.theme.scrollbar_1, borderwidth=0)
+        style.configure(
+            "Normal.Horizontal.TScrollbar",
+            gripcount=0,
+            background=self.theme.scrollbar_2,
+            troughcolor=self.theme.scrollbar_1,
+            borderwidth=0,
+        )
 
-        style.map("Normal.Horizontal.TScrollbar",
-                  background=[("disabled", self.theme.scrollbar_1)],
-                  troughcolor=[("disabled", self.theme.scrollbar_1)],
-                  borderwidth=[("disabled", 0)])
+        style.map(
+            "Normal.Horizontal.TScrollbar",
+            background=[("disabled", self.theme.scrollbar_1)],
+            troughcolor=[("disabled", self.theme.scrollbar_1)],
+            borderwidth=[("disabled", 0)],
+        )
 
-        style.configure("Dialog.Vertical.TScrollbar", gripcount=0,
-                        background=self.theme.scrollbar_dialog_2, troughcolor=self.theme.scrollbar_dialog_1, borderwidth=0)
+        style.configure(
+            "Dialog.Vertical.TScrollbar",
+            gripcount=0,
+            background=self.theme.scrollbar_dialog_2,
+            troughcolor=self.theme.scrollbar_dialog_1,
+            borderwidth=0,
+        )
 
-        style.map("Dialog.Vertical.TScrollbar",
-                  background=[("disabled", self.theme.scrollbar_dialog_1)],
-                  troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
-                  borderwidth=[("disabled", 0)])
+        style.map(
+            "Dialog.Vertical.TScrollbar",
+            background=[("disabled", self.theme.scrollbar_dialog_1)],
+            troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
+            borderwidth=[("disabled", 0)],
+        )
 
-        style.configure("Dialog.Horizontal.TScrollbar", gripcount=0,
-                        background=self.theme.scrollbar_dialog_2, troughcolor=self.theme.scrollbar_dialog_1, borderwidth=0)
+        style.configure(
+            "Dialog.Horizontal.TScrollbar",
+            gripcount=0,
+            background=self.theme.scrollbar_dialog_2,
+            troughcolor=self.theme.scrollbar_dialog_1,
+            borderwidth=0,
+        )
 
-        style.map("Dialog.Horizontal.TScrollbar",
-                  background=[("disabled", self.theme.scrollbar_dialog_1)],
-                  troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
-                  borderwidth=[("disabled", 0)])
+        style.map(
+            "Dialog.Horizontal.TScrollbar",
+            background=[("disabled", self.theme.scrollbar_dialog_1)],
+            troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
+            borderwidth=[("disabled", 0)],
+        )
 
     def setup(self) -> None:
         self.check_commandoc()
@@ -166,6 +203,7 @@ class App:
 
     def show_about(self) -> None:
         from .dialogs import Dialog
+
         title = self.manifest["title"]
         version = self.manifest["version"]
         author = self.manifest["author"]
@@ -204,6 +242,7 @@ class App:
 
     def set_geometry(self) -> None:
         from .args import args
+
         width = args.width if args.width != -1 else self.theme.width
         height = args.height if args.height != -1 else self.theme.height
         self.root.geometry(f"{width}x{height}")
@@ -217,6 +256,7 @@ class App:
 
     def update_bottom(self) -> None:
         from .display import display
+
         display.to_bottom()
 
         def action() -> None:
@@ -243,9 +283,14 @@ class App:
         if args.display:
             return
 
-        confs = [args.compact_model, args.compact_system,
-                 args.compact_details, args.compact_buttons,
-                 args.compact_addons, args.compact_input]
+        confs = [
+            args.compact_model,
+            args.compact_system,
+            args.compact_details,
+            args.compact_buttons,
+            args.compact_addons,
+            args.compact_input,
+        ]
 
         custom = any(confs)
 
@@ -329,8 +374,12 @@ class App:
 
     def run_command(self, cmd: List[str]) -> None:
         try:
-            subprocess.Popen(cmd, start_new_session=True,
-                             stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
+            subprocess.Popen(
+                cmd,
+                start_new_session=True,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.STDOUT,
+            )
         except BaseException as e:
             utils.error(e)
 
@@ -393,6 +442,7 @@ class App:
     def on_focus_in(self, event: Any) -> None:
         from .dialogs import Dialog
         from .menus import Menu
+
         what = str(event.widget)
 
         if what == ".":
@@ -401,6 +451,7 @@ class App:
 
     def on_focus_out(self, event: Any) -> None:
         from .keyboard import keyboard
+
         what = str(event.widget)
 
         if what == ".":
@@ -490,12 +541,14 @@ class App:
         from .dialogs import Dialog
         from .menus import Menu
         from .tooltips import ToolTip
+
         Dialog.hide_all()
         Menu.hide_all()
         ToolTip.hide_all()
 
     def hide_frames(self) -> None:
         from .widgets import widgets
+
         widgets.model_frame.grid_remove()
         widgets.system_frame.grid_remove()
         widgets.details_frame.grid_remove()

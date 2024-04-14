@@ -17,9 +17,7 @@ class ArgParser:
                 name = self.under_to_dash(key)
                 name = f"--{name}"
 
-            tail = {key: value for key,
-                    value in item.items() if value is not None}
-
+            tail = {key: value for key, value in item.items() if value is not None}
             parser.add_argument(name, **tail)
 
         self.parser = parser

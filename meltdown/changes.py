@@ -57,8 +57,9 @@ class Changes:
         if self.changes_after:
             app.root.after_cancel(self.changes_after)
 
-        self.changes_after = app.root.after(self.changes_delay,
-                                            lambda: self.do_on_change())
+        self.changes_after = app.root.after(
+            self.changes_delay, lambda: self.do_on_change()
+        )
 
     def do_on_change(self) -> None:
         if not self.widget.winfo_exists():
@@ -72,6 +73,6 @@ class Changes:
         self.changes.append(text)
 
         if len(self.changes) > 50:
-            self.changes = self.changes[-config.max_changes:]
+            self.changes = self.changes[-config.max_changes :]
 
         self.changes_index = len(self.changes) - 1

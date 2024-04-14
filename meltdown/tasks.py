@@ -11,7 +11,7 @@ from . import utils
 
 class Task:
     prefix = utils.escape_regex(args.prefix)
-    pattern = fr"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
+    pattern = rf"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
 
     def __init__(self, seconds: float, cmds: str, now: bool) -> None:
         self.seconds = seconds

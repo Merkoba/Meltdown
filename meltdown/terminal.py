@@ -22,7 +22,9 @@ words: List[str] = []
 
 
 class SlashCompleter(Completer):  # type:ignore
-    def get_completions(self, document: Document, event: Any) -> Generator[Completion, None, None]:
+    def get_completions(
+        self, document: Document, event: Any
+    ) -> Generator[Completion, None, None]:
         text = document.get_word_before_cursor(WORD=True).strip()
 
         if not text:
@@ -67,9 +69,13 @@ def do_start() -> None:
 
     completer = SlashCompleter()
 
-    session = PromptSession(history=history, completer=completer,
-                            reserve_space_for_menu=args.terminal_height,
-                            vi_mode=args.terminal_vi, key_bindings=kb)
+    session = PromptSession(
+        history=history,
+        completer=completer,
+        reserve_space_for_menu=args.terminal_height,
+        vi_mode=args.terminal_vi,
+        key_bindings=kb,
+    )
 
     while True:
         try:

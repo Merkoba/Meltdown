@@ -20,8 +20,11 @@ class Dialog:
         return Dialog.current_dialog is not None
 
     @staticmethod
-    def show_confirm(text: str, cmd_ok: Optional[Callable[..., Any]] = None,
-                     cmd_cancel: Optional[Callable[..., Any]] = None) -> None:
+    def show_confirm(
+        text: str,
+        cmd_ok: Optional[Callable[..., Any]] = None,
+        cmd_cancel: Optional[Callable[..., Any]] = None,
+    ) -> None:
         if Dialog.open():
             return
 
@@ -45,10 +48,11 @@ class Dialog:
         dialog.show()
 
     @staticmethod
-    def show_commands(text: str,
-                      commands: List[Tuple[str, Callable[..., Any]]],
-                      image: Optional[Path] = None) -> None:
-
+    def show_commands(
+        text: str,
+        commands: List[Tuple[str, Callable[..., Any]]],
+        image: Optional[Path] = None,
+    ) -> None:
         if Dialog.open():
             return
 
@@ -94,14 +98,19 @@ class Dialog:
         dialog.show()
 
     @staticmethod
-    def show_input(text: str, cmd_ok: Callable[..., Any],
-                   cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "") -> None:
-
+    def show_input(
+        text: str,
+        cmd_ok: Callable[..., Any],
+        cmd_cancel: Optional[Callable[..., Any]] = None,
+        value: str = "",
+    ) -> None:
         if Dialog.open():
             return
 
         dialog = Dialog(text, top_frame=True)
-        entry = EntryBox(dialog.top_frame, font=app.theme.font(), width=20, justify="center")
+        entry = EntryBox(
+            dialog.top_frame, font=app.theme.font(), width=20, justify="center"
+        )
 
         def ok() -> None:
             ans = entry.get()
@@ -129,12 +138,15 @@ class Dialog:
         entry.full_focus()
 
     @staticmethod
-    def show_textbox(text: str, cmd_ok: Callable[..., Any],
-                     cmd_cancel: Optional[Callable[..., Any]] = None, value: str = "",
-                     commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
-                     start_maximized: bool = False,
-                     on_right_click: Optional[Callable[..., Any]] = None) -> None:
-
+    def show_textbox(
+        text: str,
+        cmd_ok: Callable[..., Any],
+        cmd_cancel: Optional[Callable[..., Any]] = None,
+        value: str = "",
+        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
+        start_maximized: bool = False,
+        on_right_click: Optional[Callable[..., Any]] = None,
+    ) -> None:
         from .textbox import TextBox
 
         if Dialog.open():
@@ -142,9 +154,14 @@ class Dialog:
 
         dialog = Dialog(text, top_frame=True)
 
-        textbox = TextBox(dialog, text=text, cmd_ok=cmd_ok,
-                          cmd_cancel=cmd_cancel, commands=commands,
-                          on_right_click=on_right_click)
+        textbox = TextBox(
+            dialog,
+            text=text,
+            cmd_ok=cmd_ok,
+            cmd_cancel=cmd_cancel,
+            commands=commands,
+            on_right_click=on_right_click,
+        )
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
@@ -207,7 +224,9 @@ class Dialog:
         self.container.grid(row=0, column=0, sticky="nsew")
 
         text_label = tk.Label(self.container, text=text, font=app.theme.font())
-        text_label.configure(wraplength=500, background=background, foreground=foreground)
+        text_label.configure(
+            wraplength=500, background=background, foreground=foreground
+        )
         text_label.grid(row=0, column=0, sticky="nsew")
 
         if with_top_frame:

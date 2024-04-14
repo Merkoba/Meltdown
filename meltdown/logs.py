@@ -30,9 +30,9 @@ class Logs:
         cmds.append(("To Text", lambda: self.to_text(True)))
         Dialog.show_commands("Save all conversations?", cmds)
 
-    def save_file(self, text: str, name: str,
-                  ext: str, all: bool, overwrite: bool, mode: str) -> None:
-
+    def save_file(
+        self, text: str, name: str, ext: str, all: bool, overwrite: bool, mode: str
+    ) -> None:
         text = text.strip()
         name = name.replace(" ", "_").lower()
         paths.logs.mkdir(parents=True, exist_ok=True)

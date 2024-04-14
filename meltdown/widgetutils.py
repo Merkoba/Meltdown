@@ -13,13 +13,14 @@ from .buttonbox import ButtonBox
 from .framedata import FrameData
 
 
-def do_grid(widget: tk.Widget,
-            col: int,
-            right_padding: Optional[int] = None,
-            bottom_padding: Optional[int] = None,
-            padx: Optional[int] = None,
-            pady: Optional[int] = None) -> None:
-
+def do_grid(
+    widget: tk.Widget,
+    col: int,
+    right_padding: Optional[int] = None,
+    bottom_padding: Optional[int] = None,
+    padx: Optional[int] = None,
+    pady: Optional[int] = None,
+) -> None:
     if padx is not None:
         if right_padding:
             px = (padx, right_padding)
@@ -38,9 +39,12 @@ def do_grid(widget: tk.Widget,
     widget.grid(row=0, column=col, padx=px, pady=py, sticky="ew")
 
 
-def make_frame(parent: Optional[tk.Frame] = None,
-               col: int = 0, row: Optional[int] = None,
-               bottom_padding: Optional[int] = None) -> FrameData:
+def make_frame(
+    parent: Optional[tk.Frame] = None,
+    col: int = 0,
+    row: Optional[int] = None,
+    bottom_padding: Optional[int] = None,
+) -> FrameData:
     p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
     padx = (app.theme.frame_padx, app.theme.frame_padx)
@@ -52,8 +56,7 @@ def make_frame(parent: Optional[tk.Frame] = None,
 
     row = row if (row is not None) else FrameData.frame_number
 
-    frame.grid(row=row, column=col, padx=padx,
-               pady=pady, sticky="nsew")
+    frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
 
     frame.bind("<Button-1>", lambda e: app.on_frame_click())
     frame.configure(background=app.theme.background_color)
@@ -64,20 +67,28 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     canvas = tk.Canvas(parent)
     scrollbar = tk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
     frame = tk.Frame(canvas, background=app.theme.background_color)
-    frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+    frame.bind(
+        "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
+    )
     canvas.create_window((0, 0), window=frame, anchor="nw")
     canvas.configure(xscrollcommand=scrollbar.set)
-    canvas.configure(borderwidth=0, highlightthickness=0, background=app.theme.background_color)
+    canvas.configure(
+        borderwidth=0, highlightthickness=0, background=app.theme.background_color
+    )
     canvas.grid(column=col, row=0, sticky="ew", padx=10)
     return frame, canvas
 
 
-def make_entry(frame_data: FrameData, value: str = "",
-               width: Optional[int] = None,
-               right_padding: Optional[int] = None) -> EntryBox:
-
+def make_entry(
+    frame_data: FrameData,
+    value: str = "",
+    width: Optional[int] = None,
+    right_padding: Optional[int] = None,
+) -> EntryBox:
     w = width if width else app.theme.entry_width
-    widget = EntryBox(frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry")
+    widget = EntryBox(
+        frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry"
+    )
     do_grid(widget, col=frame_data.col, right_padding=right_padding)
     frame_data.col += 1
 
@@ -87,44 +98,78 @@ def make_entry(frame_data: FrameData, value: str = "",
     return widget
 
 
-def get_button(parent: tk.Frame, text: str,
-               command: Optional[Callable[..., Any]] = None,
-               style: Optional[str] = None, width: Optional[int] = None, bigger: bool = False) -> ButtonBox:
-
+def get_button(
+    parent: tk.Frame,
+    text: str,
+    command: Optional[Callable[..., Any]] = None,
+    style: Optional[str] = None,
+    width: Optional[int] = None,
+    bigger: bool = False,
+) -> ButtonBox:
     return ButtonBox(parent, text, command, style=style, width=width, bigger=bigger)
 
 
-def make_button(frame_data: FrameData, text: str,
-                command: Optional[Callable[..., Any]] = None,
-                right_padding: Optional[int] = None, bottom_padding: Optional[int] = None, bigger: bool = False,
-                pady: Optional[int] = None, style: Optional[str] = None, width: Optional[int] = None) -> ButtonBox:
-
-    widget = get_button(frame_data.frame, text, command, style=style, width=width, bigger=bigger)
-    do_grid(widget, col=frame_data.col, right_padding=right_padding, bottom_padding=bottom_padding, pady=pady)
+def make_button(
+    frame_data: FrameData,
+    text: str,
+    command: Optional[Callable[..., Any]] = None,
+    right_padding: Optional[int] = None,
+    bottom_padding: Optional[int] = None,
+    bigger: bool = False,
+    pady: Optional[int] = None,
+    style: Optional[str] = None,
+    width: Optional[int] = None,
+) -> ButtonBox:
+    widget = get_button(
+        frame_data.frame, text, command, style=style, width=width, bigger=bigger
+    )
+    do_grid(
+        widget,
+        col=frame_data.col,
+        right_padding=right_padding,
+        bottom_padding=bottom_padding,
+        pady=pady,
+    )
     frame_data.col += 1
     return widget
 
 
-def make_label(frame_data: FrameData, text: str,
-               right_padding: Optional[int] = None, padx: Optional[int] = None,
-               pady: Optional[int] = None, colons: bool = True) -> tk.Label:
-
+def make_label(
+    frame_data: FrameData,
+    text: str,
+    right_padding: Optional[int] = None,
+    padx: Optional[int] = None,
+    pady: Optional[int] = None,
+    colons: bool = True,
+) -> tk.Label:
     text = f"{text}:" if colons else text
     widget = tk.Label(frame_data.frame, text=text, font=app.theme.font())
-    widget.configure(background=app.theme.background_color, foreground=app.theme.foreground_color)
-    do_grid(widget, col=frame_data.col, right_padding=right_padding, padx=padx, pady=pady)
+    widget.configure(
+        background=app.theme.background_color, foreground=app.theme.foreground_color
+    )
+    do_grid(
+        widget, col=frame_data.col, right_padding=right_padding, padx=padx, pady=pady
+    )
     frame_data.col += 1
     return widget
 
 
-def make_combobox(frame_data: FrameData, values: Optional[List[Any]] = None,
-                  width: Optional[int] = None,
-                  right_padding: Optional[int] = None) -> ttk.Combobox:
-
+def make_combobox(
+    frame_data: FrameData,
+    values: Optional[List[Any]] = None,
+    width: Optional[int] = None,
+    right_padding: Optional[int] = None,
+) -> ttk.Combobox:
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
-    widget = ttk.Combobox(frame_data.frame, values=v, state="readonly",
-                          font=app.theme.font("combobox"), style="Normal.TCombobox", width=w)
+    widget = ttk.Combobox(
+        frame_data.frame,
+        values=v,
+        state="readonly",
+        font=app.theme.font("combobox"),
+        style="Normal.TCombobox",
+        width=w,
+    )
 
     # Remove mousewheel events
     widget.bind_class("TCombobox", "<MouseWheel>", lambda e: "break")

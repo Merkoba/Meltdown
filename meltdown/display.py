@@ -18,9 +18,15 @@ from . import timeutils
 
 
 class Tab:
-    def __init__(self, conversation_id: str, tab_id: str,
-                 output: Output, find: Find, bottom: Bottom,
-                 mode: str) -> None:
+    def __init__(
+        self,
+        conversation_id: str,
+        tab_id: str,
+        output: Output,
+        find: Find,
+        bottom: Bottom,
+        mode: str,
+    ) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
         self.output = output
@@ -64,7 +70,9 @@ class Display:
         self.output_menu.add(text="Tab List", command=lambda: self.show_tab_list())
         self.output_menu.add(text="First Tab", command=lambda: self.select_first_tab())
         self.output_menu.add(text="Last Tab", command=lambda: self.select_last_tab())
-        self.output_menu.add(text="Active Tab", command=lambda: self.select_active_tab())
+        self.output_menu.add(
+            text="Active Tab", command=lambda: self.select_active_tab()
+        )
         self.output_menu.separator()
         self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
         self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
@@ -82,11 +90,14 @@ class Display:
         self.min_font_size = 6
         self.max_font_size = 36
 
-    def make_tab(self, name: Optional[str] = None,
-                 conversation_id: Optional[str] = None,
-                 select_tab: bool = True, mode: str = "normal",
-                 save: bool = True) -> str:
-
+    def make_tab(
+        self,
+        name: Optional[str] = None,
+        conversation_id: Optional[str] = None,
+        select_tab: bool = True,
+        mode: str = "normal",
+        save: bool = True,
+    ) -> str:
         from .session import session
 
         if not name:
@@ -126,10 +137,13 @@ class Display:
 
         return tab_id
 
-    def close_tab(self, tab_id: str = "",
-                  force: bool = False,
-                  make_empty: bool = True, method: str = "normal") -> None:
-
+    def close_tab(
+        self,
+        tab_id: str = "",
+        force: bool = False,
+        make_empty: bool = True,
+        method: str = "normal",
+    ) -> None:
         if not tab_id:
             tab_id = self.book.current()
 
@@ -206,6 +220,7 @@ class Display:
     def on_tab_change(self) -> None:
         from .inputcontrol import inputcontrol
         from .session import session
+
         self.update_current_tab()
         tab = self.get_current_tab()
 
@@ -269,6 +284,7 @@ class Display:
 
     def show_tab_list(self) -> None:
         from .widgets import widgets
+
         widget = widgets.output_menu
 
         if not widget:
@@ -295,10 +311,13 @@ class Display:
             tab_id = self.tab_menu_id
 
         name = self.get_tab_name(tab_id)
-        Dialog.show_input("Pick a name", lambda s: self.do_rename_tab(tab_id, s), value=name)
+        Dialog.show_input(
+            "Pick a name", lambda s: self.do_rename_tab(tab_id, s), value=name
+        )
 
     def do_rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
+
         name = name.strip()
 
         if not name:
@@ -333,6 +352,7 @@ class Display:
 
     def close_old_tabs(self, force: bool = False) -> None:
         from .session import session
+
         ids = self.tab_ids()
 
         if len(ids) <= 1:
@@ -407,7 +427,7 @@ class Display:
             return
 
         index = self.index(self.current_tab)
-        tabs = tab_ids[index + 1:]
+        tabs = tab_ids[index + 1 :]
 
         def action() -> None:
             for tab_id in tabs:
@@ -541,6 +561,7 @@ class Display:
 
     def remove_tab(self, tab_id: str) -> None:
         from .session import session
+
         tab = self.get_tab(tab_id)
 
         if not tab:
@@ -601,6 +622,7 @@ class Display:
 
     def apply_font_size(self, size: int) -> None:
         from .config import config
+
         config.set("output_font_size", size)
 
     def set_font_size(self, size: int) -> None:
@@ -614,6 +636,7 @@ class Display:
 
     def decrease_font(self) -> None:
         from .config import config
+
         new_size = config.output_font_size - 1
 
         if new_size < self.min_font_size:
@@ -623,6 +646,7 @@ class Display:
 
     def increase_font(self) -> None:
         from .config import config
+
         new_size = config.output_font_size + 1
 
         if new_size > self.max_font_size:
@@ -632,6 +656,7 @@ class Display:
 
     def reset_font(self) -> None:
         from .config import config
+
         config.reset_one("output_font_size")
 
     def update_font(self) -> None:
@@ -658,6 +683,7 @@ class Display:
 
     def update_session(self) -> None:
         from .session import session
+
         session.update()
 
     def hide_bottom(self, tab_id: str = "") -> None:
@@ -671,7 +697,9 @@ class Display:
 
         bottom.hide()
 
-    def prompt(self, who: str, text: str = "", tab_id: str = "", to_bottom: bool = True) -> None:
+    def prompt(
+        self, who: str, text: str = "", tab_id: str = "", to_bottom: bool = True
+    ) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -709,7 +737,9 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def find(self, tab_id: str = "", widget: Optional[tk.Text] = None, query: str = "") -> None:
+    def find(
+        self, tab_id: str = "", widget: Optional[tk.Text] = None, query: str = ""
+    ) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -746,6 +776,7 @@ class Display:
     def view_text(self) -> None:
         from .session import session
         from .logs import logs
+
         tab = self.get_current_tab()
 
         if not tab:
@@ -770,6 +801,7 @@ class Display:
     def view_json(self) -> None:
         from .session import session
         from .logs import logs
+
         tab = self.get_current_tab()
 
         if not tab:
@@ -850,6 +882,7 @@ class Display:
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
+
         tab = self.get_tab(tab_id)
 
         if not tab:

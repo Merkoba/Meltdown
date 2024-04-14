@@ -21,45 +21,55 @@ test_conversation = {
     "name": "Test",
     "items": [
         {"user": "Highlight Test"},
-        {"assistant": "Here is a `highlight` and `a longer highlight`.\nHere is a `highlight` and `a longer highlight`."},
+        {
+            "assistant": "Here is a `highlight` and `a longer highlight`.\nHere is a `highlight` and `a longer highlight`."
+        },
         {"user": "Highlight Test 2"},
         {"assistant": "`another highlight 123`"},
         {"user": "Bold Test"},
-        {"assistant": "Here is a bold **word** and **a bold sentence**.\nHere is a bold **word** and **a bold sentence**."},
+        {
+            "assistant": "Here is a bold **word** and **a bold sentence**.\nHere is a bold **word** and **a bold sentence**."
+        },
         {"user": "Bold Test 2"},
-        {"assistant": "\n1) **Some Item:** Description\n2) **Another Item:** Description\n3) **Third Item:** Description"},
+        {
+            "assistant": "\n1) **Some Item:** Description\n2) **Another Item:** Description\n3) **Third Item:** Description"
+        },
         {"user": "Bold Test 3"},
         {"assistant": "**This is a bold sentence**\n**This is a bold sentence**"},
         {"user": "Italic Test with Asterisk"},
-        {"assistant": "Here is an italic *word* and *an italic sentence*.\nHere is an italic *word* and *an italic sentence*."},
+        {
+            "assistant": "Here is an italic *word* and *an italic sentence*.\nHere is an italic *word* and *an italic sentence*."
+        },
         {"user": "Italic Test with Underscore"},
-        {"assistant": "Here is a an italic _word_ and _an italic sentence_.\nHere is a an italic _word_ and _an italic sentence_."},
+        {
+            "assistant": "Here is a an italic _word_ and _an italic sentence_.\nHere is a an italic _word_ and _an italic sentence_."
+        },
         {"user": "Italic Test 3"},
         {"assistant": "*This is an italic sentence*\n*This is an italic sentence*"},
         {"user": "Italic Test 4"},
         {"assistant": "_This is an italic sentence_ 2\n_This is an italic sentence_ 2"},
         {"user": "Snippet Test"},
-        {"assistant":
-            "```python\na = 123\nprint('Hello, World!')\n```\n\n" +
-            "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
-         },
+        {
+            "assistant": "```python\na = 123\nprint('Hello, World!')\n```\n\n"
+            + "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
+        },
         {"user": "Snippet Test 2"},
-        {"assistant":
-            "Here is some code:\n\n```\na = 123\nprint('Hello, World!')\n```\n\n" +
-            "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
-         },
+        {
+            "assistant": "Here is some code:\n\n```\na = 123\nprint('Hello, World!')\n```\n\n"
+            + "Here is more code:\n\n```js\nlet a = 123\nconsole.log('Hello, World!')\n```"
+        },
         {"user": "Snippet Test 3"},
-        {"assistant":
-            "```python\na = 123\nprint('Hello, World!')\n```"
-         },
+        {"assistant": "```python\na = 123\nprint('Hello, World!')\n```"},
         {"user": "Snippet Test 4"},
-        {"assistant":
-            "Last snippet 1:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```\n\n" +
-            "Last snippet 2:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
-         },
+        {
+            "assistant": "Last snippet 1:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```\n\n"
+            + "Last snippet 2:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
+        },
         {"user": "URL Test"},
-        {"assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n" +
-         "Here are some urls https://aa.com and http://cc.com\nftp://44.com"},
+        {
+            "assistant": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n"
+            + "Here are some urls https://aa.com and http://cc.com\nftp://44.com"
+        },
         {"user": "Normal Sentence"},
         {"assistant": "Here is a normal sentence"},
         {"user": "Loading dolphin-2_6-phi-2.Q5_K_M.gguf"},
@@ -82,7 +92,7 @@ class Conversation:
         session.save()
 
     def limit(self) -> None:
-        self.items = self.items[-config.max_log:]
+        self.items = self.items[-config.max_log :]
 
     def clear(self) -> None:
         self.items = []
@@ -98,9 +108,13 @@ class Conversation:
             for item in self.items:
                 for key in item:
                     if key == "user":
-                        display.prompt("user", item[key], tab_id=tab.tab_id, to_bottom=False)
+                        display.prompt(
+                            "user", item[key], tab_id=tab.tab_id, to_bottom=False
+                        )
                     elif key == "assistant":
-                        display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
+                        display.prompt(
+                            "ai", item[key], tab_id=tab.tab_id, to_bottom=False
+                        )
                     else:
                         continue
 
@@ -123,14 +137,16 @@ class Conversation:
                     if args.avatars_in_logs:
                         log += Output.get_prompt("user")
                     else:
-                        log += Output.get_prompt("user",
-                                                 show_avatar=False, colon_space=False)
+                        log += Output.get_prompt(
+                            "user", show_avatar=False, colon_space=False
+                        )
                 elif key == "assistant":
                     if args.avatars_in_logs:
                         log += Output.get_prompt("ai")
                     else:
-                        log += Output.get_prompt("ai",
-                                                 show_avatar=False, colon_space=False)
+                        log += Output.get_prompt(
+                            "ai", show_avatar=False, colon_space=False
+                        )
                 else:
                     continue
 
@@ -244,11 +260,14 @@ class Session:
             return
 
         for item in items:
-            conversation = Conversation(item["id"], item["name"], item.get("last_modified", 0.0))
+            conversation = Conversation(
+                item["id"], item["name"], item.get("last_modified", 0.0)
+            )
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
-            display.make_tab(conversation.name, conversation.id,
-                             select_tab=False, save=False)
+            display.make_tab(
+                conversation.name, conversation.id, select_tab=False, save=False
+            )
 
     def save_state(self, name: str = "") -> None:
         if not paths.sessions.exists():
@@ -332,8 +351,11 @@ class Session:
 
             return True
 
-        sessions_list = [conversation.to_dict() for conversation in
-                         self.conversations.values() if check(conversation)]
+        sessions_list = [
+            conversation.to_dict()
+            for conversation in self.conversations.values()
+            if check(conversation)
+        ]
 
         return json.dumps(sessions_list, indent=4)
 

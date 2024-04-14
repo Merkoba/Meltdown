@@ -142,6 +142,7 @@ class Theme:
 
     def get_font_family(self) -> str:
         from .args import args
+
         return self.monospace_family if args.monospace else self.font_family
 
     def get_output_font(self) -> Tuple[str, int]:
@@ -166,6 +167,7 @@ class Theme:
 
     def font(self, name: str = "font") -> Tuple[str, int, str]:
         from .args import args
+
         diff = args.font_diff
         fam = self.font_family
 

@@ -31,24 +31,36 @@ class InputControl:
         frame_data.expand()
         widgets.input = self.input
         widgets.input_frame = frame_data.frame
-        tip = "The prompt for the AI." \
-            " The prompt is a message that the AI will respond to." \
+        tip = (
+            "The prompt for the AI."
+            " The prompt is a message that the AI will respond to."
             " Use the mousewheel to cycle input history"
+        )
         ToolTip(self.input_label, tip)
         ToolTip(self.input, tip)
 
-        prev_button = widgetutils.make_button(frame_data, "< Prev", lambda: self.history_up())
+        prev_button = widgetutils.make_button(
+            frame_data, "< Prev", lambda: self.history_up()
+        )
         ToolTip(prev_button, "Previous item in the input history")
 
-        next_button = widgetutils.make_button(frame_data, "Next >", lambda: self.history_down())
+        next_button = widgetutils.make_button(
+            frame_data, "Next >", lambda: self.history_down()
+        )
         ToolTip(next_button, "Next item in the input history")
 
         if args.textbox_button:
-            textbox_button = widgetutils.make_button(frame_data, "Write", lambda: self.show_textbox())
+            textbox_button = widgetutils.make_button(
+                frame_data, "Write", lambda: self.show_textbox()
+            )
             ToolTip(textbox_button, "Show a textbox for longer inputs")
 
-        submit_button = widgetutils.make_button(frame_data, "Submit",
-                                                lambda: self.submit(scroll=False), right_padding=app.theme.right_padding)
+        submit_button = widgetutils.make_button(
+            frame_data,
+            "Submit",
+            lambda: self.submit(scroll=False),
+            right_padding=app.theme.right_padding,
+        )
 
         ToolTip(submit_button, "Send the prompt to the AI")
 
@@ -67,6 +79,7 @@ class InputControl:
 
     def show_menu(self, event: Optional[Any] = None) -> None:
         from .widgets import widgets
+
         widgets.show_menu_items("input", "inputs", lambda s: self.set(s), event)
 
     def focus(self) -> None:
@@ -191,6 +204,7 @@ class InputControl:
 
     def check(self) -> None:
         from .display import display
+
         text = args.input.strip()
 
         if not text:

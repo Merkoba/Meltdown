@@ -71,11 +71,16 @@ class Snippet(tk.Frame):
 
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
-        self.scrollbar = ttk.Scrollbar(self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL)
+        self.scrollbar = ttk.Scrollbar(
+            self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL
+        )
         self.scrollbar.configure(cursor="arrow")
         self.text.configure(xscrollcommand=self.scrollbar.set)
-        self.text.tag_configure("sel", background=app.theme.snippet_selection_background,
-                                foreground=app.theme.snippet_selection_foreground)
+        self.text.tag_configure(
+            "sel",
+            background=app.theme.snippet_selection_background,
+            foreground=app.theme.snippet_selection_foreground,
+        )
 
         if args.scrollbars:
             self.scrollbar.pack(fill=tk.X)
@@ -135,6 +140,7 @@ class Snippet(tk.Frame):
 
     def copy_all(self) -> None:
         from .dialogs import Dialog
+
         Dialog.hide_all()
         pyperclip.copy(self.content)
         self.header_copy.configure(text="Copied!")
@@ -142,6 +148,7 @@ class Snippet(tk.Frame):
 
     def select_all(self) -> None:
         from .dialogs import Dialog
+
         Dialog.hide_all()
         self.text.tag_add("sel", "1.0", tk.END)
 
@@ -151,7 +158,9 @@ class Snippet(tk.Frame):
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)
         Output.tab_id = self.parent.tab_id
-        Output.words = self.text.get(f"{current_index} wordstart", f"{current_index} wordend")
+        Output.words = self.text.get(
+            f"{current_index} wordstart", f"{current_index} wordend"
+        )
 
     def get_selected_text(self) -> str:
         try:
@@ -187,6 +196,7 @@ class Snippet(tk.Frame):
 
     def on_click(self) -> None:
         from .dialogs import Dialog
+
         Dialog.hide_all()
         self.parent.deselect_all()
 
@@ -213,5 +223,6 @@ class Snippet(tk.Frame):
     def find(self) -> None:
         from .dialogs import Dialog
         from .display import display
+
         Dialog.hide_all()
         display.find(tab_id=self.parent.tab_id, widget=self.text)

@@ -78,9 +78,9 @@ class EntryBox(ttk.Entry):
 
         self.after_idle(lambda: do_select())
 
-    def set_text(self, text: str, check_placeholder: bool = True,
-                 on_change: bool = True) -> None:
-
+    def set_text(
+        self, text: str, check_placeholder: bool = True, on_change: bool = True
+    ) -> None:
         self.text_var.trace_remove("write", self.trace_id)
         self.delete(0, tk.END)
         self.insert(0, text)
@@ -92,10 +92,9 @@ class EntryBox(ttk.Entry):
         if on_change and (not self.placeholder_active):
             self.changes.on_change()
 
-    def insert_text(self, text: str,
-                    check_placeholder: bool = True,
-                    index: int = -1) -> None:
-
+    def insert_text(
+        self, text: str, check_placeholder: bool = True, index: int = -1
+    ) -> None:
         if self.placeholder_active:
             self.delete(0, tk.END)
 

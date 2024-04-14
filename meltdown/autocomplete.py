@@ -38,7 +38,7 @@ class AutoComplete:
                 check()
                 return
 
-            missing = match[len(self.clean(self.word)):]
+            missing = match[len(self.clean(self.word)) :]
 
             if self.match:
                 inputcontrol.input.delete_text(self.pos, len(self.missing))
@@ -69,7 +69,7 @@ class AutoComplete:
         caret_pos = inputcontrol.input.index(tk.INSERT)
         text_to_caret = text[:caret_pos]
         last_space_pos = text_to_caret.rfind(" ")
-        word = text_to_caret[last_space_pos + 1:caret_pos]
+        word = text_to_caret[last_space_pos + 1 : caret_pos]
 
         if not word:
             return

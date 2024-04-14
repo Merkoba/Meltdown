@@ -20,8 +20,8 @@ class Output(tk.Text):
     word_menu.add(text="Search", command=lambda: Output.search_words())
     word_menu.add(text="New", command=lambda: Output.new_tab())
     current_output: Optional["Output"] = None
-    marker_user = "\u200B\u200B\u200B"
-    marker_ai = "\u200C\u200C\u200C"
+    marker_user = "\u200b\u200b\u200b"
+    marker_ai = "\u200c\u200c\u200c"
     words = ""
 
     @staticmethod
@@ -50,7 +50,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        query = f"What is \"{text}\" ?"
+        query = f'What is "{text}" ?'
         tab_id = Output.current_output.tab_id
         model.stream(query, tab_id)
 
@@ -60,6 +60,7 @@ class Output(tk.Text):
             return
 
         from .dialogs import Dialog
+
         text = Output.get_words()
         Output.current_output.deselect_all()
 
@@ -75,6 +76,7 @@ class Output(tk.Text):
     def new_tab() -> None:
         from .display import display
         from .model import model
+
         if not Output.current_output:
             return
 
@@ -84,7 +86,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        text = f"Tell me about \"{text}\""
+        text = f'Tell me about "{text}"'
         tab_id = display.make_tab()
         model.stream(text, tab_id)
 
@@ -98,9 +100,9 @@ class Output(tk.Text):
         Dialog.show_confirm("Open this URL?", lambda: action())
 
     @staticmethod
-    def get_prompt(who: str, mark: bool = False,
-                   show_avatar: bool = True, colon_space: bool = True) -> str:
-
+    def get_prompt(
+        who: str, mark: bool = False, show_avatar: bool = True, colon_space: bool = True
+    ) -> str:
         name = getattr(config, f"name_{who}")
         avatar = getattr(config, f"avatar_{who}")
         colons = " : " if colon_space else ": "
@@ -127,7 +129,10 @@ class Output(tk.Text):
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
-        super().__init__(parent, state="disabled", wrap="word", font=app.theme.get_output_font())
+
+        super().__init__(
+            parent, state="disabled", wrap="word", font=app.theme.get_output_font()
+        )
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
@@ -161,8 +166,12 @@ class Output(tk.Text):
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
-        self.tag_bind("name_user", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("user"))
-        self.tag_bind("name_ai", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("ai"))
+        self.tag_bind(
+            "name_user", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("user")
+        )
+        self.tag_bind(
+            "name_ai", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("ai")
+        )
 
         def on_url_click(event: Any) -> None:
             text = self.get_tagwords("url", event)
@@ -221,7 +230,10 @@ class Output(tk.Text):
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
-        self.configure(background=app.theme.output_background, foreground=app.theme.output_foreground)
+        self.configure(
+            background=app.theme.output_background,
+            foreground=app.theme.output_foreground,
+        )
         self.configure(border=4, highlightthickness=0, relief="flat")
 
         if args.colors:
@@ -236,8 +248,11 @@ class Output(tk.Text):
         for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
             self.tag_lower(tag)
 
-        self.tag_configure("sel", background=app.theme.output_selection_background,
-                           foreground=app.theme.output_selection_foreground)
+        self.tag_configure(
+            "sel",
+            background=app.theme.output_selection_background,
+            foreground=app.theme.output_selection_foreground,
+        )
 
         self.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
 
@@ -364,6 +379,7 @@ class Output(tk.Text):
 
     def to_log(self) -> str:
         from .session import session
+
         tab = self.display.get_tab(self.tab_id)
 
         if not tab:
@@ -471,7 +487,9 @@ class Output(tk.Text):
             if tags:
                 Output.words = self.get_tagwords(tags[0], event).strip()
             else:
-                Output.words = self.get(f"{current_index} wordstart", f"{current_index} wordend")
+                Output.words = self.get(
+                    f"{current_index} wordstart", f"{current_index} wordend"
+                )
 
         Output.words = Output.words.strip()
 

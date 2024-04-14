@@ -21,12 +21,19 @@ KbHelp = Optional[str]
 
 
 class KbItem:
-    def __init__(self, command: KbCmd, on_ctrl: KbCmd,
-                 on_shift: KbCmd, on_ctrl_shift: KbCmd,
-                 widget: Optional[tk.Widget], return_break: bool,
-                 help: KbHelp, shift_help: KbHelp,
-                 ctrl_help: KbHelp, ctrl_shift_help: KbHelp) -> None:
-
+    def __init__(
+        self,
+        command: KbCmd,
+        on_ctrl: KbCmd,
+        on_shift: KbCmd,
+        on_ctrl_shift: KbCmd,
+        widget: Optional[tk.Widget],
+        return_break: bool,
+        help: KbHelp,
+        shift_help: KbHelp,
+        ctrl_help: KbHelp,
+        ctrl_shift_help: KbHelp,
+    ) -> None:
         self.command = command
         self.on_ctrl = on_ctrl
         self.on_shift = on_shift
@@ -101,7 +108,22 @@ class Keyboard:
         ToolTip.hide_all()
 
         if (event.widget != inputcontrol.input) and (not is_entrybox):
-            chars = ["/", "\\", "!", "?", "¿", "!", "¡", ":", ";", ",", ".", "'", "\"", " "]
+            chars = [
+                "/",
+                "\\",
+                "!",
+                "?",
+                "¿",
+                "!",
+                "¡",
+                ":",
+                ";",
+                ",",
+                ".",
+                "'",
+                '"',
+                " ",
+            ]
             syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 
             # Focus the input and insert char
@@ -189,25 +211,36 @@ class Keyboard:
         for key in self.commands:
             add_cmd(key)
 
-    def register(self, key: str,
-                 command: Optional[Callable[..., Any]] = None,
-                 on_ctrl: Optional[Callable[..., Any]] = None,
-                 on_shift: Optional[Callable[..., Any]] = None,
-                 on_ctrl_shift: Optional[Callable[..., Any]] = None,
-                 help: Optional[str] = None,
-                 shift_help: Optional[str] = None,
-                 ctrl_help: Optional[str] = None,
-                 ctrl_shift_help: Optional[str] = None,
-                 return_break: bool = False,
-                 widget: Optional[tk.Widget] = None) -> None:
-
+    def register(
+        self,
+        key: str,
+        command: Optional[Callable[..., Any]] = None,
+        on_ctrl: Optional[Callable[..., Any]] = None,
+        on_shift: Optional[Callable[..., Any]] = None,
+        on_ctrl_shift: Optional[Callable[..., Any]] = None,
+        help: Optional[str] = None,
+        shift_help: Optional[str] = None,
+        ctrl_help: Optional[str] = None,
+        ctrl_shift_help: Optional[str] = None,
+        return_break: bool = False,
+        widget: Optional[tk.Widget] = None,
+    ) -> None:
         def add(key: str) -> None:
             if not self.commands.get(key):
                 self.commands[key] = []
 
-            item = KbItem(command, on_ctrl, on_shift, on_ctrl_shift,
-                          widget, return_break, help=help, shift_help=shift_help,
-                          ctrl_help=ctrl_help, ctrl_shift_help=ctrl_shift_help)
+            item = KbItem(
+                command,
+                on_ctrl,
+                on_shift,
+                on_ctrl_shift,
+                widget,
+                return_break,
+                help=help,
+                shift_help=shift_help,
+                ctrl_help=ctrl_help,
+                ctrl_shift_help=ctrl_shift_help,
+            )
 
             self.commands[key].append(item)
 
@@ -218,10 +251,13 @@ class Keyboard:
             add(key.upper())
 
     def setup_input(self) -> None:
-        self.register("<Tab>",
-                      lambda: autocomplete.check(),
-                      widget=inputcontrol.input, return_break=True,
-                      help="Autocomplete commands")
+        self.register(
+            "<Tab>",
+            lambda: autocomplete.check(),
+            widget=inputcontrol.input,
+            return_break=True,
+            help="Autocomplete commands",
+        )
 
     def setup_globals(self) -> None:
         def on_enter() -> None:
@@ -253,133 +289,143 @@ class Keyboard:
                 commands.exec(cmd)
 
         def add_function_key(num: int) -> None:
-            self.register(f"<F{num}>",
-                          lambda: function_key(num))
+            self.register(f"<F{num}>", lambda: function_key(num))
 
         def register_num(num: int) -> None:
-            self.register(str(num),
-                          on_ctrl=lambda: run_command(f"tab {num}"))
+            self.register(str(num), on_ctrl=lambda: run_command(f"tab {num}"))
 
-        self.register("<Return>",
-                      lambda: on_enter(),
-                      on_shift=lambda: on_shift_enter(),
-                      on_ctrl=lambda: inputcontrol.show_textbox(),
-                      help="Submit prompt",
-                      ctrl_help="Show input textbox")
+        self.register(
+            "<Return>",
+            lambda: on_enter(),
+            on_shift=lambda: on_shift_enter(),
+            on_ctrl=lambda: inputcontrol.show_textbox(),
+            help="Submit prompt",
+            ctrl_help="Show input textbox",
+        )
 
-        self.register("<Escape>",
-                      lambda: on_esc(),
-                      on_ctrl=lambda: run_command("unload"),
-                      help="Clear input, select active, stop model stream, go to bottom",
-                      ctrl_help="Unload model")
+        self.register(
+            "<Escape>",
+            lambda: on_esc(),
+            on_ctrl=lambda: run_command("unload"),
+            help="Clear input, select active, stop model stream, go to bottom",
+            ctrl_help="Unload model",
+        )
 
-        self.register("<Page_Up>",
-                      lambda: run_command("scrollup"),
-                      help="Scroll up")
+        self.register("<Page_Up>", lambda: run_command("scrollup"), help="Scroll up")
 
-        self.register("<Page_Down>",
-                      lambda: run_command("scrolldown"),
-                      help="Scroll down")
+        self.register(
+            "<Page_Down>", lambda: run_command("scrolldown"), help="Scroll down"
+        )
 
-        self.register("<BackSpace>",
-                      on_ctrl=lambda: run_command("clear"),
-                      ctrl_help="Clear the conversation")
+        self.register(
+            "<BackSpace>",
+            on_ctrl=lambda: run_command("clear"),
+            ctrl_help="Clear the conversation",
+        )
 
-        self.register("<Up>",
-                      lambda: inputcontrol.history_up(),
-                      on_ctrl=lambda: run_command("top"),
-                      on_shift=lambda: run_command("context"),
-                      help="History up",
-                      shift_help="Show context",
-                      ctrl_help="Scroll to top")
+        self.register(
+            "<Up>",
+            lambda: inputcontrol.history_up(),
+            on_ctrl=lambda: run_command("top"),
+            on_shift=lambda: run_command("context"),
+            help="History up",
+            shift_help="Show context",
+            ctrl_help="Scroll to top",
+        )
 
-        self.register("<Down>",
-                      lambda: inputcontrol.history_down(),
-                      on_ctrl=lambda: run_command("bottom"),
-                      help="History down",
-                      ctrl_help="Scroll to bottom")
+        self.register(
+            "<Down>",
+            lambda: inputcontrol.history_down(),
+            on_ctrl=lambda: run_command("bottom"),
+            help="History down",
+            ctrl_help="Scroll to bottom",
+        )
 
-        self.register("<Left>",
-                      on_ctrl=lambda: run_command("left"),
-                      ctrl_help="Tab left")
+        self.register(
+            "<Left>", on_ctrl=lambda: run_command("left"), ctrl_help="Tab left"
+        )
 
-        self.register("<Right>",
-                      on_ctrl=lambda: run_command("right"),
-                      ctrl_help="Tab right")
+        self.register(
+            "<Right>", on_ctrl=lambda: run_command("right"), ctrl_help="Tab right"
+        )
 
-        self.register("<space>",
-                      on_ctrl=lambda: run_command("menu"),
-                      ctrl_help="Show main menu")
+        self.register(
+            "<space>", on_ctrl=lambda: run_command("menu"), ctrl_help="Show main menu"
+        )
 
-        self.register("f",
-                      on_ctrl=lambda: run_command("find"),
-                      ctrl_help="Find text")
+        self.register("f", on_ctrl=lambda: run_command("find"), ctrl_help="Find text")
 
-        self.register("t",
-                      on_ctrl=lambda: run_command("new"),
-                      ctrl_help="Make tab")
+        self.register("t", on_ctrl=lambda: run_command("new"), ctrl_help="Make tab")
 
-        self.register("n",
-                      on_ctrl=lambda: run_command("new"),
-                      ctrl_help="Make tab")
+        self.register("n", on_ctrl=lambda: run_command("new"), ctrl_help="Make tab")
 
-        self.register("w",
-                      on_ctrl=lambda: run_command("close"),
-                      ctrl_help="Close tab")
+        self.register("w", on_ctrl=lambda: run_command("close"), ctrl_help="Close tab")
 
-        self.register("s",
-                      on_ctrl=lambda: run_command("savesession"),
-                      ctrl_help="Save session")
+        self.register(
+            "s", on_ctrl=lambda: run_command("savesession"), ctrl_help="Save session"
+        )
 
-        self.register("o",
-                      on_ctrl=lambda: run_command("loadsession"),
-                      ctrl_help="Load session")
+        self.register(
+            "o", on_ctrl=lambda: run_command("loadsession"), ctrl_help="Load session"
+        )
 
-        self.register("y",
-                      on_ctrl=lambda: run_command("copy"),
-                      ctrl_help="Copy conversation")
+        self.register(
+            "y", on_ctrl=lambda: run_command("copy"), ctrl_help="Copy conversation"
+        )
 
-        self.register("p",
-                      on_ctrl=lambda: run_command("compact"),
-                      ctrl_help="Toggle compact")
+        self.register(
+            "p", on_ctrl=lambda: run_command("compact"), ctrl_help="Toggle compact"
+        )
 
-        self.register("r",
-                      on_ctrl=lambda: run_command("resize"),
-                      ctrl_help="Resize window")
+        self.register(
+            "r", on_ctrl=lambda: run_command("resize"), ctrl_help="Resize window"
+        )
 
-        self.register("m",
-                      on_ctrl=lambda: run_command("browse"),
-                      ctrl_help="Browse models")
+        self.register(
+            "m", on_ctrl=lambda: run_command("browse"), ctrl_help="Browse models"
+        )
 
-        self.register("l",
-                      on_ctrl=lambda: run_command("log"),
-                      on_ctrl_shift=lambda: run_command("logsdir"),
-                      ctrl_help="Show the log menu",
-                      ctrl_shift_help="Open the logs directory")
+        self.register(
+            "l",
+            on_ctrl=lambda: run_command("log"),
+            on_ctrl_shift=lambda: run_command("logsdir"),
+            ctrl_help="Show the log menu",
+            ctrl_shift_help="Open the logs directory",
+        )
 
-        self.register("<KP_Add>",
-                      on_ctrl=lambda: run_command("bigger"),
-                      on_ctrl_shift=lambda: run_command("resetfont"),
-                      ctrl_help="Increase the font size",
-                      ctrl_shift_help="Reset the font size")
+        self.register(
+            "<KP_Add>",
+            on_ctrl=lambda: run_command("bigger"),
+            on_ctrl_shift=lambda: run_command("resetfont"),
+            ctrl_help="Increase the font size",
+            ctrl_shift_help="Reset the font size",
+        )
 
-        self.register("<KP_Subtract>",
-                      on_ctrl=lambda: run_command("smaller"),
-                      on_ctrl_shift=lambda: run_command("resetfont"),
-                      ctrl_help="Decrease the font size",
-                      ctrl_shift_help="Reset the font size")
+        self.register(
+            "<KP_Subtract>",
+            on_ctrl=lambda: run_command("smaller"),
+            on_ctrl_shift=lambda: run_command("resetfont"),
+            ctrl_help="Decrease the font size",
+            ctrl_shift_help="Reset the font size",
+        )
 
-        self.register("<equal>",
-                      on_ctrl=lambda: run_command("bigger"),
-                      ctrl_help="Increase the font size")
+        self.register(
+            "<equal>",
+            on_ctrl=lambda: run_command("bigger"),
+            ctrl_help="Increase the font size",
+        )
 
-        self.register("<minus>",
-                      on_ctrl=lambda: run_command("smaller"),
-                      ctrl_help="Decrease the font size")
+        self.register(
+            "<minus>",
+            on_ctrl=lambda: run_command("smaller"),
+            ctrl_help="Decrease the font size",
+        )
 
-        self.register("0",
-                      on_ctrl=lambda: run_command("resetfont"),
-                      ctrl_help="Reset the font size")
+        self.register(
+            "0",
+            on_ctrl=lambda: run_command("resetfont"),
+            ctrl_help="Reset the font size",
+        )
 
         for num in range(1, 13):
             add_function_key(num)
@@ -416,11 +462,15 @@ class Keyboard:
 
             used_keys.append(upkey)
 
-            if all([(not value.help) and
-                    (not value.ctrl_help) and
-                    (not value.shift_help) and
-                    (not value.ctrl_shift_help)
-                    for value in data]):
+            if all(
+                [
+                    (not value.help)
+                    and (not value.ctrl_help)
+                    and (not value.shift_help)
+                    and (not value.ctrl_shift_help)
+                    for value in data
+                ]
+            ):
                 continue
 
             upkey = upkey.replace("<", "< ").replace(">", " >")

@@ -20,7 +20,9 @@ class Find:
         self.root.configure(background=app.theme.find_background)
         self.inner.configure(background=app.theme.find_background)
         w = app.theme.find_entry_width
-        self.entry = EntryBox(self.inner, style="Normal.TEntry", font=app.theme.font(), width=w)
+        self.entry = EntryBox(
+            self.inner, style="Normal.TEntry", font=app.theme.font(), width=w
+        )
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
@@ -39,15 +41,21 @@ class Find:
         ToolTip(self.next_i_button, "Find next match (case insensitive)")
         self.next_i_button.grid(row=0, column=1, sticky="ew", padx=padx_button)
 
-        self.next_ci_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
+        self.next_ci_button = ButtonBox(
+            self.inner, "Next", lambda: self.find_next(False)
+        )
         ToolTip(self.next_ci_button, "Find next match (case sensitive)")
         self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
 
-        self.bound_ci_button = ButtonBox(self.inner, "Bound (i)", lambda: self.find_next(bound=True))
+        self.bound_ci_button = ButtonBox(
+            self.inner, "Bound (i)", lambda: self.find_next(bound=True)
+        )
         ToolTip(self.bound_ci_button, "Find next word-bound match (case insensitive)")
         self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
 
-        self.bound_i_button = ButtonBox(self.inner, "Bound", lambda: self.find_next(False, bound=True))
+        self.bound_i_button = ButtonBox(
+            self.inner, "Bound", lambda: self.find_next(False, bound=True)
+        )
         ToolTip(self.bound_i_button, "Find next word-bound match (case sensitive)")
         self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
 
@@ -61,12 +69,16 @@ class Find:
 
     def get_output(self) -> Optional[Output]:
         from .display import display
+
         return display.get_output(self.tab_id)
 
-    def find_next(self, case_insensitive: bool = True,
-                  bound: bool = False, no_match: bool = False,
-                  iteration: int = 1) -> None:
-
+    def find_next(
+        self,
+        case_insensitive: bool = True,
+        bound: bool = False,
+        no_match: bool = False,
+        iteration: int = 1,
+    ) -> None:
         if not self.visible:
             return
 
@@ -109,9 +121,11 @@ class Find:
         else:
             nocase = False
 
-        match = self.widget.search(full_query, start_pos, tk.END, regexp=True, nocase=nocase)
+        match = self.widget.search(
+            full_query, start_pos, tk.END, regexp=True, nocase=nocase
+        )
         output = self.get_output()
-        assert (output is not None)
+        assert output is not None
 
         if match:
             start_index = widget.index(match)
@@ -143,12 +157,14 @@ class Find:
                 if iteration == 2:
                     return
 
-            self.find_next(case_insensitive, bound=bound, no_match=False, iteration=iteration + 1)
+            self.find_next(
+                case_insensitive, bound=bound, no_match=False, iteration=iteration + 1
+            )
 
     def next_snippet(self) -> bool:
         self.snippet += 1
         output = self.get_output()
-        assert (output is not None)
+        assert output is not None
 
         if self.snippet >= len(output.snippets):
             return False
@@ -162,7 +178,7 @@ class Find:
     def change_widget(self) -> None:
         if not self.next_snippet():
             self.widget = self.get_output()
-            assert (self.widget is not None)
+            assert self.widget is not None
             self.snippet = -1
             self.snippet_focused = False
             self.snippet_index = "1.0"
@@ -183,7 +199,7 @@ class Find:
             self.widget = widget
         else:
             self.widget = self.get_output()
-            assert (self.widget is not None)
+            assert self.widget is not None
 
         self.visible = True
 

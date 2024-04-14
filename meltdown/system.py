@@ -60,7 +60,13 @@ def get_info() -> None:
 
     # This works with AMD GPUs | rocm-smi must be installed
     if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
-        cmd = ["/opt/rocm/bin/rocm-smi", "--showtemp", "--showuse", "--showmemuse", "--json"]
+        cmd = [
+            "/opt/rocm/bin/rocm-smi",
+            "--showtemp",
+            "--showuse",
+            "--showmemuse",
+            "--json",
+        ]
 
         gpu_use: Optional[int] = None
         gpu_ram: Optional[int] = None
@@ -88,7 +94,9 @@ def get_info() -> None:
                     widgets.gpu_ram.set(padnum(int(gpu_ram)) + "%")
 
                 if args.system_gpu_temp:
-                    gpu_temp = int(float(gpu_data.get("Temperature (Sensor junction) (C)", 0)))
+                    gpu_temp = int(
+                        float(gpu_data.get("Temperature (Sensor junction) (C)", 0))
+                    )
                     widgets.gpu_temp.set(padnum(int(gpu_temp)) + "°C")
 
     if args.system_colors:

@@ -21,49 +21,51 @@ class IndexItem:
         self.content = content
 
 
-class Markdown():
+class Markdown:
     def __init__(self, widget: Output) -> None:
         self.widget = widget
 
         chars_left = ["(", "["]
         left_string = self.escape_chars(chars_left)
-        left = fr"[{left_string}]?"
+        left = rf"[{left_string}]?"
 
         chars_right = [".", ",", ";", "!", "?", ":"]
         right_string = self.escape_chars(chars_right)
-        right = fr"[{right_string}]?"
+        right = rf"[{right_string}]?"
 
         protocols_list = ["http://", "https://", "ftp://", "www."]
         protocols_string = self.escape_chars(protocols_list, "|")
-        protocols = fr"({protocols_string})"
+        protocols = rf"({protocols_string})"
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
 
         # Code snippets / fences
-        self.pattern_snippets = fr"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
+        self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
 
         # Bold with two asterisks
-        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
+        self.pattern_bold_1 = rf"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
 
         # Italic with one asterisk
-        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}(?=\s|$)"
+        self.pattern_italic_1 = rf"(?:(?<=\s)|^){left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}(?=\s|$)"
 
         # Italic with one underscore
-        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}(?=\s|$)"
+        self.pattern_italic_2 = rf"(?:(?<=\s)|^){left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}(?=\s|$)"
 
         # Highlight with three backticks
-        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}(?=\s|$)"
+        self.pattern_highlight_1 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}(?=\s|$)"
 
         # Highlight with two backticks
-        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}(?=\s|$)"
+        self.pattern_highlight_2 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}(?=\s|$)"
 
         # Highlight with one backtick
-        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
+        self.pattern_highlight_3 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
-        self.pattern_url = fr"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
+        self.pattern_url = (
+            rf"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
+        )
 
     def format(self) -> None:
         markers, num_lines = self.widget.get_markers()
@@ -144,7 +146,9 @@ class Markdown():
                 search_col = 0
 
                 for _ in range(0, 999):
-                    start = self.widget.search(all, f"{match.line}.{search_col}", stopindex=f"{match.line}.end")
+                    start = self.widget.search(
+                        all, f"{match.line}.{search_col}", stopindex=f"{match.line}.end"
+                    )
 
                     if not start:
                         break
@@ -166,19 +170,28 @@ class Markdown():
 
                     indices.append(IndexItem(start, end, content))
 
-            sorted_indices = reversed(sorted(indices, key=lambda x: int(x.start.split(".")[1])))
+            sorted_indices = reversed(
+                sorted(indices, key=lambda x: int(x.start.split(".")[1]))
+            )
 
             for index_item in sorted_indices:
                 self.widget.delete(index_item.start, index_item.end)
                 self.widget.insert(index_item.start, index_item.content)
-                self.widget.tag_add(tag, index_item.start, f"{index_item.start} + {len(index_item.content)}c")
+                self.widget.tag_add(
+                    tag,
+                    index_item.start,
+                    f"{index_item.start} + {len(index_item.content)}c",
+                )
 
     def format_snippets(self, start_ln: int, end_ln: int) -> None:
         from .snippet import Snippet
+
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         matches = []
 
-        for match in re.finditer(self.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL):
+        for match in re.finditer(
+            self.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
+        ):
             language = match.group(1)
 
             content_start = match.start(2)
@@ -192,8 +205,12 @@ class Markdown():
             matches.append((start_line, end_line, language))
 
         for start_line, end_line, language in reversed(matches):
-            snippet_text = self.widget.get(f"{start_line} linestart", f"{end_line} lineend")
-            content_above = self.widget.get(f"{start_line} -1 line linestart", f"{start_line} -1 line lineend").strip()
+            snippet_text = self.widget.get(
+                f"{start_line} linestart", f"{end_line} lineend"
+            )
+            content_above = self.widget.get(
+                f"{start_line} -1 line linestart", f"{start_line} -1 line lineend"
+            ).strip()
             snippet = Snippet(self.widget, snippet_text, language)
             numchars = 3
 
@@ -210,14 +227,20 @@ class Markdown():
             else:
                 start_of_line_above = f"{start_line} -2 line linestart"
                 end_of_line_above = f"{start_line} -2 line lineend"
-                line_above = self.widget.get(start_of_line_above, end_of_line_above).strip()
+                line_above = self.widget.get(
+                    start_of_line_above, end_of_line_above
+                ).strip()
 
                 if line_above:
                     self.widget.insert(end_of_line_above, "\n")
-                    self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
+                    self.widget.delete(
+                        f"{start_line} -1 line linestart", f"{end_line} +1 line lineend"
+                    )
                     self.widget.window_create(start_line, window=snippet)
                 else:
-                    self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
+                    self.widget.delete(
+                        f"{start_line} -1 line linestart", f"{end_line} +1 line lineend"
+                    )
                     self.widget.window_create(f"{start_line} -1 line", window=snippet)
 
             self.widget.snippets.append(snippet)

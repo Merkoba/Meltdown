@@ -37,7 +37,7 @@ class Commands:
     def setup(self) -> None:
         prefix = utils.escape_regex(args.prefix)
         andchar = utils.escape_regex(args.andchar)
-        self.cmd_pattern = fr"{andchar}(?= {prefix}\w+)"
+        self.cmd_pattern = rf"{andchar}(?= {prefix}\w+)"
 
         self.make_commands()
         self.make_aliases()
@@ -94,6 +94,7 @@ class Commands:
         from .logs import logs
         from .widgets import widgets
         from .inputcontrol import inputcontrol
+
         force = "Use 'force' to force"
         file_name = "You can provide the file name"
         sortfilter = "Use 'sort' or a word to filter"
@@ -433,11 +434,11 @@ class Commands:
             },
             "stats": {
                 "help": "Show some internal information",
-                "action": lambda a=None: app.stats()
+                "action": lambda a=None: app.stats(),
             },
             "sticky": {
                 "help": "Make the window stay at the top",
-                "action": lambda a=None: app.toggle_sticky()
+                "action": lambda a=None: app.toggle_sticky(),
             },
             "commandoc": {
                 "help": "Make a file with all the commands",
@@ -542,6 +543,7 @@ class Commands:
 
     def argument_replace(self, argument: str) -> str:
         from .display import display
+
         argument = argument.replace(f"{args.keychar}now", str(timeutils.now_int()))
         argument = argument.replace(f"{args.keychar}name", display.get_tab_name())
         return argument
@@ -569,6 +571,7 @@ class Commands:
 
     def help_command(self) -> None:
         from .display import display
+
         p = args.prefix
 
         items = []
@@ -581,6 +584,7 @@ class Commands:
 
     def show_help(self, tab_id: str = "", mode: str = "") -> None:
         from .display import display
+
         display.print("Commands:", tab_id=tab_id)
         text = []
 
@@ -625,13 +629,16 @@ class Commands:
 
             self.palette.add(text=text, command=command, tooltip=tooltip)
 
-        keys = sorted(self.commands, key=lambda x: self.commands[x]["date"], reverse=True)
+        keys = sorted(
+            self.commands, key=lambda x: self.commands[x]["date"], reverse=True
+        )
 
         for key in keys:
             add_item(key)
 
     def show_palette(self) -> None:
         from .widgets import widgets
+
         self.make_palette()
         self.palette.show(widget=widgets.main_menu_button)
 
@@ -654,6 +661,7 @@ class Commands:
 
     def make_commandoc(self, pathstr: str) -> None:
         from .display import display
+
         path = Path(pathstr)
 
         if (not path.parent.exists()) or (not path.parent.is_dir()):

@@ -64,10 +64,13 @@ class Model:
 
     def load(self, prompt: str = "", tab_id: str = "") -> None:
         if not config.model:
-            display.print("You must configure a model first."
-                          " It can be a local model which you can download"
-                          " from the HuggingFace website (or elsewhere), or a remote ChatGPT model by"
-                          " using your API key. Check the main menu on the top right.", tab_id=tab_id)
+            display.print(
+                "You must configure a model first."
+                " It can be a local model which you can download"
+                " from the HuggingFace website (or elsewhere), or a remote ChatGPT model by"
+                " using your API key. Check the main menu on the top right.",
+                tab_id=tab_id,
+            )
             return
 
         if self.loaded_model == config.model:
@@ -124,14 +127,13 @@ class Model:
             self.read_gpt_key()
 
             if not self.gpt_key:
-                display.print("Error: OpenAI API key not found."
-                              " Use the main menu to set it.")
+                display.print(
+                    "Error: OpenAI API key not found." " Use the main menu to set it."
+                )
                 self.clear_model()
                 return
 
-            self.gpt_client = OpenAI(
-                api_key=self.gpt_key
-            )
+            self.gpt_client = OpenAI(api_key=self.gpt_key)
 
             self.model = config.model
             self.model_loading = False
@@ -150,6 +152,7 @@ class Model:
 
     def load_local(self, model: str, tab_id: str) -> None:
         from .app import app
+
         self.lock.acquire()
         self.model_loading = True
 
@@ -279,7 +282,7 @@ class Model:
         messages = [{"role": "system", "content": system}]
 
         if conversation.items:
-            for item in conversation.items[-abs(config.history):]:
+            for item in conversation.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]
 
@@ -327,10 +330,12 @@ class Model:
                     seed=config.seed,
                 )
             except BaseException:
-                display.print("Error: GPT model failed to stream."
-                              " You might not have access to this particular model,"
-                              " not enough credits, invalid API key,"
-                              " or there is no internet connection.")
+                display.print(
+                    "Error: GPT model failed to stream."
+                    " You might not have access to this particular model,"
+                    " not enough credits, invalid API key,"
+                    " or there is no internet connection."
+                )
                 self.stream_loading = False
                 self.lock.release()
                 return
@@ -442,6 +447,7 @@ class Model:
 
     def set_model(self, m: str) -> None:
         from .widgets import widgets
+
         widgets.model.set_text(m)
         config.update("model")
 
@@ -477,7 +483,9 @@ class Model:
                 text = "Not Loaded"
 
             icon.configure(text=text)
-            tooltip.set_text("No model is loaded. Pick a local or GPT model to start chatting")
+            tooltip.set_text(
+                "No model is loaded. Pick a local or GPT model to start chatting"
+            )
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
                 text = emojis.get("remote")
@@ -485,8 +493,10 @@ class Model:
                 text = "Remote"
 
             icon.configure(text=text)
-            tooltip.set_text("You are using a remote service."
-                             " Its usage might cost money. Internet connection is required")
+            tooltip.set_text(
+                "You are using a remote service."
+                " Its usage might cost money. Internet connection is required"
+            )
         else:
             if args.emojis:
                 text = emojis.get("local")
@@ -494,7 +504,9 @@ class Model:
                 text = "Local"
 
             icon.configure(text=text)
-            tooltip.set_text("You are using a local model. No network requests are made")
+            tooltip.set_text(
+                "You are using a local model. No network requests are made"
+            )
 
     def set_api_key(self) -> None:
         from .dialogs import Dialog

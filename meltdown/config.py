@@ -116,6 +116,7 @@ class Config:
 
     def print_config(self) -> None:
         from .display import display
+
         display.print("Config:")
         text = []
 
@@ -339,8 +340,9 @@ class Config:
             action()
             return
 
-        Dialog.show_confirm("This will remove your custom configs"
-                            "\nand refresh the widgets", action)
+        Dialog.show_confirm(
+            "This will remove your custom configs" "\nand refresh the widgets", action
+        )
 
     def reset_one(self, key: str, focus: bool = True) -> None:
         from .widgets import widgets
@@ -358,10 +360,12 @@ class Config:
 
     def on_model_change(self) -> None:
         from .model import model
+
         model.check_config(False)
 
     def on_output_font_change(self) -> None:
         from .display import display
+
         display.update_font()
 
     def menu(self) -> None:

@@ -11,12 +11,15 @@ from .keyboard import keyboard
 
 
 class TextBox(tk.Text):
-    def __init__(self, dialog: Dialog, text: str,
-                 cmd_ok: Callable[..., Any],
-                 cmd_cancel: Optional[Callable[..., Any]] = None,
-                 commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
-                 on_right_click: Optional[Callable[..., Any]] = None) -> None:
-
+    def __init__(
+        self,
+        dialog: Dialog,
+        text: str,
+        cmd_ok: Callable[..., Any],
+        cmd_cancel: Optional[Callable[..., Any]] = None,
+        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
+        on_right_click: Optional[Callable[..., Any]] = None,
+    ) -> None:
         from .changes import Changes
 
         super().__init__(dialog.top_frame, undo=False)
@@ -24,8 +27,12 @@ class TextBox(tk.Text):
         self.configure(width=30, height=5)
         self.configure(highlightthickness=0)
 
-        scrollbar_y = ttk.Scrollbar(dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar")
-        scrollbar_x = ttk.Scrollbar(dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar")
+        scrollbar_y = ttk.Scrollbar(
+            dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"
+        )
+        scrollbar_x = ttk.Scrollbar(
+            dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar"
+        )
 
         self.configure(yscrollcommand=scrollbar_y.set, xscrollcommand=scrollbar_x.set)
 
@@ -97,9 +104,13 @@ class TextBox(tk.Text):
             value = self.get_text()
             self.dialog.hide()
 
-            Dialog.show_textbox(self.text, self.cmd_ok,
-                                self.cmd_cancel, value=value,
-                                commands=self.commands)
+            Dialog.show_textbox(
+                self.text,
+                self.cmd_ok,
+                self.cmd_cancel,
+                value=value,
+                commands=self.commands,
+            )
         else:
             self.maximize()
             self.maxed = True
@@ -109,8 +120,12 @@ class TextBox(tk.Text):
         return "break"
 
     def maximize(self) -> None:
-        self.dialog.root.place(x=0, y=0, width=app.main_frame.winfo_width(),
-                               height=app.main_frame.winfo_height())
+        self.dialog.root.place(
+            x=0,
+            y=0,
+            width=app.main_frame.winfo_width(),
+            height=app.main_frame.winfo_height(),
+        )
 
         self.dialog.root.grid_columnconfigure(0, weight=1)
         self.dialog.root.grid_rowconfigure(0, weight=1)

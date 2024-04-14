@@ -9,15 +9,16 @@ from .tooltips import ToolTip
 
 
 class TabWidget:
-    def __init__(self, frame: tk.Frame,
-                 inner: tk.Frame, label: tk.Label, tooltip: ToolTip):
+    def __init__(
+        self, frame: tk.Frame, inner: tk.Frame, label: tk.Label, tooltip: ToolTip
+    ):
         self.frame = frame
         self.inner = inner
         self.label = label
         self.tooltip = tooltip
 
 
-class Page():
+class Page:
     notebox_id = 0
 
     def __init__(self, parent: "Book", name: str) -> None:
@@ -35,11 +36,18 @@ class Page():
         inner = tk.Frame(frame)
         inner.configure(cursor="hand2")
         inner.configure(background=app.theme.tab_normal_background)
-        inner.pack(expand=True, fill="both", padx=app.theme.tab_border_with, pady=app.theme.tab_border_with)
+        inner.pack(
+            expand=True,
+            fill="both",
+            padx=app.theme.tab_border_with,
+            pady=app.theme.tab_border_with,
+        )
         label = tk.Label(inner, text=text, font=app.theme.font("tab"))
         label.configure(background=app.theme.tab_normal_background)
         label.configure(foreground=app.theme.tab_normal_foreground)
-        label.pack(expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady)
+        label.pack(
+            expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady
+        )
         label.configure(cursor="hand2")
         tooltip = ToolTip(frame, text=text)
         return TabWidget(frame, inner, label, tooltip)
@@ -67,7 +75,7 @@ class Page():
         text = self.name
 
         if args.max_tab_width:
-            text = text[:args.max_tab_width]
+            text = text[: args.max_tab_width]
 
         if args.numbers:
             if index is None:
@@ -90,15 +98,21 @@ class Book(tk.Frame):
         self.pages: List[Page] = []
 
         self.tabs_frame = tk.Frame(self)
-        self.tabs_canvas = tk.Canvas(self.tabs_frame, borderwidth=0, highlightthickness=0)
+        self.tabs_canvas = tk.Canvas(
+            self.tabs_frame, borderwidth=0, highlightthickness=0
+        )
         self.tabs_canvas.configure(background=app.theme.tabs_container_color)
 
         tabs_scrollbar = tk.Scrollbar(self.tabs_frame, orient="horizontal")
         self.tabs_canvas.configure(xscrollcommand=tabs_scrollbar.set)
         tabs_scrollbar.configure(command=self.tabs_canvas.xview)
 
-        self.tabs_container = tk.Frame(self.tabs_canvas, background=app.theme.background_color)
-        self.tabs_container_id = self.tabs_canvas.create_window((0, 0), window=self.tabs_container, anchor="nw")
+        self.tabs_container = tk.Frame(
+            self.tabs_canvas, background=app.theme.background_color
+        )
+        self.tabs_container_id = self.tabs_canvas.create_window(
+            (0, 0), window=self.tabs_container, anchor="nw"
+        )
         self.tabs_container.bind("<Configure>", lambda e: self.update_tabs())
         self.tabs_container.configure(background=app.theme.tabs_container_color)
 
@@ -126,7 +140,7 @@ class Book(tk.Frame):
             padx = (0, 0)
             pady = (0, 0)
         else:
-            padx = ((app.theme.padx, app.theme.right_padding))
+            padx = (app.theme.padx, app.theme.right_padding)
             pady = (app.theme.pady, 0)
 
         self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
@@ -169,20 +183,28 @@ class Book(tk.Frame):
             self.on_tab_middle_click(page.id)
 
     def bind_tab_click(self, page: Page) -> None:
-        self.bind_recursive("<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame)
+        self.bind_recursive(
+            "<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame
+        )
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.mousewheel_up(e), widget)
         self.bind_recursive("<Button-5>", lambda e: self.mousewheel_down(e), widget)
 
     def bind_tab_right_click(self, page: Page) -> None:
-        self.bind_recursive("<Button-3>", lambda e: self.tab_right_click(e, page.id), page.tab.frame)
+        self.bind_recursive(
+            "<Button-3>", lambda e: self.tab_right_click(e, page.id), page.tab.frame
+        )
 
     def bind_tab_middle_click(self, page: Page) -> None:
-        self.bind_recursive("<Button-2>", lambda e: self.tab_middle_click(page), page.tab.frame)
+        self.bind_recursive(
+            "<Button-2>", lambda e: self.tab_middle_click(page), page.tab.frame
+        )
 
     def bind_tab_drag(self, page: Page) -> None:
-        self.bind_recursive("<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame)
+        self.bind_recursive(
+            "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
+        )
 
     def add(self, name: str) -> Page:
         page = Page(self, name)
@@ -202,7 +224,7 @@ class Book(tk.Frame):
         if len(ids) <= args.max_tabs:
             return
 
-        for id in ids[:-args.max_tabs]:
+        for id in ids[: -args.max_tabs]:
             self.close(id)
 
     def current(self) -> str:
@@ -465,7 +487,9 @@ class Book(tk.Frame):
         if self.on_reorder:
             self.on_reorder()
 
-    def bind_recursive(self, what: str, action: Callable[..., Any], widget: tk.Widget) -> None:
+    def bind_recursive(
+        self, what: str, action: Callable[..., Any], widget: tk.Widget
+    ) -> None:
         widget.bind(what, lambda e: action(e))
 
         for child in widget.winfo_children():
@@ -509,7 +533,9 @@ class Book(tk.Frame):
         if self.discover_debouncer:
             app.root.after_cancel(self.discover_debouncer)
 
-        self.discover_debouncer = app.root.after(self.discover_delay, lambda: self.discover())
+        self.discover_debouncer = app.root.after(
+            self.discover_delay, lambda: self.discover()
+        )
 
     def discover(self) -> None:
         if not self.current_page:

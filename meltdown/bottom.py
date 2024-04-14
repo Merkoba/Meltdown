@@ -12,7 +12,9 @@ from .buttonbox import ButtonBox
 class Bottom(tk.Frame):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         super().__init__(parent)
-        self.button = ButtonBox(self, text="Go To Bottom", command=self.to_bottom, bigger=True)
+        self.button = ButtonBox(
+            self, text="Go To Bottom", command=self.to_bottom, bigger=True
+        )
         self.button.grid(row=0, column=0, sticky="nsew")
         self.button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.button.set_bind("<Button-5>", lambda e: self.scroll_down())
@@ -68,12 +70,15 @@ class Bottom(tk.Frame):
 
     def to_bottom(self) -> None:
         from .display import display
+
         display.to_bottom(self.tab_id)
 
     def scroll_up(self) -> None:
         from .display import display
+
         display.scroll_up(self.tab_id)
 
     def scroll_down(self) -> None:
         from .display import display
+
         display.scroll_down(self.tab_id)

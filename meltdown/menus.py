@@ -12,11 +12,14 @@ from . import utils
 
 
 class MenuItem:
-    def __init__(self, text: str,
-                 command: Optional[Callable[..., Any]] = None,
-                 separator: bool = False, disabled: bool = False,
-                 tooltip: str = ""):
-
+    def __init__(
+        self,
+        text: str,
+        command: Optional[Callable[..., Any]] = None,
+        separator: bool = False,
+        disabled: bool = False,
+        tooltip: str = "",
+    ):
         self.text = text
         self.command = command
         self.separator = separator
@@ -46,12 +49,14 @@ class Menu:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
 
-    def add(self, text: str,
-            command: Optional[Callable[..., Any]] = None,
-            disabled: bool = False, tooltip: str = "") -> None:
-
-        self.items.append(MenuItem(text, command,
-                                   disabled=disabled, tooltip=tooltip))
+    def add(
+        self,
+        text: str,
+        command: Optional[Callable[..., Any]] = None,
+        disabled: bool = False,
+        tooltip: str = "",
+    ) -> None:
+        self.items.append(MenuItem(text, command, disabled=disabled, tooltip=tooltip))
 
     def separator(self) -> None:
         self.items.append(MenuItem("", lambda: None, separator=True))
@@ -81,8 +86,18 @@ class Menu:
 
     def make(self) -> None:
         self.root = tk.Frame(app.main_frame, background=app.theme.menu_border)
-        self.canvas = tk.Canvas(self.root, borderwidth=0, highlightthickness=0, background=app.theme.menu_canvas_background)
-        self.container = tk.Frame(self.canvas, background=app.theme.menu_background, borderwidth=0, highlightthickness=0)
+        self.canvas = tk.Canvas(
+            self.root,
+            borderwidth=0,
+            highlightthickness=0,
+            background=app.theme.menu_canvas_background,
+        )
+        self.container = tk.Frame(
+            self.canvas,
+            background=app.theme.menu_background,
+            borderwidth=0,
+            highlightthickness=0,
+        )
         self.canvas.create_window((0, 0), window=self.container, anchor="nw")
         self.canvas.bind("<FocusOut>", lambda e: self.hide())
         self.canvas.grid_columnconfigure(0, weight=1)
@@ -93,7 +108,9 @@ class Menu:
         self.select_first_item()
         self.configure_geometry()
         self.setup_keyboard()
-        self.canvas.grid(padx=app.theme.menu_border_width, pady=app.theme.menu_border_width)
+        self.canvas.grid(
+            padx=app.theme.menu_border_width, pady=app.theme.menu_border_width
+        )
         self.filter = ""
 
     def make_items(self) -> None:
@@ -160,16 +177,35 @@ class Menu:
             colors = self.get_colors(item)
 
             if item.separator:
-                separator = SeparatorBox(self.container, app.theme.menu_background, padx=6, pady=2)
+                separator = SeparatorBox(
+                    self.container, app.theme.menu_background, padx=6, pady=2
+                )
                 separator.grid(row=i, column=0, sticky="ew")
                 self.separators.append(separator)
             else:
-                label = ttk.Label(self.container, text=item.text, background=colors["background"], foreground=colors["foreground"],
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font("menu"), borderwidth=0, padding=(4, 2, 4, 2))
+                label = ttk.Label(
+                    self.container,
+                    text=item.text,
+                    background=colors["background"],
+                    foreground=colors["foreground"],
+                    wraplength=600,
+                    justify=tk.LEFT,
+                    anchor="w",
+                    font=app.theme.font("menu"),
+                    borderwidth=0,
+                    padding=(4, 2, 4, 2),
+                )
 
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
-                self.elements[i] = {"item": item, "index": i, "label": label, "visible": True}
-                label.bind("<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip))
+                self.elements[i] = {
+                    "item": item,
+                    "index": i,
+                    "label": label,
+                    "visible": True,
+                }
+                label.bind(
+                    "<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip)
+                )
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)
@@ -177,8 +213,18 @@ class Menu:
         for i, item in enumerate(self.items):
             make_item(item, i)
 
-        self.no_items = ttk.Label(self.container, text="No Items", background=app.theme.menu_background, foreground=app.theme.menu_foreground,
-                                  wraplength=600, justify=tk.LEFT, anchor="w", font=app.theme.font(), borderwidth=0, padding=(4, 2, 4, 2))
+        self.no_items = ttk.Label(
+            self.container,
+            text="No Items",
+            background=app.theme.menu_background,
+            foreground=app.theme.menu_foreground,
+            wraplength=600,
+            justify=tk.LEFT,
+            anchor="w",
+            font=app.theme.font(),
+            borderwidth=0,
+            padding=(4, 2, 4, 2),
+        )
 
         self.no_items.grid(row=len(self.items), column=0, sticky="ew", pady=0)
         self.no_items.grid_remove()
@@ -307,7 +353,9 @@ class Menu:
                 self.select_item(i)
                 break
 
-    def show(self, event: Optional[Any] = None, widget: Optional[tk.Widget] = None) -> None:
+    def show(
+        self, event: Optional[Any] = None, widget: Optional[tk.Widget] = None
+    ) -> None:
         Menu.hide_all()
 
         if not self.items:
@@ -331,6 +379,7 @@ class Menu:
 
     def hide(self) -> None:
         from .keyboard import keyboard
+
         ToolTip.hide_all()
 
         if self.root:
@@ -441,8 +490,12 @@ class Menu:
             hover_foreground = app.theme.menu_hover_foreground
             hover_background = app.theme.menu_hover_background
 
-        return {"background": background, "foreground": foreground,
-                "hover_background": hover_background, "hover_foreground": hover_foreground}
+        return {
+            "background": background,
+            "foreground": foreground,
+            "hover_background": hover_background,
+            "hover_foreground": hover_foreground,
+        }
 
     def scroll_to_item(self) -> None:
         if self.no_item():

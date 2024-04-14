@@ -31,6 +31,7 @@ def load() -> None:
 
 def load_models_file() -> None:
     from .model import model
+
     load_list_file(paths.models, "model", "models")
     model.check_config()
 
@@ -98,7 +99,7 @@ def add_to_list(key: str, text: str) -> None:
     items = getattr(config, key)
     new_items = [item for item in items if item != text]
     new_items.insert(0, text)
-    new_items = new_items[:args.max_list_items]
+    new_items = new_items[: args.max_list_items]
     setattr(config, key, new_items)
     path = getattr(paths, key)
     save(path, new_items)
@@ -106,6 +107,7 @@ def add_to_list(key: str, text: str) -> None:
 
 def open_log(name: str = "") -> None:
     from .app import app
+
     path = paths.logs
     path.mkdir(parents=True, exist_ok=True)
     os_name = os.name.lower()
