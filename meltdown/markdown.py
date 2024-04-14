@@ -209,7 +209,7 @@ class Markdown():
                 self.widget.window_create(f"{start_line} +1 line", window=snippet)
             else:
                 self.widget.delete(f"{start_line} -1 line linestart", f"{end_line} +1 line lineend")
-                self.widget.window_create(f"{start_line} - 1 line", window=snippet)
+                self.widget.window_create(f"{start_line} -1 line", window=snippet)
 
             self.widget.snippets.append(snippet)
 
