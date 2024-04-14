@@ -26,34 +26,34 @@ class Markdown():
         self.widget = widget
 
         chars_left = ["(", "["]
-        left_side_string = self.escape_chars(chars_left)
-        left_side = fr"[{left_side_string}]?"
+        left_string = self.escape_chars(chars_left)
+        left = fr"[{left_string}]?"
 
         chars_right = [".", ",", ";", "!", "?", ":"]
-        right_side_string = self.escape_chars(chars_right)
-        right_side = fr"[{right_side_string}]?"
+        right_string = self.escape_chars(chars_right)
+        right = fr"[{right_string}]?"
 
         protocols_list = ["http://", "https://", "ftp://", "www."]
         protocols_string = self.escape_chars(protocols_list, "|")
         protocols = fr"({protocols_string})"
 
         # Bold with two *
-        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right_side}(?=\s|$)"
+        self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>\*{{2}}(?P<content>.*?)\*{{2}}){right}(?=\s|$)"
 
         # Italic with one *
-        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right_side}(?=\s|$)"
+        self.pattern_italic_1 = fr"(?:(?<=\s)|^){left}(?P<all>\*{{1}}(?P<content>.*?)\*{{1}}){right}(?=\s|$)"
 
         # Italic with one _
-        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\_{{1}}(?P<content>.*?)\_{{1}}){right_side}(?=\s|$)"
+        self.pattern_italic_2 = fr"(?:(?<=\s)|^){left}(?P<all>\_{{1}}(?P<content>.*?)\_{{1}}){right}(?=\s|$)"
 
         # Highlight with three `
-        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{3}}(?P<content>.*?)\`{{3}}){right_side}(?=\s|$)"
+        self.pattern_highlight_1 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{3}}(?P<content>.*?)\`{{3}}){right}(?=\s|$)"
 
         # Highlight with two `
-        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{2}}(?P<content>.*?)\`{{2}}){right_side}(?=\s|$)"
+        self.pattern_highlight_2 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{2}}(?P<content>.*?)\`{{2}}){right}(?=\s|$)"
 
         # Highlight with one `
-        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left_side}(?P<all>\`{{1}}(?P<content>.*?)\`{{1}}){right_side}(?=\s|$)"
+        self.pattern_highlight_3 = fr"(?:(?<=\s)|^){left}(?P<all>\`{{1}}(?P<content>.*?)\`{{1}}){right}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = fr"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
