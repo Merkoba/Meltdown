@@ -37,9 +37,9 @@ class Markdown():
         protocols_string = self.escape_chars(protocols_list, "|")
         protocols = fr"({protocols_string})"
 
-        aster = self.escape_chars("*")
-        under = self.escape_chars("_")
-        tick = self.escape_chars("`")
+        aster = utils.escape_regex("*")
+        under = utils.escape_regex("_")
+        tick = utils.escape_regex("`")
 
         # Bold with two asterisks
         self.pattern_bold_1 = fr"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
