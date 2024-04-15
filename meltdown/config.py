@@ -198,8 +198,6 @@ class Config:
             widgets.fill()
 
     def apply(self, file: IO[str]) -> None:
-        from .args import args
-
         try:
             conf = json.load(file)
         except BaseException as e:
@@ -272,7 +270,6 @@ class Config:
             return False
 
     def set(self, key: str, value: Any) -> bool:
-        from .args import args
         from .model import model
         from .widgets import widgets
 

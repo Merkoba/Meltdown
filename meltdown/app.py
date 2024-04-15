@@ -373,8 +373,6 @@ class App:
         return opener
 
     def run_command(self, cmd: List[str]) -> None:
-        from .args import args
-
         try:
             subprocess.Popen(
                 cmd,

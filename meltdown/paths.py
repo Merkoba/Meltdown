@@ -28,6 +28,7 @@ class Paths:
         self.sessions = Path(data_dir, program, "sessions")
         self.logs = Path(data_dir, program, "logs")
         self.apikey = Path(data_dir, program, "apikey.txt")
+        self.errors = Path(data_dir, program, "errors")
 
 
 paths = Paths()
