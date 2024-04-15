@@ -209,7 +209,7 @@ class Markdown:
                 f"{start_line} linestart", f"{end_line} lineend"
             )
             content_above = self.widget.get(
-                f"{start_line} -1 line linestart", f"{start_line} -1 line lineend"
+                f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
             ).strip()
             snippet = Snippet(self.widget, snippet_text, language)
             numchars = 3
@@ -218,12 +218,14 @@ class Markdown:
                 numchars += len(language)
 
             if len(content_above) > numchars:
-                end_of_line_above = f"{start_line} -1 line lineend"
+                end_of_line_above = f"{start_line} -1 lines lineend"
                 right_bit = f"{end_of_line_above} -{numchars} chars"
-                self.widget.insert(end_of_line_above, "\n")
                 self.widget.delete(right_bit, end_of_line_above)
-                self.widget.delete(start_line, f"{end_line} +1 line lineend")
-                self.widget.window_create(f"{start_line} +1 line", window=snippet)
+                self.widget.insert(end_of_line_above, "\n")
+                self.widget.delete(
+                    f"{start_line} +1 lines", f"{end_line} +2 lines lineend"
+                )
+                self.widget.window_create(f"{start_line} +1 lines", window=snippet)
             else:
                 start_of_line_above = f"{start_line} -2 lines linestart"
                 end_of_line_above = f"{start_line} -2 lines lineend"
@@ -234,14 +236,15 @@ class Markdown:
                 if line_above:
                     self.widget.insert(end_of_line_above, "\n")
                     self.widget.delete(
-                        f"{start_line} -0 lines linestart", f"{end_line} +2 lines lineend"
+                        f"{start_line} linestart", f"{end_line} +2 lines lineend"
                     )
                     self.widget.window_create(start_line, window=snippet)
                 else:
                     self.widget.delete(
-                        f"{start_line} -1 line linestart", f"{end_line} +1 line lineend"
+                        f"{start_line} -1 lines linestart",
+                        f"{end_line} +1 lines lineend",
                     )
-                    self.widget.window_create(f"{start_line} -1 line", window=snippet)
+                    self.widget.window_create(f"{start_line} -1 lines", window=snippet)
 
             self.widget.snippets.append(snippet)
 
