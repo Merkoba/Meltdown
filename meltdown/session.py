@@ -11,7 +11,7 @@ from .paths import paths
 from .args import args
 from .dialogs import Dialog
 from .output import Output
-from .test import format_test
+from . import tests
 from . import timeutils
 from . import utils
 from . import emojis
@@ -200,7 +200,7 @@ class Session:
                 items = []
 
         if args.test:
-            items.append(format_test)
+            items.append(tests.format_test)
 
         if not items:
             return
