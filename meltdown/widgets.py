@@ -369,7 +369,7 @@ class Widgets:
         self.buttons_frame = frame_data_buttons.frame
 
         self.stop_button = widgetutils.make_button(
-            frame_data_buttons, "Stop", lambda: self.stop()
+            frame_data_buttons, "Stop", lambda: self.stop_stream()
         )
         frame_data_buttons.expand()
         ToolTip(self.stop_button, "Stop generating the current response")
@@ -801,7 +801,7 @@ class Widgets:
         self.append.set_text(text)
         config.update("append")
 
-    def stop(self) -> None:
+    def stop_stream(self) -> None:
         from .model import model
         from .display import display
 
@@ -875,7 +875,7 @@ class Widgets:
             return
 
         if model.streaming:
-            self.stop()
+            self.stop_stream()
             return
 
         display.to_bottom()
