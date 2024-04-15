@@ -62,8 +62,8 @@ test_conversation = {
         {"assistant": "```python\na = 123\nprint('Hello, World!')\n```"},
         {"user": "Snippet Test 4"},
         {
-            "assistant": "Last snippet 1:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```\n\n"
-            + "Last snippet 2:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
+            "assistant": "Last snippet 1:\n```python\na = 123\nprint('Hello, World!')\nx = 6\n```\n"
+            + "```python\na = 123\nprint('Hello, World!')\nx = 6\n```"
         },
         {"user": "URL Test"},
         {
