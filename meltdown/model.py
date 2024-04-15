@@ -282,7 +282,7 @@ class Model:
         messages = [{"role": "system", "content": system}]
 
         if conversation.items:
-            for item in conversation.items[-abs(config.history) :]:
+            for item in conversation.items[-abs(config.history):]:
                 for key in item:
                     content = item[key]
 
@@ -314,6 +314,10 @@ class Model:
         self.stream_date = now
         stream = args.stream
         display.stream_started(tab_id)
+        stop_list = config.stop.split(";;") if config.stop else None
+
+        if stop_list:
+            stop_list = [item.strip() for item in stop_list]
 
         if self.model_is_gpt(config.model):
             try:
@@ -328,6 +332,7 @@ class Model:
                     temperature=config.temperature,
                     top_p=config.top_p,
                     seed=config.seed,
+                    stop=stop_list,
                 )
             except BaseException:
                 display.print(
@@ -349,6 +354,7 @@ class Model:
                     top_k=config.top_k,
                     top_p=config.top_p,
                     seed=config.seed,
+                    stop=stop_list,
                 )
             except BaseException as e:
                 utils.error(e)

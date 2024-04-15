@@ -47,6 +47,7 @@ class Config:
         self.default_context = 2048
         self.default_avatar_user = "👽"
         self.default_avatar_ai = "😎"
+        self.default_stop = "<|im_start|> ;; <|im_end|>"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -70,6 +71,7 @@ class Config:
         self.context = self.default_context
         self.avatar_user = self.default_avatar_user
         self.avatar_ai = self.default_avatar_ai
+        self.stop = self.default_stop
 
         self.clearables = [
             "system",

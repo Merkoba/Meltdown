@@ -427,7 +427,7 @@ class Display:
             return
 
         index = self.index(self.current_tab)
-        tabs = tab_ids[index + 1 :]
+        tabs = tab_ids[index + 1:]
 
         def action() -> None:
             for tab_id in tabs:

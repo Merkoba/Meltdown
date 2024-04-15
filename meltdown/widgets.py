@@ -277,6 +277,19 @@ class Widgets:
         ToolTip(self.gpu_layers_label, tip)
         ToolTip(self.gpu_layers, tip)
 
+        self.format_label = widgetutils.make_label(details_data, "Format")
+        values = ["auto"]
+        fmts = sorted([item for item in formats._chat_handlers])
+        values.extend(fmts)
+        self.format = widgetutils.make_combobox(details_data, values=values, width=17)
+        tip = (
+            "That will format the prompt according to how model expects it."
+            " Auto is supposed to work with newer models that include the format in the metadata."
+            " Check llama-cpp-python to find all the available formats"
+        )
+        ToolTip(self.format_label, tip)
+        ToolTip(self.format, tip)
+
         self.temperature_label = widgetutils.make_label(details_data, "Temp")
         self.temperature = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
@@ -335,18 +348,14 @@ class Widgets:
         ToolTip(self.top_k_label, tip)
         ToolTip(self.top_k, tip)
 
-        self.format_label = widgetutils.make_label(details_data, "Format")
-        values = ["auto"]
-        fmts = sorted([item for item in formats._chat_handlers])
-        values.extend(fmts)
-        self.format = widgetutils.make_combobox(details_data, values=values, width=17)
+        self.stop_label = widgetutils.make_label(details_data, "Stop")
+        self.stop = widgetutils.make_entry(details_data, width=11)
         tip = (
-            "That will format the prompt according to how model expects it."
-            " Auto is supposed to work with newer models that include the format in the metadata."
-            " Check llama-cpp-python to find all the available formats"
+            "A list of strings to stop generation when encountered."
+            " Separate each item with ;;"
         )
-        ToolTip(self.format_label, tip)
-        ToolTip(self.format, tip)
+        ToolTip(self.stop_label, tip)
+        ToolTip(self.stop, tip)
 
         self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
         self.mlock = widgetutils.make_combobox(

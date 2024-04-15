@@ -92,7 +92,7 @@ class Conversation:
         session.save()
 
     def limit(self) -> None:
-        self.items = self.items[-config.max_log :]
+        self.items = self.items[-config.max_log:]
 
     def clear(self) -> None:
         self.items = []
