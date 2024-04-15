@@ -198,9 +198,14 @@ class Config:
             widgets.fill()
 
     def apply(self, file: IO[str]) -> None:
+        from .args import args
+
         try:
             conf = json.load(file)
-        except BaseException:
+        except BaseException as e:
+            if args.errors:
+                utils.error(e)
+
             conf = {}
 
         for key in self.defaults():
@@ -240,7 +245,9 @@ class Config:
                 self.apply(file)
                 self.save()
         except BaseException as e:
-            utils.error(e)
+            if args.errors:
+                utils.error(e)
+
             args.config = ""
             self.load_file()
 
@@ -269,6 +276,7 @@ class Config:
             return False
 
     def set(self, key: str, value: Any) -> bool:
+        from .args import args
         from .model import model
         from .widgets import widgets
 
@@ -279,13 +287,19 @@ class Config:
         elif vtype == int:
             try:
                 value = int(value)
-            except BaseException:
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
+
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == float:
             try:
                 value = float(value)
-            except BaseException:
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
+
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == bool:

@@ -13,6 +13,7 @@ from .paths import paths
 from .dialogs import Dialog
 from . import widgetutils
 from . import filemanager
+from . import utils
 
 
 class InputControl:
@@ -195,7 +196,10 @@ class InputControl:
             with open(path, "r", encoding="utf-8") as file:
                 try:
                     self.autocomplete = json.load(file)
-                except BaseException:
+                except BaseException as e:
+                    if args.errors:
+                        utils.error(e)
+
                     self.autocomplete = []
         else:
             self.autocomplete = []

@@ -12,6 +12,7 @@ from .widgets import widgets
 from .args import args
 from .app import app
 from . import timeutils
+from . import utils
 
 
 def padnum(num: int) -> str:
@@ -76,8 +77,9 @@ def get_info() -> None:
 
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
-        except BaseException:
-            pass
+        except BaseException as e:
+            if args.errors:
+                utils.error(e)
 
         if result and result.returncode == 0:
             ans = json.loads(result.stdout)
@@ -115,8 +117,9 @@ def check() -> None:
         if app.system_frame_visible:
             try:
                 get_info()
-            except BaseException:
-                pass
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
 
         timeutils.sleep(args.system_delay)
 

@@ -118,6 +118,7 @@ class Args:
         self.markdown_bold = True
         self.markdown_highlights = True
         self.markdown_urls = True
+        self.errors = False
 
     class Internal:
         title = app.manifest["title"]
@@ -330,6 +331,10 @@ class Args:
             "avatars_in_logs": {
                 "action": "store_true",
                 "help": "Show avatars in text logs",
+            },
+            "errors": {
+                "action": "store_true",
+                "help": "Show error messages",
             },
             "terminal_height": {
                 "type": int,
@@ -562,6 +567,7 @@ class Args:
             "on_log",
             "on_log_text",
             "on_log_json",
+            "errors",
         ]
 
         for n_item in normals:

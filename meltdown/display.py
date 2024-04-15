@@ -15,6 +15,7 @@ from .book import Book, Page
 from .find import Find
 from .args import args
 from . import timeutils
+from . import utils
 
 
 class Tab:
@@ -208,8 +209,9 @@ class Display:
             num = int(what)
             self.select_tab_by_number(num)
             return
-        except BaseException:
-            pass
+        except BaseException as e:
+            if args.errors:
+                utils.error(e)
 
         self.book.select_by_name(what)
 

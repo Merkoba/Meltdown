@@ -12,6 +12,7 @@ from pygments.styles import get_style_by_name  # type: ignore
 from .output import Output
 from .args import args
 from .app import app
+from . import utils
 
 
 class Snippet(tk.Frame):
@@ -64,7 +65,10 @@ class Snippet(tk.Frame):
         if language:
             try:
                 self.syntax_highlighter()
-            except BaseException:
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
+
                 self.text.insert("1.0", self.content)
         else:
             self.text.insert("1.0", self.content)

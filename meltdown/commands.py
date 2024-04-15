@@ -652,7 +652,10 @@ class Commands:
         with open(paths.commands, "r", encoding="utf-8") as file:
             try:
                 cmds = json.load(file)
-            except BaseException:
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
+
                 cmds = {}
 
         for key in cmds:

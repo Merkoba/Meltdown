@@ -757,3 +757,9 @@ For example: `--terminal urxvt --task-manager htop`.
 >no_markdown_urls
 
 Disable specific markdown formatters.
+
+---
+
+>errors
+
+Print error messages on caught exceptions.

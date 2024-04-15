@@ -60,7 +60,10 @@ def load_list_file(path: Path, key: str, list_key: str) -> None:
     with open(path, "r", encoding="utf-8") as file:
         try:
             items = json.load(file)
-        except BaseException:
+        except BaseException as e:
+            if args.errors:
+                utils.error(e)
+
             items = []
 
             if hasattr(config, key):

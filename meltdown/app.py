@@ -373,6 +373,8 @@ class App:
         return opener
 
     def run_command(self, cmd: List[str]) -> None:
+        from .args import args
+
         try:
             subprocess.Popen(
                 cmd,
@@ -381,7 +383,8 @@ class App:
                 stderr=subprocess.STDOUT,
             )
         except BaseException as e:
-            utils.error(e)
+            if args.errors:
+                utils.error(e)
 
     def open_url(self, url: str) -> None:
         from .args import args

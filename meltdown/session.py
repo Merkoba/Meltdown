@@ -220,7 +220,9 @@ class Session:
 
             self.load_items(path)
         except BaseException as e:
-            utils.error(e)
+            if args.errors:
+                utils.error(e)
+
             args.session = ""
             self.load()
 
@@ -237,7 +239,9 @@ class Session:
         try:
             self.load_items(path)
         except BaseException as e:
-            utils.error(e)
+            if args.errors:
+                utils.error(e)
+
             self.reset()
 
     def reset(self) -> None:
@@ -250,7 +254,10 @@ class Session:
         with open(path, "r", encoding="utf-8") as file:
             try:
                 items = json.load(file)
-            except BaseException:
+            except BaseException as e:
+                if args.errors:
+                    utils.error(e)
+
                 items = []
 
         if args.test:
@@ -317,7 +324,9 @@ class Session:
             display.select_last_tab()
             self.save()
         except BaseException as e:
-            utils.error(e)
+            if args.errors:
+                utils.error(e)
+
             self.reset()
 
     def update(self) -> None:
