@@ -27,7 +27,8 @@ class Config:
 
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
-        self.default_max_tokens: int = 0
+        self.default_context: int = 2048
+        self.default_max_tokens: int = 2048
         self.default_temperature: float = 0.8
         self.default_system: str = "\n".join(system_lines)
         self.default_top_k: int = 40
@@ -44,10 +45,9 @@ class Config:
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
         self.default_gpu_layers = 33
-        self.default_context = 2048
-        self.default_avatar_user = "👽"
-        self.default_avatar_ai = "😎"
-        self.default_stop = "<|im_start|> ;; <|im_end|>"
+        self.default_avatar_user: str = "👽"
+        self.default_avatar_ai: str = "😎"
+        self.default_stop: str = "<|im_start|> ;; <|im_end|>"
 
         self.model = self.default_model
         self.name_user = self.default_name_user

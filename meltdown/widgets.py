@@ -250,7 +250,6 @@ class Widgets:
         )
         tip = (
             "Maximum number of tokens to generate."
-            " If 0, it will generate to the end of the context window."
             " Higher values will result in longer output, but will"
             " also take longer to compute"
         )
