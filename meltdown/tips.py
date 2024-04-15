@@ -97,7 +97,6 @@ tips = {
     "prepend": "Add this to the beginning of the prompt",
     "append": "Add this to the end of the prompt",
     "input": (
-        "The input for the AI."
         " This is a message that the AI will respond to."
         " Use the mousewheel or up/down arrows to cycle input history."
         " You can also use commands here. See /help"

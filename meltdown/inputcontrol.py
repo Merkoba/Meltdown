@@ -11,6 +11,7 @@ from .app import app
 from .args import args
 from .paths import paths
 from .dialogs import Dialog
+from .tips import tips
 from . import widgetutils
 from . import filemanager
 from . import utils
@@ -32,13 +33,8 @@ class InputControl:
         frame_data.expand()
         widgets.input = self.input
         widgets.input_frame = frame_data.frame
-        tip = (
-            "The prompt for the AI."
-            " The prompt is a message that the AI will respond to."
-            " Use the mousewheel to cycle input history"
-        )
-        ToolTip(self.input_label, tip)
-        ToolTip(self.input, tip)
+        ToolTip(self.input_label, tips["input"])
+        ToolTip(self.input, tips["input"])
 
         prev_button = widgetutils.make_button(
             frame_data, "< Prev", lambda: self.history_up()
