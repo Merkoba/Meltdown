@@ -208,8 +208,7 @@ class Display:
             self.select_tab_by_number(num)
             return
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
+            utils.error(e)
 
         self.book.select_by_name(what)
 

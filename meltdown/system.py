@@ -78,8 +78,7 @@ def get_info() -> None:
         try:
             result = subprocess.run(cmd, capture_output=True, text=True)
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
+            utils.error(e)
 
         if result and result.returncode == 0:
             ans = json.loads(result.stdout)
@@ -118,8 +117,7 @@ def check() -> None:
             try:
                 get_info()
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
+                utils.error(e)
 
         timeutils.sleep(args.system_delay)
 

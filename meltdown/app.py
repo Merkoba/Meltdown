@@ -383,8 +383,7 @@ class App:
                 stderr=subprocess.STDOUT,
             )
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
+            utils.error(e)
 
     def open_url(self, url: str) -> None:
         from .args import args

@@ -59,9 +59,7 @@ def start_all() -> None:
         try:
             seconds = float(match.group(1))
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             return
 
         cmds = match.group(2)

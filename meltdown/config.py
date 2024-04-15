@@ -203,9 +203,7 @@ class Config:
         try:
             conf = json.load(file)
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             conf = {}
 
         for key in self.defaults():
@@ -245,9 +243,7 @@ class Config:
                 self.apply(file)
                 self.save()
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             args.config = ""
             self.load_file()
 
@@ -288,18 +284,14 @@ class Config:
             try:
                 value = int(value)
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
-
+                utils.error(e)
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == float:
             try:
                 value = float(value)
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
-
+                utils.error(e)
                 widgets.fill_widget(key, self.get_default(key))
                 return False
         elif vtype == bool:

@@ -121,9 +121,7 @@ class Model:
             with open(paths.apikey, "r", encoding="utf-8") as file:
                 self.gpt_key = file.read().strip()
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             self.gpt_key = ""
 
     def load_gpt(self, prompt: str, tab_id: str) -> None:
@@ -151,9 +149,7 @@ class Model:
             if prompt:
                 self.stream(prompt, tab_id)
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             display.print("Error: GPT model failed to load.")
             self.clear_model()
 
@@ -188,9 +184,7 @@ class Model:
                 verbose=args.verbose,
             )
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             display.print("Error: Model failed to load.")
             self.clear_model()
             self.lock.release()
@@ -344,8 +338,7 @@ class Model:
                     stop=stop_list,
                 )
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
+                utils.error(e)
 
                 display.print(
                     "Error: GPT model failed to stream."
@@ -369,9 +362,7 @@ class Model:
                     stop=stop_list,
                 )
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
-
+                utils.error(e)
                 self.stream_loading = False
                 self.lock.release()
                 return
@@ -445,8 +436,7 @@ class Model:
                             buffer.append(token)
                             print_buffer()
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
+                utils.error(e)
         else:
             try:
                 response = output.choices[0].message.content.strip()
@@ -455,8 +445,7 @@ class Model:
                     display.prompt("ai", tab_id=tab_id)
                     display.insert(response, tab_id=tab_id)
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
+                utils.error(e)
 
         if not broken:
             print_buffer(True)

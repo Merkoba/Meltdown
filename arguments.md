@@ -763,3 +763,9 @@ Disable specific markdown formatters.
 >errors
 
 Print error messages on caught exceptions.
+
+---
+
+>no-log-errors
+
+Don't save error messages to the error log file.

@@ -653,9 +653,7 @@ class Commands:
             try:
                 cmds = json.load(file)
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
-
+                utils.error(e)
                 cmds = {}
 
         for key in cmds:

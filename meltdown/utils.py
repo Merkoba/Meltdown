@@ -1,7 +1,15 @@
 # Standard
 import re
+import logging
+from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
 from typing import Union
+
+# Modules
+from .args import args
+
+
+error_logger = None
 
 
 def similarity(a: str, b: str) -> float:
@@ -29,4 +37,20 @@ def msg(text: str) -> None:
 
 
 def error(err: Union[str, BaseException]) -> None:
-    print(f"Error: {str(err)}")
+    if args.log_errors:
+        if not error_logger:
+            create_error_logger()
+
+        error_logger.error(err)
+
+    if args.errors:
+        print(f"Error:", err)
+
+def create_error_logger() -> None:
+    error_logger = logging.getLogger(__name__)
+    error_logger.setLevel(logging.ERROR)
+    error_handler = RotatingFileHandler("error.log", maxBytes=2000, backupCount=5)
+    error_handler.setLevel(logging.ERROR)
+    error_logger.addHandler(error_handler)
+    formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+    error_handler.setFormatter(formatter)

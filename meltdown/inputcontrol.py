@@ -193,9 +193,7 @@ class InputControl:
                 try:
                     self.autocomplete = json.load(file)
                 except BaseException as e:
-                    if args.errors:
-                        utils.error(e)
-
+                    utils.error(e)
                     self.autocomplete = []
         else:
             self.autocomplete = []

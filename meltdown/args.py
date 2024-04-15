@@ -119,6 +119,7 @@ class Args:
         self.markdown_highlights = True
         self.markdown_urls = True
         self.errors = False
+        self.log_errors = True
 
     class Internal:
         title = app.manifest["title"]
@@ -253,6 +254,10 @@ class Args:
             "no_markdown_urls": {
                 "action": "store_false",
                 "help": "Don't do URL markdown",
+            },
+            "no_log_errors": {
+                "action": "store_false",
+                "help": "Don't log error messages to a file",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -493,6 +498,7 @@ class Args:
             ("no_markdown_bold", "markdown_bold"),
             ("no_markdown_highlights", "markdown_highlights"),
             ("no_markdown_urls", "markdown_urls"),
+            ("no_log_errors", "log_errors"),
         ]
 
         for r_item in other_name:

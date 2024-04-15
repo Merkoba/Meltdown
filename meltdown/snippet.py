@@ -66,9 +66,7 @@ class Snippet(tk.Frame):
             try:
                 self.syntax_highlighter()
             except BaseException as e:
-                if args.errors:
-                    utils.error(e)
-
+                utils.error(e)
                 self.text.insert("1.0", self.content)
         else:
             self.text.insert("1.0", self.content)

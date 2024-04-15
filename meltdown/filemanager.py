@@ -61,9 +61,7 @@ def load_list_file(path: Path, key: str, list_key: str) -> None:
         try:
             items = json.load(file)
         except BaseException as e:
-            if args.errors:
-                utils.error(e)
-
+            utils.error(e)
             items = []
 
             if hasattr(config, key):
