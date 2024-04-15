@@ -11,8 +11,8 @@ import psutil  # type: ignore
 from .widgets import widgets
 from .args import args
 from .app import app
+from .utils import utils
 from . import timeutils
-from . import utils
 
 
 def padnum(num: int) -> str:

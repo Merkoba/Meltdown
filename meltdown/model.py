@@ -17,9 +17,9 @@ from .session import session
 from .app import app
 from .args import args
 from .tips import tips
+from .utils import utils
 from . import timeutils
 from . import filemanager
-from . import utils
 from . import emojis
 
 

@@ -7,8 +7,8 @@ import tempfile
 from .args import args
 from .app import app
 from .inputcontrol import inputcontrol
+from .utils import utils
 from . import timeutils
-from . import utils
 
 
 def start() -> None:

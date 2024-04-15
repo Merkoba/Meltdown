@@ -5,7 +5,7 @@ from typing import List, Any, Tuple
 # Modules
 from .args import args
 from .output import Output
-from . import utils
+from .utils import utils
 
 
 class MatchItem:

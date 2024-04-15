@@ -8,7 +8,7 @@ from pathlib import Path
 from .paths import paths
 from .config import config
 from .args import args
-from . import utils
+from .utils import utils
 
 
 def save(path: Path, dictionary: Any) -> None:

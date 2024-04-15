@@ -11,9 +11,9 @@ from .paths import paths
 from .args import args
 from .dialogs import Dialog
 from .output import Output
+from .utils import utils
 from . import tests
 from . import timeutils
-from . import utils
 from . import emojis
 
 

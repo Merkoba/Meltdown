@@ -13,7 +13,7 @@ from typing import List, Any, Optional
 # Modules
 from .config import config
 from .theme import Theme
-from . import utils
+from .utils import utils
 
 
 class App:

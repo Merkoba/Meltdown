@@ -12,9 +12,9 @@ from .args import args
 from .paths import paths
 from .dialogs import Dialog
 from .tips import tips
+from .utils import utils
 from . import widgetutils
 from . import filemanager
-from . import utils
 
 
 class InputControl:

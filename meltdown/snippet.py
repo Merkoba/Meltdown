@@ -12,7 +12,7 @@ from pygments.styles import get_style_by_name  # type: ignore
 from .output import Output
 from .args import args
 from .app import app
-from . import utils
+from .utils import utils
 
 
 class Snippet(tk.Frame):

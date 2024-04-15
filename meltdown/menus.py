@@ -8,7 +8,7 @@ from .app import app
 from .separatorbox import SeparatorBox
 from .args import args
 from .tooltips import ToolTip
-from . import utils
+from .utils import utils
 
 
 class MenuItem:

@@ -5,8 +5,8 @@ import threading
 # Modules
 from .args import args
 from .commands import commands
+from .utils import utils
 from . import timeutils
-from . import utils
 
 
 class Task:

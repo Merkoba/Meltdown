@@ -11,7 +11,7 @@ from .dialogs import Dialog
 from .menus import Menu
 from .args import args
 from .paths import paths
-from . import utils
+from .utils import utils
 from . import timeutils
 from . import filemanager
 

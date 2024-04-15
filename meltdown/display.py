@@ -14,8 +14,8 @@ from .bottom import Bottom
 from .book import Book, Page
 from .find import Find
 from .args import args
+from .utils import utils
 from . import timeutils
-from . import utils
 
 
 class Tab:

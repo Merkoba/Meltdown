@@ -14,11 +14,11 @@ from .args import args
 from .commands import commands
 from .keyboard import keyboard
 from .inputcontrol import inputcontrol
+from .utils import utils
 from . import terminal
 from . import filemanager
 from . import system
 from . import tasks
-from . import utils
 from . import listener
 from . import timeutils
 

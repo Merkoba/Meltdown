@@ -5,7 +5,7 @@ from tkinter import filedialog
 from pathlib import Path
 
 # Modules
-from . import utils
+from .utils import utils
 
 
 class Config:
