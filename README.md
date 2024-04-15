@@ -171,6 +171,10 @@ GPU support for faster responses.
 
 Dialog text box window for longer inputs.
 
+Automatic error logging to file.
+
+Textbox editing that can be maximized.
+
 And more.
 
 ---
