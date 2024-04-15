@@ -16,6 +16,7 @@ from .display import display
 from .session import session
 from .app import app
 from .args import args
+from .tips import tips
 from . import timeutils
 from . import filemanager
 from . import utils
@@ -504,9 +505,7 @@ class Model:
                 text = "Not Loaded"
 
             icon.configure(text=text)
-            tooltip.set_text(
-                "No model is loaded. Pick a local or GPT model to start chatting"
-            )
+            tooltip.set_text(tips["model_unloaded"])
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
                 text = emojis.get("remote")
@@ -514,10 +513,7 @@ class Model:
                 text = "Remote"
 
             icon.configure(text=text)
-            tooltip.set_text(
-                "You are using a remote service."
-                " Its usage might cost money. Internet connection is required"
-            )
+            tooltip.set_text(tips["model_remote"])
         else:
             if args.emojis:
                 text = emojis.get("local")
@@ -525,9 +521,7 @@ class Model:
                 text = "Local"
 
             icon.configure(text=text)
-            tooltip.set_text(
-                "You are using a local model. No network requests are made"
-            )
+            tooltip.set_text(tips["model_local"])
 
     def set_api_key(self) -> None:
         from .dialogs import Dialog

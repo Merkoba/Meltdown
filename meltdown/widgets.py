@@ -19,6 +19,7 @@ from .display import display
 from .commands import commands
 from .logs import logs
 from .framedata import FrameData
+from .tips import tips
 from . import widgetutils
 
 
@@ -53,13 +54,8 @@ class Widgets:
         self.model = widgetutils.make_entry(frame_data_model)
         frame_data_model.expand()
         self.model.bind_mousewheel()
-        tip = (
-            "Path to a model file. This should be a file that works with"
-            " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model."
-            " Check the main menu on the right to load the available models"
-        )
-        ToolTip(self.model_label, tip)
-        ToolTip(self.model, tip)
+        ToolTip(self.model_label, tips["model"])
+        ToolTip(self.model, tips["model"])
 
         self.model_icon = widgetutils.make_label(frame_data_model, "", colons=False)
         self.model_icon_tooltip = ToolTip(self.model_icon, "")
@@ -70,7 +66,7 @@ class Widgets:
         self.load_button = widgetutils.make_button(
             frame_data_model, "Load", lambda: self.load_or_unload()
         )
-        ToolTip(self.load_button, "Load or unload the model")
+        ToolTip(self.load_button, tips["load_button"])
 
         self.main_menu_button = widgetutils.make_button(
             frame_data_model,
@@ -79,7 +75,7 @@ class Widgets:
             right_padding=right_padding,
         )
 
-        ToolTip(self.main_menu_button, "Open the main menu")
+        ToolTip(self.main_menu_button, tips["main_menu"])
 
         # System
         frame_data_system = widgetutils.make_frame()
@@ -122,7 +118,7 @@ class Widgets:
             if args.system_gpu_temp:
                 monitors.append("gpu_temp")
 
-            def make_monitor(name: str, label_text: str, tip: str) -> None:
+            def make_monitor(name: str, label_text: str) -> None:
                 if name == monitors[-1]:
                     rightpad = right_padding
                 else:
@@ -137,6 +133,7 @@ class Widgets:
                 monitor_text.configure(textvariable=getattr(self, name))
                 monitor_text.configure(cursor="hand2")
                 setattr(self, f"{name}_text", monitor_text)
+                tip = tips[f"system_{name}"]
                 ToolTip(label, tip)
                 ToolTip(monitor_text, tip)
                 getattr(self, name).set("000%")
@@ -145,34 +142,33 @@ class Widgets:
                 monitor_text.bind("<Button-1>", lambda e: app.open_task_manager())
 
             if args.system_cpu:
-                make_monitor("cpu", "CPU", "Current CPU usage")
+                make_monitor("cpu", "CPU")
 
             if args.system_ram:
-                make_monitor("ram", "RAM", "Current RAM usage")
+                make_monitor("ram", "RAM")
 
             if args.system_temp:
-                make_monitor("temp", "TMP", "Current CPU temperature")
+                make_monitor("temp", "TMP")
 
             if args.system_gpu:
-                make_monitor("gpu", "GPU", "Current GPU usage")
+                make_monitor("gpu", "GPU")
 
             if args.system_gpu_ram:
-                make_monitor("gpu_ram", "GPU RAM", "Current GPU memory usage")
+                make_monitor("gpu_ram", "GPU RAM")
 
             if args.system_gpu_temp:
-                make_monitor("gpu_temp", "GPU TMP", "Current GPU temperature")
+                make_monitor("gpu_temp", "GPU TMP")
 
         # Details Container
         frame_data_details = widgetutils.make_frame()
         self.details_frame = frame_data_details.frame
-        detail_button_info = "Scroll this row. Middle click for instant"
 
         left_frame = widgetutils.make_frame(self.details_frame, col=0, row=0)
         left_frame.frame.grid_rowconfigure(0, weight=1)
         self.details_button_left = widgetutils.make_button(
             left_frame, "<", lambda: widgets.details_left(), style="alt"
         )
-        ToolTip(self.details_button_left, detail_button_info)
+        ToolTip(self.details_button_left, tips["details_button"])
 
         self.details, self.details_canvas = widgetutils.make_scrollable_frame(
             self.details_frame, 1
@@ -189,7 +185,7 @@ class Widgets:
             style="alt",
         )
 
-        ToolTip(self.details_button_right, detail_button_info)
+        ToolTip(self.details_button_right, tips["details_button"])
 
         self.details_frame.columnconfigure(1, weight=1)
 
@@ -198,171 +194,105 @@ class Widgets:
 
         avatar_width = 4
         self.user_label = widgetutils.make_label(details_data, "User", padx=0)
-        tip = "Personalize yourself"
-        ToolTip(self.user_label, tip)
+        ToolTip(self.user_label, tips["user_label"])
 
         self.avatar_user = widgetutils.make_entry(details_data, width=avatar_width)
-        tip = "The avatar of the user (You)"
-        ToolTip(self.avatar_user, tip)
+        ToolTip(self.avatar_user, tips["avatar_user"])
 
         self.name_user = widgetutils.make_entry(details_data)
-        tip = "The name of the user (You)"
-        ToolTip(self.name_user, tip)
+        ToolTip(self.name_user, tips["name_user"])
 
         self.ai_label = widgetutils.make_label(details_data, "AI")
-        tip = "Personalize the AI"
-        ToolTip(self.ai_label, tip)
+        ToolTip(self.ai_label, tips["ai_label"])
 
         self.avatar_ai = widgetutils.make_entry(details_data, width=avatar_width)
-        tip = "The avatar of the assistant (AI)"
-        ToolTip(self.avatar_ai, tip)
+        ToolTip(self.avatar_ai, tips["avatar_ai"])
 
         self.name_ai = widgetutils.make_entry(details_data)
-        tip = "The name of the assistant (AI)"
-        ToolTip(self.name_ai, tip)
+        ToolTip(self.name_ai, tips["name_ai"])
 
         self.history_label = widgetutils.make_label(details_data, "History")
         self.history = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "The number of previous messages to include in the prompt."
-            " The computation will take longer with more history."
-            " 0 means history is not used at all"
-        )
-        ToolTip(self.history_label, tip)
-        ToolTip(self.history, tip)
+        ToolTip(self.history_label, tips["history"])
+        ToolTip(self.history, tips["history"])
 
         self.context_label = widgetutils.make_label(details_data, "Context")
         self.context = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "The context size is the maximum number of tokens that the model can account for"
-            " when processing a response. This includes the prompt, and the response itself"
-        )
-        ToolTip(self.context_label, tip)
-        ToolTip(self.context, tip)
+        ToolTip(self.context_label, tips["context"])
+        ToolTip(self.context, tips["context"])
 
         self.max_tokens_label = widgetutils.make_label(details_data, "Max Tokens")
         self.max_tokens = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "Maximum number of tokens to generate."
-            " Higher values will result in longer output, but will"
-            " also take longer to compute"
-        )
-        ToolTip(self.max_tokens_label, tip)
-        ToolTip(self.max_tokens, tip)
+        ToolTip(self.max_tokens_label, tips["max_tokens"])
+        ToolTip(self.max_tokens, tips["max_tokens"])
 
         self.threads_label = widgetutils.make_label(details_data, "Threads")
         self.threads = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = "The number of CPU threads to use"
-        ToolTip(self.threads_label, tip)
-        ToolTip(self.threads, tip)
+        ToolTip(self.threads_label, tips["threads"])
+        ToolTip(self.threads, tips["threads"])
 
         self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
         self.gpu_layers = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "Number of layers to offload to GPU. If -1, all layers are offloaded."
-            " More layers should speed up response time significantly."
-            " Use enough layers to almost fill the GPU memory but no more"
-        )
-        ToolTip(self.gpu_layers_label, tip)
-        ToolTip(self.gpu_layers, tip)
+        ToolTip(self.gpu_layers_label, tips["gpu_layers"])
+        ToolTip(self.gpu_layers, tips["gpu_layers"])
 
         self.format_label = widgetutils.make_label(details_data, "Format")
         values = ["auto"]
         fmts = sorted([item for item in formats._chat_handlers])
         values.extend(fmts)
         self.format = widgetutils.make_combobox(details_data, values=values, width=17)
-        tip = (
-            "That will format the prompt according to how model expects it."
-            " Auto is supposed to work with newer models that include the format in the metadata."
-            " Check llama-cpp-python to find all the available formats"
-        )
-        ToolTip(self.format_label, tip)
-        ToolTip(self.format, tip)
+        ToolTip(self.format_label, tips["format"])
+        ToolTip(self.format, tips["format"])
 
         self.temperature_label = widgetutils.make_label(details_data, "Temp")
         self.temperature = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "The temperature parameter is used to control"
-            " the randomness of the output. A higher temperature (~1) results in more randomness"
-            " and diversity in the generated text, as the model is more likely to"
-            " explore a wider range of possible tokens. Conversely, a lower temperature"
-            " (<1) produces more focused and deterministic output, emphasizing the"
-            " most probable tokens"
-        )
-        ToolTip(self.temperature_label, tip)
-        ToolTip(self.temperature, tip)
+        ToolTip(self.temperature_label, tips["temperature"])
+        ToolTip(self.temperature, tips["temperature"])
 
         self.seed_label = widgetutils.make_label(details_data, "Seed")
         self.seed = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "The seed to use for sampling."
-            " The same seed should generate the same or similar results."
-            " -1 means no seed is used"
-        )
-        ToolTip(self.seed_label, tip)
-        ToolTip(self.seed, tip)
+        ToolTip(self.seed_label, tips["seed"])
+        ToolTip(self.seed, tips["seed"])
 
         self.top_p_label = widgetutils.make_label(details_data, "Top-P")
         self.top_p = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "Top-p, also known as nucleus sampling, controls"
-            " the cumulative probability of the generated tokens."
-            " The model generates tokens until the cumulative probability"
-            " exceeds the chosen threshold (p). This approach allows for"
-            " more dynamic control over the length of the generated text"
-            " and encourages diversity in the output by including less"
-            " probable tokens when necessary"
-        )
-        ToolTip(self.top_p_label, tip)
-        ToolTip(self.top_p, tip)
+        ToolTip(self.top_p_label, tips["top_p"])
+        ToolTip(self.top_p, tips["top_p"])
 
         self.top_k_label = widgetutils.make_label(details_data, "Top-K")
         self.top_k = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
-        tip = (
-            "(Not applied to GPT) The Top-k parameter limits the model's"
-            " predictions to the top k most probable tokens at each step"
-            " of generation. By setting a value for k, you are instructing"
-            " the model to consider only the k most likely tokens."
-            " This can help in fine-tuning the generated output and"
-            " ensuring it adheres to specific patterns or constraints"
-        )
-        ToolTip(self.top_k_label, tip)
-        ToolTip(self.top_k, tip)
+        ToolTip(self.top_k_label, tips["top_k"])
+        ToolTip(self.top_k, tips["top_k"])
 
         self.stop_label = widgetutils.make_label(details_data, "Stop")
         self.stop = widgetutils.make_entry(details_data, width=11)
-        tip = (
-            "A list of strings to stop generation when encountered."
-            " Separate each item with ;;"
-        )
-        ToolTip(self.stop_label, tip)
-        ToolTip(self.stop, tip)
+        ToolTip(self.stop_label, tips["stop"])
+        ToolTip(self.stop, tips["stop"])
 
         self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
         self.mlock = widgetutils.make_combobox(
             details_data, width=app.theme.combobox_width_small, values=["yes", "no"]
         )
-        tip = "Keep the model in memory"
-        ToolTip(self.mlock_label, tip)
-        ToolTip(self.mlock, tip)
+        ToolTip(self.mlock_label, tips["mlock"])
+        ToolTip(self.mlock, tips["mlock"])
 
         # Buttons
         frame_data_buttons = widgetutils.make_frame()
@@ -372,34 +302,34 @@ class Widgets:
             frame_data_buttons, "Stop", lambda: self.stop_stream()
         )
         frame_data_buttons.expand()
-        ToolTip(self.stop_button, "Stop generating the current response")
+        ToolTip(self.stop_button, tips["stop_button"])
 
         self.new_button = widgetutils.make_button(
             frame_data_buttons, "New", lambda: display.make_tab()
         )
         frame_data_buttons.expand()
-        ToolTip(self.new_button, "Make a new tab")
+        ToolTip(self.new_button, tips["new_button"])
 
         self.close_button = widgetutils.make_button(
             frame_data_buttons, "Close", lambda: display.close_tab()
         )
 
         frame_data_buttons.expand()
-        ToolTip(self.close_button, "Close the current tab")
+        ToolTip(self.close_button, tips["close_button"])
 
         self.clear_button = widgetutils.make_button(
             frame_data_buttons, "Clear", lambda: display.clear()
         )
 
         frame_data_buttons.expand()
-        ToolTip(self.clear_button, "Clear the conversation")
+        ToolTip(self.clear_button, tips["clear_button"])
 
         rpadding = right_padding if (not args.more_button) else 0
         self.top_button = widgetutils.make_button(
             frame_data_buttons, "Top", lambda: display.to_top(), right_padding=rpadding
         )
         frame_data_buttons.expand()
-        ToolTip(self.top_button, "Scroll to the top")
+        ToolTip(self.top_button, tips["top_button"])
 
         rpadding = right_padding if args.more_button else 0
         self.output_menu = widgetutils.make_button(
@@ -409,7 +339,7 @@ class Widgets:
             right_padding=rpadding,
         )
 
-        ToolTip(self.output_menu, "Show more options")
+        ToolTip(self.output_menu, tips["output_menu"])
 
         if not args.more_button:
             self.output_menu.grid_remove()
@@ -430,18 +360,16 @@ class Widgets:
         self.prepend_label = widgetutils.make_label(frame_data_addons, "Prepend")
         self.prepend = widgetutils.make_entry(frame_data_addons)
         frame_data_addons.expand()
-        tip = "Add this to the beginning of the prompt"
-        ToolTip(self.prepend_label, tip)
-        ToolTip(self.prepend, tip)
+        ToolTip(self.prepend_label, tips["prepend"])
+        ToolTip(self.prepend, tips["prepend"])
 
         self.append_label = widgetutils.make_label(frame_data_addons, "Append")
         self.append = widgetutils.make_entry(
             frame_data_addons, right_padding=right_padding
         )
         frame_data_addons.expand()
-        tip = "Add this to the end of the prompt"
-        ToolTip(self.append_label, tip)
-        ToolTip(self.append, tip)
+        ToolTip(self.append_label, tips["append"])
+        ToolTip(self.append, tips["append"])
 
         # Input
         self.frame_data_input = widgetutils.make_frame(bottom_padding=10)
