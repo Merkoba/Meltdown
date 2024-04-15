@@ -104,7 +104,7 @@ class Args:
         self.time = False
         self.verbose = False
         self.emojis = True
-        self.textbox_button = True
+        self.write_button = True
         self.log_feedback = True
         self.avatars_in_logs = False
         self.browser = ""
@@ -226,7 +226,7 @@ class Args:
                 "action": "store_false",
                 "help": "Don't remember input words",
             },
-            "no_textbox_button": {
+            "no_write_button": {
                 "action": "store_false",
                 "help": "Don't show the textbox button",
             },
@@ -482,7 +482,7 @@ class Args:
             ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"),
             ("no_input_memory", "input_memory"),
-            ("no_textbox_button", "textbox_button"),
+            ("no_write_button", "write_button"),
             ("no_log_feedback", "log_feedback"),
             ("no_wrap_textbox", "wrap_textbox"),
             ("no_gpu", "system_gpu"),

@@ -8,6 +8,10 @@ tips = {
     "clear_button": "Clear the conversation",
     "close_button": "Close the current tab",
     "top_button": "Scroll to the top",
+    "prev_button": "Previous item in the input history",
+    "next_button": "Next item in the input history",
+    "write_button": "Show a textbox for longer inputs",
+    "submit_button": "Send the prompt to the AI",
     "user_label": "Personalize yourself",
     "ai_label": "Personalize the AI",
     # System

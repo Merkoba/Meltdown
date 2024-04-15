@@ -39,18 +39,18 @@ class InputControl:
         prev_button = widgetutils.make_button(
             frame_data, "< Prev", lambda: self.history_up()
         )
-        ToolTip(prev_button, "Previous item in the input history")
+        ToolTip(prev_button, tips["prev_button"])
 
         next_button = widgetutils.make_button(
             frame_data, "Next >", lambda: self.history_down()
         )
-        ToolTip(next_button, "Next item in the input history")
+        ToolTip(next_button, tips["next_button"])
 
-        if args.textbox_button:
-            textbox_button = widgetutils.make_button(
+        if args.write_button:
+            write_button = widgetutils.make_button(
                 frame_data, "Write", lambda: self.show_textbox()
             )
-            ToolTip(textbox_button, "Show a textbox for longer inputs")
+            ToolTip(write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
             frame_data,
@@ -59,7 +59,7 @@ class InputControl:
             right_padding=app.theme.right_padding,
         )
 
-        ToolTip(submit_button, "Send the prompt to the AI")
+        ToolTip(submit_button, tips["submit_button"])
 
     def wheel_up(self) -> None:
         ToolTip.hide_all()
