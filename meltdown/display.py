@@ -58,26 +58,24 @@ class Display:
         self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
 
-        self.output_menu = Menu()
-        self.output_menu.add(text="Find", command=lambda: self.find())
-        self.output_menu.add(text="Find All", command=lambda: self.find_all())
-        self.output_menu.separator()
-        self.output_menu.add(text="Copy All", command=lambda: self.copy_output())
-        self.output_menu.add(text="Select All", command=lambda: self.select_output())
-        self.output_menu.separator()
-        self.output_menu.add(text="View Text", command=lambda: self.view_text())
-        self.output_menu.add(text="View JSON", command=lambda: self.view_json())
-        self.output_menu.separator()
-        self.output_menu.add(text="Tab List", command=lambda: self.show_tab_list())
-        self.output_menu.add(text="First Tab", command=lambda: self.select_first_tab())
-        self.output_menu.add(text="Last Tab", command=lambda: self.select_last_tab())
-        self.output_menu.add(
-            text="Active Tab", command=lambda: self.select_active_tab()
-        )
-        self.output_menu.separator()
-        self.output_menu.add(text="Bigger Font", command=lambda: self.increase_font())
-        self.output_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
-        self.output_menu.add(text="Reset Font", command=lambda: self.reset_font())
+        self.more_menu = Menu()
+        self.more_menu.add(text="Find", command=lambda: self.find())
+        self.more_menu.add(text="Find All", command=lambda: self.find_all())
+        self.more_menu.separator()
+        self.more_menu.add(text="Copy All", command=lambda: self.copy_output())
+        self.more_menu.add(text="Select All", command=lambda: self.select_output())
+        self.more_menu.separator()
+        self.more_menu.add(text="View Text", command=lambda: self.view_text())
+        self.more_menu.add(text="View JSON", command=lambda: self.view_json())
+        self.more_menu.separator()
+        self.more_menu.add(text="Tab List", command=lambda: self.show_tab_list())
+        self.more_menu.add(text="First Tab", command=lambda: self.select_first_tab())
+        self.more_menu.add(text="Last Tab", command=lambda: self.select_last_tab())
+        self.more_menu.add(text="Active Tab", command=lambda: self.select_active_tab())
+        self.more_menu.separator()
+        self.more_menu.add(text="Bigger Font", command=lambda: self.increase_font())
+        self.more_menu.add(text="Smaller Font", command=lambda: self.decrease_font())
+        self.more_menu.add(text="Reset Font", command=lambda: self.reset_font())
 
         self.tab_number = 1
         self.max_old_tabs = 5
@@ -287,7 +285,7 @@ class Display:
     def show_tab_list(self) -> None:
         from .widgets import widgets
 
-        widget = widgets.output_menu
+        widget = widgets.more_menu
 
         if not widget:
             return
@@ -447,8 +445,8 @@ class Display:
     def index(self, tab_id: str) -> int:
         return self.book.index(tab_id)
 
-    def show_output_menu(self, event: Any) -> None:
-        self.output_menu.show(event)
+    def show_more_menu(self, event: Any) -> None:
+        self.more_menu.show(event)
 
     def to_top(self, tab_id: str = "") -> None:
         if tab_id:

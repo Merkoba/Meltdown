@@ -332,17 +332,17 @@ class Widgets:
         ToolTip(self.top_button, tips["top_button"])
 
         rpadding = right_padding if args.more_button else 0
-        self.output_menu = widgetutils.make_button(
+        self.more_menu = widgetutils.make_button(
             frame_data_buttons,
             "More",
-            lambda e: display.show_output_menu(e),
+            lambda e: display.show_more_menu(e),
             right_padding=rpadding,
         )
 
-        ToolTip(self.output_menu, tips["output_menu"])
+        ToolTip(self.more_menu, tips["more_menu"])
 
         if not args.more_button:
-            self.output_menu.grid_remove()
+            self.more_menu.grid_remove()
         else:
             frame_data_buttons.expand()
 

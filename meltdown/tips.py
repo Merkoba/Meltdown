@@ -1,6 +1,6 @@
 tips = {
     "main_menu": "Open the main menu",
-    "output_menu": "Show more options",
+    "more_menu": "Show more options",
     "load_button": "Load or unload the model",
     "details_button": "Scroll this row. Middle click for instant",
     "stop_button": "Stop generating the current response",
