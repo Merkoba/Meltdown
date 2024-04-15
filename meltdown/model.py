@@ -282,7 +282,7 @@ class Model:
         messages = [{"role": "system", "content": system}]
 
         if conversation.items:
-            for item in conversation.items[-abs(config.history):]:
+            for item in conversation.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]
 
