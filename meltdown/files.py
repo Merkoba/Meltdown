@@ -36,7 +36,7 @@ class Files:
             config.load_file()
 
     def load_list(self, key: str) -> None:
-        path = getattr(paths, key)
+        path: Path = getattr(paths, key)
 
         if not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)
