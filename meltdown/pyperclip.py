@@ -327,7 +327,14 @@ def init_klipper_clipboard():
         )
         try:
             stdout, stderr = p.communicate(timeout=TIMEOUT)
-            return stdout.decode(ENCODING)
+            content = stdout.decode(ENCODING)
+            # even if blank, Klipper will append a newline at the end
+            assert len(content) > 0
+            # make sure that newline is there
+            assert content.endswith("\n")
+            if content.endswith("\n"):
+                content = content[:-1]
+            return content
         except subprocess.TimeoutExpired:
             return ""
 
