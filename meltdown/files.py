@@ -107,6 +107,9 @@ class Files:
         if not text:
             return
 
+        if not getattr(self, f"{key}_loaded"):
+            self.load_list(key)
+
         name = f"{key}_list"
         items = getattr(self, name)
         new_items = [item for item in items if item != text]
