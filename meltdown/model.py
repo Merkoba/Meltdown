@@ -553,7 +553,7 @@ class Model:
             return text + ". "
 
     def get_dir(self) -> Optional[str]:
-        models = [config.model] + config.models
+        models = [config.model] + files.models_list
 
         for model in models:
             path = Path(model)
@@ -564,8 +564,8 @@ class Model:
         return None
 
     def check_config(self, save: bool = True) -> None:
-        if (not config.model) and config.models:
-            config.model = config.models[0]
+        if (not config.model) and files.models_list:
+            config.model = files.models_list[0]
 
             if save:
                 config.save()

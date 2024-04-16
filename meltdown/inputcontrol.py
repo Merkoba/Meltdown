@@ -22,7 +22,6 @@ class InputControl:
         self.history_index = -1
         self.input: EntryBox
         self.autocomplete: List[str] = []
-        self.inputs: List[str] = []
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -84,39 +83,39 @@ class InputControl:
         self.input.focus_set()
 
     def apply_history(self) -> None:
-        text = files.inputs[self.history_index]
+        text = files.inputs_list[self.history_index]
         self.set(text)
 
     def history_up(self) -> None:
         if not self.input.get():
             self.reset_history_index()
 
-        if not files.inputs:
+        if not files.inputs_list:
             return
 
         if self.history_index == -1:
             self.history_index = 0
         else:
-            if self.history_index == len(files.inputs) - 1:
+            if self.history_index == len(files.inputs_list) - 1:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index + 1) % len(files.inputs)
+                self.history_index = (self.history_index + 1) % len(files.inputs_list)
 
         self.apply_history()
 
     def history_down(self) -> None:
-        if not files.inputs:
+        if not files.inputs_list:
             return
 
         if self.history_index == -1:
-            self.history_index = len(files.inputs) - 1
+            self.history_index = len(files.inputs_list) - 1
         else:
             if self.history_index == 0:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index - 1) % len(files.inputs)
+                self.history_index = (self.history_index - 1) % len(files.inputs_list)
 
         self.apply_history()
 

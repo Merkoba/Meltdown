@@ -1,7 +1,7 @@
 # Standard
 import os
 import json
-from typing import Any
+from typing import Any, List
 from pathlib import Path
 
 # Modules
@@ -13,11 +13,11 @@ from .utils import utils
 
 class Files:
     def __init__(self) -> None:
-        self.models_list = []
-        self.inputs_list = []
-        self.systems_list = []
-        self.prepends_list = []
-        self.appends_list = []
+        self.models_list: List[str] = []
+        self.inputs_list: List[str] = []
+        self.systems_list: List[str] = []
+        self.prepends_list: List[str] = []
+        self.appends_list: List[str] = []
 
     def save(self, path: Path, dictionary: Any) -> None:
         with open(path, "w", encoding="utf-8") as file:
