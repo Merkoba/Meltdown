@@ -83,39 +83,44 @@ class InputControl:
         self.input.focus_set()
 
     def apply_history(self) -> None:
-        text = files.inputs_list[self.history_index]
+        inputs = files.get_list("inputs")
+        text = inputs[self.history_index]
         self.set(text)
 
     def history_up(self) -> None:
+        inputs = files.get_list("inputs")
+
         if not self.input.get():
             self.reset_history_index()
 
-        if not files.inputs_list:
+        if not inputs:
             return
 
         if self.history_index == -1:
             self.history_index = 0
         else:
-            if self.history_index == len(files.inputs_list) - 1:
+            if self.history_index == len(inputs) - 1:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index + 1) % len(files.inputs_list)
+                self.history_index = (self.history_index + 1) % len(inputs)
 
         self.apply_history()
 
     def history_down(self) -> None:
-        if not files.inputs_list:
+        inputs = files.get_list("inputs")
+
+        if not inputs:
             return
 
         if self.history_index == -1:
-            self.history_index = len(files.inputs_list) - 1
+            self.history_index = len(inputs) - 1
         else:
             if self.history_index == 0:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index - 1) % len(files.inputs_list)
+                self.history_index = (self.history_index - 1) % len(inputs)
 
         self.apply_history()
 

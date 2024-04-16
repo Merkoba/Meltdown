@@ -19,6 +19,12 @@ class Files:
         self.prepends_list: List[str] = []
         self.appends_list: List[str] = []
 
+        self.models_loaded = False
+        self.inputs_loaded = False
+        self.systems_loaded = False
+        self.prepends_loaded = False
+        self.appends_loaded = False
+
     def save(self, path: Path, dictionary: Any) -> None:
         with open(path, "w", encoding="utf-8") as file:
             json.dump(dictionary, file, indent=4)
@@ -29,11 +35,21 @@ class Files:
         else:
             config.load_file()
 
-        self.load_models_file()
-        self.load_inputs_file()
-        self.load_systems_file()
-        self.load_prepends_file()
-        self.load_appends_file()
+    def load_list(self, what: str) -> None:
+        if what == "models":
+            self.load_models_file()
+        elif what == "inputs":
+            self.load_inputs_file()
+        elif what == "systems":
+            self.load_systems_file()
+        elif what == "prepends":
+            self.load_prepends_file()
+        elif what == "appends":
+            self.load_appends_file()
+        else:
+            utils.error(f"Unrecognized list: {what}")
+
+        setattr(self, f"{what}_loaded", True)
 
     def load_models_file(self) -> None:
         from .model import model
@@ -126,6 +142,13 @@ class Files:
             app.run_command(["open", spath])
         else:
             utils.error(f"Unrecognized OS: {os_name}")
+
+    def get_list(self, what: str) -> List[str]:
+        if not getattr(self, f"{what}_loaded"):
+            self.load_list(what)
+
+        lst = getattr(self, f"{what}_list")
+        return lst or []
 
 
 files = Files()

@@ -603,8 +603,8 @@ class Widgets:
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
+        items = files.get_list(key_list)[: args.max_list_items]
         menu.clear()
-        items = getattr(files, f"{key_list}_list")[: args.max_list_items]
 
         if only_items:
             if not items:
