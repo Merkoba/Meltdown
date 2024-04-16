@@ -165,9 +165,7 @@ class Dialog:
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
-                ans = textbox.get_ans()
-                dialog.hide()
-                func(ans)
+                func(textbox)
 
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 

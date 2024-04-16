@@ -875,10 +875,11 @@ class Widgets:
         def action(ans: Dict[str, Any]) -> None:
             config.set("system", ans["text"])
 
-        def reset(ans: Dict[str, Any]) -> None:
-            config.reset_one("system")
-            self.write_system_prompt(max=ans["maxed"])
-            return
+        def reset(textbox: TextBox) -> None:
+            value = config.get_default("system")
+
+            if value:
+                textbox.set_text(value)
 
         def right_click_action(text: str, textbox: TextBox) -> None:
             config.set("system", text)
@@ -898,7 +899,7 @@ class Widgets:
             config.set("system", text)
             return
 
-        cmds = [("Reset", lambda a: reset(a))]
+        cmds = [("Reset", lambda tb: reset(tb))]
 
         Dialog.show_textbox(
             "System Prompt",
