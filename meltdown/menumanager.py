@@ -100,10 +100,7 @@ class MoreMenu:
         self.menu.add(text="View JSON", command=lambda: display.view_json())
         self.menu.separator()
         self.menu.add(text="Tabs", command=lambda: tabs_menu.show())
-        self.menu.separator()
-        self.menu.add(text="Bigger Font", command=lambda: display.increase_font())
-        self.menu.add(text="Smaller Font", command=lambda: display.decrease_font())
-        self.menu.add(text="Reset Font", command=lambda: display.reset_font())
+        self.menu.add(text="Font", command=lambda: font_menu.show())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -162,9 +159,29 @@ class TabsMenu:
             self.menu.show(widget=widget)
 
 
+class FontMenu:
+    def __init__(self) -> None:
+        from .display import display
+
+        self.menu = Menu()
+        self.menu.add(text="Bigger Font", command=lambda: display.increase_font())
+        self.menu.add(text="Smaller Font", command=lambda: display.decrease_font())
+        self.menu.add(text="Reset Font", command=lambda: display.reset_font())
+
+    def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
+        if event:
+            self.menu.show(event)
+        else:
+            widget = getattr(widgets, "more_menu_button")
+            self.menu.show(widget=widget)
+
+
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
 tabs_menu = TabsMenu()
+font_menu = FontMenu()

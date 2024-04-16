@@ -93,7 +93,7 @@ class Commands:
         from .logs import logs
         from .widgets import widgets
         from .inputcontrol import inputcontrol
-        from .menumanager import more_menu, tab_menu, tabs_menu, gpt_menu
+        from . import menumanager
 
         force = "Use 'force' to force"
         file_name = "You can provide the file name"
@@ -454,10 +454,6 @@ class Commands:
                 "help": "Go to the tab that is currently streaming",
                 "action": lambda a=None: display.select_active_tab(),
             },
-            "gpt": {
-                "help": "Show the GPT menu",
-                "action": lambda a=None: gpt_menu.show(),
-            },
             "apikey": {
                 "help": "Set the OpenAI API key",
                 "action": lambda a=None: model.set_api_key(),
@@ -469,15 +465,23 @@ class Commands:
             },
             "more": {
                 "help": "Show the more menu",
-                "action": lambda a=None: more_menu.show(),
+                "action": lambda a=None: menumanager.more_menu.show(),
             },
             "tabmenu": {
                 "help": "Show the tab menu",
-                "action": lambda a=None: tab_menu.show(),
+                "action": lambda a=None: menumanager.tab_menu.show(),
             },
             "tabsmenu": {
                 "help": "Show the tabs menu",
-                "action": lambda a=None: tabs_menu.show(),
+                "action": lambda a=None: menumanager.tabs_menu.show(),
+            },
+            "fontmenu": {
+                "help": "Show the font menu",
+                "action": lambda a=None: menumanager.font_menu.show(),
+            },
+            "gpt": {
+                "help": "Show the GPT menu",
+                "action": lambda a=None: menumanager.gpt_menu.show(),
             },
             "progtext": {
                 "help": "Open a program using the text",
