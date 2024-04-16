@@ -563,14 +563,5 @@ class Model:
 
         return None
 
-    def check_config(self, save: bool = True) -> None:
-        models = files.get_list("models")
-
-        if (not config.model) and models:
-            config.model = models[0]
-
-            if save:
-                config.save()
-
 
 model = Model()

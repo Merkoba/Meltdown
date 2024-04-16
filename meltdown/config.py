@@ -303,9 +303,7 @@ class Config:
         setattr(self, key, value)
         self.save()
 
-        if key == "model":
-            self.on_model_change()
-        elif key == "output_font_size":
+        if key == "output_font_size":
             self.on_output_font_change()
 
         if key in self.model_keys:
@@ -331,7 +329,6 @@ class Config:
                 if default is not None:
                     setattr(self, key, default)
 
-            self.on_model_change()
             self.on_output_font_change()
             widgets.fill()
             app.check_compact()
@@ -359,11 +356,6 @@ class Config:
 
         self.set(key, default)
         widgets.fill_widget(key, getattr(self, key), focus=focus)
-
-    def on_model_change(self) -> None:
-        from .model import model
-
-        model.check_config(False)
 
     def on_output_font_change(self) -> None:
         from .display import display

@@ -52,10 +52,7 @@ class Files:
         setattr(self, f"{what}_loaded", True)
 
     def load_models_file(self) -> None:
-        from .model import model
-
         self.load_list_file(paths.models, "models")
-        model.check_config()
 
     def load_inputs_file(self) -> None:
         self.load_list_file(paths.inputs, "inputs")
