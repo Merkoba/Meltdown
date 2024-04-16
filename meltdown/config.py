@@ -14,6 +14,7 @@ class Config:
         self.input_memory_max = 30
         self.changes_delay = 250
         self.max_changes = 50
+        self.max_file_list = 120
 
         # Added for mypy
         self.models: List[str] = []

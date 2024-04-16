@@ -100,7 +100,7 @@ def add_to_list(key: str, text: str) -> None:
     items = getattr(config, key)
     new_items = [item for item in items if item != text]
     new_items.insert(0, text)
-    new_items = new_items[: args.max_list_items]
+    new_items = new_items[: config.max_file_list]
     setattr(config, key, new_items)
     path = getattr(paths, key)
     save(path, new_items)
