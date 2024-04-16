@@ -526,6 +526,9 @@ class Output(tk.Text):
         if "name_ai" in tags:
             return "break"
 
+        word_start = self.index(f"{current_index} wordstart")
+        word_end = self.index(f"{current_index} wordend")
+        self.tag_add("sel", word_start, word_end)
         self.show_word_menu(event)
         return "break"
 

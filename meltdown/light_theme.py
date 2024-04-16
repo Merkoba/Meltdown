@@ -8,7 +8,7 @@ class LightTheme(Theme):
         self.background_color = "white"
         self.foreground_color = "#343434"
 
-        self.output_background = "#E7E7E7"
+        self.output_background = "white"
         self.output_foreground = "#343434"
 
         self.entry_background = "#C5C5C5"
