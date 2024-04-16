@@ -105,6 +105,12 @@ class Config:
 
         return items
 
+    def get(self, key: str) -> Any:
+        if hasattr(self, key):
+            return getattr(self, key)
+        else:
+            return None
+
     def get_default(self, key: str) -> Optional[Any]:
         name = f"default_{key}"
 

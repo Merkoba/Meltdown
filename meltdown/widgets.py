@@ -579,6 +579,7 @@ class Widgets:
             self.gpt_menu.add(text=gpt[1], command=lambda gpt=gpt: self.use_gpt(gpt[0]))
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
+        config.update(key)
         widget = self.get_widget(key)
 
         if not widget:
@@ -591,7 +592,10 @@ class Widgets:
             if key in config.clearables:
                 menu.add(text="Clear", command=lambda: self.clear(key))
 
-        if config.get_default(key) is not None:
+        value = config.get(key)
+        defvalue = config.get_default(key)
+
+        if (defvalue is not None) and (value != defvalue) and (defvalue != ""):
             menu.add(text="Reset", command=lambda: config.reset_one(key))
 
     def show_menu_items(
@@ -666,21 +670,22 @@ class Widgets:
             self.main_menu.show(widget=self.main_menu_button)
 
     def add_generic_menus(self) -> None:
-        def add_menu(key: str) -> None:
+        def show_menu(key: str, event: Any) -> None:
+            menu = Menu()
+            self.add_common_commands(menu, key)
+            menu.show(event)
+
+        def bind_menu(key: str) -> None:
             widget = self.get_widget(key)
 
             if not widget:
                 return
 
-            menu = Menu()
-            self.add_common_commands(menu, key)
-
-            if key not in ["model", "prepend", "append", "input"]:
-                widget.bind("<Button-3>", lambda e: menu.show(e))
+            if key not in ["model", "prepend", "append", "input", "system"]:
+                widget.bind("<Button-3>", lambda e: show_menu(key, e))
 
         for key in config.defaults():
-            add_menu(key)
-            add_menu("input")
+            bind_menu(key)
 
     def enable_stop_button(self) -> None:
         if app.exists():
