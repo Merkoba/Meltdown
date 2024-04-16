@@ -175,6 +175,7 @@ class Config:
             display.print(emojis.text(msg, "storage"))
 
     def load_state(self, name: str = "") -> None:
+        from .app import app
         from .paths import paths
         from .widgets import widgets
 
@@ -199,6 +200,7 @@ class Config:
         with open(path, "r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
+            app.check_compact()
 
     def apply(self, file: IO[str]) -> None:
         try:
