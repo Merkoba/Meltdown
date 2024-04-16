@@ -4,7 +4,6 @@ from tkinter import ttk
 from typing import Any
 
 # Libraries
-import pyperclip  # type: ignore
 from pygments.lexers import get_lexer_by_name  # type: ignore
 from pygments.styles import get_style_by_name  # type: ignore
 
@@ -144,7 +143,7 @@ class Snippet(tk.Frame):
         from .dialogs import Dialog
 
         Dialog.hide_all()
-        pyperclip.copy(self.content)
+        utils.copy(self.content)
         self.header_copy.configure(text="Copied!")
         self.after(1000, lambda: self.header_copy.configure(text="Copy"))
 

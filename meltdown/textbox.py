@@ -119,6 +119,9 @@ class TextBox(tk.Text):
         self.tag_add("sel", "1.0", tk.END)
         return "break"
 
+    def deselect_all(self) -> None:
+        self.tag_remove("sel", "1.0", tk.END)
+
     def maximize(self) -> None:
         self.dialog.root.place(
             x=0,

@@ -8,13 +8,13 @@ from prompt_toolkit.history import InMemoryHistory  # type:ignore
 from prompt_toolkit.completion import Completer, Completion  # type:ignore
 from prompt_toolkit.document import Document  # type:ignore
 from prompt_toolkit.key_binding import KeyBindings  # type:ignore
-import pyperclip  # type: ignore
 
 # Modules
 from .args import args
 from .app import app
 from .commands import commands
 from .inputcontrol import inputcontrol
+from .utils import utils
 
 
 completer: Completer
@@ -59,7 +59,11 @@ def do_start() -> None:
 
     @kb.add("c-v")  # type:ignore
     def _(event: Any) -> None:
-        clipboard_data = pyperclip.paste().strip()
+        clipboard_data = utils.get_paste()
+
+        if not clipboard_data:
+            return
+
         event.current_buffer.insert_text(clipboard_data)
 
     history = InMemoryHistory()

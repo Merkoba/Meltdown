@@ -3,9 +3,6 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any, Union, Callable, Optional, List, Tuple
 
-# Libraries
-import pyperclip  # type: ignore
-
 # Modules
 from .app import app
 from .entrybox import EntryBox
@@ -183,12 +180,3 @@ def make_combobox(
 
 def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
     widget.set(str(value))
-
-
-def copy(text: str) -> None:
-    pyperclip.copy(text)
-
-
-def paste(widget: EntryBox) -> None:
-    text = pyperclip.paste()
-    widget.set_text(text)

@@ -3,14 +3,12 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any, List, Optional, Dict, Tuple
 
-# Libraries
-import pyperclip  # type: ignore
-
 # Modules
 from .config import config
 from .app import app
 from .menus import Menu
 from .args import args
+from .utils import utils
 
 
 class Output(tk.Text):
@@ -35,7 +33,7 @@ class Output(tk.Text):
 
         text = Output.get_words()
         Output.current_output.deselect_all()
-        pyperclip.copy(text)
+        utils.copy(text)
 
     @staticmethod
     def explain_words() -> None:
@@ -370,12 +368,7 @@ class Output(tk.Text):
             self.configure(state="disabled")
 
     def copy_all(self) -> None:
-        text = self.to_text()
-
-        if not text:
-            return
-
-        pyperclip.copy(text)
+        utils.copy(self.get_text())
 
     def to_text(self) -> str:
         from .session import session

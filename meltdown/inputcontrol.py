@@ -266,5 +266,8 @@ class InputControl:
         else:
             self.show_textbox()
 
+    def paste(self) -> None:
+        utils.paste(self.input)
+
 
 inputcontrol = InputControl()

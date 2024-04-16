@@ -20,6 +20,7 @@ from .commands import commands
 from .framedata import FrameData
 from .tips import tips
 from .files import files
+from .utils import utils
 from . import widgetutils
 
 
@@ -716,7 +717,7 @@ class Widgets:
             return
 
         if isinstance(widget, EntryBox):
-            widgetutils.copy(widget.get())
+            utils.copy(widget.get())
             widget.focus_set()
             config.update(key)
 
@@ -726,7 +727,7 @@ class Widgets:
         if (not widget) or (not isinstance(widget, EntryBox)):
             return
 
-        widgetutils.paste(widget)
+        utils.paste(widget)
         widget.focus_set()
         config.update(key)
 
@@ -840,19 +841,37 @@ class Widgets:
             if value:
                 textbox.set_text(value)
 
-        def right_click_action(text: str, textbox: TextBox) -> None:
-            config.set("system", text)
-            textbox.set_text(text)
-            textbox.dialog.focus()
+        def copy(textbox: TextBox) -> None:
+            utils.copy(textbox.get_text())
+
+        def paste(textbox: TextBox) -> None:
+            utils.paste(textbox)
+
+        def clear(textbox: TextBox) -> None:
+            textbox.set_text("")
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
-            self.show_menu_items(
-                "system",
-                "systems",
-                lambda a: right_click_action(a, textbox),
-                only_items=True,
-                event=event,
-            )
+            menu = Menu()
+
+            menu.add(text="Copy", command=lambda: copy(textbox))
+            menu.add(text="Paste", command=lambda: paste(textbox))
+            menu.add(text="Clear", command=lambda: clear(textbox))
+
+            items = files.get_list("systems")[: args.max_list_items]
+
+            if items:
+                menu.add(text="--- Recent ---", disabled=True)
+
+            for item in items:
+
+                def proc(item: str = item) -> None:
+                    config.set("system", item)
+                    textbox.set_text(item)
+                    textbox.dialog.focus()
+
+                menu.add(text=item[: args.list_item_width], command=proc)
+
+            menu.show(event)
 
         if text:
             config.set("system", text)

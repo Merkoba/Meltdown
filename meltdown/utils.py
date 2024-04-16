@@ -3,11 +3,15 @@ import re
 import time
 import logging
 import inspect
+import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
 from typing import Union, Optional, Tuple
 from pathlib import Path
 from datetime import datetime
+
+# Modules
+from . import pyperclip
 
 
 class Utils:
@@ -102,6 +106,25 @@ class Utils:
         current_time = datetime.now()
         suffix = add_suffix(current_time.day)
         return current_time.strftime("%A {0} of %B %Y").format(suffix)
+
+    def copy(self, text: str) -> None:
+        pyperclip.copy(text)
+
+    def paste(self, widget: tk.Widget) -> None:
+        from .entrybox import EntryBox
+        from .textbox import TextBox
+
+        assert isinstance(widget, (EntryBox, TextBox))
+
+        text = self.get_paste()
+
+        if not text:
+            return
+
+        widget.set_text(text)
+
+    def get_paste(self) -> str:
+        return pyperclip.paste().strip()
 
 
 utils = Utils()

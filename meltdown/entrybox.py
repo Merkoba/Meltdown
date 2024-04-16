@@ -78,6 +78,9 @@ class EntryBox(ttk.Entry):
 
         self.after_idle(lambda: do_select())
 
+    def deselect_all(self) -> None:
+        self.selection_clear()
+
     def set_text(
         self, text: str, check_placeholder: bool = True, on_change: bool = True
     ) -> None:
@@ -125,7 +128,7 @@ class EntryBox(ttk.Entry):
             if self.key and (not self.placeholder_active):
                 config.update(self.key)
 
-            self.selection_clear()
+            self.deselect_all()
             self.focused = False
         elif mode == "in":
             self.focused = True

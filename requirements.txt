@@ -1,5 +1,4 @@
 llama_cpp_python ~= 0.2.60
-pyperclip ~= 1.8.2
 psutil ~= 5.9.8
 appdirs ~= 1.4.4
 openai ~= 1.13.3

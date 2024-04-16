@@ -922,5 +922,13 @@ class Display:
 
         return False
 
+    def output_is_selected(self) -> bool:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return False
+
+        return bool(tab.output.get_selected_text())
+
 
 display = Display()

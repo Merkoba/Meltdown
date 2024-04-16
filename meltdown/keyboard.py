@@ -126,6 +126,16 @@ class Keyboard:
             ]
             syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 
+            if event.keysym == "c":
+                if self.ctrl:
+                    if display.output_is_selected():
+                        return
+            elif event.keysym == "v":
+                if self.ctrl:
+                    inputcontrol.focus()
+                    inputcontrol.paste()
+                    return
+
             # Focus the input and insert char
             if (len(event.keysym.strip()) == 1) or (event.char in chars):
                 inputcontrol.focus()
