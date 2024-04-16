@@ -20,6 +20,7 @@ from .commands import commands
 from .logs import logs
 from .framedata import FrameData
 from .tips import tips
+from .files import files
 from . import widgetutils
 
 
@@ -603,7 +604,7 @@ class Widgets:
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
         menu.clear()
-        items = getattr(config, key_list)[: args.max_list_items]
+        items = getattr(files, f"{key_list}_list")[: args.max_list_items]
 
         if only_items:
             if not items:

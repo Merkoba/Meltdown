@@ -13,8 +13,8 @@ from .paths import paths
 from .dialogs import Dialog
 from .tips import tips
 from .utils import utils
+from .files import files
 from . import widgetutils
-from . import filemanager
 
 
 class InputControl:
@@ -22,6 +22,7 @@ class InputControl:
         self.history_index = -1
         self.input: EntryBox
         self.autocomplete: List[str] = []
+        self.inputs: List[str] = []
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -83,39 +84,39 @@ class InputControl:
         self.input.focus_set()
 
     def apply_history(self) -> None:
-        text = config.inputs[self.history_index]
+        text = files.inputs[self.history_index]
         self.set(text)
 
     def history_up(self) -> None:
         if not self.input.get():
             self.reset_history_index()
 
-        if not config.inputs:
+        if not files.inputs:
             return
 
         if self.history_index == -1:
             self.history_index = 0
         else:
-            if self.history_index == len(config.inputs) - 1:
+            if self.history_index == len(files.inputs) - 1:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index + 1) % len(config.inputs)
+                self.history_index = (self.history_index + 1) % len(files.inputs)
 
         self.apply_history()
 
     def history_down(self) -> None:
-        if not config.inputs:
+        if not files.inputs:
             return
 
         if self.history_index == -1:
-            self.history_index = len(config.inputs) - 1
+            self.history_index = len(files.inputs) - 1
         else:
             if self.history_index == 0:
                 self.clear()
                 return
             else:
-                self.history_index = (self.history_index - 1) % len(config.inputs)
+                self.history_index = (self.history_index - 1) % len(files.inputs)
 
         self.apply_history()
 
@@ -144,7 +145,7 @@ class InputControl:
     def submit(self, tab_id: str = "", text: str = "", scroll: bool = True) -> None:
         from .model import model
         from .display import display
-        from . import filemanager
+        from . import files
 
         if args.display:
             if not text:
@@ -166,7 +167,7 @@ class InputControl:
 
         if text:
             self.clear()
-            filemanager.add_input(text)
+            files.add_input(text)
             self.add_words(text)
 
             if args.commands:
@@ -246,7 +247,7 @@ class InputControl:
                 added = True
 
         if added:
-            filemanager.save(paths.autocomplete, self.autocomplete)
+            files.save(paths.autocomplete, self.autocomplete)
 
     def show_textbox(self) -> None:
         def action(ans: Dict[str, Any]) -> None:

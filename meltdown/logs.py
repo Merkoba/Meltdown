@@ -10,8 +10,8 @@ from .args import args
 from .session import session
 from .session import Conversation
 from .paths import paths
+from .files import files
 from . import timeutils
-from . import filemanager
 from . import emojis
 
 
@@ -162,7 +162,7 @@ class Logs:
         return full_text
 
     def open(self, name: str = "") -> None:
-        filemanager.open_log(name)
+        files.open_log(name)
 
 
 logs = Logs()

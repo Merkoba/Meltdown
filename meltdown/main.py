@@ -15,8 +15,8 @@ from .commands import commands
 from .keyboard import keyboard
 from .inputcontrol import inputcontrol
 from .utils import utils
+from .files import files
 from . import terminal
-from . import filemanager
 from . import system
 from . import tasks
 from . import listener
@@ -41,7 +41,7 @@ def main() -> None:
             )
             sys.exit(0)
 
-    filemanager.load()
+    files.load()
     app.prepare()
     widgets.make()
     model.setup()

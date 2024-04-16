@@ -14,11 +14,7 @@ class Config:
         self.input_memory_max = 30
         self.changes_delay = 250
         self.max_changes = 50
-        self.max_file_list = 120
-
-        # Added for mypy
-        self.models: List[str] = []
-        self.inputs: List[str] = []
+        self.max_file_list = 100
 
         system_lines = [
             "Your name is @name_ai.",
@@ -248,14 +244,14 @@ class Config:
 
     def save(self) -> None:
         from .paths import paths
-        from . import filemanager
+        from .files import files
 
         conf = {}
 
         for key in self.defaults():
             conf[key] = getattr(self, key)
 
-        filemanager.save(paths.config, conf)
+        files.save(paths.config, conf)
 
     def update(self, key: str) -> bool:
         from .widgets import widgets

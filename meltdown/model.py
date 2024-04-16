@@ -10,16 +10,16 @@ from llama_cpp import Llama  # type: ignore
 from openai import OpenAI  # type: ignore
 
 # Modules
+from .app import app
+from .args import args
 from .config import config
 from .widgets import widgets
 from .display import display
 from .session import session
-from .app import app
-from .args import args
+from .files import files
 from .tips import tips
 from .utils import utils
 from . import timeutils
-from . import filemanager
 from . import emojis
 
 
@@ -141,7 +141,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
-            filemanager.add_model(config.model)
+            files.add_model(config.model)
             msg = f"{config.model} is ready to use"
             display.print(emojis.text(msg, "remote"))
             self.update_icon()
@@ -190,7 +190,7 @@ class Model:
             self.lock.release()
             return
 
-        filemanager.add_model(model)
+        files.add_model(model)
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
@@ -309,9 +309,9 @@ class Model:
         content = self.replace_content(content)
         messages.append({"role": "user", "content": content})
 
-        filemanager.add_system(config.system)
-        filemanager.add_prepends(config.prepend)
-        filemanager.add_appends(config.append)
+        files.add_system(config.system)
+        files.add_prepends(config.prepend)
+        files.add_appends(config.append)
 
         now = timeutils.now()
         self.stream_date = now

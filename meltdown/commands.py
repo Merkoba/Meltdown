@@ -12,8 +12,8 @@ from .menus import Menu
 from .args import args
 from .paths import paths
 from .utils import utils
+from .files import files
 from . import timeutils
-from . import filemanager
 
 
 class QueueItem:
@@ -554,7 +554,7 @@ class Commands:
         for key in self.commands:
             cmds[key] = {"date": self.commands[key]["date"]}
 
-        filemanager.save(paths.commands, cmds)
+        files.save(paths.commands, cmds)
 
     def try_to_run(self, cmd: str, argument: str) -> None:
         # Check normal
