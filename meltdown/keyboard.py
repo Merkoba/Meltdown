@@ -13,7 +13,7 @@ from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .autocomplete import autocomplete
 from .args import args
-from . import timeutils
+from .utils import utils
 
 
 KbCmd = Optional[Callable[..., Any]]
@@ -56,7 +56,7 @@ class Keyboard:
         self.commands: Dict[str, List[KbItem]] = {}
 
     def block(self) -> None:
-        self.block_date = timeutils.now()
+        self.block_date = utils.now()
 
     def blocked(self) -> bool:
         from .menus import Menu
@@ -68,7 +68,7 @@ class Keyboard:
         if Dialog.current_dialog:
             return True
 
-        if (timeutils.now() - self.block_date) < 0.2:
+        if (utils.now() - self.block_date) < 0.2:
             return True
 
         return False
@@ -92,7 +92,7 @@ class Keyboard:
             self.ctrl = True
 
             if args.taps:
-                time_now = timeutils.now()
+                time_now = utils.now()
 
                 if self.ctrl_date > 0:
                     if (time_now - self.ctrl_date) < self.double_tap_delay:

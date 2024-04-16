@@ -20,11 +20,10 @@ from . import terminal
 from . import system
 from . import tasks
 from . import listener
-from . import timeutils
 
 
 def main() -> None:
-    now = timeutils.now()
+    now = utils.now()
     title = app.manifest["title"]
     program = app.manifest["program"]
     args.parse()
@@ -64,7 +63,7 @@ def main() -> None:
     fp.flush()
 
     if args.time:
-        msg, now = timeutils.check_time("Program loaded", now)
+        msg, now = utils.check_time("Program loaded", now)
         utils.msg(msg)
 
     try:

@@ -1,10 +1,12 @@
 # Standard
 import re
+import time
 import logging
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional
+from typing import Union, Optional, Tuple
 from pathlib import Path
+from datetime import datetime
 
 
 class Utils:
@@ -58,6 +60,40 @@ class Utils:
         self.error_logger.addHandler(error_handler)
         formatter = logging.Formatter("%(asctime)s - %(message)s")
         error_handler.setFormatter(formatter)
+
+    def seconds_string(self, name: str, start: float, end: float) -> str:
+        num = round(start - end, 2)
+        return f"{name} in {num} seconds"
+
+    def check_time(self, name: str, last_time: float) -> Tuple[str, float]:
+        time_now = self.now()
+        seconds_str = self.seconds_string(name, time_now, last_time)
+        return seconds_str, time_now
+
+    def now(self) -> float:
+        return time.time()
+
+    def now_int(self) -> int:
+        return int(time.time())
+
+    def date(self) -> str:
+        time_now = datetime.now()
+        return time_now.strftime("%Y-%m-%d %H:%M:%S")
+
+    def sleep(self, seconds: float) -> None:
+        time.sleep(seconds)
+
+    def today(self) -> str:
+        def add_suffix(day: int) -> str:
+            if 10 <= day % 100 <= 20:
+                suffix = "th"
+            else:
+                suffix = {1: "st", 2: "nd", 3: "rd"}.get(day % 10, "th")
+            return f"{day}{suffix}"
+
+        current_time = datetime.now()
+        suffix = add_suffix(current_time.day)
+        return current_time.strftime("%A {0} of %B %Y").format(suffix)
 
 
 utils = Utils()

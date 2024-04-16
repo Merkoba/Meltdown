@@ -12,7 +12,6 @@ from .widgets import widgets
 from .args import args
 from .app import app
 from .utils import utils
-from . import timeutils
 
 
 def padnum(num: int) -> str:
@@ -110,7 +109,7 @@ def get_info() -> None:
 
 
 def check() -> None:
-    timeutils.sleep(1)
+    utils.sleep(1)
 
     while True:
         if app.system_frame_visible:
@@ -119,7 +118,7 @@ def check() -> None:
             except BaseException as e:
                 utils.error(e)
 
-        timeutils.sleep(args.system_delay)
+        utils.sleep(args.system_delay)
 
 
 def start() -> None:

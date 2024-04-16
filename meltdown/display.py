@@ -15,7 +15,6 @@ from .book import Book, Page
 from .find import Find
 from .args import args
 from .utils import utils
-from . import timeutils
 
 
 class Tab:
@@ -338,7 +337,7 @@ class Display:
             return
 
         max_minutes = args.old_tabs_minutes
-        max_date = timeutils.now() - (60 * max_minutes)
+        max_date = utils.now() - (60 * max_minutes)
 
         def action() -> None:
             for tab_id in ids:

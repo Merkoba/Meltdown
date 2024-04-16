@@ -11,7 +11,7 @@ from .session import session
 from .session import Conversation
 from .paths import paths
 from .files import files
-from . import timeutils
+from .utils import utils
 from . import emojis
 
 
@@ -157,7 +157,7 @@ class Logs:
 
         full_text = ""
         full_text += conversation.name + "\n"
-        full_text += timeutils.date() + "\n\n"
+        full_text += utils.date() + "\n\n"
         full_text += text
         return full_text
 

@@ -13,7 +13,6 @@ from .dialogs import Dialog
 from .output import Output
 from .utils import utils
 from . import tests
-from . import timeutils
 from . import emojis
 
 
@@ -25,7 +24,7 @@ class Conversation:
         self.last_modified = last_modified
 
     def add(self, context_dict: Dict[str, str]) -> None:
-        self.last_modified = timeutils.now()
+        self.last_modified = utils.now()
         self.items.append(context_dict)
         self.limit()
         session.save()
@@ -100,10 +99,10 @@ class Session:
 
     def add(self, name: str, conv_id: str = "") -> Conversation:
         if not conv_id:
-            conv_id = str(timeutils.now())
+            conv_id = str(utils.now())
 
         conversation = Conversation(conv_id, name)
-        conversation.last_modified = timeutils.now()
+        conversation.last_modified = utils.now()
         self.conversations[conv_id] = conversation
         return conversation
 

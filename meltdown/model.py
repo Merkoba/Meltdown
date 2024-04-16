@@ -19,7 +19,6 @@ from .session import session
 from .files import files
 from .tips import tips
 from .utils import utils
-from . import timeutils
 from . import emojis
 
 
@@ -159,7 +158,7 @@ class Model:
         self.lock.acquire()
         self.model_loading = True
 
-        now = timeutils.now()
+        now = utils.now()
         chat_format = config.format
 
         try:
@@ -197,7 +196,7 @@ class Model:
         self.update_icon()
 
         if args.model_feedback and (not args.quiet):
-            msg, now = timeutils.check_time("Model loaded", now)
+            msg, now = utils.check_time("Model loaded", now)
             display.print(msg)
 
         self.lock.release()
@@ -313,7 +312,7 @@ class Model:
         files.add_prepends(config.prepend)
         files.add_appends(config.append)
 
-        now = timeutils.now()
+        now = utils.now()
         self.stream_date = now
         stream = args.stream
         display.stream_started(tab_id)
@@ -392,7 +391,7 @@ class Model:
             if not len(buffer):
                 return
 
-            datenow = timeutils.now()
+            datenow = utils.now()
 
             if not force:
                 if (datenow - buffer_date) < args.delay:
@@ -538,7 +537,7 @@ class Model:
         if config.name_ai:
             content = content.replace(f"{args.keychar}name_ai", config.name_ai)
 
-        content = content.replace(f"{args.keychar}date", timeutils.today())
+        content = content.replace(f"{args.keychar}date", utils.today())
         return content
 
     def check_dot(self, text: str) -> str:

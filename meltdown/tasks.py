@@ -6,7 +6,6 @@ import threading
 from .args import args
 from .commands import commands
 from .utils import utils
-from . import timeutils
 
 
 class Task:
@@ -33,7 +32,7 @@ class Task:
             msg = f"Running a task every {self.seconds} seconds"
             utils.msg(msg)
 
-        timeutils.sleep(1)
+        utils.sleep(1)
 
         while True:
             if not self.first:
@@ -42,7 +41,7 @@ class Task:
 
                 self.first = True
 
-            timeutils.sleep(self.seconds)
+            utils.sleep(self.seconds)
             self.run()
 
 

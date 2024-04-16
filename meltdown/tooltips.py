@@ -6,7 +6,7 @@ from typing import Any, Optional, List
 # Modules
 from .app import app
 from .args import args
-from . import timeutils
+from .utils import utils
 
 
 def clean_string(text: str) -> str:
@@ -25,7 +25,7 @@ class ToolTip:
 
     @staticmethod
     def block() -> None:
-        ToolTip.block_date = timeutils.now()
+        ToolTip.block_date = utils.now()
 
     @staticmethod
     def get_tooltip(widget: tk.Widget) -> Optional["ToolTip"]:
@@ -75,7 +75,7 @@ class ToolTip:
 
         ToolTip.hide_all()
 
-        if (timeutils.now() - ToolTip.block_date) < 0.8:
+        if (utils.now() - ToolTip.block_date) < 0.8:
             return
 
         self.debouncer = self.widget.after(self.delay, lambda: self.show())

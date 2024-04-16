@@ -8,7 +8,6 @@ from .args import args
 from .app import app
 from .inputcontrol import inputcontrol
 from .utils import utils
-from . import timeutils
 
 
 def start() -> None:
@@ -43,4 +42,4 @@ def do_start() -> None:
 
                     inputcontrol.submit(text=text)
 
-        timeutils.sleep(args.listener_delay)
+        utils.sleep(args.listener_delay)

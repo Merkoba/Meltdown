@@ -13,7 +13,6 @@ from .args import args
 from .paths import paths
 from .utils import utils
 from .files import files
-from . import timeutils
 
 
 class QueueItem:
@@ -555,13 +554,13 @@ class Commands:
 
         item = self.commands[cmd]
         item["action"](new_argument)
-        item["date"] = timeutils.now()
+        item["date"] = utils.now()
         self.save_commands()
 
     def argument_replace(self, argument: str) -> str:
         from .display import display
 
-        argument = argument.replace(f"{args.keychar}now", str(timeutils.now_int()))
+        argument = argument.replace(f"{args.keychar}now", str(utils.now_int()))
         argument = argument.replace(f"{args.keychar}name", display.get_tab_name())
         return argument
 
