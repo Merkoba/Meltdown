@@ -94,6 +94,7 @@ class Commands:
         from .logs import logs
         from .widgets import widgets
         from .inputcontrol import inputcontrol
+        from .menumanager import more_menu, tab_menu
 
         force = "Use 'force' to force"
         file_name = "You can provide the file name"
@@ -466,6 +467,14 @@ class Commands:
                 "help": "Write the system prompt",
                 "action": lambda a=None: widgets.write_system_prompt(a),
                 "type": str,
+            },
+            "more": {
+                "help": "Show the more menu",
+                "action": lambda a=None: more_menu.show(),
+            },
+            "tabmenu": {
+                "help": "Show the tab menu",
+                "action": lambda a=None: tab_menu.show(),
             },
         }
 

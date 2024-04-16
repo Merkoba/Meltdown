@@ -17,7 +17,6 @@ from .entrybox import EntryBox
 from .inputcontrol import inputcontrol
 from .display import display
 from .commands import commands
-from .logs import logs
 from .framedata import FrameData
 from .tips import tips
 from .files import files
@@ -344,7 +343,7 @@ class Widgets:
         self.more_menu = widgetutils.make_button(
             frame_data_buttons,
             "More",
-            lambda e: display.show_more_menu(e),
+            lambda e: self.show_more_menu(e),
             right_padding=rpadding,
         )
 
@@ -384,8 +383,6 @@ class Widgets:
         self.frame_data_input = widgetutils.make_frame(bottom_padding=10)
         self.input_frame = self.frame_data_input.frame
 
-        self.main_menu = Menu()
-        self.model_menu = Menu()
         self.models_menu = Menu()
         self.gpt_menu = Menu()
         self.systems_menu = Menu()
@@ -428,8 +425,6 @@ class Widgets:
 
         self.fill()
         self.setup_details()
-        self.setup_main_menu()
-        self.setup_model_menu()
         self.setup_gpt_menu()
         self.setup_binds()
         self.setup_widgets()
@@ -552,37 +547,6 @@ class Widgets:
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
         inputcontrol.bind()
 
-    def setup_main_menu(self) -> None:
-        from .config import config
-        from .session import session
-
-        self.main_menu.add(
-            text="System Prompt", command=lambda: self.write_system_prompt()
-        )
-        self.main_menu.separator()
-        self.main_menu.add(text="Configs", command=lambda: config.menu())
-        self.main_menu.add(text="Sessions", command=lambda: session.menu())
-        self.main_menu.add(text="Logs", command=lambda: logs.menu())
-        self.main_menu.separator()
-        self.main_menu.add(text="Commands", command=lambda: commands.show_palette())
-        self.main_menu.separator()
-        self.main_menu.add(text="Compact", command=lambda: app.toggle_compact())
-        self.main_menu.add(text="Resize", command=lambda: app.resize())
-        self.main_menu.add(text="Theme", command=lambda: app.toggle_theme())
-        self.main_menu.add(text="About", command=lambda: app.show_about())
-        self.main_menu.separator()
-        self.main_menu.add(text="Exit", command=lambda: app.exit())
-
-    def setup_model_menu(self) -> None:
-        from .model import model
-
-        self.model_menu.add(
-            text="Recent Models", command=lambda: self.show_recent_models()
-        )
-        self.model_menu.add(text="Browse Models", command=lambda: model.browse_models())
-        self.model_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
-        self.model_menu.add(text="Set API Key", command=lambda: model.set_api_key())
-
     def setup_gpt_menu(self) -> None:
         from .model import model
 
@@ -673,18 +637,6 @@ class Widgets:
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
-
-    def show_main_menu(self, event: Optional[Any] = None) -> None:
-        if event:
-            self.main_menu.show(event)
-        else:
-            self.main_menu.show(widget=self.main_menu_button)
-
-    def show_model_menu(self, event: Optional[Any] = None) -> None:
-        if event:
-            self.model_menu.show(event)
-        else:
-            self.model_menu.show(widget=self.model_menu_button)
 
     def add_generic_menus(self) -> None:
         def show_menu(key: str, event: Any) -> None:
@@ -938,6 +890,18 @@ class Widgets:
                 return
 
             widget.move_to_end()
+
+    def show_main_menu(self, event: Any) -> None:
+        from .menumanager import main_menu
+        main_menu.show(event)
+
+    def show_model_menu(self, event: Any) -> None:
+        from .menumanager import model_menu
+        model_menu.show(event)
+
+    def show_more_menu(self, event: Any) -> None:
+        from .menumanager import more_menu
+        more_menu.show(event)
 
 
 widgets: Widgets = Widgets()
