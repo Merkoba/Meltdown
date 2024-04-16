@@ -2,6 +2,7 @@
 import re
 import time
 import logging
+import inspect
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
 from typing import Union, Optional, Tuple
@@ -36,15 +37,22 @@ class Utils:
     def error(self, error: Union[str, BaseException]) -> None:
         from .args import args
 
+        caller = inspect.stack()[1]
+        fname = Path(caller[1]).name
+        line = caller[2]
+        name = caller[3]
+
+        errmsg = f"{fname} | {name} | {line} | {error}"
+
         if args.log_errors:
             if not self.error_logger:
                 self.create_error_logger()
 
             if self.error_logger:
-                self.error_logger.error(error)
+                self.error_logger.error(errmsg)
 
         if args.errors:
-            print("Error:", error)
+            print("Error:", errmsg)
 
     def create_error_logger(self) -> None:
         from .paths import paths

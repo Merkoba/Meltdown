@@ -1,8 +1,10 @@
 # Standard
+import os
 import sys
 import json
 import subprocess
 import shutil
+import tempfile
 import platform
 import urllib.parse
 import tkinter as tk
@@ -652,5 +654,33 @@ class App:
         self.do_checks()
         app.root.after(self.checks_delay, self.start_checks)
 
+    def program(self, cmd: str, mode: str) -> None:
+        from .session import session
+
+        if not cmd:
+            return
+
+        conversation = session.get_current_conversation()
+
+        if not conversation:
+            return
+
+        if mode == "text":
+            text = conversation.to_text()
+            ext = "txt"
+        elif mode == "json":
+            text = conversation.to_json()
+            ext = "json"
+        else:
+            return
+
+        tmpdir = tempfile.gettempdir()
+        name = f"mlt_{utils.now_int()}.{ext}"
+        path = os.path.join(tmpdir, name)
+
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(text)
+
+        self.run_command([cmd, path])
 
 app = App()

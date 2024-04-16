@@ -479,6 +479,18 @@ class Commands:
                 "help": "Show the tabs menu",
                 "action": lambda a=None: tabs_menu.show(),
             },
+            "progtext": {
+                "help": "Open a program using the text",
+                "action": lambda a=None: app.program(a, mode="text"),
+                "type": str,
+                "arg_req": True,
+            },
+            "progjson": {
+                "help": "Open a program using the JSON",
+                "action": lambda a=None: app.program(a, mode="json"),
+                "type": str,
+                "arg_req": True,
+            },
         }
 
         for key in self.commands:

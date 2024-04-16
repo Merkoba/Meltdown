@@ -132,13 +132,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = conversation.to_dict()
-
-        if not text:
-            return ""
-
-        json_text = json.dumps(text, indent=4)
-        return json_text
+        return conversation.to_json()
 
     def to_text(self, all: bool = False, name: str = "") -> None:
         self.save("text", all, name)
@@ -150,7 +144,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = conversation.to_log()
+        text = conversation.to_text()
 
         if not text:
             return ""

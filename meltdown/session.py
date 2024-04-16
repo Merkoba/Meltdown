@@ -66,7 +66,10 @@ class Conversation:
             "items": self.items,
         }
 
-    def to_log(self) -> str:
+    def to_json(self) -> str:
+        return json.dumps(self.to_dict(), indent=4)
+
+    def to_text(self) -> str:
         log = ""
 
         for item in self.items:

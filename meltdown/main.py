@@ -70,11 +70,15 @@ def main() -> None:
         app.run()
     except KeyboardInterrupt:
         pass
+    except BaseException as e:
+        utils.error(e)
 
     try:
         model.unload()
     except KeyboardInterrupt:
         pass
+    except BaseException as e:
+        utils.error(e)
 
 
 if __name__ == "__main__":

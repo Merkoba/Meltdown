@@ -370,14 +370,14 @@ class Output(tk.Text):
             self.configure(state="disabled")
 
     def copy_all(self) -> None:
-        text = self.to_log()
+        text = self.to_text()
 
         if not text:
             return
 
         pyperclip.copy(text)
 
-    def to_log(self) -> str:
+    def to_text(self) -> str:
         from .session import session
 
         tab = self.display.get_tab(self.tab_id)
@@ -390,7 +390,7 @@ class Output(tk.Text):
         if not conversation:
             return ""
 
-        return conversation.to_log()
+        return conversation.to_text()
 
     def prompt(self, who: str) -> None:
         prompt = Output.get_prompt(who, mark=True)
