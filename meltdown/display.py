@@ -265,7 +265,7 @@ class Display:
     def show_tab_list(self) -> None:
         from .widgets import widgets
 
-        widget = widgets.more_menu
+        widget = widgets.more_menu_button
 
         if not widget:
             return
@@ -923,5 +923,6 @@ class Display:
                     return True
 
         return False
+
 
 display = Display()

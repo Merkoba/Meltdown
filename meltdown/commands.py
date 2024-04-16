@@ -332,7 +332,7 @@ class Commands:
                 "help": "Go to the tab on the right",
                 "action": lambda a=None: display.tab_right(),
             },
-            "menu": {
+            "main": {
                 "help": "Show the main menu",
                 "action": lambda a=None: widgets.show_main_menu(),
             },

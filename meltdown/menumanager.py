@@ -4,6 +4,7 @@ from typing import Any
 # Modules
 from .menus import Menu
 
+
 class MainMenu:
     def __init__(self) -> None:
         from .app import app
@@ -37,8 +38,9 @@ class MainMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "main_menu")
+            widget = getattr(widgets, "main_menu_button")
             self.menu.show(widget=widget)
+
 
 class ModelMenu:
     def __init__(self) -> None:
@@ -50,7 +52,7 @@ class ModelMenu:
             text="Recent Models", command=lambda: widgets.show_recent_models()
         )
         self.menu.add(text="Browse Models", command=lambda: model.browse_models())
-        self.menu.add(text="Use GPT Model", command=lambda: widgets.show_gpt_menu())
+        self.menu.add(text="Use GPT Model", command=lambda: gpt_menu.show())
         self.menu.add(text="Set API Key", command=lambda: model.set_api_key())
 
     def show(self, event: Any = None) -> None:
@@ -59,8 +61,29 @@ class ModelMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "model_menu")
+            widget = getattr(widgets, "model_menu_button")
             self.menu.show(widget=widget)
+
+
+class GPTMenu:
+    def __init__(self) -> None:
+        from .model import model
+        from .widgets import widgets
+
+        self.menu = Menu()
+
+        for gpt in model.gpts:
+            self.menu.add(text=gpt[1], command=lambda gpt=gpt: widgets.use_gpt(gpt[0]))
+
+    def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
+        if event:
+            self.menu.show(event)
+        else:
+            widget = getattr(widgets, "model_menu_button")
+            self.menu.show(widget=widget)
+
 
 class MoreMenu:
     def __init__(self) -> None:
@@ -88,8 +111,9 @@ class MoreMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "more_menu")
+            widget = getattr(widgets, "more_menu_button")
             self.menu.show(widget=widget)
+
 
 class TabMenu:
     def __init__(self) -> None:
@@ -107,11 +131,12 @@ class TabMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "more_menu")
+            widget = getattr(widgets, "more_menu_button")
             self.menu.show(widget=widget)
 
 
 main_menu = MainMenu()
 model_menu = ModelMenu()
+gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()

@@ -340,17 +340,17 @@ class Widgets:
         ToolTip(self.top_button, tips["top_button"])
 
         rpadding = right_padding if args.more_button else 0
-        self.more_menu = widgetutils.make_button(
+        self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
             "More",
             lambda e: self.show_more_menu(e),
             right_padding=rpadding,
         )
 
-        ToolTip(self.more_menu, tips["more_menu"])
+        ToolTip(self.more_menu_button, tips["more_menu"])
 
         if not args.more_button:
-            self.more_menu.grid_remove()
+            self.more_menu_button.grid_remove()
         else:
             frame_data_buttons.expand()
 
@@ -384,7 +384,6 @@ class Widgets:
         self.input_frame = self.frame_data_input.frame
 
         self.models_menu = Menu()
-        self.gpt_menu = Menu()
         self.systems_menu = Menu()
         self.prepends_menu = Menu()
         self.appends_menu = Menu()
@@ -425,7 +424,6 @@ class Widgets:
 
         self.fill()
         self.setup_details()
-        self.setup_gpt_menu()
         self.setup_binds()
         self.setup_widgets()
         self.add_generic_menus()
@@ -546,12 +544,6 @@ class Widgets:
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
         inputcontrol.bind()
-
-    def setup_gpt_menu(self) -> None:
-        from .model import model
-
-        for gpt in model.gpts:
-            self.gpt_menu.add(text=gpt[1], command=lambda gpt=gpt: self.use_gpt(gpt[0]))
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
         config.update(key)
@@ -829,9 +821,6 @@ class Widgets:
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
 
-    def show_gpt_menu(self) -> None:
-        self.gpt_menu.show(widget=self.main_menu_button)
-
     def model_icon_click(self) -> None:
         app.hide_all()
 
@@ -891,16 +880,19 @@ class Widgets:
 
             widget.move_to_end()
 
-    def show_main_menu(self, event: Any) -> None:
+    def show_main_menu(self, event: Any = None) -> None:
         from .menumanager import main_menu
+
         main_menu.show(event)
 
-    def show_model_menu(self, event: Any) -> None:
+    def show_model_menu(self, event: Any = None) -> None:
         from .menumanager import model_menu
+
         model_menu.show(event)
 
-    def show_more_menu(self, event: Any) -> None:
+    def show_more_menu(self, event: Any = None) -> None:
         from .menumanager import more_menu
+
         more_menu.show(event)
 
 
