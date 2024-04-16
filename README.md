@@ -197,7 +197,7 @@ ChatGPT is also supported.
 
 You must first set the API key for it to work.
 
-This can be done using the main menu: `Set API Key`.
+This can be done using the model menu: `Set API Key`.
 
 Then pick the model you want: `Use GPT Model`.
 

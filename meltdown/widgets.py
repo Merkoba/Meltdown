@@ -69,6 +69,14 @@ class Widgets:
         )
         ToolTip(self.load_button, tips["load_button"])
 
+        self.model_menu_button = widgetutils.make_button(
+            frame_data_model,
+            "Model",
+            lambda e: self.show_model_menu(e),
+        )
+
+        ToolTip(self.model_menu_button, tips["model_menu"])
+
         self.main_menu_button = widgetutils.make_button(
             frame_data_model,
             "Menu",
@@ -377,6 +385,7 @@ class Widgets:
         self.input_frame = self.frame_data_input.frame
 
         self.main_menu = Menu()
+        self.model_menu = Menu()
         self.models_menu = Menu()
         self.gpt_menu = Menu()
         self.systems_menu = Menu()
@@ -420,6 +429,7 @@ class Widgets:
         self.fill()
         self.setup_details()
         self.setup_main_menu()
+        self.setup_model_menu()
         self.setup_gpt_menu()
         self.setup_binds()
         self.setup_widgets()
@@ -534,7 +544,7 @@ class Widgets:
         setup_combobox("mlock")
 
     def setup_binds(self) -> None:
-        self.model.bind("<Button-3>", lambda e: self.show_model_menu(e))
+        self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
@@ -543,21 +553,12 @@ class Widgets:
         inputcontrol.bind()
 
     def setup_main_menu(self) -> None:
-        from .model import model
         from .config import config
         from .session import session
 
         self.main_menu.add(
             text="System Prompt", command=lambda: self.write_system_prompt()
         )
-        self.main_menu.separator()
-        self.main_menu.add(
-            text="Recent Models", command=lambda: self.show_recent_models()
-        )
-        self.main_menu.add(text="Browse Models", command=lambda: model.browse_models())
-        self.main_menu.separator()
-        self.main_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
-        self.main_menu.add(text="Set API Key", command=lambda: model.set_api_key())
         self.main_menu.separator()
         self.main_menu.add(text="Configs", command=lambda: config.menu())
         self.main_menu.add(text="Sessions", command=lambda: session.menu())
@@ -571,6 +572,16 @@ class Widgets:
         self.main_menu.add(text="About", command=lambda: app.show_about())
         self.main_menu.separator()
         self.main_menu.add(text="Exit", command=lambda: app.exit())
+
+    def setup_model_menu(self) -> None:
+        from .model import model
+
+        self.model_menu.add(
+            text="Recent Models", command=lambda: self.show_recent_models()
+        )
+        self.model_menu.add(text="Browse Models", command=lambda: model.browse_models())
+        self.model_menu.add(text="Use GPT Model", command=lambda: self.show_gpt_menu())
+        self.model_menu.add(text="Set API Key", command=lambda: model.set_api_key())
 
     def setup_gpt_menu(self) -> None:
         from .model import model
@@ -636,7 +647,7 @@ class Widgets:
             if widget:
                 menu.show(widget=widget)
 
-    def show_model_menu(
+    def show_model_context(
         self, event: Optional[Any] = None, only_items: bool = False
     ) -> None:
         from .model import model
@@ -668,6 +679,12 @@ class Widgets:
             self.main_menu.show(event)
         else:
             self.main_menu.show(widget=self.main_menu_button)
+
+    def show_model_menu(self, event: Optional[Any] = None) -> None:
+        if event:
+            self.model_menu.show(event)
+        else:
+            self.model_menu.show(widget=self.model_menu_button)
 
     def add_generic_menus(self) -> None:
         def show_menu(key: str, event: Any) -> None:
@@ -824,7 +841,7 @@ class Widgets:
         elif widget == self.append:
             self.show_append_menu()
         elif widget == self.model:
-            self.show_model_menu()
+            self.show_model_context()
 
     def details_left(self) -> None:
         self.details_canvas.xview_scroll(-self.canvas_scroll, "units")
@@ -867,7 +884,7 @@ class Widgets:
         app.hide_all()
 
     def show_recent_models(self) -> None:
-        self.show_model_menu(only_items=True)
+        self.show_model_context(only_items=True)
 
     def write_system_prompt(self, text: str = "", max: bool = False) -> None:
         from .textbox import TextBox
