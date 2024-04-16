@@ -835,12 +835,6 @@ class Widgets:
         def action(ans: Dict[str, Any]) -> None:
             config.set("system", ans["text"])
 
-        def reset(textbox: TextBox) -> None:
-            value = config.get_default("system")
-
-            if value:
-                textbox.set_text(value)
-
         def copy(textbox: TextBox) -> None:
             utils.copy(textbox.get_text())
 
@@ -850,12 +844,24 @@ class Widgets:
         def clear(textbox: TextBox) -> None:
             textbox.set_text("")
 
+        def reset(textbox: TextBox) -> None:
+            value = config.get_default("system")
+
+            if value:
+                textbox.set_text(value)
+
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
+            text = textbox.get_text()
 
             menu.add(text="Copy", command=lambda: copy(textbox))
             menu.add(text="Paste", command=lambda: paste(textbox))
-            menu.add(text="Clear", command=lambda: clear(textbox))
+
+            if text:
+                menu.add(text="Clear", command=lambda: clear(textbox))
+
+            if text != config.get_default("system"):
+                menu.add(text="Reset", command=lambda: reset(textbox))
 
             items = files.get_list("systems")[: args.max_list_items]
 
@@ -877,13 +883,10 @@ class Widgets:
             config.set("system", text)
             return
 
-        cmds = [("Reset", lambda tb: reset(tb))]
-
         Dialog.show_textbox(
             "System Prompt",
             lambda a: action(a),
             value=config.system,
-            commands=cmds,
             start_maximized=max,
             on_right_click=on_right_click,
         )
