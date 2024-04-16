@@ -35,7 +35,7 @@ class Files:
         else:
             config.load_file()
 
-    def load_list_file(self, key: str) -> None:
+    def load_list(self, key: str) -> None:
         path = getattr(paths, key)
 
         if not path.exists():
@@ -79,7 +79,7 @@ class Files:
             return
 
         if not getattr(self, f"{key}_loaded"):
-            self.load_list_file(key)
+            self.load_list(key)
 
         name = f"{key}_list"
         items = getattr(self, name)
@@ -116,7 +116,7 @@ class Files:
 
     def get_list(self, what: str) -> List[str]:
         if not getattr(self, f"{what}_loaded"):
-            self.load_list_file(what)
+            self.load_list(what)
 
         lst = getattr(self, f"{what}_list")
         return lst or []
