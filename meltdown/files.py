@@ -35,38 +35,9 @@ class Files:
         else:
             config.load_file()
 
-    def load_list(self, what: str) -> None:
-        if what == "models":
-            self.load_models_file()
-        elif what == "inputs":
-            self.load_inputs_file()
-        elif what == "systems":
-            self.load_systems_file()
-        elif what == "prepends":
-            self.load_prepends_file()
-        elif what == "appends":
-            self.load_appends_file()
-        else:
-            utils.error(f"Unrecognized list: {what}")
+    def load_list_file(self, key: str) -> None:
+        path = getattr(paths, key)
 
-        setattr(self, f"{what}_loaded", True)
-
-    def load_models_file(self) -> None:
-        self.load_list_file(paths.models, "models")
-
-    def load_inputs_file(self) -> None:
-        self.load_list_file(paths.inputs, "inputs")
-
-    def load_systems_file(self) -> None:
-        self.load_list_file(paths.systems, "systems")
-
-    def load_prepends_file(self) -> None:
-        self.load_list_file(paths.prepends, "prepends")
-
-    def load_appends_file(self) -> None:
-        self.load_list_file(paths.appends, "appends")
-
-    def load_list_file(self, path: Path, key: str) -> None:
         if not path.exists():
             path.parent.mkdir(parents=True, exist_ok=True)
             path.touch(exist_ok=True)
@@ -108,7 +79,7 @@ class Files:
             return
 
         if not getattr(self, f"{key}_loaded"):
-            self.load_list(key)
+            self.load_list_file(key)
 
         name = f"{key}_list"
         items = getattr(self, name)
@@ -145,7 +116,7 @@ class Files:
 
     def get_list(self, what: str) -> List[str]:
         if not getattr(self, f"{what}_loaded"):
-            self.load_list(what)
+            self.load_list_file(what)
 
         lst = getattr(self, f"{what}_list")
         return lst or []
