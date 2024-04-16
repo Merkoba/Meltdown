@@ -94,7 +94,7 @@ class Commands:
         from .logs import logs
         from .widgets import widgets
         from .inputcontrol import inputcontrol
-        from .menumanager import more_menu, tab_menu
+        from .menumanager import more_menu, tab_menu, tabs_menu, gpt_menu
 
         force = "Use 'force' to force"
         file_name = "You can provide the file name"
@@ -457,7 +457,7 @@ class Commands:
             },
             "gpt": {
                 "help": "Show the GPT menu",
-                "action": lambda a=None: widgets.show_gpt_menu(),
+                "action": lambda a=None: gpt_menu.show(),
             },
             "apikey": {
                 "help": "Set the OpenAI API key",
@@ -475,6 +475,10 @@ class Commands:
             "tabmenu": {
                 "help": "Show the tab menu",
                 "action": lambda a=None: tab_menu.show(),
+            },
+            "tabsmenu": {
+                "help": "Show the tabs menu",
+                "action": lambda a=None: tabs_menu.show(),
             },
         }
 

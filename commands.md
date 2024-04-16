@@ -312,7 +312,7 @@ Go to the tab on the right
 
 ---
 
->menu
+>main
 
 Show the main menu
 
@@ -357,6 +357,12 @@ Select all text
 >deselect
 
 Deselect all text
+
+---
+
+>model
+
+Show the model menu
 
 ---
 
@@ -483,3 +489,21 @@ Set the OpenAI API key
 >system
 
 Write the system prompt
+
+---
+
+>more
+
+Show the more menu
+
+---
+
+>tabmenu
+
+Show the tab menu
+
+---
+
+>tabsmenu
+
+Show the tabs menu

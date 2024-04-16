@@ -43,6 +43,7 @@ class Display:
     def __init__(self) -> None:
         self.current_tab: str = "none"
         self.tab_streaming: str = "none"
+        self.book: Book
 
     def make(self) -> None:
         from .widgets import widgets
@@ -51,11 +52,6 @@ class Display:
         self.book.on_change = lambda: self.on_tab_change()
 
         self.tabs: Dict[str, Tab] = {}
-
-        self.tab_menu = Menu()
-        self.tab_menu.add(text="Rename", command=lambda: self.rename_tab())
-        self.tab_menu.add(text="Move", command=lambda: self.move_tab())
-        self.tab_menu.add(text="Close", command=lambda: self.tab_menu_close())
         self.tab_list_menu = Menu()
 
         self.tab_number = 1
@@ -250,8 +246,11 @@ class Display:
             return None
 
     def on_tab_right_click(self, event: Any, tab_id: str) -> None:
+        from .menumanager import tab_menu
+
         self.tab_menu_id = tab_id
-        self.tab_menu.show(event)
+        self.tab_menu_event = event
+        tab_menu.show(event)
 
     def on_tab_middle_click(self, tab_id: str) -> None:
         self.close_tab(tab_id=tab_id, method="middle_click")

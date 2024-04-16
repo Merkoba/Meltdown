@@ -99,7 +99,7 @@ class MoreMenu:
         self.menu.add(text="View Text", command=lambda: display.view_text())
         self.menu.add(text="View JSON", command=lambda: display.view_json())
         self.menu.separator()
-        self.menu.add(text="Tabs", command=lambda: tab_menu.show())
+        self.menu.add(text="Tabs", command=lambda: tabs_menu.show())
         self.menu.separator()
         self.menu.add(text="Bigger Font", command=lambda: display.increase_font())
         self.menu.add(text="Smaller Font", command=lambda: display.decrease_font())
@@ -116,6 +116,33 @@ class MoreMenu:
 
 
 class TabMenu:
+    def __init__(self) -> None:
+        from .display import display
+
+        self.menu = Menu()
+        self.menu.add(text="Rename", command=lambda: display.rename_tab())
+        self.menu.add(text="Move", command=lambda: display.move_tab())
+        self.menu.add(text="Close", command=lambda: display.tab_menu_close())
+
+    def show(self, event: Any = None) -> None:
+        from .display import display
+
+        if event:
+            self.menu.show(event)
+        else:
+            page = display.book.current_page
+
+            if not page:
+                return
+
+            widget = page.tab.frame
+
+            if widget:
+                display.tab_menu_id = page.id
+                self.menu.show(widget=widget)
+
+
+class TabsMenu:
     def __init__(self) -> None:
         from .display import display
 
@@ -140,3 +167,4 @@ model_menu = ModelMenu()
 gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
+tabs_menu = TabsMenu()
