@@ -1,5 +1,4 @@
 # Standard
-import json
 from pathlib import Path
 
 # Modules
