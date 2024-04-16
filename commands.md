@@ -507,3 +507,15 @@ Show the tab menu
 >tabsmenu
 
 Show the tabs menu
+
+---
+
+>progtext
+
+Open a program using the text
+
+---
+
+>progjson
+
+Open a program using the JSON
