@@ -645,10 +645,16 @@ class App:
             if not self.loaded:
                 self.loaded = True
                 widgets.load_button.set_text("Unload")
+
+                self.update()
+                widgets.model.move_to_end()
         else:
             if self.loaded:
                 self.loaded = False
                 widgets.load_button.set_text("Load")
+
+                self.update()
+                widgets.model.move_to_end()
 
     def start_checks(self) -> None:
         self.do_checks()

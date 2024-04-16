@@ -629,6 +629,7 @@ class Widgets:
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
+        self.model.move_to_end()
 
     def add_generic_menus(self) -> None:
         def show_menu(key: str, event: Any) -> None:
