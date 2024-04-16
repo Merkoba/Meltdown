@@ -145,7 +145,6 @@ class InputControl:
     def submit(self, tab_id: str = "", text: str = "", scroll: bool = True) -> None:
         from .model import model
         from .display import display
-        from . import files
 
         if args.display:
             if not text:
