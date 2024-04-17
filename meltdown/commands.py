@@ -471,10 +471,6 @@ class Commands:
                 "help": "Show the tab menu",
                 "action": lambda a=None: menumanager.tab_menu.show(),
             },
-            "tabsmenu": {
-                "help": "Show the tabs menu",
-                "action": lambda a=None: menumanager.tabs_menu.show(),
-            },
             "fontmenu": {
                 "help": "Show the font menu",
                 "action": lambda a=None: menumanager.font_menu.show(),

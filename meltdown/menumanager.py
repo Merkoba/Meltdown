@@ -101,7 +101,6 @@ class MoreMenu:
         self.menu.add(text="View Text", command=lambda e: display.view_text())
         self.menu.add(text="View JSON", command=lambda e: display.view_json())
         self.menu.separator()
-        self.menu.add(text="Tabs", command=lambda e: tabs_menu.show())
         self.menu.add(text="Font", command=lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
@@ -116,17 +115,44 @@ class MoreMenu:
 
 class TabMenu:
     def __init__(self) -> None:
+        self.menu = Menu()
+
+    def single_mode(self) -> None:
         from .display import display
 
-        self.menu = Menu()
+        self.menu.clear()
+        self.menu.add(text="Rename", command=lambda e: display.rename_tab())
+        self.menu.add(text="Close", command=lambda e: display.tab_menu_close())
+
+    def multi_mode(self) -> None:
+        from .display import display
+
+        self.menu.clear()
+        self.menu.add(text="Tab List", command=lambda e: display.show_tab_list(e))
+        self.menu.separator()
+        self.menu.add(text="Tab Left", command=lambda e: display.tab_left())
+        self.menu.add(text="Tab Right", command=lambda e: display.tab_right())
+        self.menu.separator()
+        self.menu.add(text="First Tab", command=lambda e: display.select_first_tab())
+        self.menu.add(text="Last Tab", command=lambda e: display.select_last_tab())
+        self.menu.separator()
+        self.menu.add(text="Active Tab", command=lambda e: display.select_active_tab())
+        self.menu.separator()
         self.menu.add(text="Rename", command=lambda e: display.rename_tab())
         self.menu.add(text="Move", command=lambda e: display.move_tab())
+        self.menu.separator()
         self.menu.add(text="Close", command=lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None) -> None:
         from .display import display
 
+        if display.num_tabs() > 1:
+            self.multi_mode()
+        else:
+            self.single_mode()
+
         if event:
+            display.tab_menu_id = display.current_tab
             self.menu.show(event)
         else:
             page = display.book.current_page
@@ -139,31 +165,6 @@ class TabMenu:
             if widget:
                 display.tab_menu_id = page.id
                 self.menu.show(widget=widget)
-
-
-class TabsMenu:
-    def __init__(self) -> None:
-        from .display import display
-
-        self.menu = Menu()
-        self.menu.add(text="Tab List", command=lambda e: display.show_tab_list(e))
-        self.menu.separator()
-        self.menu.add(text="Tab Left", command=lambda e: display.tab_left())
-        self.menu.add(text="Tab Right", command=lambda e: display.tab_right())
-        self.menu.separator()
-        self.menu.add(text="First Tab", command=lambda e: display.select_first_tab())
-        self.menu.add(text="Last Tab", command=lambda e: display.select_last_tab())
-        self.menu.separator()
-        self.menu.add(text="Active Tab", command=lambda e: display.select_active_tab())
-
-    def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
-        if event:
-            self.menu.show(event)
-        else:
-            widget = getattr(widgets, "more_menu_button")
-            self.menu.show(widget=widget)
 
 
 class FontMenu:
@@ -190,5 +191,4 @@ model_menu = ModelMenu()
 gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
-tabs_menu = TabsMenu()
 font_menu = FontMenu()

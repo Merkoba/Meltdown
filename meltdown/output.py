@@ -557,7 +557,7 @@ class Output(tk.Text):
         return (markers, len(lines))
 
     def on_right_click(self, event: Any) -> None:
-        from .menumanager import tabs_menu
+        from .menumanager import tab_menu
 
         if not self.show_word_menu(event):
-            tabs_menu.show(event)
+            tab_menu.show(event)
