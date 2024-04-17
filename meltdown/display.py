@@ -249,7 +249,7 @@ class Display:
 
         self.tab_menu_id = tab_id
         self.tab_menu_event = event
-        tab_menu.show(event)
+        tab_menu.show(event, "right_click")
 
     def on_tab_middle_click(self, tab_id: str) -> None:
         self.close_tab(tab_id=tab_id, method="middle_click")
