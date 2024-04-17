@@ -657,7 +657,7 @@ class Commands:
                 text = cmd["help"]
                 tooltip = key
 
-            self.palette.add(text=text, command=command, tooltip=tooltip)
+            self.palette.add(text=text, command=lambda e: command(), tooltip=tooltip)
 
         keys = sorted(
             self.commands, key=lambda x: self.commands[x]["date"], reverse=True

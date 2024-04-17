@@ -13,10 +13,10 @@ from .utils import utils
 
 class Output(tk.Text):
     word_menu = Menu()
-    word_menu.add(text="Copy", command=lambda: Output.copy_words())
-    word_menu.add(text="Explain", command=lambda: Output.explain_words())
-    word_menu.add(text="Search", command=lambda: Output.search_words())
-    word_menu.add(text="New", command=lambda: Output.new_tab())
+    word_menu.add(text="Copy", command=lambda e: Output.copy_words())
+    word_menu.add(text="Explain", command=lambda e: Output.explain_words())
+    word_menu.add(text="Search", command=lambda e: Output.search_words())
+    word_menu.add(text="New", command=lambda e: Output.new_tab())
     current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
@@ -212,7 +212,7 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
-        self.bind("<ButtonRelease-3>", lambda e: self.show_word_menu(e))
+        self.bind("<ButtonRelease-3>", lambda e: self.on_right_click(e))
         self.bind("<Button-1>", lambda e: self.deselect_all())
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
@@ -462,7 +462,7 @@ class Output(tk.Text):
         except tk.TclError:
             return ""
 
-    def show_word_menu(self, event: Any) -> None:
+    def show_word_menu(self, event: Any) -> bool:
         current_index = self.index(tk.CURRENT)
         tags = self.tag_names(current_index)
         seltext = self.get_selected_text()
@@ -490,9 +490,10 @@ class Output(tk.Text):
         Output.words = Output.words.strip()
 
         if not Output.words:
-            return
+            return False
 
         Output.word_menu.show(event)
+        return True
 
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
@@ -554,3 +555,9 @@ class Output(tk.Text):
                 markers.append({"who": "ai", "line": i + 1})
 
         return (markers, len(lines))
+
+    def on_right_click(self, event: Any) -> None:
+        from .menumanager import tabs_menu
+
+        if not self.show_word_menu(event):
+            tabs_menu.show(event)

@@ -554,17 +554,17 @@ class Widgets:
             return
 
         if (isinstance(widget, EntryBox)) or (isinstance(widget, tk.Text)):
-            menu.add(text="Copy", command=lambda: self.copy(key))
-            menu.add(text="Paste", command=lambda: self.paste(key))
+            menu.add(text="Copy", command=lambda e: self.copy(key))
+            menu.add(text="Paste", command=lambda e: self.paste(key))
 
             if key in config.clearables:
-                menu.add(text="Clear", command=lambda: self.clear(key))
+                menu.add(text="Clear", command=lambda e: self.clear(key))
 
         value = config.get(key)
         defvalue = config.get_default(key)
 
         if (defvalue is not None) and (value != defvalue) and (defvalue != ""):
-            menu.add(text="Reset", command=lambda: config.reset_one(key))
+            menu.add(text="Reset", command=lambda e: config.reset_one(key))
 
     def show_menu_items(
         self,
@@ -594,7 +594,7 @@ class Widgets:
                 def proc(item: str = item) -> None:
                     command(item)
 
-                menu.add(text=item[: args.list_item_width], command=proc)
+                menu.add(text=item[: args.list_item_width], command=lambda e: proc())
 
         if event:
             menu.show(event)

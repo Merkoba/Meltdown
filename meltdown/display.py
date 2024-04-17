@@ -260,7 +260,7 @@ class Display:
     def on_tabs_double_click(self) -> None:
         self.make_tab()
 
-    def show_tab_list(self) -> None:
+    def show_tab_list(self, event: Any = None) -> None:
         from .widgets import widgets
 
         widget = widgets.more_menu_button
@@ -275,12 +275,12 @@ class Display:
                 return self.select_tab(page.id)
 
             name = f"{num}. {page.name}"
-            self.tab_list_menu.add(text=name, command=command)
+            self.tab_list_menu.add(text=name, command=lambda e: command())
 
         for i, page in enumerate(self.book.pages):
             add_item(page, i + 1)
 
-        self.tab_list_menu.show(widget=widget)
+        self.tab_list_menu.show(event, widget=widget)
 
     def rename_tab(self, current: bool = False) -> None:
         if current:

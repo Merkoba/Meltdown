@@ -124,7 +124,7 @@ class Menu:
             item = self.items[self.selected_index]
 
             if item.command:
-                item.command()
+                item.command(self.event)
 
         def cmd() -> None:
             self.hide()
@@ -370,6 +370,7 @@ class Menu:
         else:
             return
 
+        self.event = event
         self.make()
 
         if self.root:

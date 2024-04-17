@@ -16,21 +16,21 @@ class MainMenu:
 
         self.menu = Menu()
         self.menu.add(
-            text="System Prompt", command=lambda: widgets.write_system_prompt()
+            text="System Prompt", command=lambda e: widgets.write_system_prompt()
         )
         self.menu.separator()
-        self.menu.add(text="Configs", command=lambda: config.menu())
-        self.menu.add(text="Sessions", command=lambda: session.menu())
-        self.menu.add(text="Logs", command=lambda: logs.menu())
+        self.menu.add(text="Configs", command=lambda e: config.menu())
+        self.menu.add(text="Sessions", command=lambda e: session.menu())
+        self.menu.add(text="Logs", command=lambda e: logs.menu())
         self.menu.separator()
-        self.menu.add(text="Commands", command=lambda: commands.show_palette())
+        self.menu.add(text="Commands", command=lambda e: commands.show_palette())
         self.menu.separator()
-        self.menu.add(text="Compact", command=lambda: app.toggle_compact())
-        self.menu.add(text="Resize", command=lambda: app.resize())
-        self.menu.add(text="Theme", command=lambda: app.toggle_theme())
-        self.menu.add(text="About", command=lambda: app.show_about())
+        self.menu.add(text="Compact", command=lambda e: app.toggle_compact())
+        self.menu.add(text="Resize", command=lambda e: app.resize())
+        self.menu.add(text="Theme", command=lambda e: app.toggle_theme())
+        self.menu.add(text="About", command=lambda e: app.show_about())
         self.menu.separator()
-        self.menu.add(text="Exit", command=lambda: app.exit())
+        self.menu.add(text="Exit", command=lambda e: app.exit())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -49,11 +49,11 @@ class ModelMenu:
 
         self.menu = Menu()
         self.menu.add(
-            text="Recent Models", command=lambda: widgets.show_recent_models()
+            text="Recent Models", command=lambda e: widgets.show_recent_models()
         )
-        self.menu.add(text="Browse Models", command=lambda: model.browse_models())
-        self.menu.add(text="Use GPT Model", command=lambda: gpt_menu.show())
-        self.menu.add(text="Set API Key", command=lambda: model.set_api_key())
+        self.menu.add(text="Browse Models", command=lambda e: model.browse_models())
+        self.menu.add(text="Use GPT Model", command=lambda e: gpt_menu.show())
+        self.menu.add(text="Set API Key", command=lambda e: model.set_api_key())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -73,7 +73,9 @@ class GPTMenu:
         self.menu = Menu()
 
         for gpt in model.gpts:
-            self.menu.add(text=gpt[1], command=lambda gpt=gpt: widgets.use_gpt(gpt[0]))
+            self.menu.add(
+                text=gpt[1], command=lambda e, gpt=gpt: widgets.use_gpt(gpt[0])
+            )
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -90,17 +92,17 @@ class MoreMenu:
         from .display import display
 
         self.menu = Menu()
-        self.menu.add(text="Find", command=lambda: display.find())
-        self.menu.add(text="Find All", command=lambda: display.find_all())
+        self.menu.add(text="Find", command=lambda e: display.find())
+        self.menu.add(text="Find All", command=lambda e: display.find_all())
         self.menu.separator()
-        self.menu.add(text="Copy All", command=lambda: display.copy_output())
-        self.menu.add(text="Select All", command=lambda: display.select_output())
+        self.menu.add(text="Copy All", command=lambda e: display.copy_output())
+        self.menu.add(text="Select All", command=lambda e: display.select_output())
         self.menu.separator()
-        self.menu.add(text="View Text", command=lambda: display.view_text())
-        self.menu.add(text="View JSON", command=lambda: display.view_json())
+        self.menu.add(text="View Text", command=lambda e: display.view_text())
+        self.menu.add(text="View JSON", command=lambda e: display.view_json())
         self.menu.separator()
-        self.menu.add(text="Tabs", command=lambda: tabs_menu.show())
-        self.menu.add(text="Font", command=lambda: font_menu.show())
+        self.menu.add(text="Tabs", command=lambda e: tabs_menu.show())
+        self.menu.add(text="Font", command=lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -117,9 +119,9 @@ class TabMenu:
         from .display import display
 
         self.menu = Menu()
-        self.menu.add(text="Rename", command=lambda: display.rename_tab())
-        self.menu.add(text="Move", command=lambda: display.move_tab())
-        self.menu.add(text="Close", command=lambda: display.tab_menu_close())
+        self.menu.add(text="Rename", command=lambda e: display.rename_tab())
+        self.menu.add(text="Move", command=lambda e: display.move_tab())
+        self.menu.add(text="Close", command=lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None) -> None:
         from .display import display
@@ -144,10 +146,15 @@ class TabsMenu:
         from .display import display
 
         self.menu = Menu()
-        self.menu.add(text="Tab List", command=lambda: display.show_tab_list())
-        self.menu.add(text="First Tab", command=lambda: display.select_first_tab())
-        self.menu.add(text="Last Tab", command=lambda: display.select_last_tab())
-        self.menu.add(text="Active Tab", command=lambda: display.select_active_tab())
+        self.menu.add(text="Tab List", command=lambda e: display.show_tab_list(e))
+        self.menu.separator()
+        self.menu.add(text="Tab Left", command=lambda e: display.tab_left())
+        self.menu.add(text="Tab Right", command=lambda e: display.tab_right())
+        self.menu.separator()
+        self.menu.add(text="First Tab", command=lambda e: display.select_first_tab())
+        self.menu.add(text="Last Tab", command=lambda e: display.select_last_tab())
+        self.menu.separator()
+        self.menu.add(text="Active Tab", command=lambda e: display.select_active_tab())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -164,9 +171,9 @@ class FontMenu:
         from .display import display
 
         self.menu = Menu()
-        self.menu.add(text="Bigger Font", command=lambda: display.increase_font())
-        self.menu.add(text="Smaller Font", command=lambda: display.decrease_font())
-        self.menu.add(text="Reset Font", command=lambda: display.reset_font())
+        self.menu.add(text="Bigger Font", command=lambda e: display.increase_font())
+        self.menu.add(text="Smaller Font", command=lambda e: display.decrease_font())
+        self.menu.add(text="Reset Font", command=lambda e: display.reset_font())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
