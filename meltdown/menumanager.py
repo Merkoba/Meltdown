@@ -122,7 +122,6 @@ class TabMenu:
 
         self.menu.clear()
         self.menu.add(text="Rename", command=lambda e: display.rename_tab())
-        self.menu.add(text="Close", command=lambda e: display.tab_menu_close())
 
     def multi_mode(self) -> None:
         from .display import display
