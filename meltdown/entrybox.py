@@ -56,6 +56,9 @@ class EntryBox(ttk.Entry):
         else:
             return self.text_var.get()
 
+    def get_text(self) -> str:
+        return self.get()
+
     def change_value(self) -> str:
         return self.get()
 

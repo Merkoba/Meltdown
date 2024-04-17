@@ -10,6 +10,9 @@ from typing import Union, Optional, Tuple
 from pathlib import Path
 from datetime import datetime
 
+# Libraries
+from rich.console import Console
+
 # Modules
 from . import pyperclip
 
@@ -17,6 +20,7 @@ from . import pyperclip
 class Utils:
     def __init__(self) -> None:
         self.error_logger: Optional[logging.Logger] = None
+        self.console = Console()
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -54,6 +58,8 @@ class Utils:
 
             if self.error_logger:
                 self.error_logger.error(errmsg)
+
+        self.console.print_exception(show_locals=True)
 
         if args.errors:
             print("Error:", errmsg)

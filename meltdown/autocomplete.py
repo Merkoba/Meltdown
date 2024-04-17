@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import List
+from typing import List, Optional
 
 # Modules
 from .inputcontrol import inputcontrol
@@ -16,41 +16,50 @@ class AutoComplete:
         self.word = ""
         self.pos = 0
         self.missing = ""
+        self.widget = None
 
-    def check(self) -> None:
-        text = inputcontrol.input.get()
+    def check(self, widget: Optional[tk.Widget] = None) -> None:
+        if not widget:
+            self.widget = inputcontrol.input
+        else:
+            self.widget = widget
+
+        text = self.widget.get_text()
+
+        if "\n" in text:
+            text = text.split("\n")[-1]
 
         if not self.matches:
             self.get_matches(text)
 
-        def check() -> None:
+        def do_check() -> None:
             if self.index >= len(self.matches):
                 self.index = 0
 
             match = self.matches[self.index]
-            input_text = inputcontrol.input.get()[1:]
+            input_text = text[1:]
 
             if match == input_text:
                 if len(self.matches) == 1:
                     return
 
                 self.index += 1
-                check()
+                do_check()
                 return
 
             missing = match[len(self.clean(self.word)) :]
 
             if self.match:
-                inputcontrol.input.delete_text(self.pos, len(self.missing))
+                self.widget.delete_text(self.pos, len(self.missing))
 
-            inputcontrol.input.insert_text(missing, index=self.pos)
+            self.widget.insert_text(missing, index=self.pos)
 
             self.index += 1
             self.match = match
             self.missing = missing
 
         if self.matches:
-            check()
+            do_check()
 
     def reset(self) -> None:
         self.matches = []
@@ -66,7 +75,12 @@ class AutoComplete:
             return
 
         self.reset()
-        caret_pos = inputcontrol.input.index(tk.INSERT)
+        caret_pos = self.widget.index(tk.INSERT)
+        full_pos = caret_pos
+
+        if "." in caret_pos:
+            caret_pos = int(caret_pos.split(".")[1])
+
         text_to_caret = text[:caret_pos]
         last_space_pos = text_to_caret.rfind(" ")
         word = text_to_caret[last_space_pos + 1 : caret_pos]
@@ -75,7 +89,10 @@ class AutoComplete:
             return
 
         self.word = word
-        self.pos = inputcontrol.input.index(caret_pos)
+        self.pos = self.widget.index(full_pos)
+
+        if "." in self.pos:
+            self.pos = int(self.pos.split(".")[1])
 
         if commands.is_command(word):
             word = self.clean(word)

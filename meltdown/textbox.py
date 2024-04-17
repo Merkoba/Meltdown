@@ -8,6 +8,8 @@ from .app import app
 from .args import args
 from .dialogs import Dialog
 from .keyboard import keyboard
+from .autocomplete import autocomplete
+from .utils import utils
 
 
 class TextBox(tk.Text):
@@ -49,12 +51,7 @@ class TextBox(tk.Text):
         self.cmd_cancel = cmd_cancel
         self.on_right_click = on_right_click
         self.text = text
-
-        self.bind("<Control-v>", lambda e: self.paste())
-        self.bind("<Return>", lambda e: self.on_enter())
-        self.bind("<Escape>", lambda e: self.dialog.hide())
-        self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
-        self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
+        self.set_binds()
 
         self.grid(row=0, column=0, padx=3, pady=3, sticky="nsew")
 
@@ -65,6 +62,22 @@ class TextBox(tk.Text):
                 scrollbar_x.grid(row=1, column=0, sticky="ew")
 
         self.changes = Changes(self)
+
+    def set_binds(self) -> None:
+        self.bind("<Tab>", lambda e: self.on_tab())
+        self.bind("<Control-v>", lambda e: self.paste())
+        self.bind("<Return>", lambda e: self.on_enter())
+        self.bind("<Escape>", lambda e: self.dialog.hide())
+        self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
+        self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
+
+    def on_tab(self) -> str:
+        try:
+            autocomplete.check(widget=self)
+        except BaseException as e:
+            utils.error(e)
+
+        return "break"
 
     def right_click(self, event: Any) -> None:
         if not self.on_right_click:
@@ -155,3 +168,29 @@ class TextBox(tk.Text):
 
         if on_change:
             self.changes.on_change()
+
+    def delete_text(self, start: int, chars: int) -> None:
+        insert_index = self.index(tk.INSERT)
+        line = int(insert_index.split(".")[0])
+        s_start = f"{line}.{start}"
+        s_end = f"{line}.{start + chars}"
+        self.delete(s_start, s_end)
+
+    def insert_text(self, text: str, index: int = -1) -> None:
+        insert_index = self.index(tk.INSERT)
+        end_index = self.index(tk.END)
+
+        if index < 0:
+            index = insert_index
+
+        at_end = end_index == index
+        line = int(insert_index.split(".")[0])
+        s_index = f"{line}.{index}"
+        self.insert(s_index, text)
+
+        if at_end:
+            self.move_to_end()
+
+    def move_to_end(self) -> None:
+        self.icursor(tk.END)
+        self.xview_moveto(1.0)

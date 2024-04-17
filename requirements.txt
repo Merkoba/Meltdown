@@ -5,3 +5,4 @@ openai ~= 1.13.3
 Pygments ~= 2.17.2
 pillow ~= 10.3.0
 prompt-toolkit ~= 3.0.43
+rich ~= 13.7.1

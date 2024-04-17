@@ -102,6 +102,9 @@ class Keyboard:
         elif is_shift:
             self.shift = True
 
+        if event.keysym != "Tab":
+            autocomplete.reset()
+
         if self.blocked():
             return
 
@@ -142,9 +145,6 @@ class Keyboard:
                 inputcontrol.input.insert_text(event.char)
             elif event.keysym in syms:
                 inputcontrol.focus()
-        else:
-            if event.keysym != "Tab":
-                autocomplete.reset()
 
     def on_key_release(self, event: Any) -> None:
         if event.keysym == "Control_L" or event.keysym == "Control_R":
