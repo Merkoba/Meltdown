@@ -672,7 +672,7 @@ class App:
                 cmd = args.progjson or args.program
 
         if not cmd:
-            display.print("No program specified")
+            display.print("No program specified.")
             return
 
         conversation = session.get_current_conversation()
