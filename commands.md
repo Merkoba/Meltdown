@@ -474,12 +474,6 @@ Go to the tab that is currently streaming
 
 ---
 
->gpt
-
-Show the GPT menu
-
----
-
 >apikey
 
 Set the OpenAI API key
@@ -507,6 +501,18 @@ Show the tab menu
 >tabsmenu
 
 Show the tabs menu
+
+---
+
+>fontmenu
+
+Show the font menu
+
+---
+
+>gpt
+
+Show the GPT menu
 
 ---
 
