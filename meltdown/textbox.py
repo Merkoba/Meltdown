@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Dict, Optional, Callable, List, Tuple
+from typing import Any, Dict, Optional, Callable
 
 # Modules
 from .app import app
@@ -17,7 +17,6 @@ class TextBox(tk.Text):
         text: str,
         cmd_ok: Callable[..., Any],
         cmd_cancel: Optional[Callable[..., Any]] = None,
-        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
         on_right_click: Optional[Callable[..., Any]] = None,
     ) -> None:
         from .changes import Changes
@@ -48,7 +47,6 @@ class TextBox(tk.Text):
         self.dialog = dialog
         self.cmd_ok = cmd_ok
         self.cmd_cancel = cmd_cancel
-        self.commands = commands
         self.on_right_click = on_right_click
         self.text = text
 
@@ -109,7 +107,6 @@ class TextBox(tk.Text):
                 self.cmd_ok,
                 self.cmd_cancel,
                 value=value,
-                commands=self.commands,
             )
         else:
             self.maximize()

@@ -143,7 +143,6 @@ class Dialog:
         cmd_ok: Callable[..., Any],
         cmd_cancel: Optional[Callable[..., Any]] = None,
         value: str = "",
-        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
         start_maximized: bool = False,
         on_right_click: Optional[Callable[..., Any]] = None,
     ) -> None:
@@ -159,7 +158,6 @@ class Dialog:
             text=text,
             cmd_ok=cmd_ok,
             cmd_cancel=cmd_cancel,
-            commands=commands,
             on_right_click=on_right_click,
         )
 
@@ -168,10 +166,6 @@ class Dialog:
                 func(textbox)
 
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
-
-        if commands:
-            for cmd in commands:
-                make_cmd(cmd)
 
         dialog.make_button("Max", textbox.max)
         dialog.make_button("Cancel", textbox.cancel)
