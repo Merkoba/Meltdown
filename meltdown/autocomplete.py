@@ -1,11 +1,19 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
-from typing import List, Optional
+from typing import List, Union
 
 # Modules
 from .inputcontrol import inputcontrol
 from .commands import commands
 from .args import args
+from .utils import utils
+from .entrybox import EntryBox
+from .textbox import TextBox
+
+
+InputWidget = Union[EntryBox, TextBox, None]
 
 
 class AutoComplete:
@@ -16,13 +24,22 @@ class AutoComplete:
         self.word = ""
         self.pos = 0
         self.missing = ""
-        self.widget = None
+        self.widget: InputWidget
 
-    def check(self, widget: Optional[tk.Widget] = None) -> None:
+    def check(self, widget: InputWidget = None) -> None:
+        try:
+            self.do_check(widget=widget)
+        except BaseException as e:
+            utils.error(e)
+
+    def do_check(self, widget: InputWidget = None) -> None:
         if not widget:
             self.widget = inputcontrol.input
         else:
             self.widget = widget
+
+        if not self.widget:
+            return
 
         text = self.widget.get_text()
 
@@ -32,7 +49,10 @@ class AutoComplete:
         if not self.matches:
             self.get_matches(text)
 
-        def do_check() -> None:
+        def action() -> None:
+            if not self.widget:
+                return
+
             if self.index >= len(self.matches):
                 self.index = 0
 
@@ -44,7 +64,7 @@ class AutoComplete:
                     return
 
                 self.index += 1
-                do_check()
+                action()
                 return
 
             missing = match[len(self.clean(self.word)) :]
@@ -59,7 +79,7 @@ class AutoComplete:
             self.missing = missing
 
         if self.matches:
-            do_check()
+            action()
 
     def reset(self) -> None:
         self.matches = []
@@ -74,25 +94,24 @@ class AutoComplete:
         if not text:
             return
 
+        if not self.widget:
+            return
+
         self.reset()
-        caret_pos = self.widget.index(tk.INSERT)
-        full_pos = caret_pos
+        s_caret_pos = str(self.widget.index(tk.INSERT))
 
-        if "." in caret_pos:
-            caret_pos = int(caret_pos.split(".")[1])
+        if "." in s_caret_pos:
+            s_caret_pos = s_caret_pos.split(".")[1]
 
-        text_to_caret = text[:caret_pos]
+        self.pos = int(s_caret_pos)
+        text_to_caret = text[: self.pos]
         last_space_pos = text_to_caret.rfind(" ")
-        word = text_to_caret[last_space_pos + 1 : caret_pos]
+        word = text_to_caret[last_space_pos + 1 : self.pos]
 
         if not word:
             return
 
         self.word = word
-        self.pos = self.widget.index(full_pos)
-
-        if "." in self.pos:
-            self.pos = int(self.pos.split(".")[1])
 
         if commands.is_command(word):
             word = self.clean(word)

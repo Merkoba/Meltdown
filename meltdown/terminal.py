@@ -3,11 +3,11 @@ import threading
 from typing import Any, Generator, List
 
 # Libraries
-from prompt_toolkit import PromptSession  # type:ignore
-from prompt_toolkit.history import InMemoryHistory  # type:ignore
-from prompt_toolkit.completion import Completer, Completion  # type:ignore
-from prompt_toolkit.document import Document  # type:ignore
-from prompt_toolkit.key_binding import KeyBindings  # type:ignore
+from prompt_toolkit import PromptSession
+from prompt_toolkit.history import InMemoryHistory
+from prompt_toolkit.completion import Completer, Completion
+from prompt_toolkit.document import Document
+from prompt_toolkit.key_binding import KeyBindings
 
 # Modules
 from .args import args
@@ -21,7 +21,7 @@ completer: Completer
 words: List[str] = []
 
 
-class SlashCompleter(Completer):  # type:ignore
+class SlashCompleter(Completer):
     def get_completions(
         self, document: Document, event: Any
     ) -> Generator[Completion, None, None]:
@@ -57,7 +57,7 @@ def start() -> None:
 def do_start() -> None:
     kb = KeyBindings()
 
-    @kb.add("c-v")  # type:ignore
+    @kb.add("c-v")
     def _(event: Any) -> None:
         clipboard_data = utils.get_paste()
 
@@ -73,7 +73,7 @@ def do_start() -> None:
 
     completer = SlashCompleter()
 
-    session = PromptSession(
+    session: PromptSession[Any] = PromptSession(
         history=history,
         completer=completer,
         reserve_space_for_menu=args.terminal_height,

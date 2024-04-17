@@ -11,7 +11,7 @@ from pathlib import Path
 from datetime import datetime
 
 # Libraries
-from rich.console import Console
+from rich.console import Console  # type: ignore
 
 # Modules
 from . import pyperclip
@@ -114,7 +114,7 @@ class Utils:
         return current_time.strftime("%A {0} of %B %Y").format(suffix)
 
     def copy(self, text: str) -> None:
-        pyperclip.copy(text)
+        pyperclip.copy(text)  # type: ignore
 
     def paste(self, widget: tk.Widget) -> None:
         from .entrybox import EntryBox
@@ -130,7 +130,7 @@ class Utils:
         widget.set_text(text)
 
     def get_paste(self) -> str:
-        return pyperclip.paste().strip()
+        return pyperclip.paste().strip()  # type: ignore
 
 
 utils = Utils()

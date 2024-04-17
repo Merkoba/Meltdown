@@ -8,8 +8,6 @@ from .app import app
 from .args import args
 from .dialogs import Dialog
 from .keyboard import keyboard
-from .autocomplete import autocomplete
-from .utils import utils
 
 
 class TextBox(tk.Text):
@@ -72,11 +70,9 @@ class TextBox(tk.Text):
         self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
 
     def on_tab(self) -> str:
-        try:
-            autocomplete.check(widget=self)
-        except BaseException as e:
-            utils.error(e)
+        from .autocomplete import autocomplete
 
+        autocomplete.check(widget=self)
         return "break"
 
     def right_click(self, event: Any) -> None:
@@ -178,19 +174,10 @@ class TextBox(tk.Text):
 
     def insert_text(self, text: str, index: int = -1) -> None:
         insert_index = self.index(tk.INSERT)
-        end_index = self.index(tk.END)
 
         if index < 0:
-            index = insert_index
+            index = int(insert_index.split(".")[1])
 
-        at_end = end_index == index
         line = int(insert_index.split(".")[0])
         s_index = f"{line}.{index}"
         self.insert(s_index, text)
-
-        if at_end:
-            self.move_to_end()
-
-    def move_to_end(self) -> None:
-        self.icursor(tk.END)
-        self.xview_moveto(1.0)

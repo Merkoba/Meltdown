@@ -2,10 +2,10 @@
 from typing import Union, List
 
 # Modules
-from .entrybox import EntryBox
-from .textbox import TextBox
 from .app import app
 from .config import config
+from .entrybox import EntryBox
+from .textbox import TextBox
 
 
 class Changes:

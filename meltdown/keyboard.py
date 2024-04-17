@@ -4,14 +4,11 @@ from typing import Any, Callable, Optional, Dict, List
 
 # Modules
 from .app import app
-from .widgets import widgets
 from .inputcontrol import inputcontrol
 from .display import display
 from .model import model
 from .commands import commands
-from .entrybox import EntryBox
 from .tooltips import ToolTip
-from .autocomplete import autocomplete
 from .args import args
 from .utils import utils
 
@@ -74,7 +71,9 @@ class Keyboard:
         return False
 
     def on_key_press(self, event: Any) -> None:
+        from .entrybox import EntryBox
         from .textbox import TextBox
+        from .autocomplete import autocomplete
 
         is_ctrl = event.keysym == "Control_L" or event.keysym == "Control_R"
         is_shift = event.keysym == "Shift_L" or event.keysym == "Shift_R"
@@ -261,6 +260,8 @@ class Keyboard:
             add(key.upper())
 
     def setup_input(self) -> None:
+        from .autocomplete import autocomplete
+
         self.register(
             "<Tab>",
             lambda: autocomplete.check(),
@@ -270,6 +271,8 @@ class Keyboard:
         )
 
     def setup_globals(self) -> None:
+        from .widgets import widgets
+
         def on_enter() -> None:
             if widgets.find_focused():
                 display.find_next()
