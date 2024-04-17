@@ -769,3 +769,19 @@ Print error messages on caught exceptions.
 >no-log-errors
 
 Don't save error messages to the error log file.
+
+---
+
+>progtext
+
+The program to use by default when using the /progtext command
+
+Else you need to specify the program in the command.
+
+---
+
+>progjson
+
+The program to use by default when using the /progjson command
+
+Else you need to specify the program in the command.

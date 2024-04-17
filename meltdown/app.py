@@ -661,9 +661,18 @@ class App:
         app.root.after(self.checks_delay, self.start_checks)
 
     def program(self, cmd: str, mode: str) -> None:
+        from .args import args
         from .session import session
+        from .display import display
 
         if not cmd:
+            if mode == "text":
+                cmd = args.progtext
+            elif mode == "json":
+                cmd = args.progjson
+
+        if not cmd:
+            display.print("No program specified")
             return
 
         conversation = session.get_current_conversation()

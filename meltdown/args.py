@@ -120,6 +120,8 @@ class Args:
         self.markdown_urls = True
         self.errors = False
         self.log_errors = True
+        self.progtext = ""
+        self.progjson = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -451,6 +453,14 @@ class Args:
             "font_diff": {"type": int, "help": "Add or subtract this from font sizes"},
             "task_manager": {"type": str, "help": "Which task manager to use"},
             "terminal": {"type": str, "help": "Which terminal to use"},
+            "progtext": {
+                "type": str,
+                "help": "Use this program as default for the progtext command",
+            },
+            "progjson": {
+                "type": str,
+                "help": "Use this program as default for the progjson command",
+            },
         }
 
     def parse(self) -> None:
@@ -574,6 +584,8 @@ class Args:
             "on_log_text",
             "on_log_json",
             "errors",
+            "progtext",
+            "progjson",
         ]
 
         for n_item in normals:
