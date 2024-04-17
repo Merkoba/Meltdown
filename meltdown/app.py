@@ -667,9 +667,9 @@ class App:
 
         if not cmd:
             if mode == "text":
-                cmd = args.progtext
+                cmd = args.progtext or args.program
             elif mode == "json":
-                cmd = args.progjson
+                cmd = args.progjson or args.program
 
         if not cmd:
             display.print("No program specified")

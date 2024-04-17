@@ -774,7 +774,7 @@ Don't save error messages to the error log file.
 
 >progtext
 
-The program to use by default when using the /progtext command
+The program to use by default when using the `progtext` command.
 
 Else you need to specify the program in the command.
 
@@ -782,6 +782,14 @@ Else you need to specify the program in the command.
 
 >progjson
 
-The program to use by default when using the /progjson command
+The program to use by default when using the `progjson` command.
 
 Else you need to specify the program in the command.
+
+---
+
+>program
+
+The program to use by default when using the `progtext` or `progjson` commands.
+
+Else you need to specify the program in the commands.

@@ -122,6 +122,7 @@ class Args:
         self.log_errors = True
         self.progtext = ""
         self.progjson = ""
+        self.program = ""
 
     class Internal:
         title = app.manifest["title"]
@@ -461,6 +462,10 @@ class Args:
                 "type": str,
                 "help": "Use this program as default for the progjson command",
             },
+            "program": {
+                "type": str,
+                "help": "Use this program as default for the progtext and progjson commands",
+            },
         }
 
     def parse(self) -> None:
@@ -586,6 +591,7 @@ class Args:
             "errors",
             "progtext",
             "progjson",
+            "program",
         ]
 
         for n_item in normals:
