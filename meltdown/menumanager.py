@@ -148,9 +148,7 @@ class TabMenu:
     def show(self, event: Any = None, mode: str = "normal") -> None:
         from .display import display
 
-        if mode == "right_click":
-            menu = self.menu_single
-        elif display.num_tabs() > 1:
+        if display.num_tabs() > 1:
             menu = self.menu_multi
         else:
             menu = self.menu_single
