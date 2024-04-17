@@ -24,7 +24,7 @@ For example `/saveconfig @now` might save `1712344148.json`.
 
 ---
 
-@name
+>@name
 
 This is replaced with the name of the current tab in a file-friendly format.
 
