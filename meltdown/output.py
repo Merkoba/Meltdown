@@ -409,12 +409,15 @@ class Output(tk.Text):
             if len(self.get_text()):
                 last_chars = self.last_characters(2).strip(" ")
 
-                if last_chars == "\n\n":
-                    pass
-                elif last_chars == "\n":
-                    left = "\n"
-                else:
-                    left = "\n\n"
+                if last_chars:
+                    if last_chars == "\n\n":
+                        pass
+                    elif last_chars == "\n":
+                        left = "\n"
+                    elif last_chars[-1] == "\n":
+                        left = "\n"
+                    else:
+                        left = "\n\n"
 
         text = left + text
         self.insert_text(text)
