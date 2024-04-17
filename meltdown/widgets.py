@@ -854,14 +854,14 @@ class Widgets:
             menu = Menu()
             text = textbox.get_text()
 
-            menu.add(text="Copy", command=lambda: copy(textbox))
-            menu.add(text="Paste", command=lambda: paste(textbox))
+            menu.add(text="Copy", command=lambda e: copy(textbox))
+            menu.add(text="Paste", command=lambda e: paste(textbox))
 
             if text:
-                menu.add(text="Clear", command=lambda: clear(textbox))
+                menu.add(text="Clear", command=lambda e: clear(textbox))
 
             if text != config.get_default("system"):
-                menu.add(text="Reset", command=lambda: reset(textbox))
+                menu.add(text="Reset", command=lambda e: reset(textbox))
 
             items = files.get_list("systems")[: args.max_list_items]
 
@@ -875,7 +875,7 @@ class Widgets:
                     textbox.set_text(item)
                     textbox.dialog.focus()
 
-                menu.add(text=item[: args.list_item_width], command=proc)
+                menu.add(text=item[: args.list_item_width], command=lambda e: proc())
 
             menu.show(event)
 
