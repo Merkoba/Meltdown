@@ -602,10 +602,10 @@ class Display:
 
     def set_font_size(self, size: int) -> None:
         if size < self.min_font_size:
-            return
+            size = self.min_font_size
 
         if size > self.max_font_size:
-            return
+            size = self.max_font_size
 
         self.apply_font_size(size)
 
