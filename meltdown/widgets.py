@@ -589,12 +589,17 @@ class Widgets:
             if not only_items:
                 menu.add(text="--- Recent ---", disabled=True)
 
-            for item in items:
-
-                def proc(item: str = item) -> None:
+            def add_item(item: str) -> None:
+                def proc() -> None:
                     command(item)
 
-                menu.add(text=item[: args.list_item_width], command=lambda e: proc())
+                menu.add(
+                    text=item[: args.list_item_width],
+                    command=lambda e: proc(),
+                )
+
+            for item in items:
+                add_item(item)
 
         if event:
             menu.show(event)
@@ -872,14 +877,16 @@ class Widgets:
             if items:
                 menu.add(text="--- Recent ---", disabled=True)
 
-            for item in items:
-
-                def proc(item: str = item) -> None:
+            def add_item(item: str) -> None:
+                def proc() -> None:
                     config.set("system", item)
                     textbox.set_text(item)
                     textbox.dialog.focus()
 
                 menu.add(text=item[: args.list_item_width], command=lambda e: proc())
+
+            for item in items:
+                add_item(item)
 
             menu.show(event)
 
