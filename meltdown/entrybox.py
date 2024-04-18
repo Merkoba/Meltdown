@@ -31,6 +31,8 @@ class EntryBox(ttk.Entry):
         self.bind("<FocusIn>", lambda e: self.on_focus_change("in"))
         self.bind("<FocusOut>", lambda e: self.on_focus_change("out"))
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
+        self.bind("<Left>", lambda e: self.on_left())
+        self.bind("<Right>", lambda e: self.on_right())
 
     def bind_mousewheel(self) -> None:
         self.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
@@ -171,3 +173,17 @@ class EntryBox(ttk.Entry):
 
     def on_write(self, *args: Any) -> None:
         self.check_placeholder()
+
+    def on_left(self) -> str:
+        if self.selection_present():
+            self.icursor(tk.SEL_FIRST)
+            self.selection_clear()
+
+        return "break"
+
+    def on_right(self) -> str:
+        if self.selection_present():
+            self.icursor(tk.SEL_LAST)
+            self.selection_clear()
+
+        return "break"

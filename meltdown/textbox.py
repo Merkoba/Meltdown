@@ -62,12 +62,14 @@ class TextBox(tk.Text):
         self.changes = Changes(self)
 
     def set_binds(self) -> None:
+        self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
         self.bind("<Tab>", lambda e: self.on_tab())
         self.bind("<Control-v>", lambda e: self.paste())
         self.bind("<Return>", lambda e: self.on_enter())
         self.bind("<Escape>", lambda e: self.dialog.hide())
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
-        self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
+        self.bind("<Left>", lambda e: self.on_left())
+        self.bind("<Right>", lambda e: self.on_right())
 
     def on_tab(self) -> str:
         from .autocomplete import autocomplete
@@ -181,3 +183,17 @@ class TextBox(tk.Text):
         line = int(insert_index.split(".")[0])
         s_index = f"{line}.{index}"
         self.insert(s_index, text)
+
+    def on_left(self) -> str:
+        if self.tag_ranges("sel"):
+            self.mark_set(tk.INSERT, tk.SEL_FIRST)
+            self.tag_remove(tk.SEL, "1.0", tk.END)
+
+        return "break"
+
+    def on_right(self) -> str:
+        if self.tag_ranges("sel"):
+            self.mark_set(tk.INSERT, tk.SEL_LAST)
+            self.tag_remove(tk.SEL, "1.0", tk.END)
+
+        return "break"
