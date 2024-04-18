@@ -40,6 +40,7 @@ class Conversation:
         self.items = self.items[-config.max_log :]
 
     def clear(self) -> None:
+        self.last_modified = utils.now()
         self.items = []
         session.save()
 
