@@ -132,5 +132,13 @@ class Utils:
     def get_paste(self) -> str:
         return pyperclip.paste().strip()  # type: ignore
 
+    def extract_number(self, text: str) -> int:
+        s_num = "".join(filter(str.isdigit, text))
+
+        if not s_num:
+            return -1
+
+        return int(s_num)
+
 
 utils = Utils()

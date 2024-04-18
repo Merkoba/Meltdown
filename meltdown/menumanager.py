@@ -3,6 +3,7 @@ from typing import Any
 
 # Modules
 from .menus import Menu
+from .utils import utils
 
 
 class MainMenu:
@@ -179,10 +180,11 @@ class FontMenu:
                 display.reset_font()
                 return
 
-            if not text.isdigit():
+            num = utils.extract_number(text)
+
+            if num <= 0:
                 return
 
-            num = int(text)
             display.set_font_size(num)
 
         def set_font() -> None:
