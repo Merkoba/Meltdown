@@ -102,10 +102,7 @@ class Display:
         page.content.grid_rowconfigure(0, weight=0)
         page.content.grid_rowconfigure(1, weight=1)
         page.content.grid_rowconfigure(2, weight=0)
-
         self.tab_number += 1
-        app.show_intro(tab_id)
-        tab.modified = False
 
         if save:
             session.save()
@@ -194,20 +191,42 @@ class Display:
 
     def on_tab_change(self) -> None:
         from .inputcontrol import inputcontrol
-        from .session import session
 
         self.update_current_tab()
         tab = self.get_current_tab()
 
         if tab and not tab.loaded:
-            conversation = session.get_conversation(tab.conversation_id)
-
-            if conversation:
-                conversation.print()
-                tab.loaded = True
+            self.load_tab(tab.tab_id)
 
         inputcontrol.focus()
         self.check_scroll_buttons()
+
+    def show_intro(self, tab_id: str = "") -> None:
+        if not args.intro:
+            return
+
+        text = "\n".join(app.intro)
+        display.print(text, tab_id=tab_id)
+
+    def load_tab(self, tab_id: str) -> None:
+        from .session import session
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        if conversation.items:
+            conversation.print()
+        else:
+            self.show_intro(tab_id)
+
+        tab.loaded = True
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
@@ -474,7 +493,7 @@ class Display:
 
             tab.output.clear_text()
             session.clear(tab.conversation_id)
-            app.show_intro(tab_id)
+            self.show_intro(tab_id)
             tab.modified = False
 
         if force:
@@ -853,8 +872,7 @@ class Display:
             tab.output.auto_scroll = False
 
             if not tab.loaded:
-                conversation.print()
-                tab.loaded = True
+                self.load_tab(tab.tab_id)
                 app.update()
 
             start_index = tab.output.find_text(query)

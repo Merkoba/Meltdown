@@ -205,8 +205,10 @@ class Session:
             conversation = Conversation(
                 item["id"], item["name"], item.get("last_modified", 0.0)
             )
+
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
+
             display.make_tab(
                 conversation.name, conversation.id, select_tab=False, save=False
             )
