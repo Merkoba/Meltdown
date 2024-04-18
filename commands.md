@@ -434,7 +434,7 @@ Decrease the font size
 
 >font
 
-Set an exact font size
+Set the font size
 
 ---
 
