@@ -59,10 +59,8 @@ class Utils:
             if self.error_logger:
                 self.error_logger.error(errmsg)
 
-        self.console.print_exception(show_locals=True)
-
         if args.errors:
-            print("Error:", errmsg)
+            self.console.print_exception(show_locals=True)
 
     def create_error_logger(self) -> None:
         from .paths import paths
