@@ -498,12 +498,6 @@ Show the tab menu
 
 ---
 
->tabsmenu
-
-Show the tabs menu
-
----
-
 >fontmenu
 
 Show the font menu
