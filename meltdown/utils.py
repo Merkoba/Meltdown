@@ -142,5 +142,8 @@ class Utils:
 
         return int(s_num)
 
+    def padnum(self, num: int) -> str:
+        return str(num).zfill(3)
+
 
 utils = Utils()
