@@ -125,6 +125,10 @@ def start() -> None:
     if not args.system:
         return
 
+    if not args.quiet:
+        msg = f"Updating system monitors every {args.system_delay} seconds"
+        utils.msg(msg)
+
     thread = threading.Thread(target=lambda: check())
     thread.daemon = True
     thread.start()
