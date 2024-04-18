@@ -178,12 +178,10 @@ class EntryBox(ttk.Entry):
         if self.selection_present():
             self.icursor(tk.SEL_FIRST)
             self.selection_clear()
-
-        return "break"
+            return "break"
 
     def on_right(self) -> str:
         if self.selection_present():
             self.icursor(tk.SEL_LAST)
             self.selection_clear()
-
-        return "break"
+            return "break"

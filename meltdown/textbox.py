@@ -188,12 +188,10 @@ class TextBox(tk.Text):
         if self.tag_ranges("sel"):
             self.mark_set(tk.INSERT, tk.SEL_FIRST)
             self.tag_remove(tk.SEL, "1.0", tk.END)
-
-        return "break"
+            return "break"
 
     def on_right(self) -> str:
         if self.tag_ranges("sel"):
             self.mark_set(tk.INSERT, tk.SEL_LAST)
             self.tag_remove(tk.SEL, "1.0", tk.END)
-
-        return "break"
+            return "break"
