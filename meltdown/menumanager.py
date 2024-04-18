@@ -3,7 +3,6 @@ from typing import Any
 
 # Modules
 from .menus import Menu
-from .utils import utils
 
 
 class MainMenu:
@@ -176,16 +175,7 @@ class FontMenu:
         from .dialogs import Dialog
 
         def action(text: str) -> None:
-            if text in ["default", "reset"]:
-                display.reset_font()
-                return
-
-            num = utils.extract_number(text)
-
-            if num <= 0:
-                return
-
-            display.set_font_size(num)
+            display.set_font_size(text)
 
         def set_font() -> None:
             Dialog.show_input("Set Font Size", lambda a: action(a))

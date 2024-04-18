@@ -423,9 +423,9 @@ class Commands:
                 "action": lambda a=None: display.decrease_font(),
             },
             "font": {
-                "help": "Set an exact font size",
+                "help": "Set the font size",
                 "action": lambda a=None: display.set_font_size(a),
-                "type": int,
+                "type": str,
                 "arg_req": True,
             },
             "resetfont": {
@@ -559,6 +559,11 @@ class Commands:
                 new_argument = True if argument.lower() == "force" else False
             elif argtype == str:
                 new_argument = self.argument_replace(argument)
+            elif argtype == int:
+                new_argument = utils.extract_number(argument)
+
+                if new_argument is None:
+                    return
             else:
                 new_argument = argtype(argument)
 

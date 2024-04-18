@@ -600,7 +600,16 @@ class Display:
 
         config.set("output_font_size", size)
 
-    def set_font_size(self, size: int) -> None:
+    def set_font_size(self, text: str) -> None:
+        if text in ["default", "reset"]:
+            display.reset_font()
+            return
+
+        size = utils.extract_number(text)
+
+        if size is None:
+            return
+
         if size < self.min_font_size:
             size = self.min_font_size
 
