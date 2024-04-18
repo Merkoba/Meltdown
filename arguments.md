@@ -668,9 +668,9 @@ Don't show feedback when the model is loading.
 
 ---
 
->time
+>no-time
 
-Show the loading time at startup.
+Don't show the loading time at startup.
 
 ---
 

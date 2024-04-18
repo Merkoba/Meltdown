@@ -101,7 +101,7 @@ class Args:
         self.more_button = True
         self.model_icon = True
         self.model_feedback = True
-        self.time = False
+        self.time = True
         self.verbose = False
         self.emojis = True
         self.write_button = True
@@ -262,6 +262,10 @@ class Args:
                 "action": "store_false",
                 "help": "Don't log error messages to a file",
             },
+            "no_time": {
+                "action": "store_false",
+                "help": "Don't show the loading time at startup",
+            },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
                 "action": "store_true",
@@ -309,10 +313,6 @@ class Args:
             "tabs_always": {
                 "action": "store_true",
                 "help": "Always show the tab bar even if only one tab",
-            },
-            "time": {
-                "action": "store_true",
-                "help": "Show the loading time at startup",
             },
             "verbose": {
                 "action": "store_true",
@@ -514,6 +514,7 @@ class Args:
             ("no_markdown_highlights", "markdown_highlights"),
             ("no_markdown_urls", "markdown_urls"),
             ("no_log_errors", "log_errors"),
+            ("no_time", "time"),
         ]
 
         for r_item in other_name:
@@ -570,7 +571,6 @@ class Args:
             "autorun",
             "terminal_height",
             "terminal_vi",
-            "time",
             "verbose",
             "markdown",
             "listener",
