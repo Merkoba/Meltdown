@@ -96,6 +96,10 @@ class Utils:
         time_now = datetime.now()
         return time_now.strftime("%Y-%m-%d %H:%M:%S")
 
+    def to_date(self, timestamp: float) -> str:
+        dt_object = datetime.fromtimestamp(timestamp)
+        return dt_object.strftime("%Y-%m-%d %H:%M:%S")
+
     def sleep(self, seconds: float) -> None:
         time.sleep(seconds)
 

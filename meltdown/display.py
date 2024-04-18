@@ -222,6 +222,9 @@ class Display:
             return
 
         if conversation.items:
+            nice_date = utils.to_date(conversation.created)
+            header = f"Created: {nice_date}"
+            self.print(header, tab_id=tab_id)
             conversation.print()
         else:
             self.show_intro(tab_id)

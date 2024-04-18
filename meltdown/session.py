@@ -17,11 +17,18 @@ from . import emojis
 
 
 class Conversation:
-    def __init__(self, _id: str, name: str, last_modified: float = 0.0) -> None:
+    def __init__(
+        self, _id: str, name: str, created: float = 0.0, last_modified: float = 0.0
+    ) -> None:
         self.id = _id
         self.name = name
         self.items: List[Dict[str, str]] = []
         self.last_modified = last_modified
+
+        if created == 0.0:
+            self.created = utils.now()
+        else:
+            self.created = created
 
     def add(self, context_dict: Dict[str, str]) -> None:
         self.last_modified = utils.now()
@@ -62,6 +69,7 @@ class Conversation:
         return {
             "id": self.id,
             "name": self.name,
+            "created": self.created,
             "last_modified": self.last_modified,
             "items": self.items,
         }
@@ -203,7 +211,10 @@ class Session:
 
         for item in items:
             conversation = Conversation(
-                item["id"], item["name"], item.get("last_modified", 0.0)
+                item["id"],
+                name=item["name"],
+                created=item.get("created", 0.0),
+                last_modified=item.get("last_modified", 0.0),
             )
 
             conversation.items = item["items"]
