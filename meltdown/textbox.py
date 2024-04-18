@@ -188,20 +188,24 @@ class TextBox(tk.Text):
         from .keyboard import keyboard
 
         if keyboard.ctrl or keyboard.shift:
-            return
+            return ""
 
         if self.tag_ranges("sel"):
             self.mark_set(tk.INSERT, tk.SEL_FIRST)
             self.tag_remove(tk.SEL, "1.0", tk.END)
             return "break"
 
+        return ""
+
     def on_right(self) -> str:
         from .keyboard import keyboard
 
         if keyboard.ctrl or keyboard.shift:
-            return
+            return ""
 
         if self.tag_ranges("sel"):
             self.mark_set(tk.INSERT, tk.SEL_LAST)
             self.tag_remove(tk.SEL, "1.0", tk.END)
             return "break"
+
+        return ""

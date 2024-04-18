@@ -176,22 +176,36 @@ class EntryBox(ttk.Entry):
 
     def on_left(self) -> str:
         from .keyboard import keyboard
+        from .display import display
 
-        if keyboard.ctrl or keyboard.shift:
-            return
+        if keyboard.shift:
+            return ""
+
+        if keyboard.ctrl:
+            display.tab_left()
+            return "break"
 
         if self.selection_present():
             self.icursor(tk.SEL_FIRST)
             self.selection_clear()
             return "break"
 
+        return ""
+
     def on_right(self) -> str:
         from .keyboard import keyboard
+        from .display import display
 
-        if keyboard.ctrl or keyboard.shift:
-            return
+        if keyboard.shift:
+            return ""
+
+        if keyboard.ctrl:
+            display.tab_right()
+            return "break"
 
         if self.selection_present():
             self.icursor(tk.SEL_LAST)
             self.selection_clear()
             return "break"
+
+        return ""
