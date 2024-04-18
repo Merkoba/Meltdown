@@ -50,7 +50,7 @@ def main() -> None:
     app.start_checks()
     keyboard.setup()
     commands.setup()
-    system.start()
+    system.check()
     tasks.start_all()
     app.setup()
     inputcontrol.setup()

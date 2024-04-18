@@ -3,7 +3,7 @@ import os
 import json
 import subprocess
 import threading
-from typing import Optional, Dict
+from typing import Optional
 
 # Libraries
 import psutil  # type: ignore
@@ -15,171 +15,147 @@ from .app import app
 from .utils import utils
 
 
-Info = Dict[str, Optional[int]]
+class System:
+    def __init__(self) -> None:
+        self.cpu: Optional[int] = None
+        self.ram: Optional[int] = None
+        self.temp: Optional[int] = None
+        self.gpu_use: Optional[int] = None
+        self.gpu_ram: Optional[int] = None
+        self.gpu_temp: Optional[int] = None
 
+    def get_psutil_info(self) -> None:
+        if args.system_cpu:
+            self.cpu = int(psutil.cpu_percent(interval=1))
+            widgets.cpu.set(utils.padnum(self.cpu) + "%")
 
-def get_psutil_info() -> Info:
-    info: Info = {}
+        if args.system_ram:
+            self.ram = int(psutil.virtual_memory().percent)
+            widgets.ram.set(utils.padnum(self.ram) + "%")
 
-    cpu: Optional[int] = None
-    ram: Optional[int] = None
-    temp: Optional[int] = None
+        if args.system_temp:
+            temps = psutil.sensors_temperatures()
+            ktemps = temps.get("k10temp")
 
-    if args.system_cpu:
-        cpu = int(psutil.cpu_percent(interval=1))
-        widgets.cpu.set(utils.padnum(cpu) + "%")
+            if ktemps:
+                for ktemp in ktemps:
+                    # This one works with AMD Ryzen
+                    if ktemp.label == "Tctl":
+                        self.temp = int(ktemp.current)
+                        break
 
-    if args.system_ram:
-        ram = int(psutil.virtual_memory().percent)
-        widgets.ram.set(utils.padnum(ram) + "%")
+            if self.temp:
+                widgets.temp.set(utils.padnum(self.temp) + "°")
+            else:
+                widgets.temp.set("N/A")
 
-    if args.system_temp:
-        temps = psutil.sensors_temperatures()
-        ktemps = temps.get("k10temp")
+    def get_gpu_info(self) -> None:
+        # This works with AMD GPUs | rocm-smi must be installed
+        if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
+            rocm_smi = "/opt/rocm/bin/rocm-smi"
 
-        if ktemps:
-            for ktemp in ktemps:
-                # This one works with AMD Ryzen
-                if ktemp.label == "Tctl":
-                    temp = int(ktemp.current)
-                    break
+            if not os.path.isfile(rocm_smi):
+                return
 
-        if temp:
-            widgets.temp.set(utils.padnum(temp) + "°")
-        else:
-            widgets.temp.set("N/A")
+            cmd = [
+                rocm_smi,
+                "--showtemp",
+                "--showuse",
+                "--showmemuse",
+                "--json",
+            ]
 
-    info["cpu"] = cpu
-    info["ram"] = ram
-    info["temp"] = temp
+            result = None
 
-    return info
+            try:
+                result = subprocess.run(cmd, capture_output=True, text=True)
+            except BaseException as e:
+                utils.error(e)
+                return
 
+            if result and result.returncode == 0:
+                ans = json.loads(result.stdout)
 
-def get_gpu_info() -> Info:
-    info: Info = {}
+                if "card0" in ans:
+                    gpu_data = ans["card0"]
 
-    gpu_use: Optional[int] = None
-    gpu_ram: Optional[int] = None
-    gpu_temp: Optional[int] = None
+                    if args.system_gpu:
+                        self.gpu_use = int(float(gpu_data.get("GPU use (%)", 0)))
+                        widgets.gpu.set(utils.padnum(int(self.gpu_use)) + "%")
 
-    # This works with AMD GPUs | rocm-smi must be installed
-    if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
-        rocm_smi = "/opt/rocm/bin/rocm-smi"
+                    if args.system_gpu_ram:
+                        self.gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
+                        widgets.gpu_ram.set(utils.padnum(int(self.gpu_ram)) + "%")
 
-        if not os.path.isfile(rocm_smi):
-            return info
+                    if args.system_gpu_temp:
+                        self.gpu_temp = int(
+                            float(gpu_data.get("Temperature (Sensor junction) (C)", 0))
+                        )
 
-        cmd = [
-            rocm_smi,
-            "--showtemp",
-            "--showuse",
-            "--showmemuse",
-            "--json",
-        ]
+                        widgets.gpu_temp.set(utils.padnum(int(self.gpu_temp)) + "°C")
 
-        result = None
+    def get_info(self) -> None:
+        self.get_psutil_info()
+        self.get_gpu_info()
 
-        try:
-            result = subprocess.run(cmd, capture_output=True, text=True)
-        except BaseException as e:
-            utils.error(e)
-            return info
+        if args.system_colors:
+            self.set_colors()
 
-        if result and result.returncode == 0:
-            ans = json.loads(result.stdout)
+    def set_colors(self) -> None:
+        if self.cpu is not None:
+            self.check_color("cpu", self.cpu)
 
-            if "card0" in ans:
-                gpu_data = ans["card0"]
+        if self.ram is not None:
+            self.check_color("ram", self.ram)
 
-                if args.system_gpu:
-                    gpu_use = int(float(gpu_data.get("GPU use (%)", 0)))
-                    widgets.gpu.set(utils.padnum(int(gpu_use)) + "%")
+        if self.temp is not None:
+            self.check_color("temp", self.temp)
 
-                if args.system_gpu_ram:
-                    gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
-                    widgets.gpu_ram.set(utils.padnum(int(gpu_ram)) + "%")
+        if self.gpu_use is not None:
+            self.check_color("gpu", self.gpu_use)
 
-                if args.system_gpu_temp:
-                    gpu_temp = int(
-                        float(gpu_data.get("Temperature (Sensor junction) (C)", 0))
-                    )
-                    widgets.gpu_temp.set(utils.padnum(int(gpu_temp)) + "°C")
+        if self.gpu_ram is not None:
+            self.check_color("gpu_ram", self.gpu_ram)
 
-    info["gpu_use"] = gpu_use
-    info["gpu_ram"] = gpu_ram
-    info["gpu_temp"] = gpu_temp
+        if self.gpu_temp is not None:
+            self.check_color("gpu_temp", self.gpu_temp)
 
-    return info
+    def check_color(self, name: str, var: int) -> None:
+        if getattr(args, f"system_{name}"):
+            label = getattr(widgets, f"{name}_text")
 
+            if var >= args.system_threshold:
+                label.configure(foreground=app.theme.system_heavy)
+            else:
+                label.configure(foreground=app.theme.system_normal)
 
-def get_info() -> None:
-    cpu_info = get_psutil_info()
-    gpu_info = get_gpu_info()
+    def start_loop(self) -> None:
+        utils.sleep(1)
 
-    if args.system_colors:
-        set_colors(cpu_info, gpu_info)
+        while True:
+            if app.system_frame_visible:
+                try:
+                    self.get_info()
+                except BaseException as e:
+                    utils.error(e)
 
+            utils.sleep(args.system_delay)
 
-def set_colors(cpu_info: Info, gpu_info: Info) -> None:
-    cpu = cpu_info.get("cpu")
-    ram = cpu_info.get("ram")
-    temp = cpu_info.get("temp")
+    def start(self) -> None:
+        if not args.quiet:
+            msg = f"Updating system monitors every {args.system_delay} seconds"
+            utils.msg(msg)
 
-    gpu_use = gpu_info.get("gpu_use")
-    gpu_ram = gpu_info.get("gpu_ram")
-    gpu_temp = gpu_info.get("gpu_temp")
-
-    if cpu is not None:
-        check_color("cpu", cpu)
-
-    if ram is not None:
-        check_color("ram", ram)
-
-    if temp is not None:
-        check_color("temp", temp)
-
-    if gpu_use is not None:
-        check_color("gpu", gpu_use)
-
-    if gpu_ram is not None:
-        check_color("gpu_ram", gpu_ram)
-
-    if gpu_temp is not None:
-        check_color("gpu_temp", gpu_temp)
-
-
-def check_color(name: str, var: int) -> None:
-    if getattr(args, f"system_{name}"):
-        label = getattr(widgets, f"{name}_text")
-
-        if var >= args.system_threshold:
-            label.configure(foreground=app.theme.system_heavy)
-        else:
-            label.configure(foreground=app.theme.system_normal)
+        thread = threading.Thread(target=lambda: self.start_loop())
+        thread.daemon = True
+        thread.start()
 
 
 def check() -> None:
-    utils.sleep(1)
-
-    while True:
-        if app.system_frame_visible:
-            try:
-                get_info()
-            except BaseException as e:
-                utils.error(e)
-
-        utils.sleep(args.system_delay)
-
-
-def start() -> None:
     if not args.system:
         return
 
-    if not args.quiet:
-        msg = f"Updating system monitors every {args.system_delay} seconds"
-        utils.msg(msg)
+    system.start()
 
-    thread = threading.Thread(target=lambda: check())
-    thread.daemon = True
-    thread.start()
+
+system = System()
