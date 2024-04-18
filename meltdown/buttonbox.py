@@ -33,15 +33,17 @@ class ButtonBox(tk.Frame):
         if command:
             self.set_bind(when, command)
 
+    def prepare_text(self, text: str) -> str:
+        if (not self.custom_width) and (len(text) < 4):
+            space = "  "
+            text = f"{space}{text}{space}"
+
+        return text
+
     def make(self) -> None:
         padx = app.theme.button_padx
         pady = 2 if self.bigger else 0
-
-        if (not self.custom_width) and (len(self.text) < 4):
-            space = "  "
-            text = f"{space}{self.text}{space}"
-        else:
-            text = self.text
+        text = self.prepare_text(self.text)
 
         self.label = tk.Label(
             self, text=text, font=app.theme.font("button"), padx=padx, pady=pady
@@ -130,7 +132,12 @@ class ButtonBox(tk.Frame):
         self.style = style
 
     def set_text(self, text: str) -> None:
+        self.text = text.strip()
+        text = self.prepare_text(self.text)
         self.label.configure(text=text)
+
+    def get_text(self) -> str:
+        return self.text
 
     def set_font(self, font: str) -> None:
         self.label.configure(font=font)

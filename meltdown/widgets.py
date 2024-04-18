@@ -812,13 +812,17 @@ class Widgets:
 
         if scroll_pos_left == 0:
             self.details_button_left.set_style("disabled")
+            self.details_button_left.set_text("-")
         else:
             self.details_button_left.set_style("alt")
+            self.details_button_left.set_text("<")
 
         if scroll_pos_right == 1.0:
             self.details_button_right.set_style("disabled")
+            self.details_button_right.set_text("-")
         else:
             self.details_button_right.set_style("alt")
+            self.details_button_right.set_text(">")
 
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
