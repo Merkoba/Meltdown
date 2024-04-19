@@ -286,7 +286,7 @@ class Commands:
                 "action": lambda a=None: display.view_json(),
             },
             "move": {
-                "help": "Move tab to start or end",
+                "help": "Move tab to the start or end",
                 "action": lambda a=None: display.move_tab(True),
             },
             "tab": {
@@ -331,6 +331,14 @@ class Commands:
                 "help": "Go to the tab on the right",
                 "action": lambda a=None: display.tab_right(),
             },
+            "moveleft": {
+                "help": "Move the tab to the left",
+                "action": lambda a=None: display.move_tab_left(),
+            },
+            "moveright": {
+                "help": "Move the tab to the right",
+                "action": lambda a=None: display.move_tab_right(),
+            },
             "main": {
                 "help": "Show the main menu",
                 "action": lambda a=None: widgets.show_main_menu(),
@@ -352,7 +360,7 @@ class Commands:
                 "type": str,
             },
             "loadconfig": {
-                "help": "Load a session",
+                "help": "Load a config",
                 "extra": file_name,
                 "action": lambda a=None: config.load_state(name=a),
                 "type": str,
@@ -405,6 +413,7 @@ class Commands:
                 "action": lambda a=None: None,
                 "type": int,
                 "arg_req": True,
+                "skip_palette": True,
             },
             "hide": {
                 "help": "Close dialogs and menus",
@@ -644,6 +653,9 @@ class Commands:
 
         def add_item(key: str) -> None:
             cmd = self.commands[key]
+
+            if cmd.get("skip_palette"):
+                return
 
             def command() -> None:
                 if cmd.get("arg_req"):
