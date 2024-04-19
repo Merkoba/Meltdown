@@ -124,7 +124,7 @@ class Args:
         self.progjson = ""
         self.program = ""
         self.gestures = True
-        self.gesture_threshold = 60
+        self.gesture_threshold = 50
 
     class Internal:
         title = app.manifest["title"]

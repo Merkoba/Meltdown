@@ -579,6 +579,7 @@ class Output(tk.Text):
     def on_right_click(self, event: Any) -> None:
         from .menumanager import tab_menu
         from .display import display
+        from .keyboard import keyboard
 
         if args.gestures:
             x_diff = abs(self.drag_x - self.drag_x_start)
@@ -587,9 +588,15 @@ class Output(tk.Text):
             if x_diff > y_diff:
                 if x_diff >= args.gesture_threshold:
                     if self.drag_x < self.drag_x_start:
-                        display.tab_left()
+                        if keyboard.shift:
+                            display.select_first_tab()
+                        else:
+                            display.tab_left()
                     else:
-                        display.tab_right()
+                        if keyboard.shift:
+                            display.select_last_tab()
+                        else:
+                            display.tab_right()
 
                     return
             elif y_diff >= args.gesture_threshold:
