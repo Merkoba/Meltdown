@@ -1,4 +1,5 @@
 # Standard
+import re
 import random
 import string
 import tkinter as tk
@@ -863,6 +864,20 @@ class Display:
         if not query:
             return
 
+        query_lower = query.lower()
+        is_regex = query.startswith("/") and query.endswith("/")
+
+        if is_regex:
+            regex_query = query[1:-1]
+
+        def find(value: str) -> bool:
+            if is_regex and re.search(regex_query, value):
+                return True
+            elif query_lower in value.lower():
+                return True
+
+            return False
+
         for tab in self.tabs.values():
             conversation = session.get_conversation(tab.conversation_id)
 
@@ -876,7 +891,7 @@ class Display:
                 for key in item:
                     value = item[key]
 
-                    if query in value:
+                    if find(value):
                         if not tab.loaded:
                             self.load_tab(tab.tab_id)
                             app.update()

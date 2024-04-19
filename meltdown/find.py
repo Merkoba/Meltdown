@@ -124,6 +124,7 @@ class Find:
         match = self.widget.search(
             full_query, start_pos, tk.END, regexp=True, nocase=nocase
         )
+
         output = self.get_output()
         assert output is not None
 
