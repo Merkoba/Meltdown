@@ -872,18 +872,18 @@ class Display:
             if conversation.id == "ignore":
                 continue
 
-            tab.output.auto_scroll = False
+            for item in conversation.items:
+                for key in item:
+                    value = item[key]
 
-            if not tab.loaded:
-                self.load_tab(tab.tab_id)
-                app.update()
+                    if query in value:
+                        if not tab.loaded:
+                            self.load_tab(tab.tab_id)
+                            app.update()
 
-            start_index = tab.output.find_text(query)
-
-            if start_index:
-                self.select_tab(tab.tab_id)
-                tab.find.show(query=query)
-                break
+                        self.select_tab(tab.tab_id)
+                        tab.find.show(query=query)
+                        break
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
