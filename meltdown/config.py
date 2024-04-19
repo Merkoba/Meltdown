@@ -15,6 +15,8 @@ class Config:
         self.changes_delay = 250
         self.max_changes = 50
         self.max_file_list = 100
+        self.save_delay = 350
+        self.save_after = ""
 
         system_lines = [
             "Your name is @name_ai.",
@@ -251,6 +253,15 @@ class Config:
             self.load_file()
 
     def save(self) -> None:
+        from .app import app
+
+        if self.save_after:
+            app.root.after_cancel(self.save_after)
+            self.save_after = ""
+
+        self.save_after = app.root.after(self.save_delay, lambda: self.do_save())
+
+    def do_save(self) -> None:
         from .paths import paths
         from .files import files
 

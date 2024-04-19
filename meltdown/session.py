@@ -5,6 +5,7 @@ from tkinter import filedialog
 from pathlib import Path
 
 # Modules
+from .app import app
 from .config import config
 from .display import display
 from .paths import paths
@@ -108,6 +109,7 @@ class Conversation:
 class Session:
     def __init__(self) -> None:
         self.conversations: Dict[str, Conversation] = {}
+        self.save_after = ""
 
     def add(self, name: str, conv_id: str = "") -> Conversation:
         if not conv_id:
@@ -145,6 +147,13 @@ class Session:
             self.save()
 
     def save(self) -> None:
+        if self.save_after:
+            app.root.after_cancel(self.save_after)
+            self.save_after = ""
+
+        self.save_after = app.root.after(config.save_delay, lambda: self.do_save())
+
+    def do_save(self) -> None:
         if not paths.session.exists():
             paths.session.parent.mkdir(parents=True, exist_ok=True)
 
