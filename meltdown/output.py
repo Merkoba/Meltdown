@@ -131,11 +131,13 @@ class Output(tk.Text):
         super().__init__(
             parent, state="disabled", wrap="word", font=app.theme.get_output_font()
         )
+
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
+        self.drag_threshold = 80
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -167,6 +169,7 @@ class Output(tk.Text):
         self.tag_bind(
             "name_user", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("user")
         )
+
         self.tag_bind(
             "name_ai", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("ai")
         )
@@ -212,6 +215,8 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
+        self.bind("<ButtonPress-3>", lambda e: self.reset_drag(e))
+        self.bind("<B3-Motion>", lambda e: self.on_drag(e))
         self.bind("<ButtonRelease-3>", lambda e: self.on_right_click(e))
         self.bind("<Button-1>", lambda e: self.deselect_all())
         self.bind("<Button-4>", lambda e: mousewheel_up())
@@ -556,8 +561,40 @@ class Output(tk.Text):
 
         return (markers, len(lines))
 
+    def reset_drag(self, event: Any) -> None:
+        self.drag_x_start = event.x
+        self.drag_y_start = event.y
+        self.drag_x = 0
+        self.drag_y = 0
+
+    def on_drag(self, event: Any) -> None:
+        self.drag_x = event.x
+        self.drag_y = event.y
+
     def on_right_click(self, event: Any) -> None:
         from .menumanager import tab_menu
+        from .display import display
+
+        if args.gestures:
+            x_diff = abs(self.drag_x - self.drag_x_start)
+            y_diff = abs(self.drag_y - self.drag_y_start)
+
+            if x_diff > y_diff:
+                if x_diff > self.drag_threshold:
+                    if self.drag_x < self.drag_x_start:
+                        display.tab_left()
+                    else:
+                        display.tab_right()
+
+                    return
+            else:
+                if y_diff > self.drag_threshold:
+                    if self.drag_y < self.drag_y_start:
+                        display.to_top()
+                    else:
+                        display.to_bottom()
+
+                    return
 
         if not self.show_word_menu(event):
             tab_menu.show(event)

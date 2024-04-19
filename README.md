@@ -71,7 +71,7 @@ Show system CPU, RAM, and temperature. GPU info as well. Click to open `btop` et
 
 Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
 
-Multiple tabs, each with their own context.
+Multiple tabs, each with their own history.
 
 Sessions are remembered, can also be saved and loaded from files.
 
@@ -89,7 +89,7 @@ Several custom widgets made specifically for this program.
 
 Starts instantly and only loads the models and conversations when needed.
 
-Comands like `/clear`, `/stop`, `/log`, etc.
+Commands like `/clear`, `/stop`, `/log`, etc.
 
 Change the font size of the output.
 
@@ -103,7 +103,7 @@ Scrollable config panel to pack more configs.
 
 Close single tabs, all tabs, old tabs, to the left, to the right, or others.
 
-Horizontally-scrollable snippet text areas to show code.
+Horizontally scrollable snippet text areas to show code.
 
 Custom keyboard system.
 
@@ -125,7 +125,7 @@ Command similarity check ( >= 0.8 ).
 
 Load config and session files.
 
-Click and double click words.
+Click and double-click words.
 
 Start new conversations based on some words.
 
@@ -139,7 +139,7 @@ Find word-bound text or use regex.
 
 Dialog buttons that respond to keyboard.
 
-View text and view json raw modes.
+View text and view JSON raw modes.
 
 Find across all open tabs.
 
@@ -175,6 +175,8 @@ Automatic error logging to file.
 
 Textbox editing that can be maximized.
 
+Mouse gestures to perform actions.
+
 And more.
 
 ---
@@ -187,7 +189,7 @@ Here's a small one you can use:
 
 https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
 
-You can find more in that site.
+You can find more on that site.
 
 ---
 

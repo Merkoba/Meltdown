@@ -793,3 +793,17 @@ Else you need to specify the program in the command.
 The program to use by default when using the `progtext` or `progjson` commands.
 
 Else you need to specify the program in the commands.
+
+---
+
+>no-gestures
+
+Don't enable mouse gestures.
+
+Gestures are mouse actions you can do in the output.
+
+For example if you press right click, then drag a bit to the left or right, and release.
+
+If you drag enough it will either switch to the left tab, or the right tab.
+
+If you drag up or down it will perform scroll actions.

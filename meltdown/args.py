@@ -123,6 +123,7 @@ class Args:
         self.progtext = ""
         self.progjson = ""
         self.program = ""
+        self.gestures = True
 
     class Internal:
         title = app.manifest["title"]
@@ -265,6 +266,10 @@ class Args:
             "no_time": {
                 "action": "store_false",
                 "help": "Don't show the loading time at startup",
+            },
+            "no_gestures": {
+                "action": "store_false",
+                "help": "Don't enable mouse gestures",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -515,6 +520,7 @@ class Args:
             ("no_markdown_urls", "markdown_urls"),
             ("no_log_errors", "log_errors"),
             ("no_time", "time"),
+            ("no_gestures", "gestures"),
         ]
 
         for r_item in other_name:
