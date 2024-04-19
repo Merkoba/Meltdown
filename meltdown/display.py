@@ -871,7 +871,7 @@ class Display:
             regex_query = query[1:-1]
 
         def find(value: str) -> bool:
-            if is_regex and re.search(regex_query, value):
+            if is_regex and re.search(regex_query, value, re.IGNORECASE):
                 return True
             elif query_lower in value.lower():
                 return True
