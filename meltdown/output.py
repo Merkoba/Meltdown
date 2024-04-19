@@ -215,8 +215,11 @@ class Output(tk.Text):
             return "break"
 
         self.bind("<ButtonPress-3>", lambda e: self.start_drag(e))
+        self.bind("<ButtonPress-2>", lambda e: self.start_drag(e))
         self.bind("<B3-Motion>", lambda e: self.on_drag(e))
+        self.bind("<B2-Motion>", lambda e: self.on_drag(e))
         self.bind("<ButtonRelease-3>", lambda e: self.on_right_click(e))
+        self.bind("<ButtonRelease-2>", lambda e: self.on_right_click(e))
         self.bind("<Button-1>", lambda e: self.on_click(e))
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
@@ -572,9 +575,10 @@ class Output(tk.Text):
         self.drag_x = event.x
         self.drag_y = event.y
 
-    def on_drag(self, event: Any) -> None:
+    def on_drag(self, event: Any) -> str:
         self.drag_x = event.x
         self.drag_y = event.y
+        return "break"
 
     def on_right_click(self, event: Any) -> None:
         from .menumanager import tab_menu

@@ -808,6 +808,8 @@ If you drag enough it will either switch to the left tab, or the right tab.
 
 If you drag up or down it will perform scroll actions.
 
+Middle click can also be used for mouse gestures.
+
 ---
 
 >gesture-threshold
