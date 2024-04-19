@@ -979,5 +979,11 @@ class Display:
 
         return bool(tab.output.get_selected_text())
 
+    def move_tab_left(self) -> None:
+        self.book.move_left()
+
+    def move_tab_right(self) -> None:
+        self.book.move_right()
+
 
 display = Display()

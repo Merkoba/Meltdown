@@ -183,7 +183,9 @@ class Output(tk.Text):
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def mousewheel_up() -> str:
-            if keyboard.ctrl:
+            if keyboard.ctrl and keyboard.shift:
+                display.move_tab_left()
+            elif keyboard.ctrl:
                 self.display.increase_font()
             elif keyboard.shift:
                 display.tab_left()
@@ -195,7 +197,9 @@ class Output(tk.Text):
         def mousewheel_down() -> str:
             from .display import display
 
-            if keyboard.ctrl:
+            if keyboard.ctrl and keyboard.shift:
+                display.move_tab_right()
+            elif keyboard.ctrl:
                 self.display.decrease_font()
             elif keyboard.shift:
                 display.tab_right()
