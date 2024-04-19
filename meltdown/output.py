@@ -185,14 +185,20 @@ class Output(tk.Text):
         def mousewheel_up() -> str:
             if keyboard.ctrl:
                 self.display.increase_font()
+            elif keyboard.shift:
+                display.tab_left()
             else:
                 self.scroll_up(True)
 
             return "break"
 
         def mousewheel_down() -> str:
+            from .display import display
+
             if keyboard.ctrl:
                 self.display.decrease_font()
+            elif keyboard.shift:
+                display.tab_right()
             else:
                 self.scroll_down(True)
 
