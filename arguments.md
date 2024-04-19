@@ -812,7 +812,7 @@ If you drag up or down it will perform scroll actions.
 
 >gesture-threshold
 
-Default: 60
+Default: 33
 
 The threshold in pixels for mouse gestures.
 
