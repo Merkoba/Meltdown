@@ -125,6 +125,7 @@ class Args:
         self.program = ""
         self.gestures = True
         self.gesture_threshold = 33
+        self.increment_logs = True
 
     class Internal:
         title = app.manifest["title"]
@@ -271,6 +272,10 @@ class Args:
             "no_gestures": {
                 "action": "store_false",
                 "help": "Don't enable mouse gestures",
+            },
+            "no_increment_logs": {
+                "action": "store_false",
+                "help": "Always use the file name, don't increment with numbers",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -526,6 +531,7 @@ class Args:
             ("no_log_errors", "log_errors"),
             ("no_time", "time"),
             ("no_gestures", "gestures"),
+            ("no_increment_logs", "increment_logs"),
         ]
 
         for r_item in other_name:

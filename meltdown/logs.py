@@ -39,7 +39,7 @@ class Logs:
         file_path = Path(paths.logs, file_name)
         num = 2
 
-        if not overwrite:
+        if (not overwrite) and args.increment_logs:
             while file_path.exists():
                 file_name = f"{name}_{num}.{ext}"
                 file_path = Path(paths.logs, file_name)

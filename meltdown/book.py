@@ -575,6 +575,9 @@ class Book(tk.Frame):
         self.update_tab_columns()
         self.select(page.id)
 
+        if self.on_reorder:
+            self.on_reorder()
+
     def move_right(self, page: Optional[Page] = None) -> None:
         if not page:
             page = self.current_page
@@ -590,6 +593,9 @@ class Book(tk.Frame):
         self.pages.insert(index + 1, self.pages.pop(index))
         self.update_tab_columns()
         self.select(page.id)
+
+        if self.on_reorder:
+            self.on_reorder()
 
     def mousewheel_up(self, event: Any) -> None:
         from .keyboard import keyboard

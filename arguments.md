@@ -821,3 +821,11 @@ The threshold in pixels for mouse gestures.
 A lower number means it's more sensitive.
 
 A higher number means you need to drag more to trigger the actions.
+
+---
+
+>no-increment-logs
+
+Always use the file name, don't increment with numbers.
+
+For example save `stuff.txt` always instead of `stuff_1.txt`, `stuff_2.txt` etc.
