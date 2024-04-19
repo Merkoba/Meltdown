@@ -33,7 +33,7 @@ class Config:
         self.default_top_k: int = 40
         self.default_top_p: float = 0.95
         self.default_model: str = ""
-        self.default_history: int = 1
+        self.default_history: int = 2
         self.default_seed: int = 326
         self.default_format: str = "auto"
         self.default_prepend: str = ""
@@ -252,19 +252,24 @@ class Config:
             args.config = ""
             self.load_file()
 
-    def save(self) -> None:
+    def clear_save(self) -> None:
         from .app import app
 
         if self.save_after:
             app.root.after_cancel(self.save_after)
             self.save_after = ""
 
+    def save(self) -> None:
+        from .app import app
+
+        self.clear_save()
         self.save_after = app.root.after(self.save_delay, lambda: self.do_save())
 
     def do_save(self) -> None:
         from .paths import paths
         from .files import files
 
+        self.clear_save()
         conf = {}
 
         for key in self.defaults():

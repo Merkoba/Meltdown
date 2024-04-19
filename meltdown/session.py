@@ -35,7 +35,7 @@ class Conversation:
         self.last_modified = utils.now()
         self.items.append(context_dict)
         self.limit()
-        session.save()
+        session.do_save()
 
     def limit(self) -> None:
         self.items = self.items[-config.max_log :]
@@ -146,14 +146,18 @@ class Session:
             self.conversations[conversation_id].clear()
             self.save()
 
-    def save(self) -> None:
+    def clear_save(self) -> None:
         if self.save_after:
             app.root.after_cancel(self.save_after)
             self.save_after = ""
 
+    def save(self) -> None:
+        self.clear_save()
         self.save_after = app.root.after(config.save_delay, lambda: self.do_save())
 
     def do_save(self) -> None:
+        self.clear_save()
+
         if not paths.session.exists():
             paths.session.parent.mkdir(parents=True, exist_ok=True)
 

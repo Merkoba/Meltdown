@@ -283,7 +283,7 @@ class Model:
         system = self.replace_content(config.system)
         messages = [{"role": "system", "content": system}]
 
-        if conversation.items:
+        if conversation.items and (config.history > 0):
             for item in conversation.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]
