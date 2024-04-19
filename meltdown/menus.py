@@ -310,6 +310,8 @@ class Menu:
 
             for sep in self.separators:
                 sep.grid()
+
+            self.deselect_all()
         else:
             filtr = self.filter.lower().replace(" ", "")
 
@@ -352,6 +354,10 @@ class Menu:
             if self.elements[i]["visible"]:
                 self.select_item(i)
                 break
+
+    def deselect_all(self) -> None:
+        for i in range(len(self.items)):
+            self.deselect(i)
 
     def show(
         self, event: Optional[Any] = None, widget: Optional[tk.Widget] = None
@@ -474,6 +480,9 @@ class Menu:
         if index not in self.elements:
             return
 
+        self.deselect(index)
+
+    def deselect(self, index: int) -> None:
         els = self.elements[index]
         colors = self.get_colors(els["item"])
         els["label"]["background"] = colors["background"]
