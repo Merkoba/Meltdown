@@ -98,7 +98,8 @@ class Utils:
 
     def to_date(self, timestamp: float) -> str:
         dt_object = datetime.fromtimestamp(timestamp)
-        return dt_object.strftime("%Y-%m-%d %H:%M:%S")
+        hour = dt_object.strftime("%I").lstrip("0")
+        return dt_object.strftime(f"%b %d %Y - {hour}:%M %p")
 
     def sleep(self, seconds: float) -> None:
         time.sleep(seconds)
