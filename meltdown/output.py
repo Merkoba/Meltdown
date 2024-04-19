@@ -137,7 +137,6 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
-        self.drag_threshold = 80
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -215,10 +214,10 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
-        self.bind("<ButtonPress-3>", lambda e: self.reset_drag(e))
+        self.bind("<ButtonPress-3>", lambda e: self.start_drag(e))
         self.bind("<B3-Motion>", lambda e: self.on_drag(e))
         self.bind("<ButtonRelease-3>", lambda e: self.on_right_click(e))
-        self.bind("<Button-1>", lambda e: self.deselect_all())
+        self.bind("<Button-1>", lambda e: self.on_click(e))
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
         self.bind("<Prior>", lambda e: scroll_up())
@@ -561,11 +560,17 @@ class Output(tk.Text):
 
         return (markers, len(lines))
 
-    def reset_drag(self, event: Any) -> None:
-        self.drag_x_start = event.x
-        self.drag_y_start = event.y
+    def reset_drag(self) -> None:
+        self.drag_x_start = 0
+        self.drag_y_start = 0
         self.drag_x = 0
         self.drag_y = 0
+
+    def start_drag(self, event: Any) -> None:
+        self.drag_x_start = event.x
+        self.drag_y_start = event.y
+        self.drag_x = event.x
+        self.drag_y = event.y
 
     def on_drag(self, event: Any) -> None:
         self.drag_x = event.x
@@ -580,21 +585,24 @@ class Output(tk.Text):
             y_diff = abs(self.drag_y - self.drag_y_start)
 
             if x_diff > y_diff:
-                if x_diff > self.drag_threshold:
+                if x_diff >= args.gesture_threshold:
                     if self.drag_x < self.drag_x_start:
                         display.tab_left()
                     else:
                         display.tab_right()
 
                     return
-            else:
-                if y_diff > self.drag_threshold:
-                    if self.drag_y < self.drag_y_start:
-                        display.to_top()
-                    else:
-                        display.to_bottom()
+            elif y_diff >= args.gesture_threshold:
+                if self.drag_y < self.drag_y_start:
+                    display.to_top()
+                else:
+                    display.to_bottom()
 
-                    return
+                return
 
         if not self.show_word_menu(event):
             tab_menu.show(event)
+
+    def on_click(self, event: Any) -> None:
+        self.deselect_all()
+        self.reset_drag()

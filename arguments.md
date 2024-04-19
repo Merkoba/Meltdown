@@ -807,3 +807,15 @@ For example if you press right click, then drag a bit to the left or right, and 
 If you drag enough it will either switch to the left tab, or the right tab.
 
 If you drag up or down it will perform scroll actions.
+
+---
+
+>gesture-threshold
+
+Default: 60
+
+The threshold in pixels for mouse gestures.
+
+A lower number means it's more sensitive.
+
+A higher number means you need to drag more to trigger the actions.

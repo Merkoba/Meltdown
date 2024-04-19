@@ -124,6 +124,7 @@ class Args:
         self.progjson = ""
         self.program = ""
         self.gestures = True
+        self.gesture_threshold = 60
 
     class Internal:
         title = app.manifest["title"]
@@ -405,6 +406,10 @@ class Args:
                 "action": "append",
                 "help": "Define a task to run periodically",
             },
+            "gesture_threshold": {
+                "type": str,
+                "help": "Threshold in pixels for mouse gestures",
+            },
             "old_tabs_minutes": {
                 "type": int,
                 "help": "Consider a tab old after these minutes (using last modified date)",
@@ -598,6 +603,7 @@ class Args:
             "progtext",
             "progjson",
             "program",
+            "gesture_threshold",
         ]
 
         for n_item in normals:

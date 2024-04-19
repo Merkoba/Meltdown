@@ -196,9 +196,13 @@ class Display:
         self.update_current_tab()
         tab = self.get_current_tab()
 
-        if tab and not tab.loaded:
+        if not tab:
+            return
+
+        if not tab.loaded:
             self.load_tab(tab.tab_id)
 
+        tab.output.reset_drag()
         inputcontrol.focus()
         self.check_scroll_buttons()
 
