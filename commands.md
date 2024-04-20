@@ -324,6 +324,18 @@ Move the tab to the right
 
 ---
 
+>movefirst
+
+Move the tab to the start
+
+---
+
+>movelast
+
+Move the tab to the end
+
+---
+
 >main
 
 Show the main menu

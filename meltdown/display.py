@@ -863,11 +863,17 @@ class Display:
         cmds.append(("To End", lambda: self.move_tab_to_end(tab_id)))
         Dialog.show_commands("Move tab?", cmds)
 
-    def move_tab_to_start(self, tab_id: str) -> None:
+    def move_tab_to_start(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
         self.book.move_to_start(tab_id)
         self.update_session()
 
-    def move_tab_to_end(self, tab_id: str) -> None:
+    def move_tab_to_end(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
         self.book.move_to_end(tab_id)
         self.update_session()
 

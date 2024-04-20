@@ -339,6 +339,14 @@ class Commands:
                 "help": "Move the tab to the right",
                 "action": lambda a=None: display.move_tab_right(),
             },
+            "movefirst": {
+                "help": "Move the tab to the start",
+                "action": lambda a=None: display.move_tab_to_start(),
+            },
+            "movelast": {
+                "help": "Move the tab to the end",
+                "action": lambda a=None: display.move_tab_to_end(),
+            },
             "main": {
                 "help": "Show the main menu",
                 "action": lambda a=None: widgets.show_main_menu(),
