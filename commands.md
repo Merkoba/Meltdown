@@ -248,7 +248,7 @@ View raw JSON
 
 >move
 
-Move tab to start or end
+Move tab to the start or end
 
 ---
 
@@ -312,6 +312,18 @@ Go to the tab on the right
 
 ---
 
+>moveleft
+
+Move the tab to the left
+
+---
+
+>moveright
+
+Move the tab to the right
+
+---
+
 >main
 
 Show the main menu
@@ -338,7 +350,7 @@ Save the current config
 
 >loadconfig
 
-Load a session
+Load a config
 
 ---
 
