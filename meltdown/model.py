@@ -74,6 +74,7 @@ class Model:
                 " using your API key. Check the main menu on the top right.",
                 tab_id=tab_id,
             )
+
             return
 
         if self.loaded_model == config.model:
