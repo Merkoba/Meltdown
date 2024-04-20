@@ -132,6 +132,7 @@ class Model:
                 display.print(
                     "Error: OpenAI API key not found." " Use the main menu to set it."
                 )
+
                 self.clear_model()
                 return
 
