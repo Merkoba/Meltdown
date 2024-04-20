@@ -146,7 +146,12 @@ class InputControl:
 
         self.input.full_focus()
 
-    def submit(self, tab_id: str = "", text: str = "", scroll: bool = True) -> None:
+    def submit(
+        self,
+        tab_id: Optional[str] = None,
+        text: Optional[str] = None,
+        scroll: bool = True,
+    ) -> None:
         from .model import model
         from .display import display
 
@@ -260,7 +265,7 @@ class InputControl:
         self.clear()
         Dialog.show_textbox("Write an input", lambda a: action(a), value=text)
 
-    def input_command(self, arg: str) -> None:
+    def input_command(self, arg: Optional[str] = None) -> None:
         if arg:
             self.submit(text=arg)
         else:

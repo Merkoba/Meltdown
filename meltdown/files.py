@@ -1,7 +1,7 @@
 # Standard
 import os
 import json
-from typing import Any, List
+from typing import Any, List, Optional
 from pathlib import Path
 
 # Modules
@@ -90,7 +90,7 @@ class Files:
         path = getattr(paths, key)
         self.save(path, new_items)
 
-    def open_log(self, name: str = "") -> None:
+    def open_log(self, name: Optional[str] = None) -> None:
         from .app import app
 
         path = paths.logs

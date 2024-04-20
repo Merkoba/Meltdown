@@ -838,7 +838,9 @@ class Widgets:
     def show_recent_models(self) -> None:
         self.show_model_context(only_items=True)
 
-    def write_system_prompt(self, text: str = "", max: bool = False) -> None:
+    def write_system_prompt(
+        self, text: Optional[str] = None, max: bool = False
+    ) -> None:
         from .textbox import TextBox
 
         def action(ans: Dict[str, Any]) -> None:

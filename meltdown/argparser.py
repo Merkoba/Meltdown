@@ -1,6 +1,6 @@
 # Standard
 import argparse
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 
 class ArgParser:
@@ -27,7 +27,7 @@ class ArgParser:
     def string_arg(self) -> str:
         return " ".join(self.args.string_arg)
 
-    def get_value(self, attr: str, key: str = "") -> None:
+    def get_value(self, attr: str, key: Optional[str] = None) -> None:
         value = getattr(self.args, attr)
 
         if value is not None:

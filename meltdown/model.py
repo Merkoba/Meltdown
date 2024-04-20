@@ -62,7 +62,7 @@ class Model:
     def model_is_gpt(self, name: str) -> bool:
         return any(name == gpt[0] for gpt in self.gpts)
 
-    def load(self, prompt: str = "", tab_id: str = "") -> None:
+    def load(self, prompt: Optional[str] = None, tab_id: Optional[str] = None) -> None:
         if not config.model:
             display.print(
                 "You must configure a model first."
@@ -81,15 +81,15 @@ class Model:
             utils.error("(Load) Slow down!")
             return
 
+        if not tab_id:
+            tab_id = display.current_tab
+
         if self.model_is_gpt(config.model):
             self.unload()
-            self.load_gpt(prompt, tab_id)
+            self.load_gpt(tab_id, prompt)
             return
 
         model_path = Path(config.model)
-
-        if not tab_id:
-            tab_id = display.current_tab
 
         if (not model_path.exists()) or (not model_path.is_file()):
             display.print("Error: Model not found. Check the path.", tab_id=tab_id)
@@ -123,7 +123,7 @@ class Model:
             utils.error(e)
             self.gpt_key = ""
 
-    def load_gpt(self, prompt: str, tab_id: str) -> None:
+    def load_gpt(self, tab_id: str, prompt: Optional[str] = None) -> None:
         try:
             self.read_gpt_key()
 

@@ -206,7 +206,7 @@ class Display:
         inputcontrol.focus()
         self.check_scroll_buttons()
 
-    def show_intro(self, tab_id: str = "") -> None:
+    def show_intro(self, tab_id: Optional[str] = None) -> None:
         if not args.intro:
             return
 
@@ -309,13 +309,18 @@ class Display:
 
         self.tab_list_menu.show(event, widget=widget)
 
-    def rename_tab(self, current: bool = False) -> None:
+    def rename_tab(self, current: bool = False, name: Optional[str] = None) -> None:
         if current:
             tab_id = self.current_tab
         else:
             tab_id = self.tab_menu_id
 
+        if name:
+            self.do_rename_tab(tab_id, name)
+            return
+
         name = self.get_tab_name(tab_id)
+
         Dialog.show_input(
             "Pick a name", lambda s: self.do_rename_tab(tab_id, s), value=name
         )
@@ -450,7 +455,7 @@ class Display:
     def index(self, tab_id: str) -> int:
         return self.book.index(tab_id)
 
-    def to_top(self, tab_id: str = "") -> None:
+    def to_top(self, tab_id: Optional[str] = None) -> None:
         if tab_id:
             tab = self.get_tab(tab_id)
         else:
@@ -461,7 +466,7 @@ class Display:
 
         tab.output.to_top()
 
-    def to_bottom(self, tab_id: str = "") -> None:
+    def to_bottom(self, tab_id: Optional[str] = None) -> None:
         if tab_id:
             tab = self.get_tab(tab_id)
         else:
@@ -481,7 +486,7 @@ class Display:
 
         output.copy_all()
 
-    def clear(self, tab_id: str = "", force: bool = False) -> None:
+    def clear(self, tab_id: Optional[str] = None, force: bool = False) -> None:
         from .session import session
 
         if not tab_id:
@@ -522,7 +527,7 @@ class Display:
         if output:
             output.deselect_all()
 
-    def print(self, text: str, tab_id: str = "") -> None:
+    def print(self, text: str, tab_id: Optional[str] = None) -> None:
         if not app.exists():
             return
 
@@ -537,9 +542,12 @@ class Display:
         tab.output.print(text)
         tab.modified = True
 
-    def insert(self, text: str, tab_id: str = "") -> None:
+    def insert(self, text: str, tab_id: Optional[str] = None) -> None:
         if not app.exists():
             return
+
+        if not tab_id:
+            tab_id = self.current_tab
 
         tab = self.get_tab(tab_id)
 
@@ -549,7 +557,7 @@ class Display:
         tab.output.insert_text(text)
         tab.modified = True
 
-    def get_tab_name(self, tab_id: str = "") -> str:
+    def get_tab_name(self, tab_id: Optional[str] = None) -> str:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -585,7 +593,7 @@ class Display:
         name = con() + vow() + con() + vow() + con() + vow()
         return name.capitalize()
 
-    def check_scroll_buttons(self, tab_id: str = "") -> None:
+    def check_scroll_buttons(self, tab_id: Optional[str] = None) -> None:
         from .widgets import widgets
 
         if not tab_id:
@@ -674,7 +682,7 @@ class Display:
         for tab in self.tabs.values():
             tab.output.update_font()
 
-    def scroll_up(self, tab_id: str = "") -> None:
+    def scroll_up(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -683,7 +691,7 @@ class Display:
         if output:
             output.scroll_up()
 
-    def scroll_down(self, tab_id: str = "") -> None:
+    def scroll_down(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -697,8 +705,8 @@ class Display:
 
         session.update()
 
-    def hide_bottom(self, tab_id: str = "") -> None:
-        if tab_id:
+    def hide_bottom(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
             tab_id = self.current_tab
 
         bottom = self.get_bottom(tab_id)
@@ -709,7 +717,11 @@ class Display:
         bottom.hide()
 
     def prompt(
-        self, who: str, text: str = "", tab_id: str = "", to_bottom: bool = True
+        self,
+        who: str,
+        text: Optional[str] = None,
+        tab_id: Optional[str] = None,
+        to_bottom: bool = True,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -730,7 +742,7 @@ class Display:
 
         tab.modified = True
 
-    def format_text(self, tab_id: str = "") -> None:
+    def format_text(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -749,7 +761,10 @@ class Display:
         self.book.select_last()
 
     def find(
-        self, tab_id: str = "", widget: Optional[tk.Text] = None, query: str = ""
+        self,
+        tab_id: Optional[str] = None,
+        widget: Optional[tk.Text] = None,
+        query: Optional[str] = None,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -856,7 +871,7 @@ class Display:
         self.book.move_to_end(tab_id)
         self.update_session()
 
-    def find_all(self, query: str = "") -> None:
+    def find_all(self, query: Optional[str] = None) -> None:
         if query:
             self.find_all_text(query)
         else:

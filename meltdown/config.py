@@ -145,7 +145,7 @@ class Config:
 
         return json.dumps(conf)
 
-    def save_state(self, name: str = "") -> None:
+    def save_state(self, name: Optional[str] = None) -> None:
         from .display import display
         from .paths import paths
         from .args import args
@@ -176,7 +176,7 @@ class Config:
             msg = f"Config saved as {name}"
             display.print(emojis.text(msg, "storage"))
 
-    def load_state(self, name: str = "") -> None:
+    def load_state(self, name: Optional[str] = None) -> None:
         from .app import app
         from .paths import paths
         from .widgets import widgets
@@ -425,7 +425,7 @@ class Config:
         if not args.quiet:
             display.print(f"{key}: {value}")
 
-    def command(self, text: str = "") -> None:
+    def command(self, text: Optional[str] = None) -> None:
         from .display import display
 
         if not text:

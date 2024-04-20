@@ -111,7 +111,7 @@ class Session:
         self.conversations: Dict[str, Conversation] = {}
         self.save_after = ""
 
-    def add(self, name: str, conv_id: str = "") -> Conversation:
+    def add(self, name: str, conv_id: Optional[str] = None) -> Conversation:
         if not conv_id:
             conv_id = str(utils.now())
 
@@ -238,7 +238,7 @@ class Session:
                 conversation.name, conversation.id, select_tab=False, save=False
             )
 
-    def save_state(self, name: str = "") -> None:
+    def save_state(self, name: Optional[str] = None) -> None:
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
@@ -262,7 +262,7 @@ class Session:
             msg = f"Session saved as {name}"
             display.print(emojis.text(msg, "storage"))
 
-    def load_state(self, name: str = "") -> None:
+    def load_state(self, name: Optional[str] = None) -> None:
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 

@@ -1,5 +1,6 @@
 # Standard
 from pathlib import Path
+from typing import Optional
 
 # Modules
 from .app import app
@@ -68,7 +69,7 @@ class Logs:
             if cmd:
                 app.run_command([cmd, str(file_path)])
 
-    def save(self, mode: str, all: bool, name: str) -> None:
+    def save(self, mode: str, all: bool, name: Optional[str] = None) -> None:
         num = 0
         conversations = []
 
@@ -121,7 +122,7 @@ class Logs:
 
             display.print(emojis.text(msg, "storage"))
 
-    def to_json(self, all: bool = False, name: str = "") -> None:
+    def to_json(self, all: bool = False, name: Optional[str] = None) -> None:
         self.save("json", all, name)
 
     def get_json(self, conversation: Conversation) -> str:
@@ -133,7 +134,7 @@ class Logs:
 
         return conversation.to_json()
 
-    def to_text(self, all: bool = False, name: str = "") -> None:
+    def to_text(self, all: bool = False, name: Optional[str] = None) -> None:
         self.save("text", all, name)
 
     def get_text(self, conversation: Conversation) -> str:
@@ -154,7 +155,7 @@ class Logs:
         full_text += text
         return full_text
 
-    def open(self, name: str = "") -> None:
+    def open(self, name: Optional[str] = None) -> None:
         files.open_log(name)
 
 

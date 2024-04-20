@@ -451,7 +451,9 @@ class Keyboard:
         self.shift = False
         self.ctrl_date = 0.0
 
-    def show_help(self, tab_id: str = "", mode: str = "") -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, mode: Optional[str] = None
+    ) -> None:
         from .display import display
 
         keys = list(self.commands.keys())

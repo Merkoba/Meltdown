@@ -395,7 +395,8 @@ class Commands:
             },
             "rename": {
                 "help": "Rename the tab",
-                "action": lambda a=None: display.rename_tab(True),
+                "action": lambda a=None: display.rename_tab(True, name=a),
+                "type": str,
             },
             "input": {
                 "help": "Prompt the AI with this input",
@@ -490,12 +491,12 @@ class Commands:
             },
             "progtext": {
                 "help": "Open a program using the text",
-                "action": lambda a=None: app.program(a, mode="text"),
+                "action": lambda a=None: app.program(mode="text", cmd=a),
                 "type": str,
             },
             "progjson": {
                 "help": "Open a program using the JSON",
-                "action": lambda a=None: app.program(a, mode="json"),
+                "action": lambda a=None: app.program(mode="json", cmd=a),
                 "type": str,
             },
         }
@@ -549,7 +550,7 @@ class Commands:
 
         return True
 
-    def run(self, cmd: str, argument: str = "") -> None:
+    def run(self, cmd: str, argument: Optional[str] = None) -> None:
         item = self.commands.get(cmd)
 
         if not item:
@@ -563,10 +564,15 @@ class Commands:
         argtype = item.get("type")
         new_argument: Any = None
 
-        if argtype and argument:
+        if argtype:
             if argtype == "force":
-                new_argument = True if argument.lower() == "force" else False
-            elif argtype == str:
+                if argument:
+                    new_argument = True if argument.lower() == "force" else False
+                else:
+                    new_argument = False
+
+        if argtype and argument:
+            if argtype == str:
                 new_argument = self.argument_replace(argument)
             elif argtype == int:
                 new_argument = utils.extract_number(argument)
@@ -622,7 +628,9 @@ class Commands:
         text = "\n".join(items)
         display.print(text)
 
-    def show_help(self, tab_id: str = "", mode: str = "") -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, mode: Optional[str] = None
+    ) -> None:
         from .display import display
 
         display.print("Commands:", tab_id=tab_id)

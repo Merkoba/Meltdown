@@ -511,7 +511,7 @@ class App:
     def unfullscreen(self) -> None:
         self.root.attributes("-fullscreen", False)
 
-    def show_help(self, what: str, mode: str = "") -> None:
+    def show_help(self, what: str, mode: Optional[str] = None) -> None:
         from .display import display
         from .commands import commands
         from .keyboard import keyboard
@@ -650,7 +650,7 @@ class App:
         self.do_checks()
         app.root.after(self.checks_delay, self.start_checks)
 
-    def program(self, cmd: str, mode: str) -> None:
+    def program(self, mode: str, cmd: Optional[str] = None) -> None:
         from .args import args
         from .session import session
         from .display import display

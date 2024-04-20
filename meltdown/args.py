@@ -1,6 +1,6 @@
 # Standard
 import sys
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 # Modules
 from .app import app
@@ -645,7 +645,9 @@ class Args:
         if not self.f12:
             self.f12 = f"{self.prefix}list"
 
-    def show_help(self, tab_id: str = "", mode: str = "") -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, mode: Optional[str] = None
+    ) -> None:
         from .display import display
 
         keys = list(self.Internal.arguments.keys())

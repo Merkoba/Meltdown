@@ -188,7 +188,9 @@ class Find:
         if self.widget:
             self.widget.tag_remove("find", "1.0", "end")
 
-    def show(self, widget: Optional[tk.Text] = None, query: str = "") -> None:
+    def show(
+        self, widget: Optional[tk.Text] = None, query: Optional[str] = None
+    ) -> None:
         if self.widget:
             self.clear()
 
