@@ -63,6 +63,9 @@ class Model:
         return any(name == gpt[0] for gpt in self.gpts)
 
     def load(self, prompt: Optional[str] = None, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = display.current_tab
+
         if not config.model:
             display.print(
                 "You must configure a model first."
@@ -80,9 +83,6 @@ class Model:
         if self.is_loading():
             utils.error("(Load) Slow down!")
             return
-
-        if not tab_id:
-            tab_id = display.current_tab
 
         if self.model_is_gpt(config.model):
             self.unload()
