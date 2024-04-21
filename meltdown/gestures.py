@@ -7,10 +7,21 @@ from .args import args
 
 
 class Gestures:
-    def __init__(self, widget: tk.Text, on_right_click: Callable[..., Any]) -> None:
-        self.widget = widget
+    def __init__(
+        self, widget: tk.Widget, text: tk.Text, on_right_click: Callable[..., Any]
+    ) -> None:
         self.on_right_click = on_right_click
+        self.text = text
 
+        def bind_events(wid: tk.Widget) -> None:
+            self.bind(wid)
+
+            for child in wid.winfo_children():
+                bind_events(child)
+
+        bind_events(widget)
+
+    def bind(self, widget: tk.Widget) -> None:
         widget.bind("<ButtonPress-3>", lambda e: self.start_drag(e))
         widget.bind("<ButtonPress-2>", lambda e: self.start_drag(e))
         widget.bind("<B3-Motion>", lambda e: self.on_drag(e))
@@ -65,4 +76,5 @@ class Gestures:
 
                 return
 
-        self.on_right_click(event)
+        if event.widget == self.text:
+            self.on_right_click(event)

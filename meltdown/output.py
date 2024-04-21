@@ -206,7 +206,7 @@ class Output(tk.Text):
             self.to_bottom()
             return "break"
 
-        self.gestures = Gestures(self, self.on_right_click)
+        self.gestures = Gestures(self, self, self.on_right_click)
         self.bind("<Button-1>", lambda e: self.on_click(e))
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
@@ -431,7 +431,7 @@ class Output(tk.Text):
             return ""
 
         cur_line, cur_char = map(int, str(current_index).split("."))
-        ranges = self.tag_ranges(tag)
+        ranges = event.widget.tag_ranges(tag)
 
         for i in range(0, len(ranges), 2):
             start, end = ranges[i], ranges[i + 1]
@@ -445,37 +445,36 @@ class Output(tk.Text):
                 if cur_line == end_line and cur_char > end_char:
                     continue  # Skip if the cursor is after the end of the tagged text on the same line
 
-                tagged_text = self.get(start, end)
+                tagged_text = event.widget.get(start, end)
                 tagged_lines = tagged_text.split("\n")
 
                 # Return the line of the tagged text that the cursor is on
-                return tagged_lines[cur_line - start_line]
+                return tagged_lines[cur_line - start_line] or ""
 
         return ""  # Return an empty string if no tagged word is found
 
-    def get_selected_text(self) -> str:
+    def get_selected_text(self, widget: Optional[tk.Text] = None) -> str:
+        if not widget:
+            widget = self
+
         try:
-            start = self.index(tk.SEL_FIRST)
-            end = self.index(tk.SEL_LAST)
-            selected_text = self.get(start, end)
+            start = widget.index(tk.SEL_FIRST)
+            end = widget.index(tk.SEL_LAST)
+            selected_text = widget.get(start, end)
             return selected_text
         except tk.TclError:
             return ""
 
-    def show_word_menu(self, event: Any) -> bool:
-        current_index = self.index(tk.CURRENT)
-        tags = self.tag_names(current_index)
-        seltext = self.get_selected_text()
+    def show_word_menu(self, event: Any, widget: Optional[tk.Text] = None) -> bool:
+        if not widget:
+            widget = self
+
+        current_index = widget.index(tk.CURRENT)
+        tags = widget.tag_names(current_index)
+        seltext = self.get_selected_text(widget)
 
         Output.words = ""
         Output.current_output = self
-
-        if not seltext:
-            for snippet in self.snippets:
-                seltext = snippet.get_selected_text()
-
-                if seltext:
-                    break
 
         if seltext:
             Output.words = seltext
@@ -483,7 +482,7 @@ class Output(tk.Text):
             if tags:
                 Output.words = self.get_tagwords(tags[0], event).strip()
             else:
-                Output.words = self.get(
+                Output.words = widget.get(
                     f"{current_index} wordstart", f"{current_index} wordend"
                 )
 
@@ -513,9 +512,12 @@ class Output(tk.Text):
         else:
             self.configure(cursor="xterm")
 
-    def on_double_click(self, event: Any) -> str:
-        current_index = self.index(tk.CURRENT)
-        tags = self.tag_names(current_index)
+    def on_double_click(self, event: Any, widget: Optional[tk.Text] = None) -> str:
+        if not widget:
+            widget = self
+
+        current_index = widget.index(tk.CURRENT)
+        tags = widget.tag_names(current_index)
 
         if "name_user" in tags:
             return "break"
@@ -523,10 +525,10 @@ class Output(tk.Text):
         if "name_ai" in tags:
             return "break"
 
-        word_start = self.index(f"{current_index} wordstart")
-        word_end = self.index(f"{current_index} wordend")
-        self.tag_add("sel", word_start, word_end)
-        self.show_word_menu(event)
+        word_start = widget.index(f"{current_index} wordstart")
+        word_end = widget.index(f"{current_index} wordend")
+        widget.tag_add("sel", word_start, word_end)
+        self.show_word_menu(event, widget)
         return "break"
 
     def get_snippet_index(self, index: int) -> str:
@@ -562,10 +564,10 @@ class Output(tk.Text):
         for snippet in self.snippets:
             snippet.gestures.reset_drag()
 
-    def on_right_click(self, event: Any) -> None:
+    def on_right_click(self, event: Any, widget: Optional[tk.Text] = None) -> None:
         from .menumanager import tab_menu
 
-        if not self.show_word_menu(event):
+        if not self.show_word_menu(event, widget):
             tab_menu.show(event)
 
     def on_click(self, event: Any) -> None:

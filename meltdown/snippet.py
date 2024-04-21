@@ -118,8 +118,10 @@ class Snippet(tk.Frame):
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
-        self.gestures = Gestures(self.header, self.on_right_click)
-        self.gestures = Gestures(self.text, self.on_right_click)
+        self.gestures = Gestures(self, self.text, self.on_right_click)
+        self.text.bind(
+            "<Double-Button-1>", lambda e: self.parent.on_double_click(e, self.text)
+        )
 
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
@@ -235,4 +237,4 @@ class Snippet(tk.Frame):
         display.find(tab_id=self.parent.tab_id, widget=self.text)
 
     def on_right_click(self, event: Any) -> None:
-        self.parent.on_right_click(event)
+        self.parent.on_right_click(event, self.text)
