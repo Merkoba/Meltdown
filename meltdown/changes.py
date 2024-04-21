@@ -16,22 +16,10 @@ class Changes:
         self.changes: List[str] = [""]
         self.changes_index = 0
 
-        widget.bind("<KeyPress-z>", lambda e: self.undo_or_redo())
-        widget.bind("<KeyPress-Z>", lambda e: self.undo_or_redo())
-
-    def undo_or_redo(self) -> None:
-        from .keyboard import keyboard
-
-        if not keyboard.ctrl:
-            return
-
-        if not len(self.changes):
-            return
-
-        if keyboard.shift:
-            self.redo()
-        else:
-            self.undo()
+        widget.bind("<Control-KeyPress-z>", lambda e: self.undo())
+        widget.bind("<Control-KeyPress-Z>", lambda e: self.undo())
+        widget.bind("<Control-Shift-KeyPress-z>", lambda e: self.redo())
+        widget.bind("<Control-Shift-KeyPress-Z>", lambda e: self.redo())
 
     def undo(self) -> None:
         self.changes_index -= 1
