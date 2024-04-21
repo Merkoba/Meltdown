@@ -217,8 +217,10 @@ class Snippet(tk.Frame):
 
     def on_click(self) -> None:
         from .dialogs import Dialog
+        from .menus import Menu
 
         Dialog.hide_all()
+        Menu.hide_all()
         self.parent.deselect_all()
 
     def scroll_up(self) -> str:
