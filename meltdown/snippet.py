@@ -118,6 +118,7 @@ class Snippet(tk.Frame):
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
+        self.gestures = Gestures(self.header, self.on_right_click)
         self.gestures = Gestures(self.text, self.on_right_click)
 
     def update_size(self) -> None:
