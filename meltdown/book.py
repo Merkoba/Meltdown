@@ -188,8 +188,12 @@ class Book(tk.Frame):
         )
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
-        self.bind_recursive("<Button-4>", lambda e: self.mousewheel_up(e), widget)
-        self.bind_recursive("<Button-5>", lambda e: self.mousewheel_down(e), widget)
+        self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
+        self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
+        self.bind_recursive("<Shift-Button-4>", lambda e: self.move_left(), widget)
+        self.bind_recursive("<Shift-Button-5>", lambda e: self.move_right(), widget)
+        self.bind_recursive("<Control-Button-4>", lambda e: self.move_left(), widget)
+        self.bind_recursive("<Control-Button-5>", lambda e: self.move_right(), widget)
 
     def bind_tab_right_click(self, page: Page) -> None:
         self.bind_recursive(
@@ -596,22 +600,6 @@ class Book(tk.Frame):
 
         if self.on_reorder:
             self.on_reorder()
-
-    def mousewheel_up(self, event: Any) -> None:
-        from .keyboard import keyboard
-
-        if keyboard.ctrl or keyboard.shift:
-            self.move_left()
-        else:
-            self.select_left()
-
-    def mousewheel_down(self, event: Any) -> None:
-        from .keyboard import keyboard
-
-        if keyboard.ctrl or keyboard.shift:
-            self.move_right()
-        else:
-            self.select_right()
 
     def highlight(self, id: str) -> None:
         for page in self.pages:

@@ -105,6 +105,8 @@ class Snippet(tk.Frame):
             widget.bind("<Button-1>", lambda e: self.on_click())
             widget.bind("<Button-4>", lambda e: self.scroll_up())
             widget.bind("<Button-5>", lambda e: self.scroll_down())
+            widget.bind("<Shift-Button-4>", lambda e: self.scroll_left())
+            widget.bind("<Shift-Button-5>", lambda e: self.scroll_right())
             widget.bind("<Button-3>", lambda e: self.parent.show_word_menu(e))
 
             for child in widget.winfo_children():
@@ -133,11 +135,25 @@ class Snippet(tk.Frame):
         self.header_select.configure(font=snippet_font_2)
         self.update_size()
 
-    def scroll_left(self) -> None:
-        self.text.xview_scroll(-2, "units")
+    def overflowed(self) -> bool:
+        pos = self.scrollbar.get()
+        return pos[0] != 0.0 or pos[1] != 1.0
 
-    def scroll_right(self) -> None:
+    def scroll_left(self) -> str:
+        if not self.overflowed():
+            self.parent.tab_left()
+            return "break"
+
+        self.text.xview_scroll(-2, "units")
+        return "break"
+
+    def scroll_right(self) -> str:
+        if not self.overflowed():
+            self.parent.tab_right()
+            return "break"
+
         self.text.xview_scroll(2, "units")
+        return "break"
 
     def copy_all(self) -> None:
         from .dialogs import Dialog
@@ -202,23 +218,11 @@ class Snippet(tk.Frame):
         self.parent.deselect_all()
 
     def scroll_up(self) -> str:
-        from .keyboard import keyboard
-
-        if keyboard.shift:
-            self.scroll_left()
-        else:
-            self.parent.scroll_up(True)
-
+        self.parent.scroll_up(True)
         return "break"
 
     def scroll_down(self) -> str:
-        from .keyboard import keyboard
-
-        if keyboard.shift:
-            self.scroll_right()
-        else:
-            self.parent.scroll_down(True)
-
+        self.parent.scroll_down(True)
         return "break"
 
     def find(self) -> None:

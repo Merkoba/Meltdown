@@ -152,7 +152,6 @@ class Output(tk.Text):
         from .inputcontrol import inputcontrol
         from .display import display
         from .markdown import Markdown
-        from .keyboard import keyboard
 
         self.display = display
         self.markdown = Markdown(self)
@@ -183,29 +182,11 @@ class Output(tk.Text):
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def mousewheel_up() -> str:
-            if keyboard.ctrl and keyboard.shift:
-                display.move_tab_left()
-            elif keyboard.ctrl:
-                self.display.increase_font()
-            elif keyboard.shift:
-                display.tab_left()
-            else:
-                self.scroll_up(True)
-
+            self.scroll_up(True)
             return "break"
 
         def mousewheel_down() -> str:
-            from .display import display
-
-            if keyboard.ctrl and keyboard.shift:
-                display.move_tab_right()
-            elif keyboard.ctrl:
-                self.display.decrease_font()
-            elif keyboard.shift:
-                display.tab_right()
-            else:
-                self.scroll_down(True)
-
+            self.scroll_down(True)
             return "break"
 
         def scroll_up() -> str:
@@ -233,6 +214,12 @@ class Output(tk.Text):
         self.bind("<Button-1>", lambda e: self.on_click(e))
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
+        self.bind("<Shift-Button-4>", lambda e: self.tab_left())
+        self.bind("<Shift-Button-5>", lambda e: self.tab_right())
+        self.bind("<Control-Button-4>", lambda e: self.increase_font())
+        self.bind("<Control-Button-5>", lambda e: self.decrease_font())
+        self.bind("<Control-Shift-Button-4>", lambda e: self.move_left())
+        self.bind("<Control-Shift-Button-5>", lambda e: self.move_right())
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<KeyPress-Home>", lambda e: home())
@@ -627,3 +614,27 @@ class Output(tk.Text):
     def on_click(self, event: Any) -> None:
         self.deselect_all()
         self.reset_drag()
+
+    def tab_left(self) -> str:
+        self.display.tab_left()
+        return "break"
+
+    def tab_right(self) -> str:
+        self.display.tab_right()
+        return "break"
+
+    def increase_font(self) -> str:
+        self.display.increase_font()
+        return "break"
+
+    def decrease_font(self) -> str:
+        self.display.decrease_font()
+        return "break"
+
+    def move_left(self) -> str:
+        self.display.move_tab_left()
+        return "break"
+
+    def move_right(self) -> str:
+        self.display.move_tab_right()
+        return "break"
