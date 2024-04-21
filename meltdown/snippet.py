@@ -12,6 +12,7 @@ from .output import Output
 from .args import args
 from .app import app
 from .utils import utils
+from .gestures import Gestures
 
 
 class Snippet(tk.Frame):
@@ -107,7 +108,6 @@ class Snippet(tk.Frame):
             widget.bind("<Button-5>", lambda e: self.scroll_down())
             widget.bind("<Shift-Button-4>", lambda e: self.scroll_left())
             widget.bind("<Shift-Button-5>", lambda e: self.scroll_right())
-            widget.bind("<Button-3>", lambda e: self.parent.show_word_menu(e))
 
             for child in widget.winfo_children():
                 bind_scroll_events(child)
@@ -118,6 +118,7 @@ class Snippet(tk.Frame):
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
+        self.gestures = Gestures(self.text, self.on_right_click)
 
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
@@ -231,3 +232,6 @@ class Snippet(tk.Frame):
 
         Dialog.hide_all()
         display.find(tab_id=self.parent.tab_id, widget=self.text)
+
+    def on_right_click(self, event: Any) -> None:
+        self.parent.on_right_click(event)
