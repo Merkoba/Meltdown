@@ -729,7 +729,7 @@ class Commands:
         path = Path(pathstr)
 
         if (not path.parent.exists()) or (not path.parent.is_dir()):
-            utils.error(f"Invalid path: {pathstr}")
+            utils.msg(f"Invalid path: {pathstr}")
             return
 
         sep = "\n\n---\n\n"

@@ -85,7 +85,7 @@ class Model:
                 return
 
         if self.is_loading():
-            utils.error("(Load) Slow down!")
+            utils.msg("(Load) Slow down!")
             return
 
         if self.model_is_gpt(config.model):
@@ -243,7 +243,7 @@ class Model:
 
     def stream(self, prompt: Dict[str, str], tab_id: str) -> None:
         if self.is_loading():
-            utils.error("(Stream) Slow down!")
+            utils.msg("(Stream) Slow down!")
             return
 
         tab = display.get_tab(tab_id)
@@ -277,11 +277,11 @@ class Model:
         prompt_url = prompt["url"].strip()
 
         if not self.model:
-            utils.error("Model not loaded")
+            utils.msg("Model not loaded")
             return
 
         if not prompt_text:
-            utils.error("Empty prompt")
+            utils.msg("Empty prompt")
             return
 
         if config.prepend:
@@ -299,7 +299,6 @@ class Model:
             return
 
         display.prompt("user", text=prompt_text, tab_id=tab_id)
-        widgets.enable_stop_button()
         conversation = session.get_conversation(tab.conversation_id)
 
         if not conversation:
@@ -336,10 +335,12 @@ class Model:
             content_items = []
 
             if not prompt_url.startswith("http"):
-                prompt_url = self.image_to_base64(prompt_url)
+                converted = self.image_to_base64(prompt_url)
 
-                if not prompt_url:
+                if not converted:
                     return
+
+                prompt_url = converted
 
             content_items.append(
                 {"type": "image_url", "image_url": {"url": prompt_url}}
@@ -497,12 +498,6 @@ class Model:
 
         self.lock.release()
 
-    def set_model(self, m: str) -> None:
-        from .widgets import widgets
-
-        widgets.model.set_text(m)
-        config.update("model")
-
     def load_or_unload(self) -> None:
         if self.model_loading:
             return
@@ -591,5 +586,6 @@ class Model:
                 return f"data:image/png;base64,{base64_data}"
         except BaseException:
             return None
+
 
 model = Model()

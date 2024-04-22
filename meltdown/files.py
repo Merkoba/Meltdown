@@ -117,7 +117,7 @@ class Files:
             # macOS
             app.run_command(["open", spath])
         else:
-            utils.error(f"Unrecognized OS: {os_name}")
+            utils.msg(f"Unrecognized OS: {os_name}")
 
     def get_list(self, what: str) -> List[str]:
         if not getattr(self, f"{what}_loaded"):

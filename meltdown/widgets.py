@@ -697,7 +697,7 @@ class Widgets:
         self.show_menu_items(
             "model",
             "models",
-            lambda m: model.set_model(m),
+            lambda m: self.set_model(m),
             event,
             only_items=only_items,
         )
@@ -788,6 +788,10 @@ class Widgets:
     def set_url(self, text: str) -> None:
         self.url.set_text(text)
         config.update("url")
+
+    def set_model(self, m: str) -> None:
+        widgets.model.set_text(m)
+        config.update("model")
 
     def stop_stream(self) -> None:
         from .model import model
@@ -1039,7 +1043,7 @@ class Widgets:
         file = filedialog.askopenfilename(initialdir=self.get_dir("model", "models"))
 
         if file:
-            model.set_model(file)
+            self.set_model(file)
 
     def browse_file(self) -> None:
         file = filedialog.askopenfilename(initialdir=self.get_dir("url", "urls"))
