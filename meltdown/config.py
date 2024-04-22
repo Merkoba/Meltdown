@@ -15,7 +15,7 @@ class Config:
         self.changes_delay = 250
         self.max_changes = 50
         self.max_file_list = 100
-        self.save_delay = 350
+        self.save_delay = 500
         self.save_after = ""
 
         system_lines = [
