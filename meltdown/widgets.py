@@ -1,5 +1,6 @@
 # Standard
 import tkinter as tk
+from tkinter import filedialog
 from tkinter import ttk
 from typing import Optional, Any, Callable, Dict
 
@@ -625,6 +626,7 @@ class Widgets:
         command: Callable[..., Any],
         event: Optional[Any] = None,
         only_items: bool = False,
+        browse: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
         items = files.get_list(key_list)[: args.max_list_items]
@@ -636,6 +638,9 @@ class Widgets:
                 return
         else:
             self.add_common_commands(menu, key_config)
+
+        if browse:
+            menu.add(text="Browse", command=lambda e: self.browse_file())
 
         if items:
             if not only_items:
@@ -686,7 +691,9 @@ class Widgets:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
     def show_url_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("url", "urls", lambda s: self.set_url(s), event)
+        self.show_menu_items(
+            "url", "urls", lambda s: self.set_url(s), event, browse=True
+        )
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -991,6 +998,23 @@ class Widgets:
         from .menumanager import more_menu
 
         more_menu.show(event)
+
+    def browse_models(self) -> None:
+        from .model import model
+
+        if model.model_loading:
+            return
+
+        file = filedialog.askopenfilename(initialdir=model.get_dir())
+
+        if file:
+            model.set_model(file)
+
+    def browse_file(self) -> None:
+        file = filedialog.askopenfilename()
+
+        if file:
+            self.set_url(file)
 
 
 widgets: Widgets = Widgets()

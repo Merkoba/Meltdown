@@ -3,7 +3,6 @@ import base64
 import threading
 from pathlib import Path
 from typing import Optional
-from tkinter import filedialog
 from typing import List, Tuple, Dict, Any
 
 # Libraries
@@ -500,15 +499,6 @@ class Model:
 
         widgets.model.set_text(m)
         config.update("model")
-
-    def browse_models(self) -> None:
-        if self.model_loading:
-            return
-
-        file = filedialog.askopenfilename(initialdir=self.get_dir())
-
-        if file:
-            self.set_model(file)
 
     def load_or_unload(self) -> None:
         if self.model_loading:

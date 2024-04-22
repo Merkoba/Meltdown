@@ -51,7 +51,7 @@ class ModelMenu:
         self.menu.add(
             text="Recent Models", command=lambda e: widgets.show_recent_models()
         )
-        self.menu.add(text="Browse Models", command=lambda e: model.browse_models())
+        self.menu.add(text="Browse Models", command=lambda e: widgets.browse_models())
         self.menu.add(text="Use GPT Model", command=lambda e: gpt_menu.show())
         self.menu.add(text="Set API Key", command=lambda e: model.set_api_key())
 

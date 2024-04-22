@@ -395,7 +395,11 @@ class Commands:
             },
             "browse": {
                 "help": "Browse the models",
-                "action": lambda a=None: model.browse_models(),
+                "action": lambda a=None: widgets.browse_models(),
+            },
+            "file": {
+                "help": "Browse for a file",
+                "action": lambda a=None: widgets.browse_file(),
             },
             "palette": {
                 "help": "Show the command palette",
