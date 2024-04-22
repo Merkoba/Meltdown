@@ -440,6 +440,7 @@ class Widgets:
             frame_data_addons, right_padding=right_padding
         )
 
+        self.model.bind_mousewheel()
         ToolTip(self.url_label, tips["url"])
         ToolTip(self.url, tips["url"])
 
@@ -997,7 +998,7 @@ class Widgets:
         )
 
     def check_move_to_end(self, key: str) -> None:
-        if key in ["model"]:
+        if key in ["model", "url"]:
             widget = widgets.get_widget(key)
 
             if not widget:
