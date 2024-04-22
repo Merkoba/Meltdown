@@ -160,17 +160,13 @@ class Snippet(tk.Frame):
         return "break"
 
     def copy_all(self) -> None:
-        from .dialogs import Dialog
-
-        Dialog.hide_all()
+        app.hide_all()
         utils.copy(self.content)
         self.header_copy.configure(text="Copied!")
         self.after(1000, lambda: self.header_copy.configure(text="Copy"))
 
     def select_all(self) -> None:
-        from .dialogs import Dialog
-
-        Dialog.hide_all()
+        app.hide_all()
         self.text.tag_add("sel", "1.0", tk.END)
 
     def deselect_all(self) -> None:
@@ -216,11 +212,7 @@ class Snippet(tk.Frame):
             self.text.delete(last_line_index, "end")
 
     def on_click(self) -> None:
-        from .dialogs import Dialog
-        from .menus import Menu
-
-        Dialog.hide_all()
-        Menu.hide_all()
+        app.hide_all()
         self.parent.deselect_all()
 
     def scroll_up(self) -> str:
@@ -232,10 +224,9 @@ class Snippet(tk.Frame):
         return "break"
 
     def find(self) -> None:
-        from .dialogs import Dialog
         from .display import display
 
-        Dialog.hide_all()
+        app.hide_all()
         display.find(tab_id=self.parent.tab_id, widget=self.text)
 
     def on_right_click(self, event: Any) -> None:
