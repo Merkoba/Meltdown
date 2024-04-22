@@ -581,17 +581,6 @@ class Model:
         else:
             return text + ". "
 
-    def get_dir(self) -> Optional[str]:
-        models = [config.model] + files.get_list("models")
-
-        for model in models:
-            path = Path(model)
-
-            if path.exists() and path.is_file():
-                return str(path.parent)
-
-        return None
-
     def image_to_base64(self, path: str) -> str:
         with open(path, "rb") as img_file:
             base64_data = base64.b64encode(img_file.read()).decode("utf-8")

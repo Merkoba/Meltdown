@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
 from typing import Optional, Any, Callable, Dict
+from pathlib import Path
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -999,19 +1000,30 @@ class Widgets:
 
         more_menu.show(event)
 
+    def get_dir(self, what: str, list: str) -> Optional[str]:
+        items = [getattr(config, what)] + files.get_list(list)
+
+        for item in items:
+            path = Path(item)
+
+            if path.exists() and path.is_file():
+                return str(path.parent)
+
+        return None
+
     def browse_models(self) -> None:
         from .model import model
 
         if model.model_loading:
             return
 
-        file = filedialog.askopenfilename(initialdir=model.get_dir())
+        file = filedialog.askopenfilename(initialdir=self.get_dir("model", "models"))
 
         if file:
             model.set_model(file)
 
     def browse_file(self) -> None:
-        file = filedialog.askopenfilename()
+        file = filedialog.askopenfilename(initialdir=self.get_dir("url", "urls"))
 
         if file:
             self.set_url(file)
