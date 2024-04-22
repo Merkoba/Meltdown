@@ -161,6 +161,7 @@ class Snippet(tk.Frame):
 
     def copy_all(self) -> None:
         app.hide_all()
+        self.deselect_all()
         utils.copy(self.content)
         self.header_copy.configure(text="Copied!")
         self.after(1000, lambda: self.header_copy.configure(text="Copy"))

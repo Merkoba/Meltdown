@@ -126,6 +126,8 @@ class Args:
         self.gestures = True
         self.gesture_threshold = 33
         self.increment_logs = True
+        self.confirm_urls = True
+        self.confirm_search = True
 
     class Internal:
         title = app.manifest["title"]
@@ -276,6 +278,14 @@ class Args:
             "no_increment_logs": {
                 "action": "store_false",
                 "help": "Always use the file name, don't increment with numbers",
+            },
+            "no_confirm_urls": {
+                "action": "store_false",
+                "help": "No need to confirm when opening URLs",
+            },
+            "no_confirm_search": {
+                "action": "store_false",
+                "help": "No need to confirm when searching",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -532,6 +542,8 @@ class Args:
             ("no_time", "time"),
             ("no_gestures", "gestures"),
             ("no_increment_logs", "increment_logs"),
+            ("no_confirm_urls", "confirm_urls"),
+            ("no_confirm_search", "confirm_search"),
         ]
 
         for r_item in other_name:

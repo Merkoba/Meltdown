@@ -69,7 +69,10 @@ class Output(tk.Text):
         def action() -> None:
             app.search_text(text)
 
-        Dialog.show_confirm("Search for this term?", lambda: action())
+        if args.confirm_search:
+            Dialog.show_confirm("Search for this term?", lambda: action())
+        else:
+            action()
 
     @staticmethod
     def new_tab() -> None:
@@ -96,7 +99,10 @@ class Output(tk.Text):
         def action() -> None:
             app.open_url(url)
 
-        Dialog.show_confirm("Open this URL?", lambda: action())
+        if args.confirm_urls:
+            Dialog.show_confirm("Open this URL?", lambda: action())
+        else:
+            action()
 
     @staticmethod
     def get_prompt(

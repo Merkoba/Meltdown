@@ -829,3 +829,15 @@ A higher number means you need to drag more to trigger the actions.
 Always use the file name, don't increment with numbers.
 
 For example save `stuff.txt` always instead of `stuff_1.txt`, `stuff_2.txt` etc.
+
+---
+
+>no-confirm-urls
+
+Don't show the confirm dialog when opening URLs.
+
+---
+
+>no-confirm-search
+
+Don't show the confirm dialog when searching words.
