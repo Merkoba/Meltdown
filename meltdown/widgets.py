@@ -407,18 +407,32 @@ class Widgets:
         self.addons_frame = frame_data_addons.frame
 
         self.prepend_label = widgetutils.make_label(frame_data_addons, "Prepend")
-        self.prepend = widgetutils.make_entry(frame_data_addons)
-        frame_data_addons.expand()
+        rpadding = (
+            right_padding if ((not args.show_append) and (not args.show_url)) else 0
+        )
+        self.prepend = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
         ToolTip(self.prepend_label, tips["prepend"])
         ToolTip(self.prepend, tips["prepend"])
 
+        if not args.show_prepend:
+            self.prepend_label.grid_remove()
+            self.prepend.grid_remove()
+        else:
+            frame_data_addons.expand()
+
         self.append_label = widgetutils.make_label(frame_data_addons, "Append")
+        rpadding = right_padding if (not args.show_url) else 0
 
-        self.append = widgetutils.make_entry(
-            frame_data_addons, right_padding=right_padding
-        )
+        self.append = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
 
-        frame_data_addons.expand()
+        ToolTip(self.append_label, tips["append"])
+        ToolTip(self.append, tips["append"])
+
+        if not args.show_append:
+            self.append_label.grid_remove()
+            self.append.grid_remove()
+        else:
+            frame_data_addons.expand()
 
         self.url_label = widgetutils.make_label(frame_data_addons, "URL")
 
@@ -426,9 +440,14 @@ class Widgets:
             frame_data_addons, right_padding=right_padding
         )
 
-        frame_data_addons.expand()
-        ToolTip(self.append_label, tips["append"])
-        ToolTip(self.append, tips["append"])
+        ToolTip(self.url_label, tips["url"])
+        ToolTip(self.url, tips["url"])
+
+        if not args.show_url:
+            self.url_label.grid_remove()
+            self.url.grid_remove()
+        else:
+            frame_data_addons.expand()
 
         # Input
         self.frame_data_input = widgetutils.make_frame(bottom_padding=10)

@@ -130,6 +130,9 @@ class Args:
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
+        self.show_prepend = True
+        self.show_append = True
+        self.show_url = True
 
     class Internal:
         title = app.manifest["title"]
@@ -296,6 +299,18 @@ class Args:
             "no_confirm_clear": {
                 "action": "store_false",
                 "help": "No need to confirm clearing conversations",
+            },
+            "no_prepend": {
+                "action": "store_false",
+                "help": "Don't show Prepend",
+            },
+            "no_append": {
+                "action": "store_false",
+                "help": "Don't show Append",
+            },
+            "no_url": {
+                "action": "store_false",
+                "help": "Don't show URL",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -556,6 +571,9 @@ class Args:
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
+            ("no_prepend", "show_prepend"),
+            ("no_append", "show_append"),
+            ("no_url", "show_url"),
         ]
 
         for r_item in other_name:
