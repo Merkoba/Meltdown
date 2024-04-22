@@ -64,9 +64,11 @@ class EntryBox(ttk.Entry):
     def change_value(self) -> str:
         return self.get()
 
-    def clear(self) -> None:
+    def clear(self, focus: bool = True) -> None:
         self.set_text("")
-        self.focus_set()
+
+        if focus:
+            self.focus_set()
 
     def full_focus(self) -> None:
         self.focus_set()

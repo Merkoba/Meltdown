@@ -192,6 +192,7 @@ class InputControl:
                 return
 
             url = widgets.url.get().strip()
+            widgets.url.clear(False)
             prompt = {"text": text, "url": url}
             model.stream(prompt, tab.tab_id)
         elif scroll:
