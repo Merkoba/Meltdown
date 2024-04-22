@@ -128,6 +128,8 @@ class Args:
         self.increment_logs = True
         self.confirm_urls = True
         self.confirm_search = True
+        self.confirm_close = True
+        self.confirm_clear = True
 
     class Internal:
         title = app.manifest["title"]
@@ -286,6 +288,14 @@ class Args:
             "no_confirm_search": {
                 "action": "store_false",
                 "help": "No need to confirm when searching",
+            },
+            "no_confirm_close": {
+                "action": "store_false",
+                "help": "No need to confirm closing tabs",
+            },
+            "no_confirm_clear": {
+                "action": "store_false",
+                "help": "No need to confirm clearing conversations",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -544,6 +554,8 @@ class Args:
             ("no_increment_logs", "increment_logs"),
             ("no_confirm_urls", "confirm_urls"),
             ("no_confirm_search", "confirm_search"),
+            ("no_confirm_close", "confirm_close"),
+            ("no_confirm_clear", "confirm_clear"),
         ]
 
         for r_item in other_name:

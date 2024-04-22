@@ -841,3 +841,15 @@ Don't show the confirm dialog when opening URLs.
 >no-confirm-search
 
 Don't show the confirm dialog when searching words.
+
+---
+
+>no-confirm-close
+
+Don't show the confirm dialog when closing tabs.
+
+---
+
+>no-confirm-clear
+
+Don't show the confirm dialog when clearing conversations.

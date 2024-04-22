@@ -354,7 +354,7 @@ class Display:
             for tab_id in self.tab_ids():
                 self.close_tab(tab_id=tab_id, force=True, make_empty=make_empty)
 
-        if force:
+        if force or (not args.confirm_close):
             action()
             return
 
@@ -386,7 +386,7 @@ class Display:
                 if conversation.last_modified < max_date:
                     self.close_tab(tab_id=tab_id, force=True, make_empty=True)
 
-        if force:
+        if force or (not args.confirm_close):
             action()
             return
 
@@ -405,7 +405,7 @@ class Display:
                 if tab_id != current:
                     self.close_tab(tab_id=tab_id, force=True)
 
-        if force:
+        if force or (not args.confirm_close):
             action()
             return
 
@@ -424,7 +424,7 @@ class Display:
             for tab_id in tabs:
                 self.close_tab(tab_id=tab_id, force=True)
 
-        if force:
+        if force or (not args.confirm_close):
             action()
             return
 
@@ -443,7 +443,7 @@ class Display:
             for tab_id in tabs:
                 self.close_tab(tab_id=tab_id, force=True)
 
-        if force:
+        if force or (not args.confirm_close):
             action()
             return
 
@@ -509,7 +509,7 @@ class Display:
             self.show_intro(tab_id)
             tab.modified = False
 
-        if force:
+        if force or (not args.confirm_clear):
             action()
             return
 
