@@ -407,10 +407,13 @@ class Widgets:
         self.addons_frame = frame_data_addons.frame
 
         self.prepend_label = widgetutils.make_label(frame_data_addons, "Prepend")
+
         rpadding = (
             right_padding if ((not args.show_append) and (not args.show_url)) else 0
         )
+
         self.prepend = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
+        self.prepend.bind_mousewheel()
         ToolTip(self.prepend_label, tips["prepend"])
         ToolTip(self.prepend, tips["prepend"])
 
@@ -424,7 +427,7 @@ class Widgets:
         rpadding = right_padding if (not args.show_url) else 0
 
         self.append = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
-
+        self.append.bind_mousewheel()
         ToolTip(self.append_label, tips["append"])
         ToolTip(self.append, tips["append"])
 
@@ -440,7 +443,7 @@ class Widgets:
             frame_data_addons, right_padding=right_padding
         )
 
-        self.model.bind_mousewheel()
+        self.url.bind_mousewheel()
         ToolTip(self.url_label, tips["url"])
         ToolTip(self.url, tips["url"])
 
