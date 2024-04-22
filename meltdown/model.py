@@ -332,11 +332,14 @@ class Model:
 
         prompt_text = self.replace_content(prompt_text)
 
-        if prompt_url:
+        if prompt_url and (config.mode == "images"):
             content_items = []
 
             if not prompt_url.startswith("http"):
                 prompt_url = self.image_to_base64(prompt_url)
+
+                if not prompt_url:
+                    return
 
             content_items.append(
                 {"type": "image_url", "image_url": {"url": prompt_url}}
@@ -581,10 +584,12 @@ class Model:
         else:
             return text + ". "
 
-    def image_to_base64(self, path: str) -> str:
-        with open(path, "rb") as img_file:
-            base64_data = base64.b64encode(img_file.read()).decode("utf-8")
-            return f"data:image/png;base64,{base64_data}"
-
+    def image_to_base64(self, path: str) -> Optional[str]:
+        try:
+            with open(path, "rb") as img_file:
+                base64_data = base64.b64encode(img_file.read()).decode("utf-8")
+                return f"data:image/png;base64,{base64_data}"
+        except BaseException:
+            return None
 
 model = Model()
