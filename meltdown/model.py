@@ -1,12 +1,14 @@
 # Standard
+import base64
 import threading
 from pathlib import Path
 from typing import Optional
 from tkinter import filedialog
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Any
 
 # Libraries
 from llama_cpp import Llama  # type: ignore
+from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
 from openai import OpenAI  # type: ignore
 
 # Modules
@@ -62,7 +64,9 @@ class Model:
     def model_is_gpt(self, name: str) -> bool:
         return any(name == gpt[0] for gpt in self.gpts)
 
-    def load(self, prompt: Optional[str] = None, tab_id: Optional[str] = None) -> None:
+    def load(
+        self, prompt: Optional[Dict[str, str]] = None, tab_id: Optional[str] = None
+    ) -> None:
         if not tab_id:
             tab_id = display.current_tab
 
@@ -97,7 +101,8 @@ class Model:
             return
 
         def wrapper() -> None:
-            self.load_local(config.model, tab_id)
+            if not self.load_local(config.model, tab_id):
+                return
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -124,7 +129,7 @@ class Model:
             utils.error(e)
             self.gpt_key = ""
 
-    def load_gpt(self, tab_id: str, prompt: Optional[str] = None) -> None:
+    def load_gpt(self, tab_id: str, prompt: Optional[Dict[str, str]] = None) -> None:
         try:
             self.read_gpt_key()
 
@@ -154,7 +159,7 @@ class Model:
             display.print("Error: GPT model failed to load.")
             self.clear_model()
 
-    def load_local(self, model: str, tab_id: str) -> None:
+    def load_local(self, model: str, tab_id: str) -> bool:
         from .app import app
 
         self.lock.acquire()
@@ -164,6 +169,23 @@ class Model:
         chat_format = config.format
 
         try:
+            chat_handler = None
+            logits_all = False
+
+            if config.mode == "images":
+                mmproj = Path(Path(model).parent / "mmproj.gguf")
+
+                if not mmproj.exists():
+                    display.print(
+                        "Error: mmproj.gguf not found."
+                        " It must be in the same directory as the model.",
+                    )
+
+                    return False
+
+                chat_handler = Llava15ChatHandler(clip_model_path=str(mmproj))
+                logits_all = True
+
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
             mlock = True if (config.mlock == "yes") else False
@@ -176,12 +198,14 @@ class Model:
             app.update()
 
             self.model = Llama(
-                model_path=str(model),
+                model_path=model,
                 n_ctx=config.context,
                 n_threads=config.threads,
                 n_gpu_layers=config.gpu_layers,
                 use_mlock=mlock,
                 chat_format=fmt,
+                chat_handler=chat_handler,
+                logits_all=logits_all,
                 verbose=args.verbose,
             )
         except BaseException as e:
@@ -189,7 +213,7 @@ class Model:
             display.print("Error: Model failed to load.")
             self.clear_model()
             self.lock.release()
-            return
+            return False
 
         files.add_model(model)
         self.model_loading = False
@@ -202,6 +226,7 @@ class Model:
             display.print(msg)
 
         self.lock.release()
+        return True
 
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading
@@ -217,7 +242,7 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
-    def stream(self, prompt: str, tab_id: str) -> None:
+    def stream(self, prompt: Dict[str, str], tab_id: str) -> None:
         if self.is_loading():
             utils.error("(Stream) Slow down!")
             return
@@ -234,7 +259,7 @@ class Model:
             self.load(prompt, tab_id)
             return
 
-        def wrapper(prompt: str, tab_id: str) -> None:
+        def wrapper(prompt: Dict[str, str], tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
             self.do_stream(prompt, tab_id)
@@ -245,26 +270,26 @@ class Model:
         self.stream_thread.daemon = True
         self.stream_thread.start()
 
-    def do_stream(self, prompt: str, tab_id: str) -> None:
+    def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
         self.lock.acquire()
         self.stream_loading = True
-
         widgets.show_model()
-        prompt = prompt.strip()
+        prompt_text = prompt["text"].strip()
+        prompt_url = prompt["url"].strip()
 
         if not self.model:
             utils.error("Model not loaded")
             return
 
-        if not prompt:
+        if not prompt_text:
             utils.error("Empty prompt")
             return
 
         if config.prepend:
-            prompt = self.check_dot(config.prepend) + prompt
+            prompt_text = self.check_dot(config.prepend) + prompt_text
 
         if config.append:
-            prompt = self.check_dot(prompt) + config.append
+            prompt_text = self.check_dot(prompt_text) + config.append
 
         tab = display.get_tab(tab_id)
 
@@ -274,16 +299,16 @@ class Model:
         if tab.mode == "ignore":
             return
 
-        display.prompt("user", text=prompt, tab_id=tab_id)
+        display.prompt("user", text=prompt_text, tab_id=tab_id)
         widgets.enable_stop_button()
         conversation = session.get_conversation(tab.conversation_id)
 
         if not conversation:
             return
 
-        log_dict = {"user": prompt}
+        log_dict = {"user": prompt_text}
         system = self.replace_content(config.system)
-        messages = [{"role": "system", "content": system}]
+        messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
         if conversation.items and (config.history > 0):
             for item in conversation.items[-abs(config.history) :]:
@@ -297,7 +322,7 @@ class Model:
 
         if args.debug:
             utils.msg("-----")
-            utils.msg(f"prompt: {prompt}")
+            utils.msg(f"prompt: {prompt_text}")
             utils.msg(f"messages: {len(messages)}")
             utils.msg(f"history: {config.history}")
             utils.msg(f"max_tokens: {config.max_tokens}")
@@ -306,13 +331,26 @@ class Model:
             utils.msg(f"top_p: {config.top_p}")
             utils.msg(f"seed: {config.seed}")
 
-        content = prompt
-        content = self.replace_content(content)
-        messages.append({"role": "user", "content": content})
+        prompt_text = self.replace_content(prompt_text)
+
+        if prompt_url:
+            content_items = []
+
+            if not prompt_url.startswith("http"):
+                prompt_url = self.image_to_base64(prompt_url)
+
+            content_items.append(
+                {"type": "image_url", "image_url": {"url": prompt_url}}
+            )
+            content_items.append({"type": "text", "text": prompt_text})
+            messages.append({"role": "user", "content": content_items})
+        else:
+            messages.append({"role": "user", "content": prompt_text})
 
         files.add_system(config.system)
         files.add_prepends(config.prepend)
         files.add_appends(config.append)
+        files.add_urls(config.url)
 
         now = utils.now()
         self.stream_date = now
@@ -563,6 +601,11 @@ class Model:
                 return str(path.parent)
 
         return None
+
+    def image_to_base64(self, path: str) -> str:
+        with open(path, "rb") as img_file:
+            base64_data = base64.b64encode(img_file.read()).decode("utf-8")
+            return f"data:image/png;base64,{base64_data}"
 
 
 model = Model()

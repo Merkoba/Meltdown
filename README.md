@@ -205,6 +205,30 @@ Then pick the model you want: `Use GPT Model`.
 
 ---
 
+---
+
+## Images <a name="images"></a>
+
+Multi-modal models like llava 1.5 can be used.
+
+Download the model gguf and the mmproj gguf (clip model):
+
+https://huggingface.co/mys/ggml_llava-v1.5-7b/tree/main
+
+Put those 2 files in the same directory.
+
+Rename the clip model file to `mmproj.gguf`.
+
+Set `Mode` to `images`.
+
+Now you can use the `URL` field to include a link to an image.
+
+And you can use the input to include text as normal.
+
+It supports remote (http) and local image paths.
+
+---
+
 ## Installation <a name="installation"></a>
 
 You can install it with [pipx](https://pypi.org/project/pipx/):

@@ -106,4 +106,8 @@ tips = {
         " Use the mousewheel or up/down arrows to cycle input history."
         " You can also use commands here. See /help"
     ),
+    "mode": (
+        "How to handle this model. Either text or images mode."
+        " On images mode, the model is able to analyse image paths you give it"
+    ),
 }

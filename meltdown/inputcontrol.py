@@ -154,6 +154,7 @@ class InputControl:
     ) -> None:
         from .model import model
         from .display import display
+        from .widgets import widgets
 
         if args.display:
             if not text:
@@ -190,7 +191,9 @@ class InputControl:
             if model.model_loading:
                 return
 
-            model.stream(text, tab.tab_id)
+            url = widgets.url.get().strip()
+            prompt = {"text": text, "url": url}
+            model.stream(prompt, tab.tab_id)
         elif scroll:
             display.toggle_scroll()
 

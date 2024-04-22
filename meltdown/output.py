@@ -51,7 +51,7 @@ class Output(tk.Text):
 
         query = f'What is "{text}" ?'
         tab_id = Output.current_output.tab_id
-        model.stream(query, tab_id)
+        model.stream({"text": query}, tab_id)
 
     @staticmethod
     def search_words() -> None:
@@ -88,9 +88,9 @@ class Output(tk.Text):
         if not text:
             return
 
-        text = f'Tell me about "{text}"'
+        query = f'Tell me about "{text}"'
         tab_id = display.make_tab()
-        model.stream(text, tab_id)
+        model.stream({"text": query}, tab_id)
 
     @staticmethod
     def open_url(url: str) -> None:

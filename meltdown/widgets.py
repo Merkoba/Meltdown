@@ -174,9 +174,11 @@ class Widgets:
 
         left_frame = widgetutils.make_frame(self.details_frame, col=0, row=0)
         left_frame.frame.grid_rowconfigure(0, weight=1)
+
         self.details_button_left = widgetutils.make_button(
             left_frame, "<", lambda: widgets.details_left(), style="alt"
         )
+
         ToolTip(self.details_button_left, tips["details_button"])
 
         self.details, self.details_canvas = widgetutils.make_scrollable_frame(
@@ -221,37 +223,47 @@ class Widgets:
         ToolTip(self.name_ai, tips["name_ai"])
 
         self.history_label = widgetutils.make_label(details_data, "History")
+
         self.history = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.history_label, tips["history"])
         ToolTip(self.history, tips["history"])
 
         self.context_label = widgetutils.make_label(details_data, "Context")
+
         self.context = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.context_label, tips["context"])
         ToolTip(self.context, tips["context"])
 
         self.max_tokens_label = widgetutils.make_label(details_data, "Max Tokens")
+
         self.max_tokens = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.max_tokens_label, tips["max_tokens"])
         ToolTip(self.max_tokens, tips["max_tokens"])
 
         self.threads_label = widgetutils.make_label(details_data, "Threads")
+
         self.threads = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.threads_label, tips["threads"])
         ToolTip(self.threads, tips["threads"])
 
         self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
+
         self.gpu_layers = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.gpu_layers_label, tips["gpu_layers"])
         ToolTip(self.gpu_layers, tips["gpu_layers"])
 
@@ -263,31 +275,50 @@ class Widgets:
         ToolTip(self.format_label, tips["format"])
         ToolTip(self.format, tips["format"])
 
+        self.mode_label = widgetutils.make_label(details_data, "Mode")
+
+        self.mode = widgetutils.make_combobox(
+            details_data,
+            width=app.theme.combobox_width_small,
+            values=["text", "images"],
+        )
+
+        ToolTip(self.mode_label, tips["mode"])
+        ToolTip(self.mode, tips["mode"])
+
         self.temperature_label = widgetutils.make_label(details_data, "Temp")
+
         self.temperature = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.temperature_label, tips["temperature"])
         ToolTip(self.temperature, tips["temperature"])
 
         self.seed_label = widgetutils.make_label(details_data, "Seed")
+
         self.seed = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.seed_label, tips["seed"])
         ToolTip(self.seed, tips["seed"])
 
         self.top_p_label = widgetutils.make_label(details_data, "Top-P")
+
         self.top_p = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.top_p_label, tips["top_p"])
         ToolTip(self.top_p, tips["top_p"])
 
         self.top_k_label = widgetutils.make_label(details_data, "Top-K")
+
         self.top_k = widgetutils.make_entry(
             details_data, width=app.theme.entry_width_small
         )
+
         ToolTip(self.top_k_label, tips["top_k"])
         ToolTip(self.top_k, tips["top_k"])
 
@@ -297,9 +328,11 @@ class Widgets:
         ToolTip(self.stop, tips["stop"])
 
         self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
+
         self.mlock = widgetutils.make_combobox(
             details_data, width=app.theme.combobox_width_small, values=["yes", "no"]
         )
+
         ToolTip(self.mlock_label, tips["mlock"])
         ToolTip(self.mlock, tips["mlock"])
 
@@ -310,12 +343,14 @@ class Widgets:
         self.stop_button = widgetutils.make_button(
             frame_data_buttons, "Stop", lambda: self.stop_stream()
         )
+
         frame_data_buttons.expand()
         ToolTip(self.stop_button, tips["stop_button"])
 
         self.new_button = widgetutils.make_button(
             frame_data_buttons, "New", lambda: display.make_tab()
         )
+
         frame_data_buttons.expand()
         ToolTip(self.new_button, tips["new_button"])
 
@@ -334,13 +369,16 @@ class Widgets:
         ToolTip(self.clear_button, tips["clear_button"])
 
         rpadding = right_padding if (not args.more_button) else 0
+
         self.top_button = widgetutils.make_button(
             frame_data_buttons, "Top", lambda: display.to_top(), right_padding=rpadding
         )
+
         frame_data_buttons.expand()
         ToolTip(self.top_button, tips["top_button"])
 
         rpadding = right_padding if args.more_button else 0
+
         self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
             "More",
@@ -373,9 +411,19 @@ class Widgets:
         ToolTip(self.prepend, tips["prepend"])
 
         self.append_label = widgetutils.make_label(frame_data_addons, "Append")
+
         self.append = widgetutils.make_entry(
             frame_data_addons, right_padding=right_padding
         )
+
+        frame_data_addons.expand()
+
+        self.url_label = widgetutils.make_label(frame_data_addons, "URL")
+
+        self.url = widgetutils.make_entry(
+            frame_data_addons, right_padding=right_padding
+        )
+
         frame_data_addons.expand()
         ToolTip(self.append_label, tips["append"])
         ToolTip(self.append, tips["append"])
@@ -388,6 +436,7 @@ class Widgets:
         self.systems_menu = Menu()
         self.prepends_menu = Menu()
         self.appends_menu = Menu()
+        self.urls_menu = Menu()
         self.inputs_menu = Menu()
         self.current_details = 1
 
@@ -531,16 +580,19 @@ class Widgets:
         setup_entrybox("model", "Path to a model file")
         setup_entrybox("prepend", "Add before")
         setup_entrybox("append", "Add after")
+        setup_entrybox("url", "Image URL")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
 
         setup_combobox("format")
         setup_combobox("mlock")
+        setup_combobox("mode")
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
         self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
         self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
+        self.url.bind("<Button-3>", lambda e: self.show_url_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
@@ -633,6 +685,9 @@ class Widgets:
     def show_append_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
+    def show_url_menu(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("url", "urls", lambda s: self.set_url(s), event)
+
     def show_model(self) -> None:
         self.model.set_text(config.model)
         self.model.move_to_end()
@@ -649,7 +704,7 @@ class Widgets:
             if not widget:
                 return
 
-            if key not in ["model", "prepend", "append", "input", "system"]:
+            if key not in ["model", "prepend", "append", "url", "input", "system"]:
                 widget.bind("<Button-3>", lambda e: show_menu(key, e))
 
         for key in config.defaults():
@@ -702,6 +757,10 @@ class Widgets:
     def set_append(self, text: str) -> None:
         self.append.set_text(text)
         config.update("append")
+
+    def set_url(self, text: str) -> None:
+        self.url.set_text(text)
+        config.update("url")
 
     def stop_stream(self) -> None:
         from .model import model
@@ -791,6 +850,8 @@ class Widgets:
             self.show_prepend_menu()
         elif widget == self.append:
             self.show_append_menu()
+        elif widget == self.url:
+            self.show_url_menu()
         elif widget == self.model:
             self.show_model_context()
 

@@ -18,12 +18,14 @@ class Files:
         self.systems_list: List[str] = []
         self.prepends_list: List[str] = []
         self.appends_list: List[str] = []
+        self.urls_list: List[str] = []
 
         self.models_loaded = False
         self.inputs_loaded = False
         self.systems_loaded = False
         self.prepends_loaded = False
         self.appends_loaded = False
+        self.urls_loaded = False
 
     def save(self, path: Path, dictionary: Any) -> None:
         with open(path, "w", encoding="utf-8") as file:
@@ -70,6 +72,9 @@ class Files:
 
     def add_prepends(self, text: str) -> None:
         self.add_to_list("prepends", text)
+
+    def add_urls(self, text: str) -> None:
+        self.add_to_list("urls", text)
 
     def add_appends(self, text: str) -> None:
         self.add_to_list("appends", text)

@@ -47,6 +47,8 @@ class Config:
         self.default_avatar_user: str = "👽"
         self.default_avatar_ai: str = "😎"
         self.default_stop: str = "<|im_start|> ;; <|im_end|>"
+        self.default_mode: str = "text"
+        self.default_url = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -71,6 +73,8 @@ class Config:
         self.avatar_user = self.default_avatar_user
         self.avatar_ai = self.default_avatar_ai
         self.stop = self.default_stop
+        self.mode = self.default_mode
+        self.url = self.default_url
 
         self.clearables = [
             "system",
@@ -90,6 +94,7 @@ class Config:
             "gpu_layers",
             "mlock",
             "format",
+            "mode",
         ]
 
         self.validations: Dict[str, Callable[..., Any]] = {
