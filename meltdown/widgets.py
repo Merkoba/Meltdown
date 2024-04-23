@@ -307,13 +307,11 @@ class Widgets:
 
         self.before_label = widgetutils.make_label(details_data, "Before")
         self.before = widgetutils.make_entry(details_data, width=11)
-        self.before.bind_mousewheel()
         ToolTip(self.before_label, tips["before"])
         ToolTip(self.before, tips["before"])
 
         self.after_label = widgetutils.make_label(details_data, "After")
         self.after = widgetutils.make_entry(details_data, width=11)
-        self.after.bind_mousewheel()
         ToolTip(self.after_label, tips["after"])
         ToolTip(self.after, tips["after"])
 
