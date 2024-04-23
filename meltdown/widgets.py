@@ -264,7 +264,7 @@ class Widgets:
         self.mode = widgetutils.make_combobox(
             details_data,
             width=app.theme.combobox_width_small,
-            values=["text", "images"],
+            values=["text", "image"],
         )
 
         ToolTip(self.mode_label, tips["mode"])
@@ -1038,7 +1038,7 @@ class Widgets:
         self.frame_data_addons.do_unexpand(self.url_col)
 
     def check_mode(self) -> None:
-        if config.mode == "images":
+        if config.mode == "image":
             self.show_url()
         else:
             self.hide_url()

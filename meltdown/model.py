@@ -171,7 +171,7 @@ class Model:
             chat_handler = None
             logits_all = False
 
-            if config.mode == "images":
+            if config.mode == "image":
                 mmproj = Path(Path(model).parent / "mmproj.gguf")
 
                 if not mmproj.exists():
@@ -331,7 +331,7 @@ class Model:
 
         prompt_text = self.replace_content(prompt_text)
 
-        if prompt_url and (config.mode == "images"):
+        if prompt_url and (config.mode == "image"):
             content_items = []
 
             if not prompt_url.startswith("http"):
