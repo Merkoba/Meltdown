@@ -221,11 +221,9 @@ Rename the clip model file to `mmproj.gguf`.
 
 Set `Mode` to `images`.
 
-Now you can use the `URL` field to include a link to an image.
+Now you can use the `File` field to include a URL or path to an image.
 
 And you can use the input to include text as normal.
-
-It supports remote (http) and local image paths.
 
 ---
 
