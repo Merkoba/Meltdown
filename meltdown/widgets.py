@@ -722,7 +722,6 @@ class Widgets:
 
     def set_url(self, text: str) -> None:
         self.url.set_text(text)
-        config.update("url")
 
     def set_model(self, m: str) -> None:
         widgets.model.set_text(m)

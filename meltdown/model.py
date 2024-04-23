@@ -351,7 +351,9 @@ class Model:
             messages.append({"role": "user", "content": prompt_text})
 
         files.add_system(config.system)
-        files.add_urls(config.url)
+
+        if prompt_url:
+            files.add_urls(prompt_url)
 
         now = utils.now()
         self.stream_date = now
