@@ -67,16 +67,19 @@ class App:
         # padding=[left, top, right, bottom])
 
         style.configure("Normal.TCombobox", foreground=self.theme.combobox_foreground)
+
         style.map(
             "Normal.TCombobox",
             fieldbackground=[("readonly", self.theme.combobox_background)],
             fieldforeground=[("readonly", self.theme.combobox_foreground)],
         )
+
         style.map(
             "Normal.TCombobox",
             selectbackground=[("readonly", "transparent")],
             selectforeground=[("readonly", self.theme.combobox_foreground)],
         )
+
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
@@ -87,6 +90,7 @@ class App:
             fieldbackground=[("readonly", self.theme.combobox_background)],
             fieldforeground=[("readonly", self.theme.combobox_foreground)],
         )
+
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=0)
 
@@ -95,9 +99,11 @@ class App:
         style.configure("Normal.TEntry", borderwidth=0)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor=self.theme.entry_insert)
+
         style.configure(
             "Normal.TEntry", selectbackground=self.theme.entry_selection_background
         )
+
         style.configure(
             "Normal.TEntry", selectforeground=self.theme.entry_selection_foreground
         )
