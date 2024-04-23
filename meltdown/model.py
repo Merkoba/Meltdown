@@ -161,9 +161,7 @@ class Model:
     def load_local(self, model: str, tab_id: str) -> bool:
         from .app import app
 
-        self.lock.acquire()
         self.model_loading = True
-
         now = utils.now()
         chat_format = config.format
 
@@ -180,6 +178,7 @@ class Model:
                         " It must be in the same directory as the model.",
                     )
 
+                    self.model_loading = False
                     return False
 
                 chat_handler = Llava15ChatHandler(clip_model_path=str(mmproj))
@@ -195,6 +194,7 @@ class Model:
                 display.print(emojis.text(msg, "local"), tab_id=tab_id)
 
             app.update()
+            self.lock.acquire()
 
             self.model = Llama(
                 model_path=model,
@@ -211,7 +211,7 @@ class Model:
             utils.error(e)
             display.print("Error: Model failed to load.")
             self.clear_model()
-            self.lock.release()
+            self.release_lock()
             return False
 
         files.add_model(model)
@@ -224,7 +224,7 @@ class Model:
             msg, now = utils.check_time("Model loaded", now)
             display.print(msg)
 
-        self.lock.release()
+        self.release_lock()
         return True
 
     def is_loading(self) -> bool:
@@ -270,8 +270,6 @@ class Model:
         self.stream_thread.start()
 
     def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
-        self.lock.acquire()
-        self.stream_loading = True
         widgets.show_model()
         prompt_text = prompt["text"].strip()
         prompt_file = prompt["file"].strip()
@@ -364,9 +362,14 @@ class Model:
         if stop_list:
             stop_list = [item.strip() for item in stop_list]
 
+        self.stream_loading = True
+        self.lock.acquire()
+
         if self.model_is_gpt(config.model):
             try:
                 if not self.gpt_client:
+                    self.stream_loading = False
+                    self.release_lock()
                     return
 
                 output = self.gpt_client.chat.completions.create(
@@ -389,7 +392,7 @@ class Model:
                     " or there is no internet connection."
                 )
                 self.stream_loading = False
-                self.lock.release()
+                self.release_lock()
                 return
         else:
             try:
@@ -406,18 +409,17 @@ class Model:
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
-                self.lock.release()
+                self.release_lock()
                 return
 
         self.stream_loading = False
 
         if self.stream_date != now:
+            self.release_lock()
             return
 
         if self.stop_stream_thread.is_set():
-            if self.lock.locked():
-                self.lock.release()
-
+            self.release_lock()
             return
 
         added_name = False
@@ -496,7 +498,7 @@ class Model:
             log_dict["assistant"] = "".join(tokens).strip()
             conversation.add(log_dict)
 
-        self.lock.release()
+        self.release_lock()
 
     def load_or_unload(self) -> None:
         if self.model_loading:
@@ -586,6 +588,10 @@ class Model:
                 return f"data:image/png;base64,{base64_data}"
         except BaseException:
             return None
+
+    def release_lock(self) -> None:
+        if self.lock.locked():
+            self.lock.release()
 
 
 model = Model()
