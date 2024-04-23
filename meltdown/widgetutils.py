@@ -13,7 +13,6 @@ from .framedata import FrameData
 def do_grid(
     widget: tk.Widget,
     col: int,
-    bottom_padding: Optional[int] = None,
     padx: Optional[int] = None,
     pady: Optional[int] = None,
 ) -> None:
@@ -25,8 +24,7 @@ def do_grid(
     if pady is not None:
         py = (pady, pady)
     else:
-        pady_bottom = bottom_padding if bottom_padding else 0
-        py = (app.theme.pady, pady_bottom)
+        py = (app.theme.pady, 0)
 
     widget.grid(row=0, column=col, padx=px, pady=py, sticky="ew")
 
@@ -35,21 +33,13 @@ def make_frame(
     parent: Optional[tk.Frame] = None,
     col: int = 0,
     row: Optional[int] = None,
-    bottom_padding: Optional[int] = None,
 ) -> FrameData:
     p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
-    padx = (app.theme.frame_padx, app.theme.frame_padx)
-
-    if bottom_padding is not None:
-        pady = (app.theme.frame_pady, bottom_padding)
-    else:
-        pady = (app.theme.frame_pady, 0)
-
+    padx = (app.theme.frame_padx, 0)
+    pady = (app.theme.frame_pady, 0)
     row = row if (row is not None) else FrameData.frame_number
-
     frame.grid(row=row, column=col, padx=padx, pady=pady, sticky="nsew")
-
     frame.bind("<Button-1>", lambda e: app.on_frame_click())
     frame.configure(background=app.theme.background_color)
     return FrameData(frame)
@@ -104,7 +94,6 @@ def make_button(
     frame_data: FrameData,
     text: str,
     command: Optional[Callable[..., Any]] = None,
-    bottom_padding: Optional[int] = None,
     bigger: bool = False,
     pady: Optional[int] = None,
     style: Optional[str] = None,
@@ -116,7 +105,6 @@ def make_button(
     do_grid(
         widget,
         col=frame_data.col,
-        bottom_padding=bottom_padding,
         pady=pady,
     )
     frame_data.col += 1

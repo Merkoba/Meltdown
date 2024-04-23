@@ -422,7 +422,7 @@ class Widgets:
             self.show_url()
 
         # Input
-        self.frame_data_input = widgetutils.make_frame(bottom_padding=10)
+        self.frame_data_input = widgetutils.make_frame()
         self.input_frame = self.frame_data_input.frame
 
         self.models_menu = Menu()
