@@ -84,7 +84,7 @@ class Config:
             "name_ai",
             "avatar_user",
             "avatar_ai",
-            "url",
+            "file",
         ]
 
         self.model_keys = [
