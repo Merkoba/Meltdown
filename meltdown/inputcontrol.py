@@ -170,14 +170,18 @@ class InputControl:
         if not tab:
             return
 
-        if text:
-            self.clear()
-            files.add_input(text)
-            self.add_words(text)
+        file = widgets.file.get().strip()
 
-            if args.commands:
-                if commands.exec(text):
-                    return
+        if text or file:
+            self.clear()
+
+            if text:
+                files.add_input(text)
+                self.add_words(text)
+
+                if args.commands:
+                    if commands.exec(text):
+                        return
 
             if tab.mode == "ignore":
                 return
@@ -187,9 +191,15 @@ class InputControl:
             if model.model_loading:
                 return
 
-            file = widgets.file.get().strip()
             widgets.file.clear(False)
             prompt = {"text": text, "file": file}
+
+            files.add_system(config.system)
+            files.add_model(config.model)
+
+            if file:
+                files.add_file(file)
+
             model.stream(prompt, tab.tab_id)
         elif scroll:
             display.toggle_scroll()

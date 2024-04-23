@@ -398,6 +398,12 @@ class Widgets:
         ToolTip(self.file_label, tips["file"])
         ToolTip(self.file, tips["file"])
 
+        self.recent_files_button = widgetutils.make_button(
+            frame_data_file, "Recent", lambda: self.show_recent_files()
+        )
+
+        ToolTip(self.recent_files_button, tips["recent_files_button"])
+
         self.browse_file_button = widgetutils.make_button(
             frame_data_file, "Browse", lambda: self.browse_file()
         )
@@ -650,8 +656,19 @@ class Widgets:
             only_items=only_items,
         )
 
+    def show_file_context(
+        self, event: Optional[Any] = None, only_items: bool = False
+    ) -> None:
+        self.show_menu_items(
+            "file",
+            "files",
+            lambda m: self.set_file(m),
+            event,
+            only_items=only_items,
+        )
+
     def show_file_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("file", "files", lambda s: self.set_url(s), event)
+        self.show_menu_items("file", "files", lambda s: self.set_file(s), event)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -715,7 +732,7 @@ class Widgets:
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
 
-    def set_url(self, text: str) -> None:
+    def set_file(self, text: str) -> None:
         self.file.set_text(text)
 
     def set_model(self, m: str) -> None:
@@ -855,6 +872,9 @@ class Widgets:
     def show_recent_models(self) -> None:
         self.show_model_context(only_items=True)
 
+    def show_recent_files(self) -> None:
+        self.show_file_context(only_items=True)
+
     def write_system_prompt(
         self, text: Optional[str] = None, max: bool = False
     ) -> None:
@@ -980,13 +1000,15 @@ class Widgets:
         file = filedialog.askopenfilename(initialdir=self.get_dir(None, "files"))
 
         if file:
-            self.set_url(file)
+            self.set_file(file)
 
     def show_file(self) -> None:
+        self.file.set_text("")
         self.file_frame.grid()
         widgets.file_enabled = True
 
     def hide_file(self) -> None:
+        self.file.set_text("")
         self.file_frame.grid_remove()
         widgets.file_enabled = False
 

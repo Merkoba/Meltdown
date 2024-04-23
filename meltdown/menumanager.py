@@ -15,9 +15,11 @@ class MainMenu:
         from .widgets import widgets
 
         self.menu = Menu()
+
         self.menu.add(
             text="System Prompt", command=lambda e: widgets.write_system_prompt()
         )
+
         self.menu.separator()
         self.menu.add(text="Configs", command=lambda e: config.menu())
         self.menu.add(text="Sessions", command=lambda e: session.menu())
@@ -48,9 +50,11 @@ class ModelMenu:
         from .widgets import widgets
 
         self.menu = Menu()
+
         self.menu.add(
             text="Recent Models", command=lambda e: widgets.show_recent_models()
         )
+
         self.menu.add(text="Browse Models", command=lambda e: widgets.browse_models())
         self.menu.add(text="Use GPT Model", command=lambda e: gpt_menu.show())
         self.menu.add(text="Set API Key", command=lambda e: model.set_api_key())
@@ -129,16 +133,21 @@ class TabMenu:
         self.menu_multi.add(text="Tab Left", command=lambda e: display.tab_left())
         self.menu_multi.add(text="Tab Right", command=lambda e: display.tab_right())
         self.menu_multi.separator()
+
         self.menu_multi.add(
             text="First Tab", command=lambda e: display.select_first_tab()
         )
+
         self.menu_multi.add(
             text="Last Tab", command=lambda e: display.select_last_tab()
         )
+
         self.menu_multi.separator()
+
         self.menu_multi.add(
             text="Active Tab", command=lambda e: display.select_active_tab()
         )
+
         self.menu_multi.separator()
         self.menu_multi.add(text="Rename", command=lambda e: display.rename_tab())
         self.menu_multi.add(text="Move", command=lambda e: display.move_tab())

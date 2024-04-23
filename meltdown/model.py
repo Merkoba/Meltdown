@@ -17,7 +17,6 @@ from .config import config
 from .widgets import widgets
 from .display import display
 from .session import session
-from .files import files
 from .tips import tips
 from .utils import utils
 from . import emojis
@@ -146,7 +145,6 @@ class Model:
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
-            files.add_model(config.model)
             msg = f"{config.model} is ready to use"
             display.print(emojis.text(msg, "remote"))
             self.update_icon()
@@ -214,7 +212,6 @@ class Model:
             self.release_lock()
             return False
 
-        files.add_model(model)
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
@@ -274,15 +271,8 @@ class Model:
         prompt_text = prompt["text"].strip()
         prompt_file = prompt["file"].strip()
 
-        if prompt_file:
-            files.add_file(prompt_file)
-
         if not self.model:
             utils.msg("Model not loaded")
-            return
-
-        if not prompt_text:
-            utils.msg("Empty prompt")
             return
 
         if config.before:
@@ -299,7 +289,6 @@ class Model:
         if tab.mode == "ignore":
             return
 
-        display.prompt("user", text=prompt_text, tab_id=tab_id)
         conversation = session.get_conversation(tab.conversation_id)
 
         if not conversation:
@@ -332,6 +321,9 @@ class Model:
 
         prompt_text = self.replace_content(prompt_text)
 
+        if (not prompt_text) and (not prompt_file):
+            return
+
         if prompt_file and (config.mode == "image"):
             content_items = []
 
@@ -346,13 +338,16 @@ class Model:
             content_items.append(
                 {"type": "image_url", "image_url": {"url": prompt_file}}
             )
+
+            if not prompt_text:
+                prompt_text = "Describe this image"
+
             content_items.append({"type": "text", "text": prompt_text})
             messages.append({"role": "user", "content": content_items})
         else:
             messages.append({"role": "user", "content": prompt_text})
 
-        files.add_system(config.system)
-
+        display.prompt("user", text=prompt_text, tab_id=tab_id)
         now = utils.now()
         self.stream_date = now
         stream = args.stream

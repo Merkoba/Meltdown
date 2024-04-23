@@ -511,6 +511,10 @@ class Commands:
                 "action": lambda a=None: app.program(mode="json", cmd=a),
                 "type": str,
             },
+            "submit": {
+                "help": "Submit the input",
+                "action": lambda a=None: inputcontrol.submit(),
+            },
         }
 
         for key in self.commands:
