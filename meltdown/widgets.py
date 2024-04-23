@@ -68,6 +68,7 @@ class Widgets:
         self.load_button = widgetutils.make_button(
             frame_data_model, "Load", lambda: self.load_or_unload()
         )
+
         ToolTip(self.load_button, tips["load_button"])
 
         self.model_menu_button = widgetutils.make_button(
@@ -402,6 +403,12 @@ class Widgets:
         ToolTip(self.url_label, tips["url"])
         ToolTip(self.url, tips["url"])
 
+        self.browse_file_button = widgetutils.make_button(
+            frame_data_url, "Browse", lambda: self.browse_file()
+        )
+
+        ToolTip(self.browse_file_button, tips["browse_file_button"])
+
         # Input
         self.frame_data_input = widgetutils.make_frame()
         self.input_frame = self.frame_data_input.frame
@@ -555,7 +562,7 @@ class Widgets:
         setup_entrybox("model", "Path to a model file")
         setup_entrybox("prepend", "Before")
         setup_entrybox("append", "After")
-        setup_entrybox("url", "Image URL")
+        setup_entrybox("url", "URL to a remote image or a local path")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
 
@@ -600,7 +607,6 @@ class Widgets:
         command: Callable[..., Any],
         event: Optional[Any] = None,
         only_items: bool = False,
-        browse: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
         items = files.get_list(key_list)[: args.max_list_items]
@@ -612,9 +618,6 @@ class Widgets:
                 return
         else:
             self.add_common_commands(menu, key_config)
-
-        if browse:
-            menu.add(text="Browse", command=lambda e: self.browse_file())
 
         if items:
             if not only_items:
@@ -665,9 +668,7 @@ class Widgets:
         self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
 
     def show_url_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items(
-            "url", "urls", lambda s: self.set_url(s), event, browse=True
-        )
+        self.show_menu_items("url", "urls", lambda s: self.set_url(s), event)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)

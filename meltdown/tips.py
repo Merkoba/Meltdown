@@ -111,4 +111,5 @@ tips = {
         " On image mode, the model is able to analyse image paths you give it"
     ),
     "url": "The URL or path of an image file",
+    "browse_file_button": "Browse for an image file to use",
 }
