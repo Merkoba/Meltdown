@@ -339,9 +339,6 @@ class Model:
                 {"type": "image_url", "image_url": {"url": prompt_file}}
             )
 
-            if not prompt_text:
-                prompt_text = "Describe this image"
-
             content_items.append({"type": "text", "text": prompt_text})
             messages.append({"role": "user", "content": content_items})
         else:

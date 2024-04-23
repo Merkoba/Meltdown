@@ -175,13 +175,16 @@ class InputControl:
         if text or file:
             self.clear()
 
-            if text:
-                files.add_input(text)
-                self.add_words(text)
+            if not text:
+                if config.mode == "image":
+                    text = "Describe this image"
 
-                if args.commands:
-                    if commands.exec(text):
-                        return
+            files.add_input(text)
+            self.add_words(text)
+
+            if args.commands:
+                if commands.exec(text):
+                    return
 
             if tab.mode == "ignore":
                 return
