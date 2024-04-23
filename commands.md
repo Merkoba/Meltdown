@@ -402,6 +402,12 @@ Browse the models
 
 ---
 
+>file
+
+Browse for a file
+
+---
+
 >palette
 
 Show the command palette
