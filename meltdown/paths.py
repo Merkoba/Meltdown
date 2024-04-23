@@ -17,8 +17,6 @@ class Paths:
         self.models = Path(config_dir, program, "models.json")
         self.inputs = Path(config_dir, program, "inputs.json")
         self.systems = Path(config_dir, program, "systems.json")
-        self.prepends = Path(config_dir, program, "prepends.json")
-        self.appends = Path(config_dir, program, "appends.json")
         self.urls = Path(config_dir, program, "urls.json")
         self.session = Path(config_dir, program, "session.json")
         self.commands = Path(config_dir, program, "commands.json")

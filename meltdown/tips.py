@@ -99,8 +99,8 @@ tips = {
         " Separate each item with ;;"
     ),
     "mlock": "Keep the model in memory",
-    "prepend": "Add this to the beginning of the prompt",
-    "append": "Add this to the end of the prompt",
+    "before": "Add this to the beginning of the prompt",
+    "after": "Add this to the end of the prompt",
     "input": (
         " This is a message that the AI will respond to."
         " Use the mousewheel or up/down arrows to cycle input history."

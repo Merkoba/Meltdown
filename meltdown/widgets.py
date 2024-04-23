@@ -308,22 +308,22 @@ class Widgets:
         ToolTip(self.top_k_label, tips["top_k"])
         ToolTip(self.top_k, tips["top_k"])
 
+        self.before_label = widgetutils.make_label(details_data, "Before")
+        self.before = widgetutils.make_entry(details_data, width=11)
+        self.before.bind_mousewheel()
+        ToolTip(self.before_label, tips["before"])
+        ToolTip(self.before, tips["before"])
+
+        self.after_label = widgetutils.make_label(details_data, "After")
+        self.after = widgetutils.make_entry(details_data, width=11)
+        self.after.bind_mousewheel()
+        ToolTip(self.after_label, tips["after"])
+        ToolTip(self.after, tips["after"])
+
         self.stop_label = widgetutils.make_label(details_data, "Stop")
         self.stop = widgetutils.make_entry(details_data, width=11)
         ToolTip(self.stop_label, tips["stop"])
         ToolTip(self.stop, tips["stop"])
-
-        self.prepend_label = widgetutils.make_label(details_data, "Prepend")
-        self.prepend = widgetutils.make_entry(details_data, width=11)
-        self.prepend.bind_mousewheel()
-        ToolTip(self.prepend_label, tips["prepend"])
-        ToolTip(self.prepend, tips["prepend"])
-
-        self.append_label = widgetutils.make_label(details_data, "Append")
-        self.append = widgetutils.make_entry(details_data, width=11)
-        self.append.bind_mousewheel()
-        ToolTip(self.append_label, tips["append"])
-        ToolTip(self.append, tips["append"])
 
         self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
 
@@ -415,8 +415,6 @@ class Widgets:
 
         self.models_menu = Menu()
         self.systems_menu = Menu()
-        self.prepends_menu = Menu()
-        self.appends_menu = Menu()
         self.urls_menu = Menu()
         self.inputs_menu = Menu()
         self.current_details = 1
@@ -560,8 +558,8 @@ class Widgets:
         setup_entrybox("top_k", "Int")
         setup_entrybox("top_p", "Float")
         setup_entrybox("model", "Path to a model file")
-        setup_entrybox("prepend", "Before")
-        setup_entrybox("append", "After")
+        setup_entrybox("before", "Text")
+        setup_entrybox("after", "Text")
         setup_entrybox("url", "URL to a remote image or a local path")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
@@ -572,8 +570,6 @@ class Widgets:
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
-        self.prepend.bind("<Button-3>", lambda e: self.show_prepend_menu(e))
-        self.append.bind("<Button-3>", lambda e: self.show_append_menu(e))
         self.url.bind("<Button-3>", lambda e: self.show_url_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
@@ -659,14 +655,6 @@ class Widgets:
             only_items=only_items,
         )
 
-    def show_prepend_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items(
-            "prepend", "prepends", lambda s: self.set_prepend(s), event
-        )
-
-    def show_append_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("append", "appends", lambda s: self.set_append(s), event)
-
     def show_url_menu(self, event: Optional[Any] = None) -> None:
         self.show_menu_items("url", "urls", lambda s: self.set_url(s), event)
 
@@ -686,7 +674,7 @@ class Widgets:
             if not widget:
                 return
 
-            if key not in ["model", "prepend", "append", "url", "input", "system"]:
+            if key not in ["model", "url", "input", "system"]:
                 widget.bind("<Button-3>", lambda e: show_menu(key, e))
 
         for key in config.defaults():
@@ -731,14 +719,6 @@ class Widgets:
 
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
-
-    def set_prepend(self, text: str) -> None:
-        self.prepend.set_text(text)
-        config.update("prepend")
-
-    def set_append(self, text: str) -> None:
-        self.append.set_text(text)
-        config.update("append")
 
     def set_url(self, text: str) -> None:
         self.url.set_text(text)
@@ -832,10 +812,6 @@ class Widgets:
 
         if widget == self.input:
             inputcontrol.show_menu()
-        elif widget == self.prepend:
-            self.show_prepend_menu()
-        elif widget == self.append:
-            self.show_append_menu()
         elif widget == self.url:
             self.show_url_menu()
         elif widget == self.model:

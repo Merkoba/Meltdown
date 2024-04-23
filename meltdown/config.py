@@ -36,8 +36,8 @@ class Config:
         self.default_history: int = 2
         self.default_seed: int = 326
         self.default_format: str = "auto"
-        self.default_prepend: str = ""
-        self.default_append: str = ""
+        self.default_before: str = ""
+        self.default_after: str = ""
         self.default_compact: bool = False
         self.default_output_font_size: int = 14
         self.default_threads: int = 6
@@ -61,8 +61,8 @@ class Config:
         self.history = self.default_history
         self.seed = self.default_seed
         self.format = self.default_format
-        self.prepend = self.default_prepend
-        self.append = self.default_append
+        self.before = self.default_before
+        self.after = self.default_after
         self.compact = self.default_compact
         self.output_font_size = self.default_output_font_size
         self.threads = self.default_threads
@@ -78,8 +78,8 @@ class Config:
 
         self.clearables = [
             "system",
-            "prepend",
-            "append",
+            "before",
+            "after",
             "input",
             "name_user",
             "name_ai",

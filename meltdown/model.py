@@ -284,11 +284,11 @@ class Model:
             utils.msg("Empty prompt")
             return
 
-        if config.prepend:
-            prompt_text = self.check_dot(config.prepend) + prompt_text
+        if config.before:
+            prompt_text = self.check_dot(config.before) + prompt_text
 
-        if config.append:
-            prompt_text = self.check_dot(prompt_text) + config.append
+        if config.after:
+            prompt_text = self.check_dot(prompt_text) + config.after
 
         tab = display.get_tab(tab_id)
 
@@ -351,8 +351,6 @@ class Model:
             messages.append({"role": "user", "content": prompt_text})
 
         files.add_system(config.system)
-        files.add_prepends(config.prepend)
-        files.add_appends(config.append)
         files.add_urls(config.url)
 
         now = utils.now()
