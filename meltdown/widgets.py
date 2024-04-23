@@ -30,6 +30,7 @@ class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
         self.canvas_scroll = 1
+        self.url_enabled = True
 
         self.cpu: tk.StringVar
         self.ram: tk.StringVar
@@ -311,6 +312,18 @@ class Widgets:
         ToolTip(self.stop_label, tips["stop"])
         ToolTip(self.stop, tips["stop"])
 
+        self.prepend_label = widgetutils.make_label(details_data, "Prepend")
+        self.prepend = widgetutils.make_entry(details_data, width=11)
+        self.prepend.bind_mousewheel()
+        ToolTip(self.prepend_label, tips["prepend"])
+        ToolTip(self.prepend, tips["prepend"])
+
+        self.append_label = widgetutils.make_label(details_data, "Append")
+        self.append = widgetutils.make_entry(details_data, width=11)
+        self.append.bind_mousewheel()
+        ToolTip(self.append_label, tips["append"])
+        ToolTip(self.append, tips["append"])
+
         self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
 
         self.mlock = widgetutils.make_combobox(
@@ -379,47 +392,15 @@ class Widgets:
         self.display_frame.grid_rowconfigure(0, weight=1)
         self.display_frame.grid_columnconfigure(0, weight=1)
 
-        # Addons
-        frame_data_addons = widgetutils.make_frame()
-        self.frame_data_addons = frame_data_addons
-        self.addons_frame = frame_data_addons.frame
-        self.prepend_label = widgetutils.make_label(frame_data_addons, "Prepend")
-        self.prepend = widgetutils.make_entry(frame_data_addons)
-        self.prepend.bind_mousewheel()
-        ToolTip(self.prepend_label, tips["prepend"])
-        ToolTip(self.prepend, tips["prepend"])
-
-        if not args.show_prepend:
-            self.prepend_label.grid_remove()
-            self.prepend.grid_remove()
-        else:
-            frame_data_addons.expand()
-
-        self.append_label = widgetutils.make_label(frame_data_addons, "Append")
-        self.append = widgetutils.make_entry(frame_data_addons)
-        self.append.bind_mousewheel()
-        ToolTip(self.append_label, tips["append"])
-        ToolTip(self.append, tips["append"])
-
-        if not args.show_append:
-            self.append_label.grid_remove()
-            self.append.grid_remove()
-        else:
-            frame_data_addons.expand()
-
-        self.url_label = widgetutils.make_label(frame_data_addons, "URL")
-
-        self.url = widgetutils.make_entry(frame_data_addons)
-
+        # URL
+        frame_data_url = widgetutils.make_frame()
+        self.url_frame = frame_data_url.frame
+        self.url_label = widgetutils.make_label(frame_data_url, "URL")
+        self.url = widgetutils.make_entry(frame_data_url)
+        frame_data_url.expand()
         self.url.bind_mousewheel()
         ToolTip(self.url_label, tips["url"])
         ToolTip(self.url, tips["url"])
-        self.url_col = frame_data_addons.col - 1
-
-        if not args.show_url:
-            self.hide_url()
-        else:
-            self.show_url()
 
         # Input
         self.frame_data_input = widgetutils.make_frame()
@@ -572,8 +553,8 @@ class Widgets:
         setup_entrybox("top_k", "Int")
         setup_entrybox("top_p", "Float")
         setup_entrybox("model", "Path to a model file")
-        setup_entrybox("prepend", "Add before")
-        setup_entrybox("append", "Add after")
+        setup_entrybox("prepend", "Before")
+        setup_entrybox("append", "After")
         setup_entrybox("url", "Image URL")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
@@ -1025,17 +1006,12 @@ class Widgets:
             self.set_url(file)
 
     def show_url(self) -> None:
-        if not args.show_url:
-            return
-
-        self.url_label.grid()
-        self.url.grid()
-        self.frame_data_addons.do_expand(self.url_col)
+        self.url_frame.grid()
+        widgets.url_enabled = True
 
     def hide_url(self) -> None:
-        self.url_label.grid_remove()
-        self.url.grid_remove()
-        self.frame_data_addons.do_unexpand(self.url_col)
+        self.url_frame.grid_remove()
+        widgets.url_enabled = False
 
     def check_mode(self) -> None:
         if config.mode == "image":

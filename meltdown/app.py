@@ -296,7 +296,7 @@ class App:
             args.compact_system,
             args.compact_details,
             args.compact_buttons,
-            args.compact_addons,
+            args.compact_url,
             args.compact_input,
         ]
 
@@ -316,15 +316,14 @@ class App:
             if args.compact_buttons:
                 widgets.buttons_frame.grid_remove()
 
-            if args.compact_addons:
-                widgets.addons_frame.grid_remove()
+            if args.compact_url:
+                widgets.url_frame.grid_remove()
 
             if args.compact_input:
                 widgets.input_frame.grid_remove()
         else:
             widgets.system_frame.grid_remove()
             widgets.details_frame.grid_remove()
-            widgets.addons_frame.grid_remove()
             self.system_frame_visible = False
 
         self.after_compact(True)
@@ -340,7 +339,10 @@ class App:
         widgets.system_frame.grid()
         widgets.details_frame.grid()
         widgets.buttons_frame.grid()
-        widgets.addons_frame.grid()
+
+        if widgets.url_enabled:
+            widgets.url_frame.grid()
+
         widgets.input_frame.grid()
         self.system_frame_visible = True
         self.after_compact(False)
@@ -551,7 +553,7 @@ class App:
         widgets.system_frame.grid_remove()
         widgets.details_frame.grid_remove()
         widgets.buttons_frame.grid_remove()
-        widgets.addons_frame.grid_remove()
+        widgets.url_frame.grid_remove()
         widgets.input_frame.grid_remove()
 
     def autorun(self) -> None:

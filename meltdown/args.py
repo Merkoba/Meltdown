@@ -79,7 +79,7 @@ class Args:
         self.compact_model = False
         self.compact_system = False
         self.compact_details = False
-        self.compact_addons = False
+        self.compact_url = False
         self.compact_buttons = False
         self.compact_input = False
         self.display = False
@@ -130,9 +130,6 @@ class Args:
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
-        self.show_prepend = True
-        self.show_append = True
-        self.show_url = True
 
     class Internal:
         title = app.manifest["title"]
@@ -300,18 +297,6 @@ class Args:
                 "action": "store_false",
                 "help": "No need to confirm clearing conversations",
             },
-            "no_prepend": {
-                "action": "store_false",
-                "help": "Don't show Prepend",
-            },
-            "no_append": {
-                "action": "store_false",
-                "help": "Don't show Append",
-            },
-            "no_url": {
-                "action": "store_false",
-                "help": "Don't show URL",
-            },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
                 "action": "store_true",
@@ -333,9 +318,9 @@ class Args:
                 "action": "store_true",
                 "help": "Hide the buttons frame in compact mode",
             },
-            "compact_addons": {
+            "compact_url": {
                 "action": "store_true",
-                "help": "Hide the addons frame in compact mode",
+                "help": "Hide the URL frame in compact mode",
             },
             "compact_input": {
                 "action": "store_true",
@@ -571,9 +556,6 @@ class Args:
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
-            ("no_prepend", "show_prepend"),
-            ("no_append", "show_append"),
-            ("no_url", "show_url"),
         ]
 
         for r_item in other_name:
@@ -621,7 +603,7 @@ class Args:
             "andchar",
             "compact_system",
             "compact_details",
-            "compact_addons",
+            "compact_url",
             "compact_buttons",
             "compact_model",
             "compact_input",
