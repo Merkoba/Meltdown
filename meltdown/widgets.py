@@ -473,7 +473,7 @@ class Widgets:
         self.check_details_buttons()
         self.setup_tooltips()
         self.disable_stop_button()
-        self.check_url()
+        self.check_mode()
 
         inputcontrol.focus()
 
@@ -1037,10 +1037,8 @@ class Widgets:
         self.url.grid_remove()
         self.frame_data_addons.do_unexpand(self.url_col)
 
-    def check_url(self) -> None:
-        url = self.url.get()
-
-        if url:
+    def check_mode(self) -> None:
+        if config.mode == "images":
             self.show_url()
         else:
             self.hide_url()

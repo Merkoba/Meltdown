@@ -395,7 +395,7 @@ class Config:
     def on_mode_change(self) -> None:
         from .widgets import widgets
 
-        widgets.check_url()
+        widgets.check_mode()
 
     def menu(self) -> None:
         from .dialogs import Dialog
