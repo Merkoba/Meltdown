@@ -853,3 +853,15 @@ Don't show the confirm dialog when closing tabs.
 >no-confirm-clear
 
 Don't show the confirm dialog when clearing conversations.
+
+---
+
+>no-fill-prompt
+
+Don't fill the text input prompt in some cases when empty.
+
+For example if in image mode, if the text is empty
+
+it is automatically filled with "Describe this image".
+
+This disables that behavior.

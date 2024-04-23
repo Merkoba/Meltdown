@@ -130,6 +130,7 @@ class Args:
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
+        self.fill_prompt = True
 
     class Internal:
         title = app.manifest["title"]
@@ -296,6 +297,10 @@ class Args:
             "no_confirm_clear": {
                 "action": "store_false",
                 "help": "No need to confirm clearing conversations",
+            },
+            "no_fill_prompt": {
+                "action": "store_false",
+                "help": "Don't fill the text input prompt in some cases when empty",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -556,6 +561,7 @@ class Args:
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
+            ("no_fill_prompt", "fill_prompt"),
         ]
 
         for r_item in other_name:

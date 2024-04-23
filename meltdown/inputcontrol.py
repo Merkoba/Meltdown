@@ -176,15 +176,17 @@ class InputControl:
             self.clear()
 
             if not text:
-                if config.mode == "image":
-                    text = "Describe this image"
+                if args.fill_prompt:
+                    if config.mode == "image":
+                        text = "Describe this image"
 
-            files.add_input(text)
-            self.add_words(text)
+            if text:
+                files.add_input(text)
+                self.add_words(text)
 
-            if args.commands:
-                if commands.exec(text):
-                    return
+                if args.commands:
+                    if commands.exec(text):
+                        return
 
             if tab.mode == "ignore":
                 return
