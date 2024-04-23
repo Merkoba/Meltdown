@@ -65,6 +65,14 @@ class Widgets:
         if not args.model_icon:
             self.model_icon.grid_remove()
 
+        self.mode = widgetutils.make_combobox(
+            frame_data_model,
+            width=app.theme.combobox_width_small,
+            values=["text", "image"],
+        )
+
+        ToolTip(self.mode, tips["mode"])
+
         self.load_button = widgetutils.make_button(
             frame_data_model, "Load", lambda: self.load_or_unload()
         )
@@ -260,17 +268,6 @@ class Widgets:
         self.format = widgetutils.make_combobox(details_data, values=values, width=17)
         ToolTip(self.format_label, tips["format"])
         ToolTip(self.format, tips["format"])
-
-        self.mode_label = widgetutils.make_label(details_data, "Mode")
-
-        self.mode = widgetutils.make_combobox(
-            details_data,
-            width=app.theme.combobox_width_small,
-            values=["text", "image"],
-        )
-
-        ToolTip(self.mode_label, tips["mode"])
-        ToolTip(self.mode, tips["mode"])
 
         self.temperature_label = widgetutils.make_label(details_data, "Temp")
 
