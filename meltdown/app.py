@@ -296,7 +296,7 @@ class App:
             args.compact_system,
             args.compact_details,
             args.compact_buttons,
-            args.compact_url,
+            args.compact_file,
             args.compact_input,
         ]
 
@@ -316,8 +316,8 @@ class App:
             if args.compact_buttons:
                 widgets.buttons_frame.grid_remove()
 
-            if args.compact_url:
-                widgets.url_frame.grid_remove()
+            if args.compact_file:
+                widgets.file_frame.grid_remove()
 
             if args.compact_input:
                 widgets.input_frame.grid_remove()
@@ -340,8 +340,8 @@ class App:
         widgets.details_frame.grid()
         widgets.buttons_frame.grid()
 
-        if widgets.url_enabled:
-            widgets.url_frame.grid()
+        if widgets.file_enabled:
+            widgets.file_frame.grid()
 
         widgets.input_frame.grid()
         self.system_frame_visible = True
@@ -553,7 +553,7 @@ class App:
         widgets.system_frame.grid_remove()
         widgets.details_frame.grid_remove()
         widgets.buttons_frame.grid_remove()
-        widgets.url_frame.grid_remove()
+        widgets.file_frame.grid_remove()
         widgets.input_frame.grid_remove()
 
     def autorun(self) -> None:

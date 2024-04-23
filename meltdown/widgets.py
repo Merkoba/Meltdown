@@ -30,7 +30,7 @@ class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
         self.canvas_scroll = 1
-        self.url_enabled = True
+        self.file_enabled = True
 
         self.cpu: tk.StringVar
         self.ram: tk.StringVar
@@ -393,18 +393,18 @@ class Widgets:
         self.display_frame.grid_rowconfigure(0, weight=1)
         self.display_frame.grid_columnconfigure(0, weight=1)
 
-        # URL
-        frame_data_url = widgetutils.make_frame()
-        self.url_frame = frame_data_url.frame
-        self.url_label = widgetutils.make_label(frame_data_url, "URL")
-        self.url = widgetutils.make_entry(frame_data_url)
-        frame_data_url.expand()
-        self.url.bind_mousewheel()
-        ToolTip(self.url_label, tips["url"])
-        ToolTip(self.url, tips["url"])
+        # File
+        frame_data_file = widgetutils.make_frame()
+        self.file_frame = frame_data_file.frame
+        self.file_label = widgetutils.make_label(frame_data_file, "File")
+        self.file = widgetutils.make_entry(frame_data_file)
+        frame_data_file.expand()
+        self.file.bind_mousewheel()
+        ToolTip(self.file_label, tips["file"])
+        ToolTip(self.file, tips["file"])
 
         self.browse_file_button = widgetutils.make_button(
-            frame_data_url, "Browse", lambda: self.browse_file()
+            frame_data_file, "Browse", lambda: self.browse_file()
         )
 
         ToolTip(self.browse_file_button, tips["browse_file_button"])
@@ -415,7 +415,7 @@ class Widgets:
 
         self.models_menu = Menu()
         self.systems_menu = Menu()
-        self.urls_menu = Menu()
+        self.files_menu = Menu()
         self.inputs_menu = Menu()
         self.current_details = 1
 
@@ -560,7 +560,7 @@ class Widgets:
         setup_entrybox("model", "Path to a model file")
         setup_entrybox("before", "Text")
         setup_entrybox("after", "Text")
-        setup_entrybox("url", "URL to a remote image or a local path")
+        setup_entrybox("file", "URL to a remote file or a local path")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
 
@@ -570,7 +570,7 @@ class Widgets:
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
-        self.url.bind("<Button-3>", lambda e: self.show_url_menu(e))
+        self.file.bind("<Button-3>", lambda e: self.show_file_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
@@ -655,8 +655,8 @@ class Widgets:
             only_items=only_items,
         )
 
-    def show_url_menu(self, event: Optional[Any] = None) -> None:
-        self.show_menu_items("url", "urls", lambda s: self.set_url(s), event)
+    def show_file_menu(self, event: Optional[Any] = None) -> None:
+        self.show_menu_items("file", "files", lambda s: self.set_url(s), event)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -674,7 +674,7 @@ class Widgets:
             if not widget:
                 return
 
-            if key not in ["model", "url", "input", "system"]:
+            if key not in ["model", "file", "input", "system"]:
                 widget.bind("<Button-3>", lambda e: show_menu(key, e))
 
         for key in config.defaults():
@@ -721,7 +721,7 @@ class Widgets:
         widget.state(["disabled"])
 
     def set_url(self, text: str) -> None:
-        self.url.set_text(text)
+        self.file.set_text(text)
 
     def set_model(self, m: str) -> None:
         widgets.model.set_text(m)
@@ -811,8 +811,8 @@ class Widgets:
 
         if widget == self.input:
             inputcontrol.show_menu()
-        elif widget == self.url:
-            self.show_url_menu()
+        elif widget == self.file:
+            self.show_file_menu()
         elif widget == self.model:
             self.show_model_context()
 
@@ -927,7 +927,7 @@ class Widgets:
         )
 
     def check_move_to_end(self, key: str) -> None:
-        if key in ["model", "url"]:
+        if key in ["model", "file"]:
             widget = widgets.get_widget(key)
 
             if not widget:
@@ -982,24 +982,24 @@ class Widgets:
             self.set_model(file)
 
     def browse_file(self) -> None:
-        file = filedialog.askopenfilename(initialdir=self.get_dir(None, "urls"))
+        file = filedialog.askopenfilename(initialdir=self.get_dir(None, "files"))
 
         if file:
             self.set_url(file)
 
-    def show_url(self) -> None:
-        self.url_frame.grid()
-        widgets.url_enabled = True
+    def show_file(self) -> None:
+        self.file_frame.grid()
+        widgets.file_enabled = True
 
-    def hide_url(self) -> None:
-        self.url_frame.grid_remove()
-        widgets.url_enabled = False
+    def hide_file(self) -> None:
+        self.file_frame.grid_remove()
+        widgets.file_enabled = False
 
     def check_mode(self) -> None:
         if config.mode == "image":
-            self.show_url()
+            self.show_file()
         else:
-            self.hide_url()
+            self.hide_file()
 
 
 widgets: Widgets = Widgets()

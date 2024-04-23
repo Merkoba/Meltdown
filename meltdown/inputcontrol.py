@@ -187,9 +187,9 @@ class InputControl:
             if model.model_loading:
                 return
 
-            url = widgets.url.get().strip()
-            widgets.url.clear(False)
-            prompt = {"text": text, "url": url}
+            file = widgets.file.get().strip()
+            widgets.file.clear(False)
+            prompt = {"text": text, "file": file}
             model.stream(prompt, tab.tab_id)
         elif scroll:
             display.toggle_scroll()

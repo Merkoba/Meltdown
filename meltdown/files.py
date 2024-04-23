@@ -16,12 +16,12 @@ class Files:
         self.models_list: List[str] = []
         self.inputs_list: List[str] = []
         self.systems_list: List[str] = []
-        self.urls_list: List[str] = []
+        self.files_list: List[str] = []
 
         self.models_loaded = False
         self.inputs_loaded = False
         self.systems_loaded = False
-        self.urls_loaded = False
+        self.files_loaded = False
 
     def save(self, path: Path, dictionary: Any) -> None:
         with open(path, "w", encoding="utf-8") as file:
@@ -45,8 +45,7 @@ class Files:
 
             try:
                 items = json.load(file)
-            except BaseException as e:
-                utils.error(e)
+            except BaseException:
                 items = []
 
                 if hasattr(self, name):
@@ -66,8 +65,8 @@ class Files:
     def add_system(self, text: str) -> None:
         self.add_to_list("systems", text)
 
-    def add_urls(self, text: str) -> None:
-        self.add_to_list("urls", text)
+    def add_file(self, text: str) -> None:
+        self.add_to_list("files", text)
 
     def add_to_list(self, key: str, text: str) -> None:
         if not text:

@@ -79,7 +79,7 @@ class Args:
         self.compact_model = False
         self.compact_system = False
         self.compact_details = False
-        self.compact_url = False
+        self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
         self.display = False
@@ -318,7 +318,7 @@ class Args:
                 "action": "store_true",
                 "help": "Hide the buttons frame in compact mode",
             },
-            "compact_url": {
+            "compact_file": {
                 "action": "store_true",
                 "help": "Hide the URL frame in compact mode",
             },
@@ -603,7 +603,7 @@ class Args:
             "andchar",
             "compact_system",
             "compact_details",
-            "compact_url",
+            "compact_file",
             "compact_buttons",
             "compact_model",
             "compact_input",

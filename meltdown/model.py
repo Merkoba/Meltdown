@@ -274,7 +274,10 @@ class Model:
         self.stream_loading = True
         widgets.show_model()
         prompt_text = prompt["text"].strip()
-        prompt_url = prompt["url"].strip()
+        prompt_file = prompt["file"].strip()
+
+        if prompt_file:
+            files.add_file(prompt_file)
 
         if not self.model:
             utils.msg("Model not loaded")
@@ -331,19 +334,19 @@ class Model:
 
         prompt_text = self.replace_content(prompt_text)
 
-        if prompt_url and (config.mode == "image"):
+        if prompt_file and (config.mode == "image"):
             content_items = []
 
-            if not prompt_url.startswith("http"):
-                converted = self.image_to_base64(prompt_url)
+            if not prompt_file.startswith("http"):
+                converted = self.image_to_base64(prompt_file)
 
                 if not converted:
                     return
 
-                prompt_url = converted
+                prompt_file = converted
 
             content_items.append(
-                {"type": "image_url", "image_url": {"url": prompt_url}}
+                {"type": "image_url", "image_url": {"url": prompt_file}}
             )
             content_items.append({"type": "text", "text": prompt_text})
             messages.append({"role": "user", "content": content_items})
@@ -351,9 +354,6 @@ class Model:
             messages.append({"role": "user", "content": prompt_text})
 
         files.add_system(config.system)
-
-        if prompt_url:
-            files.add_urls(prompt_url)
 
         now = utils.now()
         self.stream_date = now
