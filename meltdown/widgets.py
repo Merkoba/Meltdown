@@ -953,8 +953,14 @@ class Widgets:
 
         more_menu.show(event)
 
-    def get_dir(self, what: str, list: str) -> Optional[str]:
-        items = [getattr(config, what)] + files.get_list(list)
+    def get_dir(self, what: Optional[str], list: Optional[str]) -> Optional[str]:
+        items = []
+
+        if what:
+            items.append(getattr(config, what))
+
+        if list:
+            items.extend(files.get_list(list))
 
         for item in items:
             path = Path(item)
@@ -976,7 +982,7 @@ class Widgets:
             self.set_model(file)
 
     def browse_file(self) -> None:
-        file = filedialog.askopenfilename(initialdir=self.get_dir("url", "urls"))
+        file = filedialog.askopenfilename(initialdir=self.get_dir(None, "urls"))
 
         if file:
             self.set_url(file)
