@@ -107,7 +107,7 @@ tips = {
         " You can also use commands here. See /help"
     ),
     "mode": (
-        "How to handle this model. Either text or image mode."
+        "The mode of the model. Either text or image mode."
         " On image mode, the model is able to analyse image paths you give it"
     ),
     "file": "The URL or path to a file",
