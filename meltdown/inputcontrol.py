@@ -7,7 +7,6 @@ from .tooltips import ToolTip
 from .commands import commands
 from .config import config
 from .entrybox import EntryBox
-from .app import app
 from .args import args
 from .paths import paths
 from .dialogs import Dialog
@@ -53,10 +52,7 @@ class InputControl:
             ToolTip(write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
-            frame_data,
-            "Submit",
-            lambda: self.submit(scroll=False),
-            right_padding=app.theme.right_padding,
+            frame_data, "Submit", lambda: self.submit(scroll=False)
         )
 
         ToolTip(submit_button, tips["submit_button"])

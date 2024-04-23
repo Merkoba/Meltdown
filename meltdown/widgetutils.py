@@ -13,19 +13,14 @@ from .framedata import FrameData
 def do_grid(
     widget: tk.Widget,
     col: int,
-    right_padding: Optional[int] = None,
     bottom_padding: Optional[int] = None,
     padx: Optional[int] = None,
     pady: Optional[int] = None,
 ) -> None:
     if padx is not None:
-        if right_padding:
-            px = (padx, right_padding)
-        else:
-            px = (padx, padx)
+        px = (padx, padx)
     else:
-        padx_right = right_padding if right_padding else 0
-        px = (app.theme.padx, padx_right)
+        px = (app.theme.padx, 0)
 
     if pady is not None:
         py = (pady, pady)
@@ -80,13 +75,12 @@ def make_entry(
     frame_data: FrameData,
     value: str = "",
     width: Optional[int] = None,
-    right_padding: Optional[int] = None,
 ) -> EntryBox:
     w = width if width else app.theme.entry_width
     widget = EntryBox(
         frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry"
     )
-    do_grid(widget, col=frame_data.col, right_padding=right_padding)
+    do_grid(widget, col=frame_data.col)
     frame_data.col += 1
 
     if value:
@@ -110,7 +104,6 @@ def make_button(
     frame_data: FrameData,
     text: str,
     command: Optional[Callable[..., Any]] = None,
-    right_padding: Optional[int] = None,
     bottom_padding: Optional[int] = None,
     bigger: bool = False,
     pady: Optional[int] = None,
@@ -123,7 +116,6 @@ def make_button(
     do_grid(
         widget,
         col=frame_data.col,
-        right_padding=right_padding,
         bottom_padding=bottom_padding,
         pady=pady,
     )
@@ -134,7 +126,6 @@ def make_button(
 def make_label(
     frame_data: FrameData,
     text: str,
-    right_padding: Optional[int] = None,
     padx: Optional[int] = None,
     pady: Optional[int] = None,
     colons: bool = True,
@@ -144,9 +135,7 @@ def make_label(
     widget.configure(
         background=app.theme.background_color, foreground=app.theme.foreground_color
     )
-    do_grid(
-        widget, col=frame_data.col, right_padding=right_padding, padx=padx, pady=pady
-    )
+    do_grid(widget, col=frame_data.col, padx=padx, pady=pady)
     frame_data.col += 1
     return widget
 
@@ -155,7 +144,6 @@ def make_combobox(
     frame_data: FrameData,
     values: Optional[List[Any]] = None,
     width: Optional[int] = None,
-    right_padding: Optional[int] = None,
 ) -> ttk.Combobox:
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
@@ -173,7 +161,7 @@ def make_combobox(
     widget.bind_class("TCombobox", "<Button-4>", lambda e: "break")
     widget.bind_class("TCombobox", "<Button-5>", lambda e: "break")
 
-    do_grid(widget, col=frame_data.col, right_padding=right_padding)
+    do_grid(widget, col=frame_data.col)
     frame_data.col += 1
     return widget
 

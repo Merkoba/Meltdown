@@ -332,6 +332,8 @@ class Config:
 
         if key == "output_font_size":
             self.on_output_font_change()
+        elif key == "mode":
+            self.on_mode_change()
 
         if key in self.model_keys:
             model.unload()
@@ -357,6 +359,7 @@ class Config:
                     setattr(self, key, default)
 
             self.on_output_font_change()
+            self.on_mode_change()
             widgets.fill()
             app.check_compact()
             self.save()
@@ -388,6 +391,11 @@ class Config:
         from .display import display
 
         display.update_font()
+
+    def on_mode_change(self) -> None:
+        from .widgets import widgets
+
+        widgets.check_url()
 
     def menu(self) -> None:
         from .dialogs import Dialog

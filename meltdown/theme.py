@@ -133,8 +133,6 @@ class Theme:
         self.combobox_width = 11
         self.combobox_width_small = 7
 
-        self.right_padding = 11
-
         self.find_background = "#6A7B83"
         self.find_match_background = "#C3C3C3"
         self.find_match_foreground = "black"

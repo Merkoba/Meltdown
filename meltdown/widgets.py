@@ -46,8 +46,6 @@ class Widgets:
         self.gpu_temp_text: tk.Label
 
     def make(self) -> None:
-        right_padding = app.theme.right_padding
-
         # Model
         app.main_frame.grid_columnconfigure(FrameData.frame_number, weight=1)
         frame_data_model = widgetutils.make_frame()
@@ -80,10 +78,7 @@ class Widgets:
         ToolTip(self.model_menu_button, tips["model_menu"])
 
         self.main_menu_button = widgetutils.make_button(
-            frame_data_model,
-            "Menu",
-            lambda e: self.show_main_menu(e),
-            right_padding=right_padding,
+            frame_data_model, "Menu", lambda e: self.show_main_menu(e)
         )
 
         ToolTip(self.main_menu_button, tips["main_menu"])
@@ -102,11 +97,6 @@ class Widgets:
         ]
 
         self.system_disabled = (not args.system) or (not any(monitor_args))
-
-        if self.system_disabled:
-            rpadding = right_padding
-        else:
-            rpadding = 0
 
         if not self.system_disabled:
             monitors = []
@@ -130,17 +120,10 @@ class Widgets:
                 monitors.append("gpu_temp")
 
             def make_monitor(name: str, label_text: str) -> None:
-                if name == monitors[-1]:
-                    rightpad = right_padding
-                else:
-                    rightpad = None
-
                 label = widgetutils.make_label(frame_data_system, label_text)
                 label.configure(cursor="hand2")
                 setattr(self, name, tk.StringVar())
-                monitor_text = widgetutils.make_label(
-                    frame_data_system, "", padx=0, right_padding=rightpad
-                )
+                monitor_text = widgetutils.make_label(frame_data_system, "", padx=0)
                 monitor_text.configure(textvariable=getattr(self, name))
                 monitor_text.configure(cursor="hand2")
                 setattr(self, f"{name}_text", monitor_text)
@@ -194,7 +177,6 @@ class Widgets:
             right_frame,
             ">",
             lambda: widgets.details_right(),
-            right_padding=right_padding,
             style="alt",
         )
 
@@ -370,22 +352,17 @@ class Widgets:
         frame_data_buttons.expand()
         ToolTip(self.clear_button, tips["clear_button"])
 
-        rpadding = right_padding if (not args.more_button) else 0
-
         self.top_button = widgetutils.make_button(
-            frame_data_buttons, "Top", lambda: display.to_top(), right_padding=rpadding
+            frame_data_buttons, "Top", lambda: display.to_top()
         )
 
         frame_data_buttons.expand()
         ToolTip(self.top_button, tips["top_button"])
 
-        rpadding = right_padding if args.more_button else 0
-
         self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
             "More",
             lambda e: self.show_more_menu(e),
-            right_padding=rpadding,
         )
 
         ToolTip(self.more_menu_button, tips["more_menu"])
@@ -404,15 +381,10 @@ class Widgets:
 
         # Addons
         frame_data_addons = widgetutils.make_frame()
+        self.frame_data_addons = frame_data_addons
         self.addons_frame = frame_data_addons.frame
-
         self.prepend_label = widgetutils.make_label(frame_data_addons, "Prepend")
-
-        rpadding = (
-            right_padding if ((not args.show_append) and (not args.show_url)) else 0
-        )
-
-        self.prepend = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
+        self.prepend = widgetutils.make_entry(frame_data_addons)
         self.prepend.bind_mousewheel()
         ToolTip(self.prepend_label, tips["prepend"])
         ToolTip(self.prepend, tips["prepend"])
@@ -424,9 +396,7 @@ class Widgets:
             frame_data_addons.expand()
 
         self.append_label = widgetutils.make_label(frame_data_addons, "Append")
-        rpadding = right_padding if (not args.show_url) else 0
-
-        self.append = widgetutils.make_entry(frame_data_addons, right_padding=rpadding)
+        self.append = widgetutils.make_entry(frame_data_addons)
         self.append.bind_mousewheel()
         ToolTip(self.append_label, tips["append"])
         ToolTip(self.append, tips["append"])
@@ -439,19 +409,17 @@ class Widgets:
 
         self.url_label = widgetutils.make_label(frame_data_addons, "URL")
 
-        self.url = widgetutils.make_entry(
-            frame_data_addons, right_padding=right_padding
-        )
+        self.url = widgetutils.make_entry(frame_data_addons)
 
         self.url.bind_mousewheel()
         ToolTip(self.url_label, tips["url"])
         ToolTip(self.url, tips["url"])
+        self.url_col = frame_data_addons.col - 1
 
         if not args.show_url:
-            self.url_label.grid_remove()
-            self.url.grid_remove()
+            self.hide_url()
         else:
-            frame_data_addons.expand()
+            self.show_url()
 
         # Input
         self.frame_data_input = widgetutils.make_frame(bottom_padding=10)
@@ -505,6 +473,7 @@ class Widgets:
         self.check_details_buttons()
         self.setup_tooltips()
         self.disable_stop_button()
+        self.check_url()
 
         inputcontrol.focus()
 
@@ -1054,6 +1023,27 @@ class Widgets:
 
         if file:
             self.set_url(file)
+
+    def show_url(self) -> None:
+        if not args.show_url:
+            return
+
+        self.url_label.grid()
+        self.url.grid()
+        self.frame_data_addons.do_expand(self.url_col)
+
+    def hide_url(self) -> None:
+        self.url_label.grid_remove()
+        self.url.grid_remove()
+        self.frame_data_addons.do_unexpand(self.url_col)
+
+    def check_url(self) -> None:
+        url = self.url.get()
+
+        if url:
+            self.show_url()
+        else:
+            self.hide_url()
 
 
 widgets: Widgets = Widgets()

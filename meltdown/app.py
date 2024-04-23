@@ -29,7 +29,7 @@ class App:
         self.root = tk.Tk(className=self.manifest["program"])
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)
-        self.main_frame.grid(row=0, column=0, sticky="nsew")
+        self.main_frame.grid(row=0, column=0, sticky="nsew", padx=(0, 10), pady=0)
         self.main_frame.configure(background="red")
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)

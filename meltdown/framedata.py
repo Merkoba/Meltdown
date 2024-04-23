@@ -12,3 +12,9 @@ class FrameData:
 
     def expand(self) -> None:
         self.frame.grid_columnconfigure(self.col - 1, weight=1)
+
+    def do_expand(self, col: int) -> None:
+        self.frame.grid_columnconfigure(col, weight=1)
+
+    def do_unexpand(self, col: int) -> None:
+        self.frame.grid_columnconfigure(col, weight=0)

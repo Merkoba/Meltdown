@@ -140,7 +140,7 @@ class Book(tk.Frame):
             padx = (0, 0)
             pady = (0, 0)
         else:
-            padx = (app.theme.padx, app.theme.right_padding)
+            padx = (app.theme.padx, 0)
             pady = (app.theme.pady, 0)
 
         self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
