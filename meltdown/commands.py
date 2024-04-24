@@ -526,6 +526,10 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "toggletabs": {
+                "help": "Toggle tabs visibility",
+                "action": lambda a=None: display.toggle_tabs(),
+            },
         }
 
         for key in self.commands:

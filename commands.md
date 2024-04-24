@@ -561,3 +561,15 @@ Submit the input
 >change
 
 Set a model by its name
+
+---
+
+>mode
+
+Change the model mode
+
+---
+
+>toggletabs
+
+Toggle tabs visibility

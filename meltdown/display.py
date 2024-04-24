@@ -1006,5 +1006,8 @@ class Display:
     def move_tab_right(self) -> None:
         self.book.move_right()
 
+    def toggle_tabs(self) -> None:
+        self.book.toggle_tabs()
+
 
 display = Display()

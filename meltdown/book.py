@@ -96,6 +96,8 @@ class Book(tk.Frame):
         super().__init__(parent)
         self.parent = parent
         self.pages: List[Page] = []
+        self.tabs_enabled = True
+        self.tabs_manual = False
 
         self.tabs_frame = tk.Frame(self)
         self.tabs_canvas = tk.Canvas(
@@ -613,8 +615,29 @@ class Book(tk.Frame):
             page.tab.label.configure(font=app.theme.font("tab"))
 
     def check_hide_tabs(self) -> None:
-        if not args.tabs_always:
-            if len(self.pages) <= 1:
-                self.tabs_frame.grid_remove()
-            else:
-                self.tabs_frame.grid()
+        if self.tabs_manual:
+            return
+
+        if args.tabs_always:
+            return
+
+        if len(self.pages) <= 1:
+            self.hide_tabs()
+        else:
+            self.show_tabs()
+
+    def hide_tabs(self) -> None:
+        self.tabs_enabled = False
+        self.tabs_frame.grid_remove()
+
+    def show_tabs(self) -> None:
+        self.tabs_enabled = True
+        self.tabs_frame.grid()
+
+    def toggle_tabs(self) -> None:
+        self.tabs_manual = True
+
+        if self.tabs_enabled:
+            self.hide_tabs()
+        else:
+            self.show_tabs()
