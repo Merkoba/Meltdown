@@ -77,7 +77,11 @@ class Commands:
                         if self.aliases.get(item.cmd):
                             self.exec(self.aliases[item.cmd], queue)
                         else:
-                            self.try_to_run(item.cmd, item.argument)
+                            if not self.try_to_run(item.cmd, item.argument):
+                                similar = self.get_similar_alias(item.cmd)
+
+                                if similar:
+                                    self.exec(self.aliases[similar], queue)
 
                     if not queue.items:
                         self.queues.remove(queue)
@@ -633,18 +637,27 @@ class Commands:
 
         files.save(paths.commands, cmds)
 
-    def try_to_run(self, cmd: str, argument: str) -> None:
+    def try_to_run(self, cmd: str, argument: str) -> bool:
         # Check normal
         for key in self.commands.keys():
             if cmd == key:
                 self.run(key, argument)
-                return
+                return True
 
         # Similarity on keys
         for key in self.commands.keys():
             if utils.check_match(cmd, key):
                 self.run(key, argument)
-                return
+                return True
+
+        return False
+
+    def get_similar_alias(self, cmd: str) -> Optional[str]:
+        for key in self.aliases.keys():
+            if utils.check_match(cmd, key):
+                return key
+
+        return None
 
     def help_command(self) -> None:
         from .display import display
