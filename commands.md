@@ -549,3 +549,15 @@ Open a program using the text
 >progjson
 
 Open a program using the JSON
+
+---
+
+>submit
+
+Submit the input
+
+---
+
+>change
+
+Set a model by its name

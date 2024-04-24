@@ -515,6 +515,11 @@ class Commands:
                 "help": "Submit the input",
                 "action": lambda a=None: inputcontrol.submit(),
             },
+            "change": {
+                "help": "Set a model by its name",
+                "action": lambda a=None: widgets.change_model(a),
+                "type": str,
+            },
         }
 
         for key in self.commands:

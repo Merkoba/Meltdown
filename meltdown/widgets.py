@@ -1018,5 +1018,20 @@ class Widgets:
         else:
             self.hide_file()
 
+    def change_model(self, name: str) -> None:
+        if not name:
+            return
+
+        name = name.lower()
+        list = files.get_list("models")
+
+        if not list:
+            return
+
+        for item in list:
+            if name in item.lower():
+                self.set_model(item)
+                return
+
 
 widgets: Widgets = Widgets()
