@@ -23,6 +23,7 @@ from .framedata import FrameData
 from .tips import tips
 from .files import files
 from .utils import utils
+from .model import model
 from . import widgetutils
 
 
@@ -643,8 +644,6 @@ class Widgets:
     def show_model_context(
         self, event: Optional[Any] = None, only_items: bool = False
     ) -> None:
-        from .model import model
-
         if model.model_loading:
             return
 
@@ -736,19 +735,15 @@ class Widgets:
         self.file.set_text(text)
 
     def set_model(self, m: str) -> None:
-        widgets.model.set_text(m)
-        config.update("model")
+        config.set("model", m)
 
     def stop_stream(self) -> None:
-        from .model import model
         from .display import display
 
         display.to_bottom()
         model.stop_stream()
 
     def load_or_unload(self) -> None:
-        from .model import model
-
         model.load_or_unload()
 
     def copy(self, key: str) -> None:
@@ -796,7 +791,6 @@ class Widgets:
         return focused == self.model
 
     def esckey(self) -> None:
-        from .model import model
         from .display import display
 
         if Dialog.current_dialog or Menu.current_menu:
@@ -986,8 +980,6 @@ class Widgets:
         return None
 
     def browse_models(self) -> None:
-        from .model import model
-
         if model.model_loading:
             return
 
@@ -1032,6 +1024,12 @@ class Widgets:
             if name in item.lower():
                 self.set_model(item)
                 return
+
+    def change_mode(self, what: str) -> None:
+        if what not in config.modes:
+            return
+
+        config.set("mode", what)
 
 
 widgets: Widgets = Widgets()

@@ -205,6 +205,7 @@ class InputControl:
             if file:
                 files.add_file(file)
 
+            widgets.show_model()
             model.stream(prompt, tab.tab_id)
         elif scroll:
             display.toggle_scroll()

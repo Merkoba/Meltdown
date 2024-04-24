@@ -97,6 +97,8 @@ class Config:
             "mode",
         ]
 
+        self.modes = ["text", "image"]
+
         self.validations: Dict[str, Callable[..., Any]] = {
             "history": lambda x: max(0, x),
         }

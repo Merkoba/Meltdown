@@ -14,7 +14,6 @@ from openai import OpenAI  # type: ignore
 from .app import app
 from .args import args
 from .config import config
-from .widgets import widgets
 from .display import display
 from .session import session
 from .tips import tips
@@ -267,9 +266,11 @@ class Model:
         self.stream_thread.start()
 
     def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
-        widgets.show_model()
         prompt_text = prompt["text"].strip()
         prompt_file = prompt["file"].strip()
+
+        if (not prompt_text) and (not prompt_file):
+            return
 
         if not self.model:
             utils.msg("Model not loaded")
@@ -502,6 +503,8 @@ class Model:
             self.load()
 
     def update_icon(self) -> None:
+        from .widgets import widgets
+
         if not app.exists():
             return
 

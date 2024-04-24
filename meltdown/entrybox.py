@@ -65,6 +65,7 @@ class EntryBox(ttk.Entry):
         return self.get()
 
     def clear(self, focus: bool = True) -> None:
+        self.placeholder_active = False
         self.set_text("")
 
         if focus:
@@ -142,10 +143,9 @@ class EntryBox(ttk.Entry):
 
         self.check_placeholder()
 
-    def enable_placeholder(self, force: bool = False) -> None:
-        if not force:
-            if self.placeholder_active:
-                return
+    def enable_placeholder(self) -> None:
+        if self.placeholder_active:
+            return
 
         self.placeholder_active = True
         self.set_text(self.placeholder, check_placeholder=False)
@@ -168,15 +168,13 @@ class EntryBox(ttk.Entry):
 
         text = self.text_var.get()
 
-        if (not self.focused) and (not text):
-            self.enable_placeholder(True)
-        elif self.focused:
+        if self.focused:
             self.disable_placeholder()
         elif self.placeholder_active:
             if text != self.placeholder:
                 self.disable_placeholder()
         elif not text:
-            self.enable_placeholder(True)
+            self.enable_placeholder()
 
     def on_write(self, *args: Any) -> None:
         self.check_placeholder()

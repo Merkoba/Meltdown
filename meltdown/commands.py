@@ -520,6 +520,12 @@ class Commands:
                 "action": lambda a=None: widgets.change_model(a),
                 "type": str,
             },
+            "mode": {
+                "help": "Change the model mode",
+                "action": lambda a=None: widgets.change_mode(a),
+                "type": str,
+                "arg_req": True,
+            },
         }
 
         for key in self.commands:
