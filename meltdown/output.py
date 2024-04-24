@@ -235,10 +235,12 @@ class Output(tk.Text):
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
+
         self.configure(
             background=app.theme.output_background,
             foreground=app.theme.output_foreground,
         )
+
         self.configure(border=4, highlightthickness=0, relief="flat")
 
         if args.colors:

@@ -23,11 +23,8 @@ class Gestures:
 
     def bind(self, widget: tk.Widget) -> None:
         widget.bind("<ButtonPress-3>", lambda e: self.start_drag(e))
-        widget.bind("<ButtonPress-2>", lambda e: self.start_drag(e))
         widget.bind("<B3-Motion>", lambda e: self.on_drag(e))
-        widget.bind("<B2-Motion>", lambda e: self.on_drag(e))
         widget.bind("<ButtonRelease-3>", lambda e: self.on_drag_end(e))
-        widget.bind("<ButtonRelease-2>", lambda e: self.on_drag_end(e))
 
     def reset_drag(self) -> None:
         self.drag_x_start = 0
