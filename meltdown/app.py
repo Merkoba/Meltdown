@@ -29,8 +29,6 @@ class App:
         self.root = tk.Tk(className=self.manifest["program"])
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)
-        self.main_frame.grid(row=0, column=0, sticky="nsew", padx=(0, 10), pady=(0, 10))
-        self.main_frame.configure(background="red")
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)
         self.root.minsize(100, 100)
@@ -471,6 +469,15 @@ class App:
         self.set_theme()
         self.set_style()
         self.set_geometry()
+        self.show_window()
+
+    def show_window(self) -> None:
+        padx = self.theme.padx
+        pady = self.theme.pady
+
+        self.main_frame.grid(
+            row=0, column=0, sticky="nsew", padx=(0, padx), pady=(0, pady)
+        )
 
     def set_theme(self) -> None:
         from .args import args
