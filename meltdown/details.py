@@ -77,7 +77,7 @@ def add_format(widgets: "Widgets", data: "FrameData") -> None:
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
-    widgets.format = widgetutils.make_combobox(data, values=values, width=17)
+    widgets.format = widgetutils.make_combobox(data, values=values, width=15)
     ToolTip(widgets.format_label, tips["format"])
     ToolTip(widgets.format, tips["format"])
 

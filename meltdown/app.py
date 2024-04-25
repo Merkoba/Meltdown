@@ -78,9 +78,30 @@ class App:
             selectforeground=[("readonly", self.theme.combobox_foreground)],
         )
 
+        style.layout(
+            "Normal.TCombobox",
+            [
+                (
+                    "Combobox.field",
+                    {
+                        "children": [
+                            (
+                                "Combobox.padding",
+                                {
+                                    "children": [
+                                        ("Combobox.textarea", {"sticky": "nswe"})
+                                    ]
+                                },
+                            )
+                        ]
+                    },
+                ),
+            ],
+        )
+
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
-        style.configure("Normal.TCombobox", padding=[4, 2, 0, 2])
+        style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
         self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
 
         style.map(
