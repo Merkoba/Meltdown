@@ -49,14 +49,18 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canv
     canvas = tk.Canvas(parent)
     scrollbar = tk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
     frame = tk.Frame(canvas, background=app.theme.background_color)
+
     frame.bind(
         "<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all"))
     )
+
     canvas.create_window((0, 0), window=frame, anchor="nw")
     canvas.configure(xscrollcommand=scrollbar.set)
+
     canvas.configure(
         borderwidth=0, highlightthickness=0, background=app.theme.background_color
     )
+
     canvas.grid(column=col, row=0, sticky="ew", padx=10)
     return frame, canvas
 
@@ -67,9 +71,11 @@ def make_entry(
     width: Optional[int] = None,
 ) -> EntryBox:
     w = width if width else app.theme.entry_width
+
     widget = EntryBox(
         frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry"
     )
+
     do_grid(widget, col=frame_data.col)
     frame_data.col += 1
 
@@ -102,11 +108,13 @@ def make_button(
     widget = get_button(
         frame_data.frame, text, command, style=style, width=width, bigger=bigger
     )
+
     do_grid(
         widget,
         col=frame_data.col,
         pady=pady,
     )
+
     frame_data.col += 1
     return widget
 
@@ -120,9 +128,11 @@ def make_label(
 ) -> tk.Label:
     text = f"{text}:" if colons else text
     widget = tk.Label(frame_data.frame, text=text, font=app.theme.font())
+
     widget.configure(
         background=app.theme.background_color, foreground=app.theme.foreground_color
     )
+
     do_grid(widget, col=frame_data.col, padx=padx, pady=pady)
     frame_data.col += 1
     return widget
@@ -135,6 +145,7 @@ def make_combobox(
 ) -> ttk.Combobox:
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
+
     widget = ttk.Combobox(
         frame_data.frame,
         values=v,

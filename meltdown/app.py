@@ -309,7 +309,8 @@ class App:
                 self.system_frame_visible = False
 
             if args.compact_details:
-                widgets.details_frame.grid_remove()
+                widgets.details_frame_1.grid_remove()
+                widgets.details_frame_2.grid_remove()
 
             if args.compact_buttons:
                 widgets.buttons_frame.grid_remove()
@@ -321,7 +322,8 @@ class App:
                 widgets.input_frame.grid_remove()
         else:
             widgets.system_frame.grid_remove()
-            widgets.details_frame.grid_remove()
+            widgets.details_frame_1.grid_remove()
+            widgets.details_frame_2.grid_remove()
             self.system_frame_visible = False
 
         self.after_compact(True)
@@ -335,7 +337,8 @@ class App:
 
         widgets.model_frame.grid()
         widgets.system_frame.grid()
-        widgets.details_frame.grid()
+        widgets.details_frame_1.grid()
+        widgets.details_frame_2.grid()
         widgets.buttons_frame.grid()
 
         if widgets.file_enabled:
@@ -558,7 +561,8 @@ class App:
 
         widgets.model_frame.grid_remove()
         widgets.system_frame.grid_remove()
-        widgets.details_frame.grid_remove()
+        widgets.details_frame_1.grid_remove()
+        widgets.details_frame_2.grid_remove()
         widgets.buttons_frame.grid_remove()
         widgets.file_frame.grid_remove()
         widgets.input_frame.grid_remove()

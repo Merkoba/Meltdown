@@ -5,9 +5,6 @@ from tkinter import ttk
 from typing import Optional, Any, Callable, Dict
 from pathlib import Path
 
-# Libraries
-from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
-
 # Modules
 from .args import args
 from .app import app
@@ -25,6 +22,7 @@ from .files import files
 from .utils import utils
 from .model import model
 from . import widgetutils
+from . import details
 
 
 class Widgets:
@@ -46,6 +44,41 @@ class Widgets:
         self.gpu_text: tk.Label
         self.gpu_ram_text: tk.Label
         self.gpu_temp_text: tk.Label
+
+        self.user_label: tk.Label
+        self.avatar_user: EntryBox
+        self.name_user: EntryBox
+        self.ai_label: tk.Label
+        self.avatar_ai: EntryBox
+        self.name_ai: EntryBox
+        self.history_label: tk.Label
+        self.history: EntryBox
+        self.context_label: tk.Label
+        self.context: EntryBox
+        self.max_tokens_label: tk.Label
+        self.max_tokens: EntryBox
+        self.threads_label: tk.Label
+        self.threads: EntryBox
+        self.gpu_layers_label: tk.Label
+        self.gpu_layers: EntryBox
+        self.format_label: tk.Label
+        self.format: ttk.Combobox
+        self.temperature_label: tk.Label
+        self.temperature: EntryBox
+        self.seed_label: tk.Label
+        self.seed: EntryBox
+        self.top_p_label: tk.Label
+        self.top_p: EntryBox
+        self.top_k_label: tk.Label
+        self.top_k: EntryBox
+        self.before_label: tk.Label
+        self.before: EntryBox
+        self.after_label: tk.Label
+        self.after: EntryBox
+        self.stop_label: tk.Label
+        self.stop: EntryBox
+        self.mlock_label: tk.Label
+        self.mlock: ttk.Combobox
 
     def make(self) -> None:
         # Model
@@ -164,171 +197,84 @@ class Widgets:
             if args.system_gpu_temp:
                 make_monitor("gpu_temp", "GPU TMP")
 
-        # Details Container
-        frame_data_details = widgetutils.make_frame()
-        self.details_frame = frame_data_details.frame
+        # Details Container 1
+        frame_data_details_1 = widgetutils.make_frame()
+        self.details_frame_1 = frame_data_details_1.frame
+        left_frame_1 = widgetutils.make_frame(self.details_frame_1, col=0, row=0)
+        left_frame_1.frame.grid_rowconfigure(0, weight=1)
 
-        left_frame = widgetutils.make_frame(self.details_frame, col=0, row=0)
-        left_frame.frame.grid_rowconfigure(0, weight=1)
-
-        self.details_button_left = widgetutils.make_button(
-            left_frame, "<", lambda: widgets.details_left(), style="alt"
+        self.details_button_left_1 = widgetutils.make_button(
+            left_frame_1, "<", lambda: widgets.details_left(1), style="alt"
         )
 
-        ToolTip(self.details_button_left, tips["details_button"])
+        ToolTip(self.details_button_left_1, tips["details_button"])
 
-        self.details, self.details_canvas = widgetutils.make_scrollable_frame(
-            self.details_frame, 1
+        self.details_1, self.details_canvas_1 = widgetutils.make_scrollable_frame(
+            self.details_frame_1, 1
         )
 
-        right_frame = widgetutils.make_frame(self.details_frame, col=2, row=0)
-        right_frame.frame.grid_rowconfigure(0, weight=1)
+        right_frame_1 = widgetutils.make_frame(self.details_frame_1, col=2, row=0)
+        right_frame_1.frame.grid_rowconfigure(0, weight=1)
 
-        self.details_button_right = widgetutils.make_button(
-            right_frame,
+        self.details_button_right_1 = widgetutils.make_button(
+            right_frame_1,
             ">",
-            lambda: widgets.details_right(),
+            lambda: widgets.details_right(1),
             style="alt",
         )
 
-        ToolTip(self.details_button_right, tips["details_button"])
+        ToolTip(self.details_button_right_1, tips["details_button"])
+        self.details_frame_1.columnconfigure(1, weight=1)
 
-        self.details_frame.columnconfigure(1, weight=1)
+        # Details 1
+        details_data = FrameData(self.details_1)
+        details.add_users(self, details_data)
+        details.add_history(self, details_data)
+        details.add_context(self, details_data)
+        details.add_max_tokens(self, details_data)
+        details.add_threads(self, details_data)
+        details.add_gpu_layers(self, details_data)
 
-        # Details Widgets
-        details_data = FrameData(self.details)
+        # Details Container 2
+        frame_data_details_2 = widgetutils.make_frame()
+        self.details_frame_2 = frame_data_details_2.frame
+        left_frame_2 = widgetutils.make_frame(self.details_frame_2, col=0, row=0)
+        left_frame_2.frame.grid_rowconfigure(0, weight=1)
 
-        avatar_width = 4
-        self.user_label = widgetutils.make_label(details_data, "User", padx=0)
-        ToolTip(self.user_label, tips["user_label"])
-
-        self.avatar_user = widgetutils.make_entry(details_data, width=avatar_width)
-        ToolTip(self.avatar_user, tips["avatar_user"])
-
-        self.name_user = widgetutils.make_entry(details_data)
-        ToolTip(self.name_user, tips["name_user"])
-
-        self.ai_label = widgetutils.make_label(details_data, "AI")
-        ToolTip(self.ai_label, tips["ai_label"])
-
-        self.avatar_ai = widgetutils.make_entry(details_data, width=avatar_width)
-        ToolTip(self.avatar_ai, tips["avatar_ai"])
-
-        self.name_ai = widgetutils.make_entry(details_data)
-        ToolTip(self.name_ai, tips["name_ai"])
-
-        self.history_label = widgetutils.make_label(details_data, "History")
-
-        self.history = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
+        self.details_button_left_2 = widgetutils.make_button(
+            left_frame_2, "<", lambda: widgets.details_left(2), style="alt"
         )
 
-        ToolTip(self.history_label, tips["history"])
-        ToolTip(self.history, tips["history"])
+        ToolTip(self.details_button_left_2, tips["details_button"])
 
-        self.context_label = widgetutils.make_label(details_data, "Context")
-
-        self.context = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
+        self.details_2, self.details_canvas_2 = widgetutils.make_scrollable_frame(
+            self.details_frame_2, 1
         )
 
-        ToolTip(self.context_label, tips["context"])
-        ToolTip(self.context, tips["context"])
+        right_frame_2 = widgetutils.make_frame(self.details_frame_2, col=2, row=0)
+        right_frame_2.frame.grid_rowconfigure(0, weight=1)
 
-        self.max_tokens_label = widgetutils.make_label(details_data, "Max Tokens")
-
-        self.max_tokens = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
+        self.details_button_right_2 = widgetutils.make_button(
+            right_frame_2,
+            ">",
+            lambda: widgets.details_right(2),
+            style="alt",
         )
 
-        ToolTip(self.max_tokens_label, tips["max_tokens"])
-        ToolTip(self.max_tokens, tips["max_tokens"])
+        ToolTip(self.details_button_right_2, tips["details_button"])
+        self.details_frame_2.columnconfigure(1, weight=1)
 
-        self.threads_label = widgetutils.make_label(details_data, "Threads")
-
-        self.threads = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.threads_label, tips["threads"])
-        ToolTip(self.threads, tips["threads"])
-
-        self.gpu_layers_label = widgetutils.make_label(details_data, "GPU Layers")
-
-        self.gpu_layers = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.gpu_layers_label, tips["gpu_layers"])
-        ToolTip(self.gpu_layers, tips["gpu_layers"])
-
-        self.format_label = widgetutils.make_label(details_data, "Format")
-        values = ["auto"]
-        fmts = sorted([item for item in formats._chat_handlers])
-        values.extend(fmts)
-        self.format = widgetutils.make_combobox(details_data, values=values, width=17)
-        ToolTip(self.format_label, tips["format"])
-        ToolTip(self.format, tips["format"])
-
-        self.temperature_label = widgetutils.make_label(details_data, "Temp")
-
-        self.temperature = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.temperature_label, tips["temperature"])
-        ToolTip(self.temperature, tips["temperature"])
-
-        self.seed_label = widgetutils.make_label(details_data, "Seed")
-
-        self.seed = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.seed_label, tips["seed"])
-        ToolTip(self.seed, tips["seed"])
-
-        self.top_p_label = widgetutils.make_label(details_data, "Top-P")
-
-        self.top_p = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.top_p_label, tips["top_p"])
-        ToolTip(self.top_p, tips["top_p"])
-
-        self.top_k_label = widgetutils.make_label(details_data, "Top-K")
-
-        self.top_k = widgetutils.make_entry(
-            details_data, width=app.theme.entry_width_small
-        )
-
-        ToolTip(self.top_k_label, tips["top_k"])
-        ToolTip(self.top_k, tips["top_k"])
-
-        self.before_label = widgetutils.make_label(details_data, "Before")
-        self.before = widgetutils.make_entry(details_data, width=11)
-        ToolTip(self.before_label, tips["before"])
-        ToolTip(self.before, tips["before"])
-
-        self.after_label = widgetutils.make_label(details_data, "After")
-        self.after = widgetutils.make_entry(details_data, width=11)
-        ToolTip(self.after_label, tips["after"])
-        ToolTip(self.after, tips["after"])
-
-        self.stop_label = widgetutils.make_label(details_data, "Stop")
-        self.stop = widgetutils.make_entry(details_data, width=11)
-        ToolTip(self.stop_label, tips["stop"])
-        ToolTip(self.stop, tips["stop"])
-
-        self.mlock_label = widgetutils.make_label(details_data, "M-Lock")
-
-        self.mlock = widgetutils.make_combobox(
-            details_data, width=app.theme.combobox_width_small, values=["yes", "no"]
-        )
-
-        ToolTip(self.mlock_label, tips["mlock"])
-        ToolTip(self.mlock, tips["mlock"])
+        # Details 2
+        details_data_2 = FrameData(self.details_2)
+        details.add_format(self, details_data_2)
+        details.add_temperature(self, details_data_2)
+        details.add_seed(self, details_data_2)
+        details.add_top_p(self, details_data_2)
+        details.add_top_k(self, details_data_2)
+        details.add_before(self, details_data_2)
+        details.add_after(self, details_data_2)
+        details.add_stop(self, details_data_2)
+        details.add_mlock(self, details_data_2)
 
         # Buttons
         frame_data_buttons = widgetutils.make_frame()
@@ -458,7 +404,8 @@ class Widgets:
         self.setup_binds()
         self.setup_widgets()
         self.add_generic_menus()
-        self.check_details_buttons()
+        self.check_details_buttons(1)
+        self.check_details_buttons(2)
         self.setup_tooltips()
         self.disable_stop_button()
         self.check_mode()
@@ -492,37 +439,45 @@ class Widgets:
 
     def setup_details(self) -> None:
         app.root.update_idletasks()
-        self.details.update_idletasks()
-        self.details_canvas.update_idletasks()
-        self.details_canvas.configure(width=self.details.winfo_reqwidth())
-        self.details_canvas.configure(height=self.details.winfo_reqheight())
+        self.do_setup_details(1)
+        self.do_setup_details(2)
 
-        self.details_button_left.set_bind(
-            "<Button-4>", lambda e: widgets.details_left()
-        )
-        self.details_button_left.set_bind(
-            "<Button-5>", lambda e: widgets.details_right()
-        )
-        self.details_button_left.set_bind(
-            "<Button-2>", lambda e: widgets.details_start()
-        )
+    def do_setup_details(self, num: int) -> None:
+        details = getattr(self, f"details_{num}")
+        details.update_idletasks()
+        canvas = getattr(self, f"details_canvas_{num}")
+        canvas.update_idletasks()
+        canvas.configure(width=details.winfo_reqwidth())
+        canvas.configure(height=details.winfo_reqheight())
+        left = getattr(self, f"details_button_left_{num}")
+        right = getattr(self, f"details_button_right_{num}")
 
-        self.details_button_right.set_bind(
-            "<Button-4>", lambda e: widgets.details_left()
+        left.set_bind(
+            "<Button-4>", lambda e: widgets.details_left(num)
         )
-        self.details_button_right.set_bind(
-            "<Button-5>", lambda e: widgets.details_right()
+        left.set_bind(
+            "<Button-5>", lambda e: widgets.details_right(num)
         )
-        self.details_button_right.set_bind(
-            "<Button-2>", lambda e: widgets.details_end()
+        left.set_bind(
+            "<Button-2>", lambda e: widgets.details_start(num)
         )
 
-        self.details.bind("<Button-4>", lambda e: widgets.details_left())
-        self.details.bind("<Button-5>", lambda e: widgets.details_right())
+        right.set_bind(
+            "<Button-4>", lambda e: widgets.details_left(num)
+        )
+        right.set_bind(
+            "<Button-5>", lambda e: widgets.details_right(num)
+        )
+        right.set_bind(
+            "<Button-2>", lambda e: widgets.details_end(num)
+        )
 
-        for child in self.details.winfo_children():
-            child.bind("<Button-4>", lambda e: widgets.details_left())
-            child.bind("<Button-5>", lambda e: widgets.details_right())
+        details.bind("<Button-4>", lambda e: widgets.details_left(num))
+        details.bind("<Button-5>", lambda e: widgets.details_right(num))
+
+        for child in details.winfo_children():
+            child.bind("<Button-4>", lambda e: widgets.details_left(num))
+            child.bind("<Button-5>", lambda e: widgets.details_right(num))
 
     def setup_widgets(self) -> None:
         def setup_entrybox(key: str, placeholder: str) -> None:
@@ -822,40 +777,48 @@ class Widgets:
         elif widget == self.model:
             self.show_model_context()
 
-    def details_left(self) -> None:
-        self.details_canvas.xview_scroll(-self.canvas_scroll, "units")
-        self.check_details_buttons()
+    def details_left(self, num: int) -> None:
+        canvas = getattr(self, f"details_canvas_{num}")
+        canvas.xview_scroll(-self.canvas_scroll, "units")
+        self.check_details_buttons(num)
 
-    def details_right(self) -> None:
-        self.details_canvas.xview_scroll(self.canvas_scroll, "units")
-        self.check_details_buttons()
+    def details_right(self, num: int) -> None:
+        canvas = getattr(self, f"details_canvas_{num}")
+        canvas.xview_scroll(self.canvas_scroll, "units")
+        self.check_details_buttons(num)
 
-    def details_start(self) -> None:
-        self.details_canvas.xview_moveto(0)
-        self.check_details_buttons()
+    def details_start(self, num: int) -> None:
+        canvas = getattr(self, f"details_canvas_{num}")
+        canvas.xview_moveto(0)
+        self.check_details_buttons(num)
 
-    def details_end(self) -> None:
-        self.details_canvas.xview_moveto(1.0)
-        self.check_details_buttons()
+    def details_end(self, num: int) -> None:
+        canvas = getattr(self, f"details_canvas_{num}")
+        canvas.xview_moveto(1.0)
+        self.check_details_buttons(num)
 
-    def check_details_buttons(self) -> None:
-        scroll_pos_left = self.details_canvas.xview()[0]
-        scroll_pos_right = self.details_canvas.xview()[1]
+    def check_details_buttons(self, num: int) -> None:
+        canvas = getattr(self, f"details_canvas_{num}")
+        scroll_pos_left = canvas.xview()[0]
+        scroll_pos_right = canvas.xview()[1]
         ToolTip.hide_all()
 
+        left = getattr(self, f"details_button_left_{num}")
+        right = getattr(self, f"details_button_right_{num}")
+
         if scroll_pos_left == 0:
-            self.details_button_left.set_style("disabled")
-            self.details_button_left.set_text("-")
+            left.set_style("disabled")
+            left.set_text("-")
         else:
-            self.details_button_left.set_style("alt")
-            self.details_button_left.set_text("<")
+            left.set_style("alt")
+            left.set_text("<")
 
         if scroll_pos_right == 1.0:
-            self.details_button_right.set_style("disabled")
-            self.details_button_right.set_text("-")
+            right.set_style("disabled")
+            right.set_text("-")
         else:
-            self.details_button_right.set_style("alt")
-            self.details_button_right.set_text(">")
+            right.set_style("alt")
+            right.set_text(">")
 
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
