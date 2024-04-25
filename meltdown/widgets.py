@@ -234,6 +234,7 @@ class Widgets:
         details.add_max_tokens(self, details_data)
         details.add_threads(self, details_data)
         details.add_gpu_layers(self, details_data)
+        details.add_temperature(self, details_data)
 
         # Details Container 2
         frame_data_details_2 = widgetutils.make_frame()
@@ -267,13 +268,12 @@ class Widgets:
         # Details 2
         details_data_2 = FrameData(self.details_2)
         details.add_format(self, details_data_2)
-        details.add_temperature(self, details_data_2)
-        details.add_seed(self, details_data_2)
-        details.add_top_p(self, details_data_2)
-        details.add_top_k(self, details_data_2)
         details.add_before(self, details_data_2)
         details.add_after(self, details_data_2)
         details.add_stop(self, details_data_2)
+        details.add_seed(self, details_data_2)
+        details.add_top_p(self, details_data_2)
+        details.add_top_k(self, details_data_2)
         details.add_mlock(self, details_data_2)
 
         # Buttons
@@ -452,25 +452,13 @@ class Widgets:
         left = getattr(self, f"details_button_left_{num}")
         right = getattr(self, f"details_button_right_{num}")
 
-        left.set_bind(
-            "<Button-4>", lambda e: widgets.details_left(num)
-        )
-        left.set_bind(
-            "<Button-5>", lambda e: widgets.details_right(num)
-        )
-        left.set_bind(
-            "<Button-2>", lambda e: widgets.details_start(num)
-        )
+        left.set_bind("<Button-4>", lambda e: widgets.details_left(num))
+        left.set_bind("<Button-5>", lambda e: widgets.details_right(num))
+        left.set_bind("<Button-2>", lambda e: widgets.details_start(num))
 
-        right.set_bind(
-            "<Button-4>", lambda e: widgets.details_left(num)
-        )
-        right.set_bind(
-            "<Button-5>", lambda e: widgets.details_right(num)
-        )
-        right.set_bind(
-            "<Button-2>", lambda e: widgets.details_end(num)
-        )
+        right.set_bind("<Button-4>", lambda e: widgets.details_left(num))
+        right.set_bind("<Button-5>", lambda e: widgets.details_right(num))
+        right.set_bind("<Button-2>", lambda e: widgets.details_end(num))
 
         details.bind("<Button-4>", lambda e: widgets.details_left(num))
         details.bind("<Button-5>", lambda e: widgets.details_right(num))

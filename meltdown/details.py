@@ -73,7 +73,7 @@ def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
 
 
 def add_format(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.format_label = widgetutils.make_label(data, "Format")
+    widgets.format_label = widgetutils.make_label(data, "Format", padx=0)
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)

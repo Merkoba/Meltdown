@@ -240,11 +240,22 @@ class App:
         if update:
             self.update_bottom()
 
+        self.root.after(100, lambda: self.on_geometry_change())
+
     def unmaximize(self, update: bool = True) -> None:
         self.root.attributes("-zoomed", False)
 
         if update:
             self.update_bottom()
+
+        self.root.after(100, lambda: self.on_geometry_change())
+
+    def on_geometry_change(self) -> None:
+        from .widgets import widgets
+
+        self.update()
+        widgets.check_details_buttons(1)
+        widgets.check_details_buttons(2)
 
     def set_geometry(self) -> None:
         from .args import args
