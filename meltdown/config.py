@@ -212,6 +212,7 @@ class Config:
             self.apply(file)
             widgets.fill()
             app.check_compact()
+            self.on_font_change()
 
     def apply(self, file: IO[str]) -> None:
         try:
@@ -336,9 +337,9 @@ class Config:
 
         if on_change:
             if key == "font_size":
-                self.on_output_font_change()
+                self.on_font_change()
             elif key == "font_family":
-                self.on_output_font_change()
+                self.on_font_change()
             elif key == "mode":
                 self.on_mode_change()
 
@@ -365,7 +366,7 @@ class Config:
                 if default is not None:
                     setattr(self, key, default)
 
-            self.on_output_font_change()
+            self.on_font_change()
             self.on_mode_change()
             widgets.fill()
             app.check_compact()
@@ -394,7 +395,7 @@ class Config:
         self.set(key, default, on_change=on_change)
         widgets.fill_widget(key, getattr(self, key), focus=focus)
 
-    def on_output_font_change(self) -> None:
+    def on_font_change(self) -> None:
         from .display import display
 
         display.update_font()
