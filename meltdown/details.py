@@ -1,5 +1,5 @@
 # Standard
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -14,6 +14,42 @@ from . import widgetutils
 if TYPE_CHECKING:
     from .widgets import Widgets
     from .framedata import FrameData
+
+
+def make_entry(
+    widgets: "Widgets",
+    data: "FrameData",
+    key: str,
+    label: str,
+    width: Optional[int] = None,
+) -> None:
+    label_wid = widgetutils.make_label(data, label)
+    setattr(widgets, f"{key}_label", label_wid)
+
+    width = width or app.theme.entry_width_small
+    entry_wid = widgetutils.make_entry(data, width=width)
+    setattr(widgets, key, entry_wid)
+
+    ToolTip(label_wid, tips[key])
+    ToolTip(entry_wid, tips[key])
+
+
+def make_combobox(
+    widgets: "Widgets",
+    data: "FrameData",
+    key: str,
+    label: str,
+    values: list,
+    padx: Optional[int] = None,
+) -> None:
+    label_wid = widgetutils.make_label(data, label, padx=padx)
+    setattr(widgets, f"{key}_label", label_wid)
+
+    combo_wid = widgetutils.make_combobox(data, values=values, width=15)
+    setattr(widgets, key, combo_wid)
+
+    ToolTip(label_wid, tips[key])
+    ToolTip(combo_wid, tips[key])
 
 
 def add_users(widgets: "Widgets", data: "FrameData") -> None:
@@ -38,109 +74,60 @@ def add_users(widgets: "Widgets", data: "FrameData") -> None:
 
 
 def add_history(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.history_label = widgetutils.make_label(data, "History")
-    widgets.history = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.history_label, tips["history"])
-    ToolTip(widgets.history, tips["history"])
+    make_entry(widgets, data, "history", "History")
 
 
 def add_context(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.context_label = widgetutils.make_label(data, "Context")
-    widgets.context = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.context_label, tips["context"])
-    ToolTip(widgets.context, tips["context"])
+    make_entry(widgets, data, "context", "Context")
 
 
 def add_max_tokens(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.max_tokens_label = widgetutils.make_label(data, "Max Tokens")
-    widgets.max_tokens = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.max_tokens_label, tips["max_tokens"])
-    ToolTip(widgets.max_tokens, tips["max_tokens"])
+    make_entry(widgets, data, "max_tokens", "Max Tokens")
 
 
 def add_threads(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.threads_label = widgetutils.make_label(data, "Threads")
-    widgets.threads = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.threads_label, tips["threads"])
-    ToolTip(widgets.threads, tips["threads"])
+    make_entry(widgets, data, "threads", "Threads")
 
 
 def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.gpu_layers_label = widgetutils.make_label(data, "GPU Layers")
-    widgets.gpu_layers = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.gpu_layers_label, tips["gpu_layers"])
-    ToolTip(widgets.gpu_layers, tips["gpu_layers"])
+    make_entry(widgets, data, "gpu_layers", "GPU Layers")
 
 
 def add_format(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.format_label = widgetutils.make_label(data, "Format", padx=0)
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
-    widgets.format = widgetutils.make_combobox(data, values=values, width=15)
-    ToolTip(widgets.format_label, tips["format"])
-    ToolTip(widgets.format, tips["format"])
+    make_combobox(widgets, data, "format", "Format", values)
 
 
 def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.temperature_label = widgetutils.make_label(data, "Temp")
-
-    widgets.temperature = widgetutils.make_entry(
-        data, width=app.theme.entry_width_small
-    )
-
-    ToolTip(widgets.temperature_label, tips["temperature"])
-    ToolTip(widgets.temperature, tips["temperature"])
+    make_entry(widgets, data, "temperature", "Temperature")
 
 
 def add_seed(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.seed_label = widgetutils.make_label(data, "Seed")
-    widgets.seed = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.seed_label, tips["seed"])
-    ToolTip(widgets.seed, tips["seed"])
+    make_entry(widgets, data, "seed", "Seed")
 
 
 def add_top_p(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.top_p_label = widgetutils.make_label(data, "Top P")
-    widgets.top_p = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.top_p_label, tips["top_p"])
-    ToolTip(widgets.top_p, tips["top_p"])
+    make_entry(widgets, data, "top_p", "Top P")
 
 
 def add_top_k(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.top_k_label = widgetutils.make_label(data, "Top K")
-    widgets.top_k = widgetutils.make_entry(data, width=app.theme.entry_width_small)
-    ToolTip(widgets.top_k_label, tips["top_k"])
-    ToolTip(widgets.top_k, tips["top_k"])
+    make_entry(widgets, data, "top_k", "Top K")
 
 
 def add_before(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.before_label = widgetutils.make_label(data, "Before")
-    widgets.before = widgetutils.make_entry(data, width=11)
-    ToolTip(widgets.before_label, tips["before"])
-    ToolTip(widgets.before, tips["before"])
+    make_entry(widgets, data, "before", "Before", width=11)
 
 
 def add_after(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.after_label = widgetutils.make_label(data, "After")
-    widgets.after = widgetutils.make_entry(data, width=11)
-    ToolTip(widgets.after_label, tips["after"])
-    ToolTip(widgets.after, tips["after"])
+    make_entry(widgets, data, "after", "After", width=11)
 
 
 def add_stop(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.stop_label = widgetutils.make_label(data, "Stop")
-    widgets.stop = widgetutils.make_entry(data, width=11)
-    ToolTip(widgets.stop_label, tips["stop"])
-    ToolTip(widgets.stop, tips["stop"])
+    make_entry(widgets, data, "stop", "Stop", width=11)
 
 
 def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
-    widgets.mlock_label = widgetutils.make_label(data, "M-Lock")
-
-    widgets.mlock = widgetutils.make_combobox(
-        data, width=app.theme.combobox_width_small, values=["yes", "no"]
-    )
-
-    ToolTip(widgets.mlock_label, tips["mlock"])
-    ToolTip(widgets.mlock, tips["mlock"])
+    values = ["yes", "no"]
+    make_combobox(widgets, data, "mlock", "M-Lock", values)
