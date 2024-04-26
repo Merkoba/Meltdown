@@ -13,8 +13,8 @@ tips = {
     "next_button": "Next item in the input history",
     "write_button": "Show a textbox for longer inputs",
     "submit_button": "Send the prompt to the AI",
-    "user_label": "Personalize yourself",
-    "ai_label": "Personalize the AI",
+    "user": "Personalize yourself",
+    "ai": "Personalize the AI",
     # System
     "system_cpu": "Current CPU usage",
     "system_ram": "Current RAM usage",
