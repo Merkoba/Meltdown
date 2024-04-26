@@ -767,11 +767,21 @@ class Widgets:
 
     def details_left(self, num: int) -> None:
         canvas = getattr(self, f"details_canvas_{num}")
+        scroll_pos_left = canvas.xview()[0]
+
+        if scroll_pos_left == 0.0:
+            return
+
         canvas.xview_scroll(-self.canvas_scroll, "units")
         self.check_details_buttons(num)
 
     def details_right(self, num: int) -> None:
         canvas = getattr(self, f"details_canvas_{num}")
+        scroll_pos_right = canvas.xview()[1]
+
+        if scroll_pos_right == 1.0:
+            return
+
         canvas.xview_scroll(self.canvas_scroll, "units")
         self.check_details_buttons(num)
 
