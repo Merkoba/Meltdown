@@ -348,7 +348,7 @@ class Config:
         from .widgets import widgets
         from .dialogs import Dialog
 
-        keep = ("model", "theme")
+        keep = ("model", "mode", "theme")
 
         def action() -> None:
             for key in self.defaults():
