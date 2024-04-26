@@ -8,6 +8,7 @@ from typing import Optional
 
 # Modules
 from .app import app
+from .config import config
 from .menus import Menu
 from .dialogs import Dialog
 from .output import Output
@@ -631,9 +632,7 @@ class Display:
         self.close_tab(tab_id=self.current_tab)
 
     def apply_font_size(self, size: int) -> None:
-        from .config import config
-
-        config.set("output_font_size", size)
+        config.set("font_size", size)
 
     def set_font_size(self, text: str) -> None:
         if text in ["default", "reset"]:
@@ -654,9 +653,7 @@ class Display:
         self.apply_font_size(size)
 
     def decrease_font(self) -> None:
-        from .config import config
-
-        new_size = config.output_font_size - 1
+        new_size = config.font_size - 1
 
         if new_size < self.min_font_size:
             return
@@ -664,19 +661,26 @@ class Display:
         self.apply_font_size(new_size)
 
     def increase_font(self) -> None:
-        from .config import config
-
-        new_size = config.output_font_size + 1
+        new_size = config.font_size + 1
 
         if new_size > self.max_font_size:
             return
 
         self.apply_font_size(new_size)
 
-    def reset_font(self) -> None:
-        from .config import config
+    def toggle_font(self) -> None:
+        font = config.font_family
 
-        config.reset_one("output_font_size")
+        if font == "monospace":
+            font = "sans"
+        else:
+            font = "monospace"
+
+        config.set("font_family", font)
+
+    def reset_font(self) -> None:
+        config.reset_one("font_size", False)
+        config.reset_one("font_family")
 
     def update_font(self) -> None:
         for tab in self.tabs.values():

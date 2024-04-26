@@ -29,20 +29,17 @@ class Args:
         self.wrap = True
         self.stream = True
         self.maximize = False
-        self.compact = False
         self.tabs = True
         self.allow_empty = True
         self.bottom = True
         self.bottom_autohide = True
         self.reorder = True
         self.numbers = False
-        self.full = False
         self.test = False
         self.alt_palette = False
         self.width = -1
         self.height = -1
         self.max_tabs = 0
-        self.theme = ""
         self.config = ""
         self.session = ""
         self.on_log = ""
@@ -84,7 +81,6 @@ class Args:
         self.compact_input = False
         self.display = False
         self.intro = True
-        self.monospace = False
         self.autorun = ""
         self.show_terminal = True
         self.terminal_height = 3
@@ -336,8 +332,6 @@ class Args:
                 "action": "store_true",
                 "help": "Maximize the window on start",
             },
-            "compact": {"action": "store_true", "help": "Start in compact mode"},
-            "full": {"action": "store_true", "help": "Start in full mode"},
             "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
             "alt_palette": {
                 "action": "store_true",
@@ -364,10 +358,6 @@ class Args:
                 "action": "store_true",
                 "help": "Only show the output and tabs",
             },
-            "monospace": {
-                "action": "store_true",
-                "help": "Use monospace font on the output",
-            },
             "listener": {
                 "action": "store_true",
                 "help": "Listen for changes to the stdin file",
@@ -391,11 +381,6 @@ class Args:
             "max_tab_width": {
                 "type": int,
                 "help": "Max number of characters to show in a tab name",
-            },
-            "theme": {
-                "type": str,
-                "help": "The color theme to use, either dark or light",
-                "choices": ["dark", "light"],
             },
             "config": {"type": str, "help": "Name or path of a config file to use"},
             "session": {"type": str, "help": "Name or path of a session file to use"},
@@ -574,11 +559,8 @@ class Args:
 
         normals = [
             "maximize",
-            "compact",
-            "full",
             "width",
             "height",
-            "theme",
             "test",
             "config",
             "session",
@@ -619,7 +601,6 @@ class Args:
             "compact_model",
             "compact_input",
             "display",
-            "monospace",
             "autorun",
             "terminal_height",
             "terminal_vi",

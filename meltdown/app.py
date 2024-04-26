@@ -401,13 +401,7 @@ class App:
         config.set("compact", enabled)
 
     def check_compact(self) -> None:
-        from .args import args
-
-        if args.full:
-            self.disable_compact()
-        elif args.compact:
-            self.enable_compact()
-        elif config.compact:
+        if config.compact:
             self.enable_compact()
         else:
             self.disable_compact()
@@ -525,13 +519,9 @@ class App:
         )
 
     def set_theme(self) -> None:
-        from .args import args
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
         from .config import config
-
-        if args.theme and (args.theme != config.theme):
-            config.set("theme", args.theme)
 
         if config.theme == "light":
             self.theme = LightTheme()

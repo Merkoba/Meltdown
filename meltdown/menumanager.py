@@ -193,6 +193,7 @@ class FontMenu:
         self.menu.add(text="Set Font", command=lambda e: set_font())
         self.menu.add(text="Bigger Font", command=lambda e: display.increase_font())
         self.menu.add(text="Smaller Font", command=lambda e: display.decrease_font())
+        self.menu.add(text="Font Family", command=lambda e: display.toggle_font())
         self.menu.add(text="Reset Font", command=lambda e: display.reset_font())
 
     def show(self, event: Any = None) -> None:

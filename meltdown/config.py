@@ -42,7 +42,8 @@ class Config:
         self.default_before: str = ""
         self.default_after: str = ""
         self.default_compact: bool = False
-        self.default_output_font_size: int = 14
+        self.default_font_size: int = 14
+        self.default_font_family: str = "sans"
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
@@ -64,7 +65,8 @@ class Config:
         self.before = self.default_before
         self.after = self.default_after
         self.compact = self.default_compact
-        self.output_font_size = self.default_output_font_size
+        self.font_size = self.default_font_size
+        self.font_family = self.default_font_family
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.theme = self.default_theme
@@ -297,7 +299,7 @@ class Config:
         else:
             return False
 
-    def set(self, key: str, value: Any) -> bool:
+    def set(self, key: str, value: Any, on_change: bool = True) -> bool:
         from .model import model
         from .widgets import widgets
 
@@ -332,13 +334,16 @@ class Config:
         setattr(self, key, value)
         self.save()
 
-        if key == "output_font_size":
-            self.on_output_font_change()
-        elif key == "mode":
-            self.on_mode_change()
+        if on_change:
+            if key == "font_size":
+                self.on_output_font_change()
+            elif key == "font_family":
+                self.on_output_font_change()
+            elif key == "mode":
+                self.on_mode_change()
 
-        if key in self.model_keys:
-            model.unload()
+            if key in self.model_keys:
+                model.unload()
 
         return True
 
@@ -375,7 +380,7 @@ class Config:
             "This will remove your custom configs" "\nand refresh the widgets", action
         )
 
-    def reset_one(self, key: str, focus: bool = True) -> None:
+    def reset_one(self, key: str, focus: bool = True, on_change: bool = True) -> None:
         from .widgets import widgets
 
         if not hasattr(self, key):
@@ -386,7 +391,7 @@ class Config:
         if getattr(self, key) == default:
             return
 
-        self.set(key, default)
+        self.set(key, default, on_change=on_change)
         widgets.fill_widget(key, getattr(self, key), focus=focus)
 
     def on_output_font_change(self) -> None:

@@ -139,16 +139,19 @@ class Theme:
         self.find_entry_width = 12
 
     def get_font_family(self) -> str:
-        from .args import args
+        if config.font_family == "monospace":
+            font = self.monospace_family
+        else:
+            font = self.font_family
 
-        return self.monospace_family if args.monospace else self.font_family
+        return font
 
     def get_output_font(self) -> Tuple[str, int]:
         ff = self.get_font_family()
-        return (ff, config.output_font_size)
+        return (ff, config.font_size)
 
     def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
-        size = config.output_font_size
+        size = config.font_size
 
         if smaller:
             size -= self.snippet_header_minus
@@ -157,11 +160,11 @@ class Theme:
 
     def get_bold_font(self) -> Tuple[str, int, str]:
         ff = self.get_font_family()
-        return (ff, config.output_font_size, "bold")
+        return (ff, config.font_size, "bold")
 
     def get_italic_font(self) -> Tuple[str, int, str]:
         ff = self.get_font_family()
-        return (ff, config.output_font_size, "italic")
+        return (ff, config.font_size, "italic")
 
     def font(self, name: str = "font") -> Tuple[str, int, str]:
         from .args import args
