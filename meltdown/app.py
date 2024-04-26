@@ -45,12 +45,26 @@ class App:
         self.loaded = False
         self.checks_delay = 200
         self.system_frame_visible = True
+        self.main_frame.bind("<Configure>", lambda e: self.on_frame_configure())
+        self.check_geometry_after = ""
+        self.geometry_delay = 250
 
         self.intro = [
             f"Welcome to {title}.",
             "Write a prompt and press Enter.",
             "Use /help to learn more.",
         ]
+
+    def clear_geometry_after(self) -> None:
+        if self.check_geometry_after:
+            self.root.after_cancel(self.check_geometry_after)
+            self.check_geometry_after = ""
+
+    def on_frame_configure(self) -> None:
+        self.clear_geometry_after()
+        self.check_geometry_after = self.root.after(
+            self.geometry_delay, lambda: self.on_geometry_change()
+        )
 
     def setup_images(self) -> None:
         self.icon_path = Path(self.here, "icon.png")
@@ -261,20 +275,17 @@ class App:
         if update:
             self.update_bottom()
 
-        self.root.after(100, lambda: self.on_geometry_change())
-
     def unmaximize(self, update: bool = True) -> None:
         self.root.attributes("-zoomed", False)
 
         if update:
             self.update_bottom()
 
-        self.root.after(100, lambda: self.on_geometry_change())
-
     def on_geometry_change(self) -> None:
         from .widgets import widgets
 
-        self.update()
+        print(4)
+        self.clear_geometry_after()
         widgets.check_details_buttons(1)
         widgets.check_details_buttons(2)
 
