@@ -25,6 +25,8 @@ class Config:
             "The current date is @date.",
         ]
 
+        self.default_avatar_user: str = "😎"
+        self.default_avatar_ai: str = "🤯"
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
         self.default_context: int = 2048
@@ -45,8 +47,6 @@ class Config:
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
         self.default_gpu_layers = 33
-        self.default_avatar_user: str = "👽"
-        self.default_avatar_ai: str = "😎"
         self.default_stop: str = "<|im_start|> ;; <|im_end|>"
         self.default_mode: str = "text"
 
