@@ -582,12 +582,6 @@ This means clicking outside the window won't hide it.
 
 ---
 
->monospace
-
-Use monospace font for the output.
-
----
-
 >commandoc
 
 Make the commandoc and save it on this path.
