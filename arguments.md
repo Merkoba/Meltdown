@@ -865,3 +865,9 @@ For example if in image mode, if the text is empty
 it is automatically filled with "Describe this image".
 
 This disables that behavior.
+
+---
+
+>scroll_lines
+
+How many lines to scroll the output.

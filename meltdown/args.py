@@ -131,6 +131,7 @@ class Args:
         self.confirm_close = True
         self.confirm_clear = True
         self.fill_prompt = True
+        self.scroll_lines = 1
 
     class Internal:
         title = app.manifest["title"]
@@ -440,6 +441,10 @@ class Args:
                 "type": str,
                 "help": "Threshold in pixels for mouse gestures",
             },
+            "scroll_lines": {
+                "type": int,
+                "help": "How many lines to scroll the output",
+            },
             "old_tabs_minutes": {
                 "type": int,
                 "help": "Consider a tab old after these minutes (using last modified date)",
@@ -640,6 +645,7 @@ class Args:
             "progjson",
             "program",
             "gesture_threshold",
+            "scroll_lines",
         ]
 
         for n_item in normals:

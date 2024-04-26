@@ -317,16 +317,20 @@ class Output(tk.Text):
         fraction = float(num_lines / lines[0])
         return fraction
 
-    def scroll_up(self, check: bool = False) -> None:
+    def get_scroll_lines(self) -> float:
         fraction = self.get_fraction()
-        self.yview_moveto(self.yview()[0] - fraction)
+        return fraction * args.scroll_lines
+
+    def scroll_up(self, check: bool = False) -> None:
+        lines = self.get_scroll_lines()
+        self.yview_moveto(self.yview()[0] - lines)
 
         if check:
             self.check_autoscroll("up")
 
     def scroll_down(self, check: bool = False) -> None:
-        fraction = self.get_fraction()
-        self.yview_moveto(self.yview()[0] + fraction)
+        lines = self.get_scroll_lines()
+        self.yview_moveto(self.yview()[0] + lines)
 
         if check:
             self.check_autoscroll("down")
