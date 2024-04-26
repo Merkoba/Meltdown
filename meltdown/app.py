@@ -284,7 +284,6 @@ class App:
     def on_geometry_change(self) -> None:
         from .widgets import widgets
 
-        print(4)
         self.clear_geometry_after()
         widgets.check_details_buttons(1)
         widgets.check_details_buttons(2)
