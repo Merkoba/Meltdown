@@ -347,8 +347,10 @@ class Widgets:
         self.file.bind_mousewheel()
         ToolTip(self.file_label, tips["file"])
         ToolTip(self.file, tips["file"])
-        self.file.drop_target_register(DND_FILES)  # type: ignore
-        self.file.dnd_bind("<<Drop>>", lambda e: self.on_file_dropped(e))  # type: ignore
+
+        if args.drag_and_drop:
+            self.file.drop_target_register(DND_FILES)  # type: ignore
+            self.file.dnd_bind("<<Drop>>", lambda e: self.on_file_dropped(e))  # type: ignore
 
         self.recent_files_button = widgetutils.make_button(
             frame_data_file, "Recent", lambda: self.show_recent_files()

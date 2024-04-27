@@ -130,6 +130,7 @@ class Args:
         self.scroll_lines = 1
         self.user_color = "auto"
         self.ai_color = "auto"
+        self.drag_and_drop = True
 
     class Internal:
         title = app.manifest["title"]
@@ -300,6 +301,10 @@ class Args:
             "no_fill_prompt": {
                 "action": "store_false",
                 "help": "Don't fill the text input prompt in some cases when empty",
+            },
+            "no_drag_and_drop": {
+                "action": "store_false",
+                "help": "Don't enable drag and drop",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -562,6 +567,7 @@ class Args:
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
             ("no_fill_prompt", "fill_prompt"),
+            ("no_drag_and_drop", "drag_and_drop"),
         ]
 
         for r_item in other_name:

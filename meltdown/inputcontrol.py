@@ -37,8 +37,10 @@ class InputControl:
         widgets.input_frame = frame_data.frame
         ToolTip(self.input_label, tips["input"])
         ToolTip(self.input, tips["input"])
-        self.input.drop_target_register(DND_TEXT)  # type: ignore
-        self.input.dnd_bind("<<Drop>>", lambda e: self.on_text_dropped(e))  # type: ignore
+
+        if args.drag_and_drop:
+            self.input.drop_target_register(DND_TEXT)  # type: ignore
+            self.input.dnd_bind("<<Drop>>", lambda e: self.on_text_dropped(e))  # type: ignore
 
         prev_button = widgetutils.make_button(
             frame_data, "< Prev", lambda: self.history_up()

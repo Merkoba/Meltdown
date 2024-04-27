@@ -29,16 +29,15 @@ class App:
             self.manifest = json.load(file)
 
         title = self.manifest["title"]
-        self.root = TkinterDnD.Tk(className=self.manifest["program"])
-        self.root.title(title)
-        self.main_frame = tk.Frame(self.root)
-        self.root.grid_columnconfigure(0, weight=1)
-        self.root.grid_rowconfigure(0, weight=1)
-        self.root.minsize(100, 100)
-        self.autorun_delay = 250
-        self.setup_images()
-        self.setup_focus()
-        self.setup_binds()
+
+        self.intro = [
+            f"Welcome to {title}.",
+            "Write a prompt and press Enter.",
+            "Use /help to learn more.",
+        ]
+
+        self.root: tk.Tk
+        self.main_frame: tk.Frame
         self.theme: Theme
         self.sticky = False
         self.exit_delay = 100
@@ -48,15 +47,9 @@ class App:
         self.loaded = False
         self.checks_delay = 200
         self.system_frame_visible = True
-        self.main_frame.bind("<Configure>", lambda e: self.on_frame_configure())
-        self.check_geometry_after = ""
+        self.autorun_delay = 250
         self.geometry_delay = 250
-
-        self.intro = [
-            f"Welcome to {title}.",
-            "Write a prompt and press Enter.",
-            "Use /help to learn more.",
-        ]
+        self.check_geometry_after = ""
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -521,6 +514,25 @@ class App:
             keyboard.reset()
 
     def prepare(self) -> None:
+        from .args import args
+
+        if args.drag_and_drop:
+            self.root = TkinterDnD.Tk(className=self.manifest["program"])
+        else:
+            self.root = tk.Tk(className=self.manifest["program"])
+
+        self.root.title(self.manifest["title"])
+        self.main_frame = tk.Frame(self.root)
+        self.root.grid_columnconfigure(0, weight=1)
+        self.root.grid_rowconfigure(0, weight=1)
+        self.root.minsize(100, 100)
+
+        self.setup_images()
+        self.setup_focus()
+        self.setup_binds()
+
+        self.main_frame.bind("<Configure>", lambda e: self.on_frame_configure())
+
         self.set_theme()
         self.set_style()
         self.set_geometry()
