@@ -25,8 +25,8 @@ class Config:
             "The current date is @date.",
         ]
 
-        self.default_avatar_user: str = "😎"
-        self.default_avatar_ai: str = "🤯"
+        self.default_avatar_user: str = "🥶"
+        self.default_avatar_ai: str = "🫠"
         self.default_name_user: str = "Joe"
         self.default_name_ai: str = "Melt"
         self.default_context: int = 2048
