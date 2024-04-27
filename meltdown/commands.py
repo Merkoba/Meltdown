@@ -599,7 +599,7 @@ class Commands:
 
         arg_req = item.get("arg_req")
 
-        if (not argument) and arg_req:
+        if (argument is None) and arg_req:
             return
 
         argtype = item.get("type")
@@ -623,7 +623,7 @@ class Commands:
                     new_argument = int(float(argument))
                 except ValueError:
                     return
-            else:
+            elif arg_req:
                 return
 
         item = self.commands[cmd]
