@@ -612,16 +612,17 @@ class Commands:
                 else:
                     new_argument = False
 
-        if argtype and argument:
-            if argtype == str:
-                new_argument = self.argument_replace(argument)
-            elif argtype == int:
-                new_argument = utils.extract_number(argument)
+        if not new_argument:
+            if argtype and argument:
+                if argtype == str:
+                    new_argument = self.argument_replace(argument)
+                elif argtype == int:
+                    new_argument = utils.extract_number(argument)
 
-                if new_argument is None:
-                    return
-            else:
-                new_argument = argtype(argument)
+                    if new_argument is None:
+                        return
+                else:
+                    new_argument = argtype(argument)
 
         item = self.commands[cmd]
         item["action"](new_argument)
