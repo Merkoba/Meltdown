@@ -230,9 +230,9 @@ class App:
             self.exit_after = ""
 
             if feedback:
-                display.print("Exit cancelled")
+                display.print("Exit cancelled.")
         elif feedback:
-            display.print("No exit to cancel")
+            display.print("No exit to cancel.")
 
     def exists(self) -> bool:
         try:
