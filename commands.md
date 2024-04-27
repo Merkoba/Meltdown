@@ -20,7 +20,7 @@ Clear the conversation
 
 >exit
 
-Exit the application. Optional delay
+Exit the application. Optional seconds delay
 
 ---
 

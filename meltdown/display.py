@@ -639,9 +639,9 @@ class Display:
             display.reset_font()
             return
 
-        size = utils.extract_number(text)
-
-        if size is None:
+        try:
+            size = int(text)
+        except BaseException:
             return
 
         if size < self.min_font_size:

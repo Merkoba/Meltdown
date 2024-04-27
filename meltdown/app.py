@@ -216,16 +216,16 @@ class App:
     def run(self) -> None:
         self.root.mainloop()
 
-    def exit(self, delay: Optional[float] = None) -> None:
+    def exit(self, seconds: Optional[int] = None) -> None:
         from .args import args
         from .display import display
 
         self.cancel_exit()
-        d = int((delay * 1000)) if delay else self.exit_delay
+        d = (seconds * 1000) if seconds else self.exit_delay
         d = d if d >= self.exit_delay else self.exit_delay
 
         if not args.quiet:
-            if d >= 1.0:
+            if seconds and seconds >= 1:
                 secs = int(d / 1000)
                 display.print(f"Exiting in {secs} seconds.")
 

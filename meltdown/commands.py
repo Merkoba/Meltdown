@@ -111,9 +111,9 @@ class Commands:
                 "type": "force",
             },
             "exit": {
-                "help": "Exit the application. Optional delay",
+                "help": "Exit the application. Optional seconds delay",
                 "action": lambda a=None: app.exit(a),
-                "type": float,
+                "type": int,
             },
             "cancelexit": {
                 "help": "Cancel the exit if you had set a delay",
@@ -611,18 +611,20 @@ class Commands:
                     new_argument = True if argument.lower() == "force" else False
                 else:
                     new_argument = False
-
-        if new_argument is None:
-            if argtype and argument:
-                if argtype == str:
-                    new_argument = self.argument_replace(argument)
-                elif argtype == int:
-                    new_argument = utils.extract_number(argument)
-
-                    if new_argument is None:
-                        return
-                else:
-                    new_argument = argtype(argument)
+            elif argument and argtype == str:
+                new_argument = self.argument_replace(argument)
+            elif argument and argtype == float:
+                try:
+                    new_argument = float(argument)
+                except ValueError:
+                    return
+            elif argument and argtype == int:
+                try:
+                    new_argument = int(float(argument))
+                except ValueError:
+                    return
+            else:
+                return
 
         item = self.commands[cmd]
         item["action"](new_argument)
