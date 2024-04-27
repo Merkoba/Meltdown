@@ -43,7 +43,7 @@ class Config:
         self.default_after: str = ""
         self.default_compact: bool = False
         self.default_font_size: int = 14
-        self.default_font_family: str = "sans"
+        self.default_font_family: str = "sans-serif"
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"

@@ -116,7 +116,7 @@ class App:
         style.configure("Normal.TCombobox", borderwidth=0)
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
-        self.root.option_add("*TCombobox*Listbox.font", ("sans", 13))
+        self.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
 
         style.map(
             "Disabled.TCombobox",
