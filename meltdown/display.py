@@ -669,8 +669,13 @@ class Display:
         self.apply_font_size(new_size)
 
     def set_font_family(self, name: str) -> None:
-        if name not in ["sans", "monospace"]:
+        if name not in ["sans-serif", "sans", "monospace", "mono"]:
             return
+
+        if name == "sans":
+            name = "sans-serif"
+        elif name == "mono":
+            name = "monospace"
 
         config.set("font_family", name)
 

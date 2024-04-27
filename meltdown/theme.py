@@ -10,7 +10,7 @@ class Theme:
         self.width = 784
         self.height = 752
 
-        self.font_family = "sans"
+        self.font_family = "sans-serif"
         self.monospace_family = "monospace"
 
         self.font_size = 14
