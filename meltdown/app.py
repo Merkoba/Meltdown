@@ -217,13 +217,26 @@ class App:
         self.root.mainloop()
 
     def exit(self, delay: Optional[float] = None) -> None:
+        from .args import args
+        from .display import display
+
         self.cancel_exit()
         d = int((delay * 1000)) if delay else self.exit_delay
         d = d if d >= self.exit_delay else self.exit_delay
+
+        if not args.quiet:
+            if d >= 1.0:
+                secs = int(d / 1000)
+                display.print(f"Exiting in {secs} seconds.")
+
         self.exit_after = self.root.after(d, lambda: self.root.destroy())
 
     def cancel_exit(self, feedback: bool = False) -> None:
+        from .args import args
         from .display import display
+
+        if args.quiet:
+            feedback = False
 
         if self.exit_after:
             self.root.after_cancel(self.exit_after)
