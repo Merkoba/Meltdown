@@ -193,8 +193,28 @@ class FontMenu:
         self.menu.add(text="Set Font", command=lambda e: set_font())
         self.menu.add(text="Bigger Font", command=lambda e: display.increase_font())
         self.menu.add(text="Smaller Font", command=lambda e: display.decrease_font())
-        self.menu.add(text="Font Family", command=lambda e: display.toggle_font())
+        self.menu.add(text="Font Family", command=lambda e: font_family_menu.show())
         self.menu.add(text="Reset Font", command=lambda e: display.reset_font())
+
+    def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
+        if event:
+            self.menu.show(event)
+        else:
+            widget = getattr(widgets, "more_menu_button")
+            self.menu.show(widget=widget)
+
+
+class FontFamilyMenu:
+    def __init__(self) -> None:
+        from .display import display
+
+        self.menu = Menu()
+        self.menu.add(text="Sans", command=lambda e: display.set_font_family("sans"))
+        self.menu.add(
+            text="Monospace", command=lambda e: display.set_font_family("monospace")
+        )
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -212,3 +232,4 @@ gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
+font_family_menu = FontFamilyMenu()

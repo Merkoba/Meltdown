@@ -454,6 +454,12 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "fontfamily": {
+                "help": "Set the font family",
+                "action": lambda a=None: display.set_font_family(a),
+                "type": str,
+                "arg_req": True,
+            },
             "resetfont": {
                 "help": "Reset the font size",
                 "action": lambda a=None: display.reset_font(),

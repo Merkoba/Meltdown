@@ -668,15 +668,11 @@ class Display:
 
         self.apply_font_size(new_size)
 
-    def toggle_font(self) -> None:
-        font = config.font_family
+    def set_font_family(self, name: str) -> None:
+        if name not in ["sans", "monospace"]:
+            return
 
-        if font == "monospace":
-            font = "sans"
-        else:
-            font = "monospace"
-
-        config.set("font_family", font)
+        config.set("font_family", name)
 
     def reset_font(self) -> None:
         config.reset_one("font_size", False)
