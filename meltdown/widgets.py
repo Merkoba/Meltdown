@@ -5,6 +5,9 @@ from tkinter import ttk
 from typing import Optional, Any, Callable, Dict
 from pathlib import Path
 
+# Libraries
+from tkinterdnd2 import DND_FILES  # type: ignore
+
 # Modules
 from .args import args
 from .app import app
@@ -344,6 +347,8 @@ class Widgets:
         self.file.bind_mousewheel()
         ToolTip(self.file_label, tips["file"])
         ToolTip(self.file, tips["file"])
+        self.file.drop_target_register(DND_FILES)  # type: ignore
+        self.file.dnd_bind("<<Drop>>", lambda e: self.on_file_dropped(e))  # type: ignore
 
         self.recent_files_button = widgetutils.make_button(
             frame_data_file, "Recent", lambda: self.show_recent_files()
@@ -731,7 +736,11 @@ class Widgets:
 
     def model_focused(self) -> bool:
         focused = app.root.focus_get()
-        return focused == self.model
+
+        if isinstance(focused, EntryBox):
+            return focused == self.model
+
+        return False
 
     def esckey(self) -> None:
         from .display import display
@@ -991,6 +1000,10 @@ class Widgets:
             return
 
         config.set("mode", what)
+
+    def on_file_dropped(self, event: Any) -> None:
+        if event.data:
+            self.set_file(event.data)
 
 
 widgets: Widgets = Widgets()

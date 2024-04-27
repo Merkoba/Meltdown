@@ -12,6 +12,9 @@ from tkinter import ttk
 from pathlib import Path
 from typing import List, Any, Optional
 
+# Libraries
+from tkinterdnd2 import TkinterDnD  # type: ignore
+
 # Modules
 from .config import config
 from .theme import Theme
@@ -26,7 +29,7 @@ class App:
             self.manifest = json.load(file)
 
         title = self.manifest["title"]
-        self.root = tk.Tk(className=self.manifest["program"])
+        self.root = TkinterDnD.Tk(className=self.manifest["program"])
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)
         self.root.grid_columnconfigure(0, weight=1)
@@ -249,7 +252,7 @@ class App:
 
     def exists(self) -> bool:
         try:
-            return self.root.winfo_exists()
+            return bool(self.root.winfo_exists())
         except RuntimeError:
             return False
         except tk.TclError:
