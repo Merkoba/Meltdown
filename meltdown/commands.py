@@ -612,7 +612,7 @@ class Commands:
                 else:
                     new_argument = False
 
-        if not new_argument:
+        if new_argument is None:
             if argtype and argument:
                 if argtype == str:
                     new_argument = self.argument_replace(argument)
