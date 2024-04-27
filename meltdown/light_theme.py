@@ -16,8 +16,8 @@ class LightTheme(Theme):
         self.entry_placeholder_color = "grey"
         self.entry_insert = "#343434"
 
-        self.name_user = "#343434"
-        self.name_ai = "#343434"
+        self.user_color = "#343434"
+        self.ai_color = "#343434"
 
         self.tab_normal_background = "#AEAEAE"
         self.tab_normal_foreground = "#343434"

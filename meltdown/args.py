@@ -128,6 +128,8 @@ class Args:
         self.confirm_clear = True
         self.fill_prompt = True
         self.scroll_lines = 1
+        self.user_color = "auto"
+        self.ai_color = "auto"
 
     class Internal:
         title = app.manifest["title"]
@@ -496,6 +498,14 @@ class Args:
                 "type": str,
                 "help": "Use this program as default for the progtext and progjson commands",
             },
+            "user_color": {
+                "type": str,
+                "help": "The color of the text for the name of the user",
+            },
+            "ai_color": {
+                "type": str,
+                "help": "The color of the text for the name of the AI",
+            },
         }
 
     def parse(self) -> None:
@@ -627,6 +637,8 @@ class Args:
             "program",
             "gesture_threshold",
             "scroll_lines",
+            "user_color",
+            "ai_color",
         ]
 
         for n_item in normals:

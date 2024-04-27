@@ -22,8 +22,8 @@ class Theme:
         self.font_tooltips_size = 12
         self.font_textbox = 13
 
-        self.name_user = "#87CEEB"
-        self.name_ai = "#98FB98"
+        self.user_color = "#87CEEB"
+        self.ai_color = "#98FB98"
 
         self.syntax_style = "monokai"
 

@@ -244,8 +244,15 @@ class Output(tk.Text):
         self.configure(border=4, highlightthickness=0, relief="flat")
 
         if args.colors:
-            self.tag_configure("name_user", foreground=app.theme.name_user)
-            self.tag_configure("name_ai", foreground=app.theme.name_ai)
+            if args.user_color == "auto":
+                self.tag_configure("name_user", foreground=app.theme.user_color)
+            else:
+                self.tag_configure("name_user", foreground=args.user_color)
+
+            if args.ai_color == "auto":
+                self.tag_configure("name_ai", foreground=app.theme.ai_color)
+            else:
+                self.tag_configure("name_ai", foreground=args.ai_color)
 
         self.tag_configure("highlight", underline=True)
         self.tag_configure("url", underline=True)

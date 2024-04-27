@@ -851,3 +851,15 @@ This disables that behavior.
 >scroll_lines
 
 How many lines to scroll the output.
+
+---
+
+>user_color
+
+The color of the name of the user.
+
+---
+
+>ai_color
+
+The color of the name of the AI.
