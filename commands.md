@@ -468,6 +468,12 @@ Set the font size
 
 ---
 
+>fontfamily
+
+Set the font family
+
+---
+
 >resetfont
 
 Reset the font size
