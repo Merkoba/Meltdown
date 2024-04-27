@@ -188,7 +188,7 @@ class Model:
 
             if args.model_feedback and (not args.quiet):
                 msg = f"Loading {name}"
-                display.print(emojis.text(msg, "local"), tab_id=tab_id)
+                display.print(emojis.text(msg, "loading"), tab_id=tab_id)
 
             app.update()
             self.lock.acquire()
