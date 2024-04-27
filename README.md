@@ -256,3 +256,17 @@ To run it, use `run.sh` in the root dir.
 ---
 
 More information [here](https://github.com/abetlen/llama-cpp-python).
+
+---
+
+## Drag and Drop
+
+Some widgets like File and Input accept drag and drop operations.
+
+For instance you can drop a file to use its path.
+
+Or text to use as input.
+
+However you need to have `tkdnd` installed in your system.
+
+This is an extension for `Tcl`.
