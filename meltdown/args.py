@@ -512,6 +512,8 @@ class Args:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self)
 
         other_name = [
+            ("alias", "aliases"),
+            ("task", "tasks"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
@@ -527,8 +529,6 @@ class Args:
             ("no_stream", "stream"),
             ("no_taps", "taps"),
             ("no_empty", "allow_empty"),
-            ("alias", "aliases"),
-            ("task", "tasks"),
             ("no_bottom_autohide", "bottom_autohide"),
             ("no_bottom", "bottom"),
             ("no_reorder", "reorder"),
