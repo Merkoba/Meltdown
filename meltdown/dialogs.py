@@ -161,15 +161,10 @@ class Dialog:
             on_right_click=on_right_click,
         )
 
-        def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
-            def generic(func: Callable[..., Any]) -> None:
-                func(textbox)
-
-            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
-
         dialog.make_button("Max", textbox.max)
         dialog.make_button("Cancel", textbox.cancel)
         dialog.make_button("Ok", textbox.ok)
+        dialog.focus_hide_enabled = False
 
         dialog.show()
         dialog.highlight_last_button()
@@ -232,8 +227,13 @@ class Dialog:
         self.buttons_frame = tk.Frame(self.container, background=background)
         self.buttons_frame.grid(row=3, column=0)
 
+        self.focus_hide_enabled = True
         self.root.bind("<Escape>", lambda e: self.hide())
-        self.root.bind("<FocusOut>", lambda e: self.hide())
+        self.root.bind("<FocusOut>", lambda e: self.focus_hide())
+
+    def focus_hide(self) -> None:
+        if self.focus_hide_enabled:
+            self.hide()
 
     def show(self) -> None:
         self.root.update_idletasks()
