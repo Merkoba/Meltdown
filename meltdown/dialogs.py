@@ -160,7 +160,7 @@ class Dialog:
                     if tb:
                         tb.focus_set()
 
-                return
+                    return
 
         dialog = Dialog(text, top_frame=True, id=id)
 
@@ -213,6 +213,7 @@ class Dialog:
         self.root.bind("<Return>", lambda e: self.enter())
 
         Dialog.current_dialog = self
+        Dialog.current_textbox = None
 
     def make(self, text: str, with_top_frame: bool = False) -> None:
         background = app.theme.dialog_background
