@@ -312,7 +312,6 @@ class InputControl:
 
             def add_item(item: str) -> None:
                 def proc() -> None:
-                    config.set("input", item)
                     textbox.set_text(item)
                     textbox.dialog.focus()
 
