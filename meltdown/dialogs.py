@@ -148,9 +148,6 @@ class Dialog:
     ) -> None:
         from .textbox import TextBox
 
-        if Dialog.open():
-            return
-
         dialog = Dialog(text, top_frame=True)
 
         textbox = TextBox(
@@ -185,15 +182,14 @@ class Dialog:
             Dialog.current_dialog.focus()
 
     def __init__(self, text: str, top_frame: bool = False) -> None:
+        Dialog.hide_all()
         self.buttons: List[ButtonBox] = []
         self.make(text, with_top_frame=top_frame)
-
         self.highlighted = False
         self.current_button: Optional[int] = None
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())
         self.root.bind("<Return>", lambda e: self.enter())
-
         Dialog.current_dialog = self
 
     def make(self, text: str, with_top_frame: bool = False) -> None:

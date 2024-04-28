@@ -28,6 +28,10 @@ from . import widgetutils
 from . import details
 
 
+Gettable = (EntryBox, ttk.Combobox)
+TextWidget = (EntryBox, tk.Text)
+
+
 class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
@@ -540,15 +544,18 @@ class Widgets:
         if not widget:
             return
 
-        if (isinstance(widget, EntryBox)) or (isinstance(widget, tk.Text)):
-            menu.add(text="Copy", command=lambda e: self.copy(key))
-            menu.add(text="Paste", command=lambda e: self.paste(key))
-
-            if key in config.clearables:
-                menu.add(text="Clear", command=lambda e: self.clear(key))
-
         value = config.get(key)
         defvalue = config.get_default(key)
+
+        if isinstance(widget, Gettable):
+            if value:
+                menu.add(text="Copy", command=lambda e: self.copy(key))
+
+            if isinstance(widget, TextWidget):
+                menu.add(text="Paste", command=lambda e: self.paste(key))
+
+            if value and (key in config.clearables):
+                menu.add(text="Clear", command=lambda e: self.clear(key))
 
         if (defvalue is not None) and (value != defvalue) and (defvalue != ""):
             menu.add(text="Reset", command=lambda e: config.reset_one(key))
@@ -707,7 +714,7 @@ class Widgets:
         if not widget:
             return
 
-        if isinstance(widget, EntryBox):
+        if isinstance(widget, Gettable):
             utils.copy(widget.get())
             widget.focus_set()
             config.update(key)
@@ -873,7 +880,9 @@ class Widgets:
             menu = Menu()
             text = textbox.get_text()
 
-            menu.add(text="Copy", command=lambda e: copy(textbox))
+            if text:
+                menu.add(text="Copy", command=lambda e: copy(textbox))
+
             menu.add(text="Paste", command=lambda e: paste(textbox))
 
             if text:

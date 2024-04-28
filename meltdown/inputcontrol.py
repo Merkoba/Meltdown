@@ -16,6 +16,7 @@ from .dialogs import Dialog
 from .tips import tips
 from .utils import utils
 from .files import files
+from .menus import Menu
 from . import widgetutils
 
 
@@ -281,12 +282,59 @@ class InputControl:
             files.save(paths.autocomplete, self.autocomplete)
 
     def show_textbox(self) -> None:
+        from .textbox import TextBox
+
+        def copy(textbox: TextBox) -> None:
+            utils.copy(textbox.get_text())
+
+        def paste(textbox: TextBox) -> None:
+            utils.paste(textbox)
+
+        def clear(textbox: TextBox) -> None:
+            textbox.set_text("")
+
+        def on_right_click(event: Any, textbox: TextBox) -> None:
+            menu = Menu()
+            text = textbox.get_text()
+
+            if text:
+                menu.add(text="Copy", command=lambda e: copy(textbox))
+
+            menu.add(text="Paste", command=lambda e: paste(textbox))
+
+            if text:
+                menu.add(text="Clear", command=lambda e: clear(textbox))
+
+            items = files.get_list("inputs")[: args.max_list_items]
+
+            if items:
+                menu.add(text="--- Recent ---", disabled=True)
+
+            def add_item(item: str) -> None:
+                def proc() -> None:
+                    config.set("input", item)
+                    textbox.set_text(item)
+                    textbox.dialog.focus()
+
+                menu.add(text=item[: args.list_item_width], command=lambda e: proc())
+
+            for item in items:
+                add_item(item)
+
+            menu.show(event)
+
         def action(ans: Dict[str, Any]) -> None:
             self.submit(text=ans["text"], scroll=False)
 
         text = self.input.get().strip()
         self.clear()
-        Dialog.show_textbox("Write an input", lambda a: action(a), value=text)
+
+        Dialog.show_textbox(
+            "Write an input",
+            lambda a: action(a),
+            on_right_click=on_right_click,
+            value=text,
+        )
 
     def input_command(self, arg: Optional[str] = None) -> None:
         if arg:
