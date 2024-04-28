@@ -10,6 +10,7 @@ class Theme:
         self.width = 780
         self.height = 800
 
+        self.serif_family = "serif"
         self.font_family = "sans-serif"
         self.monospace_family = "monospace"
 
@@ -141,6 +142,8 @@ class Theme:
     def get_font_family(self) -> str:
         if config.font_family == "monospace":
             font = self.monospace_family
+        elif config.font_family == "serif":
+            font = self.serif_family
         else:
             font = self.font_family
 

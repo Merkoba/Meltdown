@@ -212,9 +212,13 @@ class FontFamilyMenu:
         from .display import display
 
         self.menu = Menu()
+
+        self.menu.add(text="Serif", command=lambda e: display.set_font_family("serif"))
+
         self.menu.add(
             text="Sans-Serif", command=lambda e: display.set_font_family("sans-serif")
         )
+
         self.menu.add(
             text="Monospace", command=lambda e: display.set_font_family("monospace")
         )

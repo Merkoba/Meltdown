@@ -681,7 +681,7 @@ class Display:
             font_family_menu.show()
             return
 
-        if name not in ["sans-serif", "sans", "monospace", "mono"]:
+        if name not in ["sans-serif", "sans", "monospace", "mono", "serif"]:
             return
 
         if name == "sans":
