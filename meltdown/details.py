@@ -45,8 +45,10 @@ def make_combobox(
     data: "FrameData",
     key: str,
     values: List[str],
+    width: Optional[int] = None,
 ) -> None:
-    combo_wid = widgetutils.make_combobox(data, values=values, width=15)
+    width = width or 15
+    combo_wid = widgetutils.make_combobox(data, values=values, width=width)
     setattr(widgets, key, combo_wid)
     ToolTip(combo_wid, tips[key])
 
@@ -91,7 +93,7 @@ def add_format(widgets: "Widgets", data: "FrameData") -> None:
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
-    make_combobox(widgets, data, "format", values)
+    make_combobox(widgets, data, "format", values, width=15)
 
 
 def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
@@ -131,4 +133,4 @@ def add_stop(widgets: "Widgets", data: "FrameData") -> None:
 
 def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "mlock", "M-Lock")
-    make_combobox(widgets, data, "mlock", ["yes", "no"])
+    make_combobox(widgets, data, "mlock", ["yes", "no"], width=7)
