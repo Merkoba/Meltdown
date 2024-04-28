@@ -86,18 +86,21 @@ class Menu:
 
     def make(self) -> None:
         self.root = tk.Frame(app.main_frame, background=app.theme.menu_border)
+
         self.canvas = tk.Canvas(
             self.root,
             borderwidth=0,
             highlightthickness=0,
             background=app.theme.menu_canvas_background,
         )
+
         self.container = tk.Frame(
             self.canvas,
             background=app.theme.menu_background,
             borderwidth=0,
             highlightthickness=0,
         )
+
         self.canvas.create_window((0, 0), window=self.container, anchor="nw")
         self.canvas.bind("<FocusOut>", lambda e: self.hide())
         self.canvas.grid_columnconfigure(0, weight=1)
@@ -108,9 +111,11 @@ class Menu:
         self.select_first_item()
         self.configure_geometry()
         self.setup_keyboard()
+
         self.canvas.grid(
             padx=app.theme.menu_border_width, pady=app.theme.menu_border_width
         )
+
         self.filter = ""
 
     def make_items(self) -> None:
@@ -180,6 +185,7 @@ class Menu:
                 separator = SeparatorBox(
                     self.container, app.theme.menu_background, padx=6, pady=2
                 )
+
                 separator.grid(row=i, column=0, sticky="ew")
                 self.separators.append(separator)
             else:
@@ -197,15 +203,18 @@ class Menu:
                 )
 
                 label.configure(cursor="hand2" if not item.disabled else "arrow")
+
                 self.elements[i] = {
                     "item": item,
                     "index": i,
                     "label": label,
                     "visible": True,
                 }
+
                 label.bind(
                     "<Button-3>", lambda e: self.show_tooltip(e, label, item.tooltip)
                 )
+
                 label.bind("<<Custom-Enter>>", lambda e: self.on_enter(i))
                 label.bind("<<Custom-Leave>>", lambda e: self.on_leave(i))
                 label.grid(row=i, column=0, sticky="ew", pady=0)

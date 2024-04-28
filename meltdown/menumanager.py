@@ -16,9 +16,7 @@ class MainMenu:
 
         self.menu = Menu()
 
-        self.menu.add(
-            text="System Prompt", command=lambda e: widgets.write_system_prompt()
-        )
+        self.menu.add(text="System", command=lambda e: widgets.write_system_prompt())
 
         self.menu.separator()
         self.menu.add(text="Configs", command=lambda e: config.menu())
