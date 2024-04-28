@@ -96,6 +96,10 @@ class Widgets:
         ToolTip(self.model_label, tips["model"])
         ToolTip(self.model, tips["model"])
 
+        if args.drag_and_drop:
+            self.model.drop_target_register(DND_FILES)  # type: ignore
+            self.model.dnd_bind("<<Drop>>", lambda e: self.on_model_dropped(e))  # type: ignore
+
         self.model_icon = widgetutils.make_label(frame_data_model, "", colons=False)
         self.model_icon_tooltip = ToolTip(self.model_icon, "")
 
@@ -1006,6 +1010,10 @@ class Widgets:
     def on_file_dropped(self, event: Any) -> None:
         if event.data:
             self.set_file(event.data)
+
+    def on_model_dropped(self, event: Any) -> None:
+        if event.data:
+            self.set_model(event.data)
 
 
 widgets: Widgets = Widgets()
