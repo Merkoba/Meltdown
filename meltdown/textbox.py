@@ -129,6 +129,7 @@ class TextBox(tk.Text):
                 self.cmd_ok,
                 self.cmd_cancel,
                 value=value,
+                on_right_click=self.on_right_click,
             )
         else:
             self.maximize()
