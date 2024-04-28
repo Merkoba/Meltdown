@@ -7,8 +7,8 @@ from .config import config
 
 class Theme:
     def __init__(self) -> None:
-        self.width = 784
-        self.height = 752
+        self.width = 780
+        self.height = 800
 
         self.font_family = "sans-serif"
         self.monospace_family = "monospace"
