@@ -470,7 +470,7 @@ Set the font size
 
 >fontfamily
 
-Set the font family (sans-serif, monospace)
+Set the font family
 
 ---
 

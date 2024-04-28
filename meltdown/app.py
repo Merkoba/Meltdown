@@ -362,7 +362,8 @@ class App:
         confs = [
             args.compact_model,
             args.compact_system,
-            args.compact_details,
+            args.compact_details_1,
+            args.compact_details_2,
             args.compact_buttons,
             args.compact_file,
             args.compact_input,
@@ -378,8 +379,10 @@ class App:
                 widgets.system_frame.grid_remove()
                 self.system_frame_visible = False
 
-            if args.compact_details:
+            if args.compact_details_1:
                 widgets.details_frame_1.grid_remove()
+
+            if args.compact_details_2:
                 widgets.details_frame_2.grid_remove()
 
             if args.compact_buttons:

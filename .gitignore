@@ -11,3 +11,4 @@ run.spec
 decomp/
 *.tar.gz
 *.zip
+llama.log

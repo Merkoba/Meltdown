@@ -75,7 +75,8 @@ class Args:
         self.commands = True
         self.compact_model = False
         self.compact_system = False
-        self.compact_details = False
+        self.compact_details_1 = False
+        self.compact_details_2 = False
         self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
@@ -319,9 +320,13 @@ class Args:
                 "action": "store_true",
                 "help": "Hide the system frame in compactm ode",
             },
-            "compact_details": {
+            "compact_details_1": {
                 "action": "store_true",
-                "help": "Hide the details frame in compact mode",
+                "help": "Hide the first details frame in compact mode",
+            },
+            "compact_details_2": {
+                "action": "store_true",
+                "help": "Hide the second details frame in compact mode",
             },
             "compact_buttons": {
                 "action": "store_true",
@@ -611,7 +616,8 @@ class Args:
             "keychar",
             "andchar",
             "compact_system",
-            "compact_details",
+            "compact_details_1",
+            "compact_details_2",
             "compact_file",
             "compact_buttons",
             "compact_model",
