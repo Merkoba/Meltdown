@@ -1,4 +1,5 @@
 # Standard
+import re
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
@@ -178,6 +179,14 @@ class EntryBox(ttk.Entry):
 
     def on_write(self, *args: Any) -> None:
         self.check_placeholder()
+
+        if not self.placeholder_active:
+            self.clean_string()
+
+    def clean_string(self) -> None:
+        text = self.text_var.get()
+        text = re.sub(r"\s+", " ", text).lstrip()
+        self.set_text(text)
 
     def on_left(self) -> str:
         from .keyboard import keyboard

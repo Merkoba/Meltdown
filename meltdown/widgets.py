@@ -544,10 +544,11 @@ class Widgets:
         if not widget:
             return
 
-        value = config.get(key)
         defvalue = config.get_default(key)
 
         if isinstance(widget, Gettable):
+            value = widget.get()
+
             if value:
                 menu.add(text="Copy", command=lambda e: self.copy(key))
 
@@ -557,7 +558,9 @@ class Widgets:
             if value and (key in config.clearables):
                 menu.add(text="Clear", command=lambda e: self.clear(key))
 
-        if (defvalue is not None) and (value != defvalue) and (defvalue != ""):
+        conf_value = config.get(key)
+
+        if (defvalue is not None) and (conf_value != defvalue) and (defvalue != ""):
             menu.add(text="Reset", command=lambda e: config.reset_one(key))
 
     def show_menu_items(
