@@ -454,7 +454,7 @@ class Commands:
                 "type": str,
             },
             "fontfamily": {
-                "help": "Set the font family (sans-serif, monospace)",
+                "help": "Set the font family",
                 "action": lambda a=None: display.set_font_family(a),
                 "type": str,
             },
@@ -611,7 +611,7 @@ class Commands:
                     new_argument = False
             elif argument and argtype == str:
                 new_argument = self.argument_replace(argument)
-            else:
+            elif argument:
                 try:
                     new_argument = argtype(argument)
                 except ValueError:
