@@ -597,7 +597,7 @@ class Commands:
 
         arg_req = item.get("arg_req")
 
-        if (argument is None) and arg_req:
+        if arg_req and (argument is None):
             return
 
         argtype = item.get("type")
@@ -611,18 +611,11 @@ class Commands:
                     new_argument = False
             elif argument and argtype == str:
                 new_argument = self.argument_replace(argument)
-            elif argument and argtype == float:
+            else:
                 try:
-                    new_argument = float(argument)
+                    new_argument = argtype(argument)
                 except ValueError:
                     return
-            elif argument and argtype == int:
-                try:
-                    new_argument = int(float(argument))
-                except ValueError:
-                    return
-            elif arg_req:
-                return
 
         item = self.commands[cmd]
         item["action"](new_argument)

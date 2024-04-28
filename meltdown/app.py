@@ -261,8 +261,6 @@ class App:
 
             if feedback:
                 display.print("Exit cancelled.")
-        elif feedback:
-            display.print("No exit to cancel.")
 
     def exists(self) -> bool:
         try:
