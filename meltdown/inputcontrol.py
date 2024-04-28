@@ -329,6 +329,7 @@ class InputControl:
         self.clear()
 
         Dialog.show_textbox(
+            "input",
             "Write an input",
             lambda a: action(a),
             on_right_click=on_right_click,

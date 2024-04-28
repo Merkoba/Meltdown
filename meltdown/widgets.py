@@ -914,6 +914,7 @@ class Widgets:
             return
 
         Dialog.show_textbox(
+            "system",
             "System Prompt",
             lambda a: action(a),
             value=config.system,

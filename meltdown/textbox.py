@@ -124,6 +124,7 @@ class TextBox(tk.Text):
             self.dialog.hide()
 
             Dialog.show_textbox(
+                self.dialog.id,
                 self.text,
                 self.cmd_ok,
                 self.cmd_cancel,

@@ -14,6 +14,7 @@ from . import widgetutils
 
 class Dialog:
     current_dialog: Optional["Dialog"] = None
+    current_textbox: Optional[tk.Widget] = None
 
     @staticmethod
     def open() -> bool:
@@ -139,6 +140,7 @@ class Dialog:
 
     @staticmethod
     def show_textbox(
+        id: str,
         text: str,
         cmd_ok: Callable[..., Any],
         cmd_cancel: Optional[Callable[..., Any]] = None,
@@ -148,7 +150,19 @@ class Dialog:
     ) -> None:
         from .textbox import TextBox
 
-        dialog = Dialog(text, top_frame=True)
+        if Dialog.open():
+            curr = Dialog.current_dialog
+
+            if curr:
+                if curr.id == id:
+                    tb = Dialog.current_textbox
+
+                    if tb:
+                        tb.focus_set()
+
+                return
+
+        dialog = Dialog(text, top_frame=True, id=id)
 
         textbox = TextBox(
             dialog,
@@ -168,6 +182,8 @@ class Dialog:
         textbox.insert(tk.END, value)
         textbox.focus_set()
 
+        Dialog.current_textbox = textbox
+
         if start_maximized:
             textbox.max()
 
@@ -181,15 +197,21 @@ class Dialog:
         if Dialog.current_dialog:
             Dialog.current_dialog.focus()
 
-    def __init__(self, text: str, top_frame: bool = False) -> None:
+    def __init__(self, text: str, top_frame: bool = False, id: str = "") -> None:
         Dialog.hide_all()
+
+        self.id = id
         self.buttons: List[ButtonBox] = []
+
         self.make(text, with_top_frame=top_frame)
+
         self.highlighted = False
         self.current_button: Optional[int] = None
+
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())
         self.root.bind("<Return>", lambda e: self.enter())
+
         Dialog.current_dialog = self
 
     def make(self, text: str, with_top_frame: bool = False) -> None:
