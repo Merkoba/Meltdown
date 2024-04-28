@@ -629,13 +629,17 @@ class App:
 
         display.to_top(tab_id=tab_id)
 
-    def hide_all(self) -> None:
+    def hide_all(self, hide_dialog: bool = True, hide_menu: bool = True) -> None:
         from .dialogs import Dialog
         from .menus import Menu
         from .tooltips import ToolTip
 
-        Dialog.hide_all()
-        Menu.hide_all()
+        if hide_dialog:
+            Dialog.hide_all()
+
+        if hide_menu:
+            Menu.hide_all()
+
         ToolTip.hide_all()
 
     def hide_frames(self) -> None:

@@ -591,7 +591,7 @@ class Output(tk.Text):
             tab_menu.show(event)
 
     def on_click(self, event: Any) -> None:
-        app.hide_all()
+        app.hide_all(hide_dialog=False)
         self.deselect_all()
         self.reset_drag()
 
