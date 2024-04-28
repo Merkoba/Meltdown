@@ -185,6 +185,7 @@ class EntryBox(ttk.Entry):
 
     def clean_string(self) -> None:
         text = self.text_var.get()
+        text = re.sub(r"\n+", " ", text)
         text = re.sub(r"\s+", " ", text).lstrip()
         self.set_text(text)
 
