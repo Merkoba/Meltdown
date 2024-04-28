@@ -452,13 +452,11 @@ class Commands:
                 "help": "Set the font size",
                 "action": lambda a=None: display.set_font_size(a),
                 "type": str,
-                "arg_req": True,
             },
             "fontfamily": {
                 "help": "Set the font family (sans-serif, monospace)",
                 "action": lambda a=None: display.set_font_family(a),
                 "type": str,
-                "arg_req": True,
             },
             "resetfont": {
                 "help": "Reset the font size",

@@ -634,7 +634,13 @@ class Display:
     def apply_font_size(self, size: int) -> None:
         config.set("font_size", size)
 
-    def set_font_size(self, text: str) -> None:
+    def set_font_size(self, text: Optional[str] = None) -> None:
+        from .menumanager import font_menu
+
+        if not text:
+            font_menu.show()
+            return
+
         if text in ["default", "reset"]:
             display.reset_font()
             return
@@ -668,7 +674,13 @@ class Display:
 
         self.apply_font_size(new_size)
 
-    def set_font_family(self, name: str) -> None:
+    def set_font_family(self, name: Optional[str] = None) -> None:
+        from .menumanager import font_family_menu
+
+        if not name:
+            font_family_menu.show()
+            return
+
         if name not in ["sans-serif", "sans", "monospace", "mono"]:
             return
 
