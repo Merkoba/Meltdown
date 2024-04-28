@@ -126,6 +126,7 @@ class Keyboard:
                 '"',
                 " ",
             ]
+
             syms = ["Return", "Up", "Down", "Left", "Right", "BackSpace", "Delete"]
 
             if event.keysym == "c":

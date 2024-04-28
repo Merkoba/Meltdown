@@ -85,6 +85,7 @@ class InputControl:
 
     def focus(self) -> None:
         self.input.focus_set()
+        self.input.on_focus_change("in")
 
     def apply_history(self) -> None:
         inputs = files.get_list("inputs")

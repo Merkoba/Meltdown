@@ -179,11 +179,12 @@ class EntryBox(ttk.Entry):
 
     def on_write(self, *args: Any) -> None:
         self.check_placeholder()
-
-        if not self.placeholder_active:
-            self.clean_string()
+        self.clean_string()
 
     def clean_string(self) -> None:
+        if self.placeholder_active:
+            return
+
         text = self.text_var.get()
         text = re.sub(r"\n+", " ", text)
         text = re.sub(r"\s+", " ", text).lstrip()
