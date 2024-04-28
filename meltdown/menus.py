@@ -337,12 +337,20 @@ class Menu:
         self.canvas.yview_moveto(0.0)
 
     def show_item(self, index: int) -> None:
-        els = self.elements[index]
+        els = self.elements.get(index)
+
+        if not els:
+            return
+
         els["visible"] = True
         els["label"].grid()
 
     def hide_item(self, index: int) -> None:
-        els = self.elements[index]
+        els = self.elements.get(index)
+
+        if not els:
+            return
+
         els["visible"] = False
         els["label"].grid_remove()
 
@@ -449,10 +457,15 @@ class Menu:
         if index not in self.elements:
             return False
 
-        if self.elements[index]["item"].disabled:
+        els = self.elements.get(index)
+
+        if not els:
             return False
 
-        if not self.elements[index]["visible"]:
+        if els["item"].disabled:
+            return False
+
+        if not els["visible"]:
             return False
 
         self.on_enter(index)
@@ -463,7 +476,11 @@ class Menu:
             return
 
         self.on_leave(self.selected_index)
-        els = self.elements[index]
+        els = self.elements.get(index)
+
+        if not els:
+            return
+
         colors = self.get_colors(els["item"])
         els["label"]["background"] = colors["hover_background"]
         els["label"]["foreground"] = colors["hover_foreground"]
@@ -483,7 +500,11 @@ class Menu:
         self.deselect(index)
 
     def deselect(self, index: int) -> None:
-        els = self.elements[index]
+        els = self.elements.get(index)
+
+        if not els:
+            return
+
         colors = self.get_colors(els["item"])
         els["label"]["background"] = colors["background"]
         els["label"]["foreground"] = colors["foreground"]

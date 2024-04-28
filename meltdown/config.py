@@ -81,7 +81,7 @@ class Config:
             "system",
             "before",
             "after",
-            "input",
+            "stop" "input",
             "name_user",
             "name_ai",
             "avatar_user",

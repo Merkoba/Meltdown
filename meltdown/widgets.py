@@ -516,6 +516,7 @@ class Widgets:
         setup_entrybox("model", "Path to a model file")
         setup_entrybox("before", "Text")
         setup_entrybox("after", "Text")
+        setup_entrybox("stop", "Text")
         setup_entrybox("file", "URL to a remote file or a local path")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
