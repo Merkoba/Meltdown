@@ -540,7 +540,6 @@ class Widgets:
         inputcontrol.bind()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
-        config.update(key)
         widget = self.get_widget(key)
 
         if not widget:
