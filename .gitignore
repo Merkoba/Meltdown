@@ -12,3 +12,6 @@ decomp/
 *.tar.gz
 *.zip
 llama.log
+*.xml
+*.iml
+*.idea

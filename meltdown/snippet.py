@@ -196,9 +196,9 @@ class Snippet(tk.Frame):
         for key in parsed:
             if key[1]["color"] != "" and key[1]["color"] is not None:
                 color = "#" + key[1]["color"]
-                key = str(key[0])
-                self.text.tag_configure(key, foreground=color)
-                self.text.tag_lower(key)
+                key_ = str(key[0])
+                self.text.tag_configure(key_, foreground=color)
+                self.text.tag_lower(key_)
 
         lexer = get_lexer_by_name(self.language, stripall=True)
         tokens = list(lexer.get_tokens(self.content))

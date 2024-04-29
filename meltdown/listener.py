@@ -37,8 +37,8 @@ def do_start() -> None:
                 text = file.read().strip()
 
                 if text:
-                    with open(path, "w") as file:
-                        file.write("")
+                    with open(path, "w") as file_2:
+                        file_2.write("")
 
                     inputcontrol.submit(text=text)
 

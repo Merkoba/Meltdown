@@ -36,18 +36,22 @@ class Page:
         inner = tk.Frame(frame)
         inner.configure(cursor="hand2")
         inner.configure(background=app.theme.tab_normal_background)
+
         inner.pack(
             expand=True,
             fill="both",
             padx=app.theme.tab_border_with,
             pady=app.theme.tab_border_with,
         )
+
         label = tk.Label(inner, text=text, font=app.theme.font("tab"))
         label.configure(background=app.theme.tab_normal_background)
         label.configure(foreground=app.theme.tab_normal_foreground)
+
         label.pack(
             expand=True, fill="both", padx=app.theme.tab_padx, pady=app.theme.tab_pady
         )
+
         label.configure(cursor="hand2")
         tooltip = ToolTip(frame, text=text)
         return TabWidget(frame, inner, label, tooltip)
@@ -100,9 +104,11 @@ class Book(tk.Frame):
         self.tabs_manual = False
 
         self.tabs_frame = tk.Frame(self)
+
         self.tabs_canvas = tk.Canvas(
             self.tabs_frame, borderwidth=0, highlightthickness=0
         )
+
         self.tabs_canvas.configure(background=app.theme.tabs_container_color)
 
         tabs_scrollbar = tk.Scrollbar(self.tabs_frame, orient="horizontal")
@@ -112,9 +118,11 @@ class Book(tk.Frame):
         self.tabs_container = tk.Frame(
             self.tabs_canvas, background=app.theme.background_color
         )
+
         self.tabs_container_id = self.tabs_canvas.create_window(
             (0, 0), window=self.tabs_container, anchor="nw"
         )
+
         self.tabs_container.bind("<Configure>", lambda e: self.update_tabs())
         self.tabs_container.configure(background=app.theme.tabs_container_color)
 
