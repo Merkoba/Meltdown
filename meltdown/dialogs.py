@@ -26,9 +26,6 @@ class Dialog:
         cmd_ok: Optional[Callable[..., Any]] = None,
         cmd_cancel: Optional[Callable[..., Any]] = None,
     ) -> None:
-        if Dialog.open():
-            return
-
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -54,9 +51,6 @@ class Dialog:
         commands: List[Tuple[str, Callable[..., Any]]],
         image: Optional[Path] = None,
     ) -> None:
-        if Dialog.open():
-            return
-
         dialog = Dialog(text)
 
         if image:
@@ -86,9 +80,6 @@ class Dialog:
 
     @staticmethod
     def show_message(text: str) -> None:
-        if Dialog.open():
-            return
-
         dialog = Dialog(text)
 
         def ok() -> None:
@@ -105,9 +96,6 @@ class Dialog:
         cmd_cancel: Optional[Callable[..., Any]] = None,
         value: str = "",
     ) -> None:
-        if Dialog.open():
-            return
-
         dialog = Dialog(text, top_frame=True)
         entry = EntryBox(
             dialog.top_frame, font=app.theme.font(), width=20, justify="center"
