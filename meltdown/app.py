@@ -24,8 +24,9 @@ from .utils import utils
 class App:
     def __init__(self) -> None:
         self.here = Path(__file__).parent.expanduser().resolve()
+        manifest_path = Path(self.here, "manifest.json")
 
-        with Path(self.here, "manifest.json").open("r", encoding="utf-8") as file:
+        with manifest_path.open("r", encoding="utf-8") as file:
             self.manifest = json.load(file)
 
         title = self.manifest["title"]
