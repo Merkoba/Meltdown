@@ -27,6 +27,7 @@ class MainMenu:
         self.menu.separator()
         self.menu.add(text="Compact", command=lambda e: app.toggle_compact())
         self.menu.add(text="Resize", command=lambda e: app.resize())
+        self.menu.separator()
         self.menu.add(text="Theme", command=lambda e: app.toggle_theme())
         self.menu.add(text="About", command=lambda e: app.show_about())
         self.menu.separator()
@@ -122,7 +123,6 @@ class TabMenu:
         self.menu_single = Menu()
         self.menu_single.add(text="Rename", command=lambda e: display.rename_tab())
         self.menu_single.add(text="Move", command=lambda e: display.move_tab())
-        self.menu_single.add(text="Clear", command=lambda e: display.clear())
         self.menu_single.add(text="Close", command=lambda e: display.tab_menu_close())
 
         self.menu_multi = Menu()
@@ -149,7 +149,6 @@ class TabMenu:
         self.menu_multi.separator()
         self.menu_multi.add(text="Rename", command=lambda e: display.rename_tab())
         self.menu_multi.add(text="Move", command=lambda e: display.move_tab())
-        self.menu_multi.add(text="Clear", command=lambda e: display.clear())
         self.menu_multi.add(text="Close", command=lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None, mode: str = "normal") -> None:
