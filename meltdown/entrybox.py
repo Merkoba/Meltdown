@@ -2,7 +2,7 @@
 import re
 import tkinter as tk
 from tkinter import ttk
-from typing import Any
+from typing import Any, Optional
 
 # Modules
 from .app import app
@@ -60,6 +60,14 @@ class EntryBox(ttk.Entry):
 
     def get_text(self) -> str:
         return self.get()
+
+    def get_selected(self) -> Optional[str]:
+        try:
+            start = self.index(tk.SEL_FIRST)
+            end = self.index(tk.SEL_LAST)
+            return self.text_var.get()[start:end]
+        except tk.TclError:
+            return None
 
     def change_value(self) -> str:
         return self.get()

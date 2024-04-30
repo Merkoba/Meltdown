@@ -9,6 +9,7 @@ from .app import app
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .args import args
+from .utils import utils
 from . import widgetutils
 
 
@@ -96,7 +97,10 @@ class Dialog:
         cmd_cancel: Optional[Callable[..., Any]] = None,
         value: str = "",
     ) -> None:
+        from .menus import Menu
+
         dialog = Dialog(text, top_frame=True)
+
         entry = EntryBox(
             dialog.top_frame, font=app.theme.font(), width=20, justify="center"
         )
@@ -115,13 +119,38 @@ class Dialog:
         if value:
             entry.insert(0, value)
 
+        def copy(text: Optional[str]) -> None:
+            if not text:
+                text = entry.get()
+
+            if not text:
+                return
+
+            utils.copy(text)
+
+        def paste() -> None:
+            utils.paste(entry)
+
+        def on_right_click(event: Any) -> None:
+            menu = Menu()
+            text = entry.get()
+            selected = entry.get_selected()
+
+            if text:
+                menu.add(text="Copy", command=lambda e: copy(selected))
+
+            menu.add(text="Paste", command=lambda e: paste())
+            menu.show(event)
+
         entry.bind("<Return>", lambda e: dialog.enter())
         entry.bind("<Escape>", lambda e: dialog.hide())
         entry.bind("<Down>", lambda e: dialog.root.focus_set())
+        entry.bind("<Button-3>", lambda e: on_right_click(e))
         dialog.root.bind("<Up>", lambda e: entry.focus_set())
         entry.pack(padx=3, pady=3)
         dialog.make_button("Cancel", cancel)
         dialog.make_button("Ok", ok)
+        dialog.focus_hide_enabled = False
         dialog.show()
         dialog.highlight_button(1)
         entry.full_focus()
