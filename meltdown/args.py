@@ -132,6 +132,7 @@ class Args:
         self.user_color = "auto"
         self.ai_color = "auto"
         self.drag_and_drop = True
+        self.confirm_exit = False
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -311,6 +312,10 @@ class Args:
             "force": {
                 "action": "store_true",
                 "help": "Allow opening multiple instances",
+            },
+            "confirm_exit": {
+                "action": "store_true",
+                "help": "Show confirm exit dialog",
             },
             "compact_model": {
                 "action": "store_true",
@@ -651,6 +656,7 @@ class Args:
             "scroll_lines",
             "user_color",
             "ai_color",
+            "confirm_exit",
         ]
 
         for n_item in normals:

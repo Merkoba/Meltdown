@@ -863,3 +863,9 @@ The color of the name of the user.
 >ai_color
 
 The color of the name of the AI.
+
+---
+
+>confirm_exit
+
+Show a confirm exit dialog.

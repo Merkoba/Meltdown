@@ -234,9 +234,18 @@ class App:
     def run(self) -> None:
         self.root.mainloop()
 
-    def exit(self, seconds: Optional[int] = None) -> None:
+    def exit(self, seconds: Optional[int] = None, force: bool = False) -> None:
         from .args import args
         from .display import display
+        from .dialogs import Dialog
+
+        if args.confirm_exit and (not force):
+
+            def action() -> None:
+                self.exit(seconds, force=True)
+
+            Dialog.show_confirm("Exit the program?", action)
+            return
 
         self.cancel_exit()
         d = (seconds * 1000) if seconds else self.exit_delay
