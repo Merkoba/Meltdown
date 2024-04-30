@@ -233,6 +233,8 @@ class Dialog:
         Dialog.current_textbox = None
 
     def make(self, text: str, with_top_frame: bool = False) -> None:
+        from .menus import Menu
+
         background = app.theme.dialog_background
         foreground = app.theme.dialog_foreground
         border = app.theme.dialog_border
@@ -247,9 +249,11 @@ class Dialog:
         self.container.grid(row=0, column=0, sticky="nsew")
 
         text_label = tk.Label(self.container, text=text, font=app.theme.font())
+
         text_label.configure(
             wraplength=500, background=background, foreground=foreground
         )
+
         text_label.grid(row=0, column=0, sticky="nsew")
 
         if with_top_frame:
@@ -264,8 +268,16 @@ class Dialog:
         self.buttons_frame.grid(row=3, column=0)
 
         self.focus_hide_enabled = True
-        self.root.bind("<Escape>", lambda e: self.hide())
-        self.root.bind("<FocusOut>", lambda e: self.focus_hide())
+
+        def bind(widget: tk.Widget) -> None:
+            widget.bind("<Escape>", lambda e: self.hide())
+            widget.bind("<ButtonPress-1>", lambda e: Menu.hide_all())
+            widget.bind("<FocusOut>", lambda e: self.focus_hide())
+
+            for child in widget.winfo_children():
+                bind(child)
+
+        bind(self.root)
 
     def focus_hide(self) -> None:
         if self.focus_hide_enabled:
