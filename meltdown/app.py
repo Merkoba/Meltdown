@@ -717,12 +717,11 @@ class App:
             if not self.streaming:
                 self.streaming = True
                 widgets.enable_stop_button()
-        else:
-            if self.streaming:
-                self.streaming = False
-                widgets.disable_stop_button()
-                display.stream_stopped()
-                commands.after_stream()
+        elif self.streaming:
+            self.streaming = False
+            widgets.disable_stop_button()
+            display.stream_stopped()
+            commands.after_stream()
 
         model_empty = widgets.model.get() == ""
 
@@ -731,11 +730,10 @@ class App:
                 self.loading = True
                 widgets.disable_load_button()
                 widgets.disable_format_select()
-        else:
-            if self.loading:
-                self.loading = False
-                widgets.enable_load_button()
-                widgets.enable_format_select()
+        elif self.loading:
+            self.loading = False
+            widgets.enable_load_button()
+            widgets.enable_format_select()
 
         if model.loaded_model:
             if not self.loaded:
@@ -744,13 +742,12 @@ class App:
 
                 self.update()
                 widgets.model.move_to_end()
-        else:
-            if self.loaded:
-                self.loaded = False
-                widgets.load_button.set_text("Load")
+        elif self.loaded:
+            self.loaded = False
+            widgets.load_button.set_text("Load")
 
-                self.update()
-                widgets.model.move_to_end()
+            self.update()
+            widgets.model.move_to_end()
 
     def start_checks(self) -> None:
         self.do_checks()

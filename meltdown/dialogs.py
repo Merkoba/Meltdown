@@ -283,11 +283,10 @@ class Dialog:
             new_index = len(self.buttons) - 1
         elif self.current_button > 0:
             new_index = self.current_button - 1
+        elif args.wrap:
+            new_index = len(self.buttons) - 1
         else:
-            if args.wrap:
-                new_index = len(self.buttons) - 1
-            else:
-                return
+            return
 
         self.highlight_button(new_index)
 
@@ -299,11 +298,10 @@ class Dialog:
             new_index = 0
         elif self.current_button < len(self.buttons) - 1:
             new_index = self.current_button + 1
+        elif args.wrap:
+            new_index = 0
         else:
-            if args.wrap:
-                new_index = 0
-            else:
-                return
+            return
 
         self.highlight_button(new_index)
 

@@ -58,11 +58,10 @@ class Gestures:
                             display.select_first_tab()
                         else:
                             display.tab_left()
+                    elif keyboard.shift:
+                        display.select_last_tab()
                     else:
-                        if keyboard.shift:
-                            display.select_last_tab()
-                        else:
-                            display.tab_right()
+                        display.tab_right()
 
                     return
             elif y_diff >= args.gesture_threshold:

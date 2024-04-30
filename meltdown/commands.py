@@ -73,15 +73,13 @@ class Commands:
 
                         if item.argument and queue.items:
                             queue.wait = float(item.argument) * 1000.0
-                    else:
-                        if self.aliases.get(item.cmd):
-                            self.exec(self.aliases[item.cmd], queue)
-                        else:
-                            if not self.try_to_run(item.cmd, item.argument):
-                                similar = self.get_similar_alias(item.cmd)
+                    elif self.aliases.get(item.cmd):
+                        self.exec(self.aliases[item.cmd], queue)
+                    elif not self.try_to_run(item.cmd, item.argument):
+                        similar = self.get_similar_alias(item.cmd)
 
-                                if similar:
-                                    self.exec(self.aliases[similar], queue)
+                        if similar:
+                            self.exec(self.aliases[similar], queue)
 
                     if not queue.items:
                         self.queues.remove(queue)

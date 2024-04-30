@@ -24,6 +24,8 @@ select = [
     "Q004",
     "SIM103",
     "ERA001",
+    "PLR5501",
+    "PLR1711",
 ]
 exclude = [
     "pyperclip.py",

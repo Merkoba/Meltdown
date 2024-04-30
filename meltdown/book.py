@@ -326,8 +326,6 @@ class Book(tk.Frame):
             else:
                 page.content.grid()
 
-        return
-
     def get_page_by_id(self, id: str) -> Optional[Page]:
         for page in self.pages:
             if page.id == id:

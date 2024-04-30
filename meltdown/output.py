@@ -117,11 +117,10 @@ class Output(tk.Text):
                 prompt = f"{avatar} {name}{colons}"
             else:
                 prompt = f"{avatar}{colons}"
+        elif name:
+            prompt = f"{name}{colons}"
         else:
-            if name:
-                prompt = f"{name}{colons}"
-            else:
-                prompt = f"Anon{colons}"
+            prompt = f"Anon{colons}"
 
         if mark:
             # Add invisible markers
@@ -424,19 +423,18 @@ class Output(tk.Text):
 
         if widget_above:
             left = "\n\n"
-        else:
-            if len(self.get_text()):
-                last_chars = self.last_characters(2).strip(" ")
+        elif len(self.get_text()):
+            last_chars = self.last_characters(2).strip(" ")
 
-                if last_chars:
-                    if last_chars == "\n\n":
-                        pass
-                    elif last_chars == "\n":
-                        left = "\n"
-                    elif last_chars[-1] == "\n":
-                        left = "\n"
-                    else:
-                        left = "\n\n"
+            if last_chars:
+                if last_chars == "\n\n":
+                    pass
+                elif last_chars == "\n":
+                    left = "\n"
+                elif last_chars[-1] == "\n":
+                    left = "\n"
+                else:
+                    left = "\n\n"
 
         text = left + text
         self.insert_text(text)
@@ -496,13 +494,12 @@ class Output(tk.Text):
 
         if seltext:
             Output.words = seltext
+        elif tags:
+            Output.words = self.get_tagwords(tags[0], event).strip()
         else:
-            if tags:
-                Output.words = self.get_tagwords(tags[0], event).strip()
-            else:
-                Output.words = widget.get(
-                    f"{current_index} wordstart", f"{current_index} wordend"
-                )
+            Output.words = widget.get(
+                f"{current_index} wordstart", f"{current_index} wordend"
+            )
 
         Output.words = Output.words.strip()
 
