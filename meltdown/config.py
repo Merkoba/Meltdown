@@ -120,16 +120,16 @@ class Config:
     def get(self, key: str) -> Any:
         if hasattr(self, key):
             return getattr(self, key)
-        else:
-            return None
+
+        return None
 
     def get_default(self, key: str) -> Optional[Any]:
         name = f"default_{key}"
 
         if hasattr(self, name):
             return getattr(self, name)
-        else:
-            return None
+
+        return None
 
     def print_config(self) -> None:
         from .display import display
@@ -298,8 +298,8 @@ class Config:
 
         if widget:
             return self.set(key, widget.get())
-        else:
-            return False
+
+        return False
 
     def set(self, key: str, value: Any, on_change: bool = True) -> bool:
         from .model import model

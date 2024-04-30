@@ -26,5 +26,5 @@ def text(text: str, name: str) -> str:
 
     if emoji:
         return f"{emoji} {text}"
-    else:
-        return text
+
+    return text

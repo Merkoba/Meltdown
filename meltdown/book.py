@@ -299,7 +299,8 @@ class Book(tk.Frame):
             if page_name == name:
                 closest = page.id
                 break
-            elif page_name.startswith(name):
+
+            if page_name.startswith(name):
                 closest = page.id
 
         if closest:
@@ -326,7 +327,7 @@ class Book(tk.Frame):
             else:
                 page.content.grid()
 
-        return None
+        return
 
     def get_page_by_id(self, id: str) -> Optional[Page]:
         for page in self.pages:

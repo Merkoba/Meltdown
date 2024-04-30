@@ -321,8 +321,7 @@ class Output(tk.Text):
         if not lines:
             return 0.0
 
-        fraction = float(num_lines / lines[0])
-        return fraction
+        return float(num_lines / lines[0])
 
     def get_scroll_lines(self) -> float:
         fraction = self.get_fraction()
@@ -480,8 +479,7 @@ class Output(tk.Text):
         try:
             start = widget.index(tk.SEL_FIRST)
             end = widget.index(tk.SEL_LAST)
-            selected_text = widget.get(start, end)
-            return selected_text
+            return widget.get(start, end)
         except tk.TclError:
             return ""
 
@@ -558,8 +556,8 @@ class Output(tk.Text):
             if element[0] == "window":
                 if num == index:
                     return element[2]
-                else:
-                    num += 1
+
+                num += 1
 
         return "1.0"
 

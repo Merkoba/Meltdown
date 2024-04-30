@@ -261,16 +261,16 @@ class Display:
 
         if tab:
             return tab.output
-        else:
-            return None
+
+        return None
 
     def get_bottom(self, tab_id: str) -> Optional[Bottom]:
         tab = self.get_tab(tab_id)
 
         if tab:
             return tab.bottom
-        else:
-            return None
+
+        return None
 
     def on_tab_right_click(self, event: Any, tab_id: str) -> None:
         from .menumanager import tab_menu
@@ -915,7 +915,8 @@ class Display:
         def find(value: str) -> bool:
             if is_regex and re.search(regex_query, value, re.IGNORECASE):
                 return True
-            elif query_lower in value.lower():
+
+            if query_lower in value.lower():
                 return True
 
             return False

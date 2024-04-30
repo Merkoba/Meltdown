@@ -387,8 +387,8 @@ class Widgets:
             widget = getattr(self, key)
             assert isinstance(widget, tk.Widget)
             return widget
-        else:
-            return None
+
+        return None
 
     def fill(self) -> None:
         for key in config.defaults():

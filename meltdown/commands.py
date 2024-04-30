@@ -626,8 +626,7 @@ class Commands:
         from .display import display
 
         argument = argument.replace(f"{args.keychar}now", str(utils.now_int()))
-        argument = argument.replace(f"{args.keychar}name", display.get_tab_name())
-        return argument
+        return argument.replace(f"{args.keychar}name", display.get_tab_name())
 
     def save_commands(self) -> None:
         cmds = {}

@@ -133,8 +133,8 @@ class Session:
 
         if tab:
             return self.get_conversation(tab.conversation_id)
-        else:
-            return None
+
+        return None
 
     def change_name(self, conversation_id: str, name: str) -> None:
         if conversation_id in self.conversations:

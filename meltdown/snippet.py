@@ -184,8 +184,7 @@ class Snippet(tk.Frame):
         try:
             start = self.text.index(tk.SEL_FIRST)
             end = self.text.index(tk.SEL_LAST)
-            selected_text = self.text.get(start, end)
-            return selected_text
+            return self.text.get(start, end)
         except tk.TclError:
             return ""
 

@@ -562,8 +562,7 @@ class Model:
         if config.name_ai:
             content = content.replace(f"{args.keychar}name_ai", config.name_ai)
 
-        content = content.replace(f"{args.keychar}date", utils.today())
-        return content
+        return content.replace(f"{args.keychar}date", utils.today())
 
     def check_dot(self, text: str) -> str:
         if not text:
@@ -573,8 +572,8 @@ class Model:
 
         if text[-1] in chars:
             return text + " "
-        else:
-            return text + ". "
+
+        return text + ". "
 
     def image_to_base64(self, path: str) -> Optional[str]:
         try:

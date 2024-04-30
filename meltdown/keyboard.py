@@ -197,8 +197,8 @@ class Keyboard:
                     if self.action(item):
                         if item.return_break:
                             return "break"
-                        else:
-                            return ""
+
+                        return ""
 
             for item in items:
                 if item.widget:
@@ -206,8 +206,8 @@ class Keyboard:
                         if self.action(item):
                             if item.return_break:
                                 return "break"
-                            else:
-                                return ""
+
+                            return ""
 
             self.on_key_press(event)
             return ""

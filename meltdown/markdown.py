@@ -78,7 +78,8 @@ class Markdown:
 
         if args.markdown == "none":
             return
-        elif args.markdown == "all":
+
+        if args.markdown == "all":
             start_ln = 1
             end_ln = num_lines + 1
             add()

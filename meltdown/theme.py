@@ -177,19 +177,26 @@ class Theme:
 
         if name == "font":
             return (fam, self.font_size + diff, "normal")
-        elif name == "button":
+
+        if name == "button":
             return (fam, self.font_button_size + diff, "normal")
-        elif name == "combobox":
+
+        if name == "combobox":
             return (fam, self.font_combobox_size + diff, "normal")
-        elif name == "tab":
+
+        if name == "tab":
             return (fam, self.font_tab_size + diff, "normal")
-        elif name == "tab_highlight":
+
+        if name == "tab_highlight":
             return (fam, self.font_tab_highlight_size + diff, "underline")
-        elif name == "menu":
+
+        if name == "menu":
             return (fam, self.font_menu_size + diff, "normal")
-        elif name == "tooltips":
+
+        if name == "tooltips":
             return (fam, self.font_tooltips_size + diff, "normal")
-        elif name == "textbox":
+
+        if name == "textbox":
             return (fam, self.font_textbox + diff, "normal")
-        else:
-            return (fam, self.font_size + diff, "normal")
+
+        return (fam, self.font_size + diff, "normal")

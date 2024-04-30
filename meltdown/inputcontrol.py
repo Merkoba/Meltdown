@@ -107,8 +107,8 @@ class InputControl:
             if self.history_index == len(inputs) - 1:
                 self.clear()
                 return
-            else:
-                self.history_index = (self.history_index + 1) % len(inputs)
+
+            self.history_index = (self.history_index + 1) % len(inputs)
 
         self.apply_history()
 
@@ -124,8 +124,8 @@ class InputControl:
             if self.history_index == 0:
                 self.clear()
                 return
-            else:
-                self.history_index = (self.history_index - 1) % len(inputs)
+
+            self.history_index = (self.history_index - 1) % len(inputs)
 
         self.apply_history()
 

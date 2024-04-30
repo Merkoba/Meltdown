@@ -1,2 +1,20 @@
 [lint]
-select = ["F402", "PLW2901", "F811"]
+select = [
+    "F402",
+    "PLW2901",
+    "F811",
+    "PIE790",
+    "RET501",
+    "RET502",
+    "RET503",
+    "RET504",
+    "RET505",
+    "RET506",
+    "RET507",
+    "RET508",
+]
+exclude = [
+    "pyperclip.py",
+    "PIE800",
+    "PIE804",
+]

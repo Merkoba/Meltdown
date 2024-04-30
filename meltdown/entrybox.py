@@ -56,8 +56,7 @@ class EntryBox(ttk.Entry):
         if self.placeholder_active:
             return ""
 
-        else:
-            return self.text_var.get()
+        return self.text_var.get()
 
     def get_text(self) -> str:
         return self.get()
