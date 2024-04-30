@@ -69,12 +69,12 @@ class Logs:
             if cmd:
                 app.run_command([cmd, str(file_path)])
 
-    def save(self, mode: str, all: bool, name: Optional[str] = None) -> None:
+    def save(self, mode: str, save_all: bool, name: Optional[str] = None) -> None:
         num = 0
 
         conversations = (
             [session.get_conversation(key) for key in session.conversations]
-            if all
+            if save_all
             else [session.get_current_conversation()]
         )
 
@@ -103,9 +103,9 @@ class Logs:
             else:
                 overwrite = True
 
-            self.save_file(text, name, ext, all, overwrite=overwrite, mode=mode)
+            self.save_file(text, name, ext, save_all, overwrite=overwrite, mode=mode)
 
-        if all:
+        if save_all:
             if args.quiet or (not args.log_feedback):
                 return
 
