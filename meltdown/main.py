@@ -3,6 +3,7 @@ import os
 import sys
 import fcntl
 import tempfile
+from pathlib import Path
 
 # Modules
 from .app import app
@@ -28,8 +29,8 @@ def main() -> None:
     program = app.manifest["program"]
     args.parse()
 
-    pid_file = os.path.join(tempfile.gettempdir(), f"mlt_{program}.pid")
-    fp = open(pid_file, "w", encoding="utf-8")
+    pid_file = Path(tempfile.gettempdir(), f"mlt_{program}.pid")
+    fp = pid_file.open("w", encoding="utf-8")
 
     try:
         fcntl.lockf(fp, fcntl.LOCK_EX | fcntl.LOCK_NB)
@@ -38,6 +39,7 @@ def main() -> None:
             utils.msg(
                 f"{title} is already running.\nUse --force to launch multiple instances."
             )
+
             sys.exit(0)
 
     files.load()

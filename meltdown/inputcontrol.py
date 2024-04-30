@@ -223,7 +223,7 @@ class InputControl:
         path = paths.autocomplete
 
         if path.exists() and path.is_file():
-            with open(path, "r", encoding="utf-8") as file:
+            with path.open("r", encoding="utf-8") as file:
                 try:
                     self.autocomplete = json.load(file)
                 except BaseException as e:

@@ -177,19 +177,22 @@ class Config:
                 return
 
         conf = self.get_string()
+        path = Path(file_path)
 
-        with open(file_path, "w", encoding="utf-8") as file:
+        with path.open("w", encoding="utf-8") as file:
             file.write(conf)
 
         if not args.quiet:
-            name = Path(file_path).name
+            name = path.name
             msg = f"Config saved as {name}"
             display.print(emojis.text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
         from .app import app
+        from .args import args
         from .paths import paths
         from .widgets import widgets
+        from .display import display
 
         if not paths.configs.exists():
             paths.configs.mkdir(parents=True, exist_ok=True)
@@ -207,9 +210,12 @@ class Config:
             path = Path(file_path)
 
         if (not path.exists()) or (not path.is_file()):
+            if not args.quiet:
+                display.print("Config file not found.")
+
             return
 
-        with open(path, "r", encoding="utf-8") as file:
+        with path.open("r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
             app.check_compact()
@@ -232,7 +238,7 @@ class Config:
             paths.config.parent.mkdir(parents=True, exist_ok=True)
             paths.config.touch(exist_ok=True)
 
-        with open(paths.config, "r", encoding="utf-8") as file:
+        with paths.config.open("r", encoding="utf-8") as file:
             self.apply(file)
 
     def load_arg(self) -> None:
@@ -255,7 +261,7 @@ class Config:
                 self.load_file()
                 return
 
-            with open(path, "r", encoding="utf-8") as file:
+            with path.open("r", encoding="utf-8") as file:
                 self.apply(file)
                 self.save()
         except BaseException as e:

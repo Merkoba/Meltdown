@@ -120,7 +120,7 @@ class Model:
         from .paths import paths
 
         try:
-            with open(paths.apikey, "r", encoding="utf-8") as file:
+            with paths.apikey.open("r", encoding="utf-8") as file:
                 self.gpt_key = file.read().strip()
         except BaseException as e:
             utils.error(e)
@@ -550,7 +550,7 @@ class Model:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 Path.touch(paths.apikey, exist_ok=True)
 
-            with open(path, "w", encoding="utf-8") as file:
+            with path.open("w", encoding="utf-8") as file:
                 file.write(key)
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text))
@@ -575,9 +575,11 @@ class Model:
 
         return text + ". "
 
-    def image_to_base64(self, path: str) -> Optional[str]:
+    def image_to_base64(self, path_str: str) -> Optional[str]:
+        path = Path(path_str)
+
         try:
-            with open(path, "rb") as img_file:
+            with path.open("rb") as img_file:
                 base64_data = base64.b64encode(img_file.read()).decode("utf-8")
                 return f"data:image/png;base64,{base64_data}"
         except BaseException:

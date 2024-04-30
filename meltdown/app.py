@@ -25,7 +25,7 @@ class App:
     def __init__(self) -> None:
         self.here = Path(__file__).parent.expanduser().resolve()
 
-        with open(Path(self.here, "manifest.json", encoding="utf-8"), "r") as file:
+        with Path(self.here, "manifest.json").open("r", encoding="utf-8") as file:
             self.manifest = json.load(file)
 
         title = self.manifest["title"]
@@ -786,12 +786,12 @@ class App:
 
         tmpdir = tempfile.gettempdir()
         name = f"mlt_{utils.now_int()}.{ext}"
-        path = os.path.join(tmpdir, name)
+        path = Path(tmpdir, name)
 
-        with open(path, "w", encoding="utf-8") as file:
+        with path.open("w", encoding="utf-8") as file:
             file.write(text)
 
-        self.run_command([cmd, path])
+        self.run_command([cmd, str(path)])
 
 
 app = App()

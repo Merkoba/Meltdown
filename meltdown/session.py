@@ -161,7 +161,7 @@ class Session:
         if not paths.session.exists():
             paths.session.parent.mkdir(parents=True, exist_ok=True)
 
-        with open(paths.session, "w", encoding="utf-8") as file:
+        with paths.session.open("w", encoding="utf-8") as file:
             file.write(self.to_json())
 
     def load_arg(self) -> None:
@@ -210,7 +210,7 @@ class Session:
     def load_items(self, path: Path) -> None:
         display.close_all_tabs(force=True, make_empty=False)
 
-        with open(path, "r", encoding="utf-8") as file:
+        with path.open("r", encoding="utf-8") as file:
             try:
                 items = json.load(file)
             except BaseException as e:
@@ -254,11 +254,13 @@ class Session:
             if not file_path:
                 return
 
-        with open(file_path, "w", encoding="utf-8") as file:
+        path = Path(file_path)
+
+        with path.open("w", encoding="utf-8") as file:
             file.write(self.to_json())
 
         if not args.quiet:
-            name = Path(file_path).name
+            name = path.name
             msg = f"Session saved as {name}"
             display.print(emojis.text(msg, "storage"))
 
@@ -279,6 +281,9 @@ class Session:
             path = Path(file_path)
 
         if (not path.exists()) or (not path.is_file()):
+            if not args.quiet:
+                display.print("Session file not found.")
+
             return
 
         try:

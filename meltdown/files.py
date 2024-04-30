@@ -24,7 +24,7 @@ class Files:
         self.files_loaded = False
 
     def save(self, path: Path, dictionary: Any) -> None:
-        with open(path, "w", encoding="utf-8") as file:
+        with path.open("w", encoding="utf-8") as file:
             json.dump(dictionary, file, indent=4)
 
     def load(self) -> None:
@@ -40,7 +40,7 @@ class Files:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.touch(exist_ok=True)
 
-        with open(path, "r", encoding="utf-8") as file:
+        with path.open("r", encoding="utf-8") as file:
             name = f"{key}_list"
 
             try:

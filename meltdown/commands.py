@@ -606,7 +606,7 @@ class Commands:
         if argtype:
             if argtype == "force":
                 if argument:
-                    new_argument = True if argument.lower() == "force" else False
+                    new_argument = argument.lower() == "force"
                 else:
                     new_argument = False
             elif argument and argtype == str:
@@ -743,7 +743,7 @@ class Commands:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):
             return
 
-        with open(paths.commands, "r", encoding="utf-8") as file:
+        with paths.commands.open("r", encoding="utf-8") as file:
             try:
                 cmds = json.load(file)
             except BaseException as e:
@@ -784,7 +784,7 @@ class Commands:
             text += f">{key}\n\n"
             text += info
 
-        with open(path, "w", encoding="utf-8") as file:
+        with path.open("w", encoding="utf-8") as file:
             file.write(text)
 
         msg = f"Saved to {path}"

@@ -33,11 +33,11 @@ def do_start() -> None:
 
     while True:
         if path.exists() and path.is_file():
-            with open(path, "r") as file:
+            with path.open("r") as file:
                 text = file.read().strip()
 
                 if text:
-                    with open(path, "w") as file_2:
+                    with path.open("w") as file_2:
                         file_2.write("")
 
                     inputcontrol.submit(text=text)

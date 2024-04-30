@@ -4,6 +4,7 @@ import json
 import subprocess
 import threading
 from typing import Optional
+from pathlib import Path
 
 # Libraries
 import psutil  # type: ignore
@@ -54,7 +55,7 @@ class System:
         if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
             rocm_smi = "/opt/rocm/bin/rocm-smi"
 
-            if not os.path.isfile(rocm_smi):
+            if not Path(rocm_smi).is_file():
                 return
 
             cmd = [

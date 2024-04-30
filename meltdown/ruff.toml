@@ -12,6 +12,7 @@ select = [
     "RET506",
     "RET507",
     "RET508",
+    "PTH",
 ]
 exclude = [
     "pyperclip.py",
