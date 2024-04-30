@@ -129,7 +129,6 @@ class Book(tk.Frame):
         if args.tabs:
             self.tabs_canvas.grid(row=0, column=0, sticky="ew")
 
-        # tabs_scrollbar.grid(row=1, column=0, sticky="ew")
         self.tabs_frame.grid(row=0, column=0, sticky="ew")
 
         self.tabs_frame.configure(background=app.theme.tabs_container_color)

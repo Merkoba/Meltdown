@@ -2,8 +2,14 @@
 select = [
     "F402",
     "F811",
+    "F823",
+    "F841",
+    "F842",
     "PLW2901",
     "PIE790",
+    "PIE794",
+    "PIE800",
+    "PIE804",
     "RET501",
     "RET502",
     "RET503",
@@ -13,6 +19,11 @@ select = [
     "RET507",
     "RET508",
     "PTH",
+    "T201",
+    "Q001",
+    "Q004",
+    "SIM103",
+    "ERA001",
 ]
 exclude = [
     "pyperclip.py",

@@ -40,7 +40,7 @@ class Utils:
         return "".join(escaped_chars)
 
     def msg(self, text: str) -> None:
-        print(text)
+        self.console.print(text)
 
     def error(self, error: Union[str, BaseException]) -> None:
         from .args import args
