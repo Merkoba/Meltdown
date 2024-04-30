@@ -712,7 +712,7 @@ class Args:
             action = data.get("action", "")
 
             if argtype:
-                extra = " ({0})".format(str(argtype.__name__))
+                extra = f" ({argtype.__name__})"
             elif action:
                 extra = " (bool)"
             else:
