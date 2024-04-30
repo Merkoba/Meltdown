@@ -1,6 +1,6 @@
 # Standard
 import sys
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, ClassVar
 
 # Modules
 from .app import app
@@ -134,11 +134,11 @@ class Args:
         self.drag_and_drop = True
 
     class Internal:
-        title = app.manifest["title"]
-        version = app.manifest["version"]
-        vinfo = f"{title} {version}"
+        title: ClassVar[str] = app.manifest["title"]
+        version: ClassVar[str] = app.manifest["version"]
+        vinfo: ClassVar[str] = f"{title} {version}"
 
-        arguments: Dict[str, Any] = {
+        arguments: ClassVar[Dict[str, Any]] = {
             "version": {
                 "action": "version",
                 "help": "Check the version of the program",
@@ -712,7 +712,7 @@ class Args:
             action = data.get("action", "")
 
             if argtype:
-                extra = f" ({str(argtype.__name__)})"
+                extra = " ({0})".format(str(argtype.__name__))
             elif action:
                 extra = " (bool)"
             else:

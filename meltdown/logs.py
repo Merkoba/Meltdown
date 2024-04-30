@@ -71,13 +71,12 @@ class Logs:
 
     def save(self, mode: str, all: bool, name: Optional[str] = None) -> None:
         num = 0
-        conversations = []
 
-        if all:
-            for key in session.conversations:
-                conversations.append(session.get_conversation(key))
-        else:
-            conversations.append(session.get_current_conversation())
+        conversations = (
+            [session.get_conversation(key) for key in session.conversations]
+            if all
+            else [session.get_current_conversation()]
+        )
 
         if mode == "text":
             ext = "txt"
