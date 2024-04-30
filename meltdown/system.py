@@ -69,9 +69,10 @@ class System:
             result = None
 
             try:
-                result = subprocess.run(cmd, capture_output=True, text=True)
-            except BaseException as e:
-                utils.error(e)
+                result = subprocess.run(
+                    cmd, capture_output=True, text=True, check=False
+                )
+            except BaseException:
                 return
 
             if result and result.returncode == 0:

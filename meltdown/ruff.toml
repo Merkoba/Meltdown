@@ -26,6 +26,7 @@ select = [
     "ERA001",
     "PLR5501",
     "PLR1711",
+    "PLW",
 ]
 exclude = [
     "pyperclip.py",
