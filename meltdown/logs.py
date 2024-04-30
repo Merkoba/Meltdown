@@ -31,7 +31,7 @@ class Logs:
         Dialog.show_commands("Save all conversations?", cmds)
 
     def save_file(
-        self, text: str, name: str, ext: str, all: bool, overwrite: bool, mode: str
+        self, text: str, name: str, ext: str, save_all: bool, overwrite: bool, mode: str
     ) -> None:
         text = text.strip()
         name = name.replace(" ", "_").lower()
@@ -52,7 +52,7 @@ class Logs:
         with file_path.open("w", encoding="utf-8") as file:
             file.write(text)
 
-        if not all:
+        if not save_all:
             if not args.quiet and args.log_feedback:
                 msg = f"Log saved as {file_name}"
                 display.print(emojis.text(msg, "storage"))
@@ -121,8 +121,8 @@ class Logs:
 
             display.print(emojis.text(msg, "storage"))
 
-    def to_json(self, all: bool = False, name: Optional[str] = None) -> None:
-        self.save("json", all, name)
+    def to_json(self, save_all: bool = False, name: Optional[str] = None) -> None:
+        self.save("json", save_all, name)
 
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
@@ -133,8 +133,8 @@ class Logs:
 
         return conversation.to_json()
 
-    def to_text(self, all: bool = False, name: Optional[str] = None) -> None:
-        self.save("text", all, name)
+    def to_text(self, save_all: bool = False, name: Optional[str] = None) -> None:
+        self.save("text", save_all, name)
 
     def get_text(self, conversation: Conversation) -> str:
         if not conversation:
