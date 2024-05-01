@@ -133,6 +133,7 @@ class Args:
         self.drag_and_drop = True
         self.confirm_exit = False
         self.use_keywords = True
+        self.snippets_font = "monospace"
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -524,6 +525,10 @@ class Args:
                 "type": str,
                 "help": "The color of the text for the name of the AI",
             },
+            "snippets_font": {
+                "type": str,
+                "help": "The font to use in snippets",
+            },
         }
 
     def parse(self) -> None:
@@ -660,6 +665,7 @@ class Args:
             "user_color",
             "ai_color",
             "confirm_exit",
+            "snippets_font",
         ]
 
         for n_item in normals:

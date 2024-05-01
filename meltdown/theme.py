@@ -154,12 +154,14 @@ class Theme:
         return (ff, config.font_size)
 
     def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
+        from .args import args
+
         size = config.font_size
 
         if smaller:
             size -= self.snippet_header_minus
 
-        return (self.monospace_family, size)
+        return (args.snippets_font, size)
 
     def get_bold_font(self) -> Tuple[str, int, str]:
         ff = self.get_font_family()

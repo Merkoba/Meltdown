@@ -724,15 +724,15 @@ For example: `--terminal urxvt --task-manager htop`.
 
 ---
 
->no_markdown_snippets
+>no-markdown-snippets
 
->no_markdown_italic
+>no-markdown-italic
 
->no_markdown_bold
+>no-markdown-bold
 
->no_markdown_highlights
+>no-markdown-highlights
 
->no_markdown_urls
+>no-markdown-urls
 
 Disable specific markdown formatters.
 
@@ -846,25 +846,25 @@ This disables that behavior.
 
 ---
 
->scroll_lines
+>scroll-lines
 
 How many lines to scroll the output.
 
 ---
 
->user_color
+>user-color
 
 The color of the name of the user.
 
 ---
 
->ai_color
+>ai-color
 
 The color of the name of the AI.
 
 ---
 
->confirm_exit
+>confirm-exit
 
 Show a confirm exit dialog.
 
@@ -873,3 +873,9 @@ Show a confirm exit dialog.
 >no-keywords
 
 Don't do keyword replacements like `((now))` or `((noun))`.
+
+---
+
+>snippets-font
+
+The font to use on snippets.
