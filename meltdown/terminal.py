@@ -86,7 +86,7 @@ def do_start() -> None:
             text = session.prompt("Input: ")
 
         except KeyboardInterrupt:
-            app.exit()
+            app.exit(force=True)
             return
         except Exception:
             continue

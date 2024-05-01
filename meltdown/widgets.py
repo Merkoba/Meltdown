@@ -401,7 +401,11 @@ class Widgets:
             return
 
         if isinstance(widget, EntryBox):
-            widget.set_text(value)
+            if value:
+                widget.set_text(value)
+            else:
+                widget.clear(focus=False)
+
             self.check_move_to_end(key)
 
             if focus:
