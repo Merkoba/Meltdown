@@ -127,9 +127,11 @@ class Dialog:
                 return
 
             utils.copy(text)
+            entry.focus_set()
 
         def paste() -> None:
             utils.paste(entry)
+            entry.focus_set()
 
         def on_right_click(event: Any) -> None:
             menu = Menu()
