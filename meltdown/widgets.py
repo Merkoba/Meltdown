@@ -734,8 +734,8 @@ class Widgets:
             return
 
         utils.paste(widget)
-        widget.focus_end()
         config.update(key)
+        widget.focus_end()
 
     def clear(self, key: str) -> None:
         widget = self.get_widget(key)
