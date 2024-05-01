@@ -82,7 +82,7 @@ class Theme:
         self.snippet_selection_background = "#C3C3C3"
         self.snippet_selection_foreground = "black"
 
-        self.snippet_header_minus = 1
+        self.smaller_font = 1
 
         self.highlight_background = "#3D4555"
         self.highlight_foreground = "white"
@@ -149,19 +149,19 @@ class Theme:
 
         return font
 
-    def get_output_font(self) -> Tuple[str, int]:
+    def get_output_font(self, smaller: bool = False) -> Tuple[str, int]:
         ff = self.get_font_family()
-        return (ff, config.font_size)
-
-    def get_snippet_font(self, smaller: bool = False) -> Tuple[str, int]:
-        from .args import args
-
         size = config.font_size
 
         if smaller:
-            size -= self.snippet_header_minus
+            size -= self.smaller_font
 
-        return (args.snippets_font, size)
+        return (ff, size)
+
+    def get_snippet_font(self) -> Tuple[str, int]:
+        from .args import args
+
+        return (args.snippets_font, config.font_size)
 
     def get_bold_font(self) -> Tuple[str, int, str]:
         ff = self.get_font_family()

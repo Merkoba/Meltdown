@@ -29,29 +29,29 @@ class Snippet(tk.Frame):
         else:
             header_text = "Plain Text"
 
-        label_font = app.theme.get_snippet_font(True)
+        font_header = app.theme.get_output_font(True)
         header_fg = app.theme.snippet_header_foreground
         header_bg = app.theme.snippet_header_background
 
-        self.header_text = tk.Label(self.header, text=header_text, font=label_font)
+        self.header_text = tk.Label(self.header, text=header_text, font=font_header)
         self.header_text.configure(foreground=header_fg)
         self.header_text.configure(background=header_bg)
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
 
-        self.header_copy = tk.Label(self.header, text="Copy", font=label_font)
+        self.header_copy = tk.Label(self.header, text="Copy", font=font_header)
         self.header_copy.configure(cursor="hand2")
         self.header_copy.pack(side=tk.RIGHT, padx=5)
         self.header_copy.configure(foreground=header_fg)
         self.header_copy.configure(background=header_bg)
 
-        self.header_select = tk.Label(self.header, text="Select", font=label_font)
+        self.header_select = tk.Label(self.header, text="Select", font=font_header)
         self.header_select.configure(cursor="hand2")
         self.header_select.pack(side=tk.RIGHT, padx=5)
         self.header_select.configure(foreground=header_fg)
         self.header_select.configure(background=header_bg)
 
-        self.header_find = tk.Label(self.header, text="Find", font=label_font)
+        self.header_find = tk.Label(self.header, text="Find", font=font_header)
         self.header_find.configure(cursor="hand2")
         self.header_find.pack(side=tk.RIGHT, padx=5)
         self.header_find.configure(foreground=header_fg)
@@ -73,11 +73,14 @@ class Snippet(tk.Frame):
 
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
+
         self.scrollbar = ttk.Scrollbar(
             self, style="Normal.Horizontal.TScrollbar", orient=tk.HORIZONTAL
         )
+
         self.scrollbar.configure(cursor="arrow")
         self.text.configure(xscrollcommand=self.scrollbar.set)
+
         self.text.tag_configure(
             "sel",
             background=app.theme.snippet_selection_background,
@@ -108,6 +111,8 @@ class Snippet(tk.Frame):
             widget.bind("<Button-5>", lambda e: self.scroll_down())
             widget.bind("<Shift-Button-4>", lambda e: self.scroll_left())
             widget.bind("<Shift-Button-5>", lambda e: self.scroll_right())
+            widget.bind("<Control-Button-4>", lambda e: self.parent.increase_font())
+            widget.bind("<Control-Button-5>", lambda e: self.parent.decrease_font())
 
             for child in widget.winfo_children():
                 bind_scroll_events(child)
@@ -119,6 +124,7 @@ class Snippet(tk.Frame):
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
         self.gestures = Gestures(self, self.text, self.on_right_click)
+
         self.text.bind(
             "<Double-Button-1>", lambda e: self.parent.on_double_click(e, self.text)
         )
@@ -131,12 +137,14 @@ class Snippet(tk.Frame):
         self.text.configure(width=width_chars)
 
     def update_font(self) -> None:
+        font_header = app.theme.get_output_font(True)
         snippet_font = app.theme.get_snippet_font()
-        snippet_font_2 = app.theme.get_snippet_font(True)
+
         self.text.configure(font=snippet_font)
-        self.header_text.configure(font=snippet_font_2)
-        self.header_copy.configure(font=snippet_font_2)
-        self.header_select.configure(font=snippet_font_2)
+
+        self.header_text.configure(font=font_header)
+        self.header_copy.configure(font=font_header)
+        self.header_select.configure(font=font_header)
         self.update_size()
 
     def overflowed(self) -> bool:
@@ -176,6 +184,7 @@ class Snippet(tk.Frame):
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)
         Output.tab_id = self.parent.tab_id
+
         Output.words = self.text.get(
             f"{current_index} wordstart", f"{current_index} wordend"
         )

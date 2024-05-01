@@ -457,7 +457,7 @@ class Commands:
                 "type": str,
             },
             "resetfont": {
-                "help": "Reset the font size",
+                "help": "Reset the font",
                 "action": lambda a=None: display.reset_font(),
             },
             "togglescroll": {
