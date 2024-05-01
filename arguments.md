@@ -14,27 +14,27 @@ There are some keywords you can use in the command arguments:
 
 ---
 
->!@now
+>((now))
 
 This is replaced with the current unix time in seconds.
 
 You might want to use this when saving files.
 
-For example `/saveconfig !@now` might save `1712344148.json`.
+For example `/saveconfig ((now))` might save `1712344148.json`.
 
 ---
 
->!@name
+>((name))
 
 This is replaced with the name of the current tab in a file-friendly format.
 
-For instance `Maguko Tom` would be replaced to `maguko_tom` if `!@name` is used.
+For instance `Maguko Tom` would be replaced to `maguko_tom` if `((name))` is used.
 
-You can use this to save logs: `/logtext !@name`.
+You can use this to save logs: `/logtext ((name))`.
 
 ---
 
->!@noun
+>((noun))
 
 Replace this with a random noun word.
 
@@ -441,14 +441,6 @@ Default: "&"
 The command used to join commands.
 
 Like `&` in `/tab 1 & /select`.
-
----
-
->keychar
-
-Default: "!@"
-
-Character to use for keywords like `!@now`.
 
 ---
 
@@ -880,4 +872,4 @@ Show a confirm exit dialog.
 
 >no-keywords
 
-Don't do keyword replacements like `!@now` or `!@noun`.
+Don't do keyword replacements like `((now))` or `((noun))`.

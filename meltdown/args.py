@@ -71,7 +71,6 @@ class Args:
         self.delay = 0.1
         self.prefix = "/"
         self.andchar = "&"
-        self.keychar = "!@"
         self.commands = True
         self.compact_model = False
         self.compact_system = False
@@ -311,7 +310,7 @@ class Args:
             },
             "no_keywords": {
                 "action": "store_false",
-                "help": "Don't do keyword replacements like @now",
+                "help": "Don't do keyword replacements like ((now))",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -474,7 +473,6 @@ class Args:
             },
             "prefix": {"type": str, "help": "Character used to prefix commands like /"},
             "andchar": {"type": str, "help": "Character used to join commands like &"},
-            "keychar": {"type": str, "help": "Character used for keywords like @"},
             "system_threshold": {
                 "type": int,
                 "help": "Show system monitors as critical after this percentage threshold",
@@ -624,7 +622,6 @@ class Args:
             "debug",
             "delay",
             "prefix",
-            "keychar",
             "andchar",
             "compact_system",
             "compact_details_1",
