@@ -875,3 +875,9 @@ The color of the name of the AI.
 >confirm_exit
 
 Show a confirm exit dialog.
+
+---
+
+>no-keywords
+
+Don't do keyword replacements like `@now` or `@noun`.
