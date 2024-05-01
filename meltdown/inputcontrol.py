@@ -287,12 +287,15 @@ class InputControl:
 
         def copy(textbox: TextBox) -> None:
             utils.copy(textbox.get_text())
+            textbox.focus_set()
 
         def paste(textbox: TextBox) -> None:
             utils.paste(textbox)
+            textbox.focus_set()
 
         def clear(textbox: TextBox) -> None:
             textbox.set_text("")
+            textbox.focus_set()
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
@@ -314,7 +317,7 @@ class InputControl:
             def add_item(item: str) -> None:
                 def proc() -> None:
                     textbox.set_text(item)
-                    textbox.dialog.focus()
+                    textbox.focus_set()
 
                 menu.add(text=item[: args.list_item_width], command=lambda e: proc())
 
