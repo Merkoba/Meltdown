@@ -297,7 +297,7 @@ class Model:
             return
 
         log_dict = {"user": prompt_text}
-        system = self.replace_content(config.system)
+        system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
         if conversation.items and (config.history > 0):
@@ -306,7 +306,7 @@ class Model:
                     content = item[key]
 
                     if key == "user":
-                        content = self.replace_content(content)
+                        content = utils.replace_keywords(content)
 
                     messages.append({"role": key, "content": content})
 
@@ -321,7 +321,7 @@ class Model:
             utils.msg(f"top_p: {config.top_p}")
             utils.msg(f"seed: {config.seed}")
 
-        prompt_text = self.replace_content(prompt_text)
+        prompt_text = utils.replace_keywords(prompt_text)
 
         if (not prompt_text) and (not prompt_file):
             return
@@ -555,24 +555,6 @@ class Model:
                 file.write(key)
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text))
-
-    def replace_content(self, content: str) -> str:
-        if not args.use_keywords:
-            return content
-
-        if config.name_user:
-            content = content.replace(f"{args.keychar}name_user", config.name_user)
-
-        if config.name_ai:
-            content = content.replace(f"{args.keychar}name_ai", config.name_ai)
-
-        content = content.replace(f"{args.keychar}date", utils.today())
-
-        def replace_noun(match: re.Match[str]) -> str:
-            return utils.random_noun()
-
-        pattern = re.compile(f"{re.escape(args.keychar)}noun")
-        return pattern.sub(replace_noun, content)
 
     def check_dot(self, text: str) -> str:
         if not text:

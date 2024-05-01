@@ -608,7 +608,7 @@ class Commands:
                 else:
                     new_argument = False
             elif argument and argtype == str:
-                new_argument = self.argument_replace(argument)
+                new_argument = utils.replace_keywords(argument)
             elif argument:
                 try:
                     new_argument = argtype(argument)
@@ -619,12 +619,6 @@ class Commands:
         item["action"](new_argument)
         item["date"] = utils.now()
         self.save_commands()
-
-    def argument_replace(self, argument: str) -> str:
-        from .display import display
-
-        argument = argument.replace(f"{args.keychar}now", str(utils.now_int()))
-        return argument.replace(f"{args.keychar}name", display.get_tab_name())
 
     def save_commands(self) -> None:
         cmds = {}

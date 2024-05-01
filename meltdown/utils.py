@@ -149,5 +149,29 @@ class Utils:
 
         return random.choice(self.nouns)
 
+    def replace_keywords(self, content: str) -> str:
+        from .args import args
+        from .config import config
+        from .display import display
+
+        if not args.use_keywords:
+            return content
+
+        if config.name_user:
+            content = content.replace(f"{args.keychar}name_user", config.name_user)
+
+        if config.name_ai:
+            content = content.replace(f"{args.keychar}name_ai", config.name_ai)
+
+        content = content.replace(f"{args.keychar}date", self.today())
+        content = content.replace(f"{args.keychar}now", str(self.now_int()))
+        content = content.replace(f"{args.keychar}name", display.get_tab_name())
+
+        def replace_noun(match: re.Match[str]) -> str:
+            return self.random_noun()
+
+        pattern = re.compile(f"{re.escape(args.keychar)}noun")
+        return pattern.sub(replace_noun, content)
+
 
 utils = Utils()
