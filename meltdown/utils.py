@@ -157,27 +157,49 @@ class Utils:
         if not args.use_keywords:
             return content
 
-        c1 = "(("
-        c2 = "))"
+        c1 = re.escape("((")
+        c2 = re.escape("))")
+
+        def replace(what: str) -> str:
+            if what == "noun":
+                return utils.random_noun()
+
+            if what == "user":
+                return config.name_user
+
+            if what == "ai":
+                return config.name_ai
+
+            if what == "date":
+                return self.today()
+
+            if what == "now":
+                return str(self.now_int())
+
+            if what == "name":
+                return display.get_tab_name()
+
+            return ""
 
         if config.name_user:
-            content = content.replace(f"{c1}name_user{c2}", config.name_user)
+            pattern = re.compile(f"{c1}name_user{c2}")
+            content = pattern.sub(lambda m: replace("user"), content)
 
         if config.name_ai:
-            content = content.replace(f"{c1}name_ai{c2}", config.name_ai)
+            pattern = re.compile(f"{c1}name_ai{c2}")
+            content = pattern.sub(lambda m: replace("ai"), content)
 
-        content = content.replace(f"{c1}date{c2}", self.today())
-        content = content.replace(f"{c1}now{c2}", str(self.now_int()))
-        content = content.replace(f"{c1}name{c2}", display.get_tab_name())
+        pattern = re.compile(f"{c1}date{c2}")
+        content = pattern.sub(lambda m: replace("date"), content)
 
-        def replace_noun(match: re.Match[str]) -> str:
-            return self.random_noun()
+        pattern = re.compile(f"{c1}now{c2}")
+        content = pattern.sub(lambda m: replace("now"), content)
 
-        c1_esc = re.escape(c1)
-        c2_esc = re.escape(c2)
+        pattern = re.compile(f"{c1}name{c2}")
+        content = pattern.sub(lambda m: replace("name"), content)
 
-        pattern = re.compile(f"{c1_esc}noun{c2_esc}")
-        return pattern.sub(replace_noun, content)
+        pattern = re.compile(f"{c1}noun{c2}")
+        return pattern.sub(lambda m: replace("noun"), content)
 
 
 utils = Utils()

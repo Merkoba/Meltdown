@@ -20,7 +20,7 @@ class Config:
         self.save_after = ""
 
         system_lines = [
-            "Your name is ((name_ai))",
+            "Your name is ((name_ai)).",
             "You are talking to ((name_user)).",
             "The current date is ((date)).",
         ]
