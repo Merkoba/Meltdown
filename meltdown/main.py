@@ -52,13 +52,12 @@ def main() -> None:
     app.start_checks()
     keyboard.setup()
     commands.setup()
-    system.check()
-    tasks.start_all()
-    app.setup()
     inputcontrol.setup()
+    app.setup()
+    system.check()
     terminal.start()
     listener.start()
-    app.autorun()
+    tasks.start_all()
 
     # Create singleton
     fp.write(str(os.getpid()))

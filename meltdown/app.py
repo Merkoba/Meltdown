@@ -232,6 +232,7 @@ class App:
             self.hide_frames()
 
     def run(self) -> None:
+        self.autorun()
         self.root.mainloop()
 
     def exit(self, seconds: Optional[int] = None, force: bool = False) -> None:
