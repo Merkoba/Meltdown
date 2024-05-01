@@ -71,7 +71,7 @@ class Args:
         self.delay = 0.1
         self.prefix = "/"
         self.andchar = "&"
-        self.keychar = "@"
+        self.keychar = "!@"
         self.commands = True
         self.compact_model = False
         self.compact_system = False
