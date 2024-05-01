@@ -20,9 +20,9 @@ class Config:
         self.save_after = ""
 
         system_lines = [
-            "Your name is @name_ai.",
-            "You are talking to @name_user.",
-            "The current date is @date.",
+            "Your name is !@name_ai.",
+            "You are talking to !@name_user.",
+            "The current date is !@date.",
         ]
 
         self.default_avatar_user: str = "🥶"

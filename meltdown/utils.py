@@ -157,20 +157,23 @@ class Utils:
         if not args.use_keywords:
             return content
 
+        char = args.keychar
+
         if config.name_user:
-            content = content.replace(f"{args.keychar}name_user", config.name_user)
+            content = content.replace(f"{char}name_user", config.name_user)
 
         if config.name_ai:
-            content = content.replace(f"{args.keychar}name_ai", config.name_ai)
+            content = content.replace(f"{char}name_ai", config.name_ai)
 
-        content = content.replace(f"{args.keychar}date", self.today())
-        content = content.replace(f"{args.keychar}now", str(self.now_int()))
-        content = content.replace(f"{args.keychar}name", display.get_tab_name())
+        content = content.replace(f"{char}date", self.today())
+        content = content.replace(f"{char}now", str(self.now_int()))
+        content = content.replace(f"{char}name", display.get_tab_name())
 
         def replace_noun(match: re.Match[str]) -> str:
             return self.random_noun()
 
-        pattern = re.compile(f"{re.escape(args.keychar)}noun")
+        char_2 = re.escape(args.keychar)
+        pattern = re.compile(f"{char_2}noun")
         return pattern.sub(replace_noun, content)
 
 
