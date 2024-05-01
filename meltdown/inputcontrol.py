@@ -149,7 +149,7 @@ class InputControl:
         else:
             self.input.insert_text(f" {name}")
 
-        self.input.full_focus()
+        self.input.focus_end()
 
     def submit(
         self,
@@ -287,15 +287,15 @@ class InputControl:
 
         def copy(textbox: TextBox) -> None:
             utils.copy(textbox.get_text())
-            textbox.focus_set()
+            textbox.focus_end()
 
         def paste(textbox: TextBox) -> None:
             utils.paste(textbox)
-            textbox.focus_set()
+            textbox.focus_end()
 
         def clear(textbox: TextBox) -> None:
             textbox.set_text("")
-            textbox.focus_set()
+            textbox.focus_end()
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
@@ -317,7 +317,7 @@ class InputControl:
             def add_item(item: str) -> None:
                 def proc() -> None:
                     textbox.set_text(item)
-                    textbox.focus_set()
+                    textbox.focus_end()
 
                 menu.add(text=item[: args.list_item_width], command=lambda e: proc())
 

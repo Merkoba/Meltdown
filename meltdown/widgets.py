@@ -402,7 +402,7 @@ class Widgets:
 
         if isinstance(widget, EntryBox):
             if value:
-                widget.set_text(value)
+                widget.set_text(str(value))
             else:
                 widget.clear(focus=False)
 
@@ -734,7 +734,7 @@ class Widgets:
             return
 
         utils.paste(widget)
-        widget.focus_set()
+        widget.focus_end()
         config.update(key)
 
     def clear(self, key: str) -> None:
@@ -871,15 +871,15 @@ class Widgets:
 
         def copy(textbox: TextBox) -> None:
             utils.copy(textbox.get_text())
-            textbox.focus_set()
+            textbox.focus_end()
 
         def paste(textbox: TextBox) -> None:
             utils.paste(textbox)
-            textbox.focus_set()
+            textbox.focus_end()
 
         def clear(textbox: TextBox) -> None:
             textbox.set_text("")
-            textbox.focus_set()
+            textbox.focus_end()
 
         def reset(textbox: TextBox) -> None:
             value = config.get_default("system")
@@ -887,7 +887,7 @@ class Widgets:
             if value:
                 textbox.set_text(value)
 
-            textbox.focus_set()
+            textbox.focus_end()
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
@@ -913,7 +913,7 @@ class Widgets:
                 def proc() -> None:
                     config.set("system", item)
                     textbox.set_text(item)
-                    textbox.focus_set()
+                    textbox.focus_end()
 
                 menu.add(text=item[: args.list_item_width], command=lambda e: proc())
 

@@ -155,7 +155,7 @@ class Dialog:
         dialog.focus_hide_enabled = False
         dialog.show()
         dialog.highlight_button(1)
-        entry.full_focus()
+        entry.focus_end()
 
     @staticmethod
     def show_textbox(

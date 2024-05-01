@@ -79,9 +79,17 @@ class EntryBox(ttk.Entry):
         if focus:
             self.focus_set()
 
-    def full_focus(self) -> None:
+    def focus_end(self) -> None:
         self.focus_set()
         self.move_to_end()
+
+    def focus_start(self) -> None:
+        self.focus_set()
+        self.move_to_start()
+
+    def move_to_start(self) -> None:
+        self.icursor(0)
+        self.xview_moveto(0.0)
 
     def move_to_end(self) -> None:
         self.icursor(tk.END)
@@ -102,7 +110,7 @@ class EntryBox(ttk.Entry):
     ) -> None:
         self.text_var.trace_remove("write", self.trace_id)
         self.delete(0, tk.END)
-        self.insert(0, text)
+        self.insert(0, self.get_clean_string(text))
         self.trace_id = self.text_var.trace_add("write", self.on_write)
 
         if check_placeholder:
@@ -188,13 +196,16 @@ class EntryBox(ttk.Entry):
         self.check_placeholder()
         self.clean_string()
 
+    def get_clean_string(self, text: str) -> str:
+        text = re.sub(r"\n+", " ", text)
+        return re.sub(r"\s+", " ", text).lstrip()
+
     def clean_string(self) -> None:
         if self.placeholder_active:
             return
 
         text = self.text_var.get()
-        text = re.sub(r"\n+", " ", text)
-        text = re.sub(r"\s+", " ", text).lstrip()
+        text = self.get_clean_string(text)
         self.set_text(text)
 
     def on_left(self) -> str:

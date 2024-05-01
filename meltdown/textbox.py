@@ -32,6 +32,7 @@ class TextBox(tk.Text):
         scrollbar_y = ttk.Scrollbar(
             dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"
         )
+
         scrollbar_x = ttk.Scrollbar(
             dialog.top_frame, orient=tk.HORIZONTAL, style="Dialog.Horizontal.TScrollbar"
         )
@@ -221,3 +222,19 @@ class TextBox(tk.Text):
             return "break"
 
         return ""
+
+    def focus_end(self) -> None:
+        self.focus_set()
+        self.move_to_end()
+
+    def focus_start(self) -> None:
+        self.focus_set()
+        self.move_to_start()
+
+    def move_to_start(self) -> None:
+        self.mark_set(tk.INSERT, "1.0")
+        self.see("1.0")
+
+    def move_to_end(self) -> None:
+        self.mark_set(tk.INSERT, tk.END)
+        self.see(tk.END)
