@@ -228,14 +228,29 @@ class Display:
             return
 
         if conversation.items:
-            nice_date = utils.to_date(conversation.created)
-            header = f"Created: {nice_date}"
-            self.print(header, tab_id=tab_id)
+            self.show_header(tab_id)
             conversation.print()
         else:
             self.show_intro(tab_id)
 
         tab.loaded = True
+
+    def show_header(self, tab_id: str) -> None:
+        from .session import session
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        nice_date = utils.to_date(conversation.created)
+        header = f"Created: {nice_date}"
+        self.print(header, tab_id=tab_id)
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.get_tab(self.current_tab)
@@ -507,7 +522,8 @@ class Display:
 
             tab.output.clear_text()
             session.clear(tab.conversation_id)
-            self.show_intro(tab_id)
+            self.show_header(tab.tab_id)
+            display.print("")
             tab.modified = False
 
         if force or (not args.confirm_clear):
