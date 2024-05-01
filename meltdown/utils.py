@@ -1,12 +1,13 @@
 # Standard
 import re
 import time
+import random
 import logging
 import inspect
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional, Tuple
+from typing import Union, Optional, Tuple, List
 from pathlib import Path
 from datetime import datetime
 
@@ -21,6 +22,7 @@ class Utils:
     def __init__(self) -> None:
         self.error_logger: Optional[logging.Logger] = None
         self.console = Console()
+        self.nouns: List[str] = []
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -137,6 +139,15 @@ class Utils:
 
     def padnum(self, num: int) -> str:
         return str(num).zfill(3)
+
+    def random_noun(self) -> str:
+        from .paths import paths
+
+        if not self.nouns:
+            with paths.nouns.open("r", encoding="utf-8") as file:
+                self.nouns = file.read().strip().splitlines()
+
+        return random.choice(self.nouns)
 
 
 utils = Utils()

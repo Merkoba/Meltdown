@@ -34,6 +34,12 @@ You can use this to save logs: `/logtext @name`.
 
 ---
 
+>@noun
+
+Replace this with a random noun word.
+
+---
+
 >alias
 
 You can define one or more command aliases.
@@ -442,7 +448,7 @@ Like `&` in `/tab 1 & /select`.
 
 Default: "@"
 
-Character to use for keywords like `@date`.
+Character to use for keywords like `@now`.
 
 ---
 

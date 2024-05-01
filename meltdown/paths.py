@@ -29,5 +29,7 @@ class Paths:
         self.apikey = Path(data_dir, program, "apikey.txt")
         self.errors = Path(data_dir, program, "errors")
 
+        self.nouns = Path(app.here, "nouns.txt")
+
 
 paths = Paths()

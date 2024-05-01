@@ -133,6 +133,7 @@ class Args:
         self.ai_color = "auto"
         self.drag_and_drop = True
         self.confirm_exit = False
+        self.use_keywords = True
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -307,6 +308,10 @@ class Args:
             "no_drag_and_drop": {
                 "action": "store_false",
                 "help": "Don't enable drag and drop",
+            },
+            "no_keywords": {
+                "action": "store_false",
+                "help": "Don't do keyword replacements like @now",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -578,6 +583,7 @@ class Args:
             ("no_confirm_clear", "confirm_clear"),
             ("no_fill_prompt", "fill_prompt"),
             ("no_drag_and_drop", "drag_and_drop"),
+            ("no_keywords", "use_keywords"),
         ]
 
         for r_item in other_name:

@@ -1,4 +1,5 @@
 # Standard
+import re
 import base64
 import threading
 from pathlib import Path
@@ -556,13 +557,22 @@ class Model:
         Dialog.show_input("OpenAI API Key", lambda text: action(text))
 
     def replace_content(self, content: str) -> str:
+        if not args.use_keywords:
+            return content
+
         if config.name_user:
             content = content.replace(f"{args.keychar}name_user", config.name_user)
 
         if config.name_ai:
             content = content.replace(f"{args.keychar}name_ai", config.name_ai)
 
-        return content.replace(f"{args.keychar}date", utils.today())
+        content = content.replace(f"{args.keychar}date", utils.today())
+
+        def replace_noun(match: re.Match[str]) -> str:
+            return utils.random_noun()
+
+        pattern = re.compile(f"{re.escape(args.keychar)}noun")
+        return pattern.sub(replace_noun, content)
 
     def check_dot(self, text: str) -> str:
         if not text:
@@ -579,7 +589,7 @@ class Model:
         path = Path(path_str)
 
         try:
-            with path.open("rb") as img_file:
+            with path.open("rb", encoding="utf-8") as img_file:
                 base64_data = base64.b64encode(img_file.read()).decode("utf-8")
                 return f"data:image/png;base64,{base64_data}"
         except BaseException:
