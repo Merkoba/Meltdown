@@ -916,14 +916,14 @@ Don't apply syntax highlighting to snippets
 
 ---
 
-> emoji_unloaded
+> emoji-unloaded
 
-> emoji_local
+> emoji-local
 
-> emoji_remote
+> emoji-remote
 
-> emoji_storage
+> emoji-storage
 
-> emoji_loading
+> emoji-loading
 
 Define specific emojis.
