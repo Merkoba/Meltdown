@@ -364,7 +364,7 @@ class Keyboard:
         )
 
         self.register(
-            "<space>", on_ctrl=lambda: run_command("menu"), ctrl_help="Show main menu"
+            "<space>", on_ctrl=lambda: run_command("main"), ctrl_help="Show main menu"
         )
 
         self.register("f", on_ctrl=lambda: run_command("find"), ctrl_help="Find text")
