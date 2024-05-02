@@ -137,6 +137,7 @@ class Args:
         self.show_prevnext = False
         self.short_labels = False
         self.show_labels = True
+        self.short_buttons = False
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -403,6 +404,10 @@ class Args:
             "short_labels": {
                 "action": "store_true",
                 "help": "Use the short version of labels",
+            },
+            "short_buttons": {
+                "action": "store_true",
+                "help": "Use the short version of buttons",
             },
             "errors": {
                 "action": "store_true",
@@ -684,6 +689,7 @@ class Args:
             "confirm_exit",
             "snippets_font",
             "short_labels",
+            "short_buttons",
         ]
 
         for n_item in normals:

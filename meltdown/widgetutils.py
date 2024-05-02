@@ -106,6 +106,9 @@ def make_button(
     style: Optional[str] = None,
     width: Optional[int] = None,
 ) -> ButtonBox:
+    if args.short_buttons:
+        text = text[:1]
+
     widget = get_button(
         frame_data.frame, text, command, style=style, width=width, bigger=bigger
     )
