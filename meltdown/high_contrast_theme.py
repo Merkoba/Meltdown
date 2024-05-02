@@ -51,3 +51,12 @@ class HighContrastTheme(Theme):
         self.dialog_border = "white"
         self.dialog_border_width = 3
         self.dialog_top_frame = "black"
+
+        self.snippet_background = "black"
+        self.snippet_foreground = "white"
+
+        self.snippet_header_background = "white"
+        self.snippet_header_foreground = "black"
+
+        self.snippet_selection_background = "#C3C3C3"
+        self.snippet_selection_foreground = "black"

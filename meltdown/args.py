@@ -614,7 +614,7 @@ class Args:
             ("no_keywords", "use_keywords"),
             ("no_prevnext", "show_prevnext"),
             ("no_labels", "show_labels"),
-            ("no_syntax_highlighting", "syntax_highlighting")
+            ("no_syntax_highlighting", "syntax_highlighting"),
         ]
 
         for r_item in other_name:
