@@ -177,6 +177,8 @@ Textbox editing that can be maximized.
 
 Mouse gestures to perform actions.
 
+High contrast theme.
+
 And more.
 
 ---

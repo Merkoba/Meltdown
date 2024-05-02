@@ -138,6 +138,7 @@ class Args:
         self.short_labels = False
         self.show_labels = True
         self.short_buttons = False
+        self.syntax_highlighting = True
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -324,6 +325,10 @@ class Args:
             "no_labels": {
                 "action": "store_false",
                 "help": "Don't show the labels",
+            },
+            "no_syntax_highlighting": {
+                "action": "store_false",
+                "help": "Don't apply syntax highlighting to snippets",
             },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
@@ -609,6 +614,7 @@ class Args:
             ("no_keywords", "use_keywords"),
             ("no_prevnext", "show_prevnext"),
             ("no_labels", "show_labels"),
+            ("no_syntax_highlighting", "syntax_highlighting")
         ]
 
         for r_item in other_name:

@@ -62,7 +62,7 @@ class Snippet(tk.Frame):
         self.text.configure(borderwidth=0, highlightthickness=0)
         self.text.delete("1.0", tk.END)
 
-        if language:
+        if language and args.syntax_highlighting:
             try:
                 self.syntax_highlighter()
             except BaseException as e:

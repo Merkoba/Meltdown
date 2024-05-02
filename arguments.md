@@ -901,3 +901,15 @@ This is to make the interface more compact.
 >no-labels
 
 Don't show the labels at all.
+
+---
+
+>short-buttons
+
+Like short-labels but for buttons.
+
+---
+
+>no-syntax-highlighting
+
+Don't apply syntax highlighting to snippets

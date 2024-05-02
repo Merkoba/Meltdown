@@ -35,6 +35,7 @@ class Theme:
         self.system_heavy = "#FF6B6B"
 
         self.button_background = "#446CA1"
+        self.button_foreground = "white"
         self.button_hover_background = "#387ADF"
 
         self.button_alt_background = "#3D4555"
@@ -47,7 +48,7 @@ class Theme:
         self.button_active_hover_background = "#944E63"
 
         self.button_disabled_background = "#2B303B"
-        self.button_foreground = "white"
+
         self.button_padx = 10
         self.button_width = 8
 
@@ -55,6 +56,7 @@ class Theme:
         self.entry_foreground = "white"
         self.entry_placeholder_color = "#494D62"
         self.entry_insert = "white"
+        self.entry_border_width = 0
 
         self.separator_color = "#2B303B"
 
@@ -66,6 +68,7 @@ class Theme:
 
         self.combobox_background = "#2B303B"
         self.combobox_foreground = "white"
+        self.combobox_border_width = 0
 
         self.dialog_background = "white"
         self.dialog_foreground = "black"
