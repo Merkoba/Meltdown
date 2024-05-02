@@ -267,8 +267,8 @@ class Model:
         self.stream_thread.start()
 
     def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
-        prompt_text = prompt["text"].strip()
-        prompt_file = prompt["file"].strip()
+        prompt_text = prompt.get("text", "").strip()
+        prompt_file = prompt.get("file", "").strip()
 
         if (not prompt_text) and (not prompt_file):
             return
