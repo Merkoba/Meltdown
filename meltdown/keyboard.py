@@ -402,7 +402,7 @@ class Keyboard:
         self.register(
             "l",
             on_ctrl=lambda: run_command("log"),
-            on_ctrl_shift=lambda: run_command("logsdir"),
+            on_ctrl_shift=lambda: run_command("openlog"),
             ctrl_help="Show the log menu",
             ctrl_shift_help="Open the logs directory",
         )
