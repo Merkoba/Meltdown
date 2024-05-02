@@ -879,3 +879,9 @@ Don't do keyword replacements like `((now))` or `((noun))`.
 >snippets-font
 
 The font to use on snippets.
+
+---
+
+>no_prevnext
+
+Don't show the Prev and Next buttons.
