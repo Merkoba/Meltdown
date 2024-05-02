@@ -28,7 +28,7 @@ class MainMenu:
         self.menu.add(text="Compact", command=lambda e: app.toggle_compact())
         self.menu.add(text="Resize", command=lambda e: app.resize())
         self.menu.separator()
-        self.menu.add(text="Theme", command=lambda e: app.toggle_theme())
+        self.menu.add(text="Theme", command=lambda e: app.pick_theme())
         self.menu.add(text="About", command=lambda e: app.show_about())
         self.menu.separator()
         self.menu.add(text="Exit", command=lambda e: app.exit())

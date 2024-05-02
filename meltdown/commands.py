@@ -214,7 +214,7 @@ class Commands:
             },
             "theme": {
                 "help": "Change the color theme",
-                "action": lambda a=None: app.toggle_theme(),
+                "action": lambda a=None: app.pick_theme(),
             },
             "about": {
                 "help": "Show the about window",

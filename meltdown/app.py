@@ -580,29 +580,33 @@ class App:
         )
 
     def set_theme(self) -> None:
+        from .config import config
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
-        from .config import config
+        from .high_contrast_theme import HighContrastTheme
 
         if config.theme == "light":
             self.theme = LightTheme()
+        elif config.theme == "high_contrast":
+            self.theme = HighContrastTheme()
         else:
             self.theme = DarkTheme()
 
-    def toggle_theme(self) -> None:
-        from .dialogs import Dialog
+    def pick_theme(self) -> None:
         from .config import config
+        from .dialogs import Dialog
+        from .menus import Menu
+        from .widgets import widgets
 
-        if config.theme == "light":
-            new_theme = "dark"
-        else:
-            new_theme = "light"
-
-        def action() -> None:
+        def action(new_theme: str) -> None:
             config.set("theme", new_theme)
             Dialog.show_message("Theme will change after restarting the program")
 
-        Dialog.show_confirm(f"Use the {new_theme} theme?", action)
+        menu = Menu()
+        menu.add("Dark", lambda e: action("dark"))
+        menu.add("Light", lambda e: action("light"))
+        menu.add("High Contrast", lambda e: action("high_contrast"))
+        menu.show(widget=widgets.main_menu_button)
 
     def setup_binds(self) -> None:
         self.main_frame.bind("<Button-1>", lambda e: self.on_frame_click())
