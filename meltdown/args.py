@@ -135,6 +135,8 @@ class Args:
         self.use_keywords = True
         self.snippets_font = "monospace"
         self.show_prevnext = False
+        self.short_labels = False
+        self.show_labels = True
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -318,6 +320,10 @@ class Args:
                 "action": "store_false",
                 "help": "Don't show the Prev and Next buttons",
             },
+            "no_labels": {
+                "action": "store_false",
+                "help": "Don't show the labels",
+            },
             "test": {"action": "store_true", "help": "Make a test tab for debugging"},
             "force": {
                 "action": "store_true",
@@ -393,6 +399,10 @@ class Args:
             "avatars_in_logs": {
                 "action": "store_true",
                 "help": "Show avatars in text logs",
+            },
+            "short_labels": {
+                "action": "store_true",
+                "help": "Use the short version of labels",
             },
             "errors": {
                 "action": "store_true",
@@ -593,6 +603,7 @@ class Args:
             ("no_drag_and_drop", "drag_and_drop"),
             ("no_keywords", "use_keywords"),
             ("no_prevnext", "show_prevnext"),
+            ("no_labels", "show_labels"),
         ]
 
         for r_item in other_name:
@@ -672,6 +683,7 @@ class Args:
             "ai_color",
             "confirm_exit",
             "snippets_font",
+            "short_labels",
         ]
 
         for n_item in normals:

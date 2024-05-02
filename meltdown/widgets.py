@@ -175,7 +175,10 @@ class Widgets:
                 monitors.append("gpu_temp")
 
             def make_monitor(name: str, label_text: str) -> None:
-                label = widgetutils.make_label(frame_data_system, label_text)
+                label = widgetutils.make_label(
+                    frame_data_system, label_text, ignore_short=True
+                )
+
                 label.configure(cursor="hand2")
                 setattr(self, name, tk.StringVar())
                 monitor_text = widgetutils.make_label(frame_data_system, "", padx=0)

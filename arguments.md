@@ -882,6 +882,22 @@ The font to use on snippets.
 
 ---
 
->no_prevnext
+>no-prevnext
 
 Don't show the Prev and Next buttons.
+
+---
+
+>short-labels
+
+Use the short form for labels.
+
+For example `F` instead of `Format`.
+
+This is to make the interface more compact.
+
+---
+
+>no-labels
+
+Don't show the labels at all.

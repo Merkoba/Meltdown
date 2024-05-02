@@ -5,6 +5,7 @@ from typing import Any, Union, Callable, Optional, List, Tuple
 
 # Modules
 from .app import app
+from .args import args
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .framedata import FrameData
@@ -124,16 +125,23 @@ def make_label(
     text: str,
     padx: Optional[int] = None,
     pady: Optional[int] = None,
+    ignore_short: bool = False,
     colons: bool = True,
 ) -> tk.Label:
     text = f"{text}:" if colons else text
+
+    if args.short_labels and (not ignore_short):
+        text = text[:1]
+
     widget = tk.Label(frame_data.frame, text=text, font=app.theme.font())
 
     widget.configure(
         background=app.theme.background_color, foreground=app.theme.foreground_color
     )
 
-    do_grid(widget, col=frame_data.col, padx=padx, pady=pady)
+    if args.show_labels:
+        do_grid(widget, col=frame_data.col, padx=padx, pady=pady)
+
     frame_data.col += 1
     return widget
 
