@@ -139,6 +139,11 @@ class Args:
         self.show_labels = True
         self.short_buttons = False
         self.syntax_highlighting = True
+        self.emoji_unloaded = "👻"
+        self.emoji_local = "✅"
+        self.emoji_remote = "🌐"
+        self.emoji_storage = "💾"
+        self.emoji_loading = "⏰"
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -554,6 +559,26 @@ class Args:
                 "type": str,
                 "help": "The font to use in snippets",
             },
+            "emoji_unloaded": {
+                "type": str,
+                "help": "Emoji to show when a model is not loaded",
+            },
+            "emoji_local": {
+                "type": str,
+                "help": "Emoji to show when a model is loaded locally",
+            },
+            "emoji_remote": {
+                "type": str,
+                "help": "Emoji to show when a model is loaded remotely",
+            },
+            "emoji_storage": {
+                "type": str,
+                "help": "Emoji to show when saving a log",
+            },
+            "emoji_loading": {
+                "type": str,
+                "help": "Emoji to show when loading a model",
+            },
         }
 
     def parse(self) -> None:
@@ -696,6 +721,11 @@ class Args:
             "snippets_font",
             "short_labels",
             "short_buttons",
+            "emoji_unloaded",
+            "emoji_local",
+            "emoji_remote",
+            "emoji_storage",
+            "emoji_loading",
         ]
 
         for n_item in normals:

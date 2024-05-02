@@ -14,7 +14,6 @@ from .dialogs import Dialog
 from .output import Output
 from .utils import utils
 from . import tests
-from . import emojis
 
 
 class Conversation:
@@ -262,7 +261,7 @@ class Session:
         if not args.quiet:
             name = path.name
             msg = f"Session saved as {name}"
-            display.print(emojis.text(msg, "storage"))
+            display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
         if not paths.sessions.exists():

@@ -913,3 +913,17 @@ Like short-labels but for buttons.
 >no-syntax-highlighting
 
 Don't apply syntax highlighting to snippets
+
+---
+
+> emoji_unloaded
+
+> emoji_local
+
+> emoji_remote
+
+> emoji_storage
+
+> emoji_loading
+
+Define specific emojis.

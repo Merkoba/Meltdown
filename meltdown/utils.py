@@ -201,5 +201,23 @@ class Utils:
         pattern = re.compile(f"{c1}noun{c2}")
         return pattern.sub(lambda m: replace("noun"), content)
 
+    def get_emoji(self, name: str) -> str:
+        from .args import args
+
+        return getattr(args, f"emoji_{name}", "")
+
+    def emoji_text(self, text: str, name: str) -> str:
+        from .args import args
+
+        if not args.emojis:
+            return text
+
+        emoji = self.get_emoji(name)
+
+        if emoji:
+            return f"{emoji} {text}"
+
+        return text
+
 
 utils = Utils()

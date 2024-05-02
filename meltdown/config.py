@@ -159,7 +159,6 @@ class Config:
         from .display import display
         from .paths import paths
         from .args import args
-        from . import emojis
 
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
@@ -185,7 +184,7 @@ class Config:
         if not args.quiet:
             name = path.name
             msg = f"Config saved as {name}"
-            display.print(emojis.text(msg, "storage"))
+            display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
         from .app import app

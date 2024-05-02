@@ -1,5 +1,4 @@
 # Standard
-import re
 import base64
 import threading
 from pathlib import Path
@@ -19,7 +18,6 @@ from .display import display
 from .session import session
 from .tips import tips
 from .utils import utils
-from . import emojis
 
 
 class Model:
@@ -55,7 +53,7 @@ class Model:
 
         if self.model and announce:
             msg = "Model unloaded"
-            display.print(emojis.text(msg, "unloaded"))
+            display.print(utils.emoji_text(msg, "unloaded"))
 
         self.clear_model()
 
@@ -146,7 +144,7 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
             msg = f"{config.model} is ready to use"
-            display.print(emojis.text(msg, "remote"))
+            display.print(utils.emoji_text(msg, "remote"))
             self.update_icon()
 
             if prompt:
@@ -189,7 +187,7 @@ class Model:
 
             if args.model_feedback and (not args.quiet):
                 msg = f"Loading {name}"
-                display.print(emojis.text(msg, "loading"), tab_id=tab_id)
+                display.print(utils.emoji_text(msg, "loading"), tab_id=tab_id)
 
             app.update()
             self.lock.acquire()
@@ -514,7 +512,7 @@ class Model:
 
         if not self.loaded_model:
             if args.emojis:
-                text = emojis.get("unloaded")
+                text = utils.get_emoji("unloaded")
             else:
                 text = "Not Loaded"
 
@@ -522,7 +520,7 @@ class Model:
             tooltip.set_text(tips["model_unloaded"])
         elif self.model_is_gpt(self.loaded_model):
             if args.emojis:
-                text = emojis.get("remote")
+                text = utils.get_emoji("remote")
             else:
                 text = "Remote"
 
@@ -530,7 +528,7 @@ class Model:
             tooltip.set_text(tips["model_remote"])
         else:
             if args.emojis:
-                text = emojis.get("local")
+                text = utils.get_emoji("local")
             else:
                 text = "Local"
 

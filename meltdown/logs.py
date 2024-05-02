@@ -12,7 +12,6 @@ from .session import Conversation
 from .paths import paths
 from .files import files
 from .utils import utils
-from . import emojis
 
 
 class Logs:
@@ -55,7 +54,7 @@ class Logs:
         if not save_all:
             if not args.quiet and args.log_feedback:
                 msg = f"Log saved as {file_name}"
-                display.print(emojis.text(msg, "storage"))
+                display.print(utils.emoji_text(msg, "storage"))
 
             cmd = ""
 
@@ -119,7 +118,7 @@ class Logs:
             else:
                 msg = f"{num} {s} logs saved"
 
-            display.print(emojis.text(msg, "storage"))
+            display.print(utils.emoji_text(msg, "storage"))
 
     def to_json(self, save_all: bool = False, name: Optional[str] = None) -> None:
         self.save("json", save_all, name)
