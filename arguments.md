@@ -712,17 +712,23 @@ Don't wrap the textbox text.
 
 >task-manager
 
+Default: "auto"
+
 What task manager to use when clicking the system monitors.
 
 ---
 
 >task-manager-gpu
 
+Default: "auto"
+
 What task manager to use when clicking on gpu monitors.
 
 ---
 
 >terminal
+
+Default: "auto"
 
 What terminal to use for programs like the task manager.
 
@@ -854,17 +860,23 @@ This disables that behavior.
 
 >scroll-lines
 
+Default: 1
+
 How many lines to scroll the output.
 
 ---
 
 >user-color
 
+Default: "auto"
+
 The color of the name of the user.
 
 ---
 
 >ai-color
+
+Default: "auto"
 
 The color of the name of the AI.
 
@@ -883,6 +895,8 @@ Don't do keyword replacements like `((now))` or `((noun))`.
 ---
 
 >snippets-font
+
+Default: "monospace"
 
 The font to use on snippets.
 
@@ -924,12 +938,22 @@ Don't apply syntax highlighting to snippets
 
 > emoji-unloaded
 
+Default: "👻"
+
 > emoji-local
+
+Default: "✅"
 
 > emoji-remote
 
+Default: "🌐:
+
 > emoji-storage
 
+Default: "💾"
+
 > emoji-loading
+
+Default: "⏰"
 
 Define specific emojis.
