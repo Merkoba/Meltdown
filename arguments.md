@@ -6,7 +6,7 @@ For example: `meltdown --no-tooltips --width 800 --height 900`
 
 This is how the program is configured. There is no settings window.
 
-Model configs and other settings can be set in the interface.
+(Model configs and other settings can be set in the interface)
 
 ---
 
