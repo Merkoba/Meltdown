@@ -910,20 +910,26 @@ Don't apply syntax highlighting to snippets
 
 Default: "👻"
 
+---
+
 ### emoji-local
 
 Default: "✅"
+
+---
 
 ### emoji-remote
 
 Default: "🌐"
 
+---
+
 ### emoji-storage
 
 Default: "💾"
 
+---
+
 ### emoji-loading
 
 Default: "⏰"
-
-Define specific emojis.
