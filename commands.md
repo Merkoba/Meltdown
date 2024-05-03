@@ -12,570 +12,570 @@ Here are all the available commands:
 
 ---
 
->clear
+### clear
 
 Clear the conversation
 
 ---
 
->exit
+### exit
 
 Exit the application. Optional seconds delay
 
 ---
 
->cancelexit
+### cancelexit
 
 Cancel the exit if you had set a delay
 
 ---
 
->compact
+### compact
 
 Toggle compact mode
 
 ---
 
->log
+### log
 
 Show the log menu
 
 ---
 
->logtext
+### logtext
 
 Save conversation to a text file
 
 ---
 
->logjson
+### logjson
 
 Save conversation to a JSON file
 
 ---
 
->logtextall
+### logtextall
 
 Save all conversations to text files
 
 ---
 
->logjsonall
+### logjsonall
 
 Save all conversations to JSON files
 
 ---
 
->openlog
+### openlog
 
 Open a log file by name
 
 ---
 
->resize
+### resize
 
 Resize the window
 
 ---
 
->stop
+### stop
 
 Stop the current stream
 
 ---
 
->taskmanager
+### taskmanager
 
 Open the system task manager
 
 ---
 
->top
+### top
 
 Scroll to the top
 
 ---
 
->bottom
+### bottom
 
 Scroll to the bottom
 
 ---
 
->maximize
+### maximize
 
 Maximize the window
 
 ---
 
->close
+### close
 
 Close current tab
 
 ---
 
->closeothers
+### closeothers
 
 Close other tabs
 
 ---
 
->closeall
+### closeall
 
 Close all tabs
 
 ---
 
->closeold
+### closeold
 
 Close old tabs
 
 ---
 
->closeleft
+### closeleft
 
 Close tabs to the left
 
 ---
 
->closeright
+### closeright
 
 Close tabs to the right
 
 ---
 
->new
+### new
 
 Make a new tab
 
 ---
 
->theme
+### theme
 
 Change the color theme
 
 ---
 
->about
+### about
 
 Show the about window
 
 ---
 
->help
+### help
 
 Show help information
 
 ---
 
->commands
+### commands
 
 Show the commands help
 
 ---
 
->arguments
+### arguments
 
 Show the arguments help
 
 ---
 
->keyboard
+### keyboard
 
 Show the keyboard help
 
 ---
 
->list
+### list
 
 Show the tab list to pick a tab
 
 ---
 
->find
+### find
 
 Find a text string
 
 ---
 
->findall
+### findall
 
 Find a text string among all tabs
 
 ---
 
->first
+### first
 
 Go to the first tab
 
 ---
 
->last
+### last
 
 Go to the last tab
 
 ---
 
->config
+### config
 
 Config menu or view, set, reset a config
 
 ---
 
->session
+### session
 
 Show the session menu
 
 ---
 
->reset
+### reset
 
 Reset all configs
 
 ---
 
->viewtext
+### viewtext
 
 View raw text
 
 ---
 
->viewjson
+### viewjson
 
 View raw JSON
 
 ---
 
->move
+### move
 
 Move tab to the start or end
 
 ---
 
->tab
+### tab
 
 Go to a tab by its number or by its name
 
 ---
 
->fullscreen
+### fullscreen
 
 Toggle fullscreen
 
 ---
 
->next
+### next
 
 Find next text match
 
 ---
 
->scrollup
+### scrollup
 
 Scroll up
 
 ---
 
->scrolldown
+### scrolldown
 
 Scroll down
 
 ---
 
->load
+### load
 
 Load the model
 
 ---
 
->unload
+### unload
 
 Unload the model
 
 ---
 
->context
+### context
 
 Show the context list
 
 ---
 
->left
+### left
 
 Go to the tab on the left
 
 ---
 
->right
+### right
 
 Go to the tab on the right
 
 ---
 
->moveleft
+### moveleft
 
 Move the tab to the left
 
 ---
 
->moveright
+### moveright
 
 Move the tab to the right
 
 ---
 
->movefirst
+### movefirst
 
 Move the tab to the start
 
 ---
 
->movelast
+### movelast
 
 Move the tab to the end
 
 ---
 
->main
+### main
 
 Show the main menu
 
 ---
 
->savesession
+### savesession
 
 Save the current session
 
 ---
 
->loadsession
+### loadsession
 
 Load a session
 
 ---
 
->saveconfig
+### saveconfig
 
 Save the current config
 
 ---
 
->loadconfig
+### loadconfig
 
 Load a config
 
 ---
 
->copy
+### copy
 
 Copy all the text
 
 ---
 
->select
+### select
 
 Select all text
 
 ---
 
->deselect
+### deselect
 
 Deselect all text
 
 ---
 
->model
+### model
 
 Show the model menu
 
 ---
 
->recent
+### recent
 
 Show the recent models
 
 ---
 
->browse
+### browse
 
 Browse the models
 
 ---
 
->file
+### file
 
 Browse for a file
 
 ---
 
->palette
+### palette
 
 Show the command palette
 
 ---
 
->rename
+### rename
 
 Rename the tab
 
 ---
 
->input
+### input
 
 Prompt the AI with this input
 
 ---
 
->write
+### write
 
 Write the input prompt
 
 ---
 
->sleep
+### sleep
 
 Wait x seconds before the next command
 
 ---
 
->hide
+### hide
 
 Close dialogs and menus
 
 ---
 
->printconfig
+### printconfig
 
 Print all the config settings
 
 ---
 
->bigger
+### bigger
 
 Increase the font size
 
 ---
 
->smaller
+### smaller
 
 Decrease the font size
 
 ---
 
->font
+### font
 
 Set the font size
 
 ---
 
->fontfamily
+### fontfamily
 
 Set the font family
 
 ---
 
->resetfont
+### resetfont
 
-Reset the font size
+Reset the font
 
 ---
 
->togglescroll
+### togglescroll
 
 Scroll to the bottom or to the top
 
 ---
 
->stats
+### stats
 
 Show some internal information
 
 ---
 
->sticky
+### sticky
 
 Make the window stay at the top
 
 ---
 
->commandoc
+### commandoc
 
 Make a file with all the commands
 
 ---
 
->active
+### active
 
 Go to the tab that is currently streaming
 
 ---
 
->apikey
+### apikey
 
 Set the OpenAI API key
 
 ---
 
->system
+### system
 
 Write the system prompt
 
 ---
 
->more
+### more
 
 Show the more menu
 
 ---
 
->tabmenu
+### tabmenu
 
 Show the tab menu
 
 ---
 
->fontmenu
+### fontmenu
 
 Show the font menu
 
 ---
 
->gpt
+### gpt
 
 Show the GPT menu
 
 ---
 
->progtext
+### progtext
 
 Open a program using the text
 
 ---
 
->progjson
+### progjson
 
 Open a program using the JSON
 
 ---
 
->submit
+### submit
 
 Submit the input
 
 ---
 
->change
+### change
 
 Set a model by its name
 
 ---
 
->mode
+### mode
 
 Change the model mode
 
 ---
 
->toggletabs
+### toggletabs
 
 Toggle tabs visibility

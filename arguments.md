@@ -14,7 +14,7 @@ There are some keywords you can use in the command arguments:
 
 ---
 
->((now))
+### ((now))
 
 This is replaced with the current unix time in seconds.
 
@@ -24,7 +24,7 @@ For example `/saveconfig ((now))` might save `1712344148.json`.
 
 ---
 
->((name))
+### ((name))
 
 This is replaced with the name of the current tab in a file-friendly format.
 
@@ -34,13 +34,13 @@ You can use this to save logs: `/logtext ((name))`.
 
 ---
 
->((noun))
+### ((noun))
 
 Replace this with a random noun word.
 
 ---
 
->alias
+### alias
 
 You can define one or more command aliases.
 
@@ -60,7 +60,7 @@ Or maybe a prompt alias:
 
 ---
 
->task
+### task
 
 You can run automated tasks.
 
@@ -80,145 +80,145 @@ You can define multiple tasks like this.
 
 ---
 
->width
+### width
 
 Start the window with this width.
 
 ---
 
->height
+### height
 
 Start the window with this height.
 
 ---
 
->no-tooltips
+### no-tooltips
 
 Don't show tooltips when hovering over items.
 
 ---
 
->no-scrollbars
+### no-scrollbars
 
 Don't display the scrollbars.
 
 ---
 
->no-colors
+### no-colors
 
 Don't display colors on the user names.
 
 ---
 
->no-avatars
+### no-avatars
 
 Don't display user avatars.
 
 ---
 
->no-keyboard
+### no-keyboard
 
 Disable keyboard shortcuts.
 
 ---
 
->no-taps
+### no-taps
 
 Disable double ctrl taps.
 
 ---
 
->no-system
+### no-system
 
 Don't show the system monitors like CPU.
 
 ---
 
->no-system-colors
+### no-system-colors
 
 Don't use colors on the system monitors.
 
 ---
 
->no-cpu
+### no-cpu
 
 Don't show the CPU monitor.
 
 ---
 
->no-ram
+### no-ram
 
 Don't show the RAM monitor.
 
 ---
 
->no-temp
+### no-temp
 
 Don't show the temperature monitor.
 
 ---
 
->no-gpu
+### no-gpu
 
 Don't show the GPU monitor.
 
 ---
 
->no-gpu-ram
+### no-gpu-ram
 
 Don't show the GPU RAM monitor.
 
 ---
 
->no-gpu-temp
+### no-gpu-temp
 
 Don't show the GPU temperature monitor.
 
 ---
 
->no-wrap
+### no-wrap
 
 Disable wrapping when selecting items.
 
 ---
 
->no-tabs
+### no-tabs
 
 Don't show the tab bar.
 
 ---
 
->no-stream
+### no-stream
 
 Show responses once they're ready instead of streaming live.
 
 ---
 
->no-empty
+### no-empty
 
 Don't save empty conversations.
 
 ---
 
->maximize
+### maximize
 
 Start the window maximized.
 
 ---
 
->test
+### test
 
 Open a test tab for debugging.
 
 ---
 
->version
+### version
 
 Show the version of the program.
 
 ---
 
->config
+### config
 
 Load a config file.
 
@@ -228,7 +228,7 @@ It can also be a direct path.
 
 ---
 
->session
+### session
 
 Load a session file.
 
@@ -238,11 +238,11 @@ It can also be a direct path.
 
 ---
 
->on-log
+### on-log
 
->on-log-text
+### on-log-text
 
->on-log-json
+### on-log-json
 
 This is a command to run after saving a log file.
 
@@ -260,13 +260,13 @@ It simply passes the file path as an argument to the command/script.
 
 ---
 
->numbers
+### numbers
 
 Show numbers in the tab bar.
 
 ---
 
->max-tabs
+### max-tabs
 
 Max number of tabs to keep. The older ones are closed automatically.
 
@@ -274,7 +274,7 @@ Unlimited by default.
 
 ---
 
->f1 to f12
+### f1 to f12
 
 You can assign commands to every function key.
 
@@ -286,7 +286,7 @@ Some of them have default commands but they can be overridden.
 
 ---
 
->input
+### input
 
 Use this input automatically at startup.
 
@@ -310,25 +310,25 @@ meltdown "hello world"
 
 ---
 
->force
+### force
 
 Allow opening multiple instances.
 
 ---
 
->alt-palette
+### alt-palette
 
 Show the commands instead of the descriptions in the command palette.
 
 ---
 
->no-bottom
+### no-bottom
 
 Don't show the Go To Bottom bar.
 
 ---
 
->no-bottom-autohide
+### no-bottom-autohide
 
 Don't autohide the Go To Bottom bar.
 
@@ -338,7 +338,7 @@ Instead it just disables it.
 
 ---
 
->old-tabs-minutes
+### old-tabs-minutes
 
 Default: 30
 
@@ -346,7 +346,7 @@ Consider tabs old after these minutes.
 
 ---
 
->max-list-items
+### max-list-items
 
 Default: 10
 
@@ -356,7 +356,7 @@ Like the Recent items when you right click the Input.
 
 ---
 
->list-item-width
+### list-item-width
 
 Default: 100
 
@@ -364,13 +364,13 @@ How many characters the list items can have.
 
 ---
 
->max-tab-width
+### max-tab-width
 
 Max number of characters to show in tab names.
 
 ---
 
->system-threshold
+### system-threshold
 
 Default: 70
 
@@ -378,7 +378,7 @@ Show system monitors as critical after this % threshold.
 
 ---
 
->system-delay
+### system-delay
 
 Default: 3
 
@@ -386,7 +386,7 @@ Delay in seconds for system monitor updates.
 
 ---
 
->drag-threshold
+### drag-threshold
 
 Default: 88
 
@@ -398,19 +398,19 @@ The higher the number the less sensitive the tab dragging will be.
 
 ---
 
->no-tab-highlight
+### no-tab-highlight
 
 Don't highlight the tab when streaming.
 
 ---
 
->quiet
+### quiet
 
 Don't show some messages.
 
 ---
 
->delay
+### delay
 
 Default: 0.1
 
@@ -424,7 +424,7 @@ Use `0` to not have a delay at all.
 
 ---
 
->prefix
+### prefix
 
 Default: "/"
 
@@ -434,7 +434,7 @@ Like `/` in `/about`.
 
 ---
 
->andchar
+### andchar
 
 Default: "&"
 
@@ -444,7 +444,7 @@ Like `&` in `/tab 1 & /select`.
 
 ---
 
->no-commands
+### no-commands
 
 Disable commands when submitting the input.
 
@@ -452,17 +452,17 @@ Treat all text as the prompt, don't check for commands.
 
 ---
 
->compact-model
+### compact-model
 
->compact-system
+### compact-system
 
->compact-details
+### compact-details
 
->compact-buttons
+### compact-buttons
 
->compact-addons
+### compact-addons
 
->compact-input
+### compact-input
 
 If any of these are set, compact mode will be customized.
 
@@ -476,7 +476,7 @@ In compact mode only the model frame and the buttons frame will be hidden.
 
 ---
 
->display
+### display
 
 Activate display mode.
 
@@ -488,25 +488,25 @@ Commands and keyboard shortcuts still work.
 
 ---
 
->no-intro
+### no-intro
 
 Don't print the intro in conversations.
 
 ---
 
->autorun
+### autorun
 
 A command or chain of commands to run at startup automatically.
 
 ---
 
->no-terminal
+### no-terminal
 
 Don't enable the terminal to input prompts and commands.
 
 ---
 
->terminal-height
+### terminal-height
 
 Default: 3
 
@@ -516,13 +516,13 @@ There is an autocomplete menu that needs some lines to be displayed.
 
 ---
 
->terminal-vi
+### terminal-vi
 
 Enable vi mode on the terminal.
 
 ---
 
->input-memory
+### input-memory
 
 Remember words for autocomplete.
 
@@ -532,7 +532,7 @@ Check next argument.
 
 ---
 
->input-memory-min
+### input-memory-min
 
 Default: 4
 
@@ -540,7 +540,7 @@ Minimum number of characters words need to have to be remembered in the input.
 
 ---
 
->listener
+### listener
 
 Enable the input listener.
 
@@ -562,7 +562,7 @@ echo "hello world" > /tmp/mlt_meltdown.input
 
 ---
 
->listener-delay
+### listener-delay
 
 Default: 0.5
 
@@ -572,7 +572,7 @@ If this is lower than 0.1 the listener won't start.
 
 ---
 
->on-top
+### on-top
 
 Make the window always on top.
 
@@ -580,7 +580,7 @@ This means clicking outside the window won't hide it.
 
 ---
 
->commandoc
+### commandoc
 
 Make the commandoc and save it on this path.
 
@@ -588,7 +588,7 @@ This is meant for the developer to make the documentation.
 
 ---
 
->afterstream
+### afterstream
 
 Execute this command after streaming a response.
 
@@ -604,7 +604,7 @@ After it's done, it will save the conversation to a JSON file and exit in 3 seco
 
 ---
 
->no-clean-slate
+### no-clean-slate
 
 Don't make a new tab when starting with an input.
 
@@ -616,7 +616,7 @@ If you disable this, it will always use the last tab even if not empty.
 
 ---
 
->tabs-always
+### tabs-always
 
 Always show the tab bar even if only one tab is open.
 
@@ -626,7 +626,7 @@ And show the tab bar when more tabs are opened.
 
 ---
 
->no-model-icon
+### no-model-icon
 
 Don't show the model icon.
 
@@ -634,37 +634,37 @@ This is the icon on the top right that reflect model status.
 
 ---
 
->no-more-button
+### no-more-button
 
 Don't show the More button at the right of the buttons frame.
 
 ---
 
->no-model-feedback
+### no-model-feedback
 
 Don't show feedback when the model is loading.
 
 ---
 
->no-time
+### no-time
 
 Don't show the loading time at startup.
 
 ---
 
->verbose
+### verbose
 
 Output messages from llama.cpp when streaming.
 
 ---
 
->no-emojis
+### no-emojis
 
 Don't use emojis on messages or the interface.
 
 ---
 
->markdown
+### markdown
 
 Define the markdown mode.
 
@@ -674,43 +674,43 @@ This specifies if markdown formatting is applied to the user, to the AI, to both
 
 ---
 
->no-textbox-button
+### no-textbox-button
 
 Don't show the button to show the textbox input.
 
 ---
 
->no-log-feedback
+### no-log-feedback
 
 Don't show feedback when saving logs.
 
 ---
 
->avatars-in-logs
+### avatars-in-logs
 
 Show the avatars in text logs.
 
 ---
 
->browser
+### browser
 
 Open links with this program.
 
 ---
 
->font-diff
+### font-diff
 
 Add or subtract this from font sizes.
 
 ---
 
->no-wrap-textbox
+### no-wrap-textbox
 
 Don't wrap the textbox text.
 
 ---
 
->task-manager
+### task-manager
 
 Default: "auto"
 
@@ -718,7 +718,7 @@ What task manager to use when clicking the system monitors.
 
 ---
 
->task-manager-gpu
+### task-manager-gpu
 
 Default: "auto"
 
@@ -726,7 +726,7 @@ What task manager to use when clicking on gpu monitors.
 
 ---
 
->terminal
+### terminal
 
 Default: "auto"
 
@@ -736,33 +736,33 @@ For example: `--terminal urxvt --task-manager htop`.
 
 ---
 
->no-markdown-snippets
+### no-markdown-snippets
 
->no-markdown-italic
+### no-markdown-italic
 
->no-markdown-bold
+### no-markdown-bold
 
->no-markdown-highlights
+### no-markdown-highlights
 
->no-markdown-urls
+### no-markdown-urls
 
 Disable specific markdown formatters.
 
 ---
 
->errors
+### errors
 
 Print error messages on caught exceptions.
 
 ---
 
->no-log-errors
+### no-log-errors
 
 Don't save error messages to the error log file.
 
 ---
 
->progtext
+### progtext
 
 The program to use by default when using the `progtext` command.
 
@@ -770,7 +770,7 @@ Else you need to specify the program in the command.
 
 ---
 
->progjson
+### progjson
 
 The program to use by default when using the `progjson` command.
 
@@ -778,7 +778,7 @@ Else you need to specify the program in the command.
 
 ---
 
->program
+### program
 
 The program to use by default when using the `progtext` or `progjson` commands.
 
@@ -786,7 +786,7 @@ Else you need to specify the program in the commands.
 
 ---
 
->no-gestures
+### no-gestures
 
 Don't enable mouse gestures.
 
@@ -802,7 +802,7 @@ Middle click can also be used for mouse gestures.
 
 ---
 
->gesture-threshold
+### gesture-threshold
 
 Default: 33
 
@@ -814,7 +814,7 @@ A higher number means you need to drag more to trigger the actions.
 
 ---
 
->no-increment-logs
+### no-increment-logs
 
 Always use the file name, don't increment with numbers.
 
@@ -822,31 +822,31 @@ For example save `stuff.txt` always instead of `stuff_1.txt`, `stuff_2.txt` etc.
 
 ---
 
->no-confirm-urls
+### no-confirm-urls
 
 Don't show the confirm dialog when opening URLs.
 
 ---
 
->no-confirm-search
+### no-confirm-search
 
 Don't show the confirm dialog when searching words.
 
 ---
 
->no-confirm-close
+### no-confirm-close
 
 Don't show the confirm dialog when closing tabs.
 
 ---
 
->no-confirm-clear
+### no-confirm-clear
 
 Don't show the confirm dialog when clearing conversations.
 
 ---
 
->no-fill-prompt
+### no-fill-prompt
 
 Don't fill the text input prompt in some cases when empty.
 
@@ -858,7 +858,7 @@ This disables that behavior.
 
 ---
 
->scroll-lines
+### scroll-lines
 
 Default: 1
 
@@ -866,7 +866,7 @@ How many lines to scroll the output.
 
 ---
 
->user-color
+### user-color
 
 Default: "auto"
 
@@ -874,7 +874,7 @@ The color of the name of the user.
 
 ---
 
->ai-color
+### ai-color
 
 Default: "auto"
 
@@ -882,19 +882,19 @@ The color of the name of the AI.
 
 ---
 
->confirm-exit
+### confirm-exit
 
 Show a confirm exit dialog.
 
 ---
 
->no-keywords
+### no-keywords
 
 Don't do keyword replacements like `((now))` or `((noun))`.
 
 ---
 
->snippets-font
+### snippets-font
 
 Default: "monospace"
 
@@ -902,13 +902,13 @@ The font to use on snippets.
 
 ---
 
->no-prevnext
+### no-prevnext
 
 Don't show the Prev and Next buttons.
 
 ---
 
->short-labels
+### short-labels
 
 Use the short form for labels.
 
@@ -918,41 +918,41 @@ This is to make the interface more compact.
 
 ---
 
->no-labels
+### no-labels
 
 Don't show the labels at all.
 
 ---
 
->short-buttons
+### short-buttons
 
 Like short-labels but for buttons.
 
 ---
 
->no-syntax-highlighting
+### no-syntax-highlighting
 
 Don't apply syntax highlighting to snippets
 
 ---
 
-> emoji-unloaded
+### emoji-unloaded
 
 Default: "👻"
 
-> emoji-local
+### emoji-local
 
 Default: "✅"
 
-> emoji-remote
+### emoji-remote
 
 Default: "🌐"
 
-> emoji-storage
+### emoji-storage
 
 Default: "💾"
 
-> emoji-loading
+### emoji-loading
 
 Default: "⏰"
 

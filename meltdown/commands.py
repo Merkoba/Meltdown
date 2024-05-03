@@ -778,7 +778,7 @@ class Commands:
             cmd = self.commands[key]
             info = cmd["help"]
             text += sep
-            text += f">{key}\n\n"
+            text += f"### {key}\n\n"
             text += info
 
         with path.open("w", encoding="utf-8") as file:
