@@ -274,3 +274,45 @@ However you need to have `tkdnd` installed in your system.
 This is an extension for `Tcl`.
 
 If you want to disable it instead, use the `--no-drag-and-drop` flag.
+
+---
+
+## Keywords
+
+There are some keywords you can use in commands:
+
+---
+
+### ((name_user))
+
+Name of the user.
+
+---
+
+### ((name_ai))
+
+Name of the AI.
+
+---
+
+### ((date))
+
+Current date.
+
+---
+
+### ((now))
+
+Current unix time in seconds.
+
+---
+
+### ((name))
+
+Name of the current tab.
+
+---
+
+### ((noun))
+
+Random noun.
