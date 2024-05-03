@@ -587,7 +587,9 @@ class Commands:
 
         return True
 
-    def run(self, cmd: str, argument: Optional[str] = None) -> None:
+    def run(
+        self, cmd: str, argument: Optional[str] = None, update_date: bool = False
+    ) -> None:
         item = self.commands.get(cmd)
 
         if not item:
@@ -617,7 +619,10 @@ class Commands:
 
         item = self.commands[cmd]
         item["action"](new_argument)
-        item["date"] = utils.now()
+
+        if update_date:
+            item["date"] = utils.now()
+
         self.save_commands()
 
     def save_commands(self) -> None:
@@ -704,7 +709,7 @@ class Commands:
                 if cmd.get("arg_req"):
                     Dialog.show_input("Argument", lambda a: self.run(key, a))
                 else:
-                    self.run(key)
+                    self.run(key, update_date=True)
 
             if args.alt_palette:
                 text = key
