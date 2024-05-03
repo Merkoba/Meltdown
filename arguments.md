@@ -716,6 +716,12 @@ What task manager to use when clicking the system monitors.
 
 ---
 
+>task-manager-gpu
+
+What task manager to use when clicking on gpu monitors.
+
+---
+
 >terminal
 
 What terminal to use for programs like the task manager.

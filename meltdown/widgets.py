@@ -174,7 +174,7 @@ class Widgets:
             if args.system_gpu_temp:
                 monitors.append("gpu_temp")
 
-            def make_monitor(name: str, label_text: str) -> None:
+            def make_monitor(name: str, label_text: str, mode: str) -> None:
                 label = widgetutils.make_label(
                     frame_data_system, label_text, ignore_short=True
                 )
@@ -190,26 +190,26 @@ class Widgets:
                 ToolTip(monitor_text, tip)
                 getattr(self, name).set("000%")
 
-                label.bind("<Button-1>", lambda e: app.open_task_manager())
-                monitor_text.bind("<Button-1>", lambda e: app.open_task_manager())
+                label.bind("<Button-1>", lambda e: app.open_task_manager(mode))
+                monitor_text.bind("<Button-1>", lambda e: app.open_task_manager(mode))
 
             if args.system_cpu:
-                make_monitor("cpu", "CPU")
+                make_monitor("cpu", "CPU", "normal")
 
             if args.system_ram:
-                make_monitor("ram", "RAM")
+                make_monitor("ram", "RAM", "normal")
 
             if args.system_temp:
-                make_monitor("temp", "TMP")
+                make_monitor("temp", "TMP", "normal")
 
             if args.system_gpu:
-                make_monitor("gpu", "GPU")
+                make_monitor("gpu", "GPU", "gpu")
 
             if args.system_gpu_ram:
-                make_monitor("gpu_ram", "GPU RAM")
+                make_monitor("gpu_ram", "GPU RAM", "gpu")
 
             if args.system_gpu_temp:
-                make_monitor("gpu_temp", "GPU TMP")
+                make_monitor("gpu_temp", "GPU TMP", "gpu")
 
         # Details Container 1
         frame_data_details_1 = widgetutils.make_frame()

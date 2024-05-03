@@ -495,7 +495,7 @@ class App:
         url = base_url + urllib.parse.urlencode(query_params)
         self.open_url(url)
 
-    def open_task_manager(self) -> None:
+    def get_terminal(self) -> List[str]:
         from .args import args
 
         if args.terminal == "auto":
@@ -507,24 +507,44 @@ class App:
                 cmd = ["konsole", "-e"]
             elif shutil.which("xterm"):
                 cmd = ["urxvt", "-e"]
-            elif shutil.which("xterm"):
-                cmd = ["xterm", "-e"]
             else:
-                return
+                cmd = ["xterm", "-e"]
         else:
             cmd = [args.terminal, "-e"]
 
-        if args.task_manager == "auto":
-            if shutil.which("btop"):
-                cmd.extend(["btop"])
-            elif shutil.which("htop"):
-                cmd.extend(["htop"])
-            elif shutil.which("top"):
-                cmd.extend(["top"])
+        return cmd
+
+    def open_task_manager(self, mode: str = "normal") -> None:
+        from .args import args
+
+        cmd = self.get_terminal()
+
+        if mode == "normal":
+            if args.task_manager == "auto":
+                if shutil.which("btop"):
+                    cmd.extend(["btop"])
+                elif shutil.which("htop"):
+                    cmd.extend(["htop"])
+                elif shutil.which("top"):
+                    cmd.extend(["top"])
+                else:
+                    return
             else:
-                return
-        else:
-            cmd.extend([args.task_manager])
+                cmd.extend([args.task_manager])
+        elif mode == "gpu":
+            if args.task_manager_gpu == "auto":
+                if shutil.which("amdgpu_top"):
+                    cmd.extend(["amdgpu_top"])
+                elif shutil.which("btop"):
+                    cmd.extend(["btop"])
+                elif shutil.which("htop"):
+                    cmd.extend(["htop"])
+                elif shutil.which("top"):
+                    cmd.extend(["top"])
+                else:
+                    return
+            else:
+                cmd.extend([args.task_manager_gpu])
 
         self.run_command(cmd)
 

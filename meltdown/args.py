@@ -107,6 +107,7 @@ class Args:
         self.wrap_textbox = True
         self.font_diff = 0
         self.task_manager = "auto"
+        self.task_manager_gpu = "auto"
         self.terminal = "auto"
         self.markdown = "ai"
         self.markdown_snippets = True
@@ -534,6 +535,10 @@ class Args:
             "browser": {"type": str, "help": "Open links with this browser"},
             "font_diff": {"type": int, "help": "Add or subtract this from font sizes"},
             "task_manager": {"type": str, "help": "Which task manager to use"},
+            "task_manager_gpu": {
+                "type": str,
+                "help": "Which task manager to use on the gpu monitors",
+            },
             "terminal": {"type": str, "help": "Which terminal to use"},
             "progtext": {
                 "type": str,
@@ -705,6 +710,7 @@ class Args:
             "browser",
             "font_diff",
             "task_manager",
+            "task_manager_gpu",
             "terminal",
             "on_log",
             "on_log_text",
