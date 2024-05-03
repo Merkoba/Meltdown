@@ -956,7 +956,7 @@ Don't apply syntax highlighting to snippets
 
 ### emoji-unloaded
 
-Default: "👻"
+Default: 👻
 
 Emoji when a model is unloaded.
 
@@ -964,7 +964,7 @@ Emoji when a model is unloaded.
 
 ### emoji-local
 
-Default: "✅"
+Default: ✅
 
 Emoji when a model is local.
 
@@ -972,7 +972,7 @@ Emoji when a model is local.
 
 ### emoji-remote
 
-Default: "🌐"
+Default: 🌐
 
 Emoji when a model is remote.
 
@@ -980,7 +980,7 @@ Emoji when a model is remote.
 
 ### emoji-loading
 
-Default: "⏰"
+Default: ⏰
 
 Emoji when a model is loading.
 
@@ -988,6 +988,6 @@ Emoji when a model is loading.
 
 ### emoji-storage
 
-Default: "💾"
+Default: 💾
 
 Emoji for storage operations.
