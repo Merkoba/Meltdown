@@ -946,7 +946,7 @@ Default: "✅"
 
 > emoji-remote
 
-Default: "🌐:
+Default: "🌐"
 
 > emoji-storage
 
