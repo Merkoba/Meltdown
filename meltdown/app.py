@@ -498,6 +498,8 @@ class App:
     def get_terminal(self) -> List[str]:
         from .args import args
 
+        cmd = []
+
         if args.terminal == "auto":
             if shutil.which("alacritty"):
                 cmd = ["alacritty", "-e"]
@@ -507,7 +509,7 @@ class App:
                 cmd = ["konsole", "-e"]
             elif shutil.which("xterm"):
                 cmd = ["urxvt", "-e"]
-            else:
+            elif shutil.which("xterm"):
                 cmd = ["xterm", "-e"]
         else:
             cmd = [args.terminal, "-e"]
@@ -518,6 +520,9 @@ class App:
         from .args import args
 
         cmd = self.get_terminal()
+
+        if not cmd:
+            return
 
         if mode == "normal":
             if args.task_manager == "auto":
