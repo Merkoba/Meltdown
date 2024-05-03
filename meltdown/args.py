@@ -143,8 +143,8 @@ class Args:
         self.emoji_unloaded = "👻"
         self.emoji_local = "✅"
         self.emoji_remote = "🌐"
-        self.emoji_storage = "💾"
         self.emoji_loading = "⏰"
+        self.emoji_storage = "💾"
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -576,13 +576,13 @@ class Args:
                 "type": str,
                 "help": "Emoji to show when a model is loaded remotely",
             },
-            "emoji_storage": {
-                "type": str,
-                "help": "Emoji to show when saving a log",
-            },
             "emoji_loading": {
                 "type": str,
                 "help": "Emoji to show when loading a model",
+            },
+            "emoji_storage": {
+                "type": str,
+                "help": "Emoji to show when saving a log",
             },
         }
 
@@ -730,8 +730,8 @@ class Args:
             "emoji_unloaded",
             "emoji_local",
             "emoji_remote",
-            "emoji_storage",
             "emoji_loading",
+            "emoji_storage",
         ]
 
         for n_item in normals:
