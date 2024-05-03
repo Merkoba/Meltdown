@@ -724,17 +724,23 @@ Disable markdown: italic
 
 Like _this_.
 
+---
+
 ### no-markdown-bold
 
 Disable markdown: bold
 
 Like **this**.
 
+---
+
 ### no-markdown-highlights
 
 Disable markdown: highlights
 
 Like `this`.
+
+---
 
 ### no-markdown-urls
 
