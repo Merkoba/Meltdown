@@ -424,25 +424,43 @@ Treat all text as the prompt, don't check for commands.
 
 ### compact-model
 
+Hide the model row on compact mode.
+
+---
+
 ### compact-system
 
-### compact-details
+Hide the system row on compact mode.
+
+---
+
+### compact-details_1
+
+Hide the first details row on compact mode.
+
+---
+
+### compact-details_2
+
+Hide the second details row on compact mode.
+
+---
 
 ### compact-buttons
 
-### compact-addons
+Hide the buttons row on compact mode.
+
+---
+
+### compact-file
+
+Hide the file row on compact mode.
+
+---
 
 ### compact-input
 
-If any of these are set, compact mode will be customized.
-
-If customized, it will compact/hide exactly what you defined.
-
-Else it hides by default: system, details, and addons.
-
-For example: `--compact-model --compact buttons`.
-
-In compact mode only the model frame and the buttons frame will be hidden.
+Hide the input row on compact mode.
 
 ---
 
