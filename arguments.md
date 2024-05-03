@@ -708,15 +708,39 @@ For example: `--terminal urxvt --task-manager htop`.
 
 ### no-markdown-snippets
 
+Disable markdown: snippets
+
+Like:
+
+```python
+print("Hello World")
+```
+
+---
+
 ### no-markdown-italic
+
+Disable markdown: italic
+
+Like _this_.
 
 ### no-markdown-bold
 
+Disable markdown: bold
+
+Like **this**.
+
 ### no-markdown-highlights
+
+Disable markdown: highlights
+
+Like `this`.
 
 ### no-markdown-urls
 
-Disable specific markdown formatters.
+Disable markdown: urls
+
+Like `https://`.
 
 ---
 
