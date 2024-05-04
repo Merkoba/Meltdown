@@ -216,7 +216,7 @@ class Theme:
 
         return (fam, self.font_size + diff, "normal")
 
-    def setup_style(self) -> None:
+    def setup(self) -> None:
         from .app import app
 
         style = ttk.Style()
