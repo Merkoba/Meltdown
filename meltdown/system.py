@@ -1,8 +1,8 @@
 # Standard
-import os
 import json
 import subprocess
 import threading
+import tkinter as tk
 from typing import Optional
 from pathlib import Path
 
@@ -25,14 +25,18 @@ class System:
         self.gpu_ram: Optional[int] = None
         self.gpu_temp: Optional[int] = None
 
+    def set_widget(self, widget: tk.StringVar, text: str) -> None:
+        if app.exists():
+            widget.set(text)
+
     def get_psutil_info(self) -> None:
         if args.system_cpu:
             self.cpu = int(psutil.cpu_percent(interval=1))
-            widgets.cpu.set(utils.padnum(self.cpu) + "%")
+            self.set_widget(widgets.cpu, utils.padnum(self.cpu) + "%")
 
         if args.system_ram:
             self.ram = int(psutil.virtual_memory().percent)
-            widgets.ram.set(utils.padnum(self.ram) + "%")
+            self.set_widget(widgets.ram, utils.padnum(self.ram) + "%")
 
         if args.system_temp:
             temps = psutil.sensors_temperatures()
@@ -46,9 +50,9 @@ class System:
                         break
 
             if self.temp:
-                widgets.temp.set(utils.padnum(self.temp) + "°")
+                self.set_widget(widgets.temp, utils.padnum(self.temp) + "°")
             else:
-                widgets.temp.set("N/A")
+                self.set_widget(widgets.temp, "N/A")
 
     def get_gpu_info(self) -> None:
         # This works with AMD GPUs | rocm-smi must be installed
@@ -83,18 +87,24 @@ class System:
 
                     if args.system_gpu:
                         self.gpu_use = int(float(gpu_data.get("GPU use (%)", 0)))
-                        widgets.gpu.set(utils.padnum(int(self.gpu_use)) + "%")
+                        self.set_widget(
+                            widgets.gpu, utils.padnum(int(self.gpu_use)) + "%"
+                        )
 
                     if args.system_gpu_ram:
                         self.gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
-                        widgets.gpu_ram.set(utils.padnum(int(self.gpu_ram)) + "%")
+                        self.set_widget(
+                            widgets.gpu_ram, utils.padnum(int(self.gpu_ram)) + "%"
+                        )
 
                     if args.system_gpu_temp:
                         self.gpu_temp = int(
                             float(gpu_data.get("Temperature (Sensor junction) (C)", 0))
                         )
 
-                        widgets.gpu_temp.set(utils.padnum(int(self.gpu_temp)) + "°C")
+                        self.set_widget(
+                            widgets.gpu_temp, utils.padnum(int(self.gpu_temp)) + "°C"
+                        )
 
     def get_info(self) -> None:
         self.get_psutil_info()

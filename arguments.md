@@ -1020,4 +1020,6 @@ This disables that.
 
 ### auto-name-length
 
+Default: 35
+
 Max char length for auto-named tabs.

@@ -1,5 +1,6 @@
 [lint]
 select = [
+    "F401",
     "F402",
     "F811",
     "F823",
@@ -30,6 +31,7 @@ select = [
     "FLY002",
     "PERF",
     "RUF",
+    "E401",
 ]
 exclude = [
     "pyperclip.py",
