@@ -1,1031 +1,1315 @@
 ## Arguments
 
-These are flags you can use when running the program.
-
-For example: `meltdown --no-tooltips --width 800 --height 900`
-
-This is how the program is configured. There is no settings window.
-
-(Model configs and other settings can be set in the interface)
-
----
-
-### alias
-
-You can define one or more command aliases.
-
-The name of the alias is at the start and the value is after `=`.
-
-For example:
-
-```sh
---alias "grab = /tab 1 & /select" --alias "destroy = /close force"
-```
-
-Or maybe a prompt alias:
-
-```sh
---alias "history = /input what happened on this day?"
-```
-
----
-
-### task
-
-You can run automated tasks.
-
-The format is [seconds] [commands] [/now (optional)].
-
-For example:
-
-```sh
---task "30 /tab 1 & /input hello world /now"
-```
-
-This will go to the first tab and then prompt the model with "hello world".
-
-It will run the first task instantly and then wait 30 seconds for the next iteration.
-
-You can define multiple tasks like this.
-
----
-
-### width
-
-Start the window with this width.
-
----
-
-### height
-
-Start the window with this height.
-
----
-
-### no-tooltips
-
-Don't show tooltips when hovering over items.
-
----
-
-### no-scrollbars
-
-Don't display the scrollbars.
-
----
-
-### no-colors
-
-Don't display colors on the user names.
-
----
-
-### no-avatars
-
-Don't display user avatars.
-
----
-
-### no-keyboard
-
-Disable keyboard shortcuts.
-
----
-
-### no-taps
-
-Disable double ctrl taps.
-
----
-
-### no-system
-
-Don't show the system monitors like CPU.
-
----
-
-### no-system-colors
-
-Don't use colors on the system monitors.
-
----
-
-### no-cpu
-
-Don't show the CPU monitor.
-
----
-
-### no-ram
-
-Don't show the RAM monitor.
-
----
-
-### no-temp
-
-Don't show the temperature monitor.
-
----
-
-### no-gpu
-
-Don't show the GPU monitor.
-
----
-
-### no-gpu-ram
-
-Don't show the GPU RAM monitor.
-
----
-
-### no-gpu-temp
-
-Don't show the GPU temperature monitor.
-
----
-
-### no-wrap
-
-Disable wrapping when selecting items.
-
----
-
-### no-tabs
-
-Don't show the tab bar.
-
----
-
-### no-stream
-
-Show responses once they're ready instead of streaming live.
-
----
-
-### no-empty
-
-Don't save empty conversations.
-
----
-
-### maximize
-
-Start the window maximized.
-
----
-
-### test
-
-Open a test tab for debugging.
+Here are all the available command line arguments:
 
 ---
 
 ### version
 
-Show the version of the program.
+Check the version of the program
+
+Action: version
 
 ---
 
-### config
+### no_tooltips
 
-Load a config file.
+Don't show tooltips
 
-This can be a name, you can omit the `.json`.
-
-It can also be a direct path.
+Action: store_false
 
 ---
 
-### session
+### no_scrollbars
 
-Load a session file.
+Don't show scrollbars
 
-This can be a name, you can omit the `.json`.
-
-It can also be a direct path.
+Action: store_false
 
 ---
 
-### on-log
+### no_colors
 
-### on-log-text
+Don't show user colors
 
-### on-log-json
-
-This is a command to run after saving a log file.
-
-For example you can use `--on-log geany` to automatically
-
-open the file on the Geany text editor after it is saved.
-
-It simply passes the file path as an argument to the command/script.
-
-`on-log-text` triggers after text log saves.
-
-`on-log-json` triggers after JSON log saves.
-
-`on-log` triggers if those are not defined.
+Action: store_false
 
 ---
 
-### numbers
+### no_avatars
 
-Show numbers in the tab bar.
+Don't show user avatars
 
----
-
-### max-tabs
-
-Max number of tabs to keep. The older ones are closed automatically.
-
-Unlimited by default.
+Action: store_false
 
 ---
 
-### f1 to f12
+### no_system
 
-You can assign commands to every function key.
+Don't show system monitors
 
-For example `--f1 "/tab 1"` or `--f11 "/fullscreen & /sleep 1 & /about"`.
-
-Check /commands to see all available commands.
-
-Some of them have default commands but they can be overridden.
+Action: store_false
 
 ---
 
-### input
+### no_system_colors
 
-Use this input automatically at startup.
+Disable system monitor colors
 
-It will load and ask the model automatically.
+Action: store_false
 
-Commands are also supported.
+---
 
-It simulates a normal input submit.
+### no_cpu
 
-This can also be piped:
+Don't show the CPU monitor
 
-```sh
-echo "hello world" | meltdown
-```
+Action: store_false
 
-This can also be used without the flag:
+---
 
-```sh
-meltdown "hello world"
-```
+### no_gpu
+
+Don't show the GPU monitor
+
+Action: store_false
+
+---
+
+### no_gpu_ram
+
+Don't show the GPU memory monitor
+
+Action: store_false
+
+---
+
+### no_gpu_temp
+
+Don't show the GPU temperature monitor
+
+Action: store_false
+
+---
+
+### no_ram
+
+Don't show the RAM monitor
+
+Action: store_false
+
+---
+
+### no_temp
+
+Don't show the temperature monitor
+
+Action: store_false
+
+---
+
+### no_keyboard
+
+Disable keyboard shortcuts
+
+Action: store_false
+
+---
+
+### no_taps
+
+Disable double ctrl taps
+
+Action: store_false
+
+---
+
+### no_wrap
+
+Disable wrapping when selecting items
+
+Action: store_false
+
+---
+
+### no_tabs
+
+Don't show the tab bar
+
+Action: store_false
+
+---
+
+### no_stream
+
+Don't stream responses
+
+Action: store_false
+
+---
+
+### no_empty
+
+Don't save empty conversations
+
+Action: store_false
+
+---
+
+### no_bottom
+
+Don't show the Bottom button
+
+Action: store_false
+
+---
+
+### no_bottom_autohide
+
+Don't autohide the Bottom button
+
+Action: store_false
+
+---
+
+### no_reorder
+
+Disable tab reordering by dragging
+
+Action: store_false
+
+---
+
+### no_tab_highlight
+
+Don't highlight the tab when streaming
+
+Action: store_false
+
+---
+
+### no_commands
+
+Disable commands when typing on the input
+
+Action: store_false
+
+---
+
+### no_intro
+
+Don't print the intro in conversations
+
+Action: store_false
+
+---
+
+### no_terminal
+
+Don't enable the interactive terminal
+
+Action: store_false
+
+---
+
+### no_clean_slate
+
+Don't make a new tab when starting with an input
+
+Action: store_false
+
+---
+
+### no_more_button
+
+Don't show the More button
+
+Action: store_false
+
+---
+
+### no_model_icon
+
+Don't show the model icon
+
+Action: store_false
+
+---
+
+### no_model_feedback
+
+Don't show model feedback when loading
+
+Action: store_false
+
+---
+
+### no_log_feedback
+
+Don't show feedback when saving logs
+
+Action: store_false
+
+---
+
+### no_emojis
+
+Don't use emojis
+
+Action: store_false
+
+---
+
+### no_input_memory
+
+Don't remember input words
+
+Action: store_false
+
+---
+
+### no_write_button
+
+Don't show the textbox button
+
+Action: store_false
+
+---
+
+### no_wrap_textbox
+
+Don't wrap the textbox text
+
+Action: store_false
+
+---
+
+### no_markdown_snippets
+
+Don't do snippet markdown
+
+Action: store_false
+
+---
+
+### no_markdown_italic
+
+Don't do italic markdown
+
+Action: store_false
+
+---
+
+### no_markdown_bold
+
+Don't do bold markdown
+
+Action: store_false
+
+---
+
+### no_markdown_highlights
+
+Don't do highlight markdown
+
+Action: store_false
+
+---
+
+### no_markdown_urls
+
+Don't do URL markdown
+
+Action: store_false
+
+---
+
+### no_log_errors
+
+Don't log error messages to a file
+
+Action: store_false
+
+---
+
+### no_time
+
+Don't show the loading time at startup
+
+Action: store_false
+
+---
+
+### no_gestures
+
+Don't enable mouse gestures
+
+Action: store_false
+
+---
+
+### no_increment_logs
+
+Always use the file name, don't increment with numbers
+
+Action: store_false
+
+---
+
+### no_confirm_urls
+
+No need to confirm when opening URLs
+
+Action: store_false
+
+---
+
+### no_confirm_search
+
+No need to confirm when searching
+
+Action: store_false
+
+---
+
+### no_confirm_close
+
+No need to confirm closing tabs
+
+Action: store_false
+
+---
+
+### no_confirm_clear
+
+No need to confirm clearing conversations
+
+Action: store_false
+
+---
+
+### no_fill_prompt
+
+Don't fill the text input prompt in some cases when empty
+
+Action: store_false
+
+---
+
+### no_drag_and_drop
+
+Don't enable drag and drop
+
+Action: store_false
+
+---
+
+### no_keywords
+
+Don't do keyword replacements like ((now))
+
+Action: store_false
+
+---
+
+### no_prevnext
+
+Don't show the Prev and Next buttons
+
+Action: store_false
+
+---
+
+### no_auto_name
+
+Don't auto-name tabs based on input
+
+Action: store_false
+
+---
+
+### no_tab_double_click
+
+Open new tabs on double click
+
+Action: store_false
+
+---
+
+### no_labels
+
+Don't show the labels
+
+Action: store_false
+
+---
+
+### no_syntax_highlighting
+
+Don't apply syntax highlighting to snippets
+
+Action: store_false
+
+---
+
+### test
+
+Make a test tab for debugging
+
+Default: False
+
+Action: store_true
 
 ---
 
 ### force
 
-Allow opening multiple instances.
+Allow opening multiple instances
+
+Default: True
+
+Action: store_true
 
 ---
 
-### alt-palette
+### confirm_exit
 
-Show the commands instead of the descriptions in the command palette.
+Show confirm exit dialog
 
----
+Default: False
 
-### no-bottom
-
-Don't show the Go To Bottom bar.
+Action: store_true
 
 ---
 
-### no-bottom-autohide
+### compact_model
 
-Don't autohide the Go To Bottom bar.
+Hide the model frame in compact mode
 
-Always reserve the space.
+Default: False
 
-Instead it just disables it.
-
----
-
-### old-tabs-minutes
-
-Default: 30
-
-Consider tabs old after these minutes.
+Action: store_true
 
 ---
 
-### max-list-items
+### compact_system
 
-Default: 10
+Hide the system frame in compactm ode
 
-Max number to keep in lists.
+Default: False
 
-Like the Recent items when you right click the Input.
-
----
-
-### list-item-width
-
-Default: 100
-
-How many characters the list items can have.
+Action: store_true
 
 ---
 
-### max-tab-width
+### compact_details_1
 
-Max number of characters to show in tab names.
+Hide the first details frame in compact mode
 
----
+Default: False
 
-### system-threshold
-
-Default: 70
-
-Show system monitors as critical after this % threshold.
+Action: store_true
 
 ---
 
-### system-delay
+### compact_details_2
 
-Default: 3
+Hide the second details frame in compact mode
 
-Delay in seconds for system monitor updates.
+Default: False
 
----
-
-### drag-threshold
-
-Default: 88
-
-This controls re-ordering tabs when dragging with the mouse.
-
-This is the amount of pixels that must be traveled by the mouse.
-
-The higher the number the less sensitive the tab dragging will be.
+Action: store_true
 
 ---
 
-### no-tab-highlight
+### compact_buttons
 
-Don't highlight the tab when streaming.
+Hide the buttons frame in compact mode
 
----
+Default: False
 
-### quiet
-
-Don't show some messages.
+Action: store_true
 
 ---
 
-### delay
+### compact_file
 
-Default: 0.1
+Hide the URL frame in compact mode
 
-Delay in seconds between each print when streaming.
+Default: False
 
-For example `--delay 0.25` would print more frequently compared to `--delay 1`.
-
-This might be useful if you don't want to overwhelm the interface with very frequent prints.
-
-Use `0` to not have a delay at all.
+Action: store_true
 
 ---
 
-### prefix
+### compact_input
 
-Default: "/"
+Hide the input frame in compact mode
 
-The command prefix for all commands.
+Default: False
 
-Like `/` in `/about`.
-
----
-
-### andchar
-
-Default: "&"
-
-The command used to join commands.
-
-Like `&` in `/tab 1 & /select`.
+Action: store_true
 
 ---
 
-### no-commands
+### maximize
 
-Disable commands when submitting the input.
+Maximize the window on start
 
-Treat all text as the prompt, don't check for commands.
+Default: False
 
----
-
-### compact-model
-
-Hide the model row on compact mode.
+Action: store_true
 
 ---
 
-### compact-system
+### numbers
 
-Hide the system row on compact mode.
+Show numbers in the tab bar
 
----
+Default: False
 
-### compact-details_1
-
-Hide the first details row on compact mode.
+Action: store_true
 
 ---
 
-### compact-details_2
+### alt_palette
 
-Hide the second details row on compact mode.
+Show commands instead of descriptions in the palette
 
----
+Default: False
 
-### compact-buttons
-
-Hide the buttons row on compact mode.
+Action: store_true
 
 ---
 
-### compact-file
+### terminal_vi
 
-Hide the file row on compact mode.
+Use vi mode in the terminal
 
----
+Default: False
 
-### compact-input
-
-Hide the input row on compact mode.
+Action: store_true
 
 ---
 
-### display
+### tabs_always
 
-Activate display mode.
+Always show the tab bar even if only one tab
 
-This hides all frames except the display and tabs.
+Default: False
 
-Input submit is also disabled.
-
-Commands and keyboard shortcuts still work.
-
----
-
-### no-intro
-
-Don't print the intro in conversations.
-
----
-
-### autorun
-
-A command or chain of commands to run at startup automatically.
-
----
-
-### no-terminal
-
-Don't enable the terminal to input prompts and commands.
-
----
-
-### terminal-height
-
-Default: 3
-
-Reserve these number of lines for the prompt.
-
-There is an autocomplete menu that needs some lines to be displayed.
-
----
-
-### terminal-vi
-
-Enable vi mode on the terminal.
-
----
-
-### input-memory
-
-Remember words for autocomplete.
-
-The words must be at least x characters long.
-
-Check next argument.
-
----
-
-### input-memory-min
-
-Default: 4
-
-Minimum number of characters words need to have to be remembered in the input.
-
----
-
-### listener
-
-Enable the input listener.
-
-This reads a file located in a temp directory.
-
-The file is called `mlt_meltdown.input`.
-
-In Linux it would be located inside `/tmp`.
-
-This file is read, and if it has content it used for the input.
-
-The file is then emptied.
-
-So for instance you can trigger an input by doing this:
-
-```sh
-echo "hello world" > /tmp/mlt_meltdown.input
-```
-
----
-
-### listener-delay
-
-Default: 0.5
-
-Delay in seconds for the listener loop check.
-
-If this is lower than 0.1 the listener won't start.
-
----
-
-### on-top
-
-Make the window always on top.
-
-This means clicking outside the window won't hide it.
-
----
-
-### commandoc
-
-Make the commandoc and save it on this path.
-
-This is meant for the developer to make the documentation.
-
----
-
-### afterstream
-
-Execute this command after streaming a response.
-
-For example:
-
-```sh
---after-stream "/logjson & /exit 3" "What is math?"
-```
-
-It will use `What is math?` as the prompt automatically.
-
-After it's done, it will save the conversation to a JSON file and exit in 3 seconds.
-
----
-
-### no-clean-slate
-
-Don't make a new tab when starting with an input.
-
-By default when you start the program with an input
-
-it will smartly check if it should re-use an empty tab or make a new one.
-
-If you disable this, it will always use the last tab even if not empty.
-
----
-
-### tabs-always
-
-Always show the tab bar even if only one tab is open.
-
-Else it will auto-hide the tab bar when only 1 tab.
-
-And show the tab bar when more tabs are opened.
-
----
-
-### no-model-icon
-
-Don't show the model icon.
-
-This is the icon on the top right that reflect model status.
-
----
-
-### no-more-button
-
-Don't show the More button at the right of the buttons frame.
-
----
-
-### no-model-feedback
-
-Don't show feedback when the model is loading.
-
----
-
-### no-time
-
-Don't show the loading time at startup.
+Action: store_true
 
 ---
 
 ### verbose
 
-Output messages from llama.cpp when streaming.
+Make the model verbose when streaming
+
+Default: False
+
+Action: store_true
 
 ---
 
-### no-emojis
+### quiet
 
-Don't use emojis on messages or the interface.
+Don't show some messages
 
----
+Default: False
 
-### markdown
-
-Define the markdown mode.
-
-Either `user`, `ai`, `all`, or `none`.
-
-This specifies if markdown formatting is applied to the user, to the AI, to both, or to none.
+Action: store_true
 
 ---
 
-### no-textbox-button
+### debug
 
-Don't show the button to show the textbox input.
+Show some information for debugging
 
----
+Default: False
 
-### no-log-feedback
-
-Don't show feedback when saving logs.
+Action: store_true
 
 ---
 
-### avatars-in-logs
+### display
 
-Show the avatars in text logs.
+Only show the output and tabs
 
----
+Default: False
 
-### browser
-
-Open links with this program.
+Action: store_true
 
 ---
 
-### font-diff
+### listener
 
-Add or subtract this from font sizes.
+Listen for changes to the stdin file
 
----
+Default: False
 
-### no-wrap-textbox
-
-Don't wrap the textbox text.
+Action: store_true
 
 ---
 
-### task-manager
+### sticky
 
-Default: "auto"
+Make the window always on top
 
-What task manager to use when clicking the system monitors.
+Default: False
 
----
-
-### task-manager-gpu
-
-Default: "auto"
-
-What task manager to use when clicking on gpu monitors.
+Action: store_true
 
 ---
 
-### terminal
+### avatars_in_logs
 
-Default: "auto"
+Show avatars in text logs
 
-What terminal to use for programs like the task manager.
+Default: False
 
-For example: `--terminal urxvt --task-manager htop`.
-
----
-
-### no-markdown-snippets
-
-Disable markdown: snippets
-
-Like:
-
-```python
-print("Hello World")
-```
+Action: store_true
 
 ---
 
-### no-markdown-italic
+### short_labels
 
-Disable markdown: italic
+Use the short version of labels
 
-Like _this_.
+Default: False
 
----
-
-### no-markdown-bold
-
-Disable markdown: bold
-
-Like **this**.
+Action: store_true
 
 ---
 
-### no-markdown-highlights
+### short_buttons
 
-Disable markdown: highlights
+Use the short version of buttons
 
-Like `this`.
+Default: False
 
----
-
-### no-markdown-urls
-
-Disable markdown: urls
-
-Like `https://`.
+Action: store_true
 
 ---
 
 ### errors
 
-Print error messages on caught exceptions.
+Show error messages
+
+Default: False
+
+Action: store_true
 
 ---
 
-### no-log-errors
+### terminal_height
 
-Don't save error messages to the error log file.
+Reserve these number of rows for the terminal
+
+Default: 3
+
+Type: int
+
+---
+
+### width
+
+Width of the window
+
+Default: -1
+
+Type: int
+
+---
+
+### height
+
+Height of the window
+
+Default: -1
+
+Type: int
+
+---
+
+### max_tabs
+
+Max number fo tabs to keep open
+
+Default: 0
+
+Type: int
+
+---
+
+### max_tab_width
+
+Max number of characters to show in a tab name
+
+Default: 0
+
+Type: int
+
+---
+
+### config
+
+Name or path of a config file to use
+
+Default: ""
+
+Type: str
+
+---
+
+### session
+
+Name or path of a session file to use
+
+Default: ""
+
+Type: str
+
+---
+
+### on_log
+
+Command to execute when saving any log file
+
+Default: ""
+
+Type: str
+
+---
+
+### on_log_text
+
+Command to execute when saving a text log file
+
+Default: ""
+
+Type: str
+
+---
+
+### on_log_json
+
+Command to execute when saving a JSON log file
+
+Default: ""
+
+Type: str
+
+---
+
+### f1
+
+Command to assign to the F1 key
+
+Default: "/help"
+
+Type: str
+
+---
+
+### f2
+
+Command to assign to the F2 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f3
+
+Command to assign to the F3 key
+
+Default: "/next"
+
+Type: str
+
+---
+
+### f4
+
+Command to assign to the F4 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f5
+
+Command to assign to the F5 key
+
+Default: "/reset"
+
+Type: str
+
+---
+
+### f6
+
+Command to assign to the F6 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f7
+
+Command to assign to the F7 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f8
+
+Command to assign to the F8 key
+
+Default: "/compact"
+
+Type: str
+
+---
+
+### f9
+
+Command to assign to the F9 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f10
+
+Command to assign to the F10 key
+
+Default: ""
+
+Type: str
+
+---
+
+### f11
+
+Command to assign to the F11 key
+
+Default: "/fullscreen"
+
+Type: str
+
+---
+
+### f12
+
+Command to assign to the F12 key
+
+Default: "/list"
+
+Type: str
+
+---
+
+### input
+
+Prompt the AI automatically with this input when starting the program
+
+Default: ""
+
+Type: str
+
+---
+
+### alias
+
+Define an alias to run commands
+
+Action: append
+
+Type: str
+
+---
+
+### task
+
+Define a task to run periodically
+
+Action: append
+
+Type: str
+
+---
+
+### gesture_threshold
+
+Threshold in pixels for mouse gestures
+
+Default: 33
+
+Type: str
+
+---
+
+### scroll_lines
+
+How many lines to scroll the output
+
+Default: 1
+
+Type: int
+
+---
+
+### auto_name_length
+
+Max char length for auto tab names
+
+Default: 35
+
+Type: int
+
+---
+
+### old_tabs_minutes
+
+Consider a tab old after these minutes (using last modified date)
+
+Default: 30
+
+Type: int
+
+---
+
+### max_list_items
+
+Max number of items in context menu lists
+
+Default: 10
+
+Type: int
+
+---
+
+### list_item_width
+
+Max characters for the text of list items
+
+Default: 100
+
+Type: int
+
+---
+
+### drag_threshold
+
+The higher the number the less sensitive the tab dragging will be
+
+Default: 88
+
+Type: int
+
+---
+
+### delay
+
+Delay in seconds between each print when streaming
+
+Default: 0.1
+
+Type: float
+
+---
+
+### prefix
+
+Character used to prefix commands like /
+
+Default: "/"
+
+Type: str
+
+---
+
+### andchar
+
+Character used to join commands like &
+
+Default: "&"
+
+Type: str
+
+---
+
+### system_threshold
+
+Show system monitors as critical after this percentage threshold
+
+Default: 70
+
+Type: int
+
+---
+
+### system_delay
+
+Delay in seconds for system monitor updates
+
+Default: 3
+
+Type: int
+
+---
+
+### autorun
+
+Run this command at startup
+
+Default: ""
+
+Type: str
+
+---
+
+### input_memory_min
+
+Minimum number of characters for input words to be remembered
+
+Default: 4
+
+Type: int
+
+---
+
+### listener_delay
+
+Delay for the listener checks
+
+Default: 0.5
+
+Type: float
+
+---
+
+### commandoc
+
+Make the commandoc and save it on this path
+
+Default: "commands.md"
+
+Type: str
+
+---
+
+### argumentdoc
+
+Make the argument and save it on this path
+
+Default: "arguments.md"
+
+Type: str
+
+---
+
+### after_stream
+
+Execute this command after streaming a response
+
+Default: ""
+
+Type: str
+
+---
+
+### markdown
+
+Define where to apply markdown formatting
+
+Default: "ai"
+
+Choices: user, ai, all, none
+
+Type: str
+
+---
+
+### browser
+
+Open links with this browser
+
+Default: ""
+
+Type: str
+
+---
+
+### font_diff
+
+Add or subtract this from font sizes
+
+Default: 0
+
+Type: int
+
+---
+
+### task_manager
+
+Which task manager to use
+
+Default: "auto"
+
+Type: str
+
+---
+
+### task_manager_gpu
+
+Which task manager to use on the gpu monitors
+
+Default: "auto"
+
+Type: str
+
+---
+
+### terminal
+
+Which terminal to use
+
+Default: "auto"
+
+Type: str
 
 ---
 
 ### progtext
 
-The program to use by default when using the `progtext` command.
+Use this program as default for the progtext command
 
-Else you need to specify the program in the command.
+Default: ""
+
+Type: str
 
 ---
 
 ### progjson
 
-The program to use by default when using the `progjson` command.
+Use this program as default for the progjson command
 
-Else you need to specify the program in the command.
+Default: ""
+
+Type: str
 
 ---
 
 ### program
 
-The program to use by default when using the `progtext` or `progjson` commands.
+Use this program as default for the progtext and progjson commands
 
-Else you need to specify the program in the commands.
+Default: ""
 
----
-
-### no-gestures
-
-Don't enable mouse gestures.
-
-Gestures are mouse actions you can do in the output.
-
-For example if you press right click, then drag a bit to the left or right, and release.
-
-If you drag enough it will either switch to the left tab, or the right tab.
-
-If you drag up or down it will perform scroll actions.
-
-Middle click can also be used for mouse gestures.
+Type: str
 
 ---
 
-### gesture-threshold
+### user_color
 
-Default: 33
-
-The threshold in pixels for mouse gestures.
-
-A lower number means it's more sensitive.
-
-A higher number means you need to drag more to trigger the actions.
-
----
-
-### no-increment-logs
-
-Always use the file name, don't increment with numbers.
-
-For example save `stuff.txt` always instead of `stuff_1.txt`, `stuff_2.txt` etc.
-
----
-
-### no-confirm-urls
-
-Don't show the confirm dialog when opening URLs.
-
----
-
-### no-confirm-search
-
-Don't show the confirm dialog when searching words.
-
----
-
-### no-confirm-close
-
-Don't show the confirm dialog when closing tabs.
-
----
-
-### no-confirm-clear
-
-Don't show the confirm dialog when clearing conversations.
-
----
-
-### no-fill-prompt
-
-Don't fill the text input prompt in some cases when empty.
-
-For example if in image mode, if the text is empty
-
-it is automatically filled with "Describe this image".
-
-This disables that behavior.
-
----
-
-### scroll-lines
-
-Default: 1
-
-How many lines to scroll the output.
-
----
-
-### user-color
+The color of the text for the name of the user
 
 Default: "auto"
 
-The color of the name of the user.
+Type: str
 
 ---
 
-### ai-color
+### ai_color
+
+The color of the text for the name of the AI
 
 Default: "auto"
 
-The color of the name of the AI.
+Type: str
 
 ---
 
-### confirm-exit
+### snippets_font
 
-Show a confirm exit dialog.
-
----
-
-### no-keywords
-
-Don't do keyword replacements like `((now))` or `((noun))`.
-
----
-
-### snippets-font
+The font to use in snippets
 
 Default: "monospace"
 
-The font to use on snippets.
+Type: str
 
 ---
 
-### no-prevnext
+### emoji_unloaded
 
-Don't show the Prev and Next buttons.
+Emoji to show when a model is not loaded
 
----
+Default: "👻"
 
-### short-labels
-
-Use the short form for labels.
-
-For example `F` instead of `Format`.
-
-This is to make the interface more compact.
+Type: str
 
 ---
 
-### no-labels
+### emoji_local
 
-Don't show the labels at all.
+Emoji to show when a model is loaded locally
 
----
+Default: "✅"
 
-### short-buttons
-
-Like short-labels but for buttons.
+Type: str
 
 ---
 
-### no-syntax-highlighting
+### emoji_remote
 
-Don't apply syntax highlighting to snippets
+Emoji to show when a model is loaded remotely
 
----
+Default: "🌐"
 
-### emoji-unloaded
-
-Default: 👻
-
-Emoji when a model is unloaded.
+Type: str
 
 ---
 
-### emoji-local
+### emoji_loading
 
-Default: ✅
+Emoji to show when loading a model
 
-Emoji when a model is local.
+Default: "⏰"
 
----
-
-### emoji-remote
-
-Default: 🌐
-
-Emoji when a model is remote.
+Type: str
 
 ---
 
-### emoji-loading
+### emoji_storage
 
-Default: ⏰
+Emoji to show when saving a log
 
-Emoji when a model is loading.
+Default: "💾"
 
----
-
-### emoji-storage
-
-Default: 💾
-
-Emoji for storage operations.
+Type: str
 
 ---
 
-### name-mode
+### name_mode
+
+What mode to use when naming new tabs
 
 Default: "random"
 
-Choices: ["random", "noun", "empty"]
+Choices: random, noun, empty
 
-How to name tabs when creating them.
-
-Random = Random made up word
-
-Noun = Random noun
-
-Empty = "Tab"
-
----
-
-### no-auto-name
-
-Tabs get auto-named with the input of the first prompt.
-
-This disables that.
-
----
-
-### auto-name-length
-
-Default: 35
-
-Max char length for auto-named tabs.
-
----
-
-### no-tab-double-click
-
-Don't open new tabs when double clicking tabs or empty tab area.
+Type: str

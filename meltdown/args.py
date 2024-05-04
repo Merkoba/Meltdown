@@ -91,6 +91,7 @@ class Args:
         self.listener_delay = 0.5
         self.sticky = False
         self.commandoc = ""
+        self.argumentdoc = ""
         self.after_stream = ""
         self.clean_slate = True
         self.tabs_always = False
@@ -539,6 +540,10 @@ class Args:
                 "type": str,
                 "help": "Make the commandoc and save it on this path",
             },
+            "argumentdoc": {
+                "type": str,
+                "help": "Make the argument and save it on this path",
+            },
             "after_stream": {
                 "type": str,
                 "help": "Execute this command after streaming a response",
@@ -726,6 +731,7 @@ class Args:
             "listener_delay",
             "sticky",
             "commandoc",
+            "argumentdoc",
             "after_stream",
             "tabs_always",
             "input_memory_min",
@@ -827,6 +833,72 @@ class Args:
             text.append(f"{key}{extra} = {msg}")
 
         display.print("\n".join(text), tab_id=tab_id)
+
+    def make_argumentdoc(self, pathstr: str) -> None:
+        from .utils import utils
+        from .display import display
+        from pathlib import Path
+
+        path = Path(pathstr)
+
+        if (not path.parent.exists()) or (not path.parent.is_dir()):
+            utils.msg(f"Invalid path: {pathstr}")
+            return
+
+        sep = "\n\n---\n\n"
+
+        text = "## Arguments\n\n"
+
+        text += "Here are all the available command line arguments:"
+
+        for key in self.Internal.arguments:
+            if key == "string_arg":
+                continue
+
+            arg = self.Internal.arguments[key]
+            text += sep
+            text += f"### {key}"
+
+            info = arg.get("help")
+
+            if info:
+                text += "\n\n"
+                text += info
+
+            if hasattr(self, key):
+                defvalue = getattr(self, key)
+
+                if type(defvalue) == str:
+                    defvalue = f'"{defvalue}"'
+
+                text += "\n\n"
+                text += f"Default: {defvalue}"
+
+            choices = arg.get("choices", [])
+
+            if choices:
+                text += "\n\n"
+                text += "Choices: "
+                text += ", ".join(choices)
+
+            action = arg.get("action", "")
+
+            if action:
+                text += "\n\n"
+                text += f"Action: {action}"
+
+            argtype = arg.get("type", "")
+
+            if argtype:
+                text += "\n\n"
+                text += f"Type: {argtype.__name__}"
+
+        with path.open("w", encoding="utf-8") as file:
+            file.write(text)
+
+        msg = f"Saved to {path}"
+        display.print(msg)
+        utils.msg(msg)
 
 
 args = Args()

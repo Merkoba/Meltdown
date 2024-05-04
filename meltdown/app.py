@@ -580,8 +580,17 @@ class App:
         from .args import args
         from .commands import commands
 
+        exit = False
+
         if args.commandoc:
             commands.run("commandoc", args.commandoc)
+            exit = True
+
+        if args.argumentdoc:
+            commands.run("argumentdoc", args.argumentdoc)
+            exit = True
+
+        if exit:
             sys.exit(0)
 
     def do_checks(self) -> None:

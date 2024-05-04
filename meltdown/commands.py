@@ -478,6 +478,12 @@ class Commands:
                 "type": str,
                 "arg_req": True,
             },
+            "argumentdoc": {
+                "help": "Make a file with all the arguments",
+                "action": lambda a=None: args.make_argumentdoc(a),
+                "type": str,
+                "arg_req": True,
+            },
             "active": {
                 "help": "Go to the tab that is currently streaming",
                 "action": lambda a=None: display.select_active_tab(),
@@ -597,7 +603,7 @@ class Commands:
 
         arg_req = item.get("arg_req")
 
-        if arg_req and (argument is None):
+        if arg_req and (argument in [None, ""]):
             return
 
         argtype = item.get("type")
@@ -776,10 +782,9 @@ class Commands:
 
         for key in self.commands:
             cmd = self.commands[key]
-            info = cmd["help"]
             text += sep
             text += f"### {key}\n\n"
-            text += info
+            text += cmd["help"]
 
         with path.open("w", encoding="utf-8") as file:
             file.write(text)

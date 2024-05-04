@@ -504,6 +504,12 @@ Make a file with all the commands
 
 ---
 
+### argumentdoc
+
+Make a file with all the arguments
+
+---
+
 ### active
 
 Go to the tab that is currently streaming
