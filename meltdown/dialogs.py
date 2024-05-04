@@ -102,7 +102,11 @@ class Dialog:
         dialog = Dialog(text, top_frame=True)
 
         entry = EntryBox(
-            dialog.top_frame, font=app.theme.font(), width=20, justify="center"
+            dialog.top_frame,
+            font=app.theme.font(),
+            width=20,
+            justify="center",
+            style="Dialog.TEntry",
         )
 
         def ok() -> None:

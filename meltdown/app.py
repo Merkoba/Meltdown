@@ -7,7 +7,6 @@ import tempfile
 import platform
 import urllib.parse
 import tkinter as tk
-from tkinter import ttk
 from pathlib import Path
 from typing import List, Any, Optional
 
@@ -58,6 +57,7 @@ class App:
 
     def on_frame_configure(self) -> None:
         self.clear_geometry_after()
+
         self.check_geometry_after = self.root.after(
             self.geometry_delay, lambda: self.on_geometry_change()
         )
@@ -66,161 +66,6 @@ class App:
         self.icon_path = Path(self.here, "icon.png")
         self.root.iconphoto(False, tk.PhotoImage(file=self.icon_path))
         self.image_path = Path(self.here, "image.jpg")
-
-    def set_style(self) -> None:
-        style = ttk.Style()
-        self.root.configure(background=self.theme.background_color)
-        self.main_frame.configure(background=self.theme.background_color)
-
-        # padding=[left, top, right, bottom])
-
-        style.configure("Normal.TCombobox", foreground=self.theme.combobox_foreground)
-
-        style.map(
-            "Normal.TCombobox",
-            fieldbackground=[("readonly", self.theme.combobox_background)],
-            fieldforeground=[("readonly", self.theme.combobox_foreground)],
-        )
-
-        style.map(
-            "Normal.TCombobox",
-            selectbackground=[("readonly", "transparent")],
-            selectforeground=[("readonly", self.theme.combobox_foreground)],
-        )
-
-        style.layout(
-            "Normal.TCombobox",
-            [
-                (
-                    "Combobox.field",
-                    {
-                        "children": [
-                            (
-                                "Combobox.padding",
-                                {
-                                    "children": [
-                                        ("Combobox.textarea", {"sticky": "nswe"})
-                                    ]
-                                },
-                            )
-                        ]
-                    },
-                ),
-            ],
-        )
-
-        style.layout(
-            "Disabled.TCombobox",
-            [
-                (
-                    "Combobox.field",
-                    {
-                        "children": [
-                            (
-                                "Combobox.padding",
-                                {
-                                    "children": [
-                                        ("Combobox.textarea", {"sticky": "nswe"})
-                                    ]
-                                },
-                            )
-                        ]
-                    },
-                ),
-            ],
-        )
-
-        style.configure(
-            "Normal.TCombobox", borderwidth=self.theme.combobox_border_width
-        )
-        style.configure("Normal.TCombobox.Listbox", padding=0)
-        style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
-        self.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
-
-        style.map(
-            "Disabled.TCombobox",
-            fieldbackground=[("readonly", self.theme.combobox_background)],
-            fieldforeground=[("readonly", self.theme.combobox_foreground)],
-        )
-
-        style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
-        style.configure(
-            "Disabled.TCombobox", borderwidth=self.theme.combobox_border_width
-        )
-
-        style.configure("Normal.TEntry", fieldbackground=self.theme.entry_background)
-        style.configure("Normal.TEntry", foreground=self.theme.entry_foreground)
-        style.configure("Normal.TEntry", borderwidth=self.theme.entry_border_width)
-        style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
-        style.configure("Normal.TEntry", insertcolor=self.theme.entry_insert)
-
-        style.configure(
-            "Normal.TEntry", selectbackground=self.theme.entry_selection_background
-        )
-
-        style.configure(
-            "Normal.TEntry", selectforeground=self.theme.entry_selection_foreground
-        )
-
-        style.configure(
-            "Normal.Vertical.TScrollbar",
-            gripcount=0,
-            background=self.theme.scrollbar_2,
-            troughcolor=self.theme.scrollbar_1,
-            borderwidth=0,
-        )
-
-        style.map(
-            "Normal.Vertical.TScrollbar",
-            background=[("disabled", self.theme.scrollbar_1)],
-            troughcolor=[("disabled", self.theme.scrollbar_1)],
-            borderwidth=[("disabled", 0)],
-        )
-
-        style.configure(
-            "Normal.Horizontal.TScrollbar",
-            gripcount=0,
-            background=self.theme.scrollbar_2,
-            troughcolor=self.theme.scrollbar_1,
-            borderwidth=0,
-        )
-
-        style.map(
-            "Normal.Horizontal.TScrollbar",
-            background=[("disabled", self.theme.scrollbar_1)],
-            troughcolor=[("disabled", self.theme.scrollbar_1)],
-            borderwidth=[("disabled", 0)],
-        )
-
-        style.configure(
-            "Dialog.Vertical.TScrollbar",
-            gripcount=0,
-            background=self.theme.scrollbar_dialog_2,
-            troughcolor=self.theme.scrollbar_dialog_1,
-            borderwidth=0,
-        )
-
-        style.map(
-            "Dialog.Vertical.TScrollbar",
-            background=[("disabled", self.theme.scrollbar_dialog_1)],
-            troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
-            borderwidth=[("disabled", 0)],
-        )
-
-        style.configure(
-            "Dialog.Horizontal.TScrollbar",
-            gripcount=0,
-            background=self.theme.scrollbar_dialog_2,
-            troughcolor=self.theme.scrollbar_dialog_1,
-            borderwidth=0,
-        )
-
-        style.map(
-            "Dialog.Horizontal.TScrollbar",
-            background=[("disabled", self.theme.scrollbar_dialog_1)],
-            troughcolor=[("disabled", self.theme.scrollbar_dialog_1)],
-            borderwidth=[("disabled", 0)],
-        )
 
     def setup(self) -> None:
         self.check_commandoc()
@@ -595,7 +440,6 @@ class App:
         self.main_frame.bind("<Configure>", lambda e: self.on_frame_configure())
 
         self.set_theme()
-        self.set_style()
         self.set_geometry()
         self.show_window()
 
@@ -619,6 +463,8 @@ class App:
             self.theme = HighContrastTheme()
         else:
             self.theme = DarkTheme()
+
+        self.theme.set_style()
 
     def pick_theme(self) -> None:
         from .config import config

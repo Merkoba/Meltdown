@@ -28,6 +28,9 @@ class TextBox(tk.Text):
         self.configure(font=app.theme.font("textbox"))
         self.configure(width=30, height=5)
         self.configure(highlightthickness=0)
+        self.configure(background=app.theme.textbox_background)
+        self.configure(foreground=app.theme.textbox_foreground)
+        self.configure(insertbackground=app.theme.textbox_insert)
 
         scrollbar_y = ttk.Scrollbar(
             dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"

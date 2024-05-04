@@ -40,8 +40,8 @@ class Page:
         inner.pack(
             expand=True,
             fill="both",
-            padx=app.theme.tab_border_with,
-            pady=app.theme.tab_border_with,
+            padx=app.theme.tab_border_width,
+            pady=app.theme.tab_border_width,
         )
 
         label = tk.Label(inner, text=text, font=app.theme.font("tab"))

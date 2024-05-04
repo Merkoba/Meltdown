@@ -1,4 +1,5 @@
 # Standard
+from tkinter import ttk
 from typing import Tuple
 
 # Modules
@@ -56,7 +57,18 @@ class Theme:
         self.entry_foreground = "white"
         self.entry_placeholder_color = "#494D62"
         self.entry_insert = "white"
+        self.entry_selection_background = "#C3C3C3"
+        self.entry_selection_foreground = "black"
+        self.entry_width = 10
+        self.entry_width_small = 6
         self.entry_border_width = 0
+
+        self.entry_background_dialog = "white"
+        self.entry_foreground_dialog = "black"
+        self.entry_insert_dialog = "black"
+        self.entry_selection_background_dialog = "#494D62"
+        self.entry_selection_foreground_dialog = "white"
+        self.entry_border_width_dialog = 0
 
         self.separator_color = "#2B303B"
 
@@ -100,16 +112,13 @@ class Theme:
         self.menu_border_width = 3
         self.menu_canvas_background = "#6A7B83"
 
-        self.entry_selection_background = "#C3C3C3"
-        self.entry_selection_foreground = "black"
-
         self.tab_normal_background = "#2B303B"
         self.tab_normal_foreground = "#C9C9C9"
         self.tab_selected_background = "#494D62"
         self.tab_selected_foreground = "white"
         self.tab_border = "#6A7B83"
-        self.tab_border_with = 1
         self.tabs_container_color = "#2B303B"
+        self.tab_border_width = 1
         self.tab_padx = 20
         self.tab_pady = 1
 
@@ -131,9 +140,6 @@ class Theme:
         self.frame_padx = 0
         self.frame_pady = 0
 
-        self.entry_width = 10
-        self.entry_width_small = 6
-
         self.combobox_width = 11
         self.combobox_width_small = 7
 
@@ -141,6 +147,10 @@ class Theme:
         self.find_match_background = "#C3C3C3"
         self.find_match_foreground = "black"
         self.find_entry_width = 12
+
+        self.textbox_background = "white"
+        self.textbox_foreground = "black"
+        self.textbox_insert = "black"
 
     def get_font_family(self) -> str:
         if config.font_family == "monospace":
@@ -205,3 +215,172 @@ class Theme:
             return (fam, self.font_textbox + diff, "normal")
 
         return (fam, self.font_size + diff, "normal")
+
+    def set_style(self) -> None:
+        from .app import app
+
+        style = ttk.Style()
+        app.root.configure(background=self.background_color)
+        app.main_frame.configure(background=self.background_color)
+
+        # padding=[left, top, right, bottom])
+
+        style.configure("Normal.TCombobox", foreground=self.combobox_foreground)
+
+        style.map(
+            "Normal.TCombobox",
+            fieldbackground=[("readonly", self.combobox_background)],
+            fieldforeground=[("readonly", self.combobox_foreground)],
+        )
+
+        style.map(
+            "Normal.TCombobox",
+            selectbackground=[("readonly", "transparent")],
+            selectforeground=[("readonly", self.combobox_foreground)],
+        )
+
+        style.layout(
+            "Normal.TCombobox",
+            [
+                (
+                    "Combobox.field",
+                    {
+                        "children": [
+                            (
+                                "Combobox.padding",
+                                {
+                                    "children": [
+                                        ("Combobox.textarea", {"sticky": "nswe"})
+                                    ]
+                                },
+                            )
+                        ]
+                    },
+                ),
+            ],
+        )
+
+        style.layout(
+            "Disabled.TCombobox",
+            [
+                (
+                    "Combobox.field",
+                    {
+                        "children": [
+                            (
+                                "Combobox.padding",
+                                {
+                                    "children": [
+                                        ("Combobox.textarea", {"sticky": "nswe"})
+                                    ]
+                                },
+                            )
+                        ]
+                    },
+                ),
+            ],
+        )
+
+        style.configure("Normal.TCombobox", borderwidth=self.combobox_border_width)
+
+        style.configure("Normal.TCombobox.Listbox", padding=0)
+        style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
+        app.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
+
+        style.map(
+            "Disabled.TCombobox",
+            fieldbackground=[("readonly", self.combobox_background)],
+            fieldforeground=[("readonly", self.combobox_foreground)],
+        )
+
+        style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
+
+        style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
+
+        style.configure("Normal.TEntry", fieldbackground=self.entry_background)
+        style.configure("Normal.TEntry", foreground=self.entry_foreground)
+        style.configure("Normal.TEntry", borderwidth=self.entry_border_width)
+        style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
+        style.configure("Normal.TEntry", insertcolor=self.entry_insert)
+
+        style.configure(
+            "Normal.TEntry", selectbackground=self.entry_selection_background
+        )
+
+        style.configure(
+            "Normal.TEntry", selectforeground=self.entry_selection_foreground
+        )
+
+        style.configure("Dialog.TEntry", fieldbackground=self.entry_background_dialog)
+        style.configure("Dialog.TEntry", foreground=self.entry_foreground_dialog)
+        style.configure("Dialog.TEntry", borderwidth=self.entry_border_width_dialog)
+        style.configure("Dialog.TEntry", padding=[4, 0, 0, 0])
+        style.configure("Dialog.TEntry", insertcolor=self.entry_insert_dialog)
+
+        style.configure(
+            "Dialog.TEntry", selectbackground=self.entry_selection_background_dialog
+        )
+
+        style.configure(
+            "Dialog.TEntry", selectforeground=self.entry_selection_foreground_dialog
+        )
+
+        style.configure(
+            "Normal.Vertical.TScrollbar",
+            gripcount=0,
+            background=self.scrollbar_2,
+            troughcolor=self.scrollbar_1,
+            borderwidth=0,
+        )
+
+        style.map(
+            "Normal.Vertical.TScrollbar",
+            background=[("disabled", self.scrollbar_1)],
+            troughcolor=[("disabled", self.scrollbar_1)],
+            borderwidth=[("disabled", 0)],
+        )
+
+        style.configure(
+            "Normal.Horizontal.TScrollbar",
+            gripcount=0,
+            background=self.scrollbar_2,
+            troughcolor=self.scrollbar_1,
+            borderwidth=0,
+        )
+
+        style.map(
+            "Normal.Horizontal.TScrollbar",
+            background=[("disabled", self.scrollbar_1)],
+            troughcolor=[("disabled", self.scrollbar_1)],
+            borderwidth=[("disabled", 0)],
+        )
+
+        style.configure(
+            "Dialog.Vertical.TScrollbar",
+            gripcount=0,
+            background=self.scrollbar_dialog_2,
+            troughcolor=self.scrollbar_dialog_1,
+            borderwidth=0,
+        )
+
+        style.map(
+            "Dialog.Vertical.TScrollbar",
+            background=[("disabled", self.scrollbar_dialog_1)],
+            troughcolor=[("disabled", self.scrollbar_dialog_1)],
+            borderwidth=[("disabled", 0)],
+        )
+
+        style.configure(
+            "Dialog.Horizontal.TScrollbar",
+            gripcount=0,
+            background=self.scrollbar_dialog_2,
+            troughcolor=self.scrollbar_dialog_1,
+            borderwidth=0,
+        )
+
+        style.map(
+            "Dialog.Horizontal.TScrollbar",
+            background=[("disabled", self.scrollbar_dialog_1)],
+            troughcolor=[("disabled", self.scrollbar_dialog_1)],
+            borderwidth=[("disabled", 0)],
+        )

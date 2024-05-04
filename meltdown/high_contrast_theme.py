@@ -17,6 +17,13 @@ class HighContrastTheme(Theme):
         self.entry_insert = "white"
         self.entry_border_width = 1
 
+        self.entry_background_dialog = "black"
+        self.entry_foreground_dialog = "white"
+        self.entry_insert_dialog = "white"
+        self.entry_selection_background_dialog = "white"
+        self.entry_selection_foreground_dialog = "black"
+        self.entry_border_width_dialog = 1
+
         self.combobox_background = "black"
         self.combobox_foreground = "white"
         self.combobox_border_width = 1
@@ -60,3 +67,18 @@ class HighContrastTheme(Theme):
 
         self.snippet_selection_background = "#C3C3C3"
         self.snippet_selection_foreground = "black"
+
+        self.menu_background = "black"
+        self.menu_foreground = "white"
+        self.menu_hover_background = "white"
+        self.menu_hover_foreground = "black"
+        self.menu_disabled_background = "black"
+        self.menu_disabled_foreground = "white"
+        self.menu_border = "white"
+        self.menu_canvas_background = "black"
+
+        self.separator_color = "white"
+
+        self.textbox_background = "black"
+        self.textbox_foreground = "white"
+        self.textbox_insert = "white"
