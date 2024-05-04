@@ -466,7 +466,7 @@ Action: store_true
 
 Allow opening multiple instances
 
-Default: True
+Default: False
 
 Action: store_true
 
@@ -1106,7 +1106,7 @@ Type: float
 
 Make the commandoc and save it on this path
 
-Default: "commands.md"
+Default: ""
 
 Type: str
 
@@ -1116,7 +1116,7 @@ Type: str
 
 Make the argument and save it on this path
 
-Default: "arguments.md"
+Default: ""
 
 Type: str
 

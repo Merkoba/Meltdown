@@ -155,6 +155,7 @@ class Args:
         title: ClassVar[str] = app.manifest["title"]
         version: ClassVar[str] = app.manifest["version"]
         vinfo: ClassVar[str] = f"{title} {version}"
+        defaults: ClassVar[Dict[str, Any]] = {}
 
         arguments: ClassVar[Dict[str, Any]] = {
             "version": {
@@ -615,6 +616,11 @@ class Args:
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], self.Internal.arguments, self)
 
+        self.fill_functions()
+
+        for attr_name, attr_value in vars(self).items():
+            self.Internal.defaults[attr_name] = attr_value
+
         other_name = [
             ("alias", "aliases"),
             ("task", "tasks"),
@@ -776,7 +782,6 @@ class Args:
             if string_arg:
                 self.input = string_arg
 
-        self.fill_functions()
         self.parser = ap.parser
 
     def fill_functions(self) -> None:
@@ -865,9 +870,9 @@ class Args:
                 text += "\n\n"
                 text += info
 
-            if hasattr(self, key):
-                defvalue = getattr(self, key)
+            defvalue = self.Internal.defaults.get(key)
 
+            if defvalue is not None:
                 if type(defvalue) == str:
                     defvalue = f'"{defvalue}"'
 
