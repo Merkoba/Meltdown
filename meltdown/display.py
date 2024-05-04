@@ -1,7 +1,5 @@
 # Standard
 import re
-import random
-import string
 import tkinter as tk
 from typing import List, Dict, Any
 from typing import Optional
@@ -78,7 +76,7 @@ class Display:
         from .session import session
 
         if not name:
-            name = self.random_tab_name()
+            name = utils.random_word()
 
         if not conversation_id:
             conv_id = "ignore" if mode == "ignore" else ""
@@ -596,19 +594,6 @@ class Display:
 
         session.remove(tab.conversation_id)
         del self.tabs[tab_id]
-
-    def random_tab_name(self) -> str:
-        vowels = "aeiou"
-        consonants = "".join(set(string.ascii_lowercase) - set(vowels))
-
-        def con() -> str:
-            return random.choice(consonants)
-
-        def vow() -> str:
-            return random.choice(vowels)
-
-        name = con() + vow() + con() + vow() + con() + vow()
-        return name.capitalize()
 
     def check_scroll_buttons(self, tab_id: Optional[str] = None) -> None:
         from .widgets import widgets

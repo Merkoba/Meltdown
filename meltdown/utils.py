@@ -2,6 +2,7 @@
 import re
 import time
 import random
+import string
 import logging
 import inspect
 import tkinter as tk
@@ -139,6 +140,19 @@ class Utils:
 
     def padnum(self, num: int) -> str:
         return str(num).zfill(3)
+
+    def random_word(self) -> str:
+        vowels = "aeiou"
+        consonants = "".join(set(string.ascii_lowercase) - set(vowels))
+
+        def con() -> str:
+            return random.choice(consonants)
+
+        def vow() -> str:
+            return random.choice(vowels)
+
+        name = con() + vow() + con() + vow() + con() + vow()
+        return name.capitalize()
 
     def random_noun(self) -> str:
         from .paths import paths
