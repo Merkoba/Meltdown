@@ -766,8 +766,9 @@ class Display:
         if text:
             tab.output.insert_text(text)
 
-        if (who == "user") and original and (not self.has_messages(tab_id)):
-            self.auto_name_tab(tab_id, original)
+        if args.auto_name and (who == "user") and original:
+            if not self.has_messages(tab_id):
+                self.auto_name_tab(tab_id, original)
 
         tab.modified = True
 
