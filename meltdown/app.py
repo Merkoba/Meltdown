@@ -467,20 +467,9 @@ class App:
         self.theme.setup()
 
     def pick_theme(self) -> None:
-        from .config import config
-        from .dialogs import Dialog
-        from .menus import Menu
-        from .widgets import widgets
+        from .menumanager import theme_menu
 
-        def action(new_theme: str) -> None:
-            config.set("theme", new_theme)
-            Dialog.show_message("Theme will change after restarting the program")
-
-        menu = Menu()
-        menu.add("Dark", lambda e: action("dark"))
-        menu.add("Light", lambda e: action("light"))
-        menu.add("High Contrast", lambda e: action("high_contrast"))
-        menu.show(widget=widgets.main_menu_button)
+        theme_menu.show()
 
     def setup_binds(self) -> None:
         self.main_frame.bind("<Button-1>", lambda e: self.on_frame_click())

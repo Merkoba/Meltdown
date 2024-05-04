@@ -16,22 +16,31 @@ class MainMenu:
 
         self.menu = Menu()
 
-        self.menu.add(text="System", command=lambda e: widgets.write_system_prompt())
+        self.menu.add("System", lambda e: widgets.write_system_prompt())
 
         self.menu.separator()
-        self.menu.add(text="Configs", command=lambda e: config.menu())
-        self.menu.add(text="Sessions", command=lambda e: session.menu())
-        self.menu.add(text="Logs", command=lambda e: logs.menu())
+
+        self.menu.add("Configs", lambda e: config.menu())
+        self.menu.add("Sessions", lambda e: session.menu())
+        self.menu.add("Logs", lambda e: logs.menu())
+
         self.menu.separator()
-        self.menu.add(text="Commands", command=lambda e: commands.show_palette())
+
+        self.menu.add("Commands", lambda e: commands.show_palette())
+
         self.menu.separator()
-        self.menu.add(text="Compact", command=lambda e: app.toggle_compact())
-        self.menu.add(text="Resize", command=lambda e: app.resize())
+
+        self.menu.add("Compact", lambda e: app.toggle_compact())
+        self.menu.add("Resize", lambda e: app.resize())
+
         self.menu.separator()
-        self.menu.add(text="Theme", command=lambda e: app.pick_theme())
-        self.menu.add(text="About", command=lambda e: app.show_about())
+
+        self.menu.add("Theme", lambda e: app.pick_theme())
+        self.menu.add("About", lambda e: app.show_about())
+
         self.menu.separator()
-        self.menu.add(text="Exit", command=lambda e: app.exit())
+
+        self.menu.add("Exit", lambda e: app.exit())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -49,14 +58,10 @@ class ModelMenu:
         from .widgets import widgets
 
         self.menu = Menu()
-
-        self.menu.add(
-            text="Recent Models", command=lambda e: widgets.show_recent_models()
-        )
-
-        self.menu.add(text="Browse Models", command=lambda e: widgets.browse_models())
-        self.menu.add(text="Use GPT Model", command=lambda e: gpt_menu.show())
-        self.menu.add(text="Set API Key", command=lambda e: model.set_api_key())
+        self.menu.add("Recent Models", lambda e: widgets.show_recent_models())
+        self.menu.add("Browse Models", lambda e: widgets.browse_models())
+        self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
+        self.menu.add("Set API Key", lambda e: model.set_api_key())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -76,9 +81,7 @@ class GPTMenu:
         self.menu = Menu()
 
         for gpt in model.gpts:
-            self.menu.add(
-                text=gpt[1], command=lambda e, gpt=gpt: widgets.use_gpt(gpt[0])
-            )
+            self.menu.add(gpt[1], lambda e, gpt=gpt: widgets.use_gpt(gpt[0]))
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -95,16 +98,23 @@ class MoreMenu:
         from .display import display
 
         self.menu = Menu()
-        self.menu.add(text="Find", command=lambda e: display.find())
-        self.menu.add(text="Find All", command=lambda e: display.find_all())
+
+        self.menu.add("Find", lambda e: display.find())
+        self.menu.add("Find All", lambda e: display.find_all())
+
         self.menu.separator()
-        self.menu.add(text="Copy All", command=lambda e: display.copy_output())
-        self.menu.add(text="Select All", command=lambda e: display.select_output())
+
+        self.menu.add("Copy All", lambda e: display.copy_output())
+        self.menu.add("Select All", lambda e: display.select_output())
+
         self.menu.separator()
-        self.menu.add(text="View Text", command=lambda e: display.view_text())
-        self.menu.add(text="View JSON", command=lambda e: display.view_json())
+
+        self.menu.add("View Text", lambda e: display.view_text())
+        self.menu.add("View JSON", lambda e: display.view_json())
+
         self.menu.separator()
-        self.menu.add(text="Font", command=lambda e: font_menu.show())
+
+        self.menu.add("Font", lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -121,35 +131,33 @@ class TabMenu:
         from .display import display
 
         self.menu_single = Menu()
-        self.menu_single.add(text="Rename", command=lambda e: display.rename_tab())
-        self.menu_single.add(text="Move", command=lambda e: display.move_tab())
-        self.menu_single.add(text="Close", command=lambda e: display.tab_menu_close())
+        self.menu_single.add("Rename", lambda e: display.rename_tab())
+        self.menu_single.add("Move", lambda e: display.move_tab())
+        self.menu_single.add("Close", lambda e: display.tab_menu_close())
 
         self.menu_multi = Menu()
-        self.menu_multi.add(text="Tab List", command=lambda e: display.show_tab_list(e))
-        self.menu_multi.separator()
-        self.menu_multi.add(text="Tab Left", command=lambda e: display.tab_left())
-        self.menu_multi.add(text="Tab Right", command=lambda e: display.tab_right())
-        self.menu_multi.separator()
 
-        self.menu_multi.add(
-            text="First Tab", command=lambda e: display.select_first_tab()
-        )
-
-        self.menu_multi.add(
-            text="Last Tab", command=lambda e: display.select_last_tab()
-        )
+        self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
 
         self.menu_multi.separator()
 
-        self.menu_multi.add(
-            text="Active Tab", command=lambda e: display.select_active_tab()
-        )
+        self.menu_multi.add("Tab Left", lambda e: display.tab_left())
+        self.menu_multi.add("Tab Right", lambda e: display.tab_right())
 
         self.menu_multi.separator()
-        self.menu_multi.add(text="Rename", command=lambda e: display.rename_tab())
-        self.menu_multi.add(text="Move", command=lambda e: display.move_tab())
-        self.menu_multi.add(text="Close", command=lambda e: display.tab_menu_close())
+
+        self.menu_multi.add("First Tab", lambda e: display.select_first_tab())
+        self.menu_multi.add("Last Tab", lambda e: display.select_last_tab())
+
+        self.menu_multi.separator()
+
+        self.menu_multi.add("Active Tab", lambda e: display.select_active_tab())
+
+        self.menu_multi.separator()
+
+        self.menu_multi.add("Rename", lambda e: display.rename_tab())
+        self.menu_multi.add("Move", lambda e: display.move_tab())
+        self.menu_multi.add("Close", lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None, mode: str = "normal") -> None:
         from .display import display
@@ -187,12 +195,12 @@ class FontMenu:
             Dialog.show_input("Set Font Size", lambda a: action(a))
 
         self.menu = Menu()
-        self.menu.add(text="Set Font", command=lambda e: set_font())
-        self.menu.add(text="Bigger Font", command=lambda e: display.increase_font())
-        self.menu.add(text="Smaller Font", command=lambda e: display.decrease_font())
-        self.menu.add(text="Font Family", command=lambda e: font_family_menu.show())
+        self.menu.add("Set Font", lambda e: set_font())
+        self.menu.add("Bigger Font", lambda e: display.increase_font())
+        self.menu.add("Smaller Font", lambda e: display.decrease_font())
+        self.menu.add("Font Family", lambda e: font_family_menu.show())
         self.menu.separator()
-        self.menu.add(text="Reset Font", command=lambda e: display.reset_font())
+        self.menu.add("Reset Font", lambda e: display.reset_font())
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -209,16 +217,9 @@ class FontFamilyMenu:
         from .display import display
 
         self.menu = Menu()
-
-        self.menu.add(text="Serif", command=lambda e: display.set_font_family("serif"))
-
-        self.menu.add(
-            text="Sans-Serif", command=lambda e: display.set_font_family("sans-serif")
-        )
-
-        self.menu.add(
-            text="Monospace", command=lambda e: display.set_font_family("monospace")
-        )
+        self.menu.add("Serif", lambda e: display.set_font_family("serif"))
+        self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
+        self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets
@@ -230,6 +231,30 @@ class FontFamilyMenu:
             self.menu.show(widget=widget)
 
 
+class ThemeMenu:
+    def __init__(self) -> None:
+        from .config import config
+        from .dialogs import Dialog
+
+        def action(new_theme: str) -> None:
+            config.set("theme", new_theme)
+            Dialog.show_message("Theme will change after restarting the program")
+
+        self.menu = Menu()
+        self.menu.add("Dark Theme", lambda e: action("dark"))
+        self.menu.add("Light Theme", lambda e: action("light"))
+        self.menu.add("High Contrast", lambda e: action("high_contrast"))
+
+    def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
+        if event:
+            self.menu.show(event)
+        else:
+            widget = getattr(widgets, "main_menu_button")
+            self.menu.show(widget=widget)
+
+
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
@@ -237,3 +262,4 @@ more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
 font_family_menu = FontFamilyMenu()
+theme_menu = ThemeMenu()
