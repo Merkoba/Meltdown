@@ -194,7 +194,7 @@ class FontMenu:
 
         def set_font() -> None:
             Dialog.show_input(
-                "Set Font Size", lambda a: action(a), value=config.font_size
+                "Set Font Size", lambda a: action(a), value=str(config.font_size)
             )
 
         self.menu = Menu()
