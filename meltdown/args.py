@@ -149,7 +149,7 @@ class Args:
         self.emoji_storage = "💾"
         self.name_mode = "random"
         self.auto_name = True
-        self.auto_name_length = 35
+        self.auto_name_length = 30
         self.tab_double_click = True
 
     def parse(self) -> None:

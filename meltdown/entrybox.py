@@ -193,8 +193,10 @@ class EntryBox(ttk.Entry):
             self.enable_placeholder()
 
     def on_write(self, *args: Any) -> None:
+        pos = self.index(tk.INSERT)
         self.check_placeholder()
         self.clean_string()
+        self.icursor(pos)
 
     def get_clean_string(self, text: str) -> str:
         text = re.sub(r"\n+", " ", text)

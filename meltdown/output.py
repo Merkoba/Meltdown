@@ -267,8 +267,6 @@ class Output(tk.Text):
             foreground=app.theme.output_selection_foreground,
         )
 
-        self.bind("<Double-Button-1>", lambda e: self.on_double_click(e))
-
     def set_text(self, text: str) -> None:
         self.enable()
         self.delete("1.0", tk.END)
@@ -520,25 +518,6 @@ class Output(tk.Text):
                 self.configure(cursor="hand2")
         else:
             self.configure(cursor="xterm")
-
-    def on_double_click(self, event: Any, widget: Optional[tk.Text] = None) -> str:
-        if not widget:
-            widget = self
-
-        current_index = widget.index(tk.CURRENT)
-        tags = widget.tag_names(current_index)
-
-        if "name_user" in tags:
-            return "break"
-
-        if "name_ai" in tags:
-            return "break"
-
-        word_start = widget.index(f"{current_index} wordstart")
-        word_end = widget.index(f"{current_index} wordend")
-        widget.tag_add("sel", word_start, word_end)
-        self.show_word_menu(event, widget)
-        return "break"
 
     def get_snippet_index(self, index: int) -> str:
         num = 0

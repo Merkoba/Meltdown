@@ -125,10 +125,6 @@ class Snippet(tk.Frame):
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
         self.gestures = Gestures(self, self.text, self.on_right_click)
 
-        self.text.bind(
-            "<Double-Button-1>", lambda e: self.parent.on_double_click(e, self.text)
-        )
-
     def update_size(self) -> None:
         char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
         width_pixels = self.parent.winfo_width() - self.parent.scrollbar.winfo_width()
