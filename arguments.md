@@ -494,7 +494,7 @@ Action: store_true
 
 ### compact-system
 
-Hide the system frame in compactm ode
+Hide the system frame in compact mode
 
 Default: False
 

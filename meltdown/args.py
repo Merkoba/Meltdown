@@ -1,10 +1,11 @@
 # Standard
 import sys
-from typing import Any, Dict, List, Optional, ClassVar
+from typing import List, Optional
 
 # Modules
 from .app import app
 from .argparser import ArgParser
+from .argspec import argspec
 
 
 class Args:
@@ -151,475 +152,13 @@ class Args:
         self.auto_name_length = 35
         self.tab_double_click = True
 
-    class Internal:
-        title: ClassVar[str] = app.manifest["title"]
-        version: ClassVar[str] = app.manifest["version"]
-        vinfo: ClassVar[str] = f"{title} {version}"
-        defaults: ClassVar[Dict[str, Any]] = {}
-
-        arguments: ClassVar[Dict[str, Any]] = {
-            "version": {
-                "action": "version",
-                "help": "Check the version of the program",
-                "version": vinfo,
-            },
-            "no_tooltips": {"action": "store_false", "help": "Don't show tooltips"},
-            "no_scrollbars": {"action": "store_false", "help": "Don't show scrollbars"},
-            "no_colors": {"action": "store_false", "help": "Don't show user colors"},
-            "no_avatars": {"action": "store_false", "help": "Don't show user avatars"},
-            "no_system": {
-                "action": "store_false",
-                "help": "Don't show system monitors",
-            },
-            "no_system_colors": {
-                "action": "store_false",
-                "help": "Disable system monitor colors",
-            },
-            "no_cpu": {"action": "store_false", "help": "Don't show the CPU monitor"},
-            "no_gpu": {"action": "store_false", "help": "Don't show the GPU monitor"},
-            "no_gpu_ram": {
-                "action": "store_false",
-                "help": "Don't show the GPU memory monitor",
-            },
-            "no_gpu_temp": {
-                "action": "store_false",
-                "help": "Don't show the GPU temperature monitor",
-            },
-            "no_ram": {"action": "store_false", "help": "Don't show the RAM monitor"},
-            "no_temp": {
-                "action": "store_false",
-                "help": "Don't show the temperature monitor",
-            },
-            "no_keyboard": {
-                "action": "store_false",
-                "help": "Disable keyboard shortcuts",
-            },
-            "no_taps": {"action": "store_false", "help": "Disable double ctrl taps"},
-            "no_wrap": {
-                "action": "store_false",
-                "help": "Disable wrapping when selecting items",
-            },
-            "no_tabs": {"action": "store_false", "help": "Don't show the tab bar"},
-            "no_stream": {"action": "store_false", "help": "Don't stream responses"},
-            "no_empty": {
-                "action": "store_false",
-                "help": "Don't save empty conversations",
-            },
-            "no_bottom": {
-                "action": "store_false",
-                "help": "Don't show the Bottom button",
-            },
-            "no_bottom_autohide": {
-                "action": "store_false",
-                "help": "Don't autohide the Bottom button",
-            },
-            "no_reorder": {
-                "action": "store_false",
-                "help": "Disable tab reordering by dragging",
-            },
-            "no_tab_highlight": {
-                "action": "store_false",
-                "help": "Don't highlight the tab when streaming",
-            },
-            "no_commands": {
-                "action": "store_false",
-                "help": "Disable commands when typing on the input",
-            },
-            "no_intro": {
-                "action": "store_false",
-                "help": "Don't print the intro in conversations",
-            },
-            "no_terminal": {
-                "action": "store_false",
-                "help": "Don't enable the interactive terminal",
-            },
-            "no_clean_slate": {
-                "action": "store_false",
-                "help": "Don't make a new tab when starting with an input",
-            },
-            "no_more_button": {
-                "action": "store_false",
-                "help": "Don't show the More button",
-            },
-            "no_model_icon": {
-                "action": "store_false",
-                "help": "Don't show the model icon",
-            },
-            "no_model_feedback": {
-                "action": "store_false",
-                "help": "Don't show model feedback when loading",
-            },
-            "no_log_feedback": {
-                "action": "store_false",
-                "help": "Don't show feedback when saving logs",
-            },
-            "no_emojis": {"action": "store_false", "help": "Don't use emojis"},
-            "no_input_memory": {
-                "action": "store_false",
-                "help": "Don't remember input words",
-            },
-            "no_write_button": {
-                "action": "store_false",
-                "help": "Don't show the textbox button",
-            },
-            "no_wrap_textbox": {
-                "action": "store_false",
-                "help": "Don't wrap the textbox text",
-            },
-            "no_markdown_snippets": {
-                "action": "store_false",
-                "help": "Don't do snippet markdown",
-            },
-            "no_markdown_italic": {
-                "action": "store_false",
-                "help": "Don't do italic markdown",
-            },
-            "no_markdown_bold": {
-                "action": "store_false",
-                "help": "Don't do bold markdown",
-            },
-            "no_markdown_highlights": {
-                "action": "store_false",
-                "help": "Don't do highlight markdown",
-            },
-            "no_markdown_urls": {
-                "action": "store_false",
-                "help": "Don't do URL markdown",
-            },
-            "no_log_errors": {
-                "action": "store_false",
-                "help": "Don't log error messages to a file",
-            },
-            "no_time": {
-                "action": "store_false",
-                "help": "Don't show the loading time at startup",
-            },
-            "no_gestures": {
-                "action": "store_false",
-                "help": "Don't enable mouse gestures",
-            },
-            "no_increment_logs": {
-                "action": "store_false",
-                "help": "Always use the file name, don't increment with numbers",
-            },
-            "no_confirm_urls": {
-                "action": "store_false",
-                "help": "No need to confirm when opening URLs",
-            },
-            "no_confirm_search": {
-                "action": "store_false",
-                "help": "No need to confirm when searching",
-            },
-            "no_confirm_close": {
-                "action": "store_false",
-                "help": "No need to confirm closing tabs",
-            },
-            "no_confirm_clear": {
-                "action": "store_false",
-                "help": "No need to confirm clearing conversations",
-            },
-            "no_fill_prompt": {
-                "action": "store_false",
-                "help": "Don't fill the text input prompt in some cases when empty",
-            },
-            "no_drag_and_drop": {
-                "action": "store_false",
-                "help": "Don't enable drag and drop",
-            },
-            "no_keywords": {
-                "action": "store_false",
-                "help": "Don't do keyword replacements like ((now))",
-            },
-            "no_prevnext": {
-                "action": "store_false",
-                "help": "Don't show the Prev and Next buttons",
-            },
-            "no_auto_name": {
-                "action": "store_false",
-                "help": "Don't auto-name tabs based on input",
-            },
-            "no_tab_double_click": {
-                "action": "store_false",
-                "help": "Open new tabs on double click",
-            },
-            "no_labels": {
-                "action": "store_false",
-                "help": "Don't show the labels",
-            },
-            "no_syntax_highlighting": {
-                "action": "store_false",
-                "help": "Don't apply syntax highlighting to snippets",
-            },
-            "test": {"action": "store_true", "help": "Make a test tab for debugging"},
-            "force": {
-                "action": "store_true",
-                "help": "Allow opening multiple instances",
-            },
-            "confirm_exit": {
-                "action": "store_true",
-                "help": "Show confirm exit dialog",
-            },
-            "compact_model": {
-                "action": "store_true",
-                "help": "Hide the model frame in compact mode",
-            },
-            "compact_system": {
-                "action": "store_true",
-                "help": "Hide the system frame in compactm ode",
-            },
-            "compact_details_1": {
-                "action": "store_true",
-                "help": "Hide the first details frame in compact mode",
-            },
-            "compact_details_2": {
-                "action": "store_true",
-                "help": "Hide the second details frame in compact mode",
-            },
-            "compact_buttons": {
-                "action": "store_true",
-                "help": "Hide the buttons frame in compact mode",
-            },
-            "compact_file": {
-                "action": "store_true",
-                "help": "Hide the URL frame in compact mode",
-            },
-            "compact_input": {
-                "action": "store_true",
-                "help": "Hide the input frame in compact mode",
-            },
-            "maximize": {
-                "action": "store_true",
-                "help": "Maximize the window on start",
-            },
-            "numbers": {"action": "store_true", "help": "Show numbers in the tab bar"},
-            "alt_palette": {
-                "action": "store_true",
-                "help": "Show commands instead of descriptions in the palette",
-            },
-            "terminal_vi": {
-                "action": "store_true",
-                "help": "Use vi mode in the terminal",
-            },
-            "tabs_always": {
-                "action": "store_true",
-                "help": "Always show the tab bar even if only one tab",
-            },
-            "verbose": {
-                "action": "store_true",
-                "help": "Make the model verbose when streaming",
-            },
-            "quiet": {"action": "store_true", "help": "Don't show some messages"},
-            "debug": {
-                "action": "store_true",
-                "help": "Show some information for debugging",
-            },
-            "display": {
-                "action": "store_true",
-                "help": "Only show the output and tabs",
-            },
-            "listener": {
-                "action": "store_true",
-                "help": "Listen for changes to the stdin file",
-            },
-            "sticky": {"action": "store_true", "help": "Make the window always on top"},
-            "avatars_in_logs": {
-                "action": "store_true",
-                "help": "Show avatars in text logs",
-            },
-            "short_labels": {
-                "action": "store_true",
-                "help": "Use the short version of labels",
-            },
-            "short_buttons": {
-                "action": "store_true",
-                "help": "Use the short version of buttons",
-            },
-            "errors": {
-                "action": "store_true",
-                "help": "Show error messages",
-            },
-            "terminal_height": {
-                "type": int,
-                "help": "Reserve these number of rows for the terminal",
-            },
-            "width": {"type": int, "help": "Width of the window"},
-            "height": {"type": int, "help": "Height of the window"},
-            "max_tabs": {"type": int, "help": "Max number fo tabs to keep open"},
-            "max_tab_width": {
-                "type": int,
-                "help": "Max number of characters to show in a tab name",
-            },
-            "config": {"type": str, "help": "Name or path of a config file to use"},
-            "session": {"type": str, "help": "Name or path of a session file to use"},
-            "on_log": {
-                "type": str,
-                "help": "Command to execute when saving any log file",
-            },
-            "on_log_text": {
-                "type": str,
-                "help": "Command to execute when saving a text log file",
-            },
-            "on_log_json": {
-                "type": str,
-                "help": "Command to execute when saving a JSON log file",
-            },
-            "f1": {"type": str, "help": "Command to assign to the F1 key"},
-            "f2": {"type": str, "help": "Command to assign to the F2 key"},
-            "f3": {"type": str, "help": "Command to assign to the F3 key"},
-            "f4": {"type": str, "help": "Command to assign to the F4 key"},
-            "f5": {"type": str, "help": "Command to assign to the F5 key"},
-            "f6": {"type": str, "help": "Command to assign to the F6 key"},
-            "f7": {"type": str, "help": "Command to assign to the F7 key"},
-            "f8": {"type": str, "help": "Command to assign to the F8 key"},
-            "f9": {"type": str, "help": "Command to assign to the F9 key"},
-            "f10": {"type": str, "help": "Command to assign to the F10 key"},
-            "f11": {"type": str, "help": "Command to assign to the F11 key"},
-            "f12": {"type": str, "help": "Command to assign to the F12 key"},
-            "input": {
-                "type": str,
-                "help": "Prompt the AI automatically with this input when starting the program",
-            },
-            "alias": {
-                "type": str,
-                "action": "append",
-                "help": "Define an alias to run commands",
-            },
-            "task": {
-                "type": str,
-                "action": "append",
-                "help": "Define a task to run periodically",
-            },
-            "gesture_threshold": {
-                "type": str,
-                "help": "Threshold in pixels for mouse gestures",
-            },
-            "scroll_lines": {
-                "type": int,
-                "help": "How many lines to scroll the output",
-            },
-            "auto_name_length": {
-                "type": int,
-                "help": "Max char length for auto tab names",
-            },
-            "old_tabs_minutes": {
-                "type": int,
-                "help": "Consider a tab old after these minutes (using last modified date)",
-            },
-            "max_list_items": {
-                "type": int,
-                "help": "Max number of items in context menu lists",
-            },
-            "list_item_width": {
-                "type": int,
-                "help": "Max characters for the text of list items",
-            },
-            "drag_threshold": {
-                "type": int,
-                "help": "The higher the number the less sensitive the tab dragging will be",
-            },
-            "delay": {
-                "type": float,
-                "help": "Delay in seconds between each print when streaming",
-            },
-            "prefix": {"type": str, "help": "Character used to prefix commands like /"},
-            "andchar": {"type": str, "help": "Character used to join commands like &"},
-            "system_threshold": {
-                "type": int,
-                "help": "Show system monitors as critical after this percentage threshold",
-            },
-            "system_delay": {
-                "type": int,
-                "help": "Delay in seconds for system monitor updates",
-            },
-            "autorun": {"type": str, "help": "Run this command at startup"},
-            "input_memory_min": {
-                "type": int,
-                "help": "Minimum number of characters for input words to be remembered",
-            },
-            "listener_delay": {"type": float, "help": "Delay for the listener checks"},
-            "commandoc": {
-                "type": str,
-                "help": "Make the commandoc and save it on this path",
-            },
-            "argumentdoc": {
-                "type": str,
-                "help": "Make the argument and save it on this path",
-            },
-            "after_stream": {
-                "type": str,
-                "help": "Execute this command after streaming a response",
-            },
-            "markdown": {
-                "type": str,
-                "choices": ["user", "ai", "all", "none"],
-                "help": "Define where to apply markdown formatting",
-            },
-            "browser": {"type": str, "help": "Open links with this browser"},
-            "font_diff": {"type": int, "help": "Add or subtract this from font sizes"},
-            "task_manager": {"type": str, "help": "Which task manager to use"},
-            "task_manager_gpu": {
-                "type": str,
-                "help": "Which task manager to use on the gpu monitors",
-            },
-            "terminal": {"type": str, "help": "Which terminal to use"},
-            "progtext": {
-                "type": str,
-                "help": "Use this program as default for the progtext command",
-            },
-            "progjson": {
-                "type": str,
-                "help": "Use this program as default for the progjson command",
-            },
-            "program": {
-                "type": str,
-                "help": "Use this program as default for the progtext and progjson commands",
-            },
-            "user_color": {
-                "type": str,
-                "help": "The color of the text for the name of the user",
-            },
-            "ai_color": {
-                "type": str,
-                "help": "The color of the text for the name of the AI",
-            },
-            "snippets_font": {
-                "type": str,
-                "help": "The font to use in snippets",
-            },
-            "emoji_unloaded": {
-                "type": str,
-                "help": "Emoji to show when a model is not loaded",
-            },
-            "emoji_local": {
-                "type": str,
-                "help": "Emoji to show when a model is loaded locally",
-            },
-            "emoji_remote": {
-                "type": str,
-                "help": "Emoji to show when a model is loaded remotely",
-            },
-            "emoji_loading": {
-                "type": str,
-                "help": "Emoji to show when loading a model",
-            },
-            "emoji_storage": {
-                "type": str,
-                "help": "Emoji to show when saving a log",
-            },
-            "name_mode": {
-                "type": str,
-                "choices": ["random", "noun", "empty"],
-                "help": "What mode to use when naming new tabs",
-            },
-        }
-
     def parse(self) -> None:
-        ap = ArgParser(app.manifest["title"], self.Internal.arguments, self)
+        ap = ArgParser(app.manifest["title"], argspec.arguments, self)
 
         self.fill_functions()
 
         for attr_name, attr_value in vars(self).items():
-            self.Internal.defaults[attr_name] = attr_value
+            argspec.defaults[attr_name] = attr_value
 
         other_name = [
             ("alias", "aliases"),
@@ -808,7 +347,7 @@ class Args:
     ) -> None:
         from .display import display
 
-        keys = list(self.Internal.arguments.keys())
+        keys = list(argspec.arguments.keys())
 
         if mode:
             if mode == "sort":
@@ -819,7 +358,7 @@ class Args:
         text = []
 
         for key in keys:
-            data = self.Internal.arguments[key]
+            data = argspec.arguments[key]
             msg = data.get("help")
 
             if not msg:
@@ -856,11 +395,11 @@ class Args:
 
         text += "Here are all the available command line arguments:"
 
-        for key in self.Internal.arguments:
+        for key in argspec.arguments:
             if key == "string_arg":
                 continue
 
-            arg = self.Internal.arguments[key]
+            arg = argspec.arguments[key]
             text += sep
             name = key.replace("_", "-")
             text += f"### {name}"
@@ -871,7 +410,7 @@ class Args:
                 text += "\n\n"
                 text += info
 
-            defvalue = self.Internal.defaults.get(key)
+            defvalue = argspec.defaults.get(key)
 
             if defvalue is not None:
                 if type(defvalue) == str:
