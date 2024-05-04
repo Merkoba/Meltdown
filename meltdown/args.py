@@ -874,7 +874,10 @@ class Args:
 
             if defvalue is not None:
                 if type(defvalue) == str:
-                    defvalue = f'"{defvalue}"'
+                    if defvalue == "":
+                        defvalue = "[Empty string]"
+                    else:
+                        defvalue = f'"{defvalue}"'
 
                 text += "\n\n"
                 text += f"Default: {defvalue}"
@@ -884,7 +887,13 @@ class Args:
             if choices:
                 text += "\n\n"
                 text += "Choices: "
-                text += ", ".join(choices)
+
+                choicestr = [
+                    f'"{choice}"' if isinstance(choice, str) else choice
+                    for choice in choices
+                ]
+
+                text += ", ".join(choicestr)
 
             action = arg.get("action", "")
 

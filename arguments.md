@@ -756,7 +756,7 @@ Type: int
 
 Name or path of a config file to use
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -766,7 +766,7 @@ Type: str
 
 Name or path of a session file to use
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -776,7 +776,7 @@ Type: str
 
 Command to execute when saving any log file
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -786,7 +786,7 @@ Type: str
 
 Command to execute when saving a text log file
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -796,7 +796,7 @@ Type: str
 
 Command to execute when saving a JSON log file
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -816,7 +816,7 @@ Type: str
 
 Command to assign to the F2 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -836,7 +836,7 @@ Type: str
 
 Command to assign to the F4 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -856,7 +856,7 @@ Type: str
 
 Command to assign to the F6 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -866,7 +866,7 @@ Type: str
 
 Command to assign to the F7 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -886,7 +886,7 @@ Type: str
 
 Command to assign to the F9 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -896,7 +896,7 @@ Type: str
 
 Command to assign to the F10 key
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -926,7 +926,7 @@ Type: str
 
 Prompt the AI automatically with this input when starting the program
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1076,7 +1076,7 @@ Type: int
 
 Run this command at startup
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1106,7 +1106,7 @@ Type: float
 
 Make the commandoc and save it on this path
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1116,7 +1116,7 @@ Type: str
 
 Make the argument and save it on this path
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1126,7 +1126,7 @@ Type: str
 
 Execute this command after streaming a response
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1138,7 +1138,7 @@ Define where to apply markdown formatting
 
 Default: "ai"
 
-Choices: user, ai, all, none
+Choices: "user", "ai", "all", "none"
 
 Type: str
 
@@ -1148,7 +1148,7 @@ Type: str
 
 Open links with this browser
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1198,7 +1198,7 @@ Type: str
 
 Use this program as default for the progtext command
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1208,7 +1208,7 @@ Type: str
 
 Use this program as default for the progjson command
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1218,7 +1218,7 @@ Type: str
 
 Use this program as default for the progtext and progjson commands
 
-Default: ""
+Default: [Empty string]
 
 Type: str
 
@@ -1310,6 +1310,6 @@ What mode to use when naming new tabs
 
 Default: "random"
 
-Choices: random, noun, empty
+Choices: "random", "noun", "empty"
 
 Type: str
