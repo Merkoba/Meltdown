@@ -1023,3 +1023,9 @@ This disables that.
 Default: 35
 
 Max char length for auto-named tabs.
+
+---
+
+### no-tab-double-click
+
+Don't open new tabs when double clicking tabs or empty tab area.

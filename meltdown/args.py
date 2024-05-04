@@ -148,6 +148,7 @@ class Args:
         self.name_mode = "random"
         self.auto_name = True
         self.auto_name_length = 35
+        self.tab_double_click = True
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -334,6 +335,10 @@ class Args:
             "no_auto_name": {
                 "action": "store_false",
                 "help": "Don't auto-name tabs based on input",
+            },
+            "no_tab_double_click": {
+                "action": "store_false",
+                "help": "Open new tabs on double click",
             },
             "no_labels": {
                 "action": "store_false",
@@ -662,6 +667,7 @@ class Args:
             ("no_labels", "show_labels"),
             ("no_syntax_highlighting", "syntax_highlighting"),
             ("no_auto_name", "auto_name"),
+            ("no_tab_double_click", "tab_double_click"),
         ]
 
         for r_item in other_name:
