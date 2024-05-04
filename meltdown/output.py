@@ -493,15 +493,9 @@ class Output(tk.Text):
         Output.current_output = self
 
         if seltext:
-            Output.words = seltext
+            Output.words = seltext.strip()
         elif tags:
             Output.words = self.get_tagwords(tags[0], event).strip()
-        else:
-            Output.words = widget.get(
-                f"{current_index} wordstart", f"{current_index} wordend"
-            )
-
-        Output.words = Output.words.strip()
 
         if not Output.words:
             return False
