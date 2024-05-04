@@ -464,7 +464,7 @@ class App:
         else:
             self.theme = DarkTheme()
 
-        self.theme.set_style()
+        self.theme.setup_style()
 
     def pick_theme(self) -> None:
         from .config import config
