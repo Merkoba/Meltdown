@@ -413,7 +413,7 @@ class Args:
             defvalue = argspec.defaults.get(key)
 
             if defvalue is not None:
-                if type(defvalue) == str:
+                if isinstance(defvalue, str):
                     if defvalue == "":
                         defvalue = "[Empty string]"
                     else:
