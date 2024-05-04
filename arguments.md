@@ -991,3 +991,33 @@ Emoji when a model is loading.
 Default: 💾
 
 Emoji for storage operations.
+
+---
+
+### name-mode
+
+Default: "random"
+
+Choices: ["random", "noun", "empty"]
+
+How to name tabs when creating them.
+
+Random = Random made up word
+
+Noun = Random noun
+
+Empty = "Tab"
+
+---
+
+### no-auto-name
+
+Tabs get auto-named with the input of the first prompt.
+
+This disables that.
+
+---
+
+### auto-name-length
+
+Max char length for auto-named tabs.

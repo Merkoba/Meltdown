@@ -151,8 +151,7 @@ class Utils:
         def vow() -> str:
             return random.choice(vowels)
 
-        name = con() + vow() + con() + vow() + con() + vow()
-        return name.capitalize()
+        return con() + vow() + con() + vow() + con() + vow()
 
     def random_noun(self) -> str:
         from .paths import paths

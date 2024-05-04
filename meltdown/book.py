@@ -67,6 +67,7 @@ class Page:
         self.set_tab_text()
         self.tab.tooltip.set_text(name)
         self.parent.update_tabs()
+        self.parent.discover()
 
     def get_index(self) -> int:
         for i, page in enumerate(self.parent.pages):

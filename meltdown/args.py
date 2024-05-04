@@ -145,6 +145,9 @@ class Args:
         self.emoji_remote = "🌐"
         self.emoji_loading = "⏰"
         self.emoji_storage = "💾"
+        self.name_mode = "random"
+        self.auto_name = True
+        self.auto_name_length = 30
 
     class Internal:
         title: ClassVar[str] = app.manifest["title"]
@@ -328,6 +331,10 @@ class Args:
                 "action": "store_false",
                 "help": "Don't show the Prev and Next buttons",
             },
+            "no_auto_name": {
+                "action": "store_false",
+                "help": "Don't auto-name tabs based on input",
+            },
             "no_labels": {
                 "action": "store_false",
                 "help": "Don't show the labels",
@@ -483,6 +490,10 @@ class Args:
                 "type": int,
                 "help": "How many lines to scroll the output",
             },
+            "auto_name_length": {
+                "type": int,
+                "help": "Max char length for auto tab names",
+            },
             "old_tabs_minutes": {
                 "type": int,
                 "help": "Consider a tab old after these minutes (using last modified date)",
@@ -584,6 +595,11 @@ class Args:
                 "type": str,
                 "help": "Emoji to show when saving a log",
             },
+            "name_mode": {
+                "type": str,
+                "choices": ["random", "noun", "empty"],
+                "help": "What mode to use when naming new tabs",
+            },
         }
 
     def parse(self) -> None:
@@ -645,6 +661,7 @@ class Args:
             ("no_prevnext", "show_prevnext"),
             ("no_labels", "show_labels"),
             ("no_syntax_highlighting", "syntax_highlighting"),
+            ("no_auto_name", "auto_name"),
         ]
 
         for r_item in other_name:
@@ -732,6 +749,8 @@ class Args:
             "emoji_remote",
             "emoji_loading",
             "emoji_storage",
+            "name_mode",
+            "auto_name_length",
         ]
 
         for n_item in normals:

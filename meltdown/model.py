@@ -267,6 +267,7 @@ class Model:
     def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
+        original_text = prompt_text
 
         if (not prompt_text) and (not prompt_file):
             return
@@ -344,7 +345,8 @@ class Model:
         else:
             messages.append({"role": "user", "content": prompt_text})
 
-        display.prompt("user", text=prompt_text, tab_id=tab_id)
+        display.prompt("user", text=prompt_text, tab_id=tab_id, original=original_text)
+
         now = utils.now()
         self.stream_date = now
         stream = args.stream

@@ -76,7 +76,14 @@ class Display:
         from .session import session
 
         if not name:
-            name = utils.random_word()
+            if args.name_mode == "random":
+                name = utils.random_word()
+            elif args.name_mode == "noun":
+                name = utils.random_noun()
+            else:
+                name = "tab"
+
+            name = name.capitalize()
 
         if not conversation_id:
             conv_id = "ignore" if mode == "ignore" else ""
@@ -740,6 +747,7 @@ class Display:
         text: Optional[str] = None,
         tab_id: Optional[str] = None,
         to_bottom: bool = True,
+        original: Optional[str] = None,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -758,7 +766,40 @@ class Display:
         if text:
             tab.output.insert_text(text)
 
+        if (who == "user") and original and (not self.has_messages(tab_id)):
+            self.auto_name_tab(tab_id, original)
+
         tab.modified = True
+
+    def auto_name_tab(self, tab_id: str, text: str) -> None:
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        if tab.mode == "ignore":
+            return
+
+        name = text[: args.auto_name_length]
+        self.do_rename_tab(tab_id, name)
+
+    def has_messages(self, tab_id: str) -> bool:
+        from .session import session
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return False
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return False
+
+        if conversation.items:
+            return True
+
+        return False
 
     def format_text(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
