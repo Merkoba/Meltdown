@@ -201,13 +201,6 @@ class Book(tk.Frame):
             "<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame
         )
 
-        if args.tab_double_click:
-            self.bind_recursive(
-                "<Double-ButtonRelease-1>",
-                lambda e: self.tabs_double_click(),
-                page.tab.frame,
-            )
-
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
         self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
