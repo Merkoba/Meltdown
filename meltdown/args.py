@@ -65,7 +65,7 @@ class Args:
         self.old_tabs_minutes = 30
         self.max_list_items = 10
         self.list_item_width = 100
-        self.drag_threshold = 88
+        self.drag_threshold = 100
         self.tab_highlight = True
         self.quiet = False
         self.debug = False
