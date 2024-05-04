@@ -185,6 +185,7 @@ class TabMenu:
 
 class FontMenu:
     def __init__(self) -> None:
+        from .config import config
         from .display import display
         from .dialogs import Dialog
 
@@ -192,7 +193,9 @@ class FontMenu:
             display.set_font_size(text)
 
         def set_font() -> None:
-            Dialog.show_input("Set Font Size", lambda a: action(a))
+            Dialog.show_input(
+                "Set Font Size", lambda a: action(a), value=config.font_size
+            )
 
         self.menu = Menu()
         self.menu.add("Set Font", lambda e: set_font())
