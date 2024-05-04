@@ -88,10 +88,10 @@ class Commands:
         loop()
 
     def make_commands(self) -> None:
-        from .cmdspec import CmdSpec
+        from .command_spec import CommandSpec
 
-        cmdspec = CmdSpec()
-        self.commands = cmdspec.commands
+        command_spec = CommandSpec()
+        self.commands = command_spec.commands
 
         for key in self.commands:
             self.commands[key]["date"] = 0.0

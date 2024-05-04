@@ -15,14 +15,15 @@ from .commands import commands
 from . import menumanager
 
 
-class CmdSpec:
+class CommandSpec:
     def __init__(self) -> None:
         self.force = "Use 'force' to force"
         self.file_name = "You can provide the file name"
         self.sortfilter = "Use 'sort' or a word to filter"
         self.infos: List[str] = []
         self.commands: Dict[str, Any] = {}
-        self.make_commands()
+
+        self.add_commands()
 
     def add_cmd(
         self, key: str, info: str, action: Callable[..., Any], **kwargs: Any
@@ -44,7 +45,7 @@ class CmdSpec:
 
         self.infos.append(info)
 
-    def make_commands(self) -> None:
+    def add_commands(self) -> None:
         self.add_cmd(
             "clear",
             "Clear the conversation",
@@ -573,4 +574,4 @@ class CmdSpec:
         )
 
 
-cmdspec = CmdSpec()
+command_spec = CommandSpec()
