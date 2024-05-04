@@ -862,7 +862,8 @@ class Args:
 
             arg = self.Internal.arguments[key]
             text += sep
-            text += f"### {key}"
+            name = key.replace("_", "-")
+            text += f"### {name}"
 
             info = arg.get("help")
 

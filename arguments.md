@@ -12,7 +12,7 @@ Action: version
 
 ---
 
-### no_tooltips
+### no-tooltips
 
 Don't show tooltips
 
@@ -20,7 +20,7 @@ Action: store_false
 
 ---
 
-### no_scrollbars
+### no-scrollbars
 
 Don't show scrollbars
 
@@ -28,7 +28,7 @@ Action: store_false
 
 ---
 
-### no_colors
+### no-colors
 
 Don't show user colors
 
@@ -36,7 +36,7 @@ Action: store_false
 
 ---
 
-### no_avatars
+### no-avatars
 
 Don't show user avatars
 
@@ -44,7 +44,7 @@ Action: store_false
 
 ---
 
-### no_system
+### no-system
 
 Don't show system monitors
 
@@ -52,7 +52,7 @@ Action: store_false
 
 ---
 
-### no_system_colors
+### no-system-colors
 
 Disable system monitor colors
 
@@ -60,7 +60,7 @@ Action: store_false
 
 ---
 
-### no_cpu
+### no-cpu
 
 Don't show the CPU monitor
 
@@ -68,7 +68,7 @@ Action: store_false
 
 ---
 
-### no_gpu
+### no-gpu
 
 Don't show the GPU monitor
 
@@ -76,7 +76,7 @@ Action: store_false
 
 ---
 
-### no_gpu_ram
+### no-gpu-ram
 
 Don't show the GPU memory monitor
 
@@ -84,7 +84,7 @@ Action: store_false
 
 ---
 
-### no_gpu_temp
+### no-gpu-temp
 
 Don't show the GPU temperature monitor
 
@@ -92,7 +92,7 @@ Action: store_false
 
 ---
 
-### no_ram
+### no-ram
 
 Don't show the RAM monitor
 
@@ -100,7 +100,7 @@ Action: store_false
 
 ---
 
-### no_temp
+### no-temp
 
 Don't show the temperature monitor
 
@@ -108,7 +108,7 @@ Action: store_false
 
 ---
 
-### no_keyboard
+### no-keyboard
 
 Disable keyboard shortcuts
 
@@ -116,7 +116,7 @@ Action: store_false
 
 ---
 
-### no_taps
+### no-taps
 
 Disable double ctrl taps
 
@@ -124,7 +124,7 @@ Action: store_false
 
 ---
 
-### no_wrap
+### no-wrap
 
 Disable wrapping when selecting items
 
@@ -132,7 +132,7 @@ Action: store_false
 
 ---
 
-### no_tabs
+### no-tabs
 
 Don't show the tab bar
 
@@ -140,7 +140,7 @@ Action: store_false
 
 ---
 
-### no_stream
+### no-stream
 
 Don't stream responses
 
@@ -148,7 +148,7 @@ Action: store_false
 
 ---
 
-### no_empty
+### no-empty
 
 Don't save empty conversations
 
@@ -156,7 +156,7 @@ Action: store_false
 
 ---
 
-### no_bottom
+### no-bottom
 
 Don't show the Bottom button
 
@@ -164,7 +164,7 @@ Action: store_false
 
 ---
 
-### no_bottom_autohide
+### no-bottom-autohide
 
 Don't autohide the Bottom button
 
@@ -172,7 +172,7 @@ Action: store_false
 
 ---
 
-### no_reorder
+### no-reorder
 
 Disable tab reordering by dragging
 
@@ -180,7 +180,7 @@ Action: store_false
 
 ---
 
-### no_tab_highlight
+### no-tab-highlight
 
 Don't highlight the tab when streaming
 
@@ -188,7 +188,7 @@ Action: store_false
 
 ---
 
-### no_commands
+### no-commands
 
 Disable commands when typing on the input
 
@@ -196,7 +196,7 @@ Action: store_false
 
 ---
 
-### no_intro
+### no-intro
 
 Don't print the intro in conversations
 
@@ -204,7 +204,7 @@ Action: store_false
 
 ---
 
-### no_terminal
+### no-terminal
 
 Don't enable the interactive terminal
 
@@ -212,7 +212,7 @@ Action: store_false
 
 ---
 
-### no_clean_slate
+### no-clean-slate
 
 Don't make a new tab when starting with an input
 
@@ -220,7 +220,7 @@ Action: store_false
 
 ---
 
-### no_more_button
+### no-more-button
 
 Don't show the More button
 
@@ -228,7 +228,7 @@ Action: store_false
 
 ---
 
-### no_model_icon
+### no-model-icon
 
 Don't show the model icon
 
@@ -236,7 +236,7 @@ Action: store_false
 
 ---
 
-### no_model_feedback
+### no-model-feedback
 
 Don't show model feedback when loading
 
@@ -244,7 +244,7 @@ Action: store_false
 
 ---
 
-### no_log_feedback
+### no-log-feedback
 
 Don't show feedback when saving logs
 
@@ -252,7 +252,7 @@ Action: store_false
 
 ---
 
-### no_emojis
+### no-emojis
 
 Don't use emojis
 
@@ -260,7 +260,7 @@ Action: store_false
 
 ---
 
-### no_input_memory
+### no-input-memory
 
 Don't remember input words
 
@@ -268,7 +268,7 @@ Action: store_false
 
 ---
 
-### no_write_button
+### no-write-button
 
 Don't show the textbox button
 
@@ -276,7 +276,7 @@ Action: store_false
 
 ---
 
-### no_wrap_textbox
+### no-wrap-textbox
 
 Don't wrap the textbox text
 
@@ -284,7 +284,7 @@ Action: store_false
 
 ---
 
-### no_markdown_snippets
+### no-markdown-snippets
 
 Don't do snippet markdown
 
@@ -292,7 +292,7 @@ Action: store_false
 
 ---
 
-### no_markdown_italic
+### no-markdown-italic
 
 Don't do italic markdown
 
@@ -300,7 +300,7 @@ Action: store_false
 
 ---
 
-### no_markdown_bold
+### no-markdown-bold
 
 Don't do bold markdown
 
@@ -308,7 +308,7 @@ Action: store_false
 
 ---
 
-### no_markdown_highlights
+### no-markdown-highlights
 
 Don't do highlight markdown
 
@@ -316,7 +316,7 @@ Action: store_false
 
 ---
 
-### no_markdown_urls
+### no-markdown-urls
 
 Don't do URL markdown
 
@@ -324,7 +324,7 @@ Action: store_false
 
 ---
 
-### no_log_errors
+### no-log-errors
 
 Don't log error messages to a file
 
@@ -332,7 +332,7 @@ Action: store_false
 
 ---
 
-### no_time
+### no-time
 
 Don't show the loading time at startup
 
@@ -340,7 +340,7 @@ Action: store_false
 
 ---
 
-### no_gestures
+### no-gestures
 
 Don't enable mouse gestures
 
@@ -348,7 +348,7 @@ Action: store_false
 
 ---
 
-### no_increment_logs
+### no-increment-logs
 
 Always use the file name, don't increment with numbers
 
@@ -356,7 +356,7 @@ Action: store_false
 
 ---
 
-### no_confirm_urls
+### no-confirm-urls
 
 No need to confirm when opening URLs
 
@@ -364,7 +364,7 @@ Action: store_false
 
 ---
 
-### no_confirm_search
+### no-confirm-search
 
 No need to confirm when searching
 
@@ -372,7 +372,7 @@ Action: store_false
 
 ---
 
-### no_confirm_close
+### no-confirm-close
 
 No need to confirm closing tabs
 
@@ -380,7 +380,7 @@ Action: store_false
 
 ---
 
-### no_confirm_clear
+### no-confirm-clear
 
 No need to confirm clearing conversations
 
@@ -388,7 +388,7 @@ Action: store_false
 
 ---
 
-### no_fill_prompt
+### no-fill-prompt
 
 Don't fill the text input prompt in some cases when empty
 
@@ -396,7 +396,7 @@ Action: store_false
 
 ---
 
-### no_drag_and_drop
+### no-drag-and-drop
 
 Don't enable drag and drop
 
@@ -404,7 +404,7 @@ Action: store_false
 
 ---
 
-### no_keywords
+### no-keywords
 
 Don't do keyword replacements like ((now))
 
@@ -412,7 +412,7 @@ Action: store_false
 
 ---
 
-### no_prevnext
+### no-prevnext
 
 Don't show the Prev and Next buttons
 
@@ -420,7 +420,7 @@ Action: store_false
 
 ---
 
-### no_auto_name
+### no-auto-name
 
 Don't auto-name tabs based on input
 
@@ -428,7 +428,7 @@ Action: store_false
 
 ---
 
-### no_tab_double_click
+### no-tab-double-click
 
 Open new tabs on double click
 
@@ -436,7 +436,7 @@ Action: store_false
 
 ---
 
-### no_labels
+### no-labels
 
 Don't show the labels
 
@@ -444,7 +444,7 @@ Action: store_false
 
 ---
 
-### no_syntax_highlighting
+### no-syntax-highlighting
 
 Don't apply syntax highlighting to snippets
 
@@ -472,7 +472,7 @@ Action: store_true
 
 ---
 
-### confirm_exit
+### confirm-exit
 
 Show confirm exit dialog
 
@@ -482,7 +482,7 @@ Action: store_true
 
 ---
 
-### compact_model
+### compact-model
 
 Hide the model frame in compact mode
 
@@ -492,7 +492,7 @@ Action: store_true
 
 ---
 
-### compact_system
+### compact-system
 
 Hide the system frame in compactm ode
 
@@ -502,7 +502,7 @@ Action: store_true
 
 ---
 
-### compact_details_1
+### compact-details-1
 
 Hide the first details frame in compact mode
 
@@ -512,7 +512,7 @@ Action: store_true
 
 ---
 
-### compact_details_2
+### compact-details-2
 
 Hide the second details frame in compact mode
 
@@ -522,7 +522,7 @@ Action: store_true
 
 ---
 
-### compact_buttons
+### compact-buttons
 
 Hide the buttons frame in compact mode
 
@@ -532,7 +532,7 @@ Action: store_true
 
 ---
 
-### compact_file
+### compact-file
 
 Hide the URL frame in compact mode
 
@@ -542,7 +542,7 @@ Action: store_true
 
 ---
 
-### compact_input
+### compact-input
 
 Hide the input frame in compact mode
 
@@ -572,7 +572,7 @@ Action: store_true
 
 ---
 
-### alt_palette
+### alt-palette
 
 Show commands instead of descriptions in the palette
 
@@ -582,7 +582,7 @@ Action: store_true
 
 ---
 
-### terminal_vi
+### terminal-vi
 
 Use vi mode in the terminal
 
@@ -592,7 +592,7 @@ Action: store_true
 
 ---
 
-### tabs_always
+### tabs-always
 
 Always show the tab bar even if only one tab
 
@@ -662,7 +662,7 @@ Action: store_true
 
 ---
 
-### avatars_in_logs
+### avatars-in-logs
 
 Show avatars in text logs
 
@@ -672,7 +672,7 @@ Action: store_true
 
 ---
 
-### short_labels
+### short-labels
 
 Use the short version of labels
 
@@ -682,7 +682,7 @@ Action: store_true
 
 ---
 
-### short_buttons
+### short-buttons
 
 Use the short version of buttons
 
@@ -702,7 +702,7 @@ Action: store_true
 
 ---
 
-### terminal_height
+### terminal-height
 
 Reserve these number of rows for the terminal
 
@@ -732,7 +732,7 @@ Type: int
 
 ---
 
-### max_tabs
+### max-tabs
 
 Max number fo tabs to keep open
 
@@ -742,7 +742,7 @@ Type: int
 
 ---
 
-### max_tab_width
+### max-tab-width
 
 Max number of characters to show in a tab name
 
@@ -772,7 +772,7 @@ Type: str
 
 ---
 
-### on_log
+### on-log
 
 Command to execute when saving any log file
 
@@ -782,7 +782,7 @@ Type: str
 
 ---
 
-### on_log_text
+### on-log-text
 
 Command to execute when saving a text log file
 
@@ -792,7 +792,7 @@ Type: str
 
 ---
 
-### on_log_json
+### on-log-json
 
 Command to execute when saving a JSON log file
 
@@ -952,7 +952,7 @@ Type: str
 
 ---
 
-### gesture_threshold
+### gesture-threshold
 
 Threshold in pixels for mouse gestures
 
@@ -962,7 +962,7 @@ Type: str
 
 ---
 
-### scroll_lines
+### scroll-lines
 
 How many lines to scroll the output
 
@@ -972,7 +972,7 @@ Type: int
 
 ---
 
-### auto_name_length
+### auto-name-length
 
 Max char length for auto tab names
 
@@ -982,7 +982,7 @@ Type: int
 
 ---
 
-### old_tabs_minutes
+### old-tabs-minutes
 
 Consider a tab old after these minutes (using last modified date)
 
@@ -992,7 +992,7 @@ Type: int
 
 ---
 
-### max_list_items
+### max-list-items
 
 Max number of items in context menu lists
 
@@ -1002,7 +1002,7 @@ Type: int
 
 ---
 
-### list_item_width
+### list-item-width
 
 Max characters for the text of list items
 
@@ -1012,7 +1012,7 @@ Type: int
 
 ---
 
-### drag_threshold
+### drag-threshold
 
 The higher the number the less sensitive the tab dragging will be
 
@@ -1052,7 +1052,7 @@ Type: str
 
 ---
 
-### system_threshold
+### system-threshold
 
 Show system monitors as critical after this percentage threshold
 
@@ -1062,7 +1062,7 @@ Type: int
 
 ---
 
-### system_delay
+### system-delay
 
 Delay in seconds for system monitor updates
 
@@ -1082,7 +1082,7 @@ Type: str
 
 ---
 
-### input_memory_min
+### input-memory-min
 
 Minimum number of characters for input words to be remembered
 
@@ -1092,7 +1092,7 @@ Type: int
 
 ---
 
-### listener_delay
+### listener-delay
 
 Delay for the listener checks
 
@@ -1122,7 +1122,7 @@ Type: str
 
 ---
 
-### after_stream
+### after-stream
 
 Execute this command after streaming a response
 
@@ -1154,7 +1154,7 @@ Type: str
 
 ---
 
-### font_diff
+### font-diff
 
 Add or subtract this from font sizes
 
@@ -1164,7 +1164,7 @@ Type: int
 
 ---
 
-### task_manager
+### task-manager
 
 Which task manager to use
 
@@ -1174,7 +1174,7 @@ Type: str
 
 ---
 
-### task_manager_gpu
+### task-manager-gpu
 
 Which task manager to use on the gpu monitors
 
@@ -1224,7 +1224,7 @@ Type: str
 
 ---
 
-### user_color
+### user-color
 
 The color of the text for the name of the user
 
@@ -1234,7 +1234,7 @@ Type: str
 
 ---
 
-### ai_color
+### ai-color
 
 The color of the text for the name of the AI
 
@@ -1244,7 +1244,7 @@ Type: str
 
 ---
 
-### snippets_font
+### snippets-font
 
 The font to use in snippets
 
@@ -1254,7 +1254,7 @@ Type: str
 
 ---
 
-### emoji_unloaded
+### emoji-unloaded
 
 Emoji to show when a model is not loaded
 
@@ -1264,7 +1264,7 @@ Type: str
 
 ---
 
-### emoji_local
+### emoji-local
 
 Emoji to show when a model is loaded locally
 
@@ -1274,7 +1274,7 @@ Type: str
 
 ---
 
-### emoji_remote
+### emoji-remote
 
 Emoji to show when a model is loaded remotely
 
@@ -1284,7 +1284,7 @@ Type: str
 
 ---
 
-### emoji_loading
+### emoji-loading
 
 Emoji to show when loading a model
 
@@ -1294,7 +1294,7 @@ Type: str
 
 ---
 
-### emoji_storage
+### emoji-storage
 
 Emoji to show when saving a log
 
@@ -1304,7 +1304,7 @@ Type: str
 
 ---
 
-### name_mode
+### name-mode
 
 What mode to use when naming new tabs
 
