@@ -133,10 +133,9 @@ class TabMenu:
         self.menu_single = Menu()
         self.menu_single.add("Rename", lambda e: display.rename_tab())
         self.menu_single.add("Move", lambda e: display.move_tab())
-        self.menu_single.add("Close", lambda e: display.tab_menu_close())
+        self.menu_single.add("Clear", lambda e: display.clear())
 
         self.menu_multi = Menu()
-
         self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
 
         self.menu_multi.separator()
