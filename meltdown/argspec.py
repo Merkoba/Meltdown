@@ -378,6 +378,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "only_text",
+            action="store_true",
+            info="Only show the text output. This is a preset that sets other arguments",
+        )
+
+        self.add_argument(
             "force",
             action="store_true",
             info="Allow opening multiple instances",

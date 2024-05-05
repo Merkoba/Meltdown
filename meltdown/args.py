@@ -30,7 +30,7 @@ class Args:
         self.wrap = True
         self.stream = True
         self.maximize = False
-        self.tabs = True
+        self.show_tabs = True
         self.allow_empty = True
         self.bottom = True
         self.bottom_autohide = True
@@ -153,6 +153,7 @@ class Args:
         self.auto_name_length = 30
         self.tab_double_click = True
         self.arrow_mode = "history"
+        self.only_text = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -176,7 +177,7 @@ class Args:
             ("no_temp", "system_temp"),
             ("no_keyboard", "keyboard"),
             ("no_wrap", "wrap"),
-            ("no_tabs", "tabs"),
+            ("no_tabs", "show_tabs"),
             ("no_stream", "stream"),
             ("no_taps", "taps"),
             ("no_empty", "allow_empty"),
@@ -312,6 +313,7 @@ class Args:
             "name_mode",
             "auto_name_length",
             "arrow_mode",
+            "only_text",
         ]
 
         for n_item in normals:
@@ -324,6 +326,16 @@ class Args:
 
             if string_arg:
                 self.input = string_arg
+
+        if self.only_text:
+            self.compact_model = True
+            self.compact_system = True
+            self.compact_details_1 = True
+            self.compact_details_2 = True
+            self.compact_buttons = True
+            self.compact_file = True
+            self.compact_input = True
+            self.show_tabs = False
 
         self.parser = ap.parser
 

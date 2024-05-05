@@ -291,7 +291,9 @@ class App:
         config.set("compact", enabled)
 
     def check_compact(self) -> None:
-        if config.compact:
+        from .args import args
+
+        if config.compact or args.only_text:
             self.enable_compact()
         else:
             self.disable_compact()

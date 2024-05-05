@@ -127,7 +127,7 @@ class Book(tk.Frame):
         self.tabs_container.bind("<Configure>", lambda e: self.update_tabs())
         self.tabs_container.configure(background=app.theme.tabs_container_color)
 
-        if args.tabs:
+        if args.show_tabs:
             self.tabs_canvas.grid(row=0, column=0, sticky="ew")
 
         self.tabs_frame.grid(row=0, column=0, sticky="ew")
