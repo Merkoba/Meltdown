@@ -462,6 +462,16 @@ Action: store_true
 
 ---
 
+### only-text
+
+Only show the text output. This is a preset that sets other arguments
+
+Default: False
+
+Action: store_true
+
+---
+
 ### force
 
 Allow opening multiple instances
