@@ -103,7 +103,7 @@ tips = {
     "after": "Add this to the end of the prompt",
     "input": (
         " This is a message that the AI will respond to."
-        " Use the mousewheel or up/down arrows to cycle input history."
+        " Use up/down arrows to cycle input history."
         " You can also use commands here. See /help"
     ),
     "mode": (
