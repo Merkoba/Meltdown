@@ -472,6 +472,16 @@ Action: store_true
 
 ---
 
+### compact
+
+Start in compact mode
+
+Default: False
+
+Action: store_true
+
+---
+
 ### force
 
 Allow opening multiple instances

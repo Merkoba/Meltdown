@@ -14,7 +14,6 @@ from typing import List, Any, Optional
 from tkinterdnd2 import TkinterDnD  # type: ignore
 
 # Modules
-from .config import config
 from .theme import Theme
 from .utils import utils
 
@@ -49,6 +48,7 @@ class App:
         self.autorun_delay = 250
         self.geometry_delay = 250
         self.check_geometry_after = ""
+        self.compact_enabled = False
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -206,7 +206,7 @@ class App:
         self.update_bottom()
 
     def toggle_compact(self) -> None:
-        if config.compact:
+        if self.compact_enabled:
             self.disable_compact()
         else:
             self.enable_compact()
@@ -283,17 +283,16 @@ class App:
     def after_compact(self, enabled: bool) -> None:
         from .inputcontrol import inputcontrol
         from .display import display
-        from .config import config
 
         self.update()
         display.to_bottom()
         inputcontrol.focus()
-        config.set("compact", enabled)
+        self.compact_enabled = enabled
 
     def check_compact(self) -> None:
         from .args import args
 
-        if config.compact or args.only_text:
+        if args.compact or args.only_text:
             self.enable_compact()
         else:
             self.disable_compact()

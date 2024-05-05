@@ -384,6 +384,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "compact",
+            action="store_true",
+            info="Start in compact mode",
+        )
+
+        self.add_argument(
             "force",
             action="store_true",
             info="Allow opening multiple instances",

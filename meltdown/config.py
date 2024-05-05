@@ -41,7 +41,6 @@ class Config:
         self.default_format: str = "auto"
         self.default_before: str = ""
         self.default_after: str = ""
-        self.default_compact: bool = False
         self.default_font_size: int = 14
         self.default_font_family: str = "sans-serif"
         self.default_threads: int = 6
@@ -64,7 +63,6 @@ class Config:
         self.format = self.default_format
         self.before = self.default_before
         self.after = self.default_after
-        self.compact = self.default_compact
         self.font_size = self.default_font_size
         self.font_family = self.default_font_family
         self.threads = self.default_threads
@@ -187,7 +185,6 @@ class Config:
             display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
-        from .app import app
         from .args import args
         from .paths import paths
         from .widgets import widgets
@@ -217,7 +214,6 @@ class Config:
         with path.open("r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
-            app.check_compact()
             self.on_font_change()
 
     def apply(self, file: IO[str]) -> None:
@@ -355,7 +351,6 @@ class Config:
         return True
 
     def reset(self, force: bool = False) -> None:
-        from .app import app
         from .model import model
         from .widgets import widgets
         from .dialogs import Dialog
@@ -375,7 +370,6 @@ class Config:
             self.on_font_change()
             self.on_mode_change()
             widgets.fill()
-            app.check_compact()
             self.save()
             model.unload(True)
 

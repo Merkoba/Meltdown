@@ -154,6 +154,7 @@ class Args:
         self.tab_double_click = True
         self.arrow_mode = "history"
         self.only_text = False
+        self.compact = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -314,6 +315,7 @@ class Args:
             "auto_name_length",
             "arrow_mode",
             "only_text",
+            "compact",
         ]
 
         for n_item in normals:
@@ -328,6 +330,7 @@ class Args:
                 self.input = string_arg
 
         if self.only_text:
+            self.compact = True
             self.compact_model = True
             self.compact_system = True
             self.compact_details_1 = True
