@@ -232,5 +232,9 @@ class Utils:
 
         return text
 
+    def shorten(self, text: str) -> str:
+        words = re.split(r"[\s-]", text)
+        return "".join(word[0].upper() for word in words if word)
+
 
 utils = Utils()

@@ -516,6 +516,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "short_system",
+            action="store_true",
+            info="Use the short version of system monitors",
+        )
+
+        self.add_argument(
             "errors",
             action="store_true",
             info="Show error messages",

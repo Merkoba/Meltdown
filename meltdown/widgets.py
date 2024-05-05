@@ -176,7 +176,7 @@ class Widgets:
 
             def make_monitor(name: str, label_text: str, mode: str) -> None:
                 label = widgetutils.make_label(
-                    frame_data_system, label_text, ignore_short=True
+                    frame_data_system, label_text, ignore_short=(not args.short_system)
                 )
 
                 label.configure(cursor="hand2")

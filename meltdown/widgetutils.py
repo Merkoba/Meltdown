@@ -5,6 +5,7 @@ from typing import Any, Union, Callable, Optional, List, Tuple
 
 # Modules
 from .app import app
+from .utils import utils
 from .args import args
 from .entrybox import EntryBox
 from .buttonbox import ButtonBox
@@ -107,7 +108,7 @@ def make_button(
     width: Optional[int] = None,
 ) -> ButtonBox:
     if args.short_buttons:
-        text = text[:1]
+        text = utils.shorten(text)
 
     widget = get_button(
         frame_data.frame, text, command, style=style, width=width, bigger=bigger
@@ -134,7 +135,7 @@ def make_label(
     text = f"{text}:" if colons else text
 
     if args.short_labels and (not ignore_short):
-        text = text[:1]
+        text = utils.shorten(text)
 
     widget = tk.Label(frame_data.frame, text=text, font=app.theme.font())
 

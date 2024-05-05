@@ -692,6 +692,16 @@ Action: store_true
 
 ---
 
+### short-system
+
+Use the short version of system monitors
+
+Default: False
+
+Action: store_true
+
+---
+
 ### errors
 
 Show error messages

@@ -141,6 +141,7 @@ class Args:
         self.short_labels = False
         self.show_labels = True
         self.short_buttons = False
+        self.short_system = False
         self.syntax_highlighting = True
         self.emoji_unloaded = "👻"
         self.emoji_local = "✅"
@@ -302,6 +303,7 @@ class Args:
             "snippets_font",
             "short_labels",
             "short_buttons",
+            "short_system",
             "emoji_unloaded",
             "emoji_local",
             "emoji_remote",
