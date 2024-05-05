@@ -72,18 +72,10 @@ class InputControl:
             prev_button.grid_remove()
             next_button.grid_remove()
 
-    def wheel_up(self) -> None:
-        ToolTip.hide_all()
-        self.history_down()
-
-    def wheel_down(self) -> None:
-        ToolTip.hide_all()
-        self.history_up()
+        self.input.bind_mousewheel()
 
     def bind(self) -> None:
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
-        self.input.bind("<Button-4>", lambda e: self.wheel_up())
-        self.input.bind("<Button-5>", lambda e: self.wheel_down())
 
     def show_menu(self, event: Optional[Any] = None) -> None:
         from .widgets import widgets
