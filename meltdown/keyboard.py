@@ -339,7 +339,7 @@ class Keyboard:
 
         self.register(
             "<Up>",
-            lambda: inputcontrol.history_up(),
+            lambda: self.up_arrow(),
             on_ctrl=lambda: run_command("top"),
             on_shift=lambda: run_command("context"),
             help="History up",
@@ -349,7 +349,7 @@ class Keyboard:
 
         self.register(
             "<Down>",
-            lambda: inputcontrol.history_down(),
+            lambda: self.down_arrow(),
             on_ctrl=lambda: run_command("bottom"),
             help="History down",
             ctrl_help="Scroll to bottom",
@@ -519,6 +519,18 @@ class Keyboard:
 
     def on_double_ctrl(self) -> None:
         commands.show_palette()
+
+    def up_arrow(self) -> None:
+        if args.arrow_mode == "history":
+            inputcontrol.history_up()
+        elif args.arrow_mode == "scroll":
+            commands.run("scrollup")
+
+    def down_arrow(self) -> None:
+        if args.arrow_mode == "history":
+            inputcontrol.history_down()
+        elif args.arrow_mode == "scroll":
+            commands.run("scrolldown")
 
 
 keyboard = Keyboard()

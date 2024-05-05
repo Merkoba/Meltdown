@@ -976,7 +976,7 @@ Type: int
 
 Max char length for auto tab names
 
-Default: 35
+Default: 30
 
 Type: int
 
@@ -1311,5 +1311,17 @@ What mode to use when naming new tabs
 Default: "random"
 
 Choices: "random", "noun", "empty"
+
+Type: str
+
+---
+
+### arrow-mode
+
+What to do on up and down arrows
+
+Default: "history"
+
+Choices: "history", "scroll"
 
 Type: str

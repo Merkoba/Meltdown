@@ -891,5 +891,12 @@ class ArgSpec:
             info="What mode to use when naming new tabs",
         )
 
+        self.add_argument(
+            "arrow_mode",
+            type=str,
+            choices=["history", "scroll"],
+            info="What to do on up and down arrows",
+        )
+
 
 argspec = ArgSpec()

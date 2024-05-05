@@ -151,6 +151,7 @@ class Args:
         self.auto_name = True
         self.auto_name_length = 30
         self.tab_double_click = True
+        self.arrow_mode = "history"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -308,6 +309,7 @@ class Args:
             "emoji_storage",
             "name_mode",
             "auto_name_length",
+            "arrow_mode",
         ]
 
         for n_item in normals:
