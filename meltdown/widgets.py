@@ -558,7 +558,15 @@ class Widgets:
             value = widget.get()
 
             if value:
-                menu.add(text="Copy", command=lambda e: self.copy(key))
+                selected = ""
+
+                if isinstance(widget, EntryBox):
+                    maybesel = widget.get_selected()
+
+                    if maybesel:
+                        selected = maybesel
+
+                menu.add(text="Copy", command=lambda e: self.copy(key, text=selected))
 
             if isinstance(widget, TextWidget):
                 menu.add(text="Paste", command=lambda e: self.paste(key))
@@ -719,16 +727,20 @@ class Widgets:
     def load_or_unload(self) -> None:
         model.load_or_unload()
 
-    def copy(self, key: str) -> None:
+    def copy(self, key: str, text: Optional[str] = None) -> None:
         widget = self.get_widget(key)
 
         if not widget:
             return
 
-        if isinstance(widget, Gettable):
-            utils.copy(widget.get())
-            widget.focus_set()
-            config.update(key)
+        assert isinstance(widget, Gettable)
+
+        if not text:
+            text = widget.get()
+
+        utils.copy(text)
+        widget.focus_set()
+        config.update(key)
 
     def paste(self, key: str) -> None:
         widget = self.get_widget(key)
@@ -872,18 +884,6 @@ class Widgets:
         def action(ans: Dict[str, Any]) -> None:
             config.set("system", ans["text"])
 
-        def copy(textbox: TextBox) -> None:
-            utils.copy(textbox.get_text())
-            textbox.focus_end()
-
-        def paste(textbox: TextBox) -> None:
-            utils.paste(textbox)
-            textbox.focus_end()
-
-        def clear(textbox: TextBox) -> None:
-            textbox.set_text("")
-            textbox.focus_end()
-
         def reset(textbox: TextBox) -> None:
             value = config.get_default("system")
 
@@ -897,12 +897,13 @@ class Widgets:
             text = textbox.get_text()
 
             if text:
-                menu.add(text="Copy", command=lambda e: copy(textbox))
+                selected = textbox.get_selected()
+                menu.add(text="Copy", command=lambda e: textbox.copy(selected))
 
-            menu.add(text="Paste", command=lambda e: paste(textbox))
+            menu.add(text="Paste", command=lambda e: textbox.paste())
 
             if text:
-                menu.add(text="Clear", command=lambda e: clear(textbox))
+                menu.add(text="Clear", command=lambda e: textbox.clear())
 
             if text != config.get_default("system"):
                 menu.add(text="Reset", command=lambda e: reset(textbox))

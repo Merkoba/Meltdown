@@ -9,6 +9,7 @@ from tkinterdnd2 import DND_TEXT  # type: ignore
 # Modules
 from .app import app
 from .args import args
+from .utils import utils
 from .dialogs import Dialog
 from .keyboard import keyboard
 
@@ -84,6 +85,12 @@ class TextBox(tk.Text):
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
         self.bind("<Left>", lambda e: self.on_left())
         self.bind("<Right>", lambda e: self.on_right())
+
+    def get_selected(self) -> Optional[str]:
+        try:
+            return str(self.selection_get())  # type: ignore
+        except tk.TclError:
+            return None
 
     def on_tab(self) -> str:
         from .autocomplete import autocomplete
@@ -168,14 +175,6 @@ class TextBox(tk.Text):
 
         self.focus_set()
 
-    def paste(self) -> None:
-        try:
-            start = self.index(tk.SEL_FIRST)
-            end = self.index(tk.SEL_LAST)
-            self.delete(start, end)
-        except tk.TclError:
-            pass
-
     def set_text(self, text: str, on_change: bool = True) -> None:
         self.delete("1.0", tk.END)
         self.insert("1.0", text)
@@ -241,3 +240,23 @@ class TextBox(tk.Text):
     def move_to_end(self) -> None:
         self.mark_set(tk.INSERT, tk.END)
         self.see(tk.END)
+
+    def copy(self, text: Optional[str] = None) -> None:
+        if not text:
+            text = self.get_text()
+
+        utils.copy(text)
+        self.focus_end()
+
+    def paste(self) -> None:
+        try:
+            start = self.index(tk.SEL_FIRST)
+            end = self.index(tk.SEL_LAST)
+            self.delete(start, end)
+            self.focus_end()
+        except tk.TclError:
+            pass
+
+    def clear(self) -> None:
+        self.set_text("")
+        self.focus_end()

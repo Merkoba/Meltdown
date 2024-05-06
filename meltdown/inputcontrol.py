@@ -284,29 +284,18 @@ class InputControl:
     def show_textbox(self) -> None:
         from .textbox import TextBox
 
-        def copy(textbox: TextBox) -> None:
-            utils.copy(textbox.get_text())
-            textbox.focus_end()
-
-        def paste(textbox: TextBox) -> None:
-            utils.paste(textbox)
-            textbox.focus_end()
-
-        def clear(textbox: TextBox) -> None:
-            textbox.set_text("")
-            textbox.focus_end()
-
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
             text = textbox.get_text()
 
             if text:
-                menu.add(text="Copy", command=lambda e: copy(textbox))
+                selected = textbox.get_selected()
+                menu.add(text="Copy", command=lambda e: textbox.copy(selected))
 
-            menu.add(text="Paste", command=lambda e: paste(textbox))
+            menu.add(text="Paste", command=lambda e: textbox.paste())
 
             if text:
-                menu.add(text="Clear", command=lambda e: clear(textbox))
+                menu.add(text="Clear", command=lambda e: textbox.clear())
 
             items = files.get_list("inputs")[: args.max_list_items]
 
