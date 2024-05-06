@@ -155,6 +155,7 @@ class Args:
         self.arrow_mode = "history"
         self.only_text = False
         self.compact = False
+        self.no_exit = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -316,6 +317,7 @@ class Args:
             "arrow_mode",
             "only_text",
             "compact",
+            "no_exit",
         ]
 
         for n_item in normals:

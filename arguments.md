@@ -482,6 +482,16 @@ Action: store_true
 
 ---
 
+### no-exit
+
+Disable exit commands
+
+Default: False
+
+Action: store_true
+
+---
+
 ### force
 
 Allow opening multiple instances

@@ -113,11 +113,8 @@ class Logs:
             elif mode == "json":
                 s = "JSON"
 
-            if num == 1:
-                msg = f"{num} {s} log saved"
-            else:
-                msg = f"{num} {s} logs saved"
-
+            word = utils.singular_or_plural(num, "log", "logs")
+            msg = f"{num} {s} {word} saved."
             display.print(utils.emoji_text(msg, "storage"))
 
     def to_json(self, save_all: bool = False, name: Optional[str] = None) -> None:

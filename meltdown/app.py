@@ -88,6 +88,9 @@ class App:
         from .display import display
         from .dialogs import Dialog
 
+        if args.no_exit and (not force):
+            return
+
         if args.confirm_exit and (not force):
 
             def action() -> None:
@@ -103,7 +106,8 @@ class App:
         if not args.quiet:
             if seconds and seconds >= 1:
                 secs = int(d / 1000)
-                display.print(f"Exiting in {secs} seconds.")
+                word = utils.singular_or_plural(secs, "second", "seconds")
+                display.print(f"Exiting in {secs} {word}.")
 
         self.exit_after = self.root.after(d, lambda: self.root.destroy())
 

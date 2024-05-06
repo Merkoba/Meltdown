@@ -390,6 +390,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_exit",
+            action="store_true",
+            info="Disable exit commands",
+        )
+
+        self.add_argument(
             "force",
             action="store_true",
             info="Allow opening multiple instances",

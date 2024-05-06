@@ -236,5 +236,11 @@ class Utils:
         words = re.split(r"[\s-]", text)
         return "".join(word[0].upper() for word in words if word)
 
+    def singular_or_plural(self, num: int, singular: str, plural: str) -> str:
+        if num == 1:
+            return singular
+
+        return plural
+
 
 utils = Utils()
