@@ -156,6 +156,10 @@ class TabMenu:
 
         self.menu_multi.add("Rename", lambda e: display.rename_tab())
         self.menu_multi.add("Move", lambda e: display.move_tab())
+        self.menu_multi.add("Clear", lambda e: display.clear())
+
+        self.menu_multi.separator()
+
         self.menu_multi.add("Close", lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None, mode: str = "normal") -> None:
