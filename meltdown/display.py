@@ -782,6 +782,7 @@ class Display:
             return
 
         name = text[: args.auto_name_length]
+        name = name.rstrip(" ,.;")
         self.do_rename_tab(tab_id, name)
 
     def has_messages(self, tab_id: str) -> bool:
