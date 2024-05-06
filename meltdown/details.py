@@ -93,7 +93,7 @@ def add_format(widgets: "Widgets", data: "FrameData") -> None:
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
-    make_combobox(widgets, data, "format", values, width=15)
+    make_combobox(widgets, data, "format", values, width=14)
 
 
 def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
