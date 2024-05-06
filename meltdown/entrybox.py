@@ -197,6 +197,7 @@ class EntryBox(ttk.Entry):
         self.check_placeholder()
         self.clean_string()
         self.icursor(pos)
+        self.xview(pos)
 
     def get_clean_string(self, text: str) -> str:
         text = re.sub(r"\n+", " ", text)
