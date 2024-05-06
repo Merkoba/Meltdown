@@ -108,13 +108,9 @@ class Logs:
             if args.quiet or (not args.log_feedback):
                 return
 
-            if mode == "text":
-                s = "text"
-            elif mode == "json":
-                s = "JSON"
-
+            f_type = "text" if mode == "text" else "JSON"
             word = utils.singular_or_plural(num, "log", "logs")
-            msg = f"{num} {s} {word} saved."
+            msg = f"{num} {f_type} {word} saved."
             display.print(utils.emoji_text(msg, "storage"))
 
     def to_json(self, save_all: bool = False, name: Optional[str] = None) -> None:
