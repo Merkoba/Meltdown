@@ -308,19 +308,19 @@ class Widgets:
         frame_data_buttons.expand()
         ToolTip(self.new_button, tips["new_button"])
 
-        self.close_button = widgetutils.make_button(
-            frame_data_buttons, "Close", lambda: display.close_tab()
-        )
-
-        frame_data_buttons.expand()
-        ToolTip(self.close_button, tips["close_button"])
-
         self.clear_button = widgetutils.make_button(
             frame_data_buttons, "Clear", lambda: display.clear()
         )
 
         frame_data_buttons.expand()
         ToolTip(self.clear_button, tips["clear_button"])
+
+        self.close_button = widgetutils.make_button(
+            frame_data_buttons, "Close", lambda: display.close_tab()
+        )
+
+        frame_data_buttons.expand()
+        ToolTip(self.close_button, tips["close_button"])
 
         self.top_button = widgetutils.make_button(
             frame_data_buttons, "Top", lambda: display.to_top()
