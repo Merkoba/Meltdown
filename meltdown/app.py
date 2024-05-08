@@ -49,6 +49,7 @@ class App:
         self.geometry_delay = 250
         self.check_geometry_after = ""
         self.compact_enabled = False
+        self.has_tabs = True
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -639,6 +640,14 @@ class App:
 
             self.update()
             widgets.model.move_to_end()
+
+        if display.num_tabs_open <= 1:
+            if self.has_tabs:
+                self.has_tabs = False
+                widgets.disable_close_button()
+        elif not self.has_tabs:
+            self.has_tabs = True
+            widgets.enable_close_button()
 
     def start_checks(self) -> None:
         self.do_checks()

@@ -172,6 +172,7 @@ class Book(tk.Frame):
         self.on_tabs_double_click: Optional[Callable[..., Any]] = None
         self.on_change: Optional[Callable[..., Any]] = None
         self.on_reorder: Optional[Callable[..., Any]] = None
+        self.on_num_tabs_change: Optional[Callable[..., Any]] = None
 
         self.discover_debouncer = ""
         self.discover_delay = 250
@@ -231,6 +232,7 @@ class Book(tk.Frame):
         self.add_tab(page)
         self.add_content(page.content)
         self.check_max_tabs()
+        self.check_num_tabs_change()
         return page
 
     def check_max_tabs(self) -> None:
@@ -447,6 +449,7 @@ class Book(tk.Frame):
         self.update_tab_columns()
         self.discover()
         self.check_hide_tabs()
+        self.check_num_tabs_change()
 
     def do_tab_drag(self, event: Any, page: Page) -> None:
         if not args.reorder:
@@ -652,3 +655,9 @@ class Book(tk.Frame):
             self.hide_tabs()
         else:
             self.show_tabs()
+
+    def check_num_tabs_change(self) -> Optional[int]:
+        if self.on_num_tabs_change:
+            self.on_num_tabs_change(len(self.pages))
+
+        return None

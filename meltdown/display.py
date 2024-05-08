@@ -43,6 +43,11 @@ class Display:
         self.current_tab: str = "none"
         self.tab_streaming: str = "none"
         self.book: Book
+        self.min_font_size = 6
+        self.max_font_size = 36
+        self.num_tabs_open = 0
+        self.tab_number = 1
+        self.max_old_tabs = 5
 
     def make(self) -> None:
         from .widgets import widgets
@@ -53,17 +58,12 @@ class Display:
         self.tabs: Dict[str, Tab] = {}
         self.tab_list_menu = Menu()
 
-        self.tab_number = 1
-        self.max_old_tabs = 5
-
         self.book.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
         self.book.on_tabs_click = lambda: self.on_tabs_click()
         self.book.on_tabs_double_click = lambda: self.on_tabs_double_click()
         self.book.on_tab_middle_click = lambda id: self.on_tab_middle_click(id)
         self.book.on_reorder = lambda: self.update_session()
-
-        self.min_font_size = 6
-        self.max_font_size = 36
+        self.book.on_num_tabs_change = lambda n: self.on_num_tabs_change(n)
 
     def make_tab(
         self,
@@ -1070,6 +1070,9 @@ class Display:
 
     def toggle_tabs(self) -> None:
         self.book.toggle_tabs()
+
+    def on_num_tabs_change(self, num: int) -> None:
+        self.num_tabs_open = num
 
 
 display = Display()

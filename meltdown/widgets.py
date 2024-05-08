@@ -544,6 +544,7 @@ class Widgets:
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
         self.top_button.set_bind("<Button-4>", lambda e: display.scroll_up())
         self.top_button.set_bind("<Button-5>", lambda e: display.scroll_down())
+        self.close_button.set_bind("<Button-2>", lambda e: display.close_other_tabs())
         inputcontrol.bind()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
@@ -687,6 +688,14 @@ class Widgets:
     def disable_load_button(self) -> None:
         if app.exists():
             self.load_button.set_style("disabled")
+
+    def enable_close_button(self) -> None:
+        if app.exists():
+            self.close_button.set_style("normal")
+
+    def disable_close_button(self) -> None:
+        if app.exists():
+            self.close_button.set_style("disabled")
 
     def enable_format_select(self) -> None:
         if app.exists():
