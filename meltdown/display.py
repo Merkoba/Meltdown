@@ -349,11 +349,11 @@ class Display:
 
         self.tab_list_menu.show(event, widget=widget)
 
-    def rename_tab(self, current: bool = False, name: Optional[str] = None) -> None:
-        if current:
+    def rename_tab(
+        self, tab_id: Optional[str] = None, name: Optional[str] = None
+    ) -> None:
+        if not tab_id:
             tab_id = self.current_tab
-        else:
-            tab_id = self.tab_menu_id
 
         if name:
             self.do_rename_tab(tab_id, name)
@@ -939,14 +939,12 @@ class Display:
             self.print(text, tab_id=new_tab)
             self.to_top(tab_id=new_tab)
 
-    def move_tab(self, current: bool = False) -> None:
+    def move_tab(self, tab_id: Optional[str] = None) -> None:
         if len(self.tab_ids()) <= 1:
             return
 
-        if current:
+        if not tab_id:
             tab_id = self.current_tab
-        else:
-            tab_id = self.tab_menu_id
 
         cmds = []
         cmds.append(("To Start", lambda: self.move_tab_to_start(tab_id)))

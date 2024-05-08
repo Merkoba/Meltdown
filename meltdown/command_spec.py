@@ -264,7 +264,7 @@ class CommandSpec:
         self.add_cmd(
             "move",
             "Move tab to the start or end",
-            lambda a=None: display.move_tab(True),
+            lambda a=None: display.move_tab(),
         )
 
         self.add_cmd(
@@ -402,7 +402,7 @@ class CommandSpec:
         self.add_cmd(
             "rename",
             "Rename the tab",
-            lambda a=None: display.rename_tab(True, name=a),
+            lambda a=None: display.rename_tab(name=a),
             type=str,
         )
 
