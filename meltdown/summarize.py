@@ -16,6 +16,9 @@ def summarize() -> None:
 
     text = conversation.to_text()
 
+    if not text:
+        return
+
     prompt = {}
     prompt["text"] = "Summarize this in a concise manner: "
     prompt["text"] += text

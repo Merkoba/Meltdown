@@ -13,6 +13,7 @@ class MainMenu:
         from .logs import logs
         from .commands import commands
         from .widgets import widgets
+        from . import summarize
 
         self.menu = Menu()
 
@@ -27,6 +28,7 @@ class MainMenu:
         self.menu.separator()
 
         self.menu.add("Commands", lambda e: commands.show_palette())
+        self.menu.add("Summarize", lambda e: summarize.summarize())
 
         self.menu.separator()
 
