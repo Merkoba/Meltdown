@@ -123,7 +123,7 @@ class Dialog:
         if value:
             entry.insert(0, value)
 
-        def copy(text: Optional[str]) -> None:
+        def copy(text: Optional[str] = None) -> None:
             if not text:
                 text = entry.get()
 

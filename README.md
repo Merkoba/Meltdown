@@ -179,6 +179,8 @@ Mouse gestures to perform actions.
 
 High contrast theme.
 
+Summarize conversations.
+
 And more.
 
 ---

@@ -983,7 +983,9 @@ class Widgets:
 
         more_menu.show(event)
 
-    def get_dir(self, what: Optional[str], list: Optional[str]) -> Optional[str]:
+    def get_dir(
+        self, what: Optional[str] = None, list: Optional[str] = None
+    ) -> Optional[str]:
         items = []
 
         if what:

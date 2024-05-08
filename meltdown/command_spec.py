@@ -12,6 +12,7 @@ from .logs import logs
 from .widgets import widgets
 from .inputcontrol import inputcontrol
 from .commands import commands
+from . import summarize
 from . import menumanager
 
 
@@ -571,6 +572,12 @@ class CommandSpec:
             "toggletabs",
             "Toggle tabs visibility",
             lambda a=None: display.toggle_tabs(),
+        )
+
+        self.add_cmd(
+            "summarize",
+            "Summarize the conversation",
+            lambda a=None: summarize.summarize(),
         )
 
 
