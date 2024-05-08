@@ -48,6 +48,7 @@ class Display:
         self.num_tabs_open = 0
         self.tab_number = 1
         self.max_old_tabs = 5
+        self.max_tabs = 999
 
     def make(self) -> None:
         from .widgets import widgets
@@ -74,6 +75,9 @@ class Display:
         save: bool = True,
     ) -> str:
         from .session import session
+
+        if self.num_tabs() >= self.max_tabs:
+            return ""
 
         if not name:
             if args.name_mode == "random":
@@ -195,6 +199,7 @@ class Display:
     def update_current_tab(self) -> None:
         tab_id = self.book.current()
         self.current_tab = tab_id
+        self.current_tab_object = self.get_tab(tab_id)
 
     def on_tab_change(self) -> None:
         from .inputcontrol import inputcontrol
@@ -258,7 +263,7 @@ class Display:
         self.print(header, tab_id=tab_id)
 
     def get_current_tab(self) -> Optional[Tab]:
-        return self.get_tab(self.current_tab)
+        return self.current_tab_object
 
     def get_current_output(self) -> Optional[Output]:
         return self.get_output(self.current_tab)
@@ -1073,6 +1078,14 @@ class Display:
 
     def on_num_tabs_change(self, num: int) -> None:
         self.num_tabs_open = num
+
+    def is_clearable(self) -> bool:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return False
+
+        return tab.modified
 
 
 display = Display()

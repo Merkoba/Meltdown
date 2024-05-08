@@ -697,6 +697,14 @@ class Widgets:
         if app.exists():
             self.close_button.set_style("disabled")
 
+    def enable_clear_button(self) -> None:
+        if app.exists():
+            self.clear_button.set_style("normal")
+
+    def disable_clear_button(self) -> None:
+        if app.exists():
+            self.clear_button.set_style("disabled")
+
     def enable_format_select(self) -> None:
         if app.exists():
             self.format.configure(style="Normal.TCombobox")
