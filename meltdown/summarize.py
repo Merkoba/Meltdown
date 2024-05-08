@@ -21,7 +21,7 @@ def summarize() -> None:
         return
 
     prompt = {}
-    prompt["user"] = args.summarize_prompt
+    prompt["user"] = "Please summarize this."
     prompt["text"] = f"{args.summarize_prompt}: "
     prompt["text"] += text
 
