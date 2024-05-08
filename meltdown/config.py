@@ -46,7 +46,7 @@ class Config:
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
-        self.default_gpu_layers = 33
+        self.default_gpu_layers = 27
         self.default_stop: str = "<|im_start|> ;; <|im_end|>"
         self.default_mode: str = "text"
 
