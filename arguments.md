@@ -204,6 +204,14 @@ Action: store_false
 
 ---
 
+### no-header
+
+Don't print the header in conversations
+
+Action: store_false
+
+---
+
 ### no-terminal
 
 Don't enable the interactive terminal
