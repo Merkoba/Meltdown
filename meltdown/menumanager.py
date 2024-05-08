@@ -13,7 +13,6 @@ class MainMenu:
         from .logs import logs
         from .commands import commands
         from .widgets import widgets
-        from . import summarize
 
         self.menu = Menu()
 
@@ -28,7 +27,6 @@ class MainMenu:
         self.menu.separator()
 
         self.menu.add("Commands", lambda e: commands.show_palette())
-        self.menu.add("Summarize", lambda e: summarize.summarize())
 
         self.menu.separator()
 
@@ -131,10 +129,11 @@ class MoreMenu:
 class TabMenu:
     def __init__(self) -> None:
         from .display import display
+        from . import summarize
 
         self.menu_single = Menu()
+        self.menu_single.add("Summarize", lambda e: summarize.summarize())
         self.menu_single.add("Rename", lambda e: display.rename_tab())
-        self.menu_single.add("Move", lambda e: display.move_tab())
         self.menu_single.add("Clear", lambda e: display.clear())
 
         self.menu_multi = Menu()
@@ -149,10 +148,11 @@ class TabMenu:
 
         self.menu_multi.add("First Tab", lambda e: display.select_first_tab())
         self.menu_multi.add("Last Tab", lambda e: display.select_last_tab())
+        self.menu_multi.add("Active Tab", lambda e: display.select_active_tab())
 
         self.menu_multi.separator()
 
-        self.menu_multi.add("Active Tab", lambda e: display.select_active_tab())
+        self.menu_multi.add("Summarize", lambda e: summarize.summarize())
 
         self.menu_multi.separator()
 
