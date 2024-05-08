@@ -585,3 +585,9 @@ Change the model mode
 ### toggletabs
 
 Toggle tabs visibility
+
+---
+
+### summarize
+
+Summarize the conversation

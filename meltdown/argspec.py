@@ -934,5 +934,11 @@ class ArgSpec:
             info="What to do on up and down arrows",
         )
 
+        self.add_argument(
+            "summarize_prompt",
+            type=str,
+            info="The instruction to tell the AI to summarize a conversation",
+        )
+
 
 argspec = ArgSpec()
