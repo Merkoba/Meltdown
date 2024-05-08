@@ -186,6 +186,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_header",
+            action="store_false",
+            info="Don't print the header in conversations",
+        )
+
+        self.add_argument(
             "no_terminal",
             action="store_false",
             info="Don't enable the interactive terminal",

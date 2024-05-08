@@ -217,8 +217,9 @@ class Display:
         inputcontrol.focus()
         self.check_scroll_buttons()
 
-    def show_intro(self, tab_id: Optional[str] = None) -> None:
-        if not args.intro:
+    def show_intro(self, tab_id: str) -> None:
+        if not args.show_intro:
+            self.show_header(tab_id)
             return
 
         text = "\n".join(app.intro)
@@ -247,6 +248,9 @@ class Display:
 
     def show_header(self, tab_id: str) -> None:
         from .session import session
+
+        if not args.show_header:
+            return
 
         tab = self.get_tab(tab_id)
 

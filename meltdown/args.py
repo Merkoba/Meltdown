@@ -81,7 +81,8 @@ class Args:
         self.compact_buttons = False
         self.compact_input = False
         self.display = False
-        self.intro = True
+        self.show_intro = True
+        self.show_header = True
         self.autorun = ""
         self.show_terminal = True
         self.terminal_height = 3
@@ -188,7 +189,8 @@ class Args:
             ("no_reorder", "reorder"),
             ("no_tab_highlight", "tab_highlight"),
             ("no_commands", "commands"),
-            ("no_intro", "intro"),
+            ("no_intro", "show_intro"),
+            ("no_header", "show_header"),
             ("no_terminal", "show_terminal"),
             ("no_clean_slate", "clean_slate"),
             ("no_emojis", "emojis"),
