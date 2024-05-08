@@ -1388,6 +1388,6 @@ Type: str
 
 The instruction to tell the AI to summarize a conversation
 
-Default: "Summarize this in a concise manner"
+Default: "Summarize this in a concise manner without addressing me"
 
 Type: str
