@@ -192,6 +192,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_disable_buttons",
+            action="store_false",
+            info="Don't disable buttons based on state",
+        )
+
+        self.add_argument(
             "no_terminal",
             action="store_false",
             info="Don't enable the interactive terminal",

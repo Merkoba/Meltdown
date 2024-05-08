@@ -212,6 +212,14 @@ Action: store_false
 
 ---
 
+### no-disable-buttons
+
+Don't disable buttons based on state
+
+Action: store_false
+
+---
+
 ### no-terminal
 
 Don't enable the interactive terminal

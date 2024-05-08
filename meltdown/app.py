@@ -601,32 +601,11 @@ class App:
             sys.exit(0)
 
     def do_checks(self) -> None:
+        from .args import args
         from .model import model
         from .commands import commands
         from .widgets import widgets
         from .display import display
-
-        if model.streaming:
-            if not self.streaming:
-                self.streaming = True
-                widgets.enable_stop_button()
-        elif self.streaming:
-            self.streaming = False
-            widgets.disable_stop_button()
-            display.stream_stopped()
-            commands.after_stream()
-
-        model_empty = widgets.model.get() == ""
-
-        if model.model_loading or (model_empty and (not model.loaded_model)):
-            if not self.loading:
-                self.loading = True
-                widgets.disable_load_button()
-                widgets.disable_format_select()
-        elif self.loading:
-            self.loading = False
-            widgets.enable_load_button()
-            widgets.enable_format_select()
 
         if model.loaded_model:
             if not self.loaded:
@@ -642,21 +621,44 @@ class App:
             self.update()
             widgets.model.move_to_end()
 
-        if display.num_tabs_open <= 1:
-            if self.close_enabled:
-                self.close_enabled = False
-                widgets.disable_close_button()
-        elif not self.close_enabled:
-            self.close_enabled = True
-            widgets.enable_close_button()
+        if model.streaming:
+            if not self.streaming:
+                self.streaming = True
+                widgets.enable_stop_button()
+        elif self.streaming:
+            self.streaming = False
+            widgets.disable_stop_button()
+            display.stream_stopped()
+            commands.after_stream()
 
-        if not display.is_clearable():
-            if self.clear_enabled:
-                self.clear_enabled = False
-                widgets.disable_clear_button()
-        elif not self.clear_enabled:
-            self.clear_enabled = True
-            widgets.enable_clear_button()
+        if args.disable_buttons:
+            model_empty = widgets.model.get() == ""
+
+            if model.model_loading or (model_empty and (not model.loaded_model)):
+                if not self.loading:
+                    self.loading = True
+                    widgets.disable_load_button()
+                    widgets.disable_format_select()
+            elif self.loading:
+                self.loading = False
+                widgets.enable_load_button()
+                widgets.enable_format_select()
+
+            if display.num_tabs_open <= 1:
+                if self.close_enabled:
+                    self.close_enabled = False
+                    widgets.disable_close_button()
+            elif not self.close_enabled:
+                self.close_enabled = True
+                widgets.enable_close_button()
+
+            if not display.is_clearable():
+                if self.clear_enabled:
+                    self.clear_enabled = False
+                    widgets.disable_clear_button()
+            elif not self.clear_enabled:
+                self.clear_enabled = True
+                widgets.enable_clear_button()
 
     def start_checks(self) -> None:
         self.do_checks()

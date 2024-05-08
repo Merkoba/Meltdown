@@ -157,6 +157,7 @@ class Args:
         self.only_text = False
         self.compact = False
         self.no_exit = False
+        self.disable_buttons = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -225,6 +226,7 @@ class Args:
             ("no_syntax_highlighting", "syntax_highlighting"),
             ("no_auto_name", "auto_name"),
             ("no_tab_double_click", "tab_double_click"),
+            ("no_disable_buttons", "disable_buttons"),
         ]
 
         for r_item in other_name:

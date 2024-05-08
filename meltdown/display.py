@@ -264,7 +264,7 @@ class Display:
 
         nice_date = utils.to_date(conversation.created)
         header = f"Created: {nice_date}"
-        self.print(header, tab_id=tab_id)
+        self.print(header, tab_id=tab_id, modified=False)
 
     def get_current_tab(self) -> Optional[Tab]:
         return self.current_tab_object
@@ -558,7 +558,9 @@ class Display:
         if output:
             output.deselect_all()
 
-    def print(self, text: str, tab_id: Optional[str] = None) -> None:
+    def print(
+        self, text: str, tab_id: Optional[str] = None, modified: bool = True
+    ) -> None:
         if not app.exists():
             return
 
@@ -571,7 +573,9 @@ class Display:
             return
 
         tab.output.print(text)
-        tab.modified = True
+
+        if modified:
+            tab.modified = True
 
     def insert(self, text: str, tab_id: Optional[str] = None) -> None:
         if not app.exists():
@@ -634,10 +638,11 @@ class Display:
         else:
             tab.bottom.show()
 
-        if yview[0] <= 0.0001:
-            widgets.disable_top_button()
-        else:
-            widgets.enable_top_button()
+        if args.disable_buttons:
+            if yview[0] <= 0.0001:
+                widgets.disable_top_button()
+            else:
+                widgets.enable_top_button()
 
     def tab_left(self) -> None:
         self.book.select_left()
