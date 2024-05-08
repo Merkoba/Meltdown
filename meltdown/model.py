@@ -346,10 +346,12 @@ class Model:
         else:
             messages.append({"role": "user", "content": prompt_text})
 
+        o_text = prompt_user if prompt_user else original_text
+
         if not prompt_user:
             prompt_user = prompt_text
 
-        display.prompt("user", text=prompt_user, tab_id=tab_id, original=original_text)
+        display.prompt("user", text=prompt_user, tab_id=tab_id, original=o_text)
 
         now = utils.now()
         self.stream_date = now
