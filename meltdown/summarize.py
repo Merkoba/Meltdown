@@ -1,11 +1,18 @@
+# Standard
+from typing import Optional
+
+# Modules
 from .args import args
 from .display import display
 from .session import session
 from .model import model
 
 
-def summarize() -> None:
-    tab = display.get_current_tab()
+def summarize(tab_id: Optional[str] = None) -> None:
+    if not tab_id:
+        tab_id = display.current_tab
+
+    tab = display.get_tab(tab_id)
 
     if not tab:
         return

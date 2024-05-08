@@ -19,11 +19,13 @@ class MenuItem:
         separator: bool = False,
         disabled: bool = False,
         tooltip: str = "",
+        underline: bool = False,
     ):
         self.text = text
         self.command = command
         self.separator = separator
         self.disabled = disabled
+        self.underline = underline
         self.tooltip = tooltip
         self.coords = {"x": 0, "y": 0}
         self.filter_text = text.lower().replace(" ", "")
@@ -55,8 +57,13 @@ class Menu:
         command: Optional[Callable[..., Any]] = None,
         disabled: bool = False,
         tooltip: str = "",
+        underline: bool = False,
     ) -> None:
-        self.items.append(MenuItem(text, command, disabled=disabled, tooltip=tooltip))
+        self.items.append(
+            MenuItem(
+                text, command, disabled=disabled, tooltip=tooltip, underline=underline
+            )
+        )
 
     def separator(self) -> None:
         self.items.append(MenuItem("", lambda: None, separator=True))
@@ -189,6 +196,8 @@ class Menu:
                 separator.grid(row=i, column=0, sticky="ew")
                 self.separators.append(separator)
             else:
+                font = "menu_underline" if item.underline else "menu"
+
                 label = ttk.Label(
                     self.container,
                     text=item.text,
@@ -197,7 +206,7 @@ class Menu:
                     wraplength=600,
                     justify=tk.LEFT,
                     anchor="w",
-                    font=app.theme.font("menu"),
+                    font=app.theme.font(font),
                     borderwidth=0,
                     padding=(4, 2, 4, 2),
                 )

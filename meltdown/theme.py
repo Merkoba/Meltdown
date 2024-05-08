@@ -208,6 +208,9 @@ class Theme:
         if name == "menu":
             return (fam, self.font_menu_size + diff, "normal")
 
+        if name == "menu_underline":
+            return (fam, self.font_menu_size + diff, "underline")
+
         if name == "tooltips":
             return (fam, self.font_tooltips_size + diff, "normal")
 

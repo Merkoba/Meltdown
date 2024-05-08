@@ -244,6 +244,7 @@ class Display:
         else:
             self.show_intro(tab_id)
 
+        tab.modified = False
         tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
@@ -306,7 +307,7 @@ class Display:
 
         self.tab_menu_id = tab_id
         self.tab_menu_event = event
-        tab_menu.show(event, "right_click")
+        tab_menu.show(event, "tab_right_click")
 
     def on_tab_middle_click(self, tab_id: str) -> None:
         self.close_tab(tab_id=tab_id, method="middle_click")
@@ -331,8 +332,17 @@ class Display:
             def command() -> None:
                 return self.select_tab(page.id)
 
+            tab = self.get_tab(page.id)
+
+            if not tab:
+                return
+
+            underline = tab.streaming
             name = f"{num}. {page.name}"
-            self.tab_list_menu.add(text=name, command=lambda e: command())
+
+            self.tab_list_menu.add(
+                text=name, command=lambda e: command(), underline=underline
+            )
 
         for i, page in enumerate(self.book.pages):
             add_item(page, i + 1)
@@ -527,8 +537,14 @@ class Display:
         if not tab:
             return
 
-        if not tab.modified:
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
             return
+
+        if not conversation.items:
+            if not tab.modified:
+                return
 
         def action() -> None:
             if (not tab) or (not tab.output):
@@ -536,8 +552,7 @@ class Display:
 
             tab.output.clear_text()
             session.clear(tab.conversation_id)
-            self.show_header(tab.tab_id)
-            display.print("")
+            self.show_intro(tab.tab_id)
             tab.modified = False
 
         if force or (not args.confirm_clear):

@@ -132,33 +132,30 @@ class TabMenu:
         from . import summarize
 
         self.menu_single = Menu()
-        self.menu_single.add("Summarize", lambda e: summarize.summarize())
+        self.menu_single.add(
+            "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)
+        )
         self.menu_single.add("Rename", lambda e: display.rename_tab())
-        self.menu_single.add("Clear", lambda e: display.clear())
+        self.menu_single.add(
+            "Clear", lambda e: display.clear(tab_id=display.tab_menu_id)
+        )
 
         self.menu_multi = Menu()
         self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
 
         self.menu_multi.separator()
 
-        self.menu_multi.add("Tab Left", lambda e: display.tab_left())
-        self.menu_multi.add("Tab Right", lambda e: display.tab_right())
-
-        self.menu_multi.separator()
-
-        self.menu_multi.add("First Tab", lambda e: display.select_first_tab())
-        self.menu_multi.add("Last Tab", lambda e: display.select_last_tab())
-        self.menu_multi.add("Active Tab", lambda e: display.select_active_tab())
-
-        self.menu_multi.separator()
-
-        self.menu_multi.add("Summarize", lambda e: summarize.summarize())
+        self.menu_multi.add(
+            "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)
+        )
 
         self.menu_multi.separator()
 
         self.menu_multi.add("Rename", lambda e: display.rename_tab())
         self.menu_multi.add("Move", lambda e: display.move_tab())
-        self.menu_multi.add("Clear", lambda e: display.clear())
+        self.menu_multi.add(
+            "Clear", lambda e: display.clear(tab_id=display.tab_menu_id)
+        )
 
         self.menu_multi.separator()
 
@@ -173,7 +170,9 @@ class TabMenu:
             menu = self.menu_single
 
         if event:
-            display.tab_menu_id = display.current_tab
+            if mode == "normal":
+                display.tab_menu_id = display.current_tab
+
             menu.show(event)
         else:
             page = display.book.current_page
@@ -184,7 +183,9 @@ class TabMenu:
             widget = page.tab.frame
 
             if widget:
-                display.tab_menu_id = page.id
+                if mode == "normal":
+                    display.tab_menu_id = page.id
+
                 menu.show(widget=widget)
 
 
