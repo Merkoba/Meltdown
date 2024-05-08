@@ -69,6 +69,13 @@ class Logs:
                 app.run_command([cmd, str(file_path)])
 
     def save(self, mode: str, save_all: bool, name: Optional[str] = None) -> None:
+        if mode == "text":
+            ext = "txt"
+        elif mode == "json":
+            ext = "json"
+        else:
+            return
+
         num = 0
 
         conversations = (
@@ -76,11 +83,6 @@ class Logs:
             if save_all
             else [session.get_current_conversation()]
         )
-
-        if mode == "text":
-            ext = "txt"
-        elif mode == "json":
-            ext = "json"
 
         for conversation in conversations:
             if not conversation:
@@ -90,6 +92,8 @@ class Logs:
                 text = self.get_text(conversation)
             elif mode == "json":
                 text = self.get_json(conversation)
+            else:
+                text = ""
 
             if not text:
                 continue

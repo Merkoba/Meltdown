@@ -511,6 +511,8 @@ class App:
         elif what == "keyboard":
             tab_id = display.make_tab("Keyboard", mode="ignore")
             keyboard.show_help(tab_id=tab_id, mode=mode)
+        else:
+            return
 
         display.to_top(tab_id=tab_id)
 

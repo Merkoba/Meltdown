@@ -179,7 +179,6 @@ class Snippet(tk.Frame):
 
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)
-        Output.tab_id = self.parent.tab_id
 
         Output.words = self.text.get(
             f"{current_index} wordstart", f"{current_index} wordend"

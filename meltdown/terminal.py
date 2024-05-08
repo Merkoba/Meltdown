@@ -23,7 +23,7 @@ words: List[str] = []
 
 class SlashCompleter(Completer):
     def get_completions(
-        self, document: Document, event: Any
+        self, document: Document, complete_event: Any
     ) -> Generator[Completion, None, None]:
         text = document.get_word_before_cursor(WORD=True).strip()
 

@@ -90,6 +90,9 @@ class Markdown:
             elif args.markdown == "ai":
                 name_a = "user"
                 name_b = "ai"
+            else:
+                name_a = "user"
+                name_b = "ai"
 
             for i, item in enumerate(markers):
                 if item["who"] == name_a:

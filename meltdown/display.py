@@ -969,6 +969,8 @@ class Display:
 
         if is_regex:
             regex_query = query[1:-1]
+        else:
+            regex_query = ""
 
         def find(value: str) -> bool:
             if is_regex and re.search(regex_query, value, re.IGNORECASE):
