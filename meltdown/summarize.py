@@ -17,7 +17,7 @@ def summarize() -> None:
     text = conversation.to_text()
 
     prompt = {}
-    prompt["text"] = "Summarize this in a concise manner:"
+    prompt["text"] = "Summarize this in a concise manner: "
     prompt["text"] += text
     prompt["user"] = "Summarize this in a concise manner."
 

@@ -296,7 +296,7 @@ class Model:
         if not conversation:
             return
 
-        log_dict = {"user": prompt_text}
+        log_dict = {"user": prompt_user if prompt_user else prompt_text}
         system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
