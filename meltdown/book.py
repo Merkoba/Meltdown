@@ -176,6 +176,7 @@ class Book(tk.Frame):
 
         self.discover_debouncer = ""
         self.discover_delay = 250
+        self.num_tabs_after = ""
 
     def tab_click(self, id: str) -> None:
         self.end_tab_drag()
@@ -658,6 +659,13 @@ class Book(tk.Frame):
 
     def check_num_tabs_change(self) -> Optional[int]:
         if self.on_num_tabs_change:
-            self.on_num_tabs_change(len(self.pages))
+            if self.num_tabs_after:
+                app.root.after_cancel(self.num_tabs_after)
+
+            self.num_tabs_after = app.root.after(100, lambda: self.do_num_tabs_change())
 
         return None
+
+    def do_num_tabs_change(self) -> None:
+        if self.on_num_tabs_change:
+            self.on_num_tabs_change(len(self.pages))
