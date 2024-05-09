@@ -223,7 +223,7 @@ class Display:
             return
 
         text = "\n".join(app.intro)
-        display.print(text, tab_id=tab_id)
+        display.print(text, tab_id=tab_id, modified=False)
 
     def load_tab(self, tab_id: str) -> None:
         from .session import session
@@ -244,7 +244,6 @@ class Display:
         else:
             self.show_intro(tab_id)
 
-        tab.modified = False
         tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
