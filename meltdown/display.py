@@ -993,20 +993,14 @@ class Display:
 
             return False
 
-        tabs = [tab for tab in self.tabs.values() if tab.tab_id != self.current_tab]
-        current = self.get_tab(self.current_tab)
-
-        if current:
-            tabs.append(current)
-
-        for tab in tabs:
+        def check_tab(tab: Tab) -> bool:
             conversation = session.get_conversation(tab.conversation_id)
 
             if not conversation:
-                continue
+                return False
 
             if conversation.id == "ignore":
-                continue
+                return False
 
             for item in conversation.items:
                 for key in item:
@@ -1019,7 +1013,28 @@ class Display:
 
                         self.select_tab(tab.tab_id)
                         tab.find.show(query=query)
-                        return
+                        return True
+
+            return False
+
+        tabs = []
+        index = -1
+
+        for page in self.book.pages:
+            tab = self.get_tab(page.id)
+
+            if tab:
+                tabs.append(tab)
+
+                if tab.tab_id == self.current_tab:
+                    index = len(tabs) - 1
+
+        if index >= 0:
+            tabs = tabs[index + 1 :] + tabs[: index + 1]
+
+        for tab in tabs:
+            if check_tab(tab):
+                return
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
