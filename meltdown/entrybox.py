@@ -213,14 +213,12 @@ class EntryBox(ttk.Entry):
 
     def on_left(self) -> str:
         from .keyboard import keyboard
-        from .display import display
 
         if keyboard.shift:
             return ""
 
         if keyboard.ctrl:
-            display.tab_left()
-            return "break"
+            return ""
 
         if self.selection_present():
             self.icursor(tk.SEL_FIRST)
@@ -231,14 +229,12 @@ class EntryBox(ttk.Entry):
 
     def on_right(self) -> str:
         from .keyboard import keyboard
-        from .display import display
 
         if keyboard.shift:
             return ""
 
         if keyboard.ctrl:
-            display.tab_right()
-            return "break"
+            return ""
 
         if self.selection_present():
             self.icursor(tk.SEL_LAST)

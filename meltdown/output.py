@@ -227,10 +227,6 @@ class Output(tk.Text):
         self.bind("<KeyPress-Home>", lambda e: home())
         self.bind("<KeyPress-End>", lambda e: end())
         self.bind("<Configure>", lambda e: self.update_size())
-        self.bind("<Control-Left>", lambda e: self.left_action())
-        self.bind("<Control-Right>", lambda e: self.right_action())
-        self.bind("<Control-Shift-Left>", lambda e: self.left_action(True))
-        self.bind("<Control-Shift-Right>", lambda e: self.right_action(True))
 
         def on_scroll(*args: Any) -> None:
             self.display.check_scroll_buttons()
@@ -589,20 +585,4 @@ class Output(tk.Text):
 
     def move_right(self) -> str:
         self.display.move_tab_right()
-        return "break"
-
-    def left_action(self, shift: bool = False) -> str:
-        if shift:
-            self.move_left()
-        else:
-            self.tab_left()
-
-        return "break"
-
-    def right_action(self, shift: bool = False) -> str:
-        if shift:
-            self.move_right()
-        else:
-            self.tab_right()
-
         return "break"
