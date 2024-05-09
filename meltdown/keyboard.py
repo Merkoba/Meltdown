@@ -357,11 +357,19 @@ class Keyboard:
         )
 
         self.register(
-            "<Left>", on_ctrl=lambda: run_command("left"), ctrl_help="Tab left"
+            "<Left>",
+            on_ctrl=lambda: run_command("left"),
+            ctrl_help="Go to the next tab (left)",
+            on_ctrl_shift=lambda: run_command("moveleft"),
+            ctrl_shift_help="Move tab to the left",
         )
 
         self.register(
-            "<Right>", on_ctrl=lambda: run_command("right"), ctrl_help="Tab right"
+            "<Right>",
+            on_ctrl=lambda: run_command("right"),
+            ctrl_help="Go to the next tab (right)",
+            on_ctrl_shift=lambda: run_command("moveright"),
+            ctrl_shift_help="Move tab to the right",
         )
 
         self.register(
