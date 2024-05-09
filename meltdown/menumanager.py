@@ -96,11 +96,12 @@ class GPTMenu:
 class MoreMenu:
     def __init__(self) -> None:
         from .display import display
+        from . import findmanager
 
         self.menu = Menu()
 
-        self.menu.add("Find", lambda e: display.find())
-        self.menu.add("Find All", lambda e: display.find_all())
+        self.menu.add("Find", lambda e: findmanager.find())
+        self.menu.add("Find All", lambda e: findmanager.find_all())
 
         self.menu.separator()
 

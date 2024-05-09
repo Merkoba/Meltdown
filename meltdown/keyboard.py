@@ -273,10 +273,11 @@ class Keyboard:
 
     def setup_globals(self) -> None:
         from .widgets import widgets
+        from . import findmanager
 
         def on_enter() -> None:
             if widgets.find_focused():
-                display.find_next()
+                findmanager.find_next()
             elif widgets.model_focused():
                 model.load()
             else:
@@ -285,11 +286,11 @@ class Keyboard:
 
         def on_shift_enter() -> None:
             if widgets.find_focused():
-                display.find_next(False)
+                findmanager.find_next(False)
 
         def on_esc() -> None:
             if widgets.find_focused():
-                display.hide_find()
+                findmanager.hide_find()
             else:
                 widgets.esckey()
 

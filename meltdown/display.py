@@ -1,8 +1,6 @@
 # Standard
-import re
 import tkinter as tk
-from typing import List, Dict, Any
-from typing import Optional
+from typing import List, Dict, Any, Optional
 
 # Modules
 from .app import app
@@ -849,45 +847,6 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def find(
-        self,
-        tab_id: Optional[str] = None,
-        widget: Optional[tk.Text] = None,
-        query: Optional[str] = None,
-    ) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        tab.find.show(widget=widget, query=query)
-
-        if query:
-            tab.find.find_next()
-
-    def find_next(self, case_insensitive: bool = True) -> None:
-        tab = self.get_current_tab()
-
-        if not tab:
-            return
-
-        if not tab.find.visible:
-            tab.find.show()
-            return
-
-        tab.find.find_next(case_insensitive)
-
-    def hide_find(self) -> None:
-        tab = self.get_current_tab()
-
-        if not tab:
-            return
-
-        tab.find.hide()
-
     def view_text(self) -> None:
         from .session import session
         from .logs import logs
@@ -963,78 +922,6 @@ class Display:
 
         self.book.move_to_end(tab_id)
         self.update_session()
-
-    def find_all(self, query: Optional[str] = None) -> None:
-        if query:
-            self.find_all_text(query)
-        else:
-            Dialog.show_input("Find text in all tabs", lambda s: self.find_all_text(s))
-
-    def find_all_text(self, query: str) -> None:
-        from .session import session
-
-        if not query:
-            return
-
-        query_lower = query.lower()
-        is_regex = query.startswith("/") and query.endswith("/")
-
-        if is_regex:
-            regex_query = query[1:-1]
-        else:
-            regex_query = ""
-
-        def find(value: str) -> bool:
-            if is_regex and re.search(regex_query, value, re.IGNORECASE):
-                return True
-
-            if query_lower in value.lower():
-                return True
-
-            return False
-
-        def check_tab(tab: Tab) -> bool:
-            conversation = session.get_conversation(tab.conversation_id)
-
-            if not conversation:
-                return False
-
-            if conversation.id == "ignore":
-                return False
-
-            for item in conversation.items:
-                for key in item:
-                    value = item[key]
-
-                    if find(value):
-                        if not tab.loaded:
-                            self.load_tab(tab.tab_id)
-                            app.update()
-
-                        self.select_tab(tab.tab_id)
-                        tab.find.show(query=query)
-                        return True
-
-            return False
-
-        tabs = []
-        index = -1
-
-        for page in self.book.pages:
-            tab = self.get_tab(page.id)
-
-            if tab:
-                tabs.append(tab)
-
-                if tab.tab_id == self.current_tab:
-                    index = len(tabs) - 1
-
-        if index >= 0:
-            tabs = tabs[index + 1 :] + tabs[: index + 1]
-
-        for tab in tabs:
-            if check_tab(tab):
-                return
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session

@@ -14,6 +14,7 @@ from .inputcontrol import inputcontrol
 from .commands import commands
 from . import summarize
 from . import menumanager
+from . import findmanager
 
 
 class CommandSpec:
@@ -220,14 +221,14 @@ class CommandSpec:
         self.add_cmd(
             "find",
             "Find a text string",
-            lambda a=None: display.find(query=a),
+            lambda a=None: findmanager.find(query=a),
             type=str,
         )
 
         self.add_cmd(
             "findall",
             "Find a text string among all tabs",
-            lambda a=None: display.find_all(a),
+            lambda a=None: findmanager.find_all(a),
             type=str,
         )
 
@@ -281,7 +282,9 @@ class CommandSpec:
             lambda a=None: app.toggle_fullscreen(),
         )
 
-        self.add_cmd("next", "Find next text match", lambda a=None: display.find_next())
+        self.add_cmd(
+            "next", "Find next text match", lambda a=None: findmanager.find_next()
+        )
 
         self.add_cmd("scrollup", "Scroll up", lambda a=None: display.scroll_up())
 

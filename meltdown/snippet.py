@@ -228,10 +228,10 @@ class Snippet(tk.Frame):
         return "break"
 
     def find(self) -> None:
-        from .display import display
+        from . import findmanager
 
         app.hide_all()
-        display.find(tab_id=self.parent.tab_id, widget=self.text)
+        findmanager.find(tab_id=self.parent.tab_id, widget=self.text)
 
     def on_right_click(self, event: Any) -> None:
         self.parent.on_right_click(event, self.text)
