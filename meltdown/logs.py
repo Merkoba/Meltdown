@@ -15,12 +15,16 @@ from .utils import utils
 
 
 class Logs:
-    def menu(self, tab_id: Optional[str] = None) -> None:
+    def menu(self, full: bool = True, tab_id: Optional[str] = None) -> None:
         cmds = []
-        cmds.append(("Open", lambda: self.open()))
-        cmds.append(("Save All", lambda: self.save_all()))
+
+        if full:
+            cmds.append(("Open", lambda: self.open()))
+            cmds.append(("Save All", lambda: self.save_all()))
+
         cmds.append(("To JSON", lambda: self.to_json(tab_id=tab_id)))
         cmds.append(("To Text", lambda: self.to_text(tab_id=tab_id)))
+
         Dialog.show_commands("Save conversation to a file?", cmds)
 
     def save_all(self) -> None:
