@@ -993,7 +993,13 @@ class Display:
 
             return False
 
-        for tab in self.tabs.values():
+        tabs = [tab for tab in self.tabs.values() if tab.tab_id != self.current_tab]
+        current = self.get_tab(self.current_tab)
+
+        if current:
+            tabs.append(current)
+
+        for tab in tabs:
             conversation = session.get_conversation(tab.conversation_id)
 
             if not conversation:
@@ -1013,7 +1019,7 @@ class Display:
 
                         self.select_tab(tab.tab_id)
                         tab.find.show(query=query)
-                        break
+                        return
 
     def tab_is_empty(self, tab_id: str) -> bool:
         from .session import session
