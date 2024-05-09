@@ -124,7 +124,11 @@ class Display:
         force: bool = False,
         make_empty: bool = True,
         method: str = "normal",
+        full: bool = True,
     ) -> None:
+        if self.num_tabs() <= 1:
+            return
+
         if not tab_id:
             tab_id = self.book.current()
 
@@ -157,15 +161,15 @@ class Display:
             return
 
         cmds = []
-        num_tabs = self.num_tabs()
 
-        if num_tabs > 1:
-            if num_tabs > 5:
-                cmds.append(("Old", lambda: self.close_old_tabs()))
+        if full and self.get_old_tabs():
+            cmds.append(("Old", lambda: self.close_old_tabs()))
 
-            cmds.append(("Others", lambda: self.close_other_tabs()))
-            cmds.append(("Left", lambda: self.close_tabs_left()))
-            cmds.append(("Right", lambda: self.close_tabs_right()))
+        cmds.append(("Others", lambda: self.close_other_tabs()))
+        cmds.append(("Left", lambda: self.close_tabs_left()))
+        cmds.append(("Right", lambda: self.close_tabs_right()))
+
+        if full:
             cmds.append(("All", lambda: self.close_all_tabs()))
 
         cmds.append(("Ok", lambda: action()))
@@ -384,7 +388,7 @@ class Display:
         session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
-        self.close_tab(tab_id=self.tab_menu_id)
+        self.close_tab(tab_id=self.tab_menu_id, full=False)
 
     def close_all_tabs(self, force: bool = False, make_empty: bool = True) -> None:
         def action() -> None:
@@ -397,31 +401,40 @@ class Display:
 
         Dialog.show_confirm("Close all tabs?", lambda: action())
 
-    def close_old_tabs(self, force: bool = False) -> None:
+    def get_old_tabs(self) -> List[Tab]:
         from .session import session
 
+        ids = self.tab_ids()
+        old_tabs = []
+
+        max_minutes = args.old_tabs_minutes
+        max_date = utils.now() - (60 * max_minutes)
+
+        for tab_id in ids:
+            tab = self.get_tab(tab_id)
+
+            if not tab:
+                continue
+
+            conversation = session.get_conversation(tab.conversation_id)
+
+            if not conversation:
+                continue
+
+            if conversation.last_modified < max_date:
+                old_tabs.append(tab)
+
+        return old_tabs
+
+    def close_old_tabs(self, force: bool = False) -> None:
         ids = self.tab_ids()
 
         if len(ids) <= 1:
             return
 
-        max_minutes = args.old_tabs_minutes
-        max_date = utils.now() - (60 * max_minutes)
-
         def action() -> None:
-            for tab_id in ids:
-                tab = self.get_tab(tab_id)
-
-                if not tab:
-                    continue
-
-                conversation = session.get_conversation(tab.conversation_id)
-
-                if not conversation:
-                    continue
-
-                if conversation.last_modified < max_date:
-                    self.close_tab(tab_id=tab_id, force=True, make_empty=True)
+            for tab in self.get_old_tabs():
+                self.close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
 
         if force or (not args.confirm_close):
             action()

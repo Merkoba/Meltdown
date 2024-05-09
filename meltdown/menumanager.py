@@ -58,6 +58,7 @@ class ModelMenu:
         from .widgets import widgets
 
         self.menu = Menu()
+
         self.menu.add("Recent Models", lambda e: widgets.show_recent_models())
         self.menu.add("Browse Models", lambda e: widgets.browse_models())
         self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
@@ -134,12 +135,14 @@ class TabMenu:
         from . import summarize
 
         self.menu_single = Menu()
+
         self.menu_single.add("Save Log", lambda e: logs.menu(full=False))
         self.menu_single.add("Summarize", lambda e: summarize.summarize())
         self.menu_single.add("Rename", lambda e: display.rename_tab())
         self.menu_single.add("Clear", lambda e: display.clear())
 
         self.menu_multi = Menu()
+
         self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
 
         self.menu_multi.separator()
@@ -211,6 +214,7 @@ class FontMenu:
             )
 
         self.menu = Menu()
+
         self.menu.add("Set Font", lambda e: set_font())
         self.menu.add("Bigger Font", lambda e: display.increase_font())
         self.menu.add("Smaller Font", lambda e: display.decrease_font())
@@ -233,6 +237,7 @@ class FontFamilyMenu:
         from .display import display
 
         self.menu = Menu()
+
         self.menu.add("Serif", lambda e: display.set_font_family("serif"))
         self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
         self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
@@ -257,6 +262,7 @@ class ThemeMenu:
             Dialog.show_message("Theme will change after restarting the program")
 
         self.menu = Menu()
+
         self.menu.add("Dark Theme", lambda e: action("dark"))
         self.menu.add("Light Theme", lambda e: action("light"))
         self.menu.add("High Contrast", lambda e: action("high_contrast"))
