@@ -189,9 +189,9 @@ And more.
 
 You will need some models to play with.
 
-Here's a small one you can use:
+Here's a good one you can use:
 
-https://huggingface.co/TheBloke/dolphin-2_6-phi-2-GGUF
+https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/blob/main/Meta-Llama-3-8B-Instruct.Q5_K_M.gguf
 
 You can find more on that site.
 
@@ -206,8 +206,6 @@ You must first set the API key for it to work.
 This can be done using the model menu: `Set API Key`.
 
 Then pick the model you want: `Use GPT Model`.
-
----
 
 ---
 
