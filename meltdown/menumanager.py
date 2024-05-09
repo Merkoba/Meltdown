@@ -130,9 +130,11 @@ class MoreMenu:
 class TabMenu:
     def __init__(self) -> None:
         from .display import display
+        from .logs import logs
         from . import summarize
 
         self.menu_single = Menu()
+        self.menu_single.add("Save Log", lambda e: logs.menu())
         self.menu_single.add("Summarize", lambda e: summarize.summarize())
         self.menu_single.add("Rename", lambda e: display.rename_tab())
         self.menu_single.add("Clear", lambda e: display.clear())
@@ -141,6 +143,8 @@ class TabMenu:
         self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
 
         self.menu_multi.separator()
+
+        self.menu_multi.add("Save Log", lambda e: logs.menu(tab_id=display.tab_menu_id))
 
         self.menu_multi.add(
             "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)

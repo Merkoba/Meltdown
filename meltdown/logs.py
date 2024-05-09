@@ -15,12 +15,12 @@ from .utils import utils
 
 
 class Logs:
-    def menu(self) -> None:
+    def menu(self, tab_id: Optional[str] = None) -> None:
         cmds = []
         cmds.append(("Open", lambda: self.open()))
         cmds.append(("Save All", lambda: self.save_all()))
-        cmds.append(("To JSON", lambda: self.to_json()))
-        cmds.append(("To Text", lambda: self.to_text()))
+        cmds.append(("To JSON", lambda: self.to_json(tab_id=tab_id)))
+        cmds.append(("To Text", lambda: self.to_text(tab_id=tab_id)))
         Dialog.show_commands("Save conversation to a file?", cmds)
 
     def save_all(self) -> None:
@@ -68,7 +68,13 @@ class Logs:
             if cmd:
                 app.run_command([cmd, str(file_path)])
 
-    def save(self, mode: str, save_all: bool, name: Optional[str] = None) -> None:
+    def save(
+        self,
+        mode: str,
+        save_all: bool,
+        name: Optional[str] = None,
+        tab_id: Optional[str] = None,
+    ) -> None:
         if mode == "text":
             ext = "txt"
         elif mode == "json":
@@ -78,11 +84,25 @@ class Logs:
 
         num = 0
 
-        conversations = (
-            [session.get_conversation(key) for key in session.conversations]
-            if save_all
-            else [session.get_current_conversation()]
-        )
+        if save_all:
+            conversations = [
+                session.get_conversation(key) for key in session.conversations
+            ]
+        else:
+            if not tab_id:
+                tab_id = display.current_tab
+
+            tab = display.get_tab(tab_id)
+
+            if not tab:
+                return
+
+            conversation = session.get_conversation(tab.conversation_id)
+
+            if not conversation:
+                return
+
+            conversations = [conversation]
 
         for conversation in conversations:
             if not conversation:
@@ -117,8 +137,13 @@ class Logs:
             msg = f"{num} {f_type} {word} saved."
             display.print(utils.emoji_text(msg, "storage"))
 
-    def to_json(self, save_all: bool = False, name: Optional[str] = None) -> None:
-        self.save("json", save_all, name)
+    def to_json(
+        self,
+        save_all: bool = False,
+        name: Optional[str] = None,
+        tab_id: Optional[str] = None,
+    ) -> None:
+        self.save("json", save_all, name, tab_id=tab_id)
 
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
@@ -129,8 +154,13 @@ class Logs:
 
         return conversation.to_json()
 
-    def to_text(self, save_all: bool = False, name: Optional[str] = None) -> None:
-        self.save("text", save_all, name)
+    def to_text(
+        self,
+        save_all: bool = False,
+        name: Optional[str] = None,
+        tab_id: Optional[str] = None,
+    ) -> None:
+        self.save("text", save_all, name, tab_id=tab_id)
 
     def get_text(self, conversation: Conversation) -> str:
         if not conversation:
