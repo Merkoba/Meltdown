@@ -195,12 +195,12 @@ class Output(tk.Text):
             self.scroll_down(True)
             return "break"
 
-        def scroll_up() -> str:
-            self.scroll_up(True)
+        def scroll_up(double: bool = False) -> str:
+            self.scroll_up(True, double=double)
             return "break"
 
-        def scroll_down() -> str:
-            self.scroll_down(True)
+        def scroll_down(double: bool = False) -> str:
+            self.scroll_down(True, double=double)
             return "break"
 
         def home() -> str:
@@ -223,7 +223,11 @@ class Output(tk.Text):
         self.bind("<Control-Shift-Button-4>", lambda e: self.move_left())
         self.bind("<Control-Shift-Button-5>", lambda e: self.move_right())
         self.bind("<Prior>", lambda e: scroll_up())
+        self.bind("<Control-Prior>", lambda e: scroll_up(True))
+        self.bind("<Shift-Prior>", lambda e: scroll_up(True))
         self.bind("<Next>", lambda e: scroll_down())
+        self.bind("<Control-Next>", lambda e: scroll_down(True))
+        self.bind("<Shift-Next>", lambda e: scroll_down(True))
         self.bind("<KeyPress-Home>", lambda e: home())
         self.bind("<KeyPress-End>", lambda e: end())
         self.bind("<Configure>", lambda e: self.update_size())
@@ -324,15 +328,23 @@ class Output(tk.Text):
         fraction = self.get_fraction()
         return fraction * args.scroll_lines
 
-    def scroll_up(self, check: bool = False) -> None:
+    def scroll_up(self, check: bool = False, double: bool = False) -> None:
         lines = self.get_scroll_lines()
+
+        if double:
+            lines *= 2
+
         self.yview_moveto(self.yview()[0] - lines)
 
         if check:
             self.check_autoscroll("up")
 
-    def scroll_down(self, check: bool = False) -> None:
+    def scroll_down(self, check: bool = False, double: bool = False) -> None:
         lines = self.get_scroll_lines()
+
+        if double:
+            lines *= 2
+
         self.yview_moveto(self.yview()[0] + lines)
 
         if check:
