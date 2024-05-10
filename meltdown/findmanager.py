@@ -25,9 +25,6 @@ def find(
 
     tab.find.show(widget=widget, query=query)
 
-    if query:
-        tab.find.find_next()
-
 
 def find_next(case_insensitive: bool = True) -> None:
     from .display import display

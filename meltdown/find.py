@@ -82,7 +82,8 @@ class Find:
         case_insensitive: bool = True,
         bound: bool = False,
         no_match: bool = False,
-        iteration: int = 1,
+        switch: bool = False,
+        first_widget: Optional[tk.Widget] = None,
     ) -> None:
         if not self.visible:
             return
@@ -102,6 +103,9 @@ class Find:
 
         if not widget:
             return
+
+        if not first_widget:
+            first_widget = self.widget
 
         if self.current_match is not None:
             start_pos = widget.index(f"{self.current_match}+1c")
@@ -162,17 +166,17 @@ class Find:
             if no_match:
                 return
 
-            self.change_widget()
+            if switch and (self.widget == first_widget):
+                return
 
-            if self.widget == output:
-                if iteration >= 2:
-                    return
+            self.change_widget()
 
             self.find_next(
                 case_insensitive,
                 bound=bound,
                 no_match=False,
-                iteration=iteration + 1,
+                switch=True,
+                first_widget=first_widget,
             )
 
     def next_snippet(self) -> bool:
