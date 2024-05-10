@@ -50,21 +50,25 @@ class Conversation:
     def print(self) -> None:
         tab = display.get_tab_by_conversation_id(self.id)
 
-        if tab:
-            for item in self.items:
-                for key in item:
-                    if key == "user":
-                        display.prompt(
-                            "user", item[key], tab_id=tab.tab_id, to_bottom=False
-                        )
-                    elif key == "assistant":
-                        display.prompt(
-                            "ai", item[key], tab_id=tab.tab_id, to_bottom=False
-                        )
-                    else:
-                        continue
+        if not tab:
+            return
 
-            display.format_text(tab.tab_id)
+        if not args.auto_scroll:
+            display.disable_auto_scroll(tab.tab_id)
+
+        for item in self.items:
+            for key in item:
+                if key == "user":
+                    display.prompt(
+                        "user", item[key], tab_id=tab.tab_id, to_bottom=False
+                    )
+                elif key == "assistant":
+                    display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
+                else:
+                    continue
+
+        display.format_text(tab.tab_id)
+        display.enable_auto_scroll(tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:
         return {

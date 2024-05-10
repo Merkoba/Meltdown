@@ -404,6 +404,14 @@ Action: store_false
 
 ---
 
+### no-auto-scroll
+
+Don't scroll to the bottom when loading tabs
+
+Action: store_false
+
+---
+
 ### no-fill-prompt
 
 Don't fill the text input prompt in some cases when empty

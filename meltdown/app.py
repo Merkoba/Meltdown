@@ -288,10 +288,8 @@ class App:
 
     def after_compact(self, enabled: bool) -> None:
         from .inputcontrol import inputcontrol
-        from .display import display
 
         self.update()
-        display.to_bottom()
         inputcontrol.focus()
         self.compact_enabled = enabled
 

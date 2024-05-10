@@ -132,6 +132,7 @@ class Args:
         self.confirm_clear = True
         self.fill_prompt = True
         self.scroll_lines = 1
+        self.auto_scroll = True
         self.user_color = "auto"
         self.ai_color = "auto"
         self.drag_and_drop = True
@@ -230,6 +231,7 @@ class Args:
             ("no_auto_name", "auto_name"),
             ("no_tab_double_click", "tab_double_click"),
             ("no_disable_buttons", "disable_buttons"),
+            ("no_auto_scroll", "auto_scroll"),
         ]
 
         for r_item in other_name:

@@ -17,37 +17,7 @@
 
 ## Screenshots <a name="screenshots"></a>
 
-(These might be a bit outdated)
-
----
-
-### Dark Theme:
-
-![](https://i.imgur.com/Mkz3nZe.jpg)
-
----
-
-### Light Theme:
-
-![](https://i.imgur.com/Z0HCYbJ.jpg)
-
----
-
-### Markdown Support:
-
-![](https://i.imgur.com/tFUkptg.jpg)
-
----
-
-### Another Screenshot:
-
-![](https://i.imgur.com/ih0V7lx.jpg)
-
----
-
-### A Gif Demo:
-
-![](https://i.imgur.com/10V4yDR.gif)
+![](https://i.imgur.com/f53rnNu.png)
 
 ---
 

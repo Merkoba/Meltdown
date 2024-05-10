@@ -368,7 +368,9 @@ class Output(tk.Text):
         self.enable()
         self.markdown.format()
         self.disable()
-        app.root.after(120, lambda: self.to_bottom(True))
+
+        if self.auto_scroll:
+            app.root.after(120, lambda: self.to_bottom(True))
 
     def update_font(self) -> None:
         self.configure(font=app.theme.get_output_font())

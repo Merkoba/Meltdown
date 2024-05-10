@@ -796,9 +796,8 @@ class Display:
         if not tab:
             return
 
-        if who == "user":
-            if to_bottom:
-                self.to_bottom(tab_id)
+        if (who == "user") and to_bottom:
+            self.to_bottom(tab_id)
 
         tab.output.prompt(who)
 
@@ -1030,6 +1029,22 @@ class Display:
             return False
 
         return tab.modified
+
+    def enable_auto_scroll(self, tab_id: str) -> None:
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        tab.output.auto_scroll = True
+
+    def disable_auto_scroll(self, tab_id: str) -> None:
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        tab.output.auto_scroll = False
 
 
 display = Display()
