@@ -19,6 +19,8 @@
 
 ![](https://i.imgur.com/f53rnNu.png)
 
+![](https://i.imgur.com/EqHelGe.png)
+
 ---
 
 ## Features <a name="features"></a>
