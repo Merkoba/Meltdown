@@ -20,9 +20,11 @@ class Find:
         self.root.configure(background=app.theme.find_background)
         self.inner.configure(background=app.theme.find_background)
         w = app.theme.find_entry_width
+
         self.entry = EntryBox(
             self.inner, style="Normal.TEntry", font=app.theme.font(), width=w
         )
+
         self.entry.set_name("find")
         ToolTip(self.entry, "Enter some text and hit Enter")
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
@@ -44,18 +46,21 @@ class Find:
         self.next_ci_button = ButtonBox(
             self.inner, "Next", lambda: self.find_next(False)
         )
+
         ToolTip(self.next_ci_button, "Find next match (case sensitive)")
         self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
 
         self.bound_ci_button = ButtonBox(
             self.inner, "Bound (i)", lambda: self.find_next(bound=True)
         )
+
         ToolTip(self.bound_ci_button, "Find next word-bound match (case insensitive)")
         self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
 
         self.bound_i_button = ButtonBox(
             self.inner, "Bound", lambda: self.find_next(False, bound=True)
         )
+
         ToolTip(self.bound_i_button, "Find next word-bound match (case sensitive)")
         self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
 
@@ -142,6 +147,11 @@ class Find:
                 widget.see(start_index)
 
             if (self.widget != output) and (not self.snippet_focused):
+                if self.snippet == -1:
+                    pos, index = output.get_snippet_index_2(self.widget)
+                    self.snippet_index = pos
+                    self.snippet = index
+
                 output.see(self.snippet_index)
                 self.snippet_focused = True
 
@@ -159,7 +169,10 @@ class Find:
                     return
 
             self.find_next(
-                case_insensitive, bound=bound, no_match=False, iteration=iteration + 1
+                case_insensitive,
+                bound=bound,
+                no_match=False,
+                iteration=iteration + 1,
             )
 
     def next_snippet(self) -> bool:
@@ -189,7 +202,9 @@ class Find:
             self.widget.tag_remove("find", "1.0", "end")
 
     def show(
-        self, widget: Optional[tk.Text] = None, query: Optional[str] = None
+        self,
+        widget: Optional[tk.Text] = None,
+        query: Optional[str] = None,
     ) -> None:
         if self.widget:
             self.clear()

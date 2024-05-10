@@ -543,6 +543,18 @@ class Output(tk.Text):
 
         return "1.0"
 
+    def get_snippet_index_2(self, snippet: tk.Widget) -> Tuple[str, int]:
+        index = 0
+
+        for element in self.dump("1.0", "end"):
+            if element[0] == "window":
+                if element[1] in str(snippet):
+                    return element[2], index
+
+                index += 1
+
+        return ("1.0", 0)
+
     def find_text(self, query: str) -> str:
         return self.search(query, "1.0", tk.END, regexp=True, nocase=True)
 
