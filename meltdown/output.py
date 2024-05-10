@@ -18,10 +18,13 @@ class Output(tk.Text):
     word_menu.add(text="Explain", command=lambda e: Output.explain_words())
     word_menu.add(text="Search", command=lambda e: Output.search_words())
     word_menu.add(text="New", command=lambda e: Output.new_tab())
+
     current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     words = ""
+
+    update_size_after = ""
 
     @staticmethod
     def get_words() -> str:
@@ -379,6 +382,15 @@ class Output(tk.Text):
             snippet.update_font()
 
     def update_size(self) -> None:
+        if not self.winfo_exists():
+            return
+
+        if self.update_size_after:
+            app.root.after_cancel(self.update_size_after)
+
+        self.update_size_after = app.root.after(100, lambda: self.do_update_size())
+
+    def do_update_size(self) -> None:
         for snippet in self.snippets:
             snippet.update_size()
 

@@ -126,7 +126,13 @@ class Snippet(tk.Frame):
         self.gestures = Gestures(self, self.text, self.on_right_click)
 
     def update_size(self) -> None:
-        char_width = self.text.tk.call("font", "measure", self.text.cget("font"), "0")
+        try:
+            char_width = self.text.tk.call(
+                "font", "measure", self.text.cget("font"), "0"
+            )
+        except BaseException:
+            return
+
         width_pixels = self.parent.winfo_width() - self.parent.scrollbar.winfo_width()
         width_pixels = int(width_pixels * 0.98)
         width_chars = int(width_pixels / char_width)
