@@ -233,7 +233,7 @@ class Output(tk.Text):
         self.bind("<Configure>", lambda e: self.update_size())
 
         def on_scroll(*args: Any) -> None:
-            self.display.check_scroll_buttons()
+            self.display.check_scroll_buttons(tab_id=self.tab_id)
             self.scrollbar.set(*args)
 
         self.scrollbar.configure(command=self.yview)

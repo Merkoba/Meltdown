@@ -69,6 +69,7 @@ class Conversation:
 
         display.format_text(tab.tab_id)
         display.enable_auto_scroll(tab.tab_id)
+        display.check_scroll_buttons(tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
