@@ -165,7 +165,7 @@ class Find:
             self.change_widget()
 
             if self.widget == output:
-                if iteration == 2:
+                if iteration >= 2:
                     return
 
             self.find_next(
