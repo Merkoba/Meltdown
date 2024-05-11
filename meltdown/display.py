@@ -1113,6 +1113,18 @@ class Display:
 
             return index
 
+        def check_index(index: int) -> bool:
+            if (not conversation) or (not conversation.items):
+                return False
+
+            if index < 0:
+                return False
+
+            if index >= len(conversation.items):
+                return False
+
+            return True
+
         def action() -> None:
             if not tab_id:
                 return
@@ -1126,10 +1138,7 @@ class Display:
             if number is not None:
                 index = get_index(number)
 
-                if index < 0:
-                    return
-
-                if index >= len(conversation.items):
+                if not check_index(index):
                     return
 
                 if mode == "normal":
@@ -1141,10 +1150,7 @@ class Display:
             elif keep is not None:
                 index = get_index(keep)
 
-                if index < 0:
-                    return
-
-                if index >= len(conversation.items):
+                if not check_index(index):
                     return
 
                 conversation.items = [conversation.items[index]]
