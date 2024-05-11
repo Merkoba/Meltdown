@@ -1099,7 +1099,7 @@ class Display:
                     index = -1
             else:
                 try:
-                    index = int(arg)
+                    index = int(arg) - 1
                 except BaseException:
                     index = -1
 
