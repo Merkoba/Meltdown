@@ -3,6 +3,7 @@ from typing import Optional
 
 # Modules
 from .args import args
+from .utils import utils
 from .dialogs import Dialog
 
 
@@ -40,26 +41,6 @@ def delete_items(
         if len(conversation.items) <= 1:
             return
 
-    def get_index(arg: str) -> int:
-        if arg == "first":
-            index = 0
-        elif arg == "second":
-            index = 1
-        elif arg == "third":
-            index = 2
-        elif arg == "last":
-            if conversation and conversation.items:
-                index = len(conversation.items) - 1
-            else:
-                index = -1
-        else:
-            try:
-                index = int(arg) - 1
-            except BaseException:
-                index = -1
-
-        return index
-
     def check_index(index: int) -> bool:
         if (not conversation) or (not conversation.items):
             return False
@@ -83,7 +64,7 @@ def delete_items(
             return
 
         if number is not None:
-            index = get_index(number)
+            index = utils.get_index(number, conversation.items)
 
             if not check_index(index):
                 return
@@ -95,7 +76,7 @@ def delete_items(
             elif mode == "below":
                 conversation.items = conversation.items[: index + 1]
         elif keep is not None:
-            index = get_index(keep)
+            index = utils.get_index(keep, conversation.items)
 
             if not check_index(index):
                 return

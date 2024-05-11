@@ -1071,5 +1071,46 @@ class Display:
 
         return tab.num_user_prompts
 
+    def repeat_prompt(self, number: str, tab_id: Optional[str] = None) -> None:
+        from .session import session
+        from .model import model
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        if not conversation.items:
+            return
+
+        index = utils.get_index(number, conversation.items)
+
+        if index < 0:
+            return
+
+        if index >= len(conversation.items):
+            return
+
+        item = conversation.items[index]
+
+        if not item:
+            return
+
+        prompt_text = item.get("user")
+
+        if not prompt_text:
+            return
+
+        prompt = {"text": prompt_text}
+        model.stream(prompt, tab_id)
+
 
 display = Display()

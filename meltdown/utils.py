@@ -8,7 +8,7 @@ import inspect
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional, Tuple, List
+from typing import Union, Optional, Tuple, List, Any
 from pathlib import Path
 from datetime import datetime
 
@@ -241,6 +241,26 @@ class Utils:
             return singular
 
         return plural
+
+    def get_index(self, arg: str, items: List[Any]) -> int:
+        if not items:
+            return -1
+
+        if arg == "first":
+            index = 0
+        elif arg == "second":
+            index = 1
+        elif arg == "third":
+            index = 2
+        elif arg == "last":
+            index = len(items) - 1
+        else:
+            try:
+                index = int(arg) - 1
+            except BaseException:
+                index = -1
+
+        return index
 
 
 utils = Utils()
