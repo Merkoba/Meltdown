@@ -119,7 +119,13 @@ class Utils:
         suffix = add_suffix(current_time.day)
         return current_time.strftime("%A {0} of %B %Y").format(suffix)
 
-    def copy(self, text: str) -> None:
+    def copy(self, text: str, command: bool = False) -> None:
+        from .args import args
+        from .app import app
+
+        if command and args.on_copy:
+            app.run_command([args.on_copy, text])
+
         pyperclip.copy(text)  # type: ignore
 
     def paste(self, widget: tk.Widget) -> None:

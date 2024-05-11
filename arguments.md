@@ -918,6 +918,16 @@ Type: str
 
 ---
 
+### on-copy
+
+Command to execute when copying text
+
+Default: [Empty string]
+
+Type: str
+
+---
+
 ### f1
 
 Command to assign to the F1 key

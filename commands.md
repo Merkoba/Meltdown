@@ -498,6 +498,12 @@ Show how much memory the program is using
 
 ---
 
+### started
+
+How long ago the program started
+
+---
+
 ### sticky
 
 Make the window stay at the top

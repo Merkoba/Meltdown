@@ -276,16 +276,17 @@ class Menu:
         menu_height = self.canvas.winfo_reqheight()
         x = self.coords["x"] - app.main_frame.winfo_rootx()
         y = self.coords["y"] - app.main_frame.winfo_rooty()
+        gap = 10
 
         if x < 0:
-            x = 0
+            x = gap
         elif x + menu_width > window_width:
-            x = window_width - menu_width
+            x = window_width - menu_width - gap
 
         if y < 0:
-            y = 0
+            y = gap
         elif y + menu_height > window_height:
-            y = window_height - menu_height
+            y = window_height - menu_height - gap
 
         x -= app.theme.menu_border_width * 2
         self.root.place(x=x, y=y)

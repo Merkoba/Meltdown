@@ -56,4 +56,4 @@ def action(mode: str, number: str, tab_id: Optional[str] = None) -> None:
         text = "\n\n".join(texts)
 
         if text:
-            utils.copy(text)
+            utils.copy(text, command=True)

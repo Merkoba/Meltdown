@@ -92,7 +92,7 @@ class Output(tk.Text):
 
         text = Output.get_words()
         Output.current_output.deselect_all()
-        utils.copy(text)
+        utils.copy(text, command=True)
 
     @staticmethod
     def explain_words() -> None:
@@ -476,7 +476,7 @@ class Output(tk.Text):
             self.configure(state="disabled")
 
     def copy_all(self) -> None:
-        utils.copy(self.get_text())
+        utils.copy(self.get_text(), command=True)
 
     def to_text(self) -> str:
         from .display import display

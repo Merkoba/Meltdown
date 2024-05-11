@@ -660,6 +660,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "on_copy",
+            type=str,
+            info="Command to execute when copying text",
+        )
+
+        self.add_argument(
             "f1",
             type=str,
             info="Command to assign to the F1 key",

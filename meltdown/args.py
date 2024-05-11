@@ -46,6 +46,7 @@ class Args:
         self.on_log = ""
         self.on_log_text = ""
         self.on_log_json = ""
+        self.on_copy = ""
         self.f1 = ""
         self.f2 = ""
         self.f3 = ""
@@ -316,6 +317,7 @@ class Args:
             "on_log",
             "on_log_text",
             "on_log_json",
+            "on_copy",
             "errors",
             "progtext",
             "progjson",
