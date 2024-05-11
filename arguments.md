@@ -20,6 +20,30 @@ Action: store_false
 
 ---
 
+### no-name-menu
+
+Don't show a menu when clicking the user names
+
+Action: store_false
+
+---
+
+### no-word-menu
+
+Don't show a menu when clicking special words
+
+Action: store_false
+
+---
+
+### no-open-urls
+
+Don't open URLs when clicked
+
+Action: store_false
+
+---
+
 ### no-scrollbars
 
 Don't show scrollbars
@@ -476,25 +500,19 @@ Action: store_false
 
 ---
 
-### no-tab-numbers
-
-Show numbers in the tab bar
-
-Action: store_false
-
----
-
-### no-item-numbers
-
-Add numbers to each message
-
-Action: store_false
-
----
-
 ### test
 
 Make a test tab for debugging
+
+Default: False
+
+Action: store_true
+
+---
+
+### item-numbers
+
+Add numbers to each message
 
 Default: False
 
@@ -635,6 +653,16 @@ Action: store_true
 ### maximize
 
 Maximize the window on start
+
+Default: False
+
+Action: store_true
+
+---
+
+### tab-numbers
+
+Show numbers in the tab bar
 
 Default: False
 
