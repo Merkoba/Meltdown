@@ -82,7 +82,7 @@ class Page:
         if args.max_tab_width:
             text = text[: args.max_tab_width]
 
-        if args.numbers:
+        if args.tab_numbers:
             if index is None:
                 index = self.get_index()
 

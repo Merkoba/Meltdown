@@ -111,6 +111,8 @@ class Output(tk.Text):
     def get_prompt(
         who: str, mark: bool = False, show_avatar: bool = True, colon_space: bool = True
     ) -> str:
+        from .display import display
+
         name = getattr(config, f"name_{who}")
         avatar = getattr(config, f"avatar_{who}")
         colons = " : " if colon_space else ": "
@@ -132,6 +134,9 @@ class Output(tk.Text):
             elif who == "ai":
                 prompt = f"{Output.marker_ai}{prompt}"
 
+        if args.item_numbers:
+            number = display.num_user_prompts()
+            prompt = f"({number + 1}) {prompt}"
         return prompt
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:

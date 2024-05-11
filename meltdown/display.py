@@ -34,6 +34,7 @@ class Tab:
         self.mode = mode
         self.loaded = False
         self.streaming = False
+        self.num_user_prompts = 0
 
 
 class Display:
@@ -563,13 +564,17 @@ class Display:
             tab.output.clear_text()
             session.clear(tab.conversation_id)
             self.show_intro(tab.tab_id)
-            tab.modified = False
+            self.reset_tab(tab)
 
         if force or (not args.confirm_clear):
             action()
             return
 
         Dialog.show_confirm("Clear conversation?", lambda: action())
+
+    def reset_tab(self, tab: Tab) -> None:
+        tab.modified = False
+        tab.num_user_prompts = 0
 
     def select_output(self) -> None:
         output = self.get_current_output()
@@ -814,6 +819,9 @@ class Display:
             if not self.has_messages(tab_id):
                 self.auto_name_tab(tab_id, original)
 
+        if who == "ai":
+            tab.num_user_prompts += 1
+
         tab.modified = True
 
     def auto_name_tab(self, tab_id: str, text: str) -> None:
@@ -1052,7 +1060,12 @@ class Display:
 
         tab.output.auto_scroll = False
 
-    def trim(self, tab_id: Optional[str] = None, start: bool = False) -> None:
+    def delete_item(
+        self,
+        tab_id: Optional[str] = None,
+        start: bool = False,
+        number: Optional[int] = None,
+    ) -> None:
         from .session import session
 
         if not tab_id:
@@ -1071,7 +1084,15 @@ class Display:
         if not conversation.items:
             return
 
-        if start:
+        if number is not None:
+            if number <= 0:
+                return
+
+            if number > len(conversation.items):
+                return
+
+            conversation.items.pop(number - 1)
+        elif start:
             conversation.items.pop(0)
         else:
             conversation.items.pop()
@@ -1079,10 +1100,22 @@ class Display:
         session.save()
 
         tab.output.clear_text()
+        self.reset_tab(tab)
         self.show_header(tab_id)
 
         if conversation.items:
             conversation.print()
+
+    def num_user_prompts(self, tab_id: Optional[str] = None) -> int:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return 0
+
+        return tab.num_user_prompts
 
 
 display = Display()

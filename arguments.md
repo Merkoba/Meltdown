@@ -486,6 +486,16 @@ Action: store_true
 
 ---
 
+### item-numbers
+
+Add numbers to each message
+
+Default: False
+
+Action: store_true
+
+---
+
 ### scroll-percentage
 
 Show scroll percentage on the Go To Bottom button
@@ -626,7 +636,7 @@ Action: store_true
 
 ---
 
-### numbers
+### tab-numbers
 
 Show numbers in the tab bar
 

@@ -597,3 +597,9 @@ Remove the last item of a conversation
 ### trimstart
 
 Remove the first item of a conversation
+
+---
+
+### delete
+
+Remove a specific item of a conversation

@@ -35,7 +35,7 @@ class Args:
         self.bottom = True
         self.bottom_autohide = True
         self.reorder = True
-        self.numbers = False
+        self.tab_numbers = False
         self.test = False
         self.alt_palette = False
         self.width = -1
@@ -160,6 +160,7 @@ class Args:
         self.no_exit = False
         self.disable_buttons = True
         self.scroll_percentage = False
+        self.item_numbers = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -248,7 +249,7 @@ class Args:
             "test",
             "config",
             "session",
-            "numbers",
+            "tab_numbers",
             "max_tabs",
             "input",
             "force",
@@ -334,6 +335,7 @@ class Args:
             "summarize_prompt",
             "theme",
             "scroll_percentage",
+            "item_numbers",
         ]
 
         for n_item in normals:

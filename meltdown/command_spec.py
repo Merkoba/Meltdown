@@ -584,13 +584,21 @@ class CommandSpec:
         self.add_cmd(
             "trim",
             "Remove the last item of a conversation",
-            lambda a=None: display.trim(),
+            lambda a=None: display.delete_item(),
         )
 
         self.add_cmd(
             "trimstart",
             "Remove the first item of a conversation",
-            lambda a=None: display.trim(start=True),
+            lambda a=None: display.delete_item(start=True),
+        )
+
+        self.add_cmd(
+            "delete",
+            "Remove a specific item of a conversation",
+            lambda a=None: display.delete_item(number=a),
+            type=int,
+            arg_req=True,
         )
 
 

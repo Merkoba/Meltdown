@@ -396,6 +396,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "item_numbers",
+            action="store_true",
+            info="Add numbers to each message",
+        )
+
+        self.add_argument(
             "scroll_percentage",
             action="store_true",
             info="Show scroll percentage on the Go To Bottom button",
@@ -480,7 +486,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "numbers",
+            "tab_numbers",
             action="store_true",
             info="Show numbers in the tab bar",
         )
