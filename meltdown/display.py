@@ -1089,6 +1089,26 @@ class Display:
         if conversation.id == "ignore":
             return
 
+        def get_index(arg: str) -> int:
+            if arg == "first":
+                index = 0
+            elif arg == "second":
+                index = 1
+            elif arg == "third":
+                index = 2
+            elif arg == "last":
+                if conversation and conversation.items:
+                    index = len(conversation.items) - 1
+                else:
+                    index = -1
+            else:
+                try:
+                    index = int(arg) - 1
+                except BaseException:
+                    index = -1
+
+            return index
+
         def action() -> None:
             if not tab_id:
                 return
@@ -1098,26 +1118,6 @@ class Display:
 
             if (not conversation) or (not conversation.items):
                 return
-
-            def get_index(arg: str) -> int:
-                if arg == "first":
-                    index = 0
-                elif arg == "second":
-                    index = 1
-                elif arg == "third":
-                    index = 2
-                elif arg == "last":
-                    if conversation and conversation.items:
-                        index = len(conversation.items) - 1
-                    else:
-                        index = -1
-                else:
-                    try:
-                        index = int(arg) - 1
-                    except BaseException:
-                        index = -1
-
-                return index
 
             if number is not None:
                 index = get_index(number)
