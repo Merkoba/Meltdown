@@ -114,4 +114,9 @@ tips = {
     "file": "The URL or path to a file",
     "browse_file_button": "Browse for a file to use",
     "recent_files_button": "Show a list of files used recently",
+    "find_next_i": "Find next match (case insensitive)",
+    "find_next": "Find next match (case sensitive)",
+    "find_bound_i": "Find next word-bound match (case insensitive)",
+    "find_bound": "Find next word-bound match (case sensitive)",
+    "find_hide": "Hide the find bar (Esc)",
 }

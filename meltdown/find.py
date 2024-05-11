@@ -9,6 +9,7 @@ from .buttonbox import ButtonBox
 from .entrybox import EntryBox
 from .tooltips import ToolTip
 from .output import Output
+from .tips import tips
 
 
 class Find:
@@ -40,32 +41,30 @@ class Find:
         padx_button = 4
 
         self.next_i_button = ButtonBox(self.inner, "Next (i)", lambda: self.find_next())
-        ToolTip(self.next_i_button, "Find next match (case insensitive)")
+        ToolTip(self.next_i_button, tips["find_next_i"])
         self.next_i_button.grid(row=0, column=1, sticky="ew", padx=padx_button)
 
-        self.next_ci_button = ButtonBox(
-            self.inner, "Next", lambda: self.find_next(False)
-        )
+        self.next_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
 
-        ToolTip(self.next_ci_button, "Find next match (case sensitive)")
-        self.next_ci_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
+        ToolTip(self.next_button, tips["find_next"])
+        self.next_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
 
-        self.bound_ci_button = ButtonBox(
+        self.bound_i_button = ButtonBox(
             self.inner, "Bound (i)", lambda: self.find_next(bound=True)
         )
 
-        ToolTip(self.bound_ci_button, "Find next word-bound match (case insensitive)")
-        self.bound_ci_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
+        ToolTip(self.bound_i_button, tips["find_bound_i"])
+        self.bound_i_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
 
-        self.bound_i_button = ButtonBox(
+        self.bound_button = ButtonBox(
             self.inner, "Bound", lambda: self.find_next(False, bound=True)
         )
 
-        ToolTip(self.bound_i_button, "Find next word-bound match (case sensitive)")
-        self.bound_i_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
+        ToolTip(self.bound_button, tips["find_bound"])
+        self.bound_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
 
         self.hide_button = ButtonBox(self.inner, "Hide", lambda: self.hide())
-        ToolTip(self.hide_button, "Hide the find bar (Esc)")
+        ToolTip(self.hide_button, tips["find_hide"])
         self.hide_button.grid(row=0, column=5, sticky="ew", padx=padx_button)
 
         self.inner.grid(row=0, column=0, sticky="ew", padx=4, pady=4)
