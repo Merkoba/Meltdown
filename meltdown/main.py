@@ -53,7 +53,7 @@ def main() -> None:
     keyboard.setup()
     commands.setup()
     inputcontrol.setup()
-    app.setup()
+    app.setup(now)
     system.check()
     terminal.start()
     listener.start()

@@ -262,5 +262,23 @@ class Utils:
 
         return index
 
+    def time_ago(self, start_time: float, end_time: float) -> str:
+        diff = end_time - start_time
+        seconds = int(diff)
+
+        if seconds < 60:
+            word = self.singular_or_plural(seconds, "second", "seconds")
+            return f"{seconds} {word} ago"
+
+        minutes = int(seconds // 60)
+
+        if minutes < 60:
+            word = self.singular_or_plural(minutes, "minute", "minutes")
+            return f"{minutes} {word} ago"
+
+        hours = int(minutes // 60)
+        word = self.singular_or_plural(hours, "hour", "hours")
+        return f"{hours} {word} ago"
+
 
 utils = Utils()

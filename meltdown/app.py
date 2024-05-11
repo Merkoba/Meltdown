@@ -53,6 +53,7 @@ class App:
         self.compact_enabled = False
         self.close_enabled = True
         self.clear_enabled = True
+        self.time_started = 0.0
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -71,7 +72,8 @@ class App:
         self.root.iconphoto(False, tk.PhotoImage(file=self.icon_path))
         self.image_path = Path(self.here, "image.jpg")
 
-    def setup(self) -> None:
+    def setup(self, time_started: float) -> None:
+        self.time_started = time_started
         self.check_commandoc()
         self.check_compact()
         self.check_display()
@@ -567,6 +569,15 @@ class App:
         memory_in_bytes = process.memory_info().rss
         memory_in_megabytes = int(memory_in_bytes / (1024 * 1024))
         Dialog.show_message(f"Memory: {memory_in_megabytes} MB")
+
+    def started(self) -> None:
+        from .dialogs import Dialog
+
+        date = utils.to_date(self.time_started)
+        date += "\n"
+        date += utils.time_ago(self.time_started, utils.now())
+
+        Dialog.show_message(date)
 
     def toggle_sticky(self) -> None:
         if self.sticky:

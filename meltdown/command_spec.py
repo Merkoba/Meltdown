@@ -493,6 +493,12 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "started",
+            "How long ago the program started",
+            lambda a=None: app.started(),
+        )
+
+        self.add_cmd(
             "sticky",
             "Make the window stay at the top",
             lambda a=None: app.toggle_sticky(),
