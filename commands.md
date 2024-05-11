@@ -591,3 +591,9 @@ Summarize the conversation
 ### trim
 
 Remove the last item of a conversation
+
+---
+
+### trimstart
+
+Remove the first item of a conversation
