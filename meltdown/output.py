@@ -21,10 +21,13 @@ class Output(tk.Text):
 
     item_menu = Menu()
     item_menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
+    item_menu.separator()
     item_menu.add(text="Delete", command=lambda e: Output.delete_items())
     item_menu.add(text="Delete Above", command=lambda e: Output.delete_items("above"))
     item_menu.add(text="Delete Below", command=lambda e: Output.delete_items("below"))
     item_menu.add(text="Keep", command=lambda e: Output.keep_item())
+    item_menu.separator()
+    item_menu.add(text="Copy", command=lambda e: Output.copy_item())
     clicked_number = 0
 
     current_output: Optional["Output"] = None
@@ -57,15 +60,26 @@ class Output(tk.Text):
         delete.delete_items(tab_id=tab_id, keep=arg)
 
     @staticmethod
-    def repeat_prompt() -> None:
-        from . import repeat
+    def copy_item() -> None:
+        from . import itemops
 
         if not Output.current_output:
             return
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        repeat.repeat_prompt(tab_id=tab_id, number=arg)
+        itemops.action("copy", tab_id=tab_id, number=arg)
+
+    @staticmethod
+    def repeat_prompt() -> None:
+        from . import itemops
+
+        if not Output.current_output:
+            return
+
+        tab_id = Output.current_output.tab_id
+        arg = str(Output.clicked_number)
+        itemops.action("repeat", tab_id=tab_id, number=arg)
 
     @staticmethod
     def get_words() -> str:
