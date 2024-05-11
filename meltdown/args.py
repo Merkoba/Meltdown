@@ -131,13 +131,14 @@ class Args:
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
+        self.confirm_delete = True
+        self.confirm_exit = False
         self.fill_prompt = True
         self.scroll_lines = 1
         self.auto_scroll = True
         self.user_color = "auto"
         self.ai_color = "auto"
         self.drag_and_drop = True
-        self.confirm_exit = False
         self.use_keywords = True
         self.snippets_font = "monospace"
         self.show_prevnext = False
@@ -230,6 +231,7 @@ class Args:
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
+            ("no_confirm_delete", "confirm_delete"),
             ("no_fill_prompt", "fill_prompt"),
             ("no_drag_and_drop", "drag_and_drop"),
             ("no_keywords", "use_keywords"),

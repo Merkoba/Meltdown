@@ -354,6 +354,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_confirm_delete",
+            action="store_false",
+            info="No need to confirm deleting items",
+        )
+
+        self.add_argument(
             "no_auto_scroll",
             action="store_false",
             info="Don't scroll to the bottom when loading tabs",

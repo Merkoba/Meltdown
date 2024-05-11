@@ -2,6 +2,7 @@
 from typing import Optional
 
 # Modules
+from .args import args
 from .dialogs import Dialog
 
 
@@ -11,6 +12,7 @@ def delete_items(
     number: Optional[str] = None,
     keep: Optional[str] = None,
     mode: str = "normal",
+    force: bool = False,
 ) -> None:
     from .display import display
     from .session import session
@@ -111,5 +113,12 @@ def delete_items(
 
         if conversation.items:
             conversation.print()
+
+    if not args.confirm_delete:
+        force = True
+
+    if force:
+        action()
+        return
 
     Dialog.show_confirm("Delete item(s)?", lambda: action())
