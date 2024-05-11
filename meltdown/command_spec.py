@@ -22,6 +22,7 @@ class CommandSpec:
         self.force = "Use 'force' to force"
         self.file_name = "You can provide the file name"
         self.sortfilter = "Use 'sort' or a word to filter"
+        self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
         self.infos: List[str] = []
         self.commands: Dict[str, Any] = {}
 
@@ -595,17 +596,17 @@ class CommandSpec:
 
         self.add_cmd(
             "delete",
-            "Remove a specific item of a conversation",
+            f"Remove a specific item of a conversation. {self.delcmd}",
             lambda a=None: display.delete_item(number=a),
-            type=int,
+            type=str,
             arg_req=True,
         )
 
         self.add_cmd(
             "keep",
-            "Remove all items except this one",
+            f"Remove all items except this one. {self.delcmd}",
             lambda a=None: display.delete_item(keep=a),
-            type=int,
+            type=str,
             arg_req=True,
         )
 

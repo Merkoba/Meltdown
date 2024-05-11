@@ -602,10 +602,10 @@ Remove the first item of a conversation
 
 ### delete
 
-Remove a specific item of a conversation
+Remove a specific item of a conversation. You can use a specific number, or words like 'first' and 'last'
 
 ---
 
 ### keep
 
-Remove all items except this one
+Remove all items except this one. You can use a specific number, or words like 'first' and 'last'

@@ -1064,8 +1064,8 @@ class Display:
         self,
         tab_id: Optional[str] = None,
         start: bool = False,
-        number: Optional[int] = None,
-        keep: Optional[int] = None,
+        number: Optional[str] = None,
+        keep: Optional[str] = None,
     ) -> None:
         from .session import session
 
@@ -1085,22 +1085,46 @@ class Display:
         if not conversation.items:
             return
 
+        def get_index(arg: str) -> int:
+            if arg == "first":
+                index = 0
+            elif arg == "second":
+                index = 1
+            elif arg == "third":
+                index = 2
+            elif arg == "last":
+                if conversation and conversation.items:
+                    index = len(conversation.items) - 1
+                else:
+                    index = -1
+            else:
+                try:
+                    index = int(arg)
+                except BaseException:
+                    index = -1
+
+            return index
+
         if number is not None:
-            if number <= 0:
+            index = get_index(number)
+
+            if index < 0:
                 return
 
-            if number > len(conversation.items):
+            if index >= len(conversation.items):
                 return
 
-            conversation.items.pop(number - 1)
+            conversation.items.pop(index)
         elif keep is not None:
-            if keep <= 0:
+            index = get_index(keep)
+
+            if index < 0:
                 return
 
-            if keep > len(conversation.items):
+            if index >= len(conversation.items):
                 return
 
-            conversation.items = [conversation.items[keep - 1]]
+            conversation.items = [conversation.items[index]]
         elif start:
             conversation.items.pop(0)
         else:
