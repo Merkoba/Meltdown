@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple, TYPE_CHECKING
 
 # Modules
 from .app import app
@@ -13,6 +13,9 @@ from .book import Book, Page
 from .find import Find
 from .args import args
 from .utils import utils
+
+if TYPE_CHECKING:
+    from .session import Conversation
 
 
 class Tab:
@@ -172,43 +175,26 @@ class Display:
         display.print(text, tab_id=tab_id, modified=False)
 
     def load_tab(self, tab_id: str) -> None:
-        from .session import session
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
 
-        tab = self.get_tab(tab_id)
-
-        if not tab:
+        if (not tab) or (not convo):
             return
 
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        if conversation.items:
+        if convo.items:
             self.show_header(tab_id)
-            conversation.print()
+            convo.print()
         else:
             self.show_intro(tab_id)
 
         tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
-        from .session import session
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
 
-        if not args.show_header:
+        if (not tab) or (not convo):
             return
 
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        nice_date = utils.to_date(conversation.created)
+        nice_date = utils.to_date(convo.created)
         header = f"Created: {nice_date}"
         self.print(header, tab_id=tab_id, modified=False)
 
@@ -378,20 +364,12 @@ class Display:
     def clear(self, tab_id: Optional[str] = None, force: bool = False) -> None:
         from .session import session
 
-        if not tab_id:
-            tab_id = self.current_tab
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
 
-        tab = self.get_tab(tab_id)
-
-        if not tab:
+        if (not tab) or (not convo):
             return
 
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        if not conversation.items:
+        if not convo.items:
             if not tab.modified:
                 return
 
@@ -680,22 +658,20 @@ class Display:
         self.do_rename_tab(tab_id, name)
 
     def has_messages(self, tab_id: str) -> bool:
-        from .session import session
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
 
-        tab = self.get_tab(tab_id)
-
-        if not tab:
+        if (not tab) or (not convo):
             return False
 
-        conversation = session.get_conversation(tab.conversation_id)
+        return bool(convo.items)
 
-        if not conversation:
-            return False
+    def tab_is_empty(self, tab_id: str) -> bool:
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
 
-        if conversation.items:
+        if (not tab) or (not convo):
             return True
 
-        return False
+        return not bool(convo.items)
 
     def format_text(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
@@ -716,23 +692,14 @@ class Display:
         self.book.select_last()
 
     def view_text(self) -> None:
-        from .session import session
         from .logs import logs
 
-        tab = self.get_current_tab()
+        tab, convo, tab_id = self.get_tab_convo(self.current_tab)
 
-        if not tab:
+        if (not tab) or (not convo):
             return
 
-        if tab.mode == "ignore":
-            return
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        text = logs.get_text(conversation)
+        text = logs.get_text(convo)
         name = self.get_tab_name(tab.tab_id)
 
         if text:
@@ -741,23 +708,14 @@ class Display:
             self.to_top(tab_id=new_tab)
 
     def view_json(self) -> None:
-        from .session import session
         from .logs import logs
 
-        tab = self.get_current_tab()
+        tab, convo, tab_id = self.get_tab_convo(self.current_tab)
 
-        if not tab:
+        if (not tab) or (not convo):
             return
 
-        if tab.mode == "ignore":
-            return
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        text = logs.get_json(conversation)
+        text = logs.get_json(convo)
         name = self.get_tab_name(tab.tab_id)
 
         if text:
@@ -790,24 +748,6 @@ class Display:
 
         self.book.move_to_end(tab_id)
         self.update_session()
-
-    def tab_is_empty(self, tab_id: str) -> bool:
-        from .session import session
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return True
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return False
-
-        if conversation.items:
-            return False
-
-        return True
 
     def stream_started(self, tab_id: str) -> None:
         if not args.tab_highlight:
@@ -917,6 +857,17 @@ class Display:
         return tab.num_user_prompts
 
     def refresh(self, tab_id: Optional[str] = None) -> None:
+        tab, convo, tab_id = self.get_tab_convo(tab_id)
+
+        if (not tab) or (not convo):
+            return
+
+        self.reset_tab(tab)
+        convo.print()
+
+    def get_tab_convo(
+        self, tab_id: Optional[str] = None
+    ) -> Tuple[Optional[Tab], Optional["Conversation"], str]:
         from .session import session
 
         if not tab_id:
@@ -925,15 +876,14 @@ class Display:
         tab = self.get_tab(tab_id)
 
         if not tab:
-            return
+            return (None, None, tab_id)
 
         conversation = session.get_conversation(tab.conversation_id)
 
         if not conversation:
-            return
+            return (None, None, tab_id)
 
-        self.reset_tab(tab)
-        conversation.print()
+        return (tab, conversation, tab_id)
 
 
 display = Display()

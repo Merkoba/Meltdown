@@ -4,25 +4,16 @@ from typing import Optional
 # Modules
 from .args import args
 from .display import display
-from .session import session
 from .model import model
 
 
 def summarize(tab_id: Optional[str] = None) -> None:
-    if not tab_id:
-        tab_id = display.current_tab
+    tab, convo, tab_id = display.get_tab_convo(tab_id)
 
-    tab = display.get_tab(tab_id)
-
-    if not tab:
+    if (not tab) or (not convo):
         return
 
-    conversation = session.get_conversation(tab.conversation_id)
-
-    if not conversation:
-        return
-
-    text = conversation.to_text()
+    text = convo.to_text()
 
     if not text:
         return

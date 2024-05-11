@@ -18,37 +18,29 @@ def delete_items(
     from .display import display
     from .session import session
 
-    if not tab_id:
-        tab_id = display.current_tab
+    tab, convo, tab_id = display.get_tab_convo(tab_id)
 
-    tab = display.get_tab(tab_id)
-
-    if not tab:
+    if (not tab) or (not convo):
         return
 
-    conversation = session.get_conversation(tab.conversation_id)
-
-    if not conversation:
+    if not convo.items:
         return
 
-    if not conversation.items:
-        return
-
-    if conversation.id == "ignore":
+    if convo.id == "ignore":
         return
 
     if (keep is not None) or (mode == "above") or (mode == "below"):
-        if len(conversation.items) <= 1:
+        if len(convo.items) <= 1:
             return
 
     def check_index(index: int) -> bool:
-        if (not conversation) or (not conversation.items):
+        if (not convo) or (not convo.items):
             return False
 
         if index < 0:
             return False
 
-        if index >= len(conversation.items):
+        if index >= len(convo.items):
             return False
 
         return True
@@ -60,38 +52,38 @@ def delete_items(
         if not tab:
             return
 
-        if (not conversation) or (not conversation.items):
+        if (not convo) or (not convo.items):
             return
 
         if number is not None:
-            index = utils.get_index(number, conversation.items)
+            index = utils.get_index(number, convo.items)
 
             if not check_index(index):
                 return
 
             if mode == "normal":
-                conversation.items.pop(index)
+                convo.items.pop(index)
             elif mode == "above":
-                conversation.items = conversation.items[index:]
+                convo.items = convo.items[index:]
             elif mode == "below":
-                conversation.items = conversation.items[: index + 1]
+                convo.items = convo.items[: index + 1]
         elif keep is not None:
-            index = utils.get_index(keep, conversation.items)
+            index = utils.get_index(keep, convo.items)
 
             if not check_index(index):
                 return
 
-            conversation.items = [conversation.items[index]]
+            convo.items = [convo.items[index]]
         elif start:
-            conversation.items.pop(0)
+            convo.items.pop(0)
         else:
-            conversation.items.pop()
+            convo.items.pop()
 
         session.save()
         display.reset_tab(tab)
 
-        if conversation.items:
-            conversation.print()
+        if convo.items:
+            convo.print()
 
     if not args.confirm_delete:
         force = True

@@ -82,8 +82,6 @@ def close_all_tabs(force: bool = False, make_empty: bool = True) -> None:
 
 
 def get_old_tabs() -> List["Tab"]:
-    from .session import session
-
     ids = display.tab_ids()
     old_tabs = []
 
@@ -91,17 +89,12 @@ def get_old_tabs() -> List["Tab"]:
     max_date = utils.now() - (60 * max_minutes)
 
     for tab_id in ids:
-        tab = display.get_tab(tab_id)
+        tab, convo, _ = display.get_tab_convo(tab_id)
 
-        if not tab:
+        if (not tab) or (not convo):
             continue
 
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            continue
-
-        if conversation.last_modified < max_date:
+        if convo.last_modified < max_date:
             old_tabs.append(tab)
 
     return old_tabs

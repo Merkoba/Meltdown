@@ -442,19 +442,14 @@ class Output(tk.Text):
         utils.copy(self.get_text())
 
     def to_text(self) -> str:
-        from .session import session
+        from .display import display
 
-        tab = self.display.get_tab(self.tab_id)
+        tab, convo, tab_id = display.get_tab_convo(self.tab_id)
 
-        if not tab:
+        if (not tab) or (not convo):
             return ""
 
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return ""
-
-        return conversation.to_text()
+        return convo.to_text()
 
     def prompt(self, who: str) -> None:
         from .display import display
