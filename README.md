@@ -165,6 +165,8 @@ High contrast theme.
 
 Summarize conversations.
 
+Remove specific items from the conversation.
+
 And more.
 
 ---
