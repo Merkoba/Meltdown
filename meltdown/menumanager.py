@@ -32,10 +32,6 @@ class MainMenu:
 
         self.menu.add("Compact", lambda e: app.toggle_compact())
         self.menu.add("Resize", lambda e: app.resize())
-
-        self.menu.separator()
-
-        self.menu.add("Theme", lambda e: app.pick_theme())
         self.menu.add("About", lambda e: app.show_about())
 
         self.menu.separator()
@@ -252,31 +248,6 @@ class FontFamilyMenu:
             self.menu.show(widget=widget)
 
 
-class ThemeMenu:
-    def __init__(self) -> None:
-        from .config import config
-        from .dialogs import Dialog
-
-        def action(new_theme: str) -> None:
-            config.set("theme", new_theme)
-            Dialog.show_message("Theme will change after restarting the program")
-
-        self.menu = Menu()
-
-        self.menu.add("Dark Theme", lambda e: action("dark"))
-        self.menu.add("Light Theme", lambda e: action("light"))
-        self.menu.add("High Contrast", lambda e: action("high_contrast"))
-
-    def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
-        if event:
-            self.menu.show(event)
-        else:
-            widget = getattr(widgets, "main_menu_button")
-            self.menu.show(widget=widget)
-
-
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
@@ -284,4 +255,3 @@ more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
 font_family_menu = FontFamilyMenu()
-theme_menu = ThemeMenu()

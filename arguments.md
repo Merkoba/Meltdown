@@ -1399,3 +1399,15 @@ The instruction to tell the AI to summarize a conversation
 Default: "Summarize this in a concise manner without addressing me"
 
 Type: str
+
+---
+
+### theme
+
+The color theme to use
+
+Default: "dark"
+
+Choices: "dark", "light", "contrast"
+
+Type: str

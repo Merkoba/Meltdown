@@ -159,9 +159,12 @@ class Args:
         self.compact = False
         self.no_exit = False
         self.disable_buttons = True
+
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
         )
+
+        self.theme = "dark"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -328,6 +331,7 @@ class Args:
             "compact",
             "no_exit",
             "summarize_prompt",
+            "theme",
         ]
 
         for n_item in normals:

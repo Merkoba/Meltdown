@@ -150,12 +150,6 @@ Make a new tab
 
 ---
 
-### theme
-
-Change the color theme
-
----
-
 ### about
 
 Show the about window

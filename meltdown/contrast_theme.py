@@ -2,7 +2,7 @@
 from .theme import Theme
 
 
-class HighContrastTheme(Theme):
+class ContrastTheme(Theme):
     def __init__(self) -> None:
         super().__init__()
         self.background_color = "black"

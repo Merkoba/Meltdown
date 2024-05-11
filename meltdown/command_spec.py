@@ -180,8 +180,6 @@ class CommandSpec:
 
         self.add_cmd("new", "Make a new tab", lambda a=None: display.make_tab())
 
-        self.add_cmd("theme", "Change the color theme", lambda a=None: app.pick_theme())
-
         self.add_cmd("about", "Show the about window", lambda a=None: app.show_about())
 
         self.add_cmd(

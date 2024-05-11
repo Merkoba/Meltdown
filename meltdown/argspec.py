@@ -946,5 +946,12 @@ class ArgSpec:
             info="The instruction to tell the AI to summarize a conversation",
         )
 
+        self.add_argument(
+            "theme",
+            type=str,
+            choices=["dark", "light", "contrast"],
+            info="The color theme to use",
+        )
+
 
 argspec = ArgSpec()

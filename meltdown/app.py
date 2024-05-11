@@ -457,24 +457,19 @@ class App:
         )
 
     def set_theme(self) -> None:
-        from .config import config
+        from .args import args
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
-        from .high_contrast_theme import HighContrastTheme
+        from .contrast_theme import ContrastTheme
 
-        if config.theme == "light":
+        if args.theme == "light":
             self.theme = LightTheme()
-        elif config.theme == "high_contrast":
-            self.theme = HighContrastTheme()
+        elif args.theme == "contrast":
+            self.theme = ContrastTheme()
         else:
             self.theme = DarkTheme()
 
         self.theme.setup()
-
-    def pick_theme(self) -> None:
-        from .menumanager import theme_menu
-
-        theme_menu.show()
 
     def setup_binds(self) -> None:
         self.main_frame.bind("<Button-1>", lambda e: self.on_frame_click())
