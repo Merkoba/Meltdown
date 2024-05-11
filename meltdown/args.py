@@ -73,6 +73,7 @@ class Args:
         self.prefix = "/"
         self.andchar = "&"
         self.commands = True
+        self.compact = False
         self.compact_model = False
         self.compact_system = False
         self.compact_details_1 = False
@@ -156,7 +157,6 @@ class Args:
         self.tab_double_click = True
         self.arrow_mode = "history"
         self.only_text = False
-        self.compact = False
         self.no_exit = False
         self.disable_buttons = True
 
