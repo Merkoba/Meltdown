@@ -411,8 +411,10 @@ class Display:
         Dialog.show_confirm("Clear conversation?", lambda: action())
 
     def reset_tab(self, tab: Tab) -> None:
+        tab.output.clear_text()
         tab.modified = False
         tab.num_user_prompts = 0
+        self.show_header(tab.tab_id)
 
     def select_output(self) -> None:
         output = self.get_current_output()
@@ -892,7 +894,10 @@ class Display:
 
         tab.output.auto_scroll = True
 
-    def disable_auto_scroll(self, tab_id: str) -> None:
+    def disable_auto_scroll(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
         tab = self.get_tab(tab_id)
 
         if not tab:
@@ -910,6 +915,25 @@ class Display:
             return 0
 
         return tab.num_user_prompts
+
+    def refresh(self, tab_id: Optional[str] = None) -> None:
+        from .session import session
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        self.reset_tab(tab)
+        conversation.print()
 
 
 display = Display()

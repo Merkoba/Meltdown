@@ -181,6 +181,12 @@ class CommandSpec:
             type="force",
         )
 
+        self.add_cmd(
+            "refresh",
+            "Refresh the conversation",
+            lambda a=None: display.refresh(),
+        )
+
         self.add_cmd("new", "Make a new tab", lambda a=None: display.make_tab())
 
         self.add_cmd("about", "Show the about window", lambda a=None: app.show_about())

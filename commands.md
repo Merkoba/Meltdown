@@ -144,6 +144,12 @@ Close tabs to the right
 
 ---
 
+### refresh
+
+Refresh the conversation
+
+---
+
 ### new
 
 Make a new tab

@@ -88,9 +88,7 @@ def delete_items(
             conversation.items.pop()
 
         session.save()
-        tab.output.clear_text()
         display.reset_tab(tab)
-        display.show_header(tab_id)
 
         if conversation.items:
             conversation.print()
