@@ -48,6 +48,24 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_name_menu",
+            action="store_false",
+            info="Don't show a menu when clicking the user names",
+        )
+
+        self.add_argument(
+            "no_word_menu",
+            action="store_false",
+            info="Don't show a menu when clicking special words",
+        )
+
+        self.add_argument(
+            "no_open_urls",
+            action="store_false",
+            info="Don't open URLs when clicked",
+        )
+
+        self.add_argument(
             "no_scrollbars",
             action="store_false",
             info="Don't show scrollbars",

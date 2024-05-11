@@ -206,6 +206,9 @@ class Output(tk.Text):
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
         def on_url_click(event: Any) -> None:
+            if not args.open_urls:
+                return
+
             text = self.get_tagwords("url", event)
 
             if text:
@@ -469,11 +472,12 @@ class Output(tk.Text):
                 else:
                     self.tag_configure(f"name_ai_{number}", foreground=args.ai_color)
 
-        self.tag_bind(
-            f"name_{who}_{number}",
-            "<ButtonRelease-1>",
-            lambda e: self.on_user_click(e, number),
-        )
+        if args.name_menu:
+            self.tag_bind(
+                f"name_{who}_{number}",
+                "<ButtonRelease-1>",
+                lambda e: self.on_user_click(e, number),
+            )
 
     def print(self, text: str) -> None:
         left = ""
@@ -547,6 +551,9 @@ class Output(tk.Text):
             return ""
 
     def show_word_menu(self, event: Any, widget: Optional[tk.Text] = None) -> bool:
+        if not args.word_menu:
+            return False
+
         if not widget:
             widget = self
 

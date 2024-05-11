@@ -161,6 +161,9 @@ class Args:
         self.disable_buttons = True
         self.scroll_percentage = False
         self.item_numbers = False
+        self.name_menu = True
+        self.word_menu = True
+        self.open_urls = True
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -237,6 +240,9 @@ class Args:
             ("no_tab_double_click", "tab_double_click"),
             ("no_disable_buttons", "disable_buttons"),
             ("no_auto_scroll", "auto_scroll"),
+            ("no_name_menu", "name_menu"),
+            ("no_word_menu", "word_menu"),
+            ("no_open_urls", "open_urls"),
         ]
 
         for r_item in other_name:
