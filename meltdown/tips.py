@@ -9,6 +9,7 @@ tips = {
     "clear_button": "Clear the conversation",
     "close_button": "Close the current tab",
     "top_button": "Scroll to the top",
+    "bottom_button": "Scroll to the bottom",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
     "write_button": "Show a textbox for longer inputs",
@@ -113,5 +114,4 @@ tips = {
     "file": "The URL or path to a file",
     "browse_file_button": "Browse for a file to use",
     "recent_files_button": "Show a list of files used recently",
-    "bottom": "Scroll to the bottom",
 }

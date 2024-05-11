@@ -19,7 +19,7 @@ class Bottom(tk.Frame):
             self, text="Go To Bottom", command=self.to_bottom, bigger=True
         )
 
-        ToolTip(self.button, tips["bottom"])
+        ToolTip(self.button, tips["bottom_button"])
         self.button.grid(row=0, column=0, sticky="nsew")
         self.button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.button.set_bind("<Button-5>", lambda e: self.scroll_down())
