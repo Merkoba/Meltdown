@@ -35,11 +35,12 @@ class Model:
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
         self.gpt_client = None
+
         self.gpts: List[Tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT-3.5 Turbo"),
             ("gpt-4-turbo", "GPT-4 Turbo"),
-            ("gpt-4-turbo-preview", "GPT-4 Turbo Preview"),
         ]
+
         self.gpt_key = ""
 
     def setup(self) -> None:
