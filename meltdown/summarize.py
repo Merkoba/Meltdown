@@ -8,12 +8,12 @@ from .model import model
 
 
 def summarize(tab_id: Optional[str] = None) -> None:
-    tab, convo, tab_id = display.get_tab_convo(tab_id)
+    tabconvo = display.get_tab_convo(tab_id)
 
-    if (not tab) or (not convo):
+    if not tabconvo:
         return
 
-    text = convo.to_text()
+    text = tabconvo.convo.to_text()
 
     if not text:
         return

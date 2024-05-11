@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import List, Dict, Any, Optional, Tuple, TYPE_CHECKING
+from typing import List, Dict, Any, Optional, TYPE_CHECKING
 
 # Modules
 from .app import app
@@ -38,6 +38,12 @@ class Tab:
         self.loaded = False
         self.streaming = False
         self.num_user_prompts = 0
+
+
+class TabConvo:
+    def __init__(self, tab: "Tab", convo: "Conversation") -> None:
+        self.tab = tab
+        self.convo = convo
 
 
 class Display:
@@ -175,26 +181,26 @@ class Display:
         display.print(text, tab_id=tab_id, modified=False)
 
     def load_tab(self, tab_id: str) -> None:
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        if convo.items:
+        if tabconvo.convo.items:
             self.show_header(tab_id)
-            convo.print()
+            tabconvo.convo.print()
         else:
             self.show_intro(tab_id)
 
-        tab.loaded = True
+        tabconvo.tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        nice_date = utils.to_date(convo.created)
+        nice_date = utils.to_date(tabconvo.convo.created)
         header = f"Created: {nice_date}"
         self.print(header, tab_id=tab_id, modified=False)
 
@@ -364,23 +370,23 @@ class Display:
     def clear(self, tab_id: Optional[str] = None, force: bool = False) -> None:
         from .session import session
 
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        if not convo.items:
-            if not tab.modified:
+        if not tabconvo.convo.items:
+            if not tabconvo.tab.modified:
                 return
 
         def action() -> None:
-            if (not tab) or (not tab.output):
+            if not tabconvo:
                 return
 
-            tab.output.clear_text()
-            session.clear(tab.conversation_id)
-            self.show_intro(tab.tab_id)
-            self.reset_tab(tab)
+            tabconvo.tab.output.clear_text()
+            session.clear(tabconvo.tab.conversation_id)
+            self.show_intro(tabconvo.tab.tab_id)
+            self.reset_tab(tabconvo.tab)
 
         if force or (not args.confirm_clear):
             action()
@@ -658,20 +664,20 @@ class Display:
         self.do_rename_tab(tab_id, name)
 
     def has_messages(self, tab_id: str) -> bool:
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return False
 
-        return bool(convo.items)
+        return bool(tabconvo.convo.items)
 
     def tab_is_empty(self, tab_id: str) -> bool:
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return True
 
-        return not bool(convo.items)
+        return not bool(tabconvo.convo.items)
 
     def format_text(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
@@ -694,13 +700,13 @@ class Display:
     def view_text(self) -> None:
         from .logs import logs
 
-        tab, convo, tab_id = self.get_tab_convo(self.current_tab)
+        tabconvo = self.get_tab_convo(self.current_tab)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        text = logs.get_text(convo)
-        name = self.get_tab_name(tab.tab_id)
+        text = logs.get_text(tabconvo.convo)
+        name = self.get_tab_name(tabconvo.tab.tab_id)
 
         if text:
             new_tab = self.make_tab(name=f"{name} Text", mode="ignore")
@@ -710,13 +716,13 @@ class Display:
     def view_json(self) -> None:
         from .logs import logs
 
-        tab, convo, tab_id = self.get_tab_convo(self.current_tab)
+        tabconvo = self.get_tab_convo(self.current_tab)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        text = logs.get_json(convo)
-        name = self.get_tab_name(tab.tab_id)
+        text = logs.get_json(tabconvo.convo)
+        name = self.get_tab_name(tabconvo.tab.tab_id)
 
         if text:
             new_tab = self.make_tab(name=f"{name} JSON", mode="ignore")
@@ -857,17 +863,15 @@ class Display:
         return tab.num_user_prompts
 
     def refresh(self, tab_id: Optional[str] = None) -> None:
-        tab, convo, tab_id = self.get_tab_convo(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return
 
-        self.reset_tab(tab)
-        convo.print()
+        self.reset_tab(tabconvo.tab)
+        tabconvo.convo.print()
 
-    def get_tab_convo(
-        self, tab_id: Optional[str] = None
-    ) -> Tuple[Optional[Tab], Optional["Conversation"], str]:
+    def get_tab_convo(self, tab_id: Optional[str] = None) -> Optional[TabConvo]:
         from .session import session
 
         if not tab_id:
@@ -876,14 +880,14 @@ class Display:
         tab = self.get_tab(tab_id)
 
         if not tab:
-            return (None, None, tab_id)
+            return None
 
         conversation = session.get_conversation(tab.conversation_id)
 
         if not conversation:
-            return (None, None, tab_id)
+            return None
 
-        return (tab, conversation, tab_id)
+        return TabConvo(tab, conversation)
 
 
 display = Display()

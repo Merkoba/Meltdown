@@ -444,12 +444,12 @@ class Output(tk.Text):
     def to_text(self) -> str:
         from .display import display
 
-        tab, convo, tab_id = display.get_tab_convo(self.tab_id)
+        tabconvo = display.get_tab_convo(self.tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             return ""
 
-        return convo.to_text()
+        return tabconvo.convo.to_text()
 
     def prompt(self, who: str) -> None:
         from .display import display

@@ -9,23 +9,23 @@ def repeat_prompt(number: str, tab_id: Optional[str] = None) -> None:
     from .model import model
     from .display import display
 
-    tab, convo, tab_id = display.get_tab_convo(tab_id)
+    tabconvo = display.get_tab_convo(tab_id)
 
-    if (not tab) or (not convo):
+    if not tabconvo:
         return
 
-    if not convo.items:
+    if not tabconvo.convo.items:
         return
 
-    index = utils.get_index(number, convo.items)
+    index = utils.get_index(number, tabconvo.convo.items)
 
     if index < 0:
         return
 
-    if index >= len(convo.items):
+    if index >= len(tabconvo.convo.items):
         return
 
-    item = convo.items[index]
+    item = tabconvo.convo.items[index]
 
     if not item:
         return
@@ -36,4 +36,4 @@ def repeat_prompt(number: str, tab_id: Optional[str] = None) -> None:
         return
 
     prompt = {"text": prompt_text}
-    model.stream(prompt, tab_id)
+    model.stream(prompt, tabconvo.tab.tab_id)

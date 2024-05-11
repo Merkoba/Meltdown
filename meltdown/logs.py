@@ -93,12 +93,12 @@ class Logs:
                 session.get_conversation(key) for key in session.conversations
             ]
         else:
-            tab, convo, tab_id = display.get_tab_convo(tab_id)
+            tabconvo = display.get_tab_convo(tab_id)
 
-            if (not tab) or (not convo):
+            if not tabconvo:
                 return
 
-            conversations = [convo]
+            conversations = [tabconvo.convo]
 
         for conversation in conversations:
             if not conversation:

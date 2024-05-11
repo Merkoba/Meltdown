@@ -89,13 +89,13 @@ def get_old_tabs() -> List["Tab"]:
     max_date = utils.now() - (60 * max_minutes)
 
     for tab_id in ids:
-        tab, convo, _ = display.get_tab_convo(tab_id)
+        tabconvo = display.get_tab_convo(tab_id)
 
-        if (not tab) or (not convo):
+        if not tabconvo:
             continue
 
-        if convo.last_modified < max_date:
-            old_tabs.append(tab)
+        if tabconvo.convo.last_modified < max_date:
+            old_tabs.append(tabconvo.tab)
 
     return old_tabs
 
