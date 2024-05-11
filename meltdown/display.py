@@ -1052,5 +1052,37 @@ class Display:
 
         tab.output.auto_scroll = False
 
+    def trim(self, tab_id: Optional[str] = None, start: bool = False) -> None:
+        from .session import session
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        conversation = session.get_conversation(tab.conversation_id)
+
+        if not conversation:
+            return
+
+        if not conversation.items:
+            return
+
+        if start:
+            conversation.items.pop(0)
+        else:
+            conversation.items.pop()
+
+        session.save()
+
+        tab.output.clear_text()
+        self.show_header(tab_id)
+
+        if conversation.items:
+            conversation.print()
+
 
 display = Display()

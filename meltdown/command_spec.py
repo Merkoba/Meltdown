@@ -581,5 +581,17 @@ class CommandSpec:
             lambda a=None: summarize.summarize(),
         )
 
+        self.add_cmd(
+            "trim",
+            "Remove the last item of a conversation",
+            lambda a=None: display.trim(),
+        )
+
+        self.add_cmd(
+            "trimstart",
+            "Remove the first item of a conversation",
+            lambda a=None: display.trim(start=True),
+        )
+
 
 command_spec = CommandSpec()
