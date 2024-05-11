@@ -329,6 +329,16 @@ class App:
         except BaseException as e:
             utils.error(e)
 
+    def file_command(self, cmd: str, text: str) -> None:
+        tmpdir = tempfile.gettempdir()
+        name = f"mlt_file_{utils.now_int()}.txt"
+        path = Path(tmpdir, name)
+
+        with path.open("w", encoding="utf-8") as file:
+            file.write(text)
+
+        self.run_command([cmd, str(path)])
+
     def open_url(self, url: str) -> None:
         from .args import args
 

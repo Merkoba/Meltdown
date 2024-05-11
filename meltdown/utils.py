@@ -5,7 +5,6 @@ import random
 import string
 import logging
 import inspect
-import tempfile
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
@@ -125,14 +124,7 @@ class Utils:
         from .app import app
 
         if command and args.on_copy:
-            tmpdir = tempfile.gettempdir()
-            name = f"mlt_copy_{utils.now_int()}.txt"
-            path = Path(tmpdir, name)
-
-            with path.open("w", encoding="utf-8") as file:
-                file.write(text)
-
-            app.run_command([args.on_copy, str(path)])
+            app.file_command(args.on_copy, text)
 
         pyperclip.copy(text)  # type: ignore
 
