@@ -233,6 +233,18 @@ class Output(tk.Text):
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
+        self.tag_bind(
+            "name_user",
+            "<ButtonRelease-1>",
+            lambda e: self.on_name_click(e),
+        )
+
+        self.tag_bind(
+            "name_ai",
+            "<ButtonRelease-1>",
+            lambda e: self.on_name_click(e),
+        )
+
         def on_url_click(event: Any) -> None:
             if not args.open_urls:
                 return
@@ -308,7 +320,17 @@ class Output(tk.Text):
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
 
-        for tag in ("bold", "italic", "highlight", "url"):
+        if args.colors:
+            if args.user_color == "auto":
+                self.tag_configure("name_user", foreground=app.theme.user_color)
+            else:
+                self.tag_configure("name_user", foreground=args.user_color)
+            if args.ai_color == "auto":
+                self.tag_configure("name_ai", foreground=app.theme.ai_color)
+            else:
+                self.tag_configure("name_ai", foreground=args.ai_color)
+
+        for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
             self.tag_lower(tag)
 
         self.tag_configure(
@@ -467,41 +489,11 @@ class Output(tk.Text):
         return tabconvo.convo.to_text()
 
     def prompt(self, who: str) -> None:
-        from .display import display
-
         prompt = Output.get_prompt(who, mark=True)
         self.print(prompt)
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
-
-        number = display.num_user_prompts() + 1
-        self.tag_add(f"name_{who}_{number}", start_index, end_index)
-        self.tag_lower(f"name_{who}_{number}")
-
-        if args.colors:
-            if who == "user":
-                if args.user_color == "auto":
-                    self.tag_configure(
-                        f"name_user_{number}", foreground=app.theme.user_color
-                    )
-                else:
-                    self.tag_configure(
-                        f"name_user_{number}", foreground=args.user_color
-                    )
-            elif who == "ai":
-                if args.ai_color == "auto":
-                    self.tag_configure(
-                        f"name_ai_{number}", foreground=app.theme.ai_color
-                    )
-                else:
-                    self.tag_configure(f"name_ai_{number}", foreground=args.ai_color)
-
-        if args.name_menu:
-            self.tag_bind(
-                f"name_{who}_{number}",
-                "<ButtonRelease-1>",
-                lambda e: self.on_user_click(e, number),
-            )
+        self.tag_add(f"name_{who}", start_index, end_index)
 
     def print(self, text: str) -> None:
         left = ""
@@ -697,7 +689,27 @@ class Output(tk.Text):
         self.display.move_tab_right()
         return "break"
 
-    def on_user_click(self, event: Any, number: int) -> None:
+    def on_name_click(self, event: Any) -> None:
+        if not args.name_menu:
+            return
+
+        number = self.get_number()
+
+        if number == 0:
+            return
+
         Output.current_output = self
         Output.clicked_number = number
         Output.item_menu.show(event)
+
+    def get_number(self) -> int:
+        line_number = int(self.index("current").split(".")[0])
+        count = 0
+
+        for i in range(1, line_number + 1):
+            line = self.get(f"{i}.0", f"{i}.end")
+
+            if line.startswith(Output.marker_user):
+                count += 1
+
+        return count
