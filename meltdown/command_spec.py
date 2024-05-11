@@ -487,6 +487,12 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "memory",
+            "Show how much memory the program is using",
+            lambda a=None: app.memory(),
+        )
+
+        self.add_cmd(
             "sticky",
             "Make the window stay at the top",
             lambda a=None: app.toggle_sticky(),

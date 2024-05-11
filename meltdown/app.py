@@ -1,4 +1,5 @@
 # Standard
+import os
 import sys
 import json
 import subprocess
@@ -11,6 +12,7 @@ from pathlib import Path
 from typing import List, Any, Optional
 
 # Libraries
+import psutil  # type: ignore
 from tkinterdnd2 import TkinterDnD  # type: ignore
 
 # Modules
@@ -546,17 +548,25 @@ class App:
         self.root.after(self.autorun_delay, lambda: action())
 
     def stats(self) -> None:
-        from .display import display
+        from .args import args
         from .commands import commands
         from .keyboard import keyboard
-        from .args import args
+        from .dialogs import Dialog
 
         lines = []
         lines.append(f"Commands: {len(commands.commands)}")
         lines.append(f"Arguments: {len(vars(args))}")
         lines.append(f"Keyboard: {len(keyboard.commands)}")
 
-        display.print("\n".join(lines))
+        Dialog.show_message("\n".join(lines))
+
+    def memory(self) -> None:
+        from .dialogs import Dialog
+
+        process = psutil.Process(os.getpid())
+        memory_in_bytes = process.memory_info().rss
+        memory_in_megabytes = int(memory_in_bytes / (1024 * 1024))
+        Dialog.show_message(f"Memory: {memory_in_megabytes} MB")
 
     def toggle_sticky(self) -> None:
         if self.sticky:

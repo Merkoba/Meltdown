@@ -492,6 +492,12 @@ Show some internal information
 
 ---
 
+### memory
+
+Show how much memory the program is using
+
+---
+
 ### sticky
 
 Make the window stay at the top
