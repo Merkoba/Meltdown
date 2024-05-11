@@ -19,12 +19,39 @@ class Output(tk.Text):
     word_menu.add(text="Search", command=lambda e: Output.search_words())
     word_menu.add(text="New", command=lambda e: Output.new_tab())
 
+    item_menu = Menu()
+    item_menu.add(text="Delete", command=lambda e: Output.delete_item())
+    item_menu.add(text="Keep", command=lambda e: Output.keep_item())
+    clicked_number = 0
+
     current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     words = ""
 
     update_size_after = ""
+
+    @staticmethod
+    def delete_item() -> None:
+        from .display import display
+
+        if not Output.current_output:
+            return
+
+        tab_id = Output.current_output.tab_id
+        arg = str(Output.clicked_number)
+        display.delete_item(tab_id=tab_id, number=arg)
+
+    @staticmethod
+    def keep_item() -> None:
+        from .display import display
+
+        if not Output.current_output:
+            return
+
+        tab_id = Output.current_output.tab_id
+        arg = str(Output.clicked_number)
+        display.delete_item(tab_id=tab_id, keep=arg)
 
     @staticmethod
     def get_words() -> str:
@@ -137,6 +164,7 @@ class Output(tk.Text):
         if args.item_numbers:
             number = display.num_user_prompts()
             prompt = f"({number + 1}) {prompt}"
+
         return prompt
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
@@ -163,7 +191,6 @@ class Output(tk.Text):
         self.setup()
 
     def setup(self) -> None:
-        from .inputcontrol import inputcontrol
         from .display import display
         from .markdown import Markdown
 
@@ -177,14 +204,6 @@ class Output(tk.Text):
 
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
-
-        self.tag_bind(
-            "name_user", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("user")
-        )
-
-        self.tag_bind(
-            "name_ai", "<ButtonRelease-1>", lambda e: inputcontrol.insert_name("ai")
-        )
 
         def on_url_click(event: Any) -> None:
             text = self.get_tagwords("url", event)
@@ -253,24 +272,12 @@ class Output(tk.Text):
         )
 
         self.configure(border=4, highlightthickness=0, relief="flat")
-
-        if args.colors:
-            if args.user_color == "auto":
-                self.tag_configure("name_user", foreground=app.theme.user_color)
-            else:
-                self.tag_configure("name_user", foreground=args.user_color)
-
-            if args.ai_color == "auto":
-                self.tag_configure("name_ai", foreground=app.theme.ai_color)
-            else:
-                self.tag_configure("name_ai", foreground=args.ai_color)
-
         self.tag_configure("highlight", underline=True)
         self.tag_configure("url", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
 
-        for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
+        for tag in ("bold", "italic", "highlight", "url"):
             self.tag_lower(tag)
 
         self.tag_configure(
@@ -433,11 +440,40 @@ class Output(tk.Text):
         return conversation.to_text()
 
     def prompt(self, who: str) -> None:
+        from .display import display
+
         prompt = Output.get_prompt(who, mark=True)
         self.print(prompt)
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
-        self.tag_add(f"name_{who}", start_index, end_index)
+
+        number = display.num_user_prompts() + 1
+        self.tag_add(f"name_{who}_{number}", start_index, end_index)
+        self.tag_lower(f"name_{who}_{number}")
+
+        if args.colors:
+            if who == "user":
+                if args.user_color == "auto":
+                    self.tag_configure(
+                        f"name_user_{number}", foreground=app.theme.user_color
+                    )
+                else:
+                    self.tag_configure(
+                        f"name_user_{number}", foreground=args.user_color
+                    )
+            elif who == "ai":
+                if args.ai_color == "auto":
+                    self.tag_configure(
+                        f"name_ai_{number}", foreground=app.theme.ai_color
+                    )
+                else:
+                    self.tag_configure(f"name_ai_{number}", foreground=args.ai_color)
+
+        self.tag_bind(
+            f"name_{who}_{number}",
+            "<ButtonRelease-1>",
+            lambda e: self.on_user_click(e, number),
+        )
 
     def print(self, text: str) -> None:
         left = ""
@@ -629,3 +665,8 @@ class Output(tk.Text):
     def move_right(self) -> str:
         self.display.move_tab_right()
         return "break"
+
+    def on_user_click(self, event: Any, number: int) -> None:
+        Output.current_output = self
+        Output.clicked_number = number
+        Output.item_menu.show(event)
