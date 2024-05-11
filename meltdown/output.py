@@ -20,14 +20,14 @@ class Output(tk.Text):
     word_menu.add(text="New", command=lambda e: Output.new_tab())
 
     item_menu = Menu()
-    item_menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
+    item_menu.add(text="Copy", command=lambda e: Output.copy_item())
     item_menu.separator()
     item_menu.add(text="Delete", command=lambda e: Output.delete_items())
     item_menu.add(text="Delete Above", command=lambda e: Output.delete_items("above"))
     item_menu.add(text="Delete Below", command=lambda e: Output.delete_items("below"))
     item_menu.add(text="Keep", command=lambda e: Output.keep_item())
     item_menu.separator()
-    item_menu.add(text="Copy", command=lambda e: Output.copy_item())
+    item_menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
     clicked_number = 0
 
     current_output: Optional["Output"] = None
