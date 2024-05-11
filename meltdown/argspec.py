@@ -390,15 +390,21 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "test",
-            action="store_true",
-            info="Make a test tab for debugging",
+            "no_tab_numbers",
+            action="store_false",
+            info="Show numbers in the tab bar",
         )
 
         self.add_argument(
-            "item_numbers",
-            action="store_true",
+            "no_item_numbers",
+            action="store_false",
             info="Add numbers to each message",
+        )
+
+        self.add_argument(
+            "test",
+            action="store_true",
+            info="Make a test tab for debugging",
         )
 
         self.add_argument(
@@ -483,12 +489,6 @@ class ArgSpec:
             "maximize",
             action="store_true",
             info="Maximize the window on start",
-        )
-
-        self.add_argument(
-            "tab_numbers",
-            action="store_true",
-            info="Show numbers in the tab bar",
         )
 
         self.add_argument(

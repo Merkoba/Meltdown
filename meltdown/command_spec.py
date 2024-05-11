@@ -601,5 +601,13 @@ class CommandSpec:
             arg_req=True,
         )
 
+        self.add_cmd(
+            "keep",
+            "Remove all items except this one",
+            lambda a=None: display.delete_item(keep=a),
+            type=int,
+            arg_req=True,
+        )
+
 
 command_spec = CommandSpec()

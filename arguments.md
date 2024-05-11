@@ -476,19 +476,25 @@ Action: store_false
 
 ---
 
-### test
+### no-tab-numbers
 
-Make a test tab for debugging
+Show numbers in the tab bar
 
-Default: False
-
-Action: store_true
+Action: store_false
 
 ---
 
-### item-numbers
+### no-item-numbers
 
 Add numbers to each message
+
+Action: store_false
+
+---
+
+### test
+
+Make a test tab for debugging
 
 Default: False
 
@@ -629,16 +635,6 @@ Action: store_true
 ### maximize
 
 Maximize the window on start
-
-Default: False
-
-Action: store_true
-
----
-
-### tab-numbers
-
-Show numbers in the tab bar
 
 Default: False
 

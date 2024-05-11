@@ -1065,6 +1065,7 @@ class Display:
         tab_id: Optional[str] = None,
         start: bool = False,
         number: Optional[int] = None,
+        keep: Optional[int] = None,
     ) -> None:
         from .session import session
 
@@ -1092,6 +1093,14 @@ class Display:
                 return
 
             conversation.items.pop(number - 1)
+        elif keep is not None:
+            if keep <= 0:
+                return
+
+            if keep > len(conversation.items):
+                return
+
+            conversation.items = [conversation.items[keep - 1]]
         elif start:
             conversation.items.pop(0)
         else:

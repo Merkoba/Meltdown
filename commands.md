@@ -603,3 +603,9 @@ Remove the first item of a conversation
 ### delete
 
 Remove a specific item of a conversation
+
+---
+
+### keep
+
+Remove all items except this one

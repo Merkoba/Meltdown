@@ -35,7 +35,8 @@ class Args:
         self.bottom = True
         self.bottom_autohide = True
         self.reorder = True
-        self.tab_numbers = False
+        self.tab_numbers = True
+        self.item_numbers = True
         self.test = False
         self.alt_palette = False
         self.width = -1
@@ -160,7 +161,6 @@ class Args:
         self.no_exit = False
         self.disable_buttons = True
         self.scroll_percentage = False
-        self.item_numbers = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -237,6 +237,8 @@ class Args:
             ("no_tab_double_click", "tab_double_click"),
             ("no_disable_buttons", "disable_buttons"),
             ("no_auto_scroll", "auto_scroll"),
+            ("no_tab_numbers", "tab_numbers"),
+            ("no_item_numbers", "item_numbers"),
         ]
 
         for r_item in other_name:
@@ -249,7 +251,6 @@ class Args:
             "test",
             "config",
             "session",
-            "tab_numbers",
             "max_tabs",
             "input",
             "force",
@@ -335,7 +336,6 @@ class Args:
             "summarize_prompt",
             "theme",
             "scroll_percentage",
-            "item_numbers",
         ]
 
         for n_item in normals:
