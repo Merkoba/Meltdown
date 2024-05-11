@@ -1150,7 +1150,6 @@ class Display:
                 conversation.items.pop()
 
             session.save()
-
             tab.output.clear_text()
             self.reset_tab(tab)
             self.show_header(tab_id)
