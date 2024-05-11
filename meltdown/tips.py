@@ -113,4 +113,5 @@ tips = {
     "file": "The URL or path to a file",
     "browse_file_button": "Browse for a file to use",
     "recent_files_button": "Show a list of files used recently",
+    "bottom": "Scroll to the bottom",
 }
