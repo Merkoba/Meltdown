@@ -21,6 +21,8 @@ class Output(tk.Text):
 
     item_menu = Menu()
     item_menu.add(text="Delete", command=lambda e: Output.delete_item())
+    item_menu.add(text="Delete Above", command=lambda e: Output.delete_item("above"))
+    item_menu.add(text="Delete Below", command=lambda e: Output.delete_item("below"))
     item_menu.add(text="Keep", command=lambda e: Output.keep_item())
     clicked_number = 0
 
@@ -32,7 +34,7 @@ class Output(tk.Text):
     update_size_after = ""
 
     @staticmethod
-    def delete_item() -> None:
+    def delete_item(mode: str = "normal") -> None:
         from .display import display
 
         if not Output.current_output:
@@ -40,7 +42,7 @@ class Output(tk.Text):
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        display.delete_item(tab_id=tab_id, number=arg)
+        display.delete_item(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
     def keep_item() -> None:

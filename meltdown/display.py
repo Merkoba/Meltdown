@@ -1066,6 +1066,7 @@ class Display:
         start: bool = False,
         number: Optional[str] = None,
         keep: Optional[str] = None,
+        mode: str = "normal",
     ) -> None:
         from .session import session
 
@@ -1117,7 +1118,12 @@ class Display:
             if index >= len(conversation.items):
                 return
 
-            conversation.items.pop(index)
+            if mode == "normal":
+                conversation.items.pop(index)
+            elif mode == "above":
+                conversation.items = conversation.items[index:]
+            elif mode == "below":
+                conversation.items = conversation.items[: index + 1]
         elif keep is not None:
             index = get_index(keep)
 
