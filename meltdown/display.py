@@ -1089,6 +1089,10 @@ class Display:
         if conversation.id == "ignore":
             return
 
+        if (keep is not None) or (mode == "above") or (mode == "below"):
+            if len(conversation.items) <= 1:
+                return
+
         def get_index(arg: str) -> int:
             if arg == "first":
                 index = 0
