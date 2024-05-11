@@ -159,6 +159,7 @@ class Args:
         self.only_text = False
         self.no_exit = False
         self.disable_buttons = True
+        self.scroll_percentage = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -332,6 +333,7 @@ class Args:
             "no_exit",
             "summarize_prompt",
             "theme",
+            "scroll_percentage",
         ]
 
         for n_item in normals:

@@ -663,6 +663,12 @@ class Display:
         else:
             tab.bottom.show()
 
+            if args.scroll_percentage:
+                visible_range = yview[1] - yview[0]
+                total_range = 1.0 - visible_range
+                perc = int((yview[0] / total_range) * 100)
+                tab.bottom.set_text(f"{perc}%")
+
         if args.disable_buttons:
             if yview[0] <= 0.0001:
                 widgets.disable_top_button()

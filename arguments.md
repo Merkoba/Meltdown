@@ -486,6 +486,16 @@ Action: store_true
 
 ---
 
+### scroll-percentage
+
+Show scroll percentage on the Go To Bottom button
+
+Default: False
+
+Action: store_true
+
+---
+
 ### only-text
 
 Only show the text output. This is a preset that sets other arguments

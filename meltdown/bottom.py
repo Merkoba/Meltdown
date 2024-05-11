@@ -84,3 +84,6 @@ class Bottom(tk.Frame):
         from .display import display
 
         display.scroll_down(self.tab_id)
+
+    def set_text(self, text: str) -> None:
+        self.button.set_text(text)
