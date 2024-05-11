@@ -689,7 +689,6 @@ class Display:
             return
 
         tab.output.format_text()
-        tab.modified = True
 
     def select_first_tab(self) -> None:
         self.book.select_first()
@@ -697,10 +696,10 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def view_text(self) -> None:
+    def view_text(self, tab_id: Optional[str] = None) -> None:
         from .logs import logs
 
-        tabconvo = self.get_tab_convo(self.current_tab)
+        tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
             return
@@ -713,10 +712,10 @@ class Display:
             self.print(text, tab_id=new_tab)
             self.to_top(tab_id=new_tab)
 
-    def view_json(self) -> None:
+    def view_json(self, tab_id: Optional[str] = None) -> None:
         from .logs import logs
 
-        tabconvo = self.get_tab_convo(self.current_tab)
+        tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
             return

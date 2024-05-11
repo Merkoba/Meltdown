@@ -49,6 +49,9 @@ class Conversation:
         return len(self.items) == 0
 
     def print(self) -> None:
+        if not self.items:
+            return
+
         tab = display.get_tab_by_conversation_id(self.id)
 
         if not tab:
