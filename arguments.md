@@ -428,6 +428,14 @@ Action: store_false
 
 ---
 
+### no-confirm-delete
+
+No need to confirm deleting items
+
+Action: store_false
+
+---
+
 ### no-auto-scroll
 
 Don't scroll to the bottom when loading tabs
