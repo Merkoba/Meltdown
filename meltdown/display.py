@@ -1085,6 +1085,9 @@ class Display:
         if not conversation.items:
             return
 
+        if conversation.id == "ignore":
+            return
+
         def get_index(arg: str) -> int:
             if arg == "first":
                 index = 0
