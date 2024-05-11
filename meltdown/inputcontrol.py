@@ -47,12 +47,14 @@ class InputControl:
             frame_data, "< Prev", lambda: self.history_up()
         )
 
+        prev_button.set_bind("<Button-2>", lambda e: self.clear())
         ToolTip(prev_button, tips["prev_button"])
 
         next_button = widgetutils.make_button(
             frame_data, "Next >", lambda: self.history_down()
         )
 
+        next_button.set_bind("<Button-2>", lambda e: self.clear())
         ToolTip(next_button, tips["next_button"])
 
         if args.write_button:

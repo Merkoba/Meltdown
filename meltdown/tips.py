@@ -1,3 +1,5 @@
+prevnext = "Middle click to clear"
+
 tips = {
     "main_menu": "Open the main menu",
     "model_menu": "Open the model menu",
@@ -10,8 +12,8 @@ tips = {
     "close_button": "Close the current tab",
     "top_button": "Scroll to the top",
     "bottom_button": "Scroll to the bottom",
-    "prev_button": "Previous item in the input history",
-    "next_button": "Next item in the input history",
+    "prev_button": f"Previous item in the input history. {prevnext}",
+    "next_button": f"Next item in the input history. {prevnext}",
     "write_button": "Show a textbox for longer inputs",
     "submit_button": "Send the prompt to the AI",
     "user": "Personalize yourself",
