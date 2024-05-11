@@ -16,8 +16,15 @@ tips = {
     "next_button": f"Next item in the input history. {prevnext}",
     "write_button": "Show a textbox for longer inputs",
     "submit_button": "Send the prompt to the AI",
+    "browse_file_button": "Browse for a file to use",
+    "recent_files_button": "Show a list of files used recently",
     "user": "Personalize yourself",
     "ai": "Personalize the AI",
+    "input": (
+        " This is a message that the AI will respond to."
+        " Use up/down arrows to cycle input history."
+        " You can also use commands here. See /help"
+    ),
     # System
     "system_cpu": "Current CPU usage",
     "system_ram": "Current RAM usage",
@@ -104,18 +111,12 @@ tips = {
     "mlock": "Keep the model in memory",
     "before": "Add this to the beginning of the prompt",
     "after": "Add this to the end of the prompt",
-    "input": (
-        " This is a message that the AI will respond to."
-        " Use up/down arrows to cycle input history."
-        " You can also use commands here. See /help"
-    ),
     "mode": (
         "The mode of the model. Either text or image."
         " On image mode, the model is able to analyse image paths you give it"
     ),
     "file": "The URL or path to a file",
-    "browse_file_button": "Browse for a file to use",
-    "recent_files_button": "Show a list of files used recently",
+    # Find
     "find_next_i": "Find next match (case insensitive)",
     "find_next": "Find next match (case sensitive)",
     "find_bound_i": "Find next word-bound match (case insensitive)",
