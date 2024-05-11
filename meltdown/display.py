@@ -1089,64 +1089,76 @@ class Display:
         if conversation.id == "ignore":
             return
 
-        def get_index(arg: str) -> int:
-            if arg == "first":
-                index = 0
-            elif arg == "second":
-                index = 1
-            elif arg == "third":
-                index = 2
-            elif arg == "last":
-                if conversation and conversation.items:
-                    index = len(conversation.items) - 1
+        def action() -> None:
+            if not tab_id:
+                return
+
+            if not tab:
+                return
+
+            if (not conversation) or (not conversation.items):
+                return
+
+            def get_index(arg: str) -> int:
+                if arg == "first":
+                    index = 0
+                elif arg == "second":
+                    index = 1
+                elif arg == "third":
+                    index = 2
+                elif arg == "last":
+                    if conversation and conversation.items:
+                        index = len(conversation.items) - 1
+                    else:
+                        index = -1
                 else:
-                    index = -1
+                    try:
+                        index = int(arg) - 1
+                    except BaseException:
+                        index = -1
+
+                return index
+
+            if number is not None:
+                index = get_index(number)
+
+                if index < 0:
+                    return
+
+                if index >= len(conversation.items):
+                    return
+
+                if mode == "normal":
+                    conversation.items.pop(index)
+                elif mode == "above":
+                    conversation.items = conversation.items[index:]
+                elif mode == "below":
+                    conversation.items = conversation.items[: index + 1]
+            elif keep is not None:
+                index = get_index(keep)
+
+                if index < 0:
+                    return
+
+                if index >= len(conversation.items):
+                    return
+
+                conversation.items = [conversation.items[index]]
+            elif start:
+                conversation.items.pop(0)
             else:
-                try:
-                    index = int(arg) - 1
-                except BaseException:
-                    index = -1
+                conversation.items.pop()
 
-            return index
+            session.save()
 
-        if number is not None:
-            index = get_index(number)
+            tab.output.clear_text()
+            self.reset_tab(tab)
+            self.show_header(tab_id)
 
-            if index < 0:
-                return
+            if conversation.items:
+                conversation.print()
 
-            if index >= len(conversation.items):
-                return
-
-            if mode == "normal":
-                conversation.items.pop(index)
-            elif mode == "above":
-                conversation.items = conversation.items[index:]
-            elif mode == "below":
-                conversation.items = conversation.items[: index + 1]
-        elif keep is not None:
-            index = get_index(keep)
-
-            if index < 0:
-                return
-
-            if index >= len(conversation.items):
-                return
-
-            conversation.items = [conversation.items[index]]
-        elif start:
-            conversation.items.pop(0)
-        else:
-            conversation.items.pop()
-
-        session.save()
-
-        tab.output.clear_text()
-        self.reset_tab(tab)
-        self.show_header(tab_id)
-
-        if conversation.items:
-            conversation.print()
+        Dialog.show_confirm("Delete item(s)?", lambda: action())
 
     def num_user_prompts(self, tab_id: Optional[str] = None) -> int:
         if not tab_id:
