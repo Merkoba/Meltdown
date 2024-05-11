@@ -15,6 +15,7 @@ from .commands import commands
 from . import summarize
 from . import menumanager
 from . import findmanager
+from . import delete
 
 
 class CommandSpec:
@@ -585,19 +586,19 @@ class CommandSpec:
         self.add_cmd(
             "trim",
             "Remove the last item of a conversation",
-            lambda a=None: display.delete_item(),
+            lambda a=None: delete.delete_items(),
         )
 
         self.add_cmd(
             "trimstart",
             "Remove the first item of a conversation",
-            lambda a=None: display.delete_item(start=True),
+            lambda a=None: delete.delete_items(start=True),
         )
 
         self.add_cmd(
             "delete",
             f"Remove a specific item of a conversation. {self.delcmd}",
-            lambda a=None: display.delete_item(number=a),
+            lambda a=None: delete.delete_items(number=a),
             type=str,
             arg_req=True,
         )
@@ -605,7 +606,7 @@ class CommandSpec:
         self.add_cmd(
             "keep",
             f"Remove all items except this one. {self.delcmd}",
-            lambda a=None: display.delete_item(keep=a),
+            lambda a=None: delete.delete_items(keep=a),
             type=str,
             arg_req=True,
         )

@@ -20,9 +20,9 @@ class Output(tk.Text):
     word_menu.add(text="New", command=lambda e: Output.new_tab())
 
     item_menu = Menu()
-    item_menu.add(text="Delete", command=lambda e: Output.delete_item())
-    item_menu.add(text="Delete Above", command=lambda e: Output.delete_item("above"))
-    item_menu.add(text="Delete Below", command=lambda e: Output.delete_item("below"))
+    item_menu.add(text="Delete", command=lambda e: Output.delete_items())
+    item_menu.add(text="Delete Above", command=lambda e: Output.delete_items("above"))
+    item_menu.add(text="Delete Below", command=lambda e: Output.delete_items("below"))
     item_menu.add(text="Keep", command=lambda e: Output.keep_item())
     clicked_number = 0
 
@@ -34,26 +34,26 @@ class Output(tk.Text):
     update_size_after = ""
 
     @staticmethod
-    def delete_item(mode: str = "normal") -> None:
-        from .display import display
+    def delete_items(mode: str = "normal") -> None:
+        from . import delete
 
         if not Output.current_output:
             return
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        display.delete_item(tab_id=tab_id, number=arg, mode=mode)
+        delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
     def keep_item() -> None:
-        from .display import display
+        from . import delete
 
         if not Output.current_output:
             return
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        display.delete_item(tab_id=tab_id, keep=arg)
+        delete.delete_items(tab_id=tab_id, keep=arg)
 
     @staticmethod
     def get_words() -> str:
