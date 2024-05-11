@@ -119,63 +119,6 @@ class Display:
 
         return tab_id
 
-    def close_tab(
-        self,
-        tab_id: str = "",
-        force: bool = False,
-        make_empty: bool = True,
-        force_empty: bool = False,
-        full: bool = True,
-    ) -> None:
-        if self.num_tabs() <= 1:
-            return
-
-        if not tab_id:
-            tab_id = self.book.current()
-
-        if not tab_id:
-            return
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        if force_empty:
-            if tab.mode == "ignore":
-                force = True
-
-            if self.tab_is_empty(tab_id):
-                force = True
-
-        def action() -> None:
-            self.book.close(tab_id)
-            self.update_current_tab()
-            self.remove_tab(tab_id)
-
-            if self.num_tabs() == 0:
-                if make_empty:
-                    self.make_tab()
-
-        if force:
-            action()
-            return
-
-        cmds = []
-
-        if full and self.get_old_tabs():
-            cmds.append(("Old", lambda: self.close_old_tabs()))
-
-        cmds.append(("Others", lambda: self.close_other_tabs()))
-        cmds.append(("Left", lambda: self.close_tabs_left()))
-        cmds.append(("Right", lambda: self.close_tabs_right()))
-
-        if full:
-            cmds.append(("All", lambda: self.close_all_tabs()))
-
-        cmds.append(("Ok", lambda: action()))
-        Dialog.show_commands("Close tab?", cmds)
-
     def select_tab(self, tab_id: str) -> None:
         if self.book.select(tab_id):
             app.update()
@@ -312,7 +255,9 @@ class Display:
         tab_menu.show(event, "tab_right_click")
 
     def on_tab_middle_click(self, tab_id: str) -> None:
-        self.close_tab(tab_id=tab_id, force_empty=True, full=False)
+        from . import close
+
+        close.close_tab(tab_id=tab_id, force_empty=True, full=False)
 
     def on_tabs_click(self) -> None:
         app.hide_all()
@@ -389,116 +334,9 @@ class Display:
         session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
-        self.close_tab(tab_id=self.tab_menu_id, full=False)
+        from . import close
 
-    def close_all_tabs(self, force: bool = False, make_empty: bool = True) -> None:
-        def action() -> None:
-            for tab_id in self.tab_ids():
-                self.close_tab(tab_id=tab_id, force=True, make_empty=make_empty)
-
-        if force or (not args.confirm_close):
-            action()
-            return
-
-        Dialog.show_confirm("Close all tabs?", lambda: action())
-
-    def get_old_tabs(self) -> List[Tab]:
-        from .session import session
-
-        ids = self.tab_ids()
-        old_tabs = []
-
-        max_minutes = args.old_tabs_minutes
-        max_date = utils.now() - (60 * max_minutes)
-
-        for tab_id in ids:
-            tab = self.get_tab(tab_id)
-
-            if not tab:
-                continue
-
-            conversation = session.get_conversation(tab.conversation_id)
-
-            if not conversation:
-                continue
-
-            if conversation.last_modified < max_date:
-                old_tabs.append(tab)
-
-        return old_tabs
-
-    def close_old_tabs(self, force: bool = False) -> None:
-        ids = self.tab_ids()
-
-        if len(ids) <= 1:
-            return
-
-        def action() -> None:
-            for tab in self.get_old_tabs():
-                self.close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
-
-        if force or (not args.confirm_close):
-            action()
-            return
-
-        Dialog.show_confirm("Close old tabs?", lambda: action())
-
-    def close_other_tabs(self, force: bool = False) -> None:
-        ids = self.tab_ids()
-
-        if len(ids) <= 1:
-            return
-
-        current = self.current_tab
-
-        def action() -> None:
-            for tab_id in ids:
-                if tab_id != current:
-                    self.close_tab(tab_id=tab_id, force=True)
-
-        if force or (not args.confirm_close):
-            action()
-            return
-
-        Dialog.show_confirm("Close other tabs?", lambda: action())
-
-    def close_tabs_left(self, force: bool = False) -> None:
-        tab_ids = self.tab_ids()
-
-        if len(tab_ids) <= 1:
-            return
-
-        index = self.index(self.current_tab)
-        tabs = tab_ids[:index]
-
-        def action() -> None:
-            for tab_id in tabs:
-                self.close_tab(tab_id=tab_id, force=True)
-
-        if force or (not args.confirm_close):
-            action()
-            return
-
-        Dialog.show_confirm("Close tabs to the left?", lambda: action())
-
-    def close_tabs_right(self, force: bool = False) -> None:
-        tab_ids = self.tab_ids()
-
-        if len(tab_ids) <= 1:
-            return
-
-        index = self.index(self.current_tab)
-        tabs = tab_ids[index + 1 :]
-
-        def action() -> None:
-            for tab_id in tabs:
-                self.close_tab(tab_id=tab_id, force=True)
-
-        if force or (not args.confirm_close):
-            action()
-            return
-
-        Dialog.show_confirm("Close tabs to the right?", lambda: action())
+        close.close_tab(tab_id=self.tab_menu_id, full=False)
 
     def tab_ids(self) -> List[str]:
         return self.book.ids()
@@ -687,7 +525,9 @@ class Display:
         self.book.select_right()
 
     def close_current_tab(self) -> None:
-        self.close_tab(tab_id=self.current_tab)
+        from . import close
+
+        close.close_tab(tab_id=self.current_tab)
 
     def apply_font_size(self, size: int) -> None:
         config.set("font_size", size)
@@ -1070,47 +910,6 @@ class Display:
             return 0
 
         return tab.num_user_prompts
-
-    def repeat_prompt(self, number: str, tab_id: Optional[str] = None) -> None:
-        from .session import session
-        from .model import model
-
-        if not tab_id:
-            tab_id = self.current_tab
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
-            return
-
-        if not conversation.items:
-            return
-
-        index = utils.get_index(number, conversation.items)
-
-        if index < 0:
-            return
-
-        if index >= len(conversation.items):
-            return
-
-        item = conversation.items[index]
-
-        if not item:
-            return
-
-        prompt_text = item.get("user")
-
-        if not prompt_text:
-            return
-
-        prompt = {"text": prompt_text}
-        model.stream(prompt, tab_id)
 
 
 display = Display()

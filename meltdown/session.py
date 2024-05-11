@@ -14,6 +14,7 @@ from .dialogs import Dialog
 from .output import Output
 from .utils import utils
 from . import tests
+from . import close
 
 
 class Conversation:
@@ -209,10 +210,10 @@ class Session:
 
     def reset(self) -> None:
         self.conversations = {}
-        display.close_all_tabs(force=True)
+        close.close_all_tabs(force=True)
 
     def load_items(self, path: Path) -> None:
-        display.close_all_tabs(force=True, make_empty=False)
+        close.close_all_tabs(force=True, make_empty=False)
 
         with path.open("r", encoding="utf-8") as file:
             try:

@@ -16,6 +16,7 @@ from . import summarize
 from . import menumanager
 from . import findmanager
 from . import delete
+from . import close
 
 
 class CommandSpec:
@@ -135,7 +136,7 @@ class CommandSpec:
         self.add_cmd(
             "close",
             "Close current tab",
-            lambda a=None: display.close_tab(force=a),
+            lambda a=None: close.close_tab(force=a),
             extra=self.force,
             type="force",
         )
@@ -143,7 +144,7 @@ class CommandSpec:
         self.add_cmd(
             "closeothers",
             "Close other tabs",
-            lambda a=None: display.close_other_tabs(force=a),
+            lambda a=None: close.close_other_tabs(force=a),
             extra=self.force,
             type="force",
         )
@@ -151,7 +152,7 @@ class CommandSpec:
         self.add_cmd(
             "closeall",
             "Close all tabs",
-            lambda a=None: display.close_all_tabs(force=a),
+            lambda a=None: close.close_all_tabs(force=a),
             extra=self.force,
             type="force",
         )
@@ -159,7 +160,7 @@ class CommandSpec:
         self.add_cmd(
             "closeold",
             "Close old tabs",
-            lambda a=None: display.close_old_tabs(force=a),
+            lambda a=None: close.close_old_tabs(force=a),
             extra=self.force,
             type="force",
         )
@@ -167,7 +168,7 @@ class CommandSpec:
         self.add_cmd(
             "closeleft",
             "Close tabs to the left",
-            lambda a=None: display.close_tabs_left(force=a),
+            lambda a=None: close.close_tabs_left(force=a),
             extra=self.force,
             type="force",
         )
@@ -175,7 +176,7 @@ class CommandSpec:
         self.add_cmd(
             "closeright",
             "Close tabs to the right",
-            lambda a=None: display.close_tabs_right(force=a),
+            lambda a=None: close.close_tabs_right(force=a),
             extra=self.force,
             type="force",
         )

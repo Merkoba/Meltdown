@@ -58,14 +58,14 @@ class Output(tk.Text):
 
     @staticmethod
     def repeat_prompt() -> None:
-        from .display import display
+        from . import repeat
 
         if not Output.current_output:
             return
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        display.repeat_prompt(tab_id=tab_id, number=arg)
+        repeat.repeat_prompt(tab_id=tab_id, number=arg)
 
     @staticmethod
     def get_words() -> str:
