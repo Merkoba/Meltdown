@@ -383,9 +383,7 @@ class Display:
             if not tabconvo:
                 return
 
-            tabconvo.tab.output.clear_text()
             session.clear(tabconvo.tab.conversation_id)
-            self.show_intro(tabconvo.tab.tab_id)
             self.reset_tab(tabconvo.tab)
 
         if force or (not args.confirm_clear):
@@ -398,7 +396,7 @@ class Display:
         tab.output.clear_text()
         tab.modified = False
         tab.num_user_prompts = 0
-        self.show_header(tab.tab_id)
+        self.show_intro(tab.tab_id)
 
     def select_output(self) -> None:
         output = self.get_current_output()

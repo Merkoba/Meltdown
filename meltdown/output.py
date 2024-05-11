@@ -331,6 +331,7 @@ class Output(tk.Text):
 
     def clear_text(self) -> None:
         self.set_text("")
+        self.snippets = []
 
     def to_top(self) -> None:
         self.auto_scroll = False
