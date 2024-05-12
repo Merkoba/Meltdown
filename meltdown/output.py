@@ -52,6 +52,20 @@ class Output(tk.Text):
         itemops.action("copy", tab_id=tab_id, number=arg)
 
     @staticmethod
+    def open_url() -> None:
+        words = Output.get_words()
+
+        if words:
+            app.open_url(words)
+
+    @staticmethod
+    def open_path() -> None:
+        words = Output.get_words()
+
+        if words:
+            app.open_path(words)
+
+    @staticmethod
     def repeat_prompt() -> None:
         from . import itemops
 
@@ -130,30 +144,6 @@ class Output(tk.Text):
         query = f'Tell me about "{text}"'
         tab_id = display.make_tab()
         model.stream({"text": query}, tab_id)
-
-    @staticmethod
-    def open_url(url: str) -> None:
-        from .dialogs import Dialog
-
-        def action() -> None:
-            app.open_url(url)
-
-        if args.confirm_urls:
-            Dialog.show_confirm("Open this URL?", lambda: action())
-        else:
-            action()
-
-    @staticmethod
-    def open_path(path: str) -> None:
-        from .dialogs import Dialog
-
-        def action() -> None:
-            app.open_path(path)
-
-        if args.confirm_paths:
-            Dialog.show_confirm("Open this path?", lambda: action())
-        else:
-            action()
 
     @staticmethod
     def get_prompt(
@@ -241,24 +231,26 @@ class Output(tk.Text):
         )
 
         def on_url_click(event: Any) -> None:
+            from .menumanager import url_menu
+
             if not args.open_urls:
                 return
 
-            text = self.get_tagwords("url", event)
-
-            if text:
-                self.open_url(text)
+            Output.current_output = self
+            Output.words = self.get_tagwords("url", event)
+            url_menu.show(event)
 
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
 
         def on_path_click(event: Any) -> None:
-            if not args.open_urls:
+            from .menumanager import path_menu
+
+            if not args.open_paths:
                 return
 
-            text = self.get_tagwords("path", event)
-
-            if text:
-                self.open_path(text)
+            Output.current_output = self
+            Output.words = self.get_tagwords("path", event)
+            path_menu.show(event)
 
         self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
 

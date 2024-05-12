@@ -138,8 +138,6 @@ class Args:
         self.gestures = True
         self.gesture_threshold = 33
         self.increment_logs = True
-        self.confirm_urls = True
-        self.confirm_paths = True
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
@@ -177,6 +175,7 @@ class Args:
         self.name_menu = True
         self.word_menu = True
         self.open_urls = True
+        self.open_paths = True
         self.file = ""
         self.image_prompt = "Describe this image"
 
@@ -248,8 +247,6 @@ class Args:
             ("no_time", "time"),
             ("no_gestures", "gestures"),
             ("no_increment_logs", "increment_logs"),
-            ("no_confirm_urls", "confirm_urls"),
-            ("no_confirm_paths", "confirm_paths"),
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
@@ -267,6 +264,7 @@ class Args:
             ("no_name_menu", "name_menu"),
             ("no_word_menu", "word_menu"),
             ("no_open_urls", "open_urls"),
+            ("no_open_paths", "open_paths"),
         ]
 
         for r_item in other_name:

@@ -66,6 +66,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_open_paths",
+            action="store_false",
+            info="Don't open paths when clicked",
+        )
+
+        self.add_argument(
             "no_scrollbars",
             action="store_false",
             info="Don't show scrollbars",
@@ -369,18 +375,6 @@ class ArgSpec:
             "no_increment_logs",
             action="store_false",
             info="Always use the file name, don't increment with numbers",
-        )
-
-        self.add_argument(
-            "no_confirm_urls",
-            action="store_false",
-            info="No need to confirm when opening URLs",
-        )
-
-        self.add_argument(
-            "no_confirm_paths",
-            action="store_false",
-            info="No need to confirm when opening paths",
         )
 
         self.add_argument(

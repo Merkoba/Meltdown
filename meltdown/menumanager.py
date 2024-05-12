@@ -295,6 +295,38 @@ class WordMenu:
             return
 
 
+class UrlMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Open", command=lambda e: Output.open_url())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
+class PathMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Open", command=lambda e: Output.open_path())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
@@ -302,5 +334,7 @@ more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
 font_family_menu = FontFamilyMenu()
-word_menu = WordMenu()
 item_menu = ItemMenu()
+word_menu = WordMenu()
+url_menu = UrlMenu()
+path_menu = PathMenu()
