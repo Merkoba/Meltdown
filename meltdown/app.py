@@ -692,7 +692,6 @@ class App:
 
     def program(self, mode: str, cmd: Optional[str] = None) -> None:
         from .args import args
-        from .session import session
         from .display import display
 
         if not cmd:
@@ -705,16 +704,13 @@ class App:
             display.print("No program specified.")
             return
 
-        conversation = session.get_current_conversation()
-
-        if not conversation:
-            return
+        tabconvo = display.get_tab_convo(None)
 
         if mode == "text":
-            text = conversation.to_text()
+            text = tabconvo.convo.to_text()
             ext = "txt"
         elif mode == "json":
-            text = conversation.to_json()
+            text = tabconvo.convo.to_json()
             ext = "json"
         else:
             return

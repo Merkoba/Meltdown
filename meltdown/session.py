@@ -136,14 +136,6 @@ class Session:
     def get_conversation(self, conversation_id: str) -> Optional[Conversation]:
         return self.conversations.get(conversation_id)
 
-    def get_current_conversation(self) -> Optional[Conversation]:
-        tab = display.get_current_tab()
-
-        if tab:
-            return self.get_conversation(tab.conversation_id)
-
-        return None
-
     def change_name(self, conversation_id: str, name: str) -> None:
         if conversation_id in self.conversations:
             self.conversations[conversation_id].name = name
