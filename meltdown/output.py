@@ -146,6 +146,18 @@ class Output(tk.Text):
             action()
 
     @staticmethod
+    def open_path(path: str) -> None:
+        from .dialogs import Dialog
+
+        def action() -> None:
+            app.open_path(path)
+
+        if args.confirm_paths:
+            Dialog.show_confirm("Open this path?", lambda: action())
+        else:
+            action()
+
+    @staticmethod
     def get_prompt(
         who: str, mark: bool = False, show_avatar: bool = True, colon_space: bool = True
     ) -> str:
@@ -246,7 +258,7 @@ class Output(tk.Text):
             text = self.get_tagwords("path", event)
 
             if text:
-                print(text)
+                self.open_path(text)
 
         self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
 

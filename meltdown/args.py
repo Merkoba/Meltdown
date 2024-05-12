@@ -109,6 +109,7 @@ class Args:
         self.log_feedback = True
         self.avatars_in_logs = False
         self.browser = ""
+        self.file_manager = ""
         self.wrap_textbox = True
         self.font_diff = 0
         self.task_manager = "auto"
@@ -138,6 +139,7 @@ class Args:
         self.gesture_threshold = 33
         self.increment_logs = True
         self.confirm_urls = True
+        self.confirm_paths = True
         self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
@@ -230,26 +232,24 @@ class Args:
             ("no_gpu", "system_gpu"),
             ("no_gpu_ram", "system_gpu"),
             ("no_gpu_temp", "system_gpu"),
-
             ("no_markdown_snippets_user", "markdown_snippets_user"),
             ("no_markdown_italic_user", "markdown_italic_user"),
             ("no_markdown_bold_user", "markdown_bold_user"),
             ("no_markdown_highlights_user", "markdown_highlights_user"),
             ("no_markdown_urls_user", "markdown_urls_user"),
             ("no_markdown_paths_user", "markdown_paths_user"),
-
             ("no_markdown_snippets_ai", "markdown_snippets_ai"),
             ("no_markdown_italic_ai", "markdown_italic_ai"),
             ("no_markdown_bold_ai", "markdown_bold_ai"),
             ("no_markdown_highlights_ai", "markdown_highlights_ai"),
             ("no_markdown_urls_ai", "markdown_urls_ai"),
             ("no_markdown_paths_ai", "markdown_paths_ai"),
-
             ("no_log_errors", "log_errors"),
             ("no_time", "time"),
             ("no_gestures", "gestures"),
             ("no_increment_logs", "increment_logs"),
             ("no_confirm_urls", "confirm_urls"),
+            ("no_confirm_paths", "confirm_paths"),
             ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
@@ -331,6 +331,7 @@ class Args:
             "input_memory_min",
             "avatars_in_logs",
             "browser",
+            "file_manager",
             "font_diff",
             "task_manager",
             "task_manager_gpu",

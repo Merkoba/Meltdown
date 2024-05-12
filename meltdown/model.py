@@ -285,6 +285,9 @@ class Model:
 
         tabconvo = display.get_tab_convo(tab_id)
 
+        if not tabconvo:
+            return
+
         if tabconvo.tab.mode == "ignore":
             return
 

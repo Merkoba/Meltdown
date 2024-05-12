@@ -228,6 +228,26 @@ class FontMenu:
             self.menu.show(widget=widget)
 
 
+class FontFamilyMenu:
+    def __init__(self) -> None:
+        from .display import display
+
+        self.menu = Menu()
+
+        self.menu.add("Serif", lambda e: display.set_font_family("serif"))
+        self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
+        self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
+
+    def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
+        if event:
+            self.menu.show(event)
+        else:
+            widget = getattr(widgets, "more_menu_button")
+            self.menu.show(widget=widget)
+
+
 class ItemMenu:
     def __init__(self) -> None:
         from .output import Output
@@ -237,12 +257,15 @@ class ItemMenu:
         self.menu.add(text="Copy", command=lambda e: Output.copy_item())
         self.menu.separator()
         self.menu.add(text="Delete", command=lambda e: Output.delete_items())
+
         self.menu.add(
             text="Delete Above", command=lambda e: Output.delete_items("above")
         )
+
         self.menu.add(
             text="Delete Below", command=lambda e: Output.delete_items("below")
         )
+
         self.menu.add(text="Keep", command=lambda e: Output.keep_item())
         self.menu.separator()
         self.menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
@@ -270,26 +293,6 @@ class WordMenu:
             self.menu.show(event)
         else:
             return
-
-
-class FontFamilyMenu:
-    def __init__(self) -> None:
-        from .display import display
-
-        self.menu = Menu()
-
-        self.menu.add("Serif", lambda e: display.set_font_family("serif"))
-        self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
-        self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
-
-    def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
-        if event:
-            self.menu.show(event)
-        else:
-            widget = getattr(widgets, "more_menu_button")
-            self.menu.show(widget=widget)
 
 
 main_menu = MainMenu()

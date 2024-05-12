@@ -352,6 +352,19 @@ class App:
 
         self.run_command(cmd)
 
+    def open_path(self, path: str) -> None:
+        from .args import args
+
+        if not path:
+            return
+
+        if args.file_manager:
+            cmd = [args.file_manager, path]
+        else:
+            cmd = [self.get_opener(), path]
+
+        self.run_command(cmd)
+
     def search_text(self, text: str) -> None:
         base_url = "https://www.google.com/search?"
         query_params = {"q": text}
@@ -705,6 +718,9 @@ class App:
             return
 
         tabconvo = display.get_tab_convo(None)
+
+        if not tabconvo:
+            return
 
         if mode == "text":
             text = tabconvo.convo.to_text()

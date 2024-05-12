@@ -378,6 +378,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_confirm_paths",
+            action="store_false",
+            info="No need to confirm when opening paths",
+        )
+
+        self.add_argument(
             "no_confirm_search",
             action="store_false",
             info="No need to confirm when searching",
@@ -930,6 +936,12 @@ class ArgSpec:
             "browser",
             type=str,
             info="Open links with this browser",
+        )
+
+        self.add_argument(
+            "file_manager",
+            type=str,
+            info="Open files with this file manager",
         )
 
         self.add_argument(

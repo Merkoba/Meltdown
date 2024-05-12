@@ -324,41 +324,97 @@ Action: store_false
 
 ---
 
-### no-markdown-snippets
+### no-markdown-snippets-user
 
-Don't do snippet markdown
-
-Action: store_false
-
----
-
-### no-markdown-italic
-
-Don't do italic markdown
+Don't do snippet markdown for user
 
 Action: store_false
 
 ---
 
-### no-markdown-bold
+### no-markdown-italic-user
 
-Don't do bold markdown
-
-Action: store_false
-
----
-
-### no-markdown-highlights
-
-Don't do highlight markdown
+Don't do italic markdown for user
 
 Action: store_false
 
 ---
 
-### no-markdown-urls
+### no-markdown-bold-user
 
-Don't do URL markdown
+Don't do bold markdown for user
+
+Action: store_false
+
+---
+
+### no-markdown-highlights-user
+
+Don't do highlight markdown for user
+
+Action: store_false
+
+---
+
+### no-markdown-urls-user
+
+Don't do URL markdown for user
+
+Action: store_false
+
+---
+
+### no-markdown-paths-user
+
+Don't do path markdown for user
+
+Action: store_false
+
+---
+
+### no-markdown-snippets-ai
+
+Don't do snippet markdown for AI
+
+Action: store_false
+
+---
+
+### no-markdown-italic-ai
+
+Don't do italic markdown for AI
+
+Action: store_false
+
+---
+
+### no-markdown-bold-ai
+
+Don't do bold markdown for AI
+
+Action: store_false
+
+---
+
+### no-markdown-highlights-ai
+
+Don't do highlight markdown for AI
+
+Action: store_false
+
+---
+
+### no-markdown-urls-ai
+
+Don't do URL markdown for AI
+
+Action: store_false
+
+---
+
+### no-markdown-paths-ai
+
+Don't do path markdown
 
 Action: store_false
 
@@ -399,6 +455,14 @@ Action: store_false
 ### no-confirm-urls
 
 No need to confirm when opening URLs
+
+Action: store_false
+
+---
+
+### no-confirm-paths
+
+No need to confirm when opening paths
 
 Action: store_false
 
@@ -1282,8 +1346,6 @@ Type: str
 
 Define where to apply markdown formatting
 
-Default: "ai"
-
 Choices: "user", "ai", "all", "none"
 
 Type: str
@@ -1293,6 +1355,16 @@ Type: str
 ### browser
 
 Open links with this browser
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### file-manager
+
+Open files with this file manager
 
 Default: [Empty string]
 

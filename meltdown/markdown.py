@@ -72,7 +72,7 @@ class Markdown:
 
     def format(self) -> None:
         markers, num_lines = self.widget.get_markers()
-        ranges: List[Tuple[int, int]] = []
+        ranges: List[Tuple[str, int, int]] = []
 
         def add(who: str, start_ln: int, end_ln: int) -> None:
             ranges.append((who, start_ln, end_ln))
@@ -92,54 +92,36 @@ class Markdown:
             self.format_all(who, start_ln, end_ln)
 
     def format_all(self, who: str, start_ln: int, end_ln: int) -> None:
-        if (
-            ((who == "user")
-            and args.markdown_snippets_user)
-            or ((who == "ai")
-            and args.markdown_snippets_ai)
+        if ((who == "user") and args.markdown_snippets_user) or (
+            (who == "ai") and args.markdown_snippets_ai
         ):
             self.format_snippets(start_ln, end_ln)
 
-        if (
-            ((who == "user")
-            and args.markdown_bold_user)
-            or ((who == "ai")
-            and args.markdown_bold_ai)
+        if ((who == "user") and args.markdown_bold_user) or (
+            (who == "ai") and args.markdown_bold_ai
         ):
             self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
 
-        if (
-            ((who == "user")
-            and args.markdown_italic_user)
-            or ((who == "ai")
-            and args.markdown_italic_ai)
+        if ((who == "user") and args.markdown_italic_user) or (
+            (who == "ai") and args.markdown_italic_ai
         ):
             self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
             self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
 
-        if (
-            ((who == "user")
-            and args.markdown_highlights_user)
-            or ((who == "ai")
-            and args.markdown_highlights_ai)
+        if ((who == "user") and args.markdown_highlights_user) or (
+            (who == "ai") and args.markdown_highlights_ai
         ):
             self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
             self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
             self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
 
-        if (
-            ((who == "user")
-            and args.markdown_urls_user)
-            or ((who == "ai")
-            and args.markdown_urls_ai)
+        if ((who == "user") and args.markdown_urls_user) or (
+            (who == "ai") and args.markdown_urls_ai
         ):
             self.do_format(start_ln, end_ln, self.pattern_url, "url")
 
-        if (
-            ((who == "user")
-            and args.markdown_paths_user)
-            or ((who == "ai")
-            and args.markdown_paths_ai)
+        if ((who == "user") and args.markdown_paths_user) or (
+            (who == "ai") and args.markdown_paths_ai
         ):
             self.do_format(start_ln, end_ln, self.pattern_path, "path")
 
