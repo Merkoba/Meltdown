@@ -149,11 +149,7 @@ class Output(tk.Text):
         model.stream({"text": query}, tab_id)
 
     @staticmethod
-    def get_prompt(
-        who: str, mark: bool = False, show_avatar: bool = True, colon_space: bool = True
-    ) -> str:
-        from .display import display
-
+    def get_prompt(who: str, show_avatar: bool = True, colon_space: bool = True) -> str:
         name = getattr(config, f"name_{who}")
         avatar = getattr(config, f"avatar_{who}")
         colons = " : " if colon_space else ": "
@@ -167,17 +163,6 @@ class Output(tk.Text):
             prompt = f"{name}{colons}"
         else:
             prompt = f"Anon{colons}"
-
-        if mark:
-            # Add invisible markers
-            if who == "user":
-                prompt = f"{Output.marker_user}{prompt}"
-            elif who == "ai":
-                prompt = f"{Output.marker_ai}{prompt}"
-
-        if args.item_numbers:
-            number = display.num_user_prompts()
-            prompt = f"({number + 1}) {prompt}"
 
         return prompt
 
@@ -512,8 +497,27 @@ class Output(tk.Text):
         return tabconvo.convo.to_text()
 
     def prompt(self, who: str) -> None:
-        prompt = Output.get_prompt(who, mark=True)
-        self.print(prompt)
+        from .display import display
+
+        prompt = Output.get_prompt(who)
+        prepend = ""
+
+        if args.item_numbers:
+            number = display.num_user_prompts()
+            prepend = f"({number + 1})"
+
+        if prepend:
+            text = f"{prepend} {prompt}"
+        else:
+            text = prompt
+
+        # Add invisible markers
+        if who == "user":
+            text = f"{Output.marker_user}{text}"
+        elif who == "ai":
+            text = f"{Output.marker_ai}{text}"
+
+        self.print(text)
         start_index = self.index(f"end - {len(prompt) + 1}c")
         end_index = self.index("end - 3c")
         self.tag_add(f"name_{who}", start_index, end_index)

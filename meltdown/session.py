@@ -117,7 +117,9 @@ class Conversation:
 
                 if args.files_in_logs:
                     file = item.get("file", "")
-                    log += f"File: {file}\n\n"
+
+                    if file:
+                        log += f"File: {file}\n\n"
 
         return log.strip()
 
