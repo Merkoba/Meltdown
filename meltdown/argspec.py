@@ -42,6 +42,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_files_in_logs",
+            action="store_false",
+            info="Don't show files in text logs",
+        )
+
+        self.add_argument(
             "no_tooltips",
             action="store_false",
             info="Don't show tooltips",
@@ -456,6 +462,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "avatars_in_logs",
+            action="store_true",
+            info="Show avatars in text logs",
+        )
+
+        self.add_argument(
             "show_duration",
             action="store_true",
             info="Show the amount of seconds that took to produce a response",
@@ -615,12 +627,6 @@ class ArgSpec:
             "sticky",
             action="store_true",
             info="Make the window always on top",
-        )
-
-        self.add_argument(
-            "avatars_in_logs",
-            action="store_true",
-            info="Show avatars in text logs",
         )
 
         self.add_argument(

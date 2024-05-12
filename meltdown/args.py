@@ -108,6 +108,7 @@ class Args:
         self.write_button = True
         self.log_feedback = True
         self.avatars_in_logs = False
+        self.files_in_logs = True
         self.browser = ""
         self.file_manager = ""
         self.wrap_textbox = True
@@ -266,6 +267,7 @@ class Args:
             ("no_word_menu", "word_menu"),
             ("no_url_menu", "url_menu"),
             ("no_path_menu", "path_menu"),
+            ("no_files_in_logs", "files_in_logs"),
         ]
 
         for r_item in other_name:
@@ -328,7 +330,6 @@ class Args:
             "after_stream",
             "tabs_always",
             "input_memory_min",
-            "avatars_in_logs",
             "browser",
             "file_manager",
             "font_diff",
@@ -370,6 +371,7 @@ class Args:
             "file",
             "image_prompt",
             "show_duration",
+            "avatars_in_logs",
         ]
 
         for n_item in normals:

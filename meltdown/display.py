@@ -622,6 +622,7 @@ class Display:
         tab_id: Optional[str] = None,
         to_bottom: bool = True,
         original: Optional[str] = None,
+        file: Optional[str] = None,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -638,6 +639,10 @@ class Display:
 
         if text:
             tab.output.insert_text(text)
+
+        if file:
+            file_text = f"File: {file}"
+            tab.output.print(file_text)
 
         if args.auto_name and (who == "user") and original:
             if not self.has_messages(tab_id):

@@ -64,7 +64,11 @@ class Conversation:
             for key in item:
                 if key == "user":
                     display.prompt(
-                        "user", item[key], tab_id=tab.tab_id, to_bottom=False
+                        "user",
+                        item[key],
+                        tab_id=tab.tab_id,
+                        to_bottom=False,
+                        file=item.get("file", ""),
                     )
                 elif key == "assistant":
                     display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
@@ -110,6 +114,10 @@ class Conversation:
                     continue
 
                 log += item[key] + "\n\n"
+
+                if args.files_in_logs:
+                    file = item.get("file", "")
+                    log += f"File: {file}\n\n"
 
         return log.strip()
 

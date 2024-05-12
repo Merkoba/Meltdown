@@ -269,6 +269,7 @@ class Model:
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
         original_text = prompt_text
+        original_file = prompt_file
 
         if (not prompt_text) and (not prompt_file):
             return
@@ -291,10 +292,9 @@ class Model:
         if tabconvo.tab.mode == "ignore":
             return
 
-        if prompt_file and (not prompt_user):
-            prompt_user = f"{prompt_text} : {prompt_file}"
-
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
+        log_dict["file"] = original_file
+
         system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
@@ -349,7 +349,9 @@ class Model:
         if not prompt_user:
             prompt_user = prompt_text
 
-        display.prompt("user", text=prompt_user, tab_id=tab_id, original=o_text)
+        display.prompt(
+            "user", text=prompt_user, tab_id=tab_id, original=o_text, file=original_file
+        )
 
         now = utils.now()
         self.stream_date = now
