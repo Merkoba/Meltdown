@@ -36,9 +36,17 @@ Action: store_false
 
 ---
 
-### no-open-urls
+### no-url-menu
 
-Don't open URLs when clicked
+Don't show a menu when clicking URLs
+
+Action: store_false
+
+---
+
+### no-path-menu
+
+Don't show a menu when clicking paths
 
 Action: store_false
 
@@ -447,22 +455,6 @@ Action: store_false
 ### no-increment-logs
 
 Always use the file name, don't increment with numbers
-
-Action: store_false
-
----
-
-### no-confirm-urls
-
-No need to confirm when opening URLs
-
-Action: store_false
-
----
-
-### no-confirm-paths
-
-No need to confirm when opening paths
 
 Action: store_false
 
