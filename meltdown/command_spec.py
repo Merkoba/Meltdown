@@ -589,6 +589,12 @@ class CommandSpec:
         self.add_cmd("submit", "Submit the input", lambda a=None: inputcontrol.submit())
 
         self.add_cmd(
+            "cleansubmit",
+            "Submit the input without using history",
+            lambda a=None: inputcontrol.submit(no_history=True),
+        )
+
+        self.add_cmd(
             "change",
             "Set a model by its name",
             lambda a=None: widgets.change_model(a),

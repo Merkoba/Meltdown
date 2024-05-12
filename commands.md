@@ -594,6 +594,12 @@ Submit the input
 
 ---
 
+### cleansubmit
+
+Submit the input without using history
+
+---
+
 ### change
 
 Set a model by its name

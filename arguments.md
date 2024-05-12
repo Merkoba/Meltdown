@@ -582,6 +582,16 @@ Action: store_true
 
 ---
 
+### clean-file
+
+Clear the file input after use
+
+Default: False
+
+Action: store_true
+
+---
+
 ### show-duration
 
 Show the amount of seconds that took to produce a response

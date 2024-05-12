@@ -213,6 +213,9 @@ class InputControl:
             if model.model_loading:
                 return
 
+            if args.clean_file:
+                widgets.file.clear(False)
+
             prompt = {"text": text, "file": file, "no_history": no_history}
 
             files.add_system(config.system)

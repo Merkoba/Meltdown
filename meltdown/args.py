@@ -116,6 +116,7 @@ class Args:
         self.task_manager = "auto"
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
+        self.clean_file = False
 
         self.markdown_snippets_user = False
         self.markdown_italic_user = False
@@ -372,6 +373,7 @@ class Args:
             "image_prompt",
             "show_duration",
             "avatars_in_logs",
+            "clean_file",
         ]
 
         for n_item in normals:

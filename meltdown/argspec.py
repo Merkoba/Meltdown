@@ -468,6 +468,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "clean_file",
+            action="store_true",
+            info="Clear the file input after use",
+        )
+
+        self.add_argument(
             "show_duration",
             action="store_true",
             info="Show the amount of seconds that took to produce a response",
