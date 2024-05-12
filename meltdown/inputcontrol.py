@@ -157,6 +157,7 @@ class InputControl:
         tab_id: Optional[str] = None,
         text: Optional[str] = None,
         scroll: bool = True,
+        file: Optional[str] = None,
     ) -> None:
         from .model import model
         from .display import display
@@ -180,7 +181,8 @@ class InputControl:
         if not tab:
             return
 
-        file = widgets.file.get().strip()
+        if not file:
+            file = widgets.file.get().strip()
 
         if text or file:
             self.clear()
@@ -188,7 +190,7 @@ class InputControl:
             if not text:
                 if args.fill_prompt:
                     if config.mode == "image":
-                        text = "Describe this image"
+                        text = args.image_prompt
 
             if text:
                 files.add_input(text)
@@ -239,20 +241,21 @@ class InputControl:
         from .display import display
 
         text = args.input.strip()
+        file = args.file.strip()
 
-        if not text:
+        if (not text) and (not file):
             return
 
         tab_id = display.current_tab
 
         if args.clean_slate:
-            is_command = commands.is_command(text)
+            is_command = text and commands.is_command(text)
 
             if not is_command:
                 if not display.tab_is_empty(tab_id):
                     tab_id = display.make_tab()
 
-        self.submit(tab_id=tab_id, text=text)
+        self.submit(tab_id=tab_id, text=text, file=file)
 
     def add_words(self, text: str) -> None:
         from . import terminal

@@ -666,6 +666,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "file",
+            type=str,
+            info="Path to a file to use at startup",
+        )
+
+        self.add_argument(
+            "image_prompt",
+            type=str,
+            info="Text to use when using an image without a text prompt",
+        )
+
+        self.add_argument(
             "f1",
             type=str,
             info="Command to assign to the F1 key",

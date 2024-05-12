@@ -166,6 +166,8 @@ class Args:
         self.name_menu = True
         self.word_menu = True
         self.open_urls = True
+        self.file = ""
+        self.image_prompt = "Describe this image"
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -346,6 +348,8 @@ class Args:
             "theme",
             "scroll_percentage",
             "item_numbers",
+            "file",
+            "image_prompt",
         ]
 
         for n_item in normals:

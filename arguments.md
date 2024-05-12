@@ -928,6 +928,26 @@ Type: str
 
 ---
 
+### file
+
+Path to a file to use at startup
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### image-prompt
+
+Text to use when using an image without a text prompt
+
+Default: "Describe this image"
+
+Type: str
+
+---
+
 ### f1
 
 Command to assign to the F1 key
