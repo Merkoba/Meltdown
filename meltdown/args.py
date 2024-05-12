@@ -181,6 +181,7 @@ class Args:
         self.file = ""
         self.image_prompt = "Describe this image"
         self.show_duration = False
+        self.separator = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -374,6 +375,7 @@ class Args:
             "show_duration",
             "avatars_in_logs",
             "clean_file",
+            "separator",
         ]
 
         for n_item in normals:

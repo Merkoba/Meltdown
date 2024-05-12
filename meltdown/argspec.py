@@ -468,6 +468,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "separator",
+            action="store_true",
+            info="Show a separator between messages",
+        )
+
+        self.add_argument(
             "clean_file",
             action="store_true",
             info="Clear the file input after use",

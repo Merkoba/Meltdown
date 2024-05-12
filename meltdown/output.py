@@ -16,6 +16,7 @@ class Output(tk.Text):
     current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
+    marker_separator = "\u200d\u200d\u200d"
     words = ""
 
     @staticmethod
@@ -28,6 +29,19 @@ class Output(tk.Text):
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
         delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
+
+    @staticmethod
+    def select_item() -> None:
+        if not Output.current_output:
+            return
+
+        number = Output.clicked_number
+        start_ln, end_ln = Output.current_output.get_item_text(number)
+
+        if start_ln == 0:
+            return
+
+        Output.current_output.select_lines(start_ln, end_ln)
 
     @staticmethod
     def copy_item() -> None:
@@ -181,6 +195,7 @@ class Output(tk.Text):
         self.auto_scroll = True
         self.update_size_after = ""
         self.markers_checked: List[int] = []
+        self.separator = f"{Output.marker_separator}------"
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -721,3 +736,38 @@ class Output(tk.Text):
                 count += 1
 
         return count
+
+    def separate(self) -> None:
+        self.print(self.separator)
+
+    def select_lines(self, start_ln: int, end_ln: int) -> None:
+        self.tag_add("sel", f"{start_ln}.0", f"{end_ln}.end")
+
+    def get_item_text(self, number: int) -> Tuple[int, int]:
+        lines = self.get_text().split("\n")
+        start_ln = 0
+        end_ln = 0
+        count = 0
+
+        for i, line in enumerate(lines):
+            if line.startswith(Output.marker_user):
+                count += 1
+
+                if start_ln == 0:
+                    if count == number:
+                        start_ln = i + 1
+                else:
+                    end_ln = i
+                    break
+            elif line.startswith(Output.marker_separator):
+                if start_ln > 0:
+                    end_ln = i
+                    break
+
+        if start_ln == 0:
+            return (0, 0)
+
+        if end_ln == 0:
+            end_ln = len(lines)
+
+        return start_ln, end_ln
