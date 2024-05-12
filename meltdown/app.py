@@ -342,26 +342,21 @@ class App:
     def open_url(self, url: str) -> None:
         from .args import args
 
-        if not url:
-            return
-
-        if args.browser:
-            cmd = [args.browser, url]
-        else:
-            cmd = [self.get_opener(), url]
-
-        self.run_command(cmd)
+        self.open_generic(url, args.browser)
 
     def open_path(self, path: str) -> None:
         from .args import args
 
-        if not path:
+        self.open_generic(path, args.file_manager)
+
+    def open_generic(self, arg: str, opener: Optional[str] = None) -> None:
+        if not arg:
             return
 
-        if args.file_manager:
-            cmd = [args.file_manager, path]
+        if opener:
+            cmd = [opener, arg]
         else:
-            cmd = [self.get_opener(), path]
+            cmd = [self.get_opener(), arg]
 
         self.run_command(cmd)
 

@@ -5,6 +5,7 @@ from typing import Any, List, Optional
 from pathlib import Path
 
 # Modules
+from .app import app
 from .paths import paths
 from .config import config
 from .args import args
@@ -117,6 +118,11 @@ class Files:
 
         lst = getattr(self, f"{what}_list")
         return lst or []
+
+    def open_last_file(self) -> None:
+        if self.files_list:
+            file = self.files_list[0]
+            app.open_generic(file)
 
 
 files = Files()

@@ -12,6 +12,7 @@ from .logs import logs
 from .widgets import widgets
 from .inputcontrol import inputcontrol
 from .commands import commands
+from .files import files
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -628,6 +629,12 @@ class CommandSpec:
             lambda a=None: delete.delete_items(keep=a),
             type=str,
             arg_req=True,
+        )
+
+        self.add_cmd(
+            "openfile",
+            "Open the last file used",
+            lambda a=None: files.open_last_file(),
         )
 
 

@@ -440,6 +440,8 @@ class Widgets:
         else:
             display.select_last_tab()
 
+        files.load_list("files")
+
     def append_tooltip(self, widget: tk.Widget, text: str) -> None:
         tooltip = ToolTip.get_tooltip(widget)
 
@@ -590,6 +592,7 @@ class Widgets:
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
+        assert isinstance(menu, Menu)
         items = files.get_list(key_list)[: args.max_list_items]
         menu.clear()
 
