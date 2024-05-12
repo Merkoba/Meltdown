@@ -71,6 +71,9 @@ class Markdown:
         self.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/[^\s]*))(?=\s|$)"
 
     def format(self) -> None:
+        if args.markdown == "none":
+            return
+
         markers, num_lines = self.widget.get_markers()
         ranges: List[Tuple[str, int, int]] = []
 
@@ -79,6 +82,15 @@ class Markdown:
 
         for i, item in enumerate(markers):
             who = item["who"]
+
+            if args.markdown != "both":
+                if args.markdown == "user":
+                    if who != "user":
+                        continue
+                elif args.markdown == "ai":
+                    if who != "ai":
+                        continue
+
             start_ln = item["line"]
 
             if i < len(markers) - 1:

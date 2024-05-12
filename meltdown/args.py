@@ -117,6 +117,7 @@ class Args:
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
         self.clean_file = False
+        self.markdown = "both"
 
         self.markdown_snippets_user = False
         self.markdown_italic_user = False

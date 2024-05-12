@@ -1376,7 +1376,9 @@ Type: str
 
 Define where to apply markdown formatting
 
-Choices: "user", "ai", "all", "none"
+Default: "both"
+
+Choices: "user", "ai", "both", "none"
 
 Type: str
 

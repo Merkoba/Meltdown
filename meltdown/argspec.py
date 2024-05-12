@@ -946,7 +946,7 @@ class ArgSpec:
         self.add_argument(
             "markdown",
             type=str,
-            choices=["user", "ai", "all", "none"],
+            choices=["user", "ai", "both", "none"],
             info="Define where to apply markdown formatting",
         )
 
