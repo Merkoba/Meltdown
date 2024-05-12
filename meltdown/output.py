@@ -30,17 +30,6 @@ class Output(tk.Text):
         delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
-    def keep_item() -> None:
-        from . import delete
-
-        if not Output.current_output:
-            return
-
-        tab_id = Output.current_output.tab_id
-        arg = str(Output.clicked_number)
-        delete.delete_items(tab_id=tab_id, keep=arg)
-
-    @staticmethod
     def copy_item() -> None:
         from . import itemops
 

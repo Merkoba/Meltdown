@@ -642,9 +642,25 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "keep",
-            f"Remove all items except this one. {self.delcmd}",
-            lambda a=None: delete.delete_items(keep=a),
+            "deleteabove",
+            f"Delete items above this item. {self.delcmd}",
+            lambda a=None: delete.delete_items(number=a, mode="above"),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "deletebelow",
+            f"Delete items below this item. {self.delcmd}",
+            lambda a=None: delete.delete_items(number=a, mode="below"),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "deleteothers",
+            f"Delete the other items. {self.delcmd}",
+            lambda a=None: delete.delete_items(number=a, mode="others"),
             type=str,
             arg_req=True,
         )

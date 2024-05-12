@@ -11,7 +11,6 @@ def delete_items(
     tab_id: Optional[str] = None,
     start: bool = False,
     number: Optional[str] = None,
-    keep: Optional[str] = None,
     mode: str = "normal",
     force: bool = False,
 ) -> None:
@@ -29,7 +28,7 @@ def delete_items(
     if tabconvo.convo.id == "ignore":
         return
 
-    if (keep is not None) or (mode == "above") or (mode == "below"):
+    if (mode == "above") or (mode == "below") or (mode == "others"):
         if len(tabconvo.convo.items) <= 1:
             return
 
@@ -46,10 +45,10 @@ def delete_items(
         return True
 
     def action() -> None:
-        if not tab_id:
+        if not tabconvo:
             return
 
-        if not tabconvo:
+        if not tabconvo.tab.tab_id:
             return
 
         if number is not None:
@@ -64,13 +63,8 @@ def delete_items(
                 tabconvo.convo.items = tabconvo.convo.items[index:]
             elif mode == "below":
                 tabconvo.convo.items = tabconvo.convo.items[: index + 1]
-        elif keep is not None:
-            index = utils.get_index(keep, tabconvo.convo.items)
-
-            if not check_index(index):
-                return
-
-            tabconvo.convo.items = [tabconvo.convo.items[index]]
+            elif mode == "others":
+                tabconvo.convo.items = [tabconvo.convo.items[index]]
         elif start:
             tabconvo.convo.items.pop(0)
         else:
@@ -89,4 +83,4 @@ def delete_items(
         action()
         return
 
-    Dialog.show_confirm("Delete item(s)?", lambda: action())
+    Dialog.show_confirm("Delete item(s) ?", lambda: action())

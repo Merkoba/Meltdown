@@ -266,7 +266,9 @@ class ItemMenu:
             text="Delete Below", command=lambda e: Output.delete_items("below")
         )
 
-        self.menu.add(text="Keep", command=lambda e: Output.keep_item())
+        self.menu.add(
+            text="Delete Others", command=lambda e: Output.delete_items("others")
+        )
         self.menu.separator()
         self.menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
 
