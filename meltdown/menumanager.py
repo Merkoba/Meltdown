@@ -271,7 +271,10 @@ class ItemMenu:
             text="Delete Others", command=lambda e: Output.delete_items("others")
         )
         self.menu.separator()
-        self.menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
+        self.menu.add(text="Repeat Prompt", command=lambda e: Output.repeat_prompt())
+        self.menu.add(
+            text="Repeat (No History)", command=lambda e: Output.repeat_prompt(True)
+        )
 
     def show(self, event: Any = None) -> None:
         if event:

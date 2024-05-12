@@ -5,7 +5,9 @@ from typing import Optional
 from .utils import utils
 
 
-def action(mode: str, number: str, tab_id: Optional[str] = None) -> None:
+def action(
+    mode: str, number: str, tab_id: Optional[str] = None, no_history: bool = False
+) -> None:
     from .model import model
     from .display import display
     from .output import Output
@@ -33,10 +35,11 @@ def action(mode: str, number: str, tab_id: Optional[str] = None) -> None:
 
     user_text = item.get("user")
     ai_text = item.get("assistant")
+    file = item.get("file", "")
 
     if mode == "repeat":
         if user_text:
-            prompt = {"text": user_text}
+            prompt = {"text": user_text, "file": file, "no_history": no_history}
             model.stream(prompt, tabconvo.tab.tab_id)
     elif mode == "copy":
         texts = []

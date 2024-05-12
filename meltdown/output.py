@@ -69,7 +69,7 @@ class Output(tk.Text):
             app.open_path(words)
 
     @staticmethod
-    def repeat_prompt() -> None:
+    def repeat_prompt(no_history: bool = False) -> None:
         from . import itemops
 
         if not Output.current_output:
@@ -77,7 +77,7 @@ class Output(tk.Text):
 
         tab_id = Output.current_output.tab_id
         arg = str(Output.clicked_number)
-        itemops.action("repeat", tab_id=tab_id, number=arg)
+        itemops.action("repeat", tab_id=tab_id, number=arg, no_history=no_history)
 
     @staticmethod
     def get_words() -> str:
