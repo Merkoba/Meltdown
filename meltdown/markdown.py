@@ -40,6 +40,7 @@ class Markdown:
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
+        quote = utils.escape_regex("\"")
 
         # Code snippets / fences
         self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
@@ -61,6 +62,9 @@ class Markdown:
 
         # Highlight with one backtick
         self.pattern_highlight_3 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
+
+        # Highlight with one double-quote
+        self.pattern_quote = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = (
@@ -103,38 +107,46 @@ class Markdown:
         for who, start_ln, end_ln in reversed(ranges):
             self.format_all(who, start_ln, end_ln)
 
+    def enabled(self, who: str, what: str) -> bool:
+        arg = getattr(args, f"markdown_{what}")
+
+        if arg == "none":
+            return False
+
+        if arg == "both":
+            return True
+
+        if arg == "user":
+            return who == "user"
+
+        if arg == "ai":
+            return who == "ai"
+
+        return False
+
     def format_all(self, who: str, start_ln: int, end_ln: int) -> None:
-        if ((who == "user") and args.markdown_snippets_user) or (
-            (who == "ai") and args.markdown_snippets_ai
-        ):
+        if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
 
-        if ((who == "user") and args.markdown_bold_user) or (
-            (who == "ai") and args.markdown_bold_ai
-        ):
+        if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
 
-        if ((who == "user") and args.markdown_italic_user) or (
-            (who == "ai") and args.markdown_italic_ai
-        ):
+        if self.enabled(who, "italic"):
             self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
             self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
 
-        if ((who == "user") and args.markdown_highlights_user) or (
-            (who == "ai") and args.markdown_highlights_ai
-        ):
+        if self.enabled(who, "highlights"):
             self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
             self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
             self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
 
-        if ((who == "user") and args.markdown_urls_user) or (
-            (who == "ai") and args.markdown_urls_ai
-        ):
+        if self.enabled(who, "quotes"):
+            self.do_format(start_ln, end_ln, self.pattern_quote, "quote")
+
+        if self.enabled(who, "urls"):
             self.do_format(start_ln, end_ln, self.pattern_url, "url")
 
-        if ((who == "user") and args.markdown_paths_user) or (
-            (who == "ai") and args.markdown_paths_ai
-        ):
+        if self.enabled(who, "paths"):
             self.do_format(start_ln, end_ln, self.pattern_path, "path")
 
     def do_format(self, start_ln: int, end_ln: int, pattern: str, tag: str) -> None:

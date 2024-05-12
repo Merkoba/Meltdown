@@ -119,19 +119,13 @@ class Args:
         self.clean_file = False
         self.markdown = "both"
 
-        self.markdown_snippets_user = False
-        self.markdown_italic_user = False
-        self.markdown_bold_user = False
-        self.markdown_highlights_user = False
-        self.markdown_urls_user = False
-        self.markdown_paths_user = True
-
-        self.markdown_snippets_ai = True
-        self.markdown_italic_ai = True
-        self.markdown_bold_ai = True
-        self.markdown_highlights_ai = True
-        self.markdown_urls_ai = True
-        self.markdown_paths_ai = True
+        self.markdown_snippets = "ai"
+        self.markdown_italic = "ai"
+        self.markdown_bold = "ai"
+        self.markdown_highlights = "ai"
+        self.markdown_quotes = "ai"
+        self.markdown_urls = "ai"
+        self.markdown_paths = "both"
 
         self.errors = False
         self.log_errors = True
@@ -236,18 +230,6 @@ class Args:
             ("no_gpu", "system_gpu"),
             ("no_gpu_ram", "system_gpu"),
             ("no_gpu_temp", "system_gpu"),
-            ("no_markdown_snippets_user", "markdown_snippets_user"),
-            ("no_markdown_italic_user", "markdown_italic_user"),
-            ("no_markdown_bold_user", "markdown_bold_user"),
-            ("no_markdown_highlights_user", "markdown_highlights_user"),
-            ("no_markdown_urls_user", "markdown_urls_user"),
-            ("no_markdown_paths_user", "markdown_paths_user"),
-            ("no_markdown_snippets_ai", "markdown_snippets_ai"),
-            ("no_markdown_italic_ai", "markdown_italic_ai"),
-            ("no_markdown_bold_ai", "markdown_bold_ai"),
-            ("no_markdown_highlights_ai", "markdown_highlights_ai"),
-            ("no_markdown_urls_ai", "markdown_urls_ai"),
-            ("no_markdown_paths_ai", "markdown_paths_ai"),
             ("no_log_errors", "log_errors"),
             ("no_time", "time"),
             ("no_gestures", "gestures"),
@@ -377,6 +359,14 @@ class Args:
             "avatars_in_logs",
             "clean_file",
             "separator",
+
+            "markdown_snippets",
+            "markdown_italic",
+            "markdown_bold",
+            "markdown_highlights",
+            "markdown_quotes",
+            "markdown_urls",
+            "markdown_paths",
         ]
 
         for n_item in normals:

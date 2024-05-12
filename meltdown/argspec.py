@@ -288,78 +288,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_markdown_snippets_user",
-            action="store_false",
-            info="Don't do snippet markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_italic_user",
-            action="store_false",
-            info="Don't do italic markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_bold_user",
-            action="store_false",
-            info="Don't do bold markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_highlights_user",
-            action="store_false",
-            info="Don't do highlight markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_urls_user",
-            action="store_false",
-            info="Don't do URL markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_paths_user",
-            action="store_false",
-            info="Don't do path markdown for user",
-        )
-
-        self.add_argument(
-            "no_markdown_snippets_ai",
-            action="store_false",
-            info="Don't do snippet markdown for AI",
-        )
-
-        self.add_argument(
-            "no_markdown_italic_ai",
-            action="store_false",
-            info="Don't do italic markdown for AI",
-        )
-
-        self.add_argument(
-            "no_markdown_bold_ai",
-            action="store_false",
-            info="Don't do bold markdown for AI",
-        )
-
-        self.add_argument(
-            "no_markdown_highlights_ai",
-            action="store_false",
-            info="Don't do highlight markdown for AI",
-        )
-
-        self.add_argument(
-            "no_markdown_urls_ai",
-            action="store_false",
-            info="Don't do URL markdown for AI",
-        )
-
-        self.add_argument(
-            "no_markdown_paths_ai",
-            action="store_false",
-            info="Don't do path markdown",
-        )
-
-        self.add_argument(
             "no_log_errors",
             action="store_false",
             info="Don't log error messages to a file",
@@ -1078,6 +1006,56 @@ class ArgSpec:
             choices=["dark", "light", "contrast"],
             info="The color theme to use",
         )
+
+        self.add_argument(
+            "markdwon_snippets",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for snippets",
+        )
+
+        self.add_argument(
+            "markdown_italic",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for italic",
+        )
+
+        self.add_argument(
+            "markdown_bold",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for bold",
+        )
+
+        self.add_argument(
+            "markdown_highlights",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for highlights",
+        )
+
+        self.add_argument(
+            "markdown_quotes",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for quotes",
+        )
+
+        self.add_argument(
+            "markdown_urls",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for urls",
+        )
+
+        self.add_argument(
+            "markdown_paths",
+            type=str,
+            choices=["user", "ai", "both", "none"],
+            info="Markdown mode for paths",
+        )
+
 
 
 argspec = ArgSpec()
