@@ -78,7 +78,8 @@ def close_all_tabs(force: bool = False, make_empty: bool = True) -> None:
         action()
         return
 
-    Dialog.show_confirm("Close all tabs?", lambda: action())
+    n = display.num_tabs()
+    Dialog.show_confirm(f"Close all tabs ({n}) ?", lambda: action())
 
 
 def get_old_tabs() -> List["Tab"]:
@@ -106,15 +107,18 @@ def close_old_tabs(force: bool = False) -> None:
     if len(ids) <= 1:
         return
 
+    tabs = get_old_tabs()
+
     def action() -> None:
-        for tab in get_old_tabs():
+        for tab in tabs:
             close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
 
     if force or (not args.confirm_close):
         action()
         return
 
-    Dialog.show_confirm("Close old tabs?", lambda: action())
+    n = len(tabs)
+    Dialog.show_confirm(f"Close old tabs ({n}) ?", lambda: action())
 
 
 def close_other_tabs(force: bool = False) -> None:
@@ -124,17 +128,18 @@ def close_other_tabs(force: bool = False) -> None:
         return
 
     current = display.current_tab
+    tab_ids = [tab_id for tab_id in ids if tab_id != current]
 
     def action() -> None:
-        for tab_id in ids:
-            if tab_id != current:
-                close_tab(tab_id=tab_id, force=True)
+        for tab_id in tab_ids:
+            close_tab(tab_id, force=True)
 
     if force or (not args.confirm_close):
         action()
         return
 
-    Dialog.show_confirm("Close other tabs?", lambda: action())
+    n = len(tab_ids)
+    Dialog.show_confirm(f"Close other tabs ({n}) ?", lambda: action())
 
 
 def close_tabs_left(force: bool = False) -> None:
@@ -154,7 +159,8 @@ def close_tabs_left(force: bool = False) -> None:
         action()
         return
 
-    Dialog.show_confirm("Close tabs to the left?", lambda: action())
+    n = len(tabs)
+    Dialog.show_confirm(f"Close tabs to the left ({n}) ?", lambda: action())
 
 
 def close_tabs_right(force: bool = False) -> None:
@@ -174,4 +180,5 @@ def close_tabs_right(force: bool = False) -> None:
         action()
         return
 
-    Dialog.show_confirm("Close tabs to the right?", lambda: action())
+    n = len(tabs)
+    Dialog.show_confirm(f"Close tabs to the right ({n}) ?", lambda: action())
