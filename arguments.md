@@ -564,6 +564,16 @@ Action: store_false
 
 ---
 
+### show-duration
+
+Show the amount of seconds that took to produce a response
+
+Default: False
+
+Action: store_true
+
+---
+
 ### test
 
 Make a test tab for debugging

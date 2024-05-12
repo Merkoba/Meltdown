@@ -456,6 +456,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "show_duration",
+            action="store_true",
+            info="Show the amount of seconds that took to produce a response",
+        )
+
+        self.add_argument(
             "test",
             action="store_true",
             info="Make a test tab for debugging",

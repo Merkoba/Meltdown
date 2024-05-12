@@ -496,6 +496,12 @@ class Model:
             log_dict["assistant"] = "".join(tokens).strip()
             tabconvo.convo.add(log_dict)
 
+            if args.show_duration:
+                diff = utils.now() - now
+                seconds = int(round(diff))
+                word = utils.singular_or_plural(seconds, "second", "seconds")
+                display.print(f"Duration: {seconds} {word}", tab_id=tab_id)
+
         self.release_lock()
 
     def load_or_unload(self) -> None:

@@ -627,3 +627,9 @@ Remove a specific item of a conversation. You can use a specific number, or word
 ### keep
 
 Remove all items except this one. You can use a specific number, or words like 'first' and 'last'
+
+---
+
+### openfile
+
+Open the last file used

@@ -178,6 +178,7 @@ class Args:
         self.path_menu = True
         self.file = ""
         self.image_prompt = "Describe this image"
+        self.show_duration = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -368,6 +369,7 @@ class Args:
             "item_numbers",
             "file",
             "image_prompt",
+            "show_duration",
         ]
 
         for n_item in normals:
