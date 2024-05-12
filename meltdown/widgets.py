@@ -904,7 +904,7 @@ class Widgets:
         self.show_file_context(only_items=True)
 
     def write_system_prompt(
-        self, text: Optional[str] = None, max: bool = False
+        self, text: Optional[str] = None, maxed: bool = False
     ) -> None:
         from .textbox import TextBox
 
@@ -962,7 +962,7 @@ class Widgets:
             "System Prompt",
             lambda a: action(a),
             value=config.system,
-            start_maximized=max,
+            start_maximized=maxed,
             on_right_click=on_right_click,
         )
 

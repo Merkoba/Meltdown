@@ -62,6 +62,7 @@ class InputControl:
                 frame_data, "Write", lambda: self.show_textbox()
             )
 
+            write_button.set_bind("<Button-2>", lambda e: self.show_textbox(True))
             ToolTip(write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
@@ -293,7 +294,7 @@ class InputControl:
         if added:
             files.save(paths.autocomplete, self.autocomplete)
 
-    def show_textbox(self) -> None:
+    def show_textbox(self, maxed: bool = False) -> None:
         from .textbox import TextBox
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
@@ -338,6 +339,7 @@ class InputControl:
             lambda a: action(a),
             on_right_click=on_right_click,
             value=text,
+            start_maximized=maxed,
         )
 
     def input_command(self, arg: Optional[str] = None) -> None:
