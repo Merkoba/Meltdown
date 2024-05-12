@@ -60,15 +60,15 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_open_urls",
+            "no_url_menu",
             action="store_false",
-            info="Don't open URLs when clicked",
+            info="Don't show a menu when clicking URLs",
         )
 
         self.add_argument(
-            "no_open_paths",
+            "no_path_menu",
             action="store_false",
-            info="Don't open paths when clicked",
+            info="Don't show a menu when clicking paths",
         )
 
         self.add_argument(

@@ -233,7 +233,7 @@ class Output(tk.Text):
         def on_url_click(event: Any) -> None:
             from .menumanager import url_menu
 
-            if not args.open_urls:
+            if not args.url_menu:
                 return
 
             Output.current_output = self
@@ -245,7 +245,7 @@ class Output(tk.Text):
         def on_path_click(event: Any) -> None:
             from .menumanager import path_menu
 
-            if not args.open_paths:
+            if not args.path_menu:
                 return
 
             Output.current_output = self

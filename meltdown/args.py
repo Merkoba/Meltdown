@@ -174,8 +174,8 @@ class Args:
         self.item_numbers = False
         self.name_menu = True
         self.word_menu = True
-        self.open_urls = True
-        self.open_paths = True
+        self.url_menu = True
+        self.path_menu = True
         self.file = ""
         self.image_prompt = "Describe this image"
 
@@ -263,8 +263,8 @@ class Args:
             ("no_auto_scroll", "auto_scroll"),
             ("no_name_menu", "name_menu"),
             ("no_word_menu", "word_menu"),
-            ("no_open_urls", "open_urls"),
-            ("no_open_paths", "open_paths"),
+            ("no_url_menu", "url_menu"),
+            ("no_path_menu", "path_menu"),
         ]
 
         for r_item in other_name:
