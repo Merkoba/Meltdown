@@ -182,7 +182,7 @@ class Args:
         self.file = ""
         self.image_prompt = "Describe this image"
         self.show_duration = False
-        self.separator = False
+        self.separator = ""
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"

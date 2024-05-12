@@ -468,12 +468,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "separator",
-            action="store_true",
-            info="Show a separator between messages",
-        )
-
-        self.add_argument(
             "clean_file",
             action="store_true",
             info="Clear the file input after use",
@@ -693,6 +687,12 @@ class ArgSpec:
             "max_tab_width",
             type=int,
             info="Max number of characters to show in a tab name",
+        )
+
+        self.add_argument(
+            "separator",
+            type=str,
+            info="Show this separator between messages",
         )
 
         self.add_argument(

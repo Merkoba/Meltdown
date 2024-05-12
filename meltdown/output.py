@@ -179,7 +179,7 @@ class Output(tk.Text):
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
         self.update_size_after = ""
-        self.separator = f"{Output.marker_separator}------"
+        self.separator = Output.marker_separator + args.separator
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
