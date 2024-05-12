@@ -201,7 +201,7 @@ class Output(tk.Text):
         def on_tag_click(event: Any) -> None:
             self.show_word_menu(event)
 
-        tags = ("bold", "italic", "highlight")
+        tags = ("bold", "italic", "highlight", "quote")
 
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
@@ -319,6 +319,7 @@ class Output(tk.Text):
         self.tag_configure("path", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
+        self.tag_configure("quote", font=app.theme.get_bold_font())
 
         if args.colors:
             if args.user_color == "auto":
@@ -334,6 +335,7 @@ class Output(tk.Text):
             "bold",
             "italic",
             "highlight",
+            "quote",
             "url",
             "path",
             "name_user",

@@ -40,7 +40,7 @@ class Markdown:
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
-        quote = utils.escape_regex("\"")
+        quote = utils.escape_regex('"')
 
         # Code snippets / fences
         self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
@@ -64,7 +64,7 @@ class Markdown:
         self.pattern_highlight_3 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
 
         # Highlight with one double-quote
-        self.pattern_quote = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
+        self.pattern_quote = rf"(?:(?<=\s)|^){left}(?P<all>{quote}{{1}}(?P<content>.*?){quote}{{1}}){right}(?=\s|$)"
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = (
@@ -141,7 +141,7 @@ class Markdown:
             self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
 
         if self.enabled(who, "quotes"):
-            self.do_format(start_ln, end_ln, self.pattern_quote, "quote")
+            self.do_format(start_ln, end_ln, self.pattern_quote, "quote", True)
 
         if self.enabled(who, "urls"):
             self.do_format(start_ln, end_ln, self.pattern_url, "url")
@@ -149,7 +149,14 @@ class Markdown:
         if self.enabled(who, "paths"):
             self.do_format(start_ln, end_ln, self.pattern_path, "path")
 
-    def do_format(self, start_ln: int, end_ln: int, pattern: str, tag: str) -> None:
+    def do_format(
+        self,
+        start_ln: int,
+        end_ln: int,
+        pattern: str,
+        tag: str,
+        no_replace: bool = False,
+    ) -> None:
         matches: List[MatchItem] = []
 
         for ln in range(start_ln, end_ln + 1):
@@ -169,7 +176,12 @@ class Markdown:
 
             for item in reversed(items):
                 all = item.group("all")
-                content = item.group("content")
+
+                if no_replace:
+                    content = all
+                else:
+                    content = item.group("content")
+
                 search_col = 0
 
                 for _ in range(0, 999):

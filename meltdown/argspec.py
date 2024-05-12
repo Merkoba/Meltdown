@@ -1008,7 +1008,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "markdwon_snippets",
+            "markdown_snippets",
             type=str,
             choices=["user", "ai", "both", "none"],
             info="Markdown mode for snippets",
@@ -1055,7 +1055,6 @@ class ArgSpec:
             choices=["user", "ai", "both", "none"],
             info="Markdown mode for paths",
         )
-
 
 
 argspec = ArgSpec()

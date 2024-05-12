@@ -58,5 +58,7 @@ format_test = {
         {"assistant": "Ok"},
         {"user": "Here is a path /home/yo/file.txt"},
         {"assistant": "That is indeed /home/yo/file.txt"},
+        {"user": 'This is "a quoted text"'},
+        {"assistant": 'That is a "quoted text"'},
     ],
 }

@@ -359,7 +359,6 @@ class Args:
             "avatars_in_logs",
             "clean_file",
             "separator",
-
             "markdown_snippets",
             "markdown_italic",
             "markdown_bold",
