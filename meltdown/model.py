@@ -578,7 +578,7 @@ class Model:
         path = Path(path_str)
 
         try:
-            with path.open("rb", encoding="utf-8") as img_file:
+            with path.open("rb") as img_file:
                 base64_data = base64.b64encode(img_file.read()).decode("utf-8")
                 return f"data:image/png;base64,{base64_data}"
         except BaseException:

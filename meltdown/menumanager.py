@@ -228,6 +228,50 @@ class FontMenu:
             self.menu.show(widget=widget)
 
 
+class ItemMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy", command=lambda e: Output.copy_item())
+        self.menu.separator()
+        self.menu.add(text="Delete", command=lambda e: Output.delete_items())
+        self.menu.add(
+            text="Delete Above", command=lambda e: Output.delete_items("above")
+        )
+        self.menu.add(
+            text="Delete Below", command=lambda e: Output.delete_items("below")
+        )
+        self.menu.add(text="Keep", command=lambda e: Output.keep_item())
+        self.menu.separator()
+        self.menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
+class WordMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Explain", command=lambda e: Output.explain_words())
+        self.menu.add(text="Search", command=lambda e: Output.search_words())
+        self.menu.add(text="New", command=lambda e: Output.new_tab())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
 class FontFamilyMenu:
     def __init__(self) -> None:
         from .display import display
@@ -255,3 +299,5 @@ more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
 font_family_menu = FontFamilyMenu()
+word_menu = WordMenu()
+item_menu = ItemMenu()

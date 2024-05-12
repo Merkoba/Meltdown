@@ -6,30 +6,13 @@ from typing import Any, List, Optional, Dict, Tuple
 # Modules
 from .config import config
 from .app import app
-from .menus import Menu
 from .args import args
 from .utils import utils
 from .gestures import Gestures
 
 
 class Output(tk.Text):
-    word_menu = Menu()
-    word_menu.add(text="Copy", command=lambda e: Output.copy_words())
-    word_menu.add(text="Explain", command=lambda e: Output.explain_words())
-    word_menu.add(text="Search", command=lambda e: Output.search_words())
-    word_menu.add(text="New", command=lambda e: Output.new_tab())
-
-    item_menu = Menu()
-    item_menu.add(text="Copy", command=lambda e: Output.copy_item())
-    item_menu.separator()
-    item_menu.add(text="Delete", command=lambda e: Output.delete_items())
-    item_menu.add(text="Delete Above", command=lambda e: Output.delete_items("above"))
-    item_menu.add(text="Delete Below", command=lambda e: Output.delete_items("below"))
-    item_menu.add(text="Keep", command=lambda e: Output.keep_item())
-    item_menu.separator()
-    item_menu.add(text="Repeat", command=lambda e: Output.repeat_prompt())
     clicked_number = 0
-
     current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
@@ -567,6 +550,8 @@ class Output(tk.Text):
             return ""
 
     def show_word_menu(self, event: Any, widget: Optional[tk.Text] = None) -> bool:
+        from .menumanager import word_menu
+
         if not args.word_menu:
             return False
 
@@ -588,7 +573,7 @@ class Output(tk.Text):
         if not Output.words:
             return False
 
-        Output.word_menu.show(event)
+        word_menu.show(event)
         return True
 
     def on_motion(self, event: Any) -> None:
@@ -690,6 +675,8 @@ class Output(tk.Text):
         return "break"
 
     def on_name_click(self, event: Any) -> None:
+        from .menumanager import item_menu
+
         if not args.name_menu:
             return
 
@@ -700,7 +687,7 @@ class Output(tk.Text):
 
         Output.current_output = self
         Output.clicked_number = number
-        Output.item_menu.show(event)
+        item_menu.show(event)
 
     def get_number(self) -> int:
         line_number = int(self.index("current").split(".")[0])
