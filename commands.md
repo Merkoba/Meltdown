@@ -642,9 +642,21 @@ Remove a specific item of a conversation. You can use a specific number, or word
 
 ---
 
-### keep
+### deleteabove
 
-Remove all items except this one. You can use a specific number, or words like 'first' and 'last'
+Delete items above this item. You can use a specific number, or words like 'first' and 'last'
+
+---
+
+### deletebelow
+
+Delete items below this item. You can use a specific number, or words like 'first' and 'last'
+
+---
+
+### deleteothers
+
+Delete the other items. You can use a specific number, or words like 'first' and 'last'
 
 ---
 

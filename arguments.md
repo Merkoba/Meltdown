@@ -582,6 +582,16 @@ Action: store_true
 
 ---
 
+### separator
+
+Show a separator between messages
+
+Default: False
+
+Action: store_true
+
+---
+
 ### clean-file
 
 Clear the file input after use
