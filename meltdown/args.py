@@ -114,12 +114,21 @@ class Args:
         self.task_manager = "auto"
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
-        self.markdown = "ai"
-        self.markdown_snippets = True
-        self.markdown_italic = True
-        self.markdown_bold = True
-        self.markdown_highlights = True
-        self.markdown_urls = True
+
+        self.markdown_snippets_user = False
+        self.markdown_italic_user = False
+        self.markdown_bold_user = False
+        self.markdown_highlights_user = False
+        self.markdown_urls_user = False
+        self.markdown_paths_user = True
+
+        self.markdown_snippets_ai = True
+        self.markdown_italic_ai = True
+        self.markdown_bold_ai = True
+        self.markdown_highlights_ai = True
+        self.markdown_urls_ai = True
+        self.markdown_paths_ai = True
+
         self.errors = False
         self.log_errors = True
         self.progtext = ""
@@ -221,11 +230,21 @@ class Args:
             ("no_gpu", "system_gpu"),
             ("no_gpu_ram", "system_gpu"),
             ("no_gpu_temp", "system_gpu"),
-            ("no_markdown_snippets", "markdown_snippets"),
-            ("no_markdown_italic", "markdown_italic"),
-            ("no_markdown_bold", "markdown_bold"),
-            ("no_markdown_highlights", "markdown_highlights"),
-            ("no_markdown_urls", "markdown_urls"),
+
+            ("no_markdown_snippets_user", "markdown_snippets_user"),
+            ("no_markdown_italic_user", "markdown_italic_user"),
+            ("no_markdown_bold_user", "markdown_bold_user"),
+            ("no_markdown_highlights_user", "markdown_highlights_user"),
+            ("no_markdown_urls_user", "markdown_urls_user"),
+            ("no_markdown_paths_user", "markdown_paths_user"),
+
+            ("no_markdown_snippets_ai", "markdown_snippets_ai"),
+            ("no_markdown_italic_ai", "markdown_italic_ai"),
+            ("no_markdown_bold_ai", "markdown_bold_ai"),
+            ("no_markdown_highlights_ai", "markdown_highlights_ai"),
+            ("no_markdown_urls_ai", "markdown_urls_ai"),
+            ("no_markdown_paths_ai", "markdown_paths_ai"),
+
             ("no_log_errors", "log_errors"),
             ("no_time", "time"),
             ("no_gestures", "gestures"),

@@ -276,33 +276,75 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_markdown_snippets",
+            "no_markdown_snippets_user",
             action="store_false",
-            info="Don't do snippet markdown",
+            info="Don't do snippet markdown for user",
         )
 
         self.add_argument(
-            "no_markdown_italic",
+            "no_markdown_italic_user",
             action="store_false",
-            info="Don't do italic markdown",
+            info="Don't do italic markdown for user",
         )
 
         self.add_argument(
-            "no_markdown_bold",
+            "no_markdown_bold_user",
             action="store_false",
-            info="Don't do bold markdown",
+            info="Don't do bold markdown for user",
         )
 
         self.add_argument(
-            "no_markdown_highlights",
+            "no_markdown_highlights_user",
             action="store_false",
-            info="Don't do highlight markdown",
+            info="Don't do highlight markdown for user",
         )
 
         self.add_argument(
-            "no_markdown_urls",
+            "no_markdown_urls_user",
             action="store_false",
-            info="Don't do URL markdown",
+            info="Don't do URL markdown for user",
+        )
+
+        self.add_argument(
+            "no_markdown_paths_user",
+            action="store_false",
+            info="Don't do path markdown for user",
+        )
+
+        self.add_argument(
+            "no_markdown_snippets_ai",
+            action="store_false",
+            info="Don't do snippet markdown for AI",
+        )
+
+        self.add_argument(
+            "no_markdown_italic_ai",
+            action="store_false",
+            info="Don't do italic markdown for AI",
+        )
+
+        self.add_argument(
+            "no_markdown_bold_ai",
+            action="store_false",
+            info="Don't do bold markdown for AI",
+        )
+
+        self.add_argument(
+            "no_markdown_highlights_ai",
+            action="store_false",
+            info="Don't do highlight markdown for AI",
+        )
+
+        self.add_argument(
+            "no_markdown_urls_ai",
+            action="store_false",
+            info="Don't do URL markdown for AI",
+        )
+
+        self.add_argument(
+            "no_markdown_paths_ai",
+            action="store_false",
+            info="Don't do path markdown",
         )
 
         self.add_argument(

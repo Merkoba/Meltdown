@@ -238,6 +238,18 @@ class Output(tk.Text):
                 self.open_url(text)
 
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
+
+        def on_path_click(event: Any) -> None:
+            if not args.open_urls:
+                return
+
+            text = self.get_tagwords("path", event)
+
+            if text:
+                print(text)
+
+        self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
+
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def mousewheel_up() -> str:
@@ -300,6 +312,7 @@ class Output(tk.Text):
         self.configure(border=4, highlightthickness=0, relief="flat")
         self.tag_configure("highlight", underline=True)
         self.tag_configure("url", underline=True)
+        self.tag_configure("path", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
 
@@ -313,7 +326,15 @@ class Output(tk.Text):
             else:
                 self.tag_configure("name_ai", foreground=args.ai_color)
 
-        for tag in ("bold", "italic", "highlight", "url", "name_user", "name_ai"):
+        for tag in (
+            "bold",
+            "italic",
+            "highlight",
+            "url",
+            "path",
+            "name_user",
+            "name_ai",
+        ):
             self.tag_lower(tag)
 
         self.tag_configure(

@@ -288,6 +288,9 @@ class Model:
         if tabconvo.tab.mode == "ignore":
             return
 
+        if prompt_file and (not prompt_user):
+            prompt_user = f"{prompt_text} : {prompt_file}"
+
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
         system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
