@@ -19,6 +19,9 @@ from .tips import tips
 from .utils import utils
 
 
+PromptArg = Dict[str, Any]
+
+
 class Model:
     def __init__(self) -> None:
         self.mode = None
@@ -61,7 +64,7 @@ class Model:
         return any(name == gpt[0] for gpt in self.gpts)
 
     def load(
-        self, prompt: Optional[Dict[str, str]] = None, tab_id: Optional[str] = None
+        self, prompt: Optional[PromptArg] = None, tab_id: Optional[str] = None
     ) -> None:
         if not tab_id:
             tab_id = display.current_tab
@@ -125,7 +128,7 @@ class Model:
             utils.error(e)
             self.gpt_key = ""
 
-    def load_gpt(self, tab_id: str, prompt: Optional[Dict[str, str]] = None) -> None:
+    def load_gpt(self, tab_id: str, prompt: Optional[PromptArg] = None) -> None:
         try:
             self.read_gpt_key()
 
@@ -236,7 +239,7 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
-    def stream(self, prompt: Dict[str, str], tab_id: str) -> None:
+    def stream(self, prompt: PromptArg, tab_id: str) -> None:
         if self.is_loading():
             utils.msg("(Stream) Slow down!")
             return
@@ -268,6 +271,9 @@ class Model:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
+
+        prompt_no_history = prompt.get("no_history", False)
+
         original_text = prompt_text
         original_file = prompt_file
 
@@ -298,7 +304,7 @@ class Model:
         system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
-        if tabconvo.convo.items and (config.history > 0):
+        if tabconvo.convo.items and (config.history > 0) and (not prompt_no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]

@@ -15,7 +15,7 @@ tips = {
     "prev_button": f"Previous item in the input history. {prevnext}",
     "next_button": f"Next item in the input history. {prevnext}",
     "write_button": "Show a textbox for longer inputs",
-    "submit_button": "Send the prompt to the AI",
+    "submit_button": "Send the prompt to the AI. Middle click to avoid using history",
     "browse_file_button": "Browse for a file to use",
     "open_file_button": "Open the current file",
     "recent_files_button": "Show a list of files used recently",

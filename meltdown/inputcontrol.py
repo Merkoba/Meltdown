@@ -68,6 +68,10 @@ class InputControl:
             frame_data, "Submit", lambda: self.submit(scroll=False)
         )
 
+        submit_button.set_bind(
+            "<Button-2>", lambda e: self.submit(scroll=False, no_history=True)
+        )
+
         ToolTip(submit_button, tips["submit_button"])
 
         if not args.show_prevnext:
@@ -158,6 +162,7 @@ class InputControl:
         text: Optional[str] = None,
         scroll: bool = True,
         file: Optional[str] = None,
+        no_history: bool = False,
     ) -> None:
         from .model import model
         from .display import display
@@ -208,8 +213,7 @@ class InputControl:
             if model.model_loading:
                 return
 
-            widgets.file.clear(False)
-            prompt = {"text": text, "file": file}
+            prompt = {"text": text, "file": file, "no_history": no_history}
 
             files.add_system(config.system)
             files.add_model(config.model)
