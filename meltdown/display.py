@@ -581,23 +581,23 @@ class Display:
         for tab in self.tabs.values():
             tab.output.update_font()
 
-    def scroll_up(self, tab_id: Optional[str] = None) -> None:
+    def scroll_up(self, tab_id: Optional[str] = None, more: bool = False) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
         output = self.get_output(tab_id)
 
         if output:
-            output.scroll_up()
+            output.scroll_up(more=more)
 
-    def scroll_down(self, tab_id: Optional[str] = None) -> None:
+    def scroll_down(self, tab_id: Optional[str] = None, more: bool = False) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
         output = self.get_output(tab_id)
 
         if output:
-            output.scroll_down()
+            output.scroll_down(more=more)
 
     def update_session(self) -> None:
         from .session import session

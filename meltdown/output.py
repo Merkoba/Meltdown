@@ -264,12 +264,12 @@ class Output(tk.Text):
             self.scroll_down(True)
             return "break"
 
-        def scroll_up(double: bool = False) -> str:
-            self.scroll_up(True, double=double)
+        def scroll_up(more: bool = False) -> str:
+            self.scroll_up(True, more=more)
             return "break"
 
-        def scroll_down(double: bool = False) -> str:
-            self.scroll_down(True, double=double)
+        def scroll_down(more: bool = False) -> str:
+            self.scroll_down(True, more=more)
             return "break"
 
         def home() -> str:
@@ -405,10 +405,10 @@ class Output(tk.Text):
         fraction = self.get_fraction()
         return fraction * args.scroll_lines
 
-    def scroll_up(self, check: bool = False, double: bool = False) -> None:
+    def scroll_up(self, check: bool = False, more: bool = False) -> None:
         lines = self.get_scroll_lines()
 
-        if double:
+        if more:
             lines *= 2
 
         self.yview_moveto(self.yview()[0] - lines)
@@ -416,10 +416,10 @@ class Output(tk.Text):
         if check:
             self.check_autoscroll("up")
 
-    def scroll_down(self, check: bool = False, double: bool = False) -> None:
+    def scroll_down(self, check: bool = False, more: bool = False) -> None:
         lines = self.get_scroll_lines()
 
-        if double:
+        if more:
             lines *= 2
 
         self.yview_moveto(self.yview()[0] + lines)

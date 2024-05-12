@@ -326,10 +326,24 @@ class Keyboard:
             ctrl_help="Unload model",
         )
 
-        self.register("<Page_Up>", lambda: run_command("scrollup"), help="Scroll up")
+        self.register(
+            "<Prior>",
+            lambda: run_command("scrollup"),
+            help="Scroll up",
+            on_ctrl=lambda: run_command("scrollupmore"),
+            ctrl_help="Scroll up more",
+            on_shift=lambda: run_command("scrollupmore"),
+            shift_help="Scroll up more",
+        )
 
         self.register(
-            "<Page_Down>", lambda: run_command("scrolldown"), help="Scroll down"
+            "<Next>",
+            lambda: run_command("scrolldown"),
+            help="Scroll down",
+            on_ctrl=lambda: run_command("scrolldownmore"),
+            ctrl_help="Scroll down more",
+            on_shift=lambda: run_command("scrolldownmore"),
+            shift_help="Scroll down more",
         )
 
         self.register(
