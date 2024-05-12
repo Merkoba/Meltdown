@@ -126,7 +126,7 @@ class Output(tk.Text):
             app.search_text(text)
 
         if args.confirm_search:
-            Dialog.show_confirm("Search for this term?", lambda: action())
+            Dialog.show_confirm("Search for this term ?", lambda: action())
         else:
             action()
 

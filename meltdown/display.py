@@ -390,7 +390,7 @@ class Display:
             action()
             return
 
-        Dialog.show_confirm("Clear conversation?", lambda: action())
+        Dialog.show_confirm("Clear conversation ?", lambda: action())
 
     def reset_tab(self, tab: Tab) -> None:
         tab.output.clear_text()

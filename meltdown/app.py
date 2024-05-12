@@ -102,7 +102,7 @@ class App:
             def action() -> None:
                 self.exit(seconds, force=True)
 
-            Dialog.show_confirm("Exit the program?", action)
+            Dialog.show_confirm("Exit the program ?", action)
             return
 
         self.cancel_exit()
