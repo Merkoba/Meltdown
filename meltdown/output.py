@@ -194,7 +194,6 @@ class Output(tk.Text):
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
         self.update_size_after = ""
-        self.markers_checked: List[int] = []
         self.separator = f"{Output.marker_separator}------"
 
         parent.grid_rowconfigure(0, weight=1)
@@ -235,6 +234,7 @@ class Output(tk.Text):
         )
 
         def on_url_click(event: Any) -> None:
+            from .keyboard import keyboard
             from .menumanager import url_menu
 
             if not args.url_menu:
@@ -242,11 +242,17 @@ class Output(tk.Text):
 
             Output.current_output = self
             Output.words = self.get_tagwords("url", event)
+
+            if keyboard.ctrl:
+                Output.open_url()
+                return
+
             url_menu.show(event)
 
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
 
         def on_path_click(event: Any) -> None:
+            from .keyboard import keyboard
             from .menumanager import path_menu
 
             if not args.path_menu:
@@ -254,6 +260,11 @@ class Output(tk.Text):
 
             Output.current_output = self
             Output.words = self.get_tagwords("path", event)
+
+            if keyboard.ctrl:
+                Output.open_path()
+                return
+
             path_menu.show(event)
 
         self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
@@ -656,11 +667,6 @@ class Output(tk.Text):
 
         for i, line in enumerate(lines):
             start_ln = i + 1
-
-            if start_ln in self.markers_checked:
-                continue
-
-            self.markers_checked.append(start_ln)
 
             if line.startswith(Output.marker_user):
                 markers.append({"who": "user", "line": start_ln})
