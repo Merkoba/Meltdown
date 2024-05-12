@@ -18,8 +18,6 @@ class Output(tk.Text):
     marker_ai = "\u200c\u200c\u200c"
     words = ""
 
-    update_size_after = ""
-
     @staticmethod
     def delete_items(mode: str = "normal") -> None:
         from . import delete
@@ -202,6 +200,8 @@ class Output(tk.Text):
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
         self.auto_scroll = True
+        self.update_size_after = ""
+        self.markers_checked: List[int] = []
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -659,10 +659,17 @@ class Output(tk.Text):
         lines = self.get_text().split("\n")
 
         for i, line in enumerate(lines):
+            start_ln = i + 1
+
+            if start_ln in self.markers_checked:
+                continue
+
+            self.markers_checked.append(start_ln)
+
             if line.startswith(Output.marker_user):
-                markers.append({"who": "user", "line": i + 1})
+                markers.append({"who": "user", "line": start_ln})
             elif line.startswith(Output.marker_ai):
-                markers.append({"who": "ai", "line": i + 1})
+                markers.append({"who": "ai", "line": start_ln})
 
         return (markers, len(lines))
 
