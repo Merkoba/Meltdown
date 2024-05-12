@@ -17,6 +17,7 @@ tips = {
     "write_button": "Show a textbox for longer inputs",
     "submit_button": "Send the prompt to the AI",
     "browse_file_button": "Browse for a file to use",
+    "open_file_button": "Open the current file",
     "recent_files_button": "Show a list of files used recently",
     "user": "Personalize yourself",
     "ai": "Personalize the AI",

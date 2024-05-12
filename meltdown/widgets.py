@@ -376,6 +376,12 @@ class Widgets:
 
         ToolTip(self.browse_file_button, tips["browse_file_button"])
 
+        self.open_file_button = widgetutils.make_button(
+            frame_data_file, "Open", lambda: self.open_file()
+        )
+
+        ToolTip(self.open_file_button, tips["open_file_button"])
+
         # Input
         self.frame_data_input = widgetutils.make_frame()
         self.input_frame = self.frame_data_input.frame
@@ -1063,6 +1069,15 @@ class Widgets:
     def on_model_dropped(self, event: Any) -> None:
         if event.data:
             self.set_model(event.data)
+
+    def open_file(self) -> None:
+        file = self.file.get()
+
+        if not file:
+            files.open_last_file()
+            return
+
+        app.open_generic(file)
 
 
 widgets: Widgets = Widgets()
