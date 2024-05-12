@@ -581,7 +581,8 @@ class Model:
             with path.open("rb") as img_file:
                 base64_data = base64.b64encode(img_file.read()).decode("utf-8")
                 return f"data:image/png;base64,{base64_data}"
-        except BaseException:
+        except BaseException as e:
+            utils.error(e)
             return None
 
     def release_lock(self) -> None:
