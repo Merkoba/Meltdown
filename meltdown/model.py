@@ -15,7 +15,6 @@ from .app import app
 from .args import args
 from .config import config
 from .display import display
-from .session import session
 from .tips import tips
 from .utils import utils
 
@@ -284,25 +283,17 @@ class Model:
         if config.after:
             prompt_text = self.check_dot(prompt_text) + config.after
 
-        tab = display.get_tab(tab_id)
+        tabconvo = display.get_tab_convo(tab_id)
 
-        if not tab:
-            return
-
-        if tab.mode == "ignore":
-            return
-
-        conversation = session.get_conversation(tab.conversation_id)
-
-        if not conversation:
+        if tabconvo.tab.mode == "ignore":
             return
 
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
         system = utils.replace_keywords(config.system)
         messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
 
-        if conversation.items and (config.history > 0):
-            for item in conversation.items[-abs(config.history) :]:
+        if tabconvo.convo.items and (config.history > 0):
+            for item in tabconvo.convo.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]
 
@@ -497,7 +488,7 @@ class Model:
 
         if tokens:
             log_dict["assistant"] = "".join(tokens).strip()
-            conversation.add(log_dict)
+            tabconvo.convo.add(log_dict)
 
         self.release_lock()
 

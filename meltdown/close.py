@@ -19,7 +19,7 @@ def close_tab(
     force_empty: bool = False,
     full: bool = True,
 ) -> None:
-    if display.num_tabs() <= 1:
+    if display.num_tabs() == 0:
         return
 
     if not tab_id:
