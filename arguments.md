@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-files-in-logs
+
+Don't show files in text logs
+
+Action: store_false
+
+---
+
 ### no-tooltips
 
 Don't show tooltips
@@ -564,6 +572,16 @@ Action: store_false
 
 ---
 
+### avatars-in-logs
+
+Show avatars in text logs
+
+Default: False
+
+Action: store_true
+
+---
+
 ### show-duration
 
 Show the amount of seconds that took to produce a response
@@ -827,16 +845,6 @@ Action: store_true
 ### sticky
 
 Make the window always on top
-
-Default: False
-
-Action: store_true
-
----
-
-### avatars-in-logs
-
-Show avatars in text logs
 
 Default: False
 
