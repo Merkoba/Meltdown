@@ -604,6 +604,12 @@ class Output(tk.Text):
 
         current_index = widget.index(tk.CURRENT)
         tags = widget.tag_names(current_index)
+
+        for tag in tags:
+            if (tag == "name_user") or (tag == "name_ai"):
+                self.on_name_click(event)
+                return True
+
         seltext = self.get_selected_text(widget)
 
         Output.words = ""
@@ -722,6 +728,7 @@ class Output(tk.Text):
 
     def on_name_click(self, event: Any) -> None:
         from .menumanager import item_menu
+        from .keyboard import keyboard
 
         if not args.name_menu:
             return
@@ -733,6 +740,11 @@ class Output(tk.Text):
 
         Output.current_output = self
         Output.clicked_number = number
+
+        if keyboard.ctrl or keyboard.shift:
+            Output.select_item()
+            return
+
         item_menu.show(event)
 
     def get_number(self) -> int:
