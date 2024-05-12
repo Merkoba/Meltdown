@@ -105,7 +105,11 @@ class Output(tk.Text):
         if not text:
             return
 
-        query = f'What is "{text}" ?'
+        if text.startswith('"') and text.endswith('"'):
+            query = f"What is {text} ?"
+        else:
+            query = f'What is "{text}" ?'
+
         tab_id = Output.current_output.tab_id
         model.stream({"text": query}, tab_id)
 
