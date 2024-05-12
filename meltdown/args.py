@@ -123,7 +123,7 @@ class Args:
         self.markdown_italic = "ai"
         self.markdown_bold = "ai"
         self.markdown_highlights = "ai"
-        self.markdown_quotes = "ai"
+        self.markdown_quotes = "both"
         self.markdown_urls = "ai"
         self.markdown_paths = "both"
 

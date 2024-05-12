@@ -340,102 +340,6 @@ Action: store_false
 
 ---
 
-### no-markdown-snippets-user
-
-Don't do snippet markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-italic-user
-
-Don't do italic markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-bold-user
-
-Don't do bold markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-highlights-user
-
-Don't do highlight markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-urls-user
-
-Don't do URL markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-paths-user
-
-Don't do path markdown for user
-
-Action: store_false
-
----
-
-### no-markdown-snippets-ai
-
-Don't do snippet markdown for AI
-
-Action: store_false
-
----
-
-### no-markdown-italic-ai
-
-Don't do italic markdown for AI
-
-Action: store_false
-
----
-
-### no-markdown-bold-ai
-
-Don't do bold markdown for AI
-
-Action: store_false
-
----
-
-### no-markdown-highlights-ai
-
-Don't do highlight markdown for AI
-
-Action: store_false
-
----
-
-### no-markdown-urls-ai
-
-Don't do URL markdown for AI
-
-Action: store_false
-
----
-
-### no-markdown-paths-ai
-
-Don't do path markdown
-
-Action: store_false
-
----
-
 ### no-log-errors
 
 Don't log error messages to a file
@@ -575,16 +479,6 @@ Action: store_false
 ### avatars-in-logs
 
 Show avatars in text logs
-
-Default: False
-
-Action: store_true
-
----
-
-### separator
-
-Show a separator between messages
 
 Default: False
 
@@ -959,6 +853,16 @@ Max number of characters to show in a tab name
 Default: 0
 
 Type: int
+
+---
+
+### separator
+
+Show this separator between messages
+
+Default: [Empty string]
+
+Type: str
 
 ---
 
@@ -1595,5 +1499,89 @@ The color theme to use
 Default: "dark"
 
 Choices: "dark", "light", "contrast"
+
+Type: str
+
+---
+
+### markdown-snippets
+
+Markdown mode for snippets
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-italic
+
+Markdown mode for italic
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-bold
+
+Markdown mode for bold
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-highlights
+
+Markdown mode for highlights
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-quotes
+
+Markdown mode for quotes
+
+Default: "both"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-urls
+
+Markdown mode for urls
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-paths
+
+Markdown mode for paths
+
+Default: "both"
+
+Choices: "user", "ai", "both", "none"
 
 Type: str
