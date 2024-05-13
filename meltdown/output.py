@@ -315,9 +315,14 @@ class Output(tk.Text):
         self.gestures = Gestures(self, self, self.on_right_click)
 
         self.bind("<Button-1>", lambda e: self.on_click())
+
         self.bind("<Button-2>", lambda e: self.on_middle_click(False, False))
         self.bind("<Control-Button-2>", lambda e: self.on_middle_click(True, False))
         self.bind("<Shift-Button-2>", lambda e: self.on_middle_click(False, True))
+        self.bind(
+            "<Control-Shift-Button-2>", lambda e: self.on_middle_click(True, True)
+        )
+
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
         self.bind("<Shift-Button-4>", lambda e: self.tab_left())
@@ -764,7 +769,11 @@ class Output(tk.Text):
     def on_middle_click(self, ctrl: bool = False, shift: bool = False) -> str:
         from .commands import commands
 
-        if ctrl:
+        if ctrl and shift:
+            if args.on_ctrl_shift_middle_click:
+                commands.exec(args.on_ctrl_shift_middle_click)
+                return "break"
+        elif ctrl:
             if args.on_ctrl_middle_click:
                 commands.exec(args.on_ctrl_middle_click)
                 return "break"

@@ -1653,3 +1653,13 @@ Commands to run when ctrl middle clicking the output
 Default: [Empty string]
 
 Type: str
+
+---
+
+### on-ctrl-shift-middle-click
+
+Commands to run when ctrl shift middle clicking the output
+
+Default: [Empty string]
+
+Type: str
