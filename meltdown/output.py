@@ -315,10 +315,10 @@ class Output(tk.Text):
         self.gestures = Gestures(self, self, self.on_right_click)
 
         self.bind("<Button-1>", lambda e: self.on_click())
-
         self.bind("<Button-2>", lambda e: self.on_middle_click(False, False))
         self.bind("<Control-Button-2>", lambda e: self.on_middle_click(True, False))
         self.bind("<Shift-Button-2>", lambda e: self.on_middle_click(False, True))
+
         self.bind(
             "<Control-Shift-Button-2>", lambda e: self.on_middle_click(True, True)
         )
