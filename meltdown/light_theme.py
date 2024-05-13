@@ -54,6 +54,7 @@ class LightTheme(Theme):
         self.scrollbar_2 = "#949494"
 
         self.menu_hover_background = "#6A7B83"
+        self.menu_canvas_background = "#949494"
 
         self.button_highlight_background = "#44B3A1"
 
