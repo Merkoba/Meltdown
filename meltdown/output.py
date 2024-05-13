@@ -761,15 +761,19 @@ class Output(tk.Text):
         self.deselect_all()
         self.reset_drag()
 
-    def on_middle_click(self, ctrl: bool = False, shift: bool = False) -> None:
+    def on_middle_click(self, ctrl: bool = False, shift: bool = False) -> str:
         from .commands import commands
 
         if ctrl:
             if args.on_ctrl_middle_click:
                 commands.exec(args.on_ctrl_middle_click)
+                return "break"
         elif shift:
             if args.on_shift_middle_click:
                 commands.exec(args.on_shift_middle_click)
+                return "break"
+
+        return ""
 
     def tab_left(self) -> str:
         self.display.tab_left()
