@@ -476,6 +476,16 @@ Action: store_false
 
 ---
 
+### file-always
+
+Always show the file panel
+
+Default: False
+
+Action: store_true
+
+---
+
 ### avatars-in-logs
 
 Show avatars in text logs
