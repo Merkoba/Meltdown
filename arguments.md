@@ -20,6 +20,14 @@ Action: store_false
 
 ---
 
+### no-tabs-wheel
+
+Don't enable mousewheel events on the tabs bar
+
+Action: store_false
+
+---
+
 ### no-tooltips
 
 Don't show tooltips
