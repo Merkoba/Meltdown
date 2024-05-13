@@ -1258,7 +1258,7 @@ Type: str
 
 What text to use for the explain prompt
 
-Default: "What is"
+Default: "What is ((words))?"
 
 Type: str
 
@@ -1268,7 +1268,7 @@ Type: str
 
 What text to use for the new prompt
 
-Default: "Tell me about"
+Default: "Tell me about ((words))"
 
 Type: str
 
