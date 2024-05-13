@@ -476,6 +476,16 @@ Action: store_false
 
 ---
 
+### extra-careful
+
+Enable more confirm dialogs in some cases
+
+Default: False
+
+Action: store_true
+
+---
+
 ### file-always
 
 Always show the file panel

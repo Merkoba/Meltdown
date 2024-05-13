@@ -390,6 +390,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "extra_careful",
+            action="store_true",
+            info="Enable more confirm dialogs in some cases",
+        )
+
+        self.add_argument(
             "file_always",
             action="store_true",
             info="Always show the file panel",

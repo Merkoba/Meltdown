@@ -110,20 +110,22 @@ def close_tab(
 
     cmds = []
 
+    do_force = not args.extra_careful
+
     if full and get_old_tabs():
-        cmds.append(("Old", lambda: close_old_tabs(force=True)))
+        cmds.append(("Old", lambda: close_old_tabs(force=do_force)))
 
     if get_other_tabs(tab_id):
-        cmds.append(("Others", lambda: close_other_tabs(tab_id=tab_id, force=True)))
+        cmds.append(("Others", lambda: close_other_tabs(tab_id=tab_id, force=do_force)))
 
     if get_left_tabs(tab_id):
-        cmds.append(("Left", lambda: close_tabs_left(tab_id=tab_id, force=True)))
+        cmds.append(("Left", lambda: close_tabs_left(tab_id=tab_id, force=do_force)))
 
     if get_right_tabs(tab_id):
-        cmds.append(("Right", lambda: close_tabs_right(tab_id=tab_id, force=True)))
+        cmds.append(("Right", lambda: close_tabs_right(tab_id=tab_id, force=do_force)))
 
     if full:
-        cmds.append(("All", lambda: close_all_tabs(force=True)))
+        cmds.append(("All", lambda: close_all_tabs(force=do_force)))
 
     if not cmds:
         return
