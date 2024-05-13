@@ -177,6 +177,7 @@ class Args:
         self.image_prompt = "Describe this image"
         self.show_duration = False
         self.separator = ""
+        self.file_always = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -366,6 +367,7 @@ class Args:
             "markdown_quotes",
             "markdown_urls",
             "markdown_paths",
+            "file_always",
         ]
 
         for n_item in normals:

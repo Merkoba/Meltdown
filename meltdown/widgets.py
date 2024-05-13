@@ -1028,10 +1028,16 @@ class Widgets:
             self.set_file(file)
 
     def show_file(self) -> None:
+        if args.file_always:
+            return
+
         self.file_frame.grid()
         widgets.file_enabled = True
 
     def hide_file(self) -> None:
+        if args.file_always:
+            return
+
         self.file_frame.grid_remove()
         widgets.file_enabled = False
 
