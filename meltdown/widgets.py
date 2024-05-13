@@ -917,6 +917,7 @@ class Widgets:
 
             if value:
                 textbox.set_text(value)
+                config.reset_one("system")
 
             textbox.focus_end()
 
