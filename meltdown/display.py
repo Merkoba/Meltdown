@@ -195,6 +195,9 @@ class Display:
         tabconvo.tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
+        if not args.show_header:
+            return
+
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
