@@ -5,6 +5,7 @@ from typing import Optional
 from .args import args
 from .display import display
 from .model import model
+from .utils import utils
 
 
 def summarize(tab_id: Optional[str] = None) -> None:
@@ -19,8 +20,12 @@ def summarize(tab_id: Optional[str] = None) -> None:
         return
 
     prompt = {}
+
+    sumprompt = args.summarize_prompt
+    sumprompt = utils.replace_keywords(sumprompt)
+
     prompt["user"] = "Please summarize this."
-    prompt["text"] = f"{args.summarize_prompt}: "
+    prompt["text"] = f"{sumprompt}: "
     prompt["text"] += text
 
     tab_id = display.make_tab()
