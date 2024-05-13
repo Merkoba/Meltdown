@@ -1633,3 +1633,23 @@ Default: "both"
 Choices: "user", "ai", "both", "none"
 
 Type: str
+
+---
+
+### on-shift-middle-click
+
+Commands to run when shift middle clicking the output
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### on-ctrl-middle-click
+
+Commands to run when ctrl middle clicking the output
+
+Default: [Empty string]
+
+Type: str

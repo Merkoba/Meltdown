@@ -203,31 +203,39 @@ class Book(tk.Frame):
             "<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame
         )
 
-    def mousewheel_up(self) -> None:
-        from .keyboard import keyboard
-
+    def mousewheel_up(self, ctrl: bool = False, shift: bool = False) -> None:
         if not args.tabs_wheel:
             return
 
-        if keyboard.ctrl or keyboard.shift:
+        if ctrl or shift:
             self.move_left()
         else:
             self.select_left()
 
-    def mousewheel_down(self) -> None:
-        from .keyboard import keyboard
-
+    def mousewheel_down(self, ctrl: bool = False, shift: bool = False) -> None:
         if not args.tabs_wheel:
             return
 
-        if keyboard.ctrl or keyboard.shift:
+        if ctrl or shift:
             self.move_right()
         else:
             self.select_right()
 
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
         self.bind_recursive("<Button-4>", lambda e: self.mousewheel_up(), widget)
+        self.bind_recursive(
+            "<Control-Button-4>", lambda e: self.mousewheel_up(True, False), widget
+        )
+        self.bind_recursive(
+            "<Shift-Button-4>", lambda e: self.mousewheel_up(False, True), widget
+        )
         self.bind_recursive("<Button-5>", lambda e: self.mousewheel_down(), widget)
+        self.bind_recursive(
+            "<Control-Button-5>", lambda e: self.mousewheel_down(True, False), widget
+        )
+        self.bind_recursive(
+            "<Shift-Button-5>", lambda e: self.mousewheel_down(False, True), widget
+        )
 
     def bind_tab_right_click(self, page: Page) -> None:
         self.bind_recursive(

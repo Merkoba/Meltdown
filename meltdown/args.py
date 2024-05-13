@@ -182,6 +182,8 @@ class Args:
         self.explain_prompt = "What is"
         self.new_prompt = "Tell me about"
         self.custom_prompts: List[str] = []
+        self.on_shift_middle_click = ""
+        self.on_ctrl_middle_click = ""
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -376,6 +378,8 @@ class Args:
             "file_always",
             "explain_prompt",
             "new_prompt",
+            "on_shift_middle_click",
+            "on_ctrl_middle_click",
         ]
 
         for n_item in normals:

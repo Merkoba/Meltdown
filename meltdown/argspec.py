@@ -1087,5 +1087,17 @@ class ArgSpec:
             info="Markdown mode for paths",
         )
 
+        self.add_argument(
+            "on_shift_middle_click",
+            type=str,
+            info="Commands to run when shift middle clicking the output",
+        )
+
+        self.add_argument(
+            "on_ctrl_middle_click",
+            type=str,
+            info="Commands to run when ctrl middle clicking the output",
+        )
+
 
 argspec = ArgSpec()
