@@ -203,7 +203,7 @@ class Menu:
                     text=item.text,
                     background=colors["background"],
                     foreground=colors["foreground"],
-                    wraplength=600,
+                    wraplength=500,
                     justify=tk.LEFT,
                     anchor="w",
                     font=app.theme.font(font),
