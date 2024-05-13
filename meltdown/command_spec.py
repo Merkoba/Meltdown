@@ -437,6 +437,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "writemax",
+            "Write an input prompt and maximize",
+            lambda a=None: inputcontrol.input_command(a, maxed=True),
+            type=str,
+        )
+
+        self.add_cmd(
             "setinput",
             "Set the input to this text",
             lambda a=None: inputcontrol.set(text=a),

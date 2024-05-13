@@ -343,11 +343,11 @@ class InputControl:
             start_maximized=maxed,
         )
 
-    def input_command(self, arg: Optional[str] = None) -> None:
+    def input_command(self, arg: Optional[str] = None, maxed: bool = False) -> None:
         if arg:
             self.submit(text=arg)
         else:
-            self.show_textbox()
+            self.show_textbox(maxed=maxed)
 
     def paste(self) -> None:
         utils.paste(self.input)
