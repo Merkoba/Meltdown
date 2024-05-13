@@ -759,12 +759,15 @@ class Output(tk.Text):
         self.deselect_all()
         self.reset_drag()
 
-    def on_middle_click(self) -> None:
+    def on_middle_click(self) -> str:
         from .keyboard import keyboard
         from . import close
 
         if keyboard.ctrl:
             close.close_tab(tab_id=self.tab_id, full=False)
+            return "break"
+
+        return ""
 
     def tab_left(self) -> str:
         self.display.tab_left()
