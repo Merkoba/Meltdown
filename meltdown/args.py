@@ -405,6 +405,8 @@ class Args:
             self.compact_file = True
             self.compact_input = True
             self.show_tabs = False
+            self.show_header = False
+            self.show_intro = False
 
         self.parser = ap.parser
 
