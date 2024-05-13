@@ -318,12 +318,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_confirm_search",
-            action="store_false",
-            info="No need to confirm when searching",
-        )
-
-        self.add_argument(
             "no_confirm_close",
             action="store_false",
             info="No need to confirm closing tabs",

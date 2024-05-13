@@ -125,22 +125,14 @@ class Output(tk.Text):
         if not Output.current_output:
             return
 
-        from .dialogs import Dialog
-
         words = Output.get_words()
         Output.current_output.deselect_all()
 
         if not words:
             return
 
-        def action() -> None:
-            quoted = utils.smart_quotes(words)
-            app.search_text(quoted)
-
-        if args.confirm_search:
-            Dialog.show_confirm("Search for this term ?", lambda: action())
-        else:
-            action()
+        quoted = utils.smart_quotes(words)
+        app.search_text(quoted)
 
     @staticmethod
     def new_tab() -> None:

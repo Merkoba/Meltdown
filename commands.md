@@ -132,6 +132,12 @@ Close old tabs
 
 ---
 
+### closeempty
+
+Close empty tabs
+
+---
+
 ### closeleft
 
 Close tabs to the left
@@ -164,7 +170,7 @@ Show the about window
 
 ### help
 
-Show help information
+Ask for help
 
 ---
 
@@ -438,6 +444,12 @@ Write an input prompt
 
 ---
 
+### writemax
+
+Write an input prompt and maximize
+
+---
+
 ### setinput
 
 Set the input to this text
@@ -663,3 +675,9 @@ Delete the other items. You can use a specific number, or words like 'first' and
 ### openfile
 
 Open the last file used
+
+---
+
+### date
+
+Show the current date and time

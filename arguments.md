@@ -380,14 +380,6 @@ Action: store_false
 
 ---
 
-### no-confirm-search
-
-No need to confirm when searching
-
-Action: store_false
-
----
-
 ### no-confirm-close
 
 No need to confirm closing tabs
@@ -1249,6 +1241,16 @@ Type: int
 Run this command at startup
 
 Default: [Empty string]
+
+Type: str
+
+---
+
+### help-prompt
+
+What text to use for the help prompt
+
+Default: "I need help!"
 
 Type: str
 

@@ -136,7 +136,6 @@ class Args:
         self.gestures = True
         self.gesture_threshold = 33
         self.increment_logs = True
-        self.confirm_search = True
         self.confirm_close = True
         self.confirm_clear = True
         self.confirm_delete = True
@@ -244,7 +243,6 @@ class Args:
             ("no_time", "time"),
             ("no_gestures", "gestures"),
             ("no_increment_logs", "increment_logs"),
-            ("no_confirm_search", "confirm_search"),
             ("no_confirm_close", "confirm_close"),
             ("no_confirm_clear", "confirm_clear"),
             ("no_confirm_delete", "confirm_delete"),
