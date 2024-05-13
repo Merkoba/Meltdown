@@ -285,6 +285,7 @@ class ItemMenu:
 
 class WordMenu:
     def __init__(self) -> None:
+        from .args import args
         from .output import Output
 
         self.menu = Menu()
@@ -293,6 +294,31 @@ class WordMenu:
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
+
+        if args.custom_prompts:
+            self.menu.separator()
+            self.menu.add(text="Custom", command=lambda e: Output.custom_menu(e))
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
+class CustomMenu:
+    def __init__(self) -> None:
+        from .args import args
+        from .output import Output
+
+        self.menu = Menu()
+
+        for item in args.custom_prompts:
+            split = item.split("=")
+            word = split[0].strip()
+            prompt = "=".join(split[1:]).strip()
+
+            self.menu.add(text=word, command=lambda e: Output.custom_prompt(prompt))
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -344,3 +370,4 @@ item_menu = ItemMenu()
 word_menu = WordMenu()
 url_menu = UrlMenu()
 path_menu = PathMenu()
+custom_menu = CustomMenu()

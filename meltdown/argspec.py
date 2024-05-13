@@ -759,14 +759,21 @@ class ArgSpec:
             "alias",
             type=str,
             action="append",
-            info="Define an alias to run commands",
+            info='Define an alias to run commands. Format is "[word] = [commands]"',
         )
 
         self.add_argument(
             "task",
             type=str,
             action="append",
-            info="Define a task to run periodically",
+            info='Define a task to run periodically. Format is "[seconds] [commands] [/now (optional)]',
+        )
+
+        self.add_argument(
+            "custom_prompt",
+            type=str,
+            action="append",
+            info='Custom prompts to use in the word menu. Format is "[word] = what is ((words))?"',
         )
 
         self.add_argument(

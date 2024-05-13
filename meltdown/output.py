@@ -20,6 +20,12 @@ class Output(tk.Text):
     words = ""
 
     @staticmethod
+    def custom_menu(event: Any) -> None:
+        from .menumanager import custom_menu
+
+        custom_menu.show(event)
+
+    @staticmethod
     def delete_items(mode: str = "normal") -> None:
         from . import delete
 
@@ -93,27 +99,41 @@ class Output(tk.Text):
         utils.copy(text, command=True)
 
     @staticmethod
+    def custom_prompt(text: str) -> None:
+        from .model import model
+
+        if not Output.current_output:
+            return
+
+        words = Output.get_words()
+        Output.current_output.deselect_all()
+
+        if not words:
+            return
+
+        quoted = utils.smart_quotes(words)
+        text = text.replace("((words))", quoted)
+        tab_id = Output.current_output.tab_id
+        model.stream({"text": text}, tab_id)
+
+    @staticmethod
     def explain_words() -> None:
         from .model import model
 
         if not Output.current_output:
             return
 
-        text = Output.get_words()
+        words = Output.get_words()
         Output.current_output.deselect_all()
 
-        if not text:
+        if not words:
             return
 
-        s = args.explain_prompt
-
-        if text.startswith('"') and text.endswith('"'):
-            query = f"{s} {text} ?"
-        else:
-            query = f'{s} "{text}" ?'
-
+        string = args.explain_prompt
+        quoted = utils.smart_quotes(words)
+        text = f"{string} {quoted} ?"
         tab_id = Output.current_output.tab_id
-        model.stream({"text": query}, tab_id)
+        model.stream({"text": text}, tab_id)
 
     @staticmethod
     def search_words() -> None:
@@ -122,14 +142,14 @@ class Output(tk.Text):
 
         from .dialogs import Dialog
 
-        text = Output.get_words()
+        words = Output.get_words()
         Output.current_output.deselect_all()
 
-        if not text:
+        if not words:
             return
 
         def action() -> None:
-            app.search_text(text)
+            app.search_text(words)
 
         if args.confirm_search:
             Dialog.show_confirm("Search for this term ?", lambda: action())
@@ -144,21 +164,17 @@ class Output(tk.Text):
         if not Output.current_output:
             return
 
-        text = Output.get_words()
+        words = Output.get_words()
         Output.current_output.deselect_all()
 
-        if not text:
+        if not words:
             return
 
-        s = args.new_prompt
-
-        if text.startswith('"') and text.endswith('"'):
-            query = f"{s} {text} ?"
-        else:
-            query = f'{s} "{text}" ?'
-
+        string = args.new_prompt
+        quoted = utils.smart_quotes(words)
+        text = f"{string} {quoted} ?"
         tab_id = display.make_tab()
-        model.stream({"text": query}, tab_id)
+        model.stream({"text": text}, tab_id)
 
     @staticmethod
     def get_prompt(who: str, show_avatar: bool = True, colon_space: bool = True) -> str:

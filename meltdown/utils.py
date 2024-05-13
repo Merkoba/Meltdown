@@ -286,5 +286,11 @@ class Utils:
         word = self.singular_or_plural(hours, "hour", "hours")
         return f"{hours} {word} ago"
 
+    def smart_quotes(self, text: str) -> str:
+        if text.startswith('"') and text.endswith('"'):
+            return text
+
+        return f'"{text}"'
+
 
 utils = Utils()
