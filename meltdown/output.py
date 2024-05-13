@@ -105,7 +105,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        s = "What is"
+        s = args.explain_prompt
 
         if text.startswith('"') and text.endswith('"'):
             query = f"{s} {text} ?"
@@ -150,7 +150,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        s = "Tell me about"
+        s = args.new_prompt
 
         if text.startswith('"') and text.endswith('"'):
             query = f"{s} {text} ?"
@@ -610,6 +610,7 @@ class Output(tk.Text):
 
     def show_word_menu(self, event: Any, widget: Optional[tk.Text] = None) -> bool:
         from .menumanager import word_menu
+        from .keyboard import keyboard
 
         if not args.word_menu:
             return False
@@ -637,6 +638,10 @@ class Output(tk.Text):
 
         if not Output.words:
             return False
+
+        if keyboard.ctrl:
+            Output.explain_words()
+            return True
 
         word_menu.show(event)
         return True

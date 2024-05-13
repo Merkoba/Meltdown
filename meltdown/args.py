@@ -178,6 +178,8 @@ class Args:
         self.show_duration = False
         self.separator = ""
         self.file_always = False
+        self.explain_prompt = "What is"
+        self.new_prompt = "Tell me about"
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -368,6 +370,8 @@ class Args:
             "markdown_urls",
             "markdown_paths",
             "file_always",
+            "explain_prompt",
+            "new_prompt",
         ]
 
         for n_item in normals:

@@ -848,6 +848,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "explain_prompt",
+            type=str,
+            info="What text to use for the explain prompt",
+        )
+
+        self.add_argument(
+            "new_prompt",
+            type=str,
+            info="What text to use for the new prompt",
+        )
+
+        self.add_argument(
             "input_memory_min",
             type=int,
             info="Minimum number of characters for input words to be remembered",
