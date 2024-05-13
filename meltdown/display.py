@@ -277,10 +277,9 @@ class Display:
                 return
 
             underline = tab.streaming
-            name = f"{num}. {page.name}"
 
             self.tab_list_menu.add(
-                text=name, command=lambda e: command(), underline=underline
+                text=page.name, command=lambda e: command(), underline=underline
             )
 
         for i, page in enumerate(self.book.pages):
