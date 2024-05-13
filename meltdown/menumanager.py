@@ -1,8 +1,22 @@
 # Standard
+import tkinter as tk
 from typing import Any
 
 # Modules
+from .args import args
 from .menus import Menu
+
+
+def get_widget() -> tk.Widget:
+    from .widgets import widgets
+
+    if args.more_button:
+        widget = getattr(widgets, "more_menu_button")
+    else:
+        widget = getattr(widgets, "stop_button")
+
+    assert isinstance(widget, tk.Widget)
+    return widget
 
 
 class MainMenu:
@@ -115,12 +129,10 @@ class MoreMenu:
         self.menu.add("Font", lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "more_menu_button")
+            widget = get_widget()
             self.menu.show(widget=widget)
 
 
@@ -219,12 +231,10 @@ class FontMenu:
         self.menu.add("Reset Font", lambda e: display.reset_font())
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "more_menu_button")
+            widget = get_widget()
             self.menu.show(widget=widget)
 
 
@@ -239,12 +249,10 @@ class FontFamilyMenu:
         self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "more_menu_button")
+            widget = get_widget()
             self.menu.show(widget=widget)
 
 
