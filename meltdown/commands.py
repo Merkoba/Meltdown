@@ -213,7 +213,8 @@ class Commands:
     def help(self) -> None:
         from .model import model
 
-        prompt = {"text": "I need help!"}
+        text = utils.replace_keywords(args.help_prompt)
+        prompt = {"text": text}
         model.stream(prompt)
 
     def show_help(

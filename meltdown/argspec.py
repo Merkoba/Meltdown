@@ -861,6 +861,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "help_prompt",
+            type=str,
+            info="What text to use for the help prompt",
+        )
+
+        self.add_argument(
             "explain_prompt",
             type=str,
             info="What text to use for the explain prompt",

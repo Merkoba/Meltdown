@@ -179,6 +179,7 @@ class Args:
         self.show_duration = False
         self.separator = ""
         self.file_always = False
+        self.help_prompt = "I need help!"
         self.explain_prompt = "What is ((words))?"
         self.new_prompt = "Tell me about ((words))"
         self.custom_prompts: List[str] = []
@@ -377,6 +378,7 @@ class Args:
             "markdown_urls",
             "markdown_paths",
             "file_always",
+            "help_prompt",
             "explain_prompt",
             "new_prompt",
             "on_shift_middle_click",
