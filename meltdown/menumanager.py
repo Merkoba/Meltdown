@@ -256,33 +256,45 @@ class FontFamilyMenu:
 
 class ItemMenu:
     def __init__(self) -> None:
+        self.menu = Menu()
+
+    def make(self) -> None:
+        from .display import display
         from .output import Output
 
-        self.menu = Menu()
+        self.menu.clear()
+        num_items = display.get_num_items()
 
         self.menu.add(text="Copy", command=lambda e: Output.copy_item())
         self.menu.add(text="Select", command=lambda e: Output.select_item())
         self.menu.separator()
         self.menu.add(text="Delete", command=lambda e: Output.delete_items())
 
-        self.menu.add(
-            text="Delete Above", command=lambda e: Output.delete_items("above")
-        )
+        if num_items > 1:
+            if Output.clicked_number > 1:
+                self.menu.add(
+                    text="Delete Above", command=lambda e: Output.delete_items("above")
+                )
 
-        self.menu.add(
-            text="Delete Below", command=lambda e: Output.delete_items("below")
-        )
+            if Output.clicked_number < num_items:
+                self.menu.add(
+                    text="Delete Below", command=lambda e: Output.delete_items("below")
+                )
 
-        self.menu.add(
-            text="Delete Others", command=lambda e: Output.delete_items("others")
-        )
+            self.menu.add(
+                text="Delete Others", command=lambda e: Output.delete_items("others")
+            )
+
         self.menu.separator()
         self.menu.add(text="Repeat Prompt", command=lambda e: Output.repeat_prompt())
+
         self.menu.add(
             text="Repeat (No History)", command=lambda e: Output.repeat_prompt(True)
         )
 
     def show(self, event: Any = None) -> None:
+        self.make()
+
         if event:
             self.menu.show(event)
         else:

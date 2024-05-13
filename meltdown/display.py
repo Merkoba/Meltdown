@@ -902,5 +902,16 @@ class Display:
 
         return TabConvo(tab, conversation)
 
+    def get_num_items(self, tab_id: Optional[str] = None) -> int:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return 0
+
+        return len(tabconvo.convo.items)
+
 
 display = Display()
