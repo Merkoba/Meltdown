@@ -592,15 +592,6 @@ class App:
         memory_in_megabytes = int(memory_in_bytes / (1024 * 1024))
         Dialog.show_message(f"Memory: {memory_in_megabytes} MB")
 
-    def started(self) -> None:
-        from .dialogs import Dialog
-
-        date = utils.to_date(self.time_started)
-        date += "\n"
-        date += utils.time_ago(self.time_started, utils.now())
-
-        Dialog.show_message(date)
-
     def toggle_sticky(self) -> None:
         if self.sticky:
             self.disable_sticky()

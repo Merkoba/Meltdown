@@ -65,7 +65,7 @@ class Keyboard:
         if Dialog.current_dialog:
             return True
 
-        if (utils.now() - self.block_date) < 0.2:
+        if (utils.now() - self.block_date) < 0.15:
             return True
 
         return False

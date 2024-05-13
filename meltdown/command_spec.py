@@ -521,7 +521,7 @@ class CommandSpec:
         self.add_cmd(
             "started",
             "How long ago the program started",
-            lambda a=None: app.started(),
+            lambda a=None: commands.show_started(),
         )
 
         self.add_cmd(
@@ -682,6 +682,12 @@ class CommandSpec:
             "openfile",
             "Open the last file used",
             lambda a=None: files.open_last_file(),
+        )
+
+        self.add_cmd(
+            "date",
+            "Show the current date and time",
+            lambda a=None: commands.show_date(),
         )
 
 
