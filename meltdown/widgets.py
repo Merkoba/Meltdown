@@ -1081,11 +1081,7 @@ class Widgets:
         file = self.file.get()
 
         if not file:
-            file = files.open_last_file()
-
-            if file:
-                self.set_file(file)
-
+            files.open_last_file()
             return
 
         app.open_generic(file)
