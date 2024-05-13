@@ -829,7 +829,7 @@ class Display:
     def on_num_tabs_change(self, num: int) -> None:
         self.num_tabs_open = num
 
-    def is_clearable(self) -> bool:
+    def is_modified(self) -> bool:
         tab = self.get_current_tab()
 
         if not tab:

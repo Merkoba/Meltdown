@@ -138,60 +138,50 @@ class MoreMenu:
 
 class TabMenu:
     def __init__(self) -> None:
+        self.menu = Menu()
+
+    def make_menu(self) -> None:
         from .display import display
         from .logs import logs
         from . import summarize
 
-        self.menu_single = Menu()
+        self.menu.clear()
+        num_tabs = display.num_tabs()
+        is_modified = display.is_modified()
 
-        self.menu_single.add("Save Log", lambda e: logs.menu(full=False))
-        self.menu_single.add("Summarize", lambda e: summarize.summarize())
-        self.menu_single.add("Rename", lambda e: display.rename_tab())
-        self.menu_single.add("Clear", lambda e: display.clear())
+        if num_tabs > 1:
+            self.menu.add("Tab List", lambda e: display.show_tab_list(e))
 
-        self.menu_multi = Menu()
+        if is_modified:
+            self.menu.add(
+                "Save Log", lambda e: logs.menu(full=False, tab_id=display.tab_menu_id)
+            )
 
-        self.menu_multi.add("Tab List", lambda e: display.show_tab_list(e))
+            self.menu.add(
+                "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)
+            )
 
-        self.menu_multi.separator()
-
-        self.menu_multi.add(
-            "Save Log", lambda e: logs.menu(full=False, tab_id=display.tab_menu_id)
-        )
-
-        self.menu_multi.add(
-            "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)
-        )
-
-        self.menu_multi.separator()
-
-        self.menu_multi.add(
+        self.menu.add(
             "Rename", lambda e: display.rename_tab(tab_id=display.tab_menu_id)
         )
-        self.menu_multi.add(
-            "Move", lambda e: display.move_tab(tab_id=display.tab_menu_id)
-        )
-        self.menu_multi.add(
-            "Clear", lambda e: display.clear(tab_id=display.tab_menu_id)
-        )
 
-        self.menu_multi.separator()
+        self.menu.add("Move", lambda e: display.move_tab(tab_id=display.tab_menu_id))
 
-        self.menu_multi.add("Close", lambda e: display.tab_menu_close())
+        if is_modified:
+            self.menu.add("Clear", lambda e: display.clear(tab_id=display.tab_menu_id))
+
+        if num_tabs > 1:
+            self.menu.add("Close", lambda e: display.tab_menu_close())
 
     def show(self, event: Any = None, mode: str = "normal") -> None:
         from .display import display
-
-        if display.num_tabs() > 1:
-            menu = self.menu_multi
-        else:
-            menu = self.menu_single
 
         if event:
             if mode == "normal":
                 display.tab_menu_id = display.current_tab
 
-            menu.show(event)
+            self.make_menu()
+            self.menu.show(event)
         else:
             page = display.book.current_page
 
@@ -204,7 +194,8 @@ class TabMenu:
                 if mode == "normal":
                     display.tab_menu_id = page.id
 
-                menu.show(widget=widget)
+                self.make_menu()
+                self.menu.show(widget=widget)
 
 
 class FontMenu:
