@@ -385,6 +385,11 @@ class Display:
             session.clear(tabconvo.tab.conversation_id)
             self.reset_tab(tabconvo.tab)
 
+            if args.auto_name:
+                name = utils.random_word()
+                name = name.capitalize()
+                self.do_rename_tab(tabconvo.tab.tab_id, name)
+
         if force or (not args.confirm_clear):
             action()
             return
