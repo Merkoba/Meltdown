@@ -150,7 +150,8 @@ class Output(tk.Text):
             return
 
         def action() -> None:
-            app.search_text(words)
+            quoted = utils.smart_quotes(words)
+            app.search_text(quoted)
 
         if args.confirm_search:
             Dialog.show_confirm("Search for this term ?", lambda: action())
