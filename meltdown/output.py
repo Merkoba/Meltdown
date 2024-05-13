@@ -315,7 +315,6 @@ class Output(tk.Text):
         self.gestures = Gestures(self, self, self.on_right_click)
 
         self.bind("<Button-1>", lambda e: self.on_click())
-        self.bind("<Button-2>", lambda e: self.on_middle_click())
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
         self.bind("<Shift-Button-4>", lambda e: self.tab_left())
@@ -758,16 +757,6 @@ class Output(tk.Text):
         app.hide_all(hide_dialog=False)
         self.deselect_all()
         self.reset_drag()
-
-    def on_middle_click(self) -> str:
-        from .keyboard import keyboard
-        from . import close
-
-        if keyboard.ctrl:
-            close.close_tab(tab_id=self.tab_id, full=False)
-            return "break"
-
-        return ""
 
     def tab_left(self) -> str:
         self.display.tab_left()
