@@ -508,11 +508,6 @@ class Display:
     def tab_right(self) -> None:
         self.book.select_right()
 
-    def close_current_tab(self) -> None:
-        from . import close
-
-        close.close_tab(tab_id=self.current_tab)
-
     def apply_font_size(self, size: int) -> None:
         config.set("font_size", size)
 

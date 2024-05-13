@@ -1,5 +1,5 @@
 # Standard
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Optional
 
 # Modules
 from .args import args
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 
 
 def close_tab(
-    tab_id: str = "",
+    tab_id: Optional[str] = None,
     force: bool = False,
     make_empty: bool = True,
     force_empty: bool = False,

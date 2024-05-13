@@ -313,8 +313,9 @@ class Output(tk.Text):
             return "break"
 
         self.gestures = Gestures(self, self, self.on_right_click)
-        self.bind("<Button-1>", lambda e: self.on_click(e))
-        self.scrollbar.bind("<Button-1>", lambda e: self.on_click(e))
+
+        self.bind("<Button-1>", lambda e: self.on_click())
+        self.bind("<Button-2>", lambda e: self.on_middle_click())
         self.bind("<Button-4>", lambda e: mousewheel_up())
         self.bind("<Button-5>", lambda e: mousewheel_down())
         self.bind("<Shift-Button-4>", lambda e: self.tab_left())
@@ -332,6 +333,8 @@ class Output(tk.Text):
         self.bind("<KeyPress-Home>", lambda e: home())
         self.bind("<KeyPress-End>", lambda e: end())
         self.bind("<Configure>", lambda e: self.update_size())
+
+        self.scrollbar.bind("<Button-1>", lambda e: self.on_click())
 
         def on_scroll(*args: Any) -> None:
             self.display.check_scroll_buttons(tab_id=self.tab_id)
@@ -751,10 +754,17 @@ class Output(tk.Text):
         if not self.show_word_menu(event, widget):
             tab_menu.show(event)
 
-    def on_click(self, event: Any) -> None:
+    def on_click(self) -> None:
         app.hide_all(hide_dialog=False)
         self.deselect_all()
         self.reset_drag()
+
+    def on_middle_click(self) -> None:
+        from .keyboard import keyboard
+        from . import close
+
+        if keyboard.ctrl:
+            close.close_tab(tab_id=self.tab_id, full=False)
 
     def tab_left(self) -> str:
         self.display.tab_left()
