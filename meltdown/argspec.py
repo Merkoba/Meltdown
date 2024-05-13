@@ -48,6 +48,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_tabs_wheel",
+            action="store_false",
+            info="Don't enable mousewheel events on the tabs bar",
+        )
+
+        self.add_argument(
             "no_tooltips",
             action="store_false",
             info="Don't show tooltips",

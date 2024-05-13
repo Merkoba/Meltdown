@@ -117,6 +117,7 @@ class Args:
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
         self.clean_file = False
+        self.tabs_wheel = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -199,6 +200,7 @@ class Args:
         other_name = [
             ("alias", "aliases"),
             ("task", "tasks"),
+            ("custom_prompt", "custom_prompts"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
@@ -257,7 +259,7 @@ class Args:
             ("no_url_menu", "url_menu"),
             ("no_path_menu", "path_menu"),
             ("no_files_in_logs", "files_in_logs"),
-            ("custom_prompt", "custom_prompts"),
+            ("no_tabs_wheel", "tabs_wheel"),
         ]
 
         for r_item in other_name:

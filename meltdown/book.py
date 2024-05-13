@@ -203,13 +203,31 @@ class Book(tk.Frame):
             "<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame
         )
 
+    def mousewheel_up(self) -> None:
+        from .keyboard import keyboard
+
+        if not args.tabs_wheel:
+            return
+
+        if keyboard.ctrl or keyboard.shift:
+            self.move_left()
+        else:
+            self.select_left()
+
+    def mousewheel_down(self) -> None:
+        from .keyboard import keyboard
+
+        if not args.tabs_wheel:
+            return
+
+        if keyboard.ctrl or keyboard.shift:
+            self.move_right()
+        else:
+            self.select_right()
+
     def bind_tab_mousewheel(self, widget: tk.Widget) -> None:
-        self.bind_recursive("<Button-4>", lambda e: self.select_left(), widget)
-        self.bind_recursive("<Button-5>", lambda e: self.select_right(), widget)
-        self.bind_recursive("<Shift-Button-4>", lambda e: self.move_left(), widget)
-        self.bind_recursive("<Shift-Button-5>", lambda e: self.move_right(), widget)
-        self.bind_recursive("<Control-Button-4>", lambda e: self.move_left(), widget)
-        self.bind_recursive("<Control-Button-5>", lambda e: self.move_right(), widget)
+        self.bind_recursive("<Button-4>", lambda e: self.mousewheel_up(), widget)
+        self.bind_recursive("<Button-5>", lambda e: self.mousewheel_down(), widget)
 
     def bind_tab_right_click(self, page: Page) -> None:
         self.bind_recursive(
