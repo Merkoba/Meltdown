@@ -109,6 +109,9 @@ def close_old_tabs(force: bool = False) -> None:
 
     tabs = get_old_tabs()
 
+    if not tabs:
+        return
+
     def action() -> None:
         for tab in tabs:
             close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
@@ -182,3 +185,42 @@ def close_tabs_right(force: bool = False) -> None:
 
     n = len(tabs)
     Dialog.show_confirm(f"Close tabs to the right ({n}) ?", lambda: action())
+
+
+def get_empty_tabs() -> List["Tab"]:
+    ids = display.tab_ids()
+    empty_tabs = []
+
+    for tab_id in ids:
+        tabconvo = display.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            continue
+
+        if not tabconvo.convo.items:
+            empty_tabs.append(tabconvo.tab)
+
+    return empty_tabs
+
+
+def close_empty_tabs(force: bool = False) -> None:
+    ids = display.tab_ids()
+
+    if len(ids) <= 1:
+        return
+
+    tabs = get_empty_tabs()
+
+    if not tabs:
+        return
+
+    def action() -> None:
+        for tab in tabs:
+            close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
+
+    if force or (not args.confirm_close):
+        action()
+        return
+
+    n = len(tabs)
+    Dialog.show_confirm(f"Close empty tabs ({n}) ?", lambda: action())

@@ -167,6 +167,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "closeempty",
+            "Close empty tabs",
+            lambda a=None: close.close_empty_tabs(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
             "closeleft",
             "Close tabs to the left",
             lambda a=None: close.close_tabs_left(force=a),
