@@ -1236,6 +1236,26 @@ Type: str
 
 ---
 
+### explain-prompt
+
+What text to use for the explain prompt
+
+Default: "What is"
+
+Type: str
+
+---
+
+### new-prompt
+
+What text to use for the new prompt
+
+Default: "Tell me about"
+
+Type: str
+
+---
+
 ### input-memory-min
 
 Minimum number of characters for input words to be remembered
