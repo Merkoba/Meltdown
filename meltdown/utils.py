@@ -168,7 +168,7 @@ class Utils:
 
         return random.choice(self.nouns)
 
-    def replace_keywords(self, content: str) -> str:
+    def replace_keywords(self, content: str, words: Optional[str] = None) -> str:
         from .args import args
         from .config import config
         from .display import display
@@ -198,6 +198,9 @@ class Utils:
             if what == "name":
                 return display.get_tab_name()
 
+            if words and (what == "words"):
+                return words
+
             return ""
 
         if config.name_user:
@@ -216,6 +219,10 @@ class Utils:
 
         pattern = re.compile(f"{c1}name{c2}")
         content = pattern.sub(lambda m: replace("name"), content)
+
+        if words:
+            pattern = re.compile(f"{c1}words{c2}")
+            content = pattern.sub(lambda m: replace("words"), content)
 
         pattern = re.compile(f"{c1}noun{c2}")
         return pattern.sub(lambda m: replace("noun"), content)

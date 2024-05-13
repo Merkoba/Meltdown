@@ -179,8 +179,8 @@ class Args:
         self.show_duration = False
         self.separator = ""
         self.file_always = False
-        self.explain_prompt = "What is"
-        self.new_prompt = "Tell me about"
+        self.explain_prompt = "What is ((words))?"
+        self.new_prompt = "Tell me about ((words))"
         self.custom_prompts: List[str] = []
         self.on_shift_middle_click = ""
         self.on_ctrl_middle_click = ""

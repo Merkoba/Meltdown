@@ -112,29 +112,13 @@ class Output(tk.Text):
             return
 
         quoted = utils.smart_quotes(words)
-        text = text.replace("((words))", quoted)
-        text = utils.replace_keywords(text)
+        text = utils.replace_keywords(text, words=quoted)
         tab_id = Output.current_output.tab_id
         model.stream({"text": text}, tab_id)
 
     @staticmethod
     def explain_words() -> None:
-        from .model import model
-
-        if not Output.current_output:
-            return
-
-        words = Output.get_words()
-        Output.current_output.deselect_all()
-
-        if not words:
-            return
-
-        string = args.explain_prompt
-        quoted = utils.smart_quotes(words)
-        text = f"{string} {quoted} ?"
-        tab_id = Output.current_output.tab_id
-        model.stream({"text": text}, tab_id)
+        Output.custom_prompt(args.explain_prompt)
 
     @staticmethod
     def search_words() -> None:
@@ -172,9 +156,8 @@ class Output(tk.Text):
         if not words:
             return
 
-        string = args.new_prompt
         quoted = utils.smart_quotes(words)
-        text = f"{string} {quoted} ?"
+        text = utils.replace_keywords(args.new_prompt, words=quoted)
         tab_id = display.make_tab()
         model.stream({"text": text}, tab_id)
 
