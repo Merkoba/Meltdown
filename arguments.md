@@ -1088,7 +1088,7 @@ Type: str
 
 ### alias
 
-Define an alias to run commands
+Define an alias to run commands. Format is "[word] = [commands]"
 
 Action: append
 
@@ -1098,7 +1098,17 @@ Type: str
 
 ### task
 
-Define a task to run periodically
+Define a task to run periodically. Format is "[seconds] [commands] [/now (optional)]
+
+Action: append
+
+Type: str
+
+---
+
+### custom-prompt
+
+Custom prompts to use in the word menu. Format is "[word] = what is ((words))?"
 
 Action: append
 
