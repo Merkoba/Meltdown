@@ -106,29 +106,36 @@ class GPTMenu:
 
 class MoreMenu:
     def __init__(self) -> None:
+        self.menu = Menu()
+
+    def make(self) -> None:
         from .display import display
         from . import findmanager
 
-        self.menu = Menu()
+        self.menu.clear()
+        num_tabs = display.num_tabs()
+        modified = display.is_modified()
+        ignored = display.is_ignored()
 
-        self.menu.add("Find", lambda e: findmanager.find())
-        self.menu.add("Find All", lambda e: findmanager.find_all())
+        if modified:
+            self.menu.add("Find", lambda e: findmanager.find())
 
-        self.menu.separator()
+        if num_tabs > 1:
+            self.menu.add("Find All", lambda e: findmanager.find_all())
 
-        self.menu.add("Copy All", lambda e: display.copy_output())
-        self.menu.add("Select All", lambda e: display.select_output())
+        if modified:
+            self.menu.add("Copy All", lambda e: display.copy_output())
+            self.menu.add("Select All", lambda e: display.select_output())
 
-        self.menu.separator()
-
-        self.menu.add("View Text", lambda e: display.view_text())
-        self.menu.add("View JSON", lambda e: display.view_json())
-
-        self.menu.separator()
+            if not ignored:
+                self.menu.add("View Text", lambda e: display.view_text())
+                self.menu.add("View JSON", lambda e: display.view_json())
 
         self.menu.add("Font", lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
+        self.make()
+
         if event:
             self.menu.show(event)
         else:
@@ -140,7 +147,7 @@ class TabMenu:
     def __init__(self) -> None:
         self.menu = Menu()
 
-    def make_menu(self) -> None:
+    def make(self) -> None:
         from .display import display
         from .logs import logs
         from . import summarize
@@ -180,7 +187,7 @@ class TabMenu:
             if mode == "normal":
                 display.tab_menu_id = display.current_tab
 
-            self.make_menu()
+            self.make()
             self.menu.show(event)
         else:
             page = display.book.current_page
@@ -194,7 +201,7 @@ class TabMenu:
                 if mode == "normal":
                     display.tab_menu_id = page.id
 
-                self.make_menu()
+                self.make()
                 self.menu.show(widget=widget)
 
 

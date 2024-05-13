@@ -837,6 +837,14 @@ class Display:
 
         return tab.modified
 
+    def is_ignored(self) -> bool:
+        tabconvo = self.get_tab_convo()
+
+        if not tabconvo:
+            return False
+
+        return tabconvo.convo.id == "ignore"
+
     def enable_auto_scroll(self, tab_id: str) -> None:
         tab = self.get_tab(tab_id)
 
