@@ -192,6 +192,7 @@ class Output(tk.Text):
         self.auto_scroll = True
         self.update_size_after = ""
         self.separator = Output.marker_separator + args.separator
+        self.checked_markers: List[int] = []
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -688,13 +689,23 @@ class Output(tk.Text):
     def get_markers(self) -> Tuple[List[Dict[str, Any]], int]:
         markers = []
         lines = self.get_text().split("\n")
+        number = 0
 
         for i, line in enumerate(lines):
             start_ln = i + 1
 
             if line.startswith(Output.marker_user):
+                number += 1
+
+                if number in self.checked_markers:
+                    continue
+
+                self.checked_markers.append(number)
                 markers.append({"who": "user", "line": start_ln})
             elif line.startswith(Output.marker_ai):
+                if number in self.checked_markers:
+                    continue
+
                 markers.append({"who": "ai", "line": start_ln})
 
         return (markers, len(lines))
