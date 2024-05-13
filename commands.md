@@ -636,18 +636,6 @@ Summarize the conversation
 
 ---
 
-### trim
-
-Remove the last item of a conversation
-
----
-
-### trimstart
-
-Remove the first item of a conversation
-
----
-
 ### delete
 
 Remove a specific item of a conversation. You can use a specific number, or words like 'first' and 'last'

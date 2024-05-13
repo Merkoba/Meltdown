@@ -8,9 +8,8 @@ from .dialogs import Dialog
 
 
 def delete_items(
+    number: str,
     tab_id: Optional[str] = None,
-    start: bool = False,
-    number: Optional[str] = None,
     mode: str = "normal",
     force: bool = False,
 ) -> None:
@@ -44,6 +43,11 @@ def delete_items(
 
         return True
 
+    index = utils.get_index(number, tabconvo.convo.items)
+
+    if not check_index(index):
+        return
+
     def action() -> None:
         if not tabconvo:
             return
@@ -51,24 +55,14 @@ def delete_items(
         if not tabconvo.tab.tab_id:
             return
 
-        if number is not None:
-            index = utils.get_index(number, tabconvo.convo.items)
-
-            if not check_index(index):
-                return
-
-            if mode == "normal":
-                tabconvo.convo.items.pop(index)
-            elif mode == "above":
-                tabconvo.convo.items = tabconvo.convo.items[index:]
-            elif mode == "below":
-                tabconvo.convo.items = tabconvo.convo.items[: index + 1]
-            elif mode == "others":
-                tabconvo.convo.items = [tabconvo.convo.items[index]]
-        elif start:
-            tabconvo.convo.items.pop(0)
-        else:
-            tabconvo.convo.items.pop()
+        if mode == "normal":
+            tabconvo.convo.items.pop(index)
+        elif mode == "above":
+            tabconvo.convo.items = tabconvo.convo.items[index:]
+        elif mode == "below":
+            tabconvo.convo.items = tabconvo.convo.items[: index + 1]
+        elif mode == "others":
+            tabconvo.convo.items = [tabconvo.convo.items[index]]
 
         session.save()
         display.reset_tab(tabconvo.tab)
@@ -83,4 +77,15 @@ def delete_items(
         action()
         return
 
-    Dialog.show_confirm("Delete item(s) ?", lambda: action())
+    if mode == "normal":
+        n = 1
+    elif mode == "above":
+        n = index
+    elif mode == "below":
+        n = len(tabconvo.convo.items) - index - 1
+    elif mode == "others":
+        n = len(tabconvo.convo.items) - 1
+    else:
+        return
+
+    Dialog.show_confirm(f"Delete items ({n}) ?", lambda: action())
