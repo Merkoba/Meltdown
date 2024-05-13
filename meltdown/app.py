@@ -33,7 +33,7 @@ class App:
         self.intro = [
             f"Welcome to {title}.",
             "Write a prompt and press Enter.",
-            "Use /help to learn more.",
+            "Type /about to learn more.",
         ]
 
         self.root: tk.Tk
@@ -143,13 +143,17 @@ class App:
         from .dialogs import Dialog
 
         title = self.manifest["title"]
+        description = self.manifest["description"]
         version = self.manifest["version"]
         author = self.manifest["author"]
+        repo = self.manifest["repo"]
 
         lines = [
             f"{title} v{version}",
+            description,
             f"Developed by {author}",
             "All Rights Reserved",
+            repo,
         ]
 
         cmds = []

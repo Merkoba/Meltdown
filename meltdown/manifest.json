@@ -1,6 +1,8 @@
 {
-    "version": "121.9.4",
+    "version": "122.0.0",
     "title": "Meltdown",
     "program": "meltdown",
-    "author": "Merkoba"
+    "author": "Merkoba",
+    "repo": "github.com/Merkoba/Meltdown",
+    "description": "Interface to AI"
 }

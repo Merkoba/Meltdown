@@ -192,9 +192,7 @@ class CommandSpec:
 
         self.add_cmd("about", "Show the about window", lambda a=None: app.show_about())
 
-        self.add_cmd(
-            "help", "Show help information", lambda a=None: commands.help_command()
-        )
+        self.add_cmd("help", "Show help information", lambda a=None: commands.help())
 
         self.add_cmd(
             "commands",

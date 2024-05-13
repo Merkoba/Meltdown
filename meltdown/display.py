@@ -185,12 +185,9 @@ class Display:
         if not tabconvo:
             return
 
-        if tabconvo.convo.items:
-            self.show_header(tab_id)
-            tabconvo.convo.print()
-        else:
-            self.show_intro(tab_id)
-
+        self.show_header(tab_id)
+        self.show_intro(tab_id)
+        tabconvo.convo.print()
         tabconvo.tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
@@ -402,6 +399,7 @@ class Display:
         tab.output.clear_text()
         tab.modified = False
         tab.num_user_prompts = 0
+        self.show_header(tab.tab_id)
         self.show_intro(tab.tab_id)
 
     def select_output(self) -> None:

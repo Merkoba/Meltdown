@@ -210,17 +210,11 @@ class Commands:
 
         return None
 
-    def help_command(self) -> None:
-        p = args.prefix
+    def help(self) -> None:
+        from .model import model
 
-        items = []
-        items.append("This is an interface to AI")
-        items.append("Check the repo for more information")
-        items.append("https://github.com/Merkoba/Meltdown")
-        items.append(f"Use {p}commands to see commands")
-        items.append(f"Use {p}arguments to see command line arguments")
-        items.append(f"Use {p}keyboard to see keyboard shortcuts")
-        Dialog.show_message("\n".join(items))
+        prompt = {"text": "I need help!"}
+        model.stream(prompt)
 
     def show_help(
         self, tab_id: Optional[str] = None, mode: Optional[str] = None
