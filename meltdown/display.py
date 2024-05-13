@@ -174,7 +174,6 @@ class Display:
 
     def show_intro(self, tab_id: str) -> None:
         if not args.show_intro:
-            self.show_header(tab_id)
             return
 
         text = "\n".join(app.intro)

@@ -432,15 +432,15 @@ Rename the tab
 
 ---
 
-### input
+### write
 
-Prompt the AI with this input
+Write an input prompt
 
 ---
 
-### write
+### setinput
 
-Write the input prompt
+Set the input to this text
 
 ---
 

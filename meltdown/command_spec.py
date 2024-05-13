@@ -430,15 +430,15 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "input",
-            "Prompt the AI with this input",
+            "write",
+            "Write an input prompt",
             lambda a=None: inputcontrol.input_command(a),
             type=str,
         )
 
         self.add_cmd(
-            "write",
-            "Write the input prompt",
+            "setinput",
+            "Set the input to this text",
             lambda a=None: inputcontrol.set(text=a),
             type=str,
             arg_req=True,
