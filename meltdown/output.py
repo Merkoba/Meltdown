@@ -113,6 +113,7 @@ class Output(tk.Text):
 
         quoted = utils.smart_quotes(words)
         text = text.replace("((words))", quoted)
+        text = utils.replace_keywords(text)
         tab_id = Output.current_output.tab_id
         model.stream({"text": text}, tab_id)
 
