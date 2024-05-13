@@ -97,6 +97,7 @@ class InputControl:
         inputs = files.get_list("inputs")
         text = inputs[self.history_index]
         self.set(text)
+        self.input.focus_end()
 
     def history_up(self) -> None:
         inputs = files.get_list("inputs")
