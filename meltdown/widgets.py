@@ -741,6 +741,7 @@ class Widgets:
 
     def set_file(self, text: str) -> None:
         self.file.set_text(text)
+        self.file.move_to_end()
 
     def set_model(self, m: str) -> None:
         config.set("model", m)
@@ -1080,7 +1081,11 @@ class Widgets:
         file = self.file.get()
 
         if not file:
-            files.open_last_file()
+            file = files.open_last_file()
+
+            if file:
+                self.set_file(file)
+
             return
 
         app.open_generic(file)

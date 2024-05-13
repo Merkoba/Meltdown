@@ -119,10 +119,13 @@ class Files:
         lst = getattr(self, f"{what}_list")
         return lst or []
 
-    def open_last_file(self) -> None:
+    def open_last_file(self) -> str:
         if self.files_list:
             file = self.files_list[0]
             app.open_generic(file)
+            return file
+
+        return ""
 
 
 files = Files()
