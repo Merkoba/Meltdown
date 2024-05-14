@@ -218,10 +218,14 @@ class Config:
             self.on_font_change()
 
     def apply(self, file: IO[str]) -> None:
+        from .args import args
+
         try:
             conf = json.load(file)
         except BaseException:
-            utils.msg("Creating empty config.json")
+            if not args.quiet:
+                utils.msg("Creating empty config.json")
+
             conf = {}
 
         for key in self.defaults():

@@ -230,7 +230,9 @@ class Session:
             try:
                 items = json.load(file)
             except BaseException:
-                utils.msg("Creating empty session.json")
+                if not args.quiet:
+                    utils.msg("Creating empty session.json")
+
                 items = []
 
         if args.test:
