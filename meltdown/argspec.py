@@ -402,21 +402,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "file_always",
-            action="store_true",
-            info="Always show the file panel",
-        )
-
-        self.add_argument(
             "avatars_in_logs",
             action="store_true",
             info="Show avatars in text logs",
-        )
-
-        self.add_argument(
-            "clean_file",
-            action="store_true",
-            info="Clear the file input after use",
         )
 
         self.add_argument(

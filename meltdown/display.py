@@ -644,7 +644,7 @@ class Display:
             tab.output.insert_text(text)
 
         if file:
-            file_text = f"File: {file}"
+            file_text = f"File:\u00a0{file}"
             tab.output.print(file_text)
 
         if args.auto_name and (who == "user") and original:

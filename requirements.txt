@@ -7,3 +7,4 @@ pillow ~= 10.3.0
 prompt-toolkit ~= 3.0.43
 rich ~= 13.7.1
 tkinterdnd2-universal ~= 1.7.3
+requests ~= 2.31.0

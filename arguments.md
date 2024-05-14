@@ -496,29 +496,9 @@ Action: store_true
 
 ---
 
-### file-always
-
-Always show the file panel
-
-Default: False
-
-Action: store_true
-
----
-
 ### avatars-in-logs
 
 Show avatars in text logs
-
-Default: False
-
-Action: store_true
-
----
-
-### clean-file
-
-Clear the file input after use
 
 Default: False
 
@@ -1638,7 +1618,7 @@ Type: str
 
 Markdown mode for urls
 
-Default: "ai"
+Default: "both"
 
 Choices: "user", "ai", "both", "none"
 

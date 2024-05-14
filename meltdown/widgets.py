@@ -437,7 +437,6 @@ class Widgets:
         self.check_details_buttons(2)
         self.setup_tooltips()
         self.disable_stop_button()
-        self.check_mode()
 
         inputcontrol.focus()
 
@@ -1028,26 +1027,6 @@ class Widgets:
 
         if file:
             self.set_file(file)
-
-    def show_file(self) -> None:
-        if args.file_always:
-            return
-
-        self.file_frame.grid()
-        widgets.file_enabled = True
-
-    def hide_file(self) -> None:
-        if args.file_always:
-            return
-
-        self.file_frame.grid_remove()
-        widgets.file_enabled = False
-
-    def check_mode(self) -> None:
-        if config.mode == "image":
-            self.show_file()
-        else:
-            self.hide_file()
 
     def change_model(self, name: str) -> None:
         if not name:

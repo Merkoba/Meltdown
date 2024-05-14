@@ -193,6 +193,7 @@ class InputControl:
 
         if text or file:
             self.clear()
+            widgets.file.clear(False)
 
             if not text:
                 if args.fill_prompt:
@@ -214,9 +215,6 @@ class InputControl:
 
             if model.model_loading:
                 return
-
-            if args.clean_file:
-                widgets.file.clear(False)
 
             prompt = {"text": text, "file": file, "no_history": no_history}
 

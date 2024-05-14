@@ -116,7 +116,6 @@ class Args:
         self.task_manager = "auto"
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
-        self.clean_file = False
         self.tabs_wheel = True
 
         self.markdown = "both"
@@ -125,7 +124,7 @@ class Args:
         self.markdown_bold = "ai"
         self.markdown_highlights = "ai"
         self.markdown_quotes = "both"
-        self.markdown_urls = "ai"
+        self.markdown_urls = "both"
         self.markdown_paths = "both"
 
         self.errors = False
@@ -177,7 +176,6 @@ class Args:
         self.image_prompt = "Describe this image"
         self.show_duration = False
         self.separator = ""
-        self.file_always = False
         self.help_prompt = "I need help!"
         self.explain_prompt = "What is ((words))?"
         self.new_prompt = "Tell me about ((words))"
@@ -369,7 +367,6 @@ class Args:
             "image_prompt",
             "show_duration",
             "avatars_in_logs",
-            "clean_file",
             "separator",
             "markdown_snippets",
             "markdown_italic",
@@ -378,7 +375,6 @@ class Args:
             "markdown_quotes",
             "markdown_urls",
             "markdown_paths",
-            "file_always",
             "help_prompt",
             "explain_prompt",
             "new_prompt",

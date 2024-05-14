@@ -6,6 +6,7 @@ from typing import Optional
 from typing import List, Tuple, Dict, Any
 
 # Libraries
+import requests  # type: ignore
 from llama_cpp import Llama  # type: ignore
 from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
 from openai import OpenAI  # type: ignore
@@ -612,12 +613,22 @@ class Model:
             self.lock.release()
 
     def read_file(self, path: str) -> str:
-        try:
-            with open(path, "r", encoding="utf-8") as file:
-                return file.read()
-        except BaseException as e:
-            utils.error(e)
-            return ""
+        if path.startswith("http"):
+            try:
+                response = requests.get(path)
+
+                if response.status_code == 200:
+                    return str(response.text)
+            except BaseException as e:
+                utils.error(e)
+        else:
+            try:
+                with Path(path).open("r", encoding="utf-8") as file:
+                    return file.read()
+            except BaseException as e:
+                utils.error(e)
+
+        return ""
 
 
 model = Model()
