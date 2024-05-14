@@ -319,6 +319,7 @@ class Keyboard:
             on_ctrl=lambda: inputcontrol.show_textbox(),
             help="Submit prompt",
             ctrl_help="Show input textbox",
+            shift_help="Make a tab and submit",
         )
 
         self.register(
