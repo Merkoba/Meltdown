@@ -286,10 +286,7 @@ class App:
         widgets.details_frame_1.grid()
         widgets.details_frame_2.grid()
         widgets.buttons_frame.grid()
-
-        if widgets.file_enabled:
-            widgets.file_frame.grid()
-
+        widgets.file_frame.grid()
         widgets.input_frame.grid()
         self.system_frame_visible = True
         self.after_compact(False)

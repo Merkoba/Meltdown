@@ -37,7 +37,6 @@ class Widgets:
     def __init__(self) -> None:
         self.input: EntryBox
         self.canvas_scroll = 1
-        self.file_enabled = True
 
         self.cpu: tk.StringVar
         self.ram: tk.StringVar
