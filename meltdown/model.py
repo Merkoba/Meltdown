@@ -333,6 +333,14 @@ class Model:
         if (not prompt_text) and (not prompt_file):
             return
 
+        file_text = ""
+
+        if prompt_file and (config.mode == "text"):
+            file_text = self.read_file(prompt_file)
+
+            if file_text:
+                messages.append({"role": "user", "content": file_text})
+
         if prompt_file and (config.mode == "image"):
             content_items = []
 
@@ -602,6 +610,14 @@ class Model:
     def release_lock(self) -> None:
         if self.lock.locked():
             self.lock.release()
+
+    def read_file(self, path: str) -> str:
+        try:
+            with open(path, "r", encoding="utf-8") as file:
+                return file.read()
+        except BaseException as e:
+            utils.error(e)
+            return ""
 
 
 model = Model()
