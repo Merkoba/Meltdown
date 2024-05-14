@@ -74,9 +74,7 @@ def make_entry(
 ) -> EntryBox:
     w = width if width else app.theme.entry_width
 
-    widget = EntryBox(
-        frame_data.frame, font=app.theme.font(), width=w, style="Normal.TEntry"
-    )
+    widget = EntryBox(frame_data.frame, width=w, style="Normal.TEntry")
 
     do_grid(widget, col=frame_data.col)
     frame_data.col += 1

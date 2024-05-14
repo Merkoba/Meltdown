@@ -15,6 +15,7 @@ class EntryBox(ttk.Entry):
         from .changes import Changes
 
         super().__init__(*args, **kwargs)
+        self.configure(font=app.theme.font("entry"))
         self.focused = False
         self.placeholder = ""
         self.key = ""

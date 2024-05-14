@@ -16,13 +16,14 @@ class Theme:
         self.monospace_family = "monospace"
 
         self.font_size = 14
-        self.font_button_size = 12
+        self.font_menu_size = 14
+        self.font_textbox_size = 14
+        self.font_entry_size = 14
         self.font_combobox_size = 13
         self.font_tab_size = 12
         self.font_tab_highlight_size = 12
-        self.font_menu_size = 13
+        self.font_button_size = 12
         self.font_tooltips_size = 12
-        self.font_textbox = 13
 
         self.user_color = "#87CEEB"
         self.ai_color = "#98FB98"
@@ -194,6 +195,9 @@ class Theme:
         if name == "font":
             return (fam, self.font_size + diff, "normal")
 
+        if name == "entry":
+            return (fam, self.font_entry_size + diff, "normal")
+
         if name == "button":
             return (fam, self.font_button_size + diff, "normal")
 
@@ -216,7 +220,7 @@ class Theme:
             return (fam, self.font_tooltips_size + diff, "normal")
 
         if name == "textbox":
-            return (fam, self.font_textbox + diff, "normal")
+            return (fam, self.font_textbox_size + diff, "normal")
 
         return (fam, self.font_size + diff, "normal")
 
