@@ -535,7 +535,7 @@ class Widgets:
         setup_entrybox("before", "Text")
         setup_entrybox("after", "Text")
         setup_entrybox("stop", "Text")
-        setup_entrybox("file", "URL to a remote or local file")
+        setup_entrybox("file", "Path to a remote or local file")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
 
