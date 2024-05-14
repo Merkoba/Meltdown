@@ -474,6 +474,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "dev",
+            action="store_true",
+            info="Launch a dev instance",
+        )
+
+        self.add_argument(
             "compact_model",
             action="store_true",
             info="Hide the model frame in compact mode",

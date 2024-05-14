@@ -17,6 +17,7 @@ from .keyboard import keyboard
 from .inputcontrol import inputcontrol
 from .utils import utils
 from .files import files
+from .paths import paths
 from . import terminal
 from . import system
 from . import tasks
@@ -28,8 +29,14 @@ def main() -> None:
     title = app.manifest["title"]
     program = app.manifest["program"]
     args.parse()
+    paths.setup()
 
-    pid_file = Path(tempfile.gettempdir(), f"mlt_{program}.pid")
+    if args.dev:
+        pid = f"mlt_{program}_dev.pid"
+    else:
+        pid = f"mlt_{program}.pid"
+
+    pid_file = Path(tempfile.gettempdir(), pid)
     fp = pid_file.open("w", encoding="utf-8")
 
     try:

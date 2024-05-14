@@ -229,8 +229,8 @@ class Session:
         with path.open("r", encoding="utf-8") as file:
             try:
                 items = json.load(file)
-            except BaseException as e:
-                utils.error(e)
+            except BaseException:
+                utils.msg("Creating empty session.json")
                 items = []
 
         if args.test:

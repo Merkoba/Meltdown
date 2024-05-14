@@ -6,11 +6,33 @@ import appdirs  # type: ignore
 
 # Modules
 from .app import app
+from .args import args
 
 
 class Paths:
     def __init__(self) -> None:
+        self.config: Path
+        self.models: Path
+        self.inputs: Path
+        self.systems: Path
+        self.files: Path
+        self.session: Path
+        self.commands: Path
+        self.autocomplete: Path
+
+        self.configs: Path
+        self.sessions: Path
+        self.logs: Path
+        self.apikey: Path
+        self.errors: Path
+
+        self.nouns: Path
+
+    def setup(self) -> None:
         program = app.manifest["program"]
+
+        if args.dev:
+            program += "_dev"
 
         config_dir = appdirs.user_config_dir()
         self.config = Path(config_dir, program, "config.json")

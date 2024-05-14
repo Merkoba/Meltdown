@@ -616,6 +616,16 @@ Action: store_true
 
 ---
 
+### dev
+
+Launch a dev instance
+
+Default: False
+
+Action: store_true
+
+---
+
 ### compact-model
 
 Hide the model frame in compact mode

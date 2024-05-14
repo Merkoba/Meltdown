@@ -458,7 +458,12 @@ class App:
         else:
             self.root = tk.Tk(className=self.manifest["program"])
 
-        self.root.title(self.manifest["title"])
+        title = self.manifest["title"]
+
+        if args.dev:
+            title += " (Dev)"
+
+        self.root.title(title)
         self.main_frame = tk.Frame(self.root)
         self.root.grid_columnconfigure(0, weight=1)
         self.root.grid_rowconfigure(0, weight=1)

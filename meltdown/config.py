@@ -219,8 +219,8 @@ class Config:
     def apply(self, file: IO[str]) -> None:
         try:
             conf = json.load(file)
-        except BaseException as e:
-            utils.error(e)
+        except BaseException:
+            utils.msg("Creating empty config.json")
             conf = {}
 
         for key in self.defaults():
