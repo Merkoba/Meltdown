@@ -87,12 +87,14 @@ class System:
 
                     if args.system_gpu:
                         self.gpu_use = int(float(gpu_data.get("GPU use (%)", 0)))
+
                         self.set_widget(
                             widgets.gpu, utils.padnum(int(self.gpu_use)) + "%"
                         )
 
                     if args.system_gpu_ram:
                         self.gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
+
                         self.set_widget(
                             widgets.gpu_ram, utils.padnum(int(self.gpu_ram)) + "%"
                         )
