@@ -171,6 +171,8 @@ Custom prompts to elaborate on words further.
 
 Multiple profiles.
 
+Read from text files.
+
 And more.
 
 ---
