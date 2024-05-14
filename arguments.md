@@ -476,6 +476,16 @@ Action: store_false
 
 ---
 
+### temporary
+
+Don't save the session
+
+Default: False
+
+Action: store_true
+
+---
+
 ### file-always
 
 Always show the file panel
