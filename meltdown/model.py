@@ -40,7 +40,7 @@ class Model:
 
         self.gpts: List[Tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
-            ("gpt-4-turbo", "GPT 4 Turbo"),
+            ("gpt-4o", "GPT 4o"),
         ]
 
         self.gpt_key = ""
