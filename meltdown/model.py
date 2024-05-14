@@ -613,22 +613,28 @@ class Model:
             self.lock.release()
 
     def read_file(self, path: str) -> str:
+        text = ""
+
         if path.startswith("http"):
             try:
                 response = requests.get(path)
 
                 if response.status_code == 200:
-                    return str(response.text)
+                    text = str(response.text)
             except BaseException as e:
                 utils.error(e)
         else:
             try:
                 with Path(path).open("r", encoding="utf-8") as file:
-                    return file.read()
+                    text = file.read()
             except BaseException as e:
                 utils.error(e)
 
-        return ""
+        if text:
+            if len(text) > args.max_file_length:
+                text = text[: args.max_file_length]
+
+        return text
 
 
 model = Model()

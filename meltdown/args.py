@@ -186,6 +186,7 @@ class Args:
         self.temporary = False
         self.clean = False
         self.profile = "main"
+        self.max_file_length = 5000
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -384,6 +385,7 @@ class Args:
             "temporary",
             "clean",
             "profile",
+            "max_file_length",
         ]
 
         for n_item in normals:

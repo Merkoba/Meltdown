@@ -816,6 +816,16 @@ Action: store_true
 
 ---
 
+### max-file-length
+
+Max number of characters to read from text files
+
+Default: 5000
+
+Type: int
+
+---
+
 ### terminal-height
 
 Reserve these number of rows for the terminal
