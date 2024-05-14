@@ -22,7 +22,6 @@ class Config:
         system_lines = [
             "Your name is ((name_ai)).",
             "You are talking to ((name_user)).",
-            "The current date is ((date)).",
             "No need to greet me, just answer.",
         ]
 
