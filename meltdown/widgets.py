@@ -410,7 +410,7 @@ class Widgets:
             return
 
         if isinstance(widget, EntryBox):
-            if value is not None:
+            if value not in [None, ""]:
                 widget.set_text(str(value))
             else:
                 widget.clear(focus=False)
