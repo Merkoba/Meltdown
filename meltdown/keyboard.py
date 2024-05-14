@@ -287,6 +287,9 @@ class Keyboard:
         def on_shift_enter() -> None:
             if widgets.find_focused():
                 findmanager.find_next(False)
+            else:
+                display.make_tab()
+                inputcontrol.submit()
 
         def on_esc() -> None:
             if widgets.find_focused():

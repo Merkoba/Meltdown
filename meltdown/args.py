@@ -185,7 +185,6 @@ class Args:
         self.temporary = False
         self.clean = False
         self.profile = "main"
-        self.max_file_length = 5000
         self.limit_tokens = True
 
         self.summarize_prompt = (
@@ -264,6 +263,7 @@ class Args:
             ("no_path_menu", "path_menu"),
             ("no_files_in_logs", "files_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
+            ("no_limit_tokens", "limit_tokens"),
         ]
 
         for r_item in other_name:
@@ -384,8 +384,6 @@ class Args:
             "temporary",
             "clean",
             "profile",
-            "max_file_length",
-            "limit_tokens",
         ]
 
         for n_item in normals:

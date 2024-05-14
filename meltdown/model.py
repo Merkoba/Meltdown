@@ -276,6 +276,7 @@ class Model:
         prompt_no_history = prompt.get("no_history", False)
 
         prompt_text = self.limit_tokens(prompt_text)
+
         original_text = prompt_text
         original_file = prompt_file
 
@@ -327,6 +328,7 @@ class Model:
 
         if prompt_file and (config.mode == "text"):
             file_text = self.read_file(prompt_file)
+            file_text = self.limit_tokens(file_text)
 
             if file_text:
                 messages.append({"role": "user", "content": file_text})
@@ -627,10 +629,6 @@ class Model:
             except BaseException as e:
                 utils.error(e)
 
-        if text:
-            if len(text) > args.max_file_length:
-                text = text[: args.max_file_length]
-
         return text
 
     def limit_tokens(self, text: str) -> str:
@@ -641,11 +639,11 @@ class Model:
             return text
 
         try:
-            max_tokens = int(config.max_tokens * 0.88)
+            max_tokens = int(config.max_tokens * config.token_limit)
             encoded = text.encode("utf-8")
             tokens = self.model.tokenize(encoded)
             bytes = self.model.detokenize(tokens[:max_tokens])
-            return str(bytes.decode("utf-8"))
+            return str(bytes.decode("utf-8")).strip()
         except BaseException as e:
             utils.error(e)
             return text

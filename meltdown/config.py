@@ -18,6 +18,7 @@ class Config:
         self.list_item_max_length = 200
         self.save_delay = 500
         self.save_after = ""
+        self.token_limit = 0.88
 
         system_lines = [
             "Your name is ((name_ai)).",

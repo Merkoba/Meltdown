@@ -236,6 +236,14 @@ Action: store_false
 
 ---
 
+### no-limit-tokens
+
+Don't limit the tokens in the prompt
+
+Action: store_false
+
+---
+
 ### no-commands
 
 Disable commands when typing on the input
@@ -736,16 +744,6 @@ Action: store_true
 
 ---
 
-### debug
-
-Show some information for debugging
-
-Default: False
-
-Action: store_true
-
----
-
 ### display
 
 Only show the output and tabs
@@ -813,16 +811,6 @@ Show error messages
 Default: False
 
 Action: store_true
-
----
-
-### max-file-length
-
-Max number of characters to read from text files
-
-Default: 5000
-
-Type: int
 
 ---
 

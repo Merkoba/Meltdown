@@ -594,12 +594,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "max_file_length",
-            type=int,
-            info="Max number of characters to read from text files",
-        )
-
-        self.add_argument(
             "terminal_height",
             type=int,
             info="Reserve these number of rows for the terminal",
