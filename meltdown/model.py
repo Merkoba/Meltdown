@@ -55,7 +55,7 @@ class Model:
 
         self.stop_stream()
 
-        if self.model and announce:
+        if self.loaded_model and announce:
             msg = "Model unloaded"
             display.print(utils.emoji_text(msg, "unloaded"))
 
@@ -142,8 +142,6 @@ class Model:
                 return
 
             self.gpt_client = OpenAI(api_key=self.gpt_key)
-
-            self.model = config.model
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
@@ -256,7 +254,7 @@ class Model:
         if tab.mode == "ignore":
             return
 
-        if not self.model:
+        if not self.loaded_model:
             self.load(prompt, tab_id)
             return
 
@@ -275,16 +273,16 @@ class Model:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
-
         prompt_no_history = prompt.get("no_history", False)
 
+        prompt_text = self.limit_tokens(prompt_text)
         original_text = prompt_text
         original_file = prompt_file
 
         if (not prompt_text) and (not prompt_file):
             return
 
-        if not self.model:
+        if not self.loaded_model:
             utils.msg("Model not loaded")
             return
 
@@ -304,9 +302,11 @@ class Model:
 
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
         log_dict["file"] = original_file
+        messages: List[Dict[str, Any]] = []
 
-        system = utils.replace_keywords(config.system)
-        messages: List[Dict[str, Any]] = [{"role": "system", "content": system}]
+        if config.system:
+            system = utils.replace_keywords(config.system)
+            messages.append({"role": "system", "content": system})
 
         if tabconvo.convo.items and (config.history > 0) and (not prompt_no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
@@ -317,17 +317,6 @@ class Model:
                         content = utils.replace_keywords(content)
 
                     messages.append({"role": key, "content": content})
-
-        if args.debug:
-            utils.msg("-----")
-            utils.msg(f"prompt: {prompt_text}")
-            utils.msg(f"messages: {len(messages)}")
-            utils.msg(f"history: {config.history}")
-            utils.msg(f"max_tokens: {config.max_tokens}")
-            utils.msg(f"temperature: {config.temperature}")
-            utils.msg(f"top_k: {config.top_k}")
-            utils.msg(f"top_p: {config.top_p}")
-            utils.msg(f"seed: {config.seed}")
 
         prompt_text = utils.replace_keywords(prompt_text)
 
@@ -383,6 +372,8 @@ class Model:
         self.stream_loading = True
         self.lock.acquire()
 
+        # ------------------------------------
+
         if self.model_is_gpt(config.model):
             try:
                 if not self.gpt_client:
@@ -413,6 +404,11 @@ class Model:
                 self.release_lock()
                 return
         else:
+            if not self.model:
+                self.stream_loading = False
+                self.release_lock()
+                return
+
             try:
                 output = self.model.create_chat_completion_openai_v1(
                     stream=stream,
@@ -635,6 +631,20 @@ class Model:
                 text = text[: args.max_file_length]
 
         return text
+
+    def limit_tokens(self, text: str) -> str:
+        if not self.model:
+            return text
+
+        try:
+            max_tokens = int(config.max_tokens * 0.8)
+            encoded = text.encode("utf-8")
+            tokens = self.model.tokenize(encoded)
+            bytes = self.model.detokenize(tokens[:max_tokens])
+            return str(bytes.decode("utf-8"))
+        except BaseException as e:
+            utils.error(e)
+            return text
 
 
 model = Model()

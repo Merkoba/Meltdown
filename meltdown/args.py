@@ -69,7 +69,6 @@ class Args:
         self.drag_threshold = 100
         self.tab_highlight = True
         self.quiet = False
-        self.debug = False
         self.delay = 0.1
         self.prefix = "/"
         self.andchar = "&"
@@ -301,7 +300,6 @@ class Args:
             "drag_threshold",
             "system_delay",
             "quiet",
-            "debug",
             "delay",
             "prefix",
             "andchar",

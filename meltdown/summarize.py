@@ -17,7 +17,10 @@ def summarize(tab_id: Optional[str] = None) -> None:
     text = tabconvo.convo.to_text()
 
     if not text:
-        return
+        text = display.get_text(tab_id)
+
+        if not text:
+            return
 
     prompt = {}
 

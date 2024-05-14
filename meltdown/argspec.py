@@ -546,12 +546,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "debug",
-            action="store_true",
-            info="Show some information for debugging",
-        )
-
-        self.add_argument(
             "display",
             action="store_true",
             info="Only show the output and tabs",

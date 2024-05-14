@@ -910,5 +910,24 @@ class Display:
 
         return len(tabconvo.convo.items)
 
+    def get_text(self, tab_id: Optional[str] = None) -> str:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return ""
+
+        num_lines = 0
+
+        if args.show_header:
+            num_lines += 1
+
+        if args.show_intro:
+            num_lines = len(app.intro)
+
+        if num_lines > 0:
+            num_lines += 1
+
+        return tabconvo.tab.output.get_text().split("\n", num_lines)[-1]
+
 
 display = Display()
