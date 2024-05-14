@@ -400,6 +400,7 @@ class Model:
                     " not enough credits, invalid API key,"
                     " or there is no internet connection."
                 )
+
                 self.stream_loading = False
                 self.release_lock()
                 return
