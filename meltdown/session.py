@@ -205,6 +205,9 @@ class Session:
             self.load_arg()
             return
 
+        if args.clean:
+            return
+
         path = paths.session
 
         if not path.exists():

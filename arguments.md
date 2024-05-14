@@ -486,6 +486,16 @@ Action: store_true
 
 ---
 
+### clean
+
+Don't load the session at startup
+
+Default: False
+
+Action: store_true
+
+---
+
 ### file-always
 
 Always show the file panel

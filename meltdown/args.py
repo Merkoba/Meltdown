@@ -186,6 +186,7 @@ class Args:
         self.on_ctrl_middle_click = ""
         self.on_ctrl_shift_middle_click = ""
         self.temporary = False
+        self.clean = False
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -384,6 +385,7 @@ class Args:
             "on_ctrl_middle_click",
             "on_ctrl_shift_middle_click",
             "temporary",
+            "clean",
         ]
 
         for n_item in normals:

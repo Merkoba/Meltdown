@@ -396,6 +396,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "clean",
+            action="store_true",
+            info="Don't load the session at startup",
+        )
+
+        self.add_argument(
             "file_always",
             action="store_true",
             info="Always show the file panel",
