@@ -111,6 +111,7 @@ class Theme:
         self.menu_border = "#959595"
         self.menu_border_width = 3
         self.menu_canvas_background = "#6A7B83"
+        self.menu_wrap_length = 380
 
         self.tab_normal_background = "#2B303B"
         self.tab_normal_foreground = "#C9C9C9"
