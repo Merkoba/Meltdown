@@ -186,6 +186,7 @@ class Args:
         self.clean = False
         self.profile = "main"
         self.max_file_length = 5000
+        self.limit_tokens = True
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -384,6 +385,7 @@ class Args:
             "clean",
             "profile",
             "max_file_length",
+            "limit_tokens",
         ]
 
         for n_item in normals:

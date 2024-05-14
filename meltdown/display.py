@@ -921,13 +921,21 @@ class Display:
         if args.show_header:
             num_lines += 1
 
+        if num_lines > 0:
+            num_lines += 1
+
         if args.show_intro:
-            num_lines = len(app.intro)
+            num_lines += len(app.intro)
 
         if num_lines > 0:
             num_lines += 1
 
-        return tabconvo.tab.output.get_text().split("\n", num_lines)[-1]
+        text = tabconvo.tab.output.get_text()
+
+        if num_lines > 0:
+            text = text.split("\n", num_lines)[-1]
+
+        return text.strip()
 
 
 display = Display()

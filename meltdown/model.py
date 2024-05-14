@@ -634,11 +634,14 @@ class Model:
         return text
 
     def limit_tokens(self, text: str) -> str:
+        if not args.limit_tokens:
+            return text
+
         if not self.model:
             return text
 
         try:
-            max_tokens = int(config.max_tokens * 0.8)
+            max_tokens = int(config.max_tokens * 0.88)
             encoded = text.encode("utf-8")
             tokens = self.model.tokenize(encoded)
             bytes = self.model.detokenize(tokens[:max_tokens])

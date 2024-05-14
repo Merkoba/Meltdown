@@ -210,6 +210,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_limit_tokens",
+            action="store_false",
+            info="Don't limit the tokens in the prompt",
+        )
+
+        self.add_argument(
             "no_commands",
             action="store_false",
             info="Disable commands when typing on the input",
