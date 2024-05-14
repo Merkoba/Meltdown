@@ -390,6 +390,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "temporary",
+            action="store_true",
+            info="Don't save the session",
+        )
+
+        self.add_argument(
             "file_always",
             action="store_true",
             info="Always show the file panel",

@@ -168,6 +168,9 @@ class Session:
     def do_save(self) -> None:
         self.clear_save()
 
+        if args.temporary:
+            return
+
         if not paths.session.exists():
             paths.session.parent.mkdir(parents=True, exist_ok=True)
 
