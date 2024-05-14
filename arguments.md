@@ -616,16 +616,6 @@ Action: store_true
 
 ---
 
-### dev
-
-Launch a dev instance
-
-Default: False
-
-Action: store_true
-
----
-
 ### compact-model
 
 Hide the model frame in compact mode
@@ -1691,6 +1681,16 @@ Type: str
 ### on-ctrl-shift-middle-click
 
 Commands to run when ctrl shift middle clicking the output
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### profile
+
+Use a different profile
 
 Default: [Empty string]
 

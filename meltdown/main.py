@@ -31,8 +31,8 @@ def main() -> None:
     args.parse()
     paths.setup()
 
-    if args.dev:
-        pid = f"mlt_{program}_dev.pid"
+    if args.profile:
+        pid = f"mlt_{program}_{args.profile}.pid"
     else:
         pid = f"mlt_{program}.pid"
 

@@ -474,12 +474,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "dev",
-            action="store_true",
-            info="Launch a dev instance",
-        )
-
-        self.add_argument(
             "compact_model",
             action="store_true",
             info="Hide the model frame in compact mode",
@@ -1121,6 +1115,12 @@ class ArgSpec:
             "on_ctrl_shift_middle_click",
             type=str,
             info="Commands to run when ctrl shift middle clicking the output",
+        )
+
+        self.add_argument(
+            "profile",
+            type=str,
+            info="Use a different profile",
         )
 
 

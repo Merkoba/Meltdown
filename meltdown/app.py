@@ -460,8 +460,8 @@ class App:
 
         title = self.manifest["title"]
 
-        if args.dev:
-            title += " (Dev)"
+        if args.profile:
+            title += f" ({args.profile})"
 
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)

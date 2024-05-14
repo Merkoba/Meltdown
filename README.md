@@ -169,6 +169,8 @@ Remove specific items from the conversation.
 
 Custom prompts to elaborate on words further.
 
+Multiple profiles.
+
 And more.
 
 ---

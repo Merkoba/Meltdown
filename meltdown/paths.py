@@ -30,26 +30,29 @@ class Paths:
 
     def setup(self) -> None:
         program = app.manifest["program"]
+        profile = args.profile
 
-        if args.dev:
-            program += "_dev"
+        if profile:
+            location = Path(program, profile)
+        else:
+            location = Path(program, "main")
 
         config_dir = appdirs.user_config_dir()
-        self.config = Path(config_dir, program, "config.json")
-        self.models = Path(config_dir, program, "models.json")
-        self.inputs = Path(config_dir, program, "inputs.json")
-        self.systems = Path(config_dir, program, "systems.json")
-        self.files = Path(config_dir, program, "files.json")
-        self.session = Path(config_dir, program, "session.json")
-        self.commands = Path(config_dir, program, "commands.json")
-        self.autocomplete = Path(config_dir, program, "autocomplete.json")
+        self.config = Path(config_dir, location, "config.json")
+        self.models = Path(config_dir, location, "models.json")
+        self.inputs = Path(config_dir, location, "inputs.json")
+        self.systems = Path(config_dir, location, "systems.json")
+        self.files = Path(config_dir, location, "files.json")
+        self.session = Path(config_dir, location, "session.json")
+        self.commands = Path(config_dir, location, "commands.json")
+        self.autocomplete = Path(config_dir, location, "autocomplete.json")
 
         data_dir = appdirs.user_data_dir()
-        self.configs = Path(data_dir, program, "configs")
-        self.sessions = Path(data_dir, program, "sessions")
-        self.logs = Path(data_dir, program, "logs")
-        self.apikey = Path(data_dir, program, "apikey.txt")
-        self.errors = Path(data_dir, program, "errors")
+        self.configs = Path(data_dir, location, "configs")
+        self.sessions = Path(data_dir, location, "sessions")
+        self.logs = Path(data_dir, location, "logs")
+        self.apikey = Path(data_dir, location, "apikey.txt")
+        self.errors = Path(data_dir, location, "errors")
 
         self.nouns = Path(app.here, "nouns.txt")
 
