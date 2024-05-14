@@ -187,7 +187,7 @@ class Args:
         self.on_ctrl_shift_middle_click = ""
         self.temporary = False
         self.clean = False
-        self.profile = ""
+        self.profile = "main"
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"

@@ -1120,7 +1120,7 @@ class ArgSpec:
         self.add_argument(
             "profile",
             type=str,
-            info="Use a different profile",
+            info="The profile to save the files",
         )
 
 

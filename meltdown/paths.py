@@ -30,12 +30,7 @@ class Paths:
 
     def setup(self) -> None:
         program = app.manifest["program"]
-        profile = args.profile
-
-        if profile:
-            location = Path(program, profile)
-        else:
-            location = Path(program, "main")
+        location = Path(program, args.profile)
 
         config_dir = appdirs.user_config_dir()
         self.config = Path(config_dir, location, "config.json")

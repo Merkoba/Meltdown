@@ -1690,8 +1690,8 @@ Type: str
 
 ### profile
 
-Use a different profile
+The profile to save the files
 
-Default: [Empty string]
+Default: "main"
 
 Type: str
