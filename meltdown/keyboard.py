@@ -318,15 +318,17 @@ class Keyboard:
             on_shift=lambda: on_shift_enter(),
             on_ctrl=lambda: inputcontrol.show_textbox(),
             help="Submit prompt",
-            ctrl_help="Show input textbox",
             shift_help="Make a tab and submit",
+            ctrl_help="Show input textbox",
         )
 
         self.register(
             "<Escape>",
             lambda: on_esc(),
+            on_shift=lambda: run_command("taskmanager"),
             on_ctrl=lambda: run_command("unload"),
             help="Clear input, select active, stop model stream, go to bottom",
+            shift_help="Open task manager",
             ctrl_help="Unload model",
         )
 
