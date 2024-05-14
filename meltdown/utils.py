@@ -299,5 +299,18 @@ class Utils:
 
         return f'"{text}"'
 
+    def clean_name(self, name: str) -> str:
+        allow = ["_"]
+
+        name = name.replace(" ", "_")
+        name = name.replace("-", "_")
+
+        name = "".join(char for char in name if (char.isalnum() or (char in allow)))
+
+        if not name:
+            name = self.random_word()
+
+        return name
+
 
 utils = Utils()

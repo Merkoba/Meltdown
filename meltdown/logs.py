@@ -118,6 +118,7 @@ class Logs:
 
             if not name:
                 name = conversation.name
+                name = utils.clean_name(name)
                 overwrite = False
             else:
                 overwrite = True
