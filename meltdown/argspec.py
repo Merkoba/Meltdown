@@ -494,7 +494,7 @@ class ArgSpec:
         self.add_argument(
             "compact_file",
             action="store_true",
-            info="Hide the URL frame in compact mode",
+            info="Hide the file frame in compact mode",
         )
 
         self.add_argument(

@@ -648,7 +648,7 @@ Action: store_true
 
 ### compact-file
 
-Hide the URL frame in compact mode
+Hide the file frame in compact mode
 
 Default: False
 
