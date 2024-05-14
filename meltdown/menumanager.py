@@ -351,6 +351,7 @@ class UrlMenu:
 
         self.menu = Menu()
 
+        self.menu.add(text="Use", command=lambda e: Output.use_path())
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Open", command=lambda e: Output.open_url())
 
@@ -367,6 +368,7 @@ class PathMenu:
 
         self.menu = Menu()
 
+        self.menu.add(text="Use", command=lambda e: Output.use_path())
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Open", command=lambda e: Output.open_path())
 

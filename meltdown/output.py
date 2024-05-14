@@ -90,6 +90,16 @@ class Output(tk.Text):
         return Output.words.strip()
 
     @staticmethod
+    def use_path() -> None:
+        from .widgets import widgets
+
+        if not Output.current_output:
+            return
+
+        path = Output.get_words()
+        widgets.set_file(path)
+
+    @staticmethod
     def copy_words() -> None:
         if not Output.current_output:
             return
