@@ -560,7 +560,7 @@ class Args:
         if not text:
             return
 
-        display.make_tab()
+        display.make_tab(name="Used arguments")
         display.print("\n".join(text))
 
 
