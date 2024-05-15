@@ -97,6 +97,8 @@ class Display:
 
             name = name.capitalize()
 
+        name = name[: config.max_name_length].strip()
+
         if not conversation_id:
             conv_id = "ignore" if mode == "ignore" else ""
             conversation = session.add(name, conv_id=conv_id)
@@ -308,7 +310,7 @@ class Display:
     def do_rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
 
-        name = name.strip()
+        name = name[: config.max_name_length].strip()
 
         if not name:
             return
