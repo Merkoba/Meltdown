@@ -100,14 +100,6 @@ Action: store_false
 
 ---
 
-### no-system
-
-Don't show system monitors
-
-Action: store_false
-
----
-
 ### no-system-colors
 
 Disable system monitor colors
