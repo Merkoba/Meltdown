@@ -310,12 +310,12 @@ class App:
             self.disable_compact()
 
     def get_opener(self) -> str:
-        system = platform.system()
+        system = platform.system().lower()
         opener = ""
 
-        if system == "Darwin":
+        if system == "darwin":
             opener = "open"
-        elif system == "Windows":
+        elif system == "windows":
             opener = "start"
         else:
             opener = "xdg-open"
