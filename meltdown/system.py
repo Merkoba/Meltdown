@@ -148,6 +148,7 @@ class System:
 
         while True:
             if app.system_frame_visible:
+                print(444)
                 try:
                     self.get_info()
                 except BaseException as e:
@@ -163,13 +164,6 @@ class System:
         thread = threading.Thread(target=lambda: self.start_loop())
         thread.daemon = True
         thread.start()
-
-
-def check() -> None:
-    if not args.system:
-        return
-
-    system.start()
 
 
 system = System()

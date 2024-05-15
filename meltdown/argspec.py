@@ -108,12 +108,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_system",
-            action="store_false",
-            info="Don't show system monitors",
-        )
-
-        self.add_argument(
             "no_system_colors",
             action="store_false",
             info="Disable system monitor colors",

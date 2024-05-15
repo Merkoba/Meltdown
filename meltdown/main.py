@@ -18,8 +18,8 @@ from .inputcontrol import inputcontrol
 from .utils import utils
 from .files import files
 from .paths import paths
+from .system import system
 from . import terminal
-from . import system
 from . import tasks
 from . import listener
 
@@ -61,7 +61,7 @@ def main() -> None:
     commands.setup()
     inputcontrol.setup()
     app.setup(now)
-    system.check()
+    system.start()
     terminal.start()
     listener.start()
     tasks.start_all()

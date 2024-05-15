@@ -15,7 +15,6 @@ class Args:
         self.scrollbars = True
         self.colors = True
         self.avatars = True
-        self.system = True
         self.system_colors = True
         self.system_cpu = True
         self.system_gpu = True
@@ -210,7 +209,6 @@ class Args:
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
             ("no_avatars", "avatars"),
-            ("no_system", "system"),
             ("no_system_colors", "system_colors"),
             ("no_cpu", "system_cpu"),
             ("no_ram", "system_ram"),

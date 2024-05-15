@@ -151,7 +151,7 @@ class Widgets:
             args.system_gpu_temp,
         ]
 
-        self.system_disabled = (not args.system) or (not any(monitor_args))
+        self.system_disabled = not any(monitor_args)
 
         if not self.system_disabled:
             monitors = []
