@@ -354,8 +354,8 @@ class Keyboard:
 
         self.register(
             "<BackSpace>",
-            on_ctrl=lambda: run_command("clear"),
-            ctrl_help="Clear the conversation",
+            on_ctrl=lambda: run_command("prevtab"),
+            ctrl_help="Go to the previous tab",
         )
 
         self.register(

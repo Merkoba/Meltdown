@@ -711,5 +711,11 @@ class CommandSpec:
             lambda a=None: args.show_used_args(),
         )
 
+        self.add_cmd(
+            "prevtab",
+            "Go to the previous tab",
+            lambda a=None: display.goto_prev_tab(),
+        )
+
 
 command_spec = CommandSpec()

@@ -48,8 +48,9 @@ class TabConvo:
 
 class Display:
     def __init__(self) -> None:
-        self.current_tab: str = "none"
-        self.tab_streaming: str = "none"
+        self.prev_tab = "none"
+        self.current_tab = "none"
+        self.tab_streaming = "none"
         self.book: Book
         self.min_font_size = 6
         self.max_font_size = 36
@@ -155,6 +156,7 @@ class Display:
 
     def update_current_tab(self) -> None:
         tab_id = self.book.current()
+        self.prev_tab = self.current_tab
         self.current_tab = tab_id
         self.current_tab_object = self.get_tab(tab_id)
 
@@ -944,6 +946,17 @@ class Display:
             text = text.split("\n", num_lines)[-1]
 
         return text.strip()
+
+    def goto_prev_tab(self) -> None:
+        if self.prev_tab == "none":
+            return
+
+        tabconvo = self.get_tab_convo(self.prev_tab)
+
+        if not tabconvo:
+            return
+
+        self.select_tab(self.prev_tab)
 
 
 display = Display()

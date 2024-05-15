@@ -699,3 +699,9 @@ Copy the selected text
 ### args
 
 Show the arguments used
+
+---
+
+### prevtab
+
+Go to the previous tab
