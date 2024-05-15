@@ -174,7 +174,10 @@ class TabMenu:
             "Rename", lambda e: display.rename_tab(tab_id=display.tab_menu_id)
         )
 
-        self.menu.add("Move", lambda e: display.move_tab(tab_id=display.tab_menu_id))
+        if num_tabs > 1:
+            self.menu.add(
+                "Move", lambda e: display.move_tab(tab_id=display.tab_menu_id)
+            )
 
         if is_modified:
             self.menu.add("Clear", lambda e: display.clear(tab_id=display.tab_menu_id))
