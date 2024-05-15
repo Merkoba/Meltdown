@@ -14,6 +14,7 @@ from .inputcontrol import inputcontrol
 from .commands import commands
 from .files import files
 from .output import Output
+from .keyboard import keyboard
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -545,6 +546,14 @@ class CommandSpec:
             "argumentdoc",
             "Make a file with all the arguments",
             lambda a=None: args.make_argumentdoc(a),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "keyboardoc",
+            "Make a file with all the keyboard shortcuts",
+            lambda a=None: keyboard.make_keyboardoc(a),
             type=str,
             arg_req=True,
         )

@@ -546,6 +546,12 @@ Make a file with all the arguments
 
 ---
 
+### keyboardoc
+
+Make a file with all the keyboard shortcuts
+
+---
+
 ### active
 
 Go to the tab that is currently streaming

@@ -1,6 +1,7 @@
 # Standard
 import tkinter as tk
 from typing import Any, Callable, Optional, Dict, List
+from pathlib import Path
 
 # Modules
 from .app import app
@@ -490,6 +491,10 @@ class Keyboard:
     ) -> None:
         from .display import display
 
+        text = self.get_argtext(mode)
+        display.print(text, tab_id=tab_id)
+
+    def get_argtext(self, mode: Optional[str] = None) -> str:
         keys = list(self.commands.keys())
 
         if mode:
@@ -547,8 +552,7 @@ class Keyboard:
         lines.append(separator)
         lines.append("F1 to F12 to run functions (configurable through arguments)\n")
 
-        text = "\n\n".join(lines)
-        display.print(text, tab_id=tab_id)
+        return "\n\n".join(lines)
 
     def on_double_ctrl(self) -> None:
         commands.show_palette()
@@ -564,6 +568,24 @@ class Keyboard:
             inputcontrol.history_down()
         elif args.arrow_mode == "scroll":
             commands.run("scrolldown")
+
+    def make_keyboardoc(self, pathstr: str) -> None:
+        from .display import display
+
+        path = Path(pathstr)
+
+        if (not path.parent.exists()) or (not path.parent.is_dir()):
+            utils.msg(f"Invalid path: {pathstr}")
+            return
+
+        text = self.get_argtext()
+
+        with path.open("w", encoding="utf-8") as file:
+            file.write(text)
+
+        msg = f"Saved to {path}"
+        display.print(msg)
+        utils.msg(msg)
 
 
 keyboard = Keyboard()

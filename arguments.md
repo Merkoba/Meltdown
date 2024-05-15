@@ -1310,7 +1310,17 @@ Type: str
 
 ### argumentdoc
 
-Make the argument and save it on this path
+Make the argumentdoc and save it on this path
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### keyboardoc
+
+Make the keyboardoc and save it on this path
 
 Default: [Empty string]
 

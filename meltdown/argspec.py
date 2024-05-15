@@ -893,7 +893,13 @@ class ArgSpec:
         self.add_argument(
             "argumentdoc",
             type=str,
-            info="Make the argument and save it on this path",
+            info="Make the argumentdoc and save it on this path",
+        )
+
+        self.add_argument(
+            "keyboardoc",
+            type=str,
+            info="Make the keyboardoc and save it on this path",
         )
 
         self.add_argument(

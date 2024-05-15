@@ -94,6 +94,7 @@ class Args:
         self.sticky = False
         self.commandoc = ""
         self.argumentdoc = ""
+        self.keyboardoc = ""
         self.after_stream = ""
         self.clean_slate = True
         self.tabs_always = False
@@ -320,6 +321,7 @@ class Args:
             "sticky",
             "commandoc",
             "argumentdoc",
+            "keyboardoc",
             "after_stream",
             "tabs_always",
             "input_memory_min",

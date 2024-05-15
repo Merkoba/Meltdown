@@ -12,6 +12,7 @@
 1. [Installation](#installation)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
+1. [Keyboard](keyboard.md)
 
 ---
 

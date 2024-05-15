@@ -640,6 +640,10 @@ class App:
             commands.run("argumentdoc", args.argumentdoc)
             exit = True
 
+        if args.keyboardoc:
+            commands.run("keyboardoc", args.keyboardoc)
+            exit = True
+
         if exit:
             sys.exit(0)
 
