@@ -4,6 +4,7 @@ from typing import Optional
 
 # Modules
 from .app import app
+from .config import config
 from .dialogs import Dialog
 from .display import display
 from .args import args
@@ -121,6 +122,7 @@ class Logs:
                 if args.clean_names:
                     name = utils.clean_name(name)
 
+                name = name[: config.max_file_name_length].strip(" _")
                 overwrite = False
             else:
                 overwrite = True

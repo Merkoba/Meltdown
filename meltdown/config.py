@@ -19,6 +19,7 @@ class Config:
         self.save_delay = 500
         self.save_after = ""
         self.token_limit = 0.88
+        self.max_file_name_length = 50
 
         system_lines = [
             "Your name is ((name_ai)).",
