@@ -395,10 +395,12 @@ class CommandSpec:
             type=str,
         )
 
-        self.add_cmd("copy", "Copy all the text", lambda a=None: display.copy_output())
+        self.add_cmd(
+            "copyall", "Copy all the text", lambda a=None: display.copy_output()
+        )
 
         self.add_cmd(
-            "select", "Select all text", lambda a=None: display.select_output()
+            "selectall", "Select all text", lambda a=None: display.select_output()
         )
 
         self.add_cmd(
@@ -689,6 +691,18 @@ class CommandSpec:
             "newexplain",
             "Open a new tab and explain something",
             lambda a=None: Output.new_selected(),
+        )
+
+        self.add_cmd(
+            "search",
+            "Search using the selected text",
+            lambda a=None: Output.search_selected(),
+        )
+
+        self.add_cmd(
+            "copy",
+            "Copy the selected text",
+            lambda a=None: Output.copy_selected(),
         )
 
 

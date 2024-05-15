@@ -150,13 +150,17 @@ class Output(tk.Text):
         Output.custom_prompt(args.explain_prompt)
 
     @staticmethod
-    def explain_selected() -> None:
+    def get_selected() -> str:
         output = Output.current_output()
 
         if not output:
-            return
+            return ""
 
-        text = output.get_selected_text().strip()
+        return output.get_selected_text().strip()
+
+    @staticmethod
+    def explain_selected() -> None:
+        text = Output.get_selected()
 
         if not text:
             return
@@ -166,18 +170,33 @@ class Output(tk.Text):
 
     @staticmethod
     def new_selected() -> None:
-        output = Output.current_output()
-
-        if not output:
-            return
-
-        text = output.get_selected_text().strip()
+        text = Output.get_selected()
 
         if not text:
             return
 
         Output.words = text
         Output.new_tab()
+
+    @staticmethod
+    def search_selected() -> None:
+        text = Output.get_selected()
+
+        if not text:
+            return
+
+        Output.words = text
+        Output.search_words()
+
+    @staticmethod
+    def copy_selected() -> None:
+        text = Output.get_selected()
+
+        if not text:
+            return
+
+        Output.words = text
+        Output.copy_words()
 
     @staticmethod
     def search_words() -> None:
