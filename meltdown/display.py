@@ -186,7 +186,10 @@ class Display:
             return
 
         self.show_header(tab_id)
-        self.show_intro(tab_id)
+
+        if tabconvo.convo.id != "ignore":
+            self.show_intro(tab_id)
+
         tabconvo.convo.print()
         tabconvo.tab.loaded = True
 
