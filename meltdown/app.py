@@ -140,6 +140,7 @@ class App:
             return False
 
     def show_about(self) -> None:
+        from .args import args
         from .dialogs import Dialog
 
         title = self.manifest["title"]
@@ -147,6 +148,7 @@ class App:
         version = self.manifest["version"]
         author = self.manifest["author"]
         repo = self.manifest["repo"]
+        profile = args.profile
 
         lines = [
             f"{title} v{version}",
@@ -154,6 +156,7 @@ class App:
             f"Developed by {author}",
             "All Rights Reserved",
             repo,
+            f"Profile: {profile}",
         ]
 
         cmds = []
