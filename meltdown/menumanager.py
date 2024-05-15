@@ -156,34 +156,47 @@ class TabMenu:
 
         self.menu.clear()
         num_tabs = display.num_tabs()
-        is_modified = display.is_modified()
+        modified = display.is_modified()
+        not_modified = not modified
+        single = num_tabs == 1
 
-        if num_tabs > 1:
-            self.menu.add("Tab List", lambda e: display.show_tab_list(e))
+        self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
+        self.menu.separator()
+        disable = not modified
 
-        if is_modified:
-            self.menu.add(
-                "Save Log", lambda e: logs.menu(full=False, tab_id=display.tab_menu_id)
-            )
+        self.menu.add(
+            "Save Log",
+            lambda e: logs.menu(full=False, tab_id=display.tab_menu_id),
+            disabled=disable,
+        )
 
-            self.menu.add(
-                "Summarize", lambda e: summarize.summarize(tab_id=display.tab_menu_id)
-            )
+        self.menu.add(
+            "Summarize",
+            lambda e: summarize.summarize(tab_id=display.tab_menu_id),
+            disabled=disable,
+        )
+
+        self.menu.separator()
 
         self.menu.add(
             "Rename", lambda e: display.rename_tab(tab_id=display.tab_menu_id)
         )
 
-        if num_tabs > 1:
-            self.menu.add(
-                "Move", lambda e: display.move_tab(tab_id=display.tab_menu_id)
-            )
+        self.menu.add(
+            "Move",
+            lambda e: display.move_tab(tab_id=display.tab_menu_id),
+            disabled=single,
+        )
 
-        if is_modified:
-            self.menu.add("Clear", lambda e: display.clear(tab_id=display.tab_menu_id))
+        self.menu.add(
+            "Clear",
+            lambda e: display.clear(tab_id=display.tab_menu_id),
+            disabled=not_modified,
+        )
 
-        if num_tabs > 1:
-            self.menu.add("Close", lambda e: display.tab_menu_close())
+        self.menu.separator()
+
+        self.menu.add("Close", lambda e: display.tab_menu_close(), disabled=single)
 
     def show(self, event: Any = None, mode: str = "normal") -> None:
         from .display import display
