@@ -4,6 +4,7 @@ import sys
 import json
 import subprocess
 import shutil
+import signal
 import tempfile
 import platform
 import urllib.parse
@@ -85,7 +86,15 @@ class App:
         if args.display:
             self.hide_frames()
 
+    def sigint_handler(self, sig, frame):
+        self.exit()
+
     def run(self) -> None:
+        from .args import args
+
+        if not args.show_terminal:
+            signal.signal(signal.SIGINT, self.sigint_handler)
+
         self.autorun()
         self.root.mainloop()
 

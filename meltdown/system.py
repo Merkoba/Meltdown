@@ -148,7 +148,6 @@ class System:
 
         while True:
             if app.system_frame_visible:
-                print(444)
                 try:
                     self.get_info()
                 except BaseException as e:
