@@ -553,12 +553,20 @@ class Args:
                 continue
 
             if argspec.defaults[attr_name] != attr_value:
-                text.append(f"{attr_name} = {attr_value}")
+                value = attr_value
+
+                if isinstance(attr_value, str):
+                    if attr_value == "":
+                        value = "[Empty string]"
+                    else:
+                        value = f'"{attr_value}"'
+
+                text.append(f"{attr_name} = {value}")
 
         if not text:
             return
 
-        display.make_tab(name="Used arguments", mode="ignore")
+        display.make_tab(name="Arguments", mode="ignore")
         display.print("\n".join(text))
 
 
