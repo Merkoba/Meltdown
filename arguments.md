@@ -284,14 +284,6 @@ Action: store_false
 
 ---
 
-### no-terminal
-
-Don't enable the interactive terminal
-
-Action: store_false
-
----
-
 ### no-clean-slate
 
 Don't make a new tab when starting with an input
@@ -489,6 +481,16 @@ Action: store_false
 Don't apply syntax highlighting to snippets
 
 Action: store_false
+
+---
+
+### show-terminal
+
+Enable the interactive terminal
+
+Default: False
+
+Action: store_true
 
 ---
 

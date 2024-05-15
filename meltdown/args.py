@@ -85,7 +85,7 @@ class Args:
         self.show_intro = True
         self.show_header = True
         self.autorun = ""
-        self.show_terminal = True
+        self.show_terminal = False
         self.terminal_height = 3
         self.terminal_vi = False
         self.input_memory = True
@@ -228,7 +228,6 @@ class Args:
             ("no_commands", "commands"),
             ("no_intro", "show_intro"),
             ("no_header", "show_header"),
-            ("no_terminal", "show_terminal"),
             ("no_clean_slate", "clean_slate"),
             ("no_emojis", "emojis"),
             ("no_more_button", "more_button"),
@@ -386,6 +385,7 @@ class Args:
             "temporary",
             "clean",
             "profile",
+            "show_terminal",
         ]
 
         for n_item in normals:

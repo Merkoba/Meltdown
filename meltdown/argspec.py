@@ -246,12 +246,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_terminal",
-            action="store_false",
-            info="Don't enable the interactive terminal",
-        )
-
-        self.add_argument(
             "no_clean_slate",
             action="store_false",
             info="Don't make a new tab when starting with an input",
@@ -399,6 +393,12 @@ class ArgSpec:
             "no_syntax_highlighting",
             action="store_false",
             info="Don't apply syntax highlighting to snippets",
+        )
+
+        self.add_argument(
+            "show_terminal",
+            action="store_true",
+            info="Enable the interactive terminal",
         )
 
         self.add_argument(
