@@ -4,6 +4,7 @@ from typing import Any, Callable
 
 # Modules
 from .args import args
+from .commands import commands
 
 
 class Gestures:
@@ -44,31 +45,23 @@ class Gestures:
         return "break"
 
     def on_drag_end(self, event: Any) -> None:
-        from .display import display
-        from .keyboard import keyboard
-
         if args.gestures:
             x_diff = abs(self.drag_x - self.drag_x_start)
             y_diff = abs(self.drag_y - self.drag_y_start)
 
             if x_diff > y_diff:
-                if x_diff >= args.gesture_threshold:
-                    if self.drag_x < self.drag_x_start:
-                        if keyboard.shift:
-                            display.select_first_tab()
-                        else:
-                            display.tab_left()
-                    elif keyboard.shift:
-                        display.select_last_tab()
-                    else:
-                        display.tab_right()
+                if x_diff >= args.gestures_threshold:
+                    if (self.drag_x < self.drag_x_start) and args.gestures_left:
+                        commands.exec(args.gestures_left)
+                    elif args.gestures_right:
+                        commands.exec(args.gestures_right)
 
                     return
-            elif y_diff >= args.gesture_threshold:
-                if self.drag_y < self.drag_y_start:
-                    display.to_top()
-                else:
-                    display.to_bottom()
+            elif y_diff >= args.gestures_threshold:
+                if (self.drag_y < self.drag_y_start) and args.gestures_up:
+                    commands.exec(args.gestures_up)
+                elif args.gestures_down:
+                    commands.exec(args.gestures_down)
 
                 return
 

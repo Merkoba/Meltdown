@@ -131,8 +131,14 @@ class Args:
         self.progtext = ""
         self.progjson = ""
         self.program = ""
+
         self.gestures = True
-        self.gesture_threshold = 33
+        self.gestures_threshold = 33
+        self.gestures_left = ""
+        self.gestures_right = ""
+        self.gestures_up = ""
+        self.gestures_down = ""
+
         self.increment_logs = True
         self.confirm_close = True
         self.confirm_clear = True
@@ -198,6 +204,7 @@ class Args:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
 
         self.fill_functions()
+        self.fill_gestures()
 
         for attr_name, attr_value in vars(self).items():
             argspec.defaults[attr_name] = attr_value
@@ -339,7 +346,11 @@ class Args:
             "progtext",
             "progjson",
             "program",
-            "gesture_threshold",
+            "gestures_threshold",
+            "gestures_left",
+            "gestures_right",
+            "gestures_up",
+            "gestures_down",
             "scroll_lines",
             "user_color",
             "ai_color",
@@ -432,6 +443,19 @@ class Args:
 
         if not self.f12:
             self.f12 = f"{self.prefix}list"
+
+    def fill_gestures(self) -> None:
+        if not self.gestures_left:
+            self.gestures_left = f"{self.prefix}left"
+
+        if not self.gestures_right:
+            self.gestures_right = f"{self.prefix}right"
+
+        if not self.gestures_up:
+            self.gestures_up = f"{self.prefix}top"
+
+        if not self.gestures_down:
+            self.gestures_down = f"{self.prefix}bottom"
 
     def show_help(
         self, tab_id: Optional[str] = None, mode: Optional[str] = None

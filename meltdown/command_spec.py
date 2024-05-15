@@ -726,5 +726,11 @@ class CommandSpec:
             lambda a=None: display.goto_prev_tab(),
         )
 
+        self.add_cmd(
+            "nothing",
+            "Do nothing",
+            lambda a=None: None,
+        )
+
 
 command_spec = CommandSpec()

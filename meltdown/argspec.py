@@ -777,9 +777,33 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "gesture_threshold",
+            "gestures_threshold",
             type=str,
             info="Threshold in pixels for mouse gestures",
+        )
+
+        self.add_argument(
+            "gestures_left",
+            type=str,
+            info="Command to execute on left gesture",
+        )
+
+        self.add_argument(
+            "gestures_right",
+            type=str,
+            info="Command to execute on right gesture",
+        )
+
+        self.add_argument(
+            "gestures_up",
+            type=str,
+            info="Command to execute on up gesture",
+        )
+
+        self.add_argument(
+            "gestures_down",
+            type=str,
+            info="Command to execute on down gesture",
         )
 
         self.add_argument(

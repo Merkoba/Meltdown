@@ -1118,11 +1118,51 @@ Type: str
 
 ---
 
-### gesture-threshold
+### gestures-threshold
 
 Threshold in pixels for mouse gestures
 
 Default: 33
+
+Type: str
+
+---
+
+### gestures-left
+
+Command to execute on left gesture
+
+Default: "/left"
+
+Type: str
+
+---
+
+### gestures-right
+
+Command to execute on right gesture
+
+Default: "/right"
+
+Type: str
+
+---
+
+### gestures-up
+
+Command to execute on up gesture
+
+Default: "/top"
+
+Type: str
+
+---
+
+### gestures-down
+
+Command to execute on down gesture
+
+Default: "/bottom"
 
 Type: str
 
