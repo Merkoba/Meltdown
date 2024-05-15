@@ -693,3 +693,9 @@ Search using the selected text
 ### copy
 
 Copy the selected text
+
+---
+
+### args
+
+Show the arguments used

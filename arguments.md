@@ -1186,7 +1186,7 @@ Type: int
 
 The higher the number the less sensitive the tab dragging will be
 
-Default: 100
+Default: 90
 
 Type: int
 
