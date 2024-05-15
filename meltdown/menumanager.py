@@ -116,21 +116,23 @@ class MoreMenu:
         num_tabs = display.num_tabs()
         modified = display.is_modified()
         ignored = display.is_ignored()
+        single = num_tabs == 1
 
-        if modified:
-            self.menu.add("Find", lambda e: findmanager.find())
+        self.menu.add("Find", lambda e: findmanager.find())
+        self.menu.add("Find All", lambda e: findmanager.find_all(), disabled=single)
 
-        if num_tabs > 1:
-            self.menu.add("Find All", lambda e: findmanager.find_all())
+        self.menu.separator()
 
-        if modified:
-            self.menu.add("Copy All", lambda e: display.copy_output())
-            self.menu.add("Select All", lambda e: display.select_output())
+        self.menu.add("Copy All", lambda e: display.copy_output())
+        self.menu.add("Select All", lambda e: display.select_output())
 
-            if not ignored:
-                self.menu.add("View Text", lambda e: display.view_text())
-                self.menu.add("View JSON", lambda e: display.view_json())
+        self.menu.separator()
 
+        disable = (not modified) or ignored
+        self.menu.add("View Text", lambda e: display.view_text(), disabled=disable)
+        self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
+
+        self.menu.separator()
         self.menu.add("Font", lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
