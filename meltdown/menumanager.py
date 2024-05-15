@@ -157,12 +157,12 @@ class TabMenu:
         self.menu.clear()
         num_tabs = display.num_tabs()
         modified = display.is_modified()
-        not_modified = not modified
+        ignored = display.is_ignored()
         single = num_tabs == 1
 
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
         self.menu.separator()
-        disable = not modified
+        disable = (not modified) or ignored
 
         self.menu.add(
             "Save Log",
@@ -188,10 +188,12 @@ class TabMenu:
             disabled=single,
         )
 
+        disable = (not modified) or ignored
+
         self.menu.add(
             "Clear",
             lambda e: display.clear(tab_id=display.tab_menu_id),
-            disabled=not_modified,
+            disabled=disable,
         )
 
         self.menu.separator()

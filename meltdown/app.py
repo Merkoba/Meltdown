@@ -686,7 +686,7 @@ class App:
                 self.close_enabled = True
                 widgets.enable_close_button()
 
-            if not display.is_modified():
+            if (not display.is_modified()) or display.is_ignored():
                 if self.clear_enabled:
                     self.clear_enabled = False
                     widgets.disable_clear_button()
