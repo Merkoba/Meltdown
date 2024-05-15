@@ -86,7 +86,7 @@ class App:
         if args.display:
             self.hide_frames()
 
-    def sigint_handler(self, sig, frame):
+    def sigint_handler(self, sig: Any, frame: Any) -> None:
         self.exit()
 
     def run(self) -> None:

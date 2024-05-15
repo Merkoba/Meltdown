@@ -348,12 +348,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_drag_and_drop",
-            action="store_false",
-            info="Don't enable drag and drop",
-        )
-
-        self.add_argument(
             "no_keywords",
             action="store_false",
             info="Don't do keyword replacements like ((now))",
@@ -387,6 +381,12 @@ class ArgSpec:
             "no_syntax_highlighting",
             action="store_false",
             info="Don't apply syntax highlighting to snippets",
+        )
+
+        self.add_argument(
+            "drag_and_drop",
+            action="store_true",
+            info="Enable drag and drop",
         )
 
         self.add_argument(

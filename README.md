@@ -261,11 +261,11 @@ For instance you can drop a file to use its path.
 
 Or text to use as input.
 
-However you need to have `tkdnd` installed in your system.
+However, you need to have `tkdnd` installed in your system.
 
 This is an extension for `Tcl`.
 
-If you want to disable it instead, use the `--no-drag-and-drop` flag.
+If you want to enable, it use the `--drag-and-drop` flag.
 
 ---
 
