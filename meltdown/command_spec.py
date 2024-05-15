@@ -28,6 +28,7 @@ class CommandSpec:
         self.file_name = "You can provide the file name"
         self.sortfilter = "Use 'sort' or a word to filter"
         self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
+        self.optdelay = "Optional delay in seconds"
         self.infos: List[str] = []
         self.commands: Dict[str, Any] = {}
 
@@ -64,8 +65,9 @@ class CommandSpec:
 
         self.add_cmd(
             "exit",
-            "Exit the application. Optional seconds delay",
+            "Exit the application",
             lambda a=None: app.exit(a),
+            extra=self.optdelay,
             type=int,
         )
 
@@ -648,32 +650,36 @@ class CommandSpec:
 
         self.add_cmd(
             "delete",
-            f"Remove a specific item of a conversation. {self.delcmd}",
+            "Remove a specific item of a conversation",
             lambda a=None: delete.delete_items(number=a),
+            extra=self.delcmd,
             type=str,
             arg_req=True,
         )
 
         self.add_cmd(
             "deleteabove",
-            f"Delete items above this item. {self.delcmd}",
+            "Delete items above this item",
             lambda a=None: delete.delete_items(number=a, mode="above"),
+            extra=self.delcmd,
             type=str,
             arg_req=True,
         )
 
         self.add_cmd(
             "deletebelow",
-            f"Delete items below this item. {self.delcmd}",
+            "Delete items below this item",
             lambda a=None: delete.delete_items(number=a, mode="below"),
+            extra=self.delcmd,
             type=str,
             arg_req=True,
         )
 
         self.add_cmd(
             "deleteothers",
-            f"Delete the other items. {self.delcmd}",
+            "Delete the other items",
             lambda a=None: delete.delete_items(number=a, mode="others"),
+            extra=self.delcmd,
             type=str,
             arg_req=True,
         )
