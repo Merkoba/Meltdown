@@ -705,5 +705,11 @@ class CommandSpec:
             lambda a=None: Output.copy_selected(),
         )
 
+        self.add_cmd(
+            "args",
+            "Show the arguments used",
+            lambda a=None: args.show_used_args(),
+        )
+
 
 command_spec = CommandSpec()

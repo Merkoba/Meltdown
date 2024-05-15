@@ -146,7 +146,7 @@ class Args:
         self.drag_and_drop = True
         self.use_keywords = True
         self.snippets_font = "monospace"
-        self.show_prevnext = False
+        self.show_prevnext = True
         self.short_labels = False
         self.show_labels = True
         self.short_buttons = False
@@ -545,5 +545,22 @@ class Args:
         display.print(msg)
         utils.msg(msg)
 
+    def show_used_args(self) -> None:
+        from .display import display
+
+        text = []
+
+        for attr_name, attr_value in vars(self).items():
+            if attr_name not in argspec.defaults:
+                continue
+
+            if argspec.defaults[attr_name] != attr_value:
+                text.append(f"{attr_name} = {attr_value}")
+
+        if not text:
+            return
+
+        display.make_tab()
+        display.print("\n".join(text))
 
 args = Args()
