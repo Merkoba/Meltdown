@@ -42,6 +42,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_clean_names",
+            action="store_false",
+            info="Don't change names when saving files",
+        )
+
+        self.add_argument(
             "no_files_in_logs",
             action="store_false",
             info="Don't show files in text logs",

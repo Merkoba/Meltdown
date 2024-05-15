@@ -186,6 +186,7 @@ class Args:
         self.clean = False
         self.profile = "main"
         self.limit_tokens = True
+        self.clean_names = True
 
         self.summarize_prompt = (
             "Summarize this in a concise manner without addressing me"
@@ -264,6 +265,7 @@ class Args:
             ("no_files_in_logs", "files_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
             ("no_limit_tokens", "limit_tokens"),
+            ("no_clean_names", "clean_names"),
         ]
 
         for r_item in other_name:

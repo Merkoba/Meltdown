@@ -309,7 +309,7 @@ class Utils:
 
         name = "".join(char for char in name if (char.isalnum() or (char in allow)))
         name = re.sub("_+", "_", name)
-        name = name.rstrip(" _")
+        name = name.rstrip(" _").lower()
 
         if not name:
             name = self.random_word()

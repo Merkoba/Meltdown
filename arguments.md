@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-clean-names
+
+Don't change names when saving files
+
+Action: store_false
+
+---
+
 ### no-files-in-logs
 
 Don't show files in text logs

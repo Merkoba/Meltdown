@@ -37,7 +37,6 @@ class Logs:
         self, text: str, name: str, ext: str, save_all: bool, overwrite: bool, mode: str
     ) -> None:
         text = text.strip()
-        name = name.replace(" ", "_").lower()
         paths.logs.mkdir(parents=True, exist_ok=True)
         file_name = name + f".{ext}"
         file_path = Path(paths.logs, file_name)
@@ -118,7 +117,10 @@ class Logs:
 
             if not name:
                 name = conversation.name
-                name = utils.clean_name(name)
+
+                if args.clean_names:
+                    name = utils.clean_name(name)
+
                 overwrite = False
             else:
                 overwrite = True
