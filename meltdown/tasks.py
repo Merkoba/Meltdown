@@ -68,4 +68,7 @@ def start_all() -> None:
         else:
             now = False
 
+        if seconds < 0.1:
+            continue
+
         Task(seconds, cmds, now)

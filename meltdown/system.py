@@ -156,6 +156,9 @@ class System:
             utils.sleep(args.system_delay)
 
     def start(self) -> None:
+        if args.system_delay < 0.1:
+            return
+
         if not args.quiet:
             msg = f"Updating system monitors every {args.system_delay} seconds"
             utils.msg(msg)
