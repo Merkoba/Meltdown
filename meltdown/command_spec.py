@@ -13,6 +13,7 @@ from .widgets import widgets
 from .inputcontrol import inputcontrol
 from .commands import commands
 from .files import files
+from .output import Output
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -676,6 +677,18 @@ class CommandSpec:
             "date",
             "Show the current date and time",
             lambda a=None: commands.show_date(),
+        )
+
+        self.add_cmd(
+            "explain",
+            "Explain selected words",
+            lambda a=None: Output.explain_selected(),
+        )
+
+        self.add_cmd(
+            "newexplain",
+            "Open a new tab and explain something",
+            lambda a=None: Output.new_selected(),
         )
 
 

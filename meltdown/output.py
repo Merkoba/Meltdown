@@ -13,11 +13,16 @@ from .gestures import Gestures
 
 class Output(tk.Text):
     clicked_number = 0
-    current_output: Optional["Output"] = None
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     marker_separator = "\u200d\u200d\u200d"
     words = ""
+
+    @staticmethod
+    def current_output() -> Optional["Output"]:
+        from .display import display
+
+        return display.get_current_output()
 
     @staticmethod
     def custom_menu(event: Any) -> None:
@@ -29,34 +34,40 @@ class Output(tk.Text):
     def delete_items(mode: str = "normal") -> None:
         from . import delete
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
-        tab_id = Output.current_output.tab_id
+        tab_id = output.tab_id
         arg = str(Output.clicked_number)
         delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
     def select_item() -> None:
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         number = Output.clicked_number
-        start_ln, end_ln = Output.current_output.get_item_text(number)
+        start_ln, end_ln = output.get_item_text(number)
 
         if start_ln == 0:
             return
 
-        Output.current_output.select_lines(start_ln, end_ln)
+        output.select_lines(start_ln, end_ln)
 
     @staticmethod
     def copy_item() -> None:
         from . import itemops
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
-        tab_id = Output.current_output.tab_id
+        tab_id = output.tab_id
         arg = str(Output.clicked_number)
         itemops.action("copy", tab_id=tab_id, number=arg)
 
@@ -78,10 +89,12 @@ class Output(tk.Text):
     def repeat_prompt(no_history: bool = False) -> None:
         from . import itemops
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
-        tab_id = Output.current_output.tab_id
+        tab_id = output.tab_id
         arg = str(Output.clicked_number)
         itemops.action("repeat", tab_id=tab_id, number=arg, no_history=no_history)
 
@@ -93,7 +106,9 @@ class Output(tk.Text):
     def use_path() -> None:
         from .widgets import widgets
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         path = Output.get_words()
@@ -101,29 +116,33 @@ class Output(tk.Text):
 
     @staticmethod
     def copy_words() -> None:
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         text = Output.get_words()
-        Output.current_output.deselect_all()
+        output.deselect_all()
         utils.copy(text, command=True)
 
     @staticmethod
     def custom_prompt(text: str) -> None:
         from .model import model
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         words = Output.get_words()
-        Output.current_output.deselect_all()
+        output.deselect_all()
 
         if not words:
             return
 
         quoted = utils.smart_quotes(words)
         text = utils.replace_keywords(text, words=quoted)
-        tab_id = Output.current_output.tab_id
+        tab_id = output.tab_id
         model.stream({"text": text}, tab_id)
 
     @staticmethod
@@ -131,12 +150,44 @@ class Output(tk.Text):
         Output.custom_prompt(args.explain_prompt)
 
     @staticmethod
+    def explain_selected() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        text = output.get_selected_text().strip()
+
+        if not text:
+            return
+
+        Output.words = text
+        Output.explain_words()
+
+    @staticmethod
+    def new_selected() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        text = output.get_selected_text().strip()
+
+        if not text:
+            return
+
+        Output.words = text
+        Output.new_tab()
+
+    @staticmethod
     def search_words() -> None:
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         words = Output.get_words()
-        Output.current_output.deselect_all()
+        output.deselect_all()
 
         if not words:
             return
@@ -149,11 +200,13 @@ class Output(tk.Text):
         from .display import display
         from .model import model
 
-        if not Output.current_output:
+        output = Output.current_output()
+
+        if not output:
             return
 
         words = Output.get_words()
-        Output.current_output.deselect_all()
+        output.deselect_all()
 
         if not words:
             return
@@ -242,7 +295,6 @@ class Output(tk.Text):
             if not args.url_menu:
                 return
 
-            Output.current_output = self
             Output.words = self.get_tagwords("url", event)
 
             if keyboard.ctrl:
@@ -260,7 +312,6 @@ class Output(tk.Text):
             if not args.path_menu:
                 return
 
-            Output.current_output = self
             Output.words = self.get_tagwords("path", event)
 
             if keyboard.ctrl:
@@ -644,7 +695,6 @@ class Output(tk.Text):
         seltext = self.get_selected_text(widget)
 
         Output.words = ""
-        Output.current_output = self
 
         if seltext:
             Output.words = seltext.strip()
@@ -806,7 +856,6 @@ class Output(tk.Text):
         if number == 0:
             return
 
-        Output.current_output = self
         Output.clicked_number = number
 
         if keyboard.ctrl or keyboard.shift:

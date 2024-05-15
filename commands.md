@@ -669,3 +669,15 @@ Open the last file used
 ### date
 
 Show the current date and time
+
+---
+
+### explain
+
+Explain selected words
+
+---
+
+### newexplain
+
+Open a new tab and explain something
