@@ -732,5 +732,14 @@ class App:
 
         self.run_command([cmd, str(path)])
 
+    def focused(self) -> Optional[tk.Widget]:
+        if app.exists():
+            widget = self.root.focus_get()
+
+            if isinstance(widget, tk.Widget):
+                return widget
+
+        return None
+
 
 app = App()

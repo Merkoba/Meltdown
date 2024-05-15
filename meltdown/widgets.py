@@ -789,7 +789,10 @@ class Widgets:
         config.update(key)
 
     def find_focused(self) -> bool:
-        focused = app.root.focus_get()
+        focused = app.focused()
+
+        if not focused:
+            return False
 
         if isinstance(focused, EntryBox):
             if focused.name == "find":
@@ -798,7 +801,10 @@ class Widgets:
         return False
 
     def model_focused(self) -> bool:
-        focused = app.root.focus_get()
+        focused = app.focused()
+
+        if not focused:
+            return False
 
         if isinstance(focused, EntryBox):
             return focused == self.model
@@ -828,7 +834,7 @@ class Widgets:
         display.to_bottom()
 
     def show_context(self) -> None:
-        widget = app.root.focus_get()
+        widget = app.focused()
 
         if widget == self.input:
             inputcontrol.show_menu()

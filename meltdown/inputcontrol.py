@@ -90,6 +90,11 @@ class InputControl:
         widgets.show_menu_items("input", "inputs", lambda s: self.set(s), event)
 
     def focus(self) -> None:
+        from .app import app
+
+        if not app.focused():
+            return
+
         self.input.focus_set()
         self.input.on_focus_change("in")
 
