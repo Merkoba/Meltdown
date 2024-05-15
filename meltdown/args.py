@@ -563,4 +563,5 @@ class Args:
         display.make_tab()
         display.print("\n".join(text))
 
+
 args = Args()
