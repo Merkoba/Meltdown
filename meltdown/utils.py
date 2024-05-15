@@ -300,12 +300,16 @@ class Utils:
         return f'"{text}"'
 
     def clean_name(self, name: str) -> str:
+        replacers = [" ", "-", ".", ",", ";"]
+
+        for replacer in replacers:
+            name = name.replace(replacer, "_")
+
         allow = ["_"]
 
-        name = name.replace(" ", "_")
-        name = name.replace("-", "_")
-
         name = "".join(char for char in name if (char.isalnum() or (char in allow)))
+        name = re.sub("_+", "_", name)
+        name = name.rstrip(" _")
 
         if not name:
             name = self.random_word()
