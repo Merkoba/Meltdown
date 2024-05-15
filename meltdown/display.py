@@ -373,6 +373,9 @@ class Display:
         if not tabconvo:
             return
 
+        if tabconvo.convo.id == "ignore":
+            return
+
         if not tabconvo.convo.items:
             if not tabconvo.tab.modified:
                 return
