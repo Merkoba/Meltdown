@@ -184,6 +184,7 @@ class Args:
         self.help_prompt = "I need help!"
         self.explain_prompt = "What is ((words))?"
         self.new_prompt = "Tell me about ((words))"
+        self.summarize_prompt = "Summarize this, without addressing me"
         self.custom_prompts: List[str] = []
         self.on_shift_middle_click = ""
         self.on_ctrl_middle_click = ""
@@ -193,11 +194,6 @@ class Args:
         self.profile = "main"
         self.limit_tokens = True
         self.clean_names = True
-
-        self.summarize_prompt = (
-            "Summarize this in a concise manner without addressing me"
-        )
-
         self.theme = "dark"
 
     def parse(self) -> None:

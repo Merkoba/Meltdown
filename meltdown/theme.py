@@ -207,6 +207,9 @@ class Theme:
         if name == "tab":
             return (fam, self.font_tab_size + diff, "normal")
 
+        if name == "tab_alt":
+            return (fam, self.font_tab_size + diff, "italic")
+
         if name == "tab_highlight":
             return (fam, self.font_tab_highlight_size + diff, "underline")
 

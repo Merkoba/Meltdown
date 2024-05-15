@@ -21,15 +21,16 @@ class TabWidget:
 class Page:
     notebox_id = 0
 
-    def __init__(self, parent: "Book", name: str) -> None:
+    def __init__(self, parent: "Book", name: str, mode: str) -> None:
         self.parent = parent
         self.name = name
-        self.tab = self.make_tab_widget(name)
+        self.mode = mode
+        self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
         self.id = f"page_{Page.notebox_id}"
         Page.notebox_id += 1
 
-    def make_tab_widget(self, text: str) -> TabWidget:
+    def make_tab_widget(self) -> TabWidget:
         frame = tk.Frame(self.parent.tabs_container)
         frame.configure(background=app.theme.tab_border)
         frame.configure(cursor="hand2")
@@ -44,7 +45,12 @@ class Page:
             pady=app.theme.tab_border_width,
         )
 
-        label = tk.Label(inner, text=text, font=app.theme.font("tab"))
+        if self.mode == "ignore":
+            font = app.theme.font("tab_alt")
+        else:
+            font = app.theme.font("tab")
+
+        label = tk.Label(inner, text=self.name, font=font)
         label.configure(background=app.theme.tab_normal_background)
         label.configure(foreground=app.theme.tab_normal_foreground)
 
@@ -53,7 +59,7 @@ class Page:
         )
 
         label.configure(cursor="hand2")
-        tooltip = ToolTip(frame, text=text)
+        tooltip = ToolTip(frame, text=self.name)
         return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
@@ -252,8 +258,8 @@ class Book(tk.Frame):
             "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
         )
 
-    def add(self, name: str) -> Page:
-        page = Page(self, name)
+    def add(self, name: str, mode: str) -> Page:
+        page = Page(self, name, mode=mode)
         self.pages.append(page)
         self.current_page = page
         self.add_tab(page)

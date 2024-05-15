@@ -98,7 +98,7 @@ class Display:
 
             name = name.capitalize()
 
-        name = name[: config.max_name_length].strip()
+        name = self.prepare_name(name)
 
         if not conversation_id:
             conv_id = "ignore" if mode == "ignore" else ""
@@ -108,7 +108,7 @@ class Display:
         if not conversation_id:
             return ""
 
-        page = self.book.add(name)
+        page = self.book.add(name, mode=mode)
         tab_id = page.id
         find = Find(page.content, tab_id)
         output_frame = tk.Frame(page.content)
@@ -312,7 +312,7 @@ class Display:
     def do_rename_tab(self, tab_id: str, name: str) -> None:
         from .session import session
 
-        name = name[: config.max_name_length].strip()
+        name = self.prepare_name(name)
 
         if not name:
             return
@@ -957,6 +957,9 @@ class Display:
             return
 
         self.select_tab(self.prev_tab)
+
+    def prepare_name(self, name: str) -> str:
+        return name[: config.max_name_length].strip()
 
 
 display = Display()
