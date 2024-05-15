@@ -139,6 +139,14 @@ class Menu:
                 item.command(self.event)
 
         def cmd() -> None:
+            if self.selected_index not in self.elements:
+                return
+
+            item = self.items[self.selected_index]
+
+            if item.disabled:
+                return
+
             self.hide()
             app.main_frame.after(10, lambda: exec())
 
@@ -178,7 +186,6 @@ class Menu:
                 child.bind("<B1-Motion>", lambda e: on_motion(e))
                 child.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
                 child.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
-                child.bind("<ButtonRelease-1>", lambda e: cmd())
                 child.bind("<ButtonRelease-1>", lambda e: cmd())
                 bind_mouse(child)
 
