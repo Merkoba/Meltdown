@@ -420,14 +420,6 @@ Action: store_false
 
 ---
 
-### no-drag-and-drop
-
-Don't enable drag and drop
-
-Action: store_false
-
----
-
 ### no-keywords
 
 Don't do keyword replacements like ((now))
@@ -473,6 +465,16 @@ Action: store_false
 Don't apply syntax highlighting to snippets
 
 Action: store_false
+
+---
+
+### drag-and-drop
+
+Enable drag and drop
+
+Default: False
+
+Action: store_true
 
 ---
 
