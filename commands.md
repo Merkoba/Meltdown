@@ -384,13 +384,13 @@ Load a config
 
 ---
 
-### copy
+### copyall
 
 Copy all the text
 
 ---
 
-### select
+### selectall
 
 Select all text
 
@@ -681,3 +681,15 @@ Explain selected words
 ### newexplain
 
 Open a new tab and explain something
+
+---
+
+### search
+
+Search using the selected text
+
+---
+
+### copy
+
+Copy the selected text
