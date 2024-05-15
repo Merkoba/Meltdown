@@ -353,12 +353,6 @@ class Keyboard:
         )
 
         self.register(
-            "<BackSpace>",
-            on_ctrl=lambda: run_command("prevtab"),
-            ctrl_help="Go to the previous tab",
-        )
-
-        self.register(
             "<Up>",
             lambda: self.up_arrow(),
             on_ctrl=lambda: run_command("top"),
@@ -425,7 +419,9 @@ class Keyboard:
         )
 
         self.register(
-            "p", on_ctrl=lambda: run_command("compact"), ctrl_help="Toggle compact"
+            "p",
+            on_ctrl=lambda: run_command("prevtab"),
+            ctrl_help="Go to the previous tab",
         )
 
         self.register(
