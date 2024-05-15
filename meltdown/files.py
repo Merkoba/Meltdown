@@ -1,5 +1,4 @@
 # Standard
-import os
 import json
 from typing import Any, List, Optional
 from pathlib import Path
@@ -9,7 +8,6 @@ from .app import app
 from .paths import paths
 from .config import config
 from .args import args
-from .utils import utils
 
 
 class Files:
@@ -93,24 +91,11 @@ class Files:
 
         path = paths.logs
         path.mkdir(parents=True, exist_ok=True)
-        os_name = os.name.lower()
 
         if name:
             path = Path(path, name)
 
-        spath = str(path)
-
-        if os_name == "posix":
-            # Linux
-            app.run_command(["xdg-open", spath])
-        elif os_name == "nt":
-            # Windows
-            app.run_command(["start", spath])
-        elif os_name == "darwin":
-            # macOS
-            app.run_command(["open", spath])
-        else:
-            utils.msg(f"Unrecognized OS: {os_name}")
+        app.open_generic(str(path))
 
     def get_list(self, what: str) -> List[str]:
         if not getattr(self, f"{what}_loaded"):
