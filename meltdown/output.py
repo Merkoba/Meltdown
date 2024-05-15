@@ -106,11 +106,6 @@ class Output(tk.Text):
     def use_path() -> None:
         from .widgets import widgets
 
-        output = Output.current_output()
-
-        if not output:
-            return
-
         path = Output.get_words()
         widgets.set_file(path)
 
