@@ -300,14 +300,8 @@ class Utils:
         return f'"{text}"'
 
     def clean_name(self, name: str) -> str:
-        replacers = [" ", "-", ".", ",", ";"]
-
-        for replacer in replacers:
-            name = name.replace(replacer, "_")
-
-        allow = ["_"]
-
-        name = "".join(char for char in name if (char.isalnum() or (char in allow)))
+        name = re.sub(r"[\s]", "_", name)
+        name = re.sub(r"[^\w]", "_", name)
         name = re.sub("_+", "_", name)
         name = name.rstrip(" _").lower()
 
