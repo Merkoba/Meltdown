@@ -80,7 +80,6 @@ class Args:
         self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
-        self.display = False
         self.show_intro = True
         self.show_header = True
         self.autorun = ""
@@ -314,7 +313,6 @@ class Args:
             "compact_buttons",
             "compact_model",
             "compact_input",
-            "display",
             "autorun",
             "terminal_height",
             "terminal_vi",

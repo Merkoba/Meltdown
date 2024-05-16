@@ -552,12 +552,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "display",
-            action="store_true",
-            info="Only show the output and tabs",
-        )
-
-        self.add_argument(
             "listener",
             action="store_true",
             info="Listen for changes to the stdin file",

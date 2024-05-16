@@ -170,13 +170,6 @@ class InputControl:
         from .display import display
         from .widgets import widgets
 
-        if args.display:
-            if not text:
-                if scroll:
-                    display.toggle_scroll()
-
-                return
-
         if not text:
             text = self.input.get().strip()
 

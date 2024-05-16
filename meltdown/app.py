@@ -77,14 +77,7 @@ class App:
         self.time_started = time_started
         self.check_commandoc()
         self.check_compact()
-        self.check_display()
         self.check_sticky()
-
-    def check_display(self) -> None:
-        from .args import args
-
-        if args.display:
-            self.hide_frames()
 
     def sigint_handler(self, sig: Any, frame: Any) -> None:
         self.exit()
@@ -241,9 +234,6 @@ class App:
         from .widgets import widgets
         from .args import args
 
-        if args.display:
-            return
-
         confs = [
             args.compact_model,
             args.compact_system,
@@ -288,10 +278,6 @@ class App:
 
     def disable_compact(self) -> None:
         from .widgets import widgets
-        from .args import args
-
-        if args.display:
-            return
 
         widgets.model_frame.grid()
         widgets.system_frame.grid()
