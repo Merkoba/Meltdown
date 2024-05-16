@@ -19,14 +19,14 @@ def do_grid(
     pady: Optional[int] = None,
 ) -> None:
     if padx is not None:
-        px = (padx, padx)
+        px = padx
     else:
-        px = (app.theme.padx, app.theme.padx)
+        px = app.theme.padx
 
     if pady is not None:
-        py = (pady, pady)
+        py = pady
     else:
-        py = (app.theme.pady, app.theme.pady)
+        py = app.theme.pady
 
     widget.grid(row=0, column=col, padx=px, pady=py, sticky="ew")
 

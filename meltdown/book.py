@@ -153,11 +153,11 @@ class Book(tk.Frame):
         self.dragging = False
 
         if args.display:
-            padx = (0, 0)
-            pady = (0, 0)
+            padx = 0
+            pady = 0
         else:
-            padx = (app.theme.padx, app.theme.padx)
-            pady = (app.theme.pady, app.theme.pady)
+            padx = app.theme.padx
+            pady = app.theme.pady
 
         self.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
         self.grid_columnconfigure(0, weight=1)
