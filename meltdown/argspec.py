@@ -246,6 +246,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_expand",
+            action="store_false",
+            info="Don't make a new tab when starting with an input",
+        )
+
+        self.add_argument(
             "no_more_button",
             action="store_false",
             info="Don't show the More button",
