@@ -1141,5 +1141,11 @@ class ArgSpec:
             info="The profile to save the files",
         )
 
+        self.add_argument(
+            "border_color",
+            type=str,
+            info="The color of the border around the window",
+        )
+
 
 argspec = ArgSpec()

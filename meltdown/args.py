@@ -195,6 +195,7 @@ class Args:
         self.limit_tokens = True
         self.clean_names = True
         self.theme = "dark"
+        self.border_color = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -393,6 +394,7 @@ class Args:
             "profile",
             "show_terminal",
             "drag_and_drop",
+            "border_color",
         ]
 
         for n_item in normals:

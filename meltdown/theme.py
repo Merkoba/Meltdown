@@ -136,8 +136,8 @@ class Theme:
         self.tooltip_border = "#959595"
         self.tooltip_border_width = 3
 
-        self.padx = 10
-        self.pady = 10
+        self.padx = 5
+        self.pady = 5
 
         self.frame_padx = 0
         self.frame_pady = 0
@@ -228,10 +228,14 @@ class Theme:
         return (fam, self.font_size + diff, "normal")
 
     def setup(self) -> None:
+        from .args import args
         from .app import app
 
         style = ttk.Style()
-        app.root.configure(background=self.background_color)
+
+        abc = args.border_color
+        bc = abc if abc else self.background_color
+        app.root.configure(background=bc)
         app.main_frame.configure(background=self.background_color)
 
         # padding=[left, top, right, bottom])
