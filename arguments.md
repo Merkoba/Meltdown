@@ -748,16 +748,6 @@ Action: store_true
 
 ---
 
-### display
-
-Only show the output and tabs
-
-Default: False
-
-Action: store_true
-
----
-
 ### listener
 
 Listen for changes to the stdin file
