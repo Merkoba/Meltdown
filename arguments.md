@@ -1727,3 +1727,13 @@ The profile to save the files
 Default: "main"
 
 Type: str
+
+---
+
+### border-color
+
+The color of the border around the window
+
+Default: [Empty string]
+
+Type: str

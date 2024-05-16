@@ -20,7 +20,7 @@ Clear the conversation
 
 ### exit
 
-Exit the application. Optional seconds delay
+Exit the application
 
 ---
 
@@ -644,25 +644,25 @@ Summarize the conversation
 
 ### delete
 
-Remove a specific item of a conversation. You can use a specific number, or words like 'first' and 'last'
+Remove a specific item of a conversation
 
 ---
 
 ### deleteabove
 
-Delete items above this item. You can use a specific number, or words like 'first' and 'last'
+Delete items above this item
 
 ---
 
 ### deletebelow
 
-Delete items below this item. You can use a specific number, or words like 'first' and 'last'
+Delete items below this item
 
 ---
 
 ### deleteothers
 
-Delete the other items. You can use a specific number, or words like 'first' and 'last'
+Delete the other items
 
 ---
 
