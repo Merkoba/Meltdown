@@ -86,11 +86,16 @@ class TextBox(tk.Text):
         self.bind("<Left>", lambda e: self.on_left())
         self.bind("<Right>", lambda e: self.on_right())
 
-    def get_selected(self) -> Optional[str]:
+    def get_selected_text(self, widget: Optional[tk.Text] = None) -> str:
+        if not widget:
+            widget = self
+
         try:
-            return str(self.selection_get())  # type: ignore
+            start = widget.index(tk.SEL_FIRST)
+            end = widget.index(tk.SEL_LAST)
+            return widget.get(start, end)
         except tk.TclError:
-            return None
+            return ""
 
     def on_tab(self) -> str:
         from .autocomplete import autocomplete
@@ -241,18 +246,33 @@ class TextBox(tk.Text):
         self.mark_set(tk.INSERT, tk.END)
         self.see(tk.END)
 
-    def copy(self, text: Optional[str] = None) -> None:
+    def copy(self) -> None:
+        text = self.get_selected_text()
+
         if not text:
             text = self.get_text()
+
+        if not text:
+            return
 
         utils.copy(text)
         self.focus_end()
 
     def paste(self) -> None:
         try:
-            start = self.index(tk.SEL_FIRST)
-            end = self.index(tk.SEL_LAST)
-            self.delete(start, end)
+            text = utils.get_paste()
+
+            if not text:
+                return
+
+            if self.get_selected_text():
+                start = self.index(tk.SEL_FIRST)
+                end = self.index(tk.SEL_LAST)
+                self.delete(start, end)
+                self.insert(tk.INSERT, text)
+            else:
+                self.set_text(text)
+
             self.focus_end()
         except tk.TclError:
             pass

@@ -291,12 +291,9 @@ class InputControl:
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
+
             text = textbox.get_text()
-
-            if text:
-                selected = textbox.get_selected()
-                menu.add(text="Copy", command=lambda e: textbox.copy(selected))
-
+            menu.add(text="Copy", command=lambda e: textbox.copy())
             menu.add(text="Paste", command=lambda e: textbox.paste())
 
             if text:

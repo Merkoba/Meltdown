@@ -26,6 +26,7 @@ class Config:
             "Your name is ((name_ai)).",
             "You are talking to ((name_user)).",
             "No need to greet me, just answer.",
+            "Define the language when using code blocks.",
         ]
 
         self.default_avatar_user: str = "🥶"
