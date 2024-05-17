@@ -25,11 +25,11 @@ class Markdown:
     def __init__(self, widget: Output) -> None:
         self.widget = widget
 
-        chars_left = ["(", "["]
+        chars_left = ["(", "[", "/"]
         left_string = self.escape_chars(chars_left)
         left = rf"[{left_string}]?"
 
-        chars_right = [".", ",", ";", "!", "?", ":"]
+        chars_right = [".", ",", ";", "!", "?", ":", "/"]
         right_string = self.escape_chars(chars_right)
         right = rf"[{right_string}]?"
 
