@@ -11,7 +11,6 @@ from .args import args
 from .session import session
 from .session import Conversation
 from .paths import paths
-from .files import files
 from .utils import utils
 
 
@@ -20,7 +19,6 @@ class Logs:
         cmds = []
 
         if full:
-            cmds.append(("Open", lambda: self.open()))
             cmds.append(("Save All", lambda: self.save_all()))
 
         cmds.append(("To JSON", lambda: self.to_json(tab_id=tab_id)))
@@ -180,9 +178,6 @@ class Logs:
         full_text += utils.date() + "\n\n"
         full_text += text
         return full_text
-
-    def open(self, name: Optional[str] = None) -> None:
-        files.open_log(name)
 
 
 logs = Logs()

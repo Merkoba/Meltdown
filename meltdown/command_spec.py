@@ -109,13 +109,6 @@ class CommandSpec:
             lambda a=None: logs.to_json(True),
         )
 
-        self.add_cmd(
-            "openlog",
-            "Open a log file by name",
-            lambda a=None: logs.open(a),
-            type=str,
-        )
-
         self.add_cmd("resize", "Resize the window", lambda a=None: app.resize())
 
         self.add_cmd(

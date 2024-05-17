@@ -52,6 +52,7 @@ class MainMenu:
         self.menu.separator()
 
         self.menu.add("Commands", lambda e: commands.show_palette())
+        self.menu.add("Profile", lambda e: app.open_profile())
 
         self.menu.separator()
 

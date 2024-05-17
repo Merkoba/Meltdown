@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import Any, List, Optional
+from typing import Any, List
 from pathlib import Path
 
 # Modules
@@ -85,17 +85,6 @@ class Files:
         setattr(self, name, new_items)
         path = getattr(paths, key)
         self.save(path, new_items)
-
-    def open_log(self, name: Optional[str] = None) -> None:
-        from .app import app
-
-        path = paths.logs
-        path.mkdir(parents=True, exist_ok=True)
-
-        if name:
-            path = Path(path, name)
-
-        app.open_generic(str(path))
 
     def get_list(self, what: str) -> List[str]:
         if not getattr(self, f"{what}_loaded"):

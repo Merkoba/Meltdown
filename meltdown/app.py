@@ -739,5 +739,22 @@ class App:
 
         return None
 
+    def open_profile(self) -> None:
+        from .paths import paths
+        from .dialogs import Dialog
+
+        cmds = []
+
+        def show_config() -> None:
+            self.open_generic(str(paths.config_dir))
+
+        def show_data() -> None:
+            self.open_generic(str(paths.data_dir))
+
+        cmds.append(("Config", lambda: show_config()))
+        cmds.append(("Data", lambda: show_data()))
+
+        Dialog.show_commands("Open directories", cmds)
+
 
 app = App()
