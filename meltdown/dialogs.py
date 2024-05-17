@@ -96,6 +96,7 @@ class Dialog:
         cmd_ok: Callable[..., Any],
         cmd_cancel: Optional[Callable[..., Any]] = None,
         value: str = "",
+        mode: str = "normal",
     ) -> None:
         from .menus import Menu
 
@@ -107,6 +108,7 @@ class Dialog:
             width=20,
             justify="center",
             style="Dialog.TEntry",
+            mode=mode,
         )
 
         def ok() -> None:

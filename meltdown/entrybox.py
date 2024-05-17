@@ -11,10 +11,14 @@ from .tooltips import ToolTip
 
 
 class EntryBox(ttk.Entry):
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: Any, mode: str = "normal", **kwargs: Any) -> None:
         from .changes import Changes
 
-        super().__init__(*args, **kwargs)
+        if mode == "password":
+            super().__init__(*args, show="*", **kwargs)
+        else:
+            super().__init__(*args, **kwargs)
+
         self.configure(font=app.theme.font("entry"))
         self.focused = False
         self.placeholder = ""

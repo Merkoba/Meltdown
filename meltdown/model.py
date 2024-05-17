@@ -583,7 +583,7 @@ class Model:
             with path.open("w", encoding="utf-8") as file:
                 file.write(key)
 
-        Dialog.show_input("OpenAI API Key", lambda text: action(text))
+        Dialog.show_input("OpenAI API Key", lambda text: action(text), mode="password")
 
     def check_dot(self, text: str) -> str:
         if not text:
