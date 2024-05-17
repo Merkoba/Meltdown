@@ -27,6 +27,7 @@ No need to greet me, just answer.
         self.token_limit = 0.88
         self.max_name_length = 50
         self.max_file_name_length = 50
+
         self.default_avatar_user = "🥶"
         self.default_avatar_ai = "🫠"
         self.default_name_user = "Joe"
