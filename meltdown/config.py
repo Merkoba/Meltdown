@@ -369,7 +369,7 @@ No need to greet me, just answer.
         from .widgets import widgets
         from .dialogs import Dialog
 
-        keep = ("model", "mode", "theme")
+        keep = ("model",)
 
         def action() -> None:
             for key in self.defaults():
