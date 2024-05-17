@@ -571,9 +571,6 @@ class Model:
         from .paths import paths
 
         def action(key: str) -> None:
-            if not key:
-                return
-
             path = Path(paths.apikey)
 
             if (not path.exists()) or not (path.is_file()):
