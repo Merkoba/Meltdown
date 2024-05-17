@@ -59,6 +59,10 @@ format_test = {
         {"user": "Here is a path /home/yo/file.txt"},
         {"assistant": "That is indeed /home/yo/file.txt"},
         {"user": 'This is "a quoted text"'},
-        {"assistant": 'That is a "quoted text"'},
+        {"assistant": 'That is a "quoted text".'},
+        {"user": "Some backtick test"},
+        {
+            "assistant": "Rendering LaTeX code as an image within a Tkinter Text widget can be achieved by using a combination of packages such as `mathjax` (to convert LaTeX to MathML) and `svglib`/`reportlab` (to convert MathML to SVG)"
+        },
     ],
 }

@@ -26,12 +26,12 @@ class Markdown:
         self.widget = widget
 
         chars_left = ["(", "[", "/"]
-        left_string = self.escape_chars(chars_left)
-        left = rf"[{left_string}]?"
+        left_string = self.escape_chars(chars_left, "|")
+        left = rf"(?:(?<=\s)|^|{left_string})"
 
         chars_right = [".", ",", ";", "!", "?", ":", "/"]
-        right_string = self.escape_chars(chars_right)
-        right = rf"[{right_string}]?"
+        right_string = self.escape_chars(chars_right, "|")
+        right = rf"(?=\s|$|{right_string})"
 
         protocols_list = ["http://", "https://", "ftp://", "www."]
         protocols_string = self.escape_chars(protocols_list, "|")
@@ -46,25 +46,39 @@ class Markdown:
         self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
 
         # Bold with two asterisks
-        self.pattern_bold_1 = rf"(?:(?<=\s)|^){left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}(?=\s|$)"
+        self.pattern_bold_1 = (
+            rf"{left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}"
+        )
 
         # Italic with one asterisk
-        self.pattern_italic_1 = rf"(?:(?<=\s)|^){left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}(?=\s|$)"
+        self.pattern_italic_1 = (
+            rf"{left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}"
+        )
 
         # Italic with one underscore
-        self.pattern_italic_2 = rf"(?:(?<=\s)|^){left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}(?=\s|$)"
+        self.pattern_italic_2 = (
+            rf"{left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}"
+        )
 
         # Highlight with three backticks
-        self.pattern_highlight_1 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}(?=\s|$)"
+        self.pattern_highlight_1 = (
+            rf"{left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}"
+        )
 
         # Highlight with two backticks
-        self.pattern_highlight_2 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}(?=\s|$)"
+        self.pattern_highlight_2 = (
+            rf"{left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}"
+        )
 
         # Highlight with one backtick
-        self.pattern_highlight_3 = rf"(?:(?<=\s)|^){left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}(?=\s|$)"
+        self.pattern_highlight_3 = (
+            rf"{left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}"
+        )
 
         # Highlight with one double-quote
-        self.pattern_quote = rf"(?:(?<=\s)|^){left}(?P<all>{quote}{{1}}(?P<content>.*?){quote}{{1}}){right}(?=\s|$)"
+        self.pattern_quote = (
+            rf"{left}(?P<all>{quote}{{1}}(?P<content>.*?){quote}{{1}}){right}"
+        )
 
         # URLs with http:// | https:// | ftp:// | www.
         self.pattern_url = (
