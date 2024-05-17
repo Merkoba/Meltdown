@@ -44,12 +44,14 @@ No need to greet me, just answer.
         self.default_before = ""
         self.default_after = ""
         self.default_font_size = 14
+        self.default_font_family = "sans-serif"
         self.default_threads = 6
         self.default_mlock = "yes"
         self.default_theme = "dark"
         self.default_gpu_layers = 27
         self.default_stop = "<|im_start|> ;; <|im_end|>"
         self.default_mode = "text"
+        self.default_theme = "dark"
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -65,6 +67,7 @@ No need to greet me, just answer.
         self.before = self.default_before
         self.after = self.default_after
         self.font_size = self.default_font_size
+        self.font_family = self.default_font_family
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.theme = self.default_theme
@@ -74,6 +77,12 @@ No need to greet me, just answer.
         self.avatar_ai = self.default_avatar_ai
         self.stop = self.default_stop
         self.mode = self.default_mode
+        self.theme = self.default_theme
+
+        self.locals = [
+            "font_size",
+            "font_family",
+        ]
 
         self.clearables = [
             "system",
@@ -149,6 +158,9 @@ No need to greet me, just answer.
         conf = {}
 
         for key in self.defaults():
+            if key in self.locals:
+                continue
+
             conf[key] = getattr(self, key)
 
         return json.dumps(conf)
@@ -344,6 +356,8 @@ No need to greet me, just answer.
         if on_change:
             if key == "font_size":
                 self.on_font_change()
+            elif key == "font_family":
+                self.on_font_change()
 
             if key in self.model_keys:
                 model.unload()
@@ -360,6 +374,9 @@ No need to greet me, just answer.
         def action() -> None:
             for key in self.defaults():
                 if key in keep:
+                    continue
+
+                if key in self.locals:
                     continue
 
                 default = self.get_default(key)

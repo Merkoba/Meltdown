@@ -952,13 +952,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "font_family",
-            type=str,
-            choices=["sans-serif", "serif", "monospace"],
-            info="The font family to use for the output",
-        )
-
-        self.add_argument(
             "snippets_font",
             type=str,
             info="The font to use in snippets",
@@ -1060,13 +1053,6 @@ class ArgSpec:
             "summarize_prompt",
             type=str,
             info="The instruction to tell the AI to summarize a conversation",
-        )
-
-        self.add_argument(
-            "theme",
-            type=str,
-            choices=["dark", "light", "contrast"],
-            info="The color theme to use",
         )
 
         self.add_argument(

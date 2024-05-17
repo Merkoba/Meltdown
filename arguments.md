@@ -1410,18 +1410,6 @@ Type: int
 
 ---
 
-### font-family
-
-The font family to use for the output
-
-Default: "sans-serif"
-
-Choices: "sans-serif", "serif", "monospace"
-
-Type: str
-
----
-
 ### snippets-font
 
 The font to use in snippets
@@ -1591,18 +1579,6 @@ Type: str
 The instruction to tell the AI to summarize a conversation
 
 Default: "Summarize this, without addressing me"
-
-Type: str
-
----
-
-### theme
-
-The color theme to use
-
-Default: "dark"
-
-Choices: "dark", "light", "contrast"
 
 Type: str
 

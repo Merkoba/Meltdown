@@ -193,9 +193,7 @@ class Args:
         self.profile = "main"
         self.limit_tokens = True
         self.clean_names = True
-        self.theme = "dark"
         self.border_color = ""
-        self.font_family = "sans-serif"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -367,7 +365,6 @@ class Args:
             "compact",
             "no_exit",
             "summarize_prompt",
-            "theme",
             "scroll_percentage",
             "item_numbers",
             "file",
@@ -394,7 +391,6 @@ class Args:
             "show_terminal",
             "drag_and_drop",
             "border_color",
-            "font_family",
         ]
 
         for n_item in normals:

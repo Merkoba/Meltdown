@@ -133,6 +133,7 @@ class MoreMenu:
         self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
 
         self.menu.separator()
+        self.menu.add("Theme", lambda e: theme_menu.show())
         self.menu.add("Font", lambda e: font_menu.show())
 
     def show(self, event: Any = None) -> None:
@@ -244,8 +245,27 @@ class FontMenu:
         self.menu.add("Set Font", lambda e: set_font())
         self.menu.add("Bigger Font", lambda e: display.increase_font())
         self.menu.add("Smaller Font", lambda e: display.decrease_font())
+        self.menu.add("Font Family", lambda e: font_family_menu.show())
         self.menu.separator()
         self.menu.add("Reset Font", lambda e: display.reset_font())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            widget = get_widget()
+            self.menu.show(widget=widget)
+
+
+class FontFamilyMenu:
+    def __init__(self) -> None:
+        from .display import display
+
+        self.menu = Menu()
+
+        self.menu.add("Serif", lambda e: display.set_font_family("serif"))
+        self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
+        self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -380,14 +400,39 @@ class PathMenu:
             return
 
 
+class ThemeMenu:
+    def __init__(self) -> None:
+        from .config import config
+        from .dialogs import Dialog
+
+        self.menu = Menu()
+
+        def action(theme: str) -> None:
+            config.set("theme", theme)
+            Dialog.show_message("Reset to apply changes.")
+
+        self.menu.add("Dark", lambda e: action("dark"))
+        self.menu.add("Light", lambda e: action("light"))
+        self.menu.add("Contrast", lambda e: action("contrast"))
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            widget = get_widget()
+            self.menu.show(widget=widget)
+
+
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
+font_family_menu = FontFamilyMenu()
 item_menu = ItemMenu()
 word_menu = WordMenu()
 url_menu = UrlMenu()
 path_menu = PathMenu()
 custom_menu = CustomMenu()
+theme_menu = ThemeMenu()
