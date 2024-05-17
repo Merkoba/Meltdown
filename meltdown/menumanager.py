@@ -24,6 +24,12 @@ def get_main_button() -> tk.Widget:
     return widgets.main_menu_button
 
 
+def get_model_button() -> tk.Widget:
+    from .widgets import widgets
+
+    return widgets.model_menu_button
+
+
 class MainMenu:
     def __init__(self) -> None:
         from .app import app
@@ -63,12 +69,10 @@ class MainMenu:
         self.menu.add("Exit", lambda e: app.exit())
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "main_menu_button")
+            widget = get_main_button()
             self.menu.show(widget=widget)
 
 
@@ -85,12 +89,10 @@ class ModelMenu:
         self.menu.add("Set API Key", lambda e: model.set_api_key())
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "model_menu_button")
+            widget = get_model_button()
             self.menu.show(widget=widget)
 
 
@@ -105,12 +107,10 @@ class GPTMenu:
             self.menu.add(gpt[1], lambda e, gpt=gpt: widgets.use_gpt(gpt[0]))
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         if event:
             self.menu.show(event)
         else:
-            widget = getattr(widgets, "model_menu_button")
+            widget = get_model_button()
             self.menu.show(widget=widget)
 
 
