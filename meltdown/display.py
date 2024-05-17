@@ -565,26 +565,8 @@ class Display:
 
         self.apply_font_size(new_size)
 
-    def set_font_family(self, name: Optional[str] = None) -> None:
-        from .menumanager import font_family_menu
-
-        if not name:
-            font_family_menu.show()
-            return
-
-        if name not in ["sans-serif", "sans", "monospace", "mono", "serif"]:
-            return
-
-        if name == "sans":
-            name = "sans-serif"
-        elif name == "mono":
-            name = "monospace"
-
-        config.set("font_family", name)
-
     def reset_font(self) -> None:
         config.reset_one("font_size", False)
-        config.reset_one("font_family")
 
     def update_font(self) -> None:
         for tab in self.tabs.values():

@@ -155,9 +155,11 @@ class Theme:
         self.textbox_insert = "black"
 
     def get_font_family(self) -> str:
-        if config.font_family == "monospace":
+        from .args import args
+
+        if args.font_family == "monospace":
             font = self.monospace_family
-        elif config.font_family == "serif":
+        elif args.font_family == "serif":
             font = self.serif_family
         else:
             font = self.font_family

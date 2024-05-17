@@ -1410,6 +1410,28 @@ Type: int
 
 ---
 
+### font-family
+
+The font family to use for the output
+
+Default: "sans-serif"
+
+Choices: "sans-serif", "serif", "monospace"
+
+Type: str
+
+---
+
+### snippets-font
+
+The font to use in snippets
+
+Default: "monospace"
+
+Type: str
+
+---
+
 ### task-manager
 
 Which task manager to use
@@ -1485,16 +1507,6 @@ Type: str
 The color of the text for the name of the AI
 
 Default: "auto"
-
-Type: str
-
----
-
-### snippets-font
-
-The font to use in snippets
-
-Default: "monospace"
 
 Type: str
 

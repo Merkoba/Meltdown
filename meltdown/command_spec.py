@@ -499,13 +499,6 @@ class CommandSpec:
             type=str,
         )
 
-        self.add_cmd(
-            "fontfamily",
-            "Set the font family",
-            lambda a=None: display.set_font_family(a),
-            type=str,
-        )
-
         self.add_cmd("resetfont", "Reset the font", lambda a=None: display.reset_font())
 
         self.add_cmd(

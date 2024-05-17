@@ -952,6 +952,19 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "font_family",
+            type=str,
+            choices=["sans-serif", "serif", "monospace"],
+            info="The font family to use for the output",
+        )
+
+        self.add_argument(
+            "snippets_font",
+            type=str,
+            info="The font to use in snippets",
+        )
+
+        self.add_argument(
             "task_manager",
             type=str,
             info="Which task manager to use",
@@ -997,12 +1010,6 @@ class ArgSpec:
             "ai_color",
             type=str,
             info="The color of the text for the name of the AI",
-        )
-
-        self.add_argument(
-            "snippets_font",
-            type=str,
-            info="The font to use in snippets",
         )
 
         self.add_argument(

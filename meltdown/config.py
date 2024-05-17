@@ -45,7 +45,6 @@ class Config:
         self.default_before: str = ""
         self.default_after: str = ""
         self.default_font_size: int = 14
-        self.default_font_family: str = "sans-serif"
         self.default_threads: int = 6
         self.default_mlock: str = "yes"
         self.default_theme: str = "dark"
@@ -67,7 +66,6 @@ class Config:
         self.before = self.default_before
         self.after = self.default_after
         self.font_size = self.default_font_size
-        self.font_family = self.default_font_family
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.theme = self.default_theme
@@ -346,8 +344,6 @@ class Config:
 
         if on_change:
             if key == "font_size":
-                self.on_font_change()
-            elif key == "font_family":
                 self.on_font_change()
 
             if key in self.model_keys:

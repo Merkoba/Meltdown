@@ -195,6 +195,7 @@ class Args:
         self.clean_names = True
         self.theme = "dark"
         self.border_color = ""
+        self.font_family = "sans-serif"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -393,6 +394,7 @@ class Args:
             "show_terminal",
             "drag_and_drop",
             "border_color",
+            "font_family",
         ]
 
         for n_item in normals:
