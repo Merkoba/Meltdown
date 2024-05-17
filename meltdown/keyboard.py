@@ -503,7 +503,7 @@ class Keyboard:
             else:
                 keys = [key for key in keys if mode in key]
 
-        separator = "--------------------------------"
+        separator = "---"
         lines = ["Keyboard Shortcuts:"]
         used_keys = []
 

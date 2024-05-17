@@ -458,48 +458,10 @@ class Args:
     ) -> None:
         from .display import display
 
-        keys = list(argspec.arguments.keys())
+        text = self.get_argtext()
+        display.print(text, tab_id=tab_id)
 
-        if mode:
-            if mode == "sort":
-                keys = list(sorted(keys))
-            else:
-                keys = [key for key in keys if mode in key]
-
-        text = []
-
-        for key in keys:
-            data = argspec.arguments[key]
-            msg = data.get("help")
-
-            if not msg:
-                continue
-
-            argtype = data.get("type", "")
-            action = data.get("action", "")
-
-            if argtype:
-                extra = f" ({argtype.__name__})"
-            elif action:
-                extra = " (bool)"
-            else:
-                extra = ""
-
-            text.append(f"{key}{extra} = {msg}")
-
-        display.print("\n".join(text), tab_id=tab_id)
-
-    def make_argumentdoc(self, pathstr: str) -> None:
-        from .utils import utils
-        from .display import display
-        from pathlib import Path
-
-        path = Path(pathstr)
-
-        if (not path.parent.exists()) or (not path.parent.is_dir()):
-            utils.msg(f"Invalid path: {pathstr}")
-            return
-
+    def get_argtext(self) -> str:
         sep = "\n\n---\n\n"
 
         text = "## Arguments\n\n"
@@ -557,6 +519,21 @@ class Args:
             if argtype:
                 text += "\n\n"
                 text += f"Type: {argtype.__name__}"
+
+        return text
+
+    def make_argumentdoc(self, pathstr: str) -> None:
+        from .utils import utils
+        from .display import display
+        from pathlib import Path
+
+        path = Path(pathstr)
+
+        if (not path.parent.exists()) or (not path.parent.is_dir()):
+            utils.msg(f"Invalid path: {pathstr}")
+            return
+
+        text = self.get_argtext()
 
         with path.open("w", encoding="utf-8") as file:
             file.write(text)

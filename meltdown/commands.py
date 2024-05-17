@@ -222,28 +222,8 @@ class Commands:
     ) -> None:
         from .display import display
 
-        display.print("Commands:", tab_id=tab_id)
-        text = []
-
-        keys = list(self.commands.keys())
-
-        if mode:
-            if mode == "sort":
-                keys = list(sorted(keys))
-            else:
-                keys = [key for key in keys if mode in key]
-
-        for key in keys:
-            data = self.commands[key]
-            msg = data["info"]
-            extra = data.get("extra")
-
-            if extra:
-                msg += f" ({extra})"
-
-            text.append(f"{args.prefix}{key} = {msg}")
-
-        display.print("\n".join(text), tab_id=tab_id)
+        text = self.get_commandtext()
+        display.print(text, tab_id=tab_id)
 
     def make_palette(self) -> None:
         self.palette = Menu()
@@ -300,15 +280,7 @@ class Commands:
             if key in self.commands:
                 self.commands[key]["date"] = cmds[key].get("date", 0.0)
 
-    def make_commandoc(self, pathstr: str) -> None:
-        from .display import display
-
-        path = Path(pathstr)
-
-        if (not path.parent.exists()) or (not path.parent.is_dir()):
-            utils.msg(f"Invalid path: {pathstr}")
-            return
-
+    def get_commandtext(self) -> str:
         sep = "\n\n---\n\n"
 
         text = "## Commands\n\n"
@@ -328,6 +300,19 @@ class Commands:
             text += sep
             text += f"### {key}\n\n"
             text += cmd["info"]
+
+        return text
+
+    def make_commandoc(self, pathstr: str) -> None:
+        from .display import display
+
+        path = Path(pathstr)
+
+        if (not path.parent.exists()) or (not path.parent.is_dir()):
+            utils.msg(f"Invalid path: {pathstr}")
+            return
+
+        text = self.get_commandtext()
 
         with path.open("w", encoding="utf-8") as file:
             file.write(text)
