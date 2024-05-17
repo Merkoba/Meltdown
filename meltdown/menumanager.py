@@ -7,16 +7,21 @@ from .args import args
 from .menus import Menu
 
 
-def get_widget() -> tk.Widget:
+def get_more_button() -> tk.Widget:
     from .widgets import widgets
 
     if args.more_button:
-        widget = getattr(widgets, "more_menu_button")
+        widget = widgets.more_menu_button
     else:
-        widget = getattr(widgets, "stop_button")
+        widget = widgets.stop_button
 
-    assert isinstance(widget, tk.Widget)
     return widget
+
+
+def get_main_button() -> tk.Widget:
+    from .widgets import widgets
+
+    return widgets.main_menu_button
 
 
 class MainMenu:
@@ -41,6 +46,11 @@ class MainMenu:
         self.menu.separator()
 
         self.menu.add("Commands", lambda e: commands.show_palette())
+
+        self.menu.separator()
+
+        self.menu.add("Theme", lambda e: theme_menu.show())
+        self.menu.add("Font", lambda e: font_menu.show())
 
         self.menu.separator()
 
@@ -132,17 +142,13 @@ class MoreMenu:
         self.menu.add("View Text", lambda e: display.view_text(), disabled=disable)
         self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
 
-        self.menu.separator()
-        self.menu.add("Theme", lambda e: theme_menu.show())
-        self.menu.add("Font", lambda e: font_menu.show())
-
     def show(self, event: Any = None) -> None:
         self.make()
 
         if event:
             self.menu.show(event)
         else:
-            widget = get_widget()
+            widget = get_more_button()
             self.menu.show(widget=widget)
 
 
@@ -253,7 +259,7 @@ class FontMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_widget()
+            widget = get_main_button()
             self.menu.show(widget=widget)
 
 
@@ -271,7 +277,7 @@ class FontFamilyMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_widget()
+            widget = get_main_button()
             self.menu.show(widget=widget)
 
 
@@ -419,7 +425,7 @@ class ThemeMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_widget()
+            widget = get_main_button()
             self.menu.show(widget=widget)
 
 
