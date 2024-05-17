@@ -10,6 +10,23 @@ from .utils import utils
 
 class Config:
     def __init__(self) -> None:
+        self.default_system = """Your name is ((name_ai)).
+You are talking to ((name_user)).
+Answer to what I have to say.
+Specify the language if you use code fences with triple backticks.
+Use proper code fences when showing code, like:
+
+```python
+print("hello world")
+```
+
+Or for plain text:
+
+```
+This is not code.
+```
+No need to greet me, just answer."""
+
         self.max_log = 50
         self.input_memory_max = 30
         self.changes_delay = 250
@@ -21,36 +38,28 @@ class Config:
         self.token_limit = 0.88
         self.max_name_length = 50
         self.max_file_name_length = 50
-
-        system_lines = [
-            "Your name is ((name_ai)).",
-            "You are talking to ((name_user)).",
-            "No need to greet me, just answer.",
-        ]
-
-        self.default_avatar_user: str = "🥶"
-        self.default_avatar_ai: str = "🫠"
-        self.default_name_user: str = "Joe"
-        self.default_name_ai: str = "Melt"
-        self.default_context: int = 2048
-        self.default_max_tokens: int = 2048
-        self.default_temperature: float = 0.8
-        self.default_system: str = "\n".join(system_lines)
-        self.default_top_k: int = 40
-        self.default_top_p: float = 0.95
-        self.default_model: str = ""
-        self.default_history: int = 2
-        self.default_seed: int = 326
-        self.default_format: str = "auto"
-        self.default_before: str = ""
-        self.default_after: str = ""
-        self.default_font_size: int = 14
-        self.default_threads: int = 6
-        self.default_mlock: str = "yes"
-        self.default_theme: str = "dark"
+        self.default_avatar_user = "🥶"
+        self.default_avatar_ai = "🫠"
+        self.default_name_user = "Joe"
+        self.default_name_ai = "Melt"
+        self.default_context = 2048
+        self.default_max_tokens = 2048
+        self.default_temperature = 0.8
+        self.default_top_k = 40
+        self.default_top_p = 0.95
+        self.default_model = ""
+        self.default_history = 2
+        self.default_seed = 326
+        self.default_format = "auto"
+        self.default_before = ""
+        self.default_after = ""
+        self.default_font_size = 14
+        self.default_threads = 6
+        self.default_mlock = "yes"
+        self.default_theme = "dark"
         self.default_gpu_layers = 27
-        self.default_stop: str = "<|im_start|> ;; <|im_end|>"
-        self.default_mode: str = "text"
+        self.default_stop = "<|im_start|> ;; <|im_end|>"
+        self.default_mode = "text"
 
         self.model = self.default_model
         self.name_user = self.default_name_user

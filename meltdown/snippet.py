@@ -6,6 +6,7 @@ from typing import Any
 # Libraries
 from pygments.lexers import get_lexer_by_name  # type: ignore
 from pygments.styles import get_style_by_name  # type: ignore
+from pygments.util import ClassNotFound  # type: ignore
 
 # Modules
 from .output import Output
@@ -209,7 +210,11 @@ class Snippet(tk.Frame):
                 self.text.tag_configure(key_, foreground=color)
                 self.text.tag_lower(key_)
 
-        lexer = get_lexer_by_name(self.language, stripall=True)
+        try:
+            lexer = get_lexer_by_name(self.language, stripall=True)
+        except ClassNotFound:
+            return
+
         tokens = list(lexer.get_tokens(self.content))
 
         for text in tokens:
