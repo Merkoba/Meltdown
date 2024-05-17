@@ -10,22 +10,11 @@ from .utils import utils
 
 class Config:
     def __init__(self) -> None:
-        self.default_system = """Your name is ((name_ai)).
+        self.default_system = """
+Your name is ((name_ai)).
 You are talking to ((name_user)).
-Answer to what I have to say.
-Specify the language if you use code fences with triple backticks.
-Use proper code fences when showing code, like:
-
-```python
-print("hello world")
-```
-
-Or for plain text:
-
-```
-This is not code.
-```
-No need to greet me, just answer."""
+No need to greet me, just answer.
+""".strip()
 
         self.max_log = 50
         self.input_memory_max = 30
