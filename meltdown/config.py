@@ -10,12 +10,6 @@ from .utils import utils
 
 class Config:
     def __init__(self) -> None:
-        self.default_system = """
-Your name is ((name_ai)).
-You are talking to ((name_user)).
-No need to greet me, just answer.
-""".strip()
-
         self.max_log = 50
         self.input_memory_max = 30
         self.changes_delay = 250
@@ -27,6 +21,12 @@ No need to greet me, just answer.
         self.token_limit = 0.88
         self.max_name_length = 50
         self.max_file_name_length = 50
+
+        self.default_system = """
+Your name is ((name_ai)).
+You are talking to ((name_user)).
+No need to greet me, just answer.
+""".strip()
 
         self.default_avatar_user = "🥶"
         self.default_avatar_ai = "🫠"
