@@ -63,14 +63,18 @@ class Snippet(tk.Frame):
         self.text.configure(borderwidth=0, highlightthickness=0)
         self.text.delete("1.0", tk.END)
 
+        def insert() -> None:
+            self.text.insert("1.0", self.content)
+
         if language and args.syntax_highlighting:
             try:
-                self.syntax_highlighter()
+                if not self.syntax_highlighter():
+                    insert()
             except BaseException as e:
                 utils.error(e)
-                self.text.insert("1.0", self.content)
+                insert()
         else:
-            self.text.insert("1.0", self.content)
+            insert()
 
         self.text.configure(state="disabled")
         self.text.pack(side=tk.TOP, fill=tk.BOTH, expand=True, padx=5, pady=5)
@@ -199,7 +203,12 @@ class Snippet(tk.Frame):
         except tk.TclError:
             return ""
 
-    def syntax_highlighter(self) -> None:
+    def syntax_highlighter(self) -> bool:
+        try:
+            lexer = get_lexer_by_name(self.language, stripall=True)
+        except ClassNotFound:
+            return False
+
         style = get_style_by_name(app.theme.syntax_style)
         parsed = style.list_styles()
 
@@ -209,11 +218,6 @@ class Snippet(tk.Frame):
                 key_ = str(key[0])
                 self.text.tag_configure(key_, foreground=color)
                 self.text.tag_lower(key_)
-
-        try:
-            lexer = get_lexer_by_name(self.language, stripall=True)
-        except ClassNotFound:
-            return
 
         tokens = list(lexer.get_tokens(self.content))
 
@@ -225,6 +229,8 @@ class Snippet(tk.Frame):
 
         if not last_line_text.strip():
             self.text.delete(last_line_index, "end")
+
+        return True
 
     def on_click(self) -> None:
         app.hide_all()

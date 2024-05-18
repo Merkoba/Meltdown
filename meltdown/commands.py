@@ -288,7 +288,7 @@ class Commands:
 
         text += "Commands can be chained:\n\n"
 
-        text += "```sh\n"
+        text += "```\n"
         text += "/tab 2 & /sleep 0.5 & /select\n"
         text += "```\n\n"
 
