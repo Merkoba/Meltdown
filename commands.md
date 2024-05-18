@@ -66,12 +66,6 @@ Save all conversations to JSON files
 
 ---
 
-### openlog
-
-Open a log file by name
-
----
-
 ### resize
 
 Resize the window

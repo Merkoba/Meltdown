@@ -1646,7 +1646,7 @@ Type: str
 
 ### markdown-urls
 
-Markdown mode for urls
+Markdown mode for URLs
 
 Default: "both"
 
@@ -1661,6 +1661,30 @@ Type: str
 Markdown mode for paths
 
 Default: "both"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-headers
+
+Markdown mode for headers
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-separators
+
+Markdown mode for separators
+
+Default: "ai"
 
 Choices: "user", "ai", "both", "none"
 
