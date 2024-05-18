@@ -101,7 +101,7 @@ class Markdown:
         self.pattern_header_3 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
 
         # Separator line
-        self.pattern_separator = r"^---$"
+        self.pattern_separator = r"^-{3,}$"
 
     def format_all(self) -> None:
         start_ln = 1
