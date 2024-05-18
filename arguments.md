@@ -648,6 +648,16 @@ Action: store_true
 
 ---
 
+### compact-details-3
+
+Hide the third details frame in compact mode
+
+Default: False
+
+Action: store_true
+
+---
+
 ### compact-buttons
 
 Hide the buttons frame in compact mode

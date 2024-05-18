@@ -139,14 +139,24 @@ def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
 
 
 def add_monitors(widgets: "Widgets", data: "FrameData") -> None:
+    first = False
+
     def make_monitor(name: str, label_text: str, mode: str) -> None:
+        nonlocal first
+
+        if not first:
+            padx = 0
+            first = True
+        else:
+            padx = None
+
         label = widgetutils.make_label(
-            data, label_text, ignore_short=(not args.short_system)
+            data, label_text, ignore_short=(not args.short_system), padx=padx
         )
 
         label.configure(cursor="hand2")
         setattr(widgets, name, tk.StringVar())
-        monitor_text = widgetutils.make_label(data, "", padx=0)
+        monitor_text = widgetutils.make_label(data, "")
         monitor_text.configure(textvariable=getattr(widgets, name))
         monitor_text.configure(cursor="hand2")
         setattr(widgets, f"{name}_text", monitor_text)

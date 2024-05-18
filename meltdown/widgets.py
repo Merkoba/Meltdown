@@ -394,6 +394,7 @@ class Widgets:
         self.add_generic_menus()
         self.check_details_buttons(1)
         self.check_details_buttons(2)
+        self.check_details_buttons(3)
         self.setup_tooltips()
         self.disable_stop_button()
 
@@ -430,6 +431,7 @@ class Widgets:
         app.root.update_idletasks()
         self.do_setup_details(1)
         self.do_setup_details(2)
+        self.do_setup_details(3)
 
     def do_setup_details(self, num: int) -> None:
         details = getattr(self, f"details_{num}")

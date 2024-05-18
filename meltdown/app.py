@@ -236,7 +236,7 @@ class App:
         from .widgets import widgets
 
         widget = getattr(widgets, f"details_frame_{num}")
-        assert(isinstance(widget, tk.Frame))
+        assert isinstance(widget, tk.Frame)
         widget.grid_remove()
         setattr(self, f"details_{num}_enabled", False)
 
@@ -244,7 +244,7 @@ class App:
         from .widgets import widgets
 
         widget = getattr(widgets, f"details_frame_{num}")
-        assert(isinstance(widget, tk.Frame))
+        assert isinstance(widget, tk.Frame)
         widget.grid()
         setattr(self, f"details_{num}_enabled", True)
 
