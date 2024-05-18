@@ -1749,3 +1749,13 @@ Use a specific title for the window
 Default: [Empty string]
 
 Type: str
+
+---
+
+### icon
+
+Use a specific icon for the window. png or gif
+
+Default: [Empty string]
+
+Type: str
