@@ -234,7 +234,9 @@ class Markdown:
 
                 for _ in range(0, 999):
                     start = self.widget.search(
-                        all, f"{match_.line}.{search_col}", stopindex=f"{match_.line}.end"
+                        all,
+                        f"{match_.line}.{search_col}",
+                        stopindex=f"{match_.line}.end",
                     )
 
                     if not start:
@@ -351,7 +353,7 @@ class Markdown:
 
             self.widget.snippets.append(snippet)
 
-    def format_separators(self, start_ln: int, end_ln: int, who: str) -> bool:
+    def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []
         lines = self.get_lines(start_ln, end_ln, who)
 
