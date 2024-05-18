@@ -295,10 +295,11 @@ class App:
     def disable_compact(self) -> None:
         from .widgets import widgets
 
+        self.show_details(1)
+        self.show_details(2)
+        self.show_details(3)
+
         widgets.model_frame.grid()
-        widgets.details_frame_1.grid()
-        widgets.details_frame_2.grid()
-        widgets.details_frame_3.grid()
         widgets.buttons_frame.grid()
         widgets.file_frame.grid()
         widgets.input_frame.grid()
