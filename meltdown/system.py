@@ -167,5 +167,19 @@ class System:
         thread.daemon = True
         thread.start()
 
+    def show(self) -> None:
+        app.system_frame_visible = True
+        widgets.system_frame.grid()
+
+    def hide(self) -> None:
+        app.system_frame_visible = False
+        widgets.system_frame.grid_remove()
+
+    def toggle(self) -> None:
+        if app.system_frame_visible:
+            self.hide()
+        else:
+            self.show()
+
 
 system = System()

@@ -717,3 +717,9 @@ Do nothing
 ### random
 
 Make up a random prompt
+
+---
+
+### togglesystem
+
+Toggle the system monitors

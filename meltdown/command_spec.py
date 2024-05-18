@@ -16,6 +16,7 @@ from .files import files
 from .output import Output
 from .keyboard import keyboard
 from .utils import utils
+from .system import system
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -736,6 +737,12 @@ class CommandSpec:
             "random",
             "Make up a random prompt",
             lambda a=None: utils.random_prompt(),
+        )
+
+        self.add_cmd(
+            "togglesystem",
+            "Toggle the system monitors",
+            lambda a=None: system.toggle(),
         )
 
 
