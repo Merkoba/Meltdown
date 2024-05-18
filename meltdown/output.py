@@ -547,8 +547,9 @@ class Output(tk.Text):
         self.update_idletasks()
         self.to_bottom(True)
 
-    def update_font(self) -> None:
-        self.configure(font=app.theme.get_output_font())
+    def update_font_size(self) -> None:
+        self.set_font()
+        self.configure_tags()
 
         for snippet in self.snippets:
             snippet.update_font()
