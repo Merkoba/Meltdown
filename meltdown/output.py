@@ -289,6 +289,7 @@ class Output(tk.Text):
         self.markdown = Markdown(self)
 
         def on_tag_click(event: Any) -> None:
+            self.deselect_all()
             self.show_word_menu(event)
 
         tags = (
@@ -887,6 +888,8 @@ class Output(tk.Text):
     def on_name_click(self, event: Any) -> None:
         from .menumanager import item_menu
         from .keyboard import keyboard
+
+        self.deselect_all()
 
         if not args.name_menu:
             return
