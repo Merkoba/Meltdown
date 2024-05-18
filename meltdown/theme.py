@@ -138,7 +138,6 @@ class Theme:
 
         self.padx = 5
         self.pady = 5
-        self.padx_small = 3
 
         self.frame_padx = 0
         self.frame_pady = 0
