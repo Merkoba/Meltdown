@@ -195,7 +195,6 @@ class System:
         if app.details_1_enabled:
             app.hide_details(1)
         else:
-            self.reset()
             app.show_details(1)
 
 

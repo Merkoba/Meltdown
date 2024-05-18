@@ -234,11 +234,15 @@ class App:
 
     def hide_details(self, num: int) -> None:
         from .widgets import widgets
+        from .system import system
 
         widget = getattr(widgets, f"details_frame_{num}")
         assert isinstance(widget, tk.Frame)
         widget.grid_remove()
         setattr(self, f"details_{num}_enabled", False)
+
+        if num == 1:
+            system.reset()
 
     def show_details(self, num: int) -> None:
         from .widgets import widgets
