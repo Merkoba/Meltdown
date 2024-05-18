@@ -547,7 +547,7 @@ class Output(tk.Text):
         self.update_idletasks()
         self.to_bottom(True)
 
-    def update_font_size(self) -> None:
+    def update_font(self) -> None:
         self.set_font()
         self.configure_tags()
 

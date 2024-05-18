@@ -586,23 +586,9 @@ class Display:
         config.reset_one("font_size", False)
         config.reset_one("font_family")
 
-    def update_font_size(self) -> None:
+    def update_font(self) -> None:
         for tab in self.tabs.values():
-            tab.output.update_font_size()
-
-    def update_font_family(self) -> None:
-        for tab in self.tabs.values():
-            if tab.modified:
-                tabconvo = self.get_tab_convo(tab.tab_id)
-
-                if not tabconvo:
-                    continue
-
-                if tabconvo.convo.id == "ignore":
-                    continue
-
-                self.reset_tab(tab)
-                tabconvo.convo.print()
+            tab.output.update_font()
 
     def scroll_up(self, tab_id: Optional[str] = None, more: bool = False) -> None:
         if not tab_id:
