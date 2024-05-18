@@ -190,6 +190,10 @@ class Theme:
         ff = self.get_font_family()
         return (ff, config.font_size + num, "bold")
 
+    def get_separator_font(self) -> Tuple[str, int]:
+        ff = self.monospace_family
+        return (ff, config.font_size)
+
     def font(self, name: str = "font") -> Tuple[str, int, str]:
         from .args import args
 

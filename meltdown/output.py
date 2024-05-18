@@ -548,9 +548,7 @@ class Output(tk.Text):
     def update_font(self) -> None:
         self.set_font()
         self.configure_tags()
-
-        for snippet in self.snippets:
-            snippet.update_font()
+        self.update_snippet_fonts()
 
     def update_size(self) -> None:
         if not self.winfo_exists():
@@ -945,6 +943,7 @@ class Output(tk.Text):
         self.tag_configure("header_1", font=app.theme.get_header_font(1))
         self.tag_configure("header_2", font=app.theme.get_header_font(2))
         self.tag_configure("header_3", font=app.theme.get_header_font(3))
+        self.tag_configure("separator", font=app.theme.get_separator_font())
 
         if args.colors:
             if args.user_color == "auto":
@@ -958,3 +957,7 @@ class Output(tk.Text):
 
     def set_font(self) -> None:
         self.configure(font=app.theme.get_output_font())
+
+    def update_snippet_fonts(self) -> None:
+        for snippet in self.snippets:
+            snippet.update_font()

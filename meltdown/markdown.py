@@ -3,11 +3,9 @@ import re
 from typing import List, Any, Tuple
 
 # Modules
-from .app import app
 from .args import args
 from .output import Output
 from .utils import utils
-from .separatorbox import SeparatorBox
 
 
 class MatchItem:
@@ -38,6 +36,8 @@ class Markdown:
         protocols_list = ["http://", "https://", "ftp://", "www."]
         protocols_string = self.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
+
+        self.separator = "───────────────────"
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
@@ -362,12 +362,14 @@ class Markdown:
                 matches.append(i)
 
         for i in reversed(matches):
-            separator = SeparatorBox(
-                self.widget, app.theme.menu_background, padx=100, pady=1
-            )
-
             self.widget.delete(f"{start_ln + i}.0", f"{start_ln + i}.end")
-            self.widget.window_create(f"{start_ln + i}.0", window=separator)
+            self.widget.insert(f"{start_ln + i}.0", self.separator)
+
+            self.widget.tag_add(
+                "separator",
+                f"{start_ln + i}.0",
+                f"{start_ln + i}.0 + {len(self.separator)}c",
+            )
 
     def get_lines(self, start_ln: int, end_ln: int, who: str) -> List[str]:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
