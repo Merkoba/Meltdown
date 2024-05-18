@@ -193,9 +193,10 @@ class System:
 
     def toggle(self) -> None:
         if app.details_1_enabled:
-            app.show_details(1)
-        else:
             app.hide_details(1)
+        else:
+            self.reset()
+            app.show_details(1)
 
 
 system = System()
