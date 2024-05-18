@@ -72,5 +72,7 @@ format_test = {
         {"assistant": "# The Title"},
         {"user": "Show me a separator"},
         {"assistant": "First line\n---\nSecond line"},
+        {"user": "Quoted header"},
+        {"assistant": '## "What is this"'},
     ],
 }
