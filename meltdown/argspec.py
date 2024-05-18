@@ -1149,5 +1149,11 @@ class ArgSpec:
             info="The color of the border around the window",
         )
 
+        self.add_argument(
+            "title",
+            type=str,
+            info="Use a specific title for the window",
+        )
+
 
 argspec = ArgSpec()

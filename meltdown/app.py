@@ -453,10 +453,13 @@ class App:
         else:
             self.root = tk.Tk(className=self.manifest["program"])
 
-        title = self.manifest["title"]
+        title = args.title
 
-        if args.profile:
-            title += f" ({args.profile})"
+        if not title:
+            title = self.manifest["title"]
+
+            if args.profile:
+                title += f" ({args.profile})"
 
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)

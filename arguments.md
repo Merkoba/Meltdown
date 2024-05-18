@@ -1739,3 +1739,13 @@ The color of the border around the window
 Default: [Empty string]
 
 Type: str
+
+---
+
+### title
+
+Use a specific title for the window
+
+Default: [Empty string]
+
+Type: str
