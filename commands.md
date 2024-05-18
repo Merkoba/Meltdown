@@ -2,7 +2,7 @@
 
 Commands can be chained:
 
-```sh
+```
 /tab 2 & /sleep 0.5 & /select
 ```
 
