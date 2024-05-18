@@ -224,6 +224,7 @@ class Commands:
 
         text = self.get_commandtext()
         display.print(text, tab_id=tab_id)
+        display.format_text(tab_id=tab_id, mode="all")
 
     def make_palette(self) -> None:
         self.palette = Menu()

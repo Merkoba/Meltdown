@@ -291,7 +291,15 @@ class Output(tk.Text):
         def on_tag_click(event: Any) -> None:
             self.show_word_menu(event)
 
-        tags = ("bold", "italic", "highlight", "quote", "header")
+        tags = (
+            "bold",
+            "italic",
+            "highlight",
+            "quote",
+            "header_1",
+            "header_2",
+            "header_3",
+        )
 
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
@@ -418,7 +426,9 @@ class Output(tk.Text):
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
         self.tag_configure("quote", font=app.theme.get_bold_font())
-        self.tag_configure("header", font=app.theme.get_header_font())
+        self.tag_configure("header_1", font=app.theme.get_header_font(1))
+        self.tag_configure("header_2", font=app.theme.get_header_font(2))
+        self.tag_configure("header_3", font=app.theme.get_header_font(3))
 
         if args.colors:
             if args.user_color == "auto":
@@ -439,7 +449,9 @@ class Output(tk.Text):
             "path",
             "name_user",
             "name_ai",
-            "header",
+            "header_1",
+            "header_2",
+            "header_3",
         ):
             self.tag_lower(tag)
 
@@ -534,20 +546,26 @@ class Output(tk.Text):
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self) -> None:
+    def format_text(self, mode: str = "normal") -> None:
         tab = self.get_tab()
 
         if not tab:
             return
 
-        if tab.mode == "ignore":
-            return
-
         if not tab.modified:
             return
 
+        if tab.mode == "ignore":
+            if mode == "normal":
+                return
+
         self.enable()
-        self.markdown.format()
+
+        if mode == "all":
+            self.markdown.format_all()
+        else:
+            self.markdown.format()
+
         self.disable()
         self.update_idletasks()
         self.to_bottom(True)

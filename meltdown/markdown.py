@@ -3,9 +3,11 @@ import re
 from typing import List, Any, Tuple
 
 # Modules
+from .app import app
 from .args import args
 from .output import Output
 from .utils import utils
+from .separatorbox import SeparatorBox
 
 
 class MatchItem:
@@ -98,6 +100,14 @@ class Markdown:
         # Header with one hash
         self.pattern_header_3 = rf"^(?P<all>{hash_}{{1}}\s*(?P<content>.*))$"
 
+        # Separator line
+        self.pattern_separator = r"^---$"
+
+    def format_all(self) -> None:
+        start_ln = 1
+        end_ln = int(self.widget.index("end").split(".")[0])
+        self.format_section("nobody", start_ln, end_ln)
+
     def format(self) -> None:
         if args.markdown == "none":
             return
@@ -129,9 +139,12 @@ class Markdown:
             add(who, start_ln, end_ln)
 
         for who, start_ln, end_ln in reversed(ranges):
-            self.format_all(who, start_ln, end_ln)
+            self.format_section(who, start_ln, end_ln)
 
     def enabled(self, who: str, what: str) -> bool:
+        if who == "nobody":
+            return True
+
         arg = getattr(args, f"markdown_{what}")
 
         if arg == "none":
@@ -148,52 +161,50 @@ class Markdown:
 
         return False
 
-    def format_all(self, who: str, start_ln: int, end_ln: int) -> None:
-        text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
-        lines = text.split("\n")
-
-        if (who == "user") or (who == "ai"):
-            index = lines[0].index(f":{Output.marker_space}") + 2
-            lines[0] = lines[0][index:]
-
+    def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
         if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
 
         if self.enabled(who, "bold"):
-            self.do_format(lines, start_ln, self.pattern_bold_1, "bold")
+            self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
 
         if self.enabled(who, "italic"):
-            self.do_format(lines, start_ln, self.pattern_italic_1, "italic")
-            self.do_format(lines, start_ln, self.pattern_italic_2, "italic")
+            self.do_format(start_ln, end_ln, who, self.pattern_italic_1, "italic")
+            self.do_format(start_ln, end_ln, who, self.pattern_italic_2, "italic")
 
         if self.enabled(who, "highlights"):
-            self.do_format(lines, start_ln, self.pattern_highlight_1, "highlight")
-            self.do_format(lines, start_ln, self.pattern_highlight_2, "highlight")
-            self.do_format(lines, start_ln, self.pattern_highlight_3, "highlight")
+            self.do_format(start_ln, end_ln, who, self.pattern_highlight_1, "highlight")
+            self.do_format(start_ln, end_ln, who, self.pattern_highlight_2, "highlight")
+            self.do_format(start_ln, end_ln, who, self.pattern_highlight_3, "highlight")
 
         if self.enabled(who, "quotes"):
-            self.do_format(lines, start_ln, self.pattern_quote, "quote", True)
+            self.do_format(start_ln, end_ln, who, self.pattern_quote, "quote", True)
 
         if self.enabled(who, "urls"):
-            self.do_format(lines, start_ln, self.pattern_url, "url")
+            self.do_format(start_ln, end_ln, who, self.pattern_url, "url")
 
         if self.enabled(who, "paths"):
-            self.do_format(lines, start_ln, self.pattern_path, "path")
+            self.do_format(start_ln, end_ln, who, self.pattern_path, "path")
 
         if self.enabled(who, "headers"):
-            self.do_format(lines, start_ln, self.pattern_header_1, "header")
-            self.do_format(lines, start_ln, self.pattern_header_2, "header")
-            self.do_format(lines, start_ln, self.pattern_header_3, "header")
+            self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_3")
+            self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
+            self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_1")
+
+        if self.enabled(who, "separators"):
+            self.format_separators(start_ln, end_ln, who)
 
     def do_format(
         self,
-        lines: List[str],
         start_ln: int,
+        end_ln: int,
+        who: str,
         pattern: str,
         tag: str,
         no_replace: bool = False,
     ) -> None:
         matches: List[MatchItem] = []
+        lines = self.get_lines(start_ln, end_ln, who)
 
         for i, line in enumerate(lines):
             if not line.strip():
@@ -204,8 +215,8 @@ class Markdown:
             if match.items:
                 matches.append(match)
 
-        for match in reversed(matches):
-            items = match.items
+        for match_ in reversed(matches):
+            items = match_.items
             indices: List[IndexItem] = []
 
             for item in reversed(items):
@@ -218,9 +229,12 @@ class Markdown:
 
                 search_col = 0
 
+                if tag == "header_3":
+                    pass
+
                 for _ in range(0, 999):
                     start = self.widget.search(
-                        all, f"{match.line}.{search_col}", stopindex=f"{match.line}.end"
+                        all, f"{match_.line}.{search_col}", stopindex=f"{match_.line}.end"
                     )
 
                     if not start:
@@ -263,16 +277,16 @@ class Markdown:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         matches = []
 
-        for match in re.finditer(
+        for match_ in re.finditer(
             self.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
         ):
-            language = match.group(1)
+            language = match_.group(1)
 
-            content_start = match.start(2)
+            content_start = match_.start(2)
             line_1 = self.get_line_number(text, content_start)
             start_line = f"{start_ln + line_1}.0"
 
-            content_end = match.end(2)
+            content_end = match_.end(2)
             line_2 = self.get_line_number(text, content_end)
             end_line = f"{start_ln + line_2}.0"
 
@@ -336,6 +350,32 @@ class Markdown:
                     self.widget.window_create(f"{start_line} -1 lines", window=snippet)
 
             self.widget.snippets.append(snippet)
+
+    def format_separators(self, start_ln: int, end_ln: int, who: str) -> bool:
+        matches = []
+        lines = self.get_lines(start_ln, end_ln, who)
+
+        for i, line in enumerate(lines):
+            if re.match(self.pattern_separator, line):
+                matches.append(i)
+
+        for i in reversed(matches):
+            separator = SeparatorBox(
+                self.widget, app.theme.menu_background, padx=100, pady=1
+            )
+
+            self.widget.delete(f"{start_ln + i}.0", f"{start_ln + i}.end")
+            self.widget.window_create(f"{start_ln + i}.0", window=separator)
+
+    def get_lines(self, start_ln: int, end_ln: int, who: str) -> List[str]:
+        text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
+        lines = text.split("\n")
+
+        if (who == "user") or (who == "ai"):
+            index = lines[0].index(f":{Output.marker_space}") + 2
+            lines[0] = lines[0][index:]
+
+        return lines
 
     def get_line_number(self, text: str, index: int) -> int:
         return text.count("\n", 0, index)

@@ -125,6 +125,7 @@ class Args:
         self.markdown_urls = "both"
         self.markdown_paths = "both"
         self.markdown_headers = "ai"
+        self.markdown_separators = "ai"
 
         self.errors = False
         self.log_errors = True
@@ -381,6 +382,7 @@ class Args:
             "markdown_urls",
             "markdown_paths",
             "markdown_headers",
+            "markdown_separators",
             "help_prompt",
             "explain_prompt",
             "new_prompt",
@@ -460,6 +462,7 @@ class Args:
 
         text = self.get_argtext()
         display.print(text, tab_id=tab_id)
+        display.format_text(tab_id=tab_id, mode="all")
 
     def get_argtext(self) -> str:
         sep = "\n\n---\n\n"

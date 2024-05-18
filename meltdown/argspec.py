@@ -1113,6 +1113,13 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "markdown_separators",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for separators",
+        )
+
+        self.add_argument(
             "on_shift_middle_click",
             type=str,
             info="Commands to run when shift middle clicking the output",

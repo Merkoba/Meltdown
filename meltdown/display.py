@@ -695,7 +695,7 @@ class Display:
 
         return not bool(tabconvo.convo.items)
 
-    def format_text(self, tab_id: Optional[str] = None) -> None:
+    def format_text(self, tab_id: Optional[str] = None, mode: str = "normal") -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -704,7 +704,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.format_text()
+        tab.output.format_text(mode=mode)
 
     def select_first_tab(self) -> None:
         self.book.select_first()

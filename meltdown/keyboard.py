@@ -493,6 +493,7 @@ class Keyboard:
 
         text = self.get_argtext(mode)
         display.print(text, tab_id=tab_id)
+        display.format_text(tab_id=tab_id, mode="all")
 
     def get_argtext(self, mode: Optional[str] = None) -> str:
         keys = list(self.commands.keys())
