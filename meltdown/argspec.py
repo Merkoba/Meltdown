@@ -1155,5 +1155,11 @@ class ArgSpec:
             info="Use a specific title for the window",
         )
 
+        self.add_argument(
+            "icon",
+            type=str,
+            info="Use a specific icon for the window. png or gif",
+        )
+
 
 argspec = ArgSpec()

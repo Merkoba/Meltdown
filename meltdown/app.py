@@ -71,8 +71,18 @@ class App:
         )
 
     def setup_images(self) -> None:
-        self.icon_path = Path(self.here, "icon.png")
-        self.root.iconphoto(False, tk.PhotoImage(file=self.icon_path))
+        from .args import args
+
+        if args.icon:
+            icon = Path(args.icon)
+        else:
+            icon = Path(self.here, "icon.png")
+
+        try:
+            self.root.iconphoto(False, tk.PhotoImage(file=icon))
+        except BaseException as e:
+            utils.error(e)
+
         self.image_path = Path(self.here, "image.jpg")
 
     def setup(self, time_started: float) -> None:
