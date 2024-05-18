@@ -31,10 +31,11 @@ class ArgParser:
         value = getattr(self.args, attr)
 
         if value is not None:
-            if key:
-                self.set(key, value)
-            else:
-                self.set(attr, value)
+            if isinstance(value, str):
+                value = value.strip()
+
+            obj = key if key else attr
+            self.set(obj, value)
 
     def set(self, attr: str, value: Any) -> None:
         setattr(self.obj, attr, value)
