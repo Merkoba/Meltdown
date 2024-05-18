@@ -69,7 +69,7 @@ format_test = {
         {"user": "Show me some hashes"},
         {"assistant": "## The Title"},
         {"user": "Show me some hashes"},
-        {"assistant": "# The Title"},
+        {"assistant": "#No Title\n# The Title"},
         {"user": "Show me a separator"},
         {"assistant": "First line\n---\nSecond line"},
         {"user": "Quoted header"},

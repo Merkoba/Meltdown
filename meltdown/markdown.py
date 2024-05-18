@@ -92,13 +92,13 @@ class Markdown:
         self.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/[^\s]*))(?=\s|$)"
 
         # Header with three hashes
-        self.pattern_header_1 = rf"^(?P<all>{hash_}{{3}}\s*(?P<content>.*))$"
+        self.pattern_header_1 = rf"^(?P<all>{hash_}{{3}}\s+(?P<content>.*))$"
 
         # Header with two hashes
-        self.pattern_header_2 = rf"^(?P<all>{hash_}{{2}}\s*(?P<content>.*))$"
+        self.pattern_header_2 = rf"^(?P<all>{hash_}{{2}}\s+(?P<content>.*))$"
 
         # Header with one hash
-        self.pattern_header_3 = rf"^(?P<all>{hash_}{{1}}\s*(?P<content>.*))$"
+        self.pattern_header_3 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
 
         # Separator line
         self.pattern_separator = r"^---$"
