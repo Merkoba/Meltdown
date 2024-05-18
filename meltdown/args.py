@@ -525,6 +525,7 @@ class Args:
                 text += "\n\n"
                 text += f"Type: {argtype.__name__}"
 
+        text += "\n"
         return text
 
     def make_argumentdoc(self, pathstr: str) -> None:

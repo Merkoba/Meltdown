@@ -302,6 +302,7 @@ class Commands:
             text += f"### {key}\n\n"
             text += cmd["info"]
 
+        text += "\n"
         return text
 
     def make_commandoc(self, pathstr: str) -> None:
