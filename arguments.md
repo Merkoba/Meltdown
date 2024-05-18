@@ -618,16 +618,6 @@ Action: store_true
 
 ---
 
-### compact-system
-
-Hide the system frame in compact mode
-
-Default: False
-
-Action: store_true
-
----
-
 ### compact-details-1
 
 Hide the first details frame in compact mode
