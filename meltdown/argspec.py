@@ -13,6 +13,7 @@ class ArgSpec:
         self.defaults: Dict[str, Any] = {}
         self.arguments: Dict[str, Any] = {}
         self.infos: List[str] = []
+        self.markdown_choices = ["user", "ai", "both", "none"]
 
         self.add_arguments()
 
@@ -1058,50 +1059,57 @@ class ArgSpec:
         self.add_argument(
             "markdown_snippets",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for snippets",
         )
 
         self.add_argument(
             "markdown_italic",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for italic",
         )
 
         self.add_argument(
             "markdown_bold",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for bold",
         )
 
         self.add_argument(
             "markdown_highlights",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for highlights",
         )
 
         self.add_argument(
             "markdown_quotes",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for quotes",
         )
 
         self.add_argument(
             "markdown_urls",
             type=str,
-            choices=["user", "ai", "both", "none"],
-            info="Markdown mode for urls",
+            choices=self.markdown_choices,
+            info="Markdown mode for URLs",
         )
 
         self.add_argument(
             "markdown_paths",
             type=str,
-            choices=["user", "ai", "both", "none"],
+            choices=self.markdown_choices,
             info="Markdown mode for paths",
+        )
+
+        self.add_argument(
+            "markdown_headers",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for headers",
         )
 
         self.add_argument(

@@ -41,6 +41,7 @@ class Markdown:
         under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
         quote = utils.escape_regex('"')
+        hash_ = utils.escape_regex("#")
 
         # Code snippets / fences
         self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
@@ -87,6 +88,15 @@ class Markdown:
 
         # Unix paths like /home/user/file.txt
         self.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/[^\s]*))(?=\s|$)"
+
+        # Header with three hashes
+        self.pattern_header_1 = rf"^(?P<all>{hash_}{{3}}\s*(?P<content>.*))$"
+
+        # Header with two hashes
+        self.pattern_header_2 = rf"^(?P<all>{hash_}{{2}}\s*(?P<content>.*))$"
+
+        # Header with one hash
+        self.pattern_header_3 = rf"^(?P<all>{hash_}{{1}}\s*(?P<content>.*))$"
 
     def format(self) -> None:
         if args.markdown == "none":
@@ -139,47 +149,57 @@ class Markdown:
         return False
 
     def format_all(self, who: str, start_ln: int, end_ln: int) -> None:
+        text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
+        lines = text.split("\n")
+
+        if (who == "user") or (who == "ai"):
+            index = lines[0].index(f":{Output.marker_space}") + 2
+            lines[0] = lines[0][index:]
+
         if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
 
         if self.enabled(who, "bold"):
-            self.do_format(start_ln, end_ln, self.pattern_bold_1, "bold")
+            self.do_format(lines, start_ln, self.pattern_bold_1, "bold")
 
         if self.enabled(who, "italic"):
-            self.do_format(start_ln, end_ln, self.pattern_italic_1, "italic")
-            self.do_format(start_ln, end_ln, self.pattern_italic_2, "italic")
+            self.do_format(lines, start_ln, self.pattern_italic_1, "italic")
+            self.do_format(lines, start_ln, self.pattern_italic_2, "italic")
 
         if self.enabled(who, "highlights"):
-            self.do_format(start_ln, end_ln, self.pattern_highlight_1, "highlight")
-            self.do_format(start_ln, end_ln, self.pattern_highlight_2, "highlight")
-            self.do_format(start_ln, end_ln, self.pattern_highlight_3, "highlight")
+            self.do_format(lines, start_ln, self.pattern_highlight_1, "highlight")
+            self.do_format(lines, start_ln, self.pattern_highlight_2, "highlight")
+            self.do_format(lines, start_ln, self.pattern_highlight_3, "highlight")
 
         if self.enabled(who, "quotes"):
-            self.do_format(start_ln, end_ln, self.pattern_quote, "quote", True)
+            self.do_format(lines, start_ln, self.pattern_quote, "quote", True)
 
         if self.enabled(who, "urls"):
-            self.do_format(start_ln, end_ln, self.pattern_url, "url")
+            self.do_format(lines, start_ln, self.pattern_url, "url")
 
         if self.enabled(who, "paths"):
-            self.do_format(start_ln, end_ln, self.pattern_path, "path")
+            self.do_format(lines, start_ln, self.pattern_path, "path")
+
+        if self.enabled(who, "headers"):
+            self.do_format(lines, start_ln, self.pattern_header_1, "header")
+            self.do_format(lines, start_ln, self.pattern_header_2, "header")
+            self.do_format(lines, start_ln, self.pattern_header_3, "header")
 
     def do_format(
         self,
+        lines: List[str],
         start_ln: int,
-        end_ln: int,
         pattern: str,
         tag: str,
         no_replace: bool = False,
     ) -> None:
         matches: List[MatchItem] = []
 
-        for ln in range(start_ln, end_ln + 1):
-            line = self.widget.get(f"{ln}.0", f"{ln}.end")
-
+        for i, line in enumerate(lines):
             if not line.strip():
                 continue
 
-            match = MatchItem(ln, list(re.finditer(pattern, line)))
+            match = MatchItem(start_ln + i, list(re.finditer(pattern, line)))
 
             if match.items:
                 matches.append(match)

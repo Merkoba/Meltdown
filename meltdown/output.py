@@ -16,6 +16,7 @@ class Output(tk.Text):
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     marker_separator = "\u200d\u200d\u200d"
+    marker_space = "\u00a0"
     words = ""
 
     @staticmethod
@@ -234,7 +235,12 @@ class Output(tk.Text):
     def get_prompt(who: str, show_avatar: bool = True, colon_space: bool = True) -> str:
         name = getattr(config, f"name_{who}")
         avatar = getattr(config, f"avatar_{who}")
-        colons = " : " if colon_space else ": "
+
+        colons = (
+            f"{Output.marker_space}:{Output.marker_space}"
+            if colon_space
+            else f":{Output.marker_space}"
+        )
 
         if args.avatars and show_avatar and avatar:
             if name:
@@ -285,7 +291,7 @@ class Output(tk.Text):
         def on_tag_click(event: Any) -> None:
             self.show_word_menu(event)
 
-        tags = ("bold", "italic", "highlight", "quote")
+        tags = ("bold", "italic", "highlight", "quote", "header")
 
         for tag in tags:
             self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
@@ -412,6 +418,7 @@ class Output(tk.Text):
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
         self.tag_configure("quote", font=app.theme.get_bold_font())
+        self.tag_configure("header", font=app.theme.get_header_font())
 
         if args.colors:
             if args.user_color == "auto":
@@ -432,6 +439,7 @@ class Output(tk.Text):
             "path",
             "name_user",
             "name_ai",
+            "header",
         ):
             self.tag_lower(tag)
 

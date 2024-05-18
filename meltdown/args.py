@@ -124,6 +124,7 @@ class Args:
         self.markdown_quotes = "both"
         self.markdown_urls = "both"
         self.markdown_paths = "both"
+        self.markdown_headers = "ai"
 
         self.errors = False
         self.log_errors = True
@@ -379,6 +380,7 @@ class Args:
             "markdown_quotes",
             "markdown_urls",
             "markdown_paths",
+            "markdown_headers",
             "help_prompt",
             "explain_prompt",
             "new_prompt",

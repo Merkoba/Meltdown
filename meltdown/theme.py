@@ -186,6 +186,10 @@ class Theme:
         ff = self.get_font_family()
         return (ff, config.font_size, "italic")
 
+    def get_header_font(self) -> Tuple[str, int, str]:
+        ff = self.get_font_family()
+        return (ff, config.font_size + 2, "bold")
+
     def font(self, name: str = "font") -> Tuple[str, int, str]:
         from .args import args
 
