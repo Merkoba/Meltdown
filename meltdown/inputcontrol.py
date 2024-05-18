@@ -6,6 +6,7 @@ from typing import Any, Optional, List, Dict
 from tkinterdnd2 import DND_TEXT  # type: ignore
 
 # Modules
+from .app import app
 from .tooltips import ToolTip
 from .commands import commands
 from .config import config
@@ -30,7 +31,8 @@ class InputControl:
         from .widgets import widgets
 
         frame_data = widgets.frame_data_input
-        self.input_label = widgetutils.make_label(frame_data, "Input")
+        padx = (app.theme.padx_small, app.theme.padx)
+        self.input_label = widgetutils.make_label(frame_data, "Input", padx=padx)
 
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()

@@ -93,7 +93,8 @@ class Widgets:
         frame_data_model = widgetutils.make_frame()
         self.model_frame = frame_data_model.frame
 
-        self.model_label = widgetutils.make_label(frame_data_model, "Model")
+        padx = (app.theme.padx_small, app.theme.padx)
+        self.model_label = widgetutils.make_label(frame_data_model, "Model", padx=padx)
         self.model = widgetutils.make_entry(frame_data_model)
         frame_data_model.expand()
         self.model.bind_mousewheel()
@@ -312,7 +313,8 @@ class Widgets:
         # File
         frame_data_file = widgetutils.make_frame()
         self.file_frame = frame_data_file.frame
-        self.file_label = widgetutils.make_label(frame_data_file, "File")
+        padx = (app.theme.padx_small, app.theme.padx)
+        self.file_label = widgetutils.make_label(frame_data_file, "File", padx=padx)
         self.file = widgetutils.make_entry(frame_data_file)
         frame_data_file.expand()
         self.file.bind_mousewheel()
