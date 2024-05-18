@@ -167,7 +167,32 @@ class System:
         thread.daemon = True
         thread.start()
 
+    def reset(self) -> None:
+        self.cpu = None
+        self.ram = None
+        self.temp = None
+        self.gpu_use = None
+        self.gpu_ram = None
+        self.gpu_temp = None
+
+        text = "000%"
+
+        self.set_widget(widgets.cpu, text)
+        self.set_widget(widgets.ram, text)
+        self.set_widget(widgets.temp, text)
+        self.set_widget(widgets.gpu, text)
+        self.set_widget(widgets.gpu_ram, text)
+        self.set_widget(widgets.gpu_temp, text)
+
+        self.check_color("cpu", 0)
+        self.check_color("ram", 0)
+        self.check_color("temp", 0)
+        self.check_color("gpu", 0)
+        self.check_color("gpu_ram", 0)
+        self.check_color("gpu_temp", 0)
+
     def show(self) -> None:
+        self.reset()
         app.system_frame_visible = True
         widgets.system_frame.grid()
 
