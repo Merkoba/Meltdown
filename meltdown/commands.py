@@ -326,15 +326,6 @@ class Commands:
         if args.after_stream:
             app.root.after(100, lambda: self.exec(args.after_stream))
 
-    def show_started(self) -> None:
-        from .dialogs import Dialog
-
-        date = utils.to_date(app.time_started)
-        date += "\n"
-        date += utils.time_ago(app.time_started, utils.now())
-
-        Dialog.show_message(date)
-
     def show_date(self) -> None:
         text = utils.to_date(utils.now())
         Dialog.show_message(text)

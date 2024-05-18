@@ -580,13 +580,22 @@ class App:
 
         Dialog.show_message("\n".join(lines))
 
-    def memory(self) -> None:
+    def show_memory(self) -> None:
         from .dialogs import Dialog
 
         process = psutil.Process(os.getpid())
         memory_in_bytes = process.memory_info().rss
         memory_in_megabytes = int(memory_in_bytes / (1024 * 1024))
         Dialog.show_message(f"Memory: {memory_in_megabytes} MB")
+
+    def show_started(self) -> None:
+        from .dialogs import Dialog
+
+        date = utils.to_date(self.time_started)
+        date += "\n"
+        date += utils.time_ago(self.time_started, utils.now())
+
+        Dialog.show_message(date)
 
     def toggle_sticky(self) -> None:
         if self.sticky:
@@ -755,6 +764,15 @@ class App:
         cmds.append(("Data", lambda: show_data()))
 
         Dialog.show_commands("Open directories", cmds)
+
+    def show_info(self) -> None:
+        from .dialogs import Dialog
+
+        cmds = []
+        cmds.append(("Memory", lambda: app.show_memory()))
+        cmds.append(("Started", lambda: app.show_started()))
+
+        Dialog.show_commands("Information", cmds)
 
 
 app = App()

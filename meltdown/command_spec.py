@@ -515,13 +515,13 @@ class CommandSpec:
         self.add_cmd(
             "memory",
             "Show how much memory the program is using",
-            lambda a=None: app.memory(),
+            lambda a=None: app.show_memory(),
         )
 
         self.add_cmd(
             "started",
             "How long ago the program started",
-            lambda a=None: commands.show_started(),
+            lambda a=None: app.show_started(),
         )
 
         self.add_cmd(
