@@ -310,5 +310,13 @@ class Utils:
 
         return name
 
+    def random_prompt(self) -> None:
+        from .model import model
+
+        noun = self.random_noun()
+        text = f"Tell me about: {noun}"
+        prompt = {"text": text}
+        model.stream(prompt)
+
 
 utils = Utils()

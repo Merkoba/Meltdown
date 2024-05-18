@@ -711,3 +711,9 @@ Go to the previous tab
 ### nothing
 
 Do nothing
+
+---
+
+### random
+
+Make up a random prompt

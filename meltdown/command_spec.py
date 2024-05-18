@@ -15,6 +15,7 @@ from .commands import commands
 from .files import files
 from .output import Output
 from .keyboard import keyboard
+from .utils import utils
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -729,6 +730,12 @@ class CommandSpec:
             "nothing",
             "Do nothing",
             lambda a=None: None,
+        )
+
+        self.add_cmd(
+            "random",
+            "Make up a random prompt",
+            lambda a=None: utils.random_prompt(),
         )
 
 
