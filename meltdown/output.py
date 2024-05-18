@@ -453,8 +453,6 @@ class Output(tk.Text):
         self.snippets = []
         self.checked_markers_user = []
         self.checked_markers_ai = []
-        self.set_font()
-        self.configure_tags()
 
     def to_top(self) -> None:
         self.auto_scroll = False
