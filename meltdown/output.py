@@ -257,10 +257,8 @@ class Output(tk.Text):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
 
-        super().__init__(
-            parent, state="disabled", wrap="word", font=app.theme.get_output_font()
-        )
-
+        super().__init__(parent, state="disabled", wrap="word")
+        self.set_font()
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
@@ -421,25 +419,7 @@ class Output(tk.Text):
         )
 
         self.configure(border=4, highlightthickness=0, relief="flat")
-        self.tag_configure("highlight", underline=True)
-        self.tag_configure("url", underline=True)
-        self.tag_configure("path", underline=True)
-        self.tag_configure("bold", font=app.theme.get_bold_font())
-        self.tag_configure("italic", font=app.theme.get_italic_font())
-        self.tag_configure("quote", font=app.theme.get_bold_font())
-        self.tag_configure("header_1", font=app.theme.get_header_font(1))
-        self.tag_configure("header_2", font=app.theme.get_header_font(2))
-        self.tag_configure("header_3", font=app.theme.get_header_font(3))
-
-        if args.colors:
-            if args.user_color == "auto":
-                self.tag_configure("name_user", foreground=app.theme.user_color)
-            else:
-                self.tag_configure("name_user", foreground=args.user_color)
-            if args.ai_color == "auto":
-                self.tag_configure("name_ai", foreground=app.theme.ai_color)
-            else:
-                self.tag_configure("name_ai", foreground=args.ai_color)
+        self.configure_tags()
 
         for tag in (
             "bold",
@@ -456,12 +436,6 @@ class Output(tk.Text):
         ):
             self.tag_lower(tag)
 
-        self.tag_configure(
-            "sel",
-            background=app.theme.output_selection_background,
-            foreground=app.theme.output_selection_foreground,
-        )
-
     def set_text(self, text: str) -> None:
         self.enable()
         self.delete("1.0", tk.END)
@@ -474,11 +448,13 @@ class Output(tk.Text):
         self.disable()
         self.to_bottom(True)
 
-    def clear_text(self) -> None:
+    def reset(self) -> None:
         self.set_text("")
         self.snippets = []
         self.checked_markers_user = []
         self.checked_markers_ai = []
+        self.set_font()
+        self.configure_tags()
 
     def to_top(self) -> None:
         self.auto_scroll = False
@@ -953,3 +929,33 @@ class Output(tk.Text):
             end_ln = len(lines)
 
         return start_ln, end_ln
+
+    def configure_tags(self) -> None:
+        self.tag_configure(
+            "sel",
+            background=app.theme.output_selection_background,
+            foreground=app.theme.output_selection_foreground,
+        )
+
+        self.tag_configure("highlight", underline=True)
+        self.tag_configure("url", underline=True)
+        self.tag_configure("path", underline=True)
+        self.tag_configure("bold", font=app.theme.get_bold_font())
+        self.tag_configure("italic", font=app.theme.get_italic_font())
+        self.tag_configure("quote", font=app.theme.get_bold_font())
+        self.tag_configure("header_1", font=app.theme.get_header_font(1))
+        self.tag_configure("header_2", font=app.theme.get_header_font(2))
+        self.tag_configure("header_3", font=app.theme.get_header_font(3))
+
+        if args.colors:
+            if args.user_color == "auto":
+                self.tag_configure("name_user", foreground=app.theme.user_color)
+            else:
+                self.tag_configure("name_user", foreground=args.user_color)
+            if args.ai_color == "auto":
+                self.tag_configure("name_ai", foreground=app.theme.ai_color)
+            else:
+                self.tag_configure("name_ai", foreground=args.ai_color)
+
+    def set_font(self) -> None:
+        self.configure(font=app.theme.get_output_font())

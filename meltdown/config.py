@@ -226,7 +226,7 @@ No need to greet me, just answer.
         with path.open("r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
-            self.on_font_change()
+            display.update_font()
 
     def apply(self, file: IO[str]) -> None:
         from .args import args
@@ -354,9 +354,7 @@ No need to greet me, just answer.
         self.save()
 
         if on_change:
-            if key == "font_size":
-                self.on_font_change()
-            elif key == "font_family":
+            if (key == "font_size") or (key == "font_family"):
                 self.on_font_change()
 
             if key in self.model_keys:
@@ -368,6 +366,7 @@ No need to greet me, just answer.
         from .model import model
         from .widgets import widgets
         from .dialogs import Dialog
+        from .display import display
 
         keep = ("model",)
 
@@ -384,10 +383,10 @@ No need to greet me, just answer.
                 if default is not None:
                     setattr(self, key, default)
 
-            self.on_font_change()
             widgets.fill()
             self.save()
             model.unload(True)
+            display.update_font()
 
         if force:
             action()

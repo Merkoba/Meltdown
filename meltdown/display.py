@@ -406,7 +406,7 @@ class Display:
         Dialog.show_confirm("Clear conversation ?", lambda: action())
 
     def reset_tab(self, tab: Tab) -> None:
-        tab.output.clear_text()
+        tab.output.reset()
         tab.modified = False
         tab.num_user_prompts = 0
         self.show_header(tab.tab_id)
@@ -588,7 +588,17 @@ class Display:
 
     def update_font(self) -> None:
         for tab in self.tabs.values():
-            tab.output.update_font()
+            if tab.modified:
+                tabconvo = self.get_tab_convo(tab.tab_id)
+
+                if not tabconvo:
+                    continue
+
+                if tabconvo.convo.id == "ignore":
+                    continue
+
+                self.reset_tab(tab)
+                tabconvo.convo.print()
 
     def scroll_up(self, tab_id: Optional[str] = None, more: bool = False) -> None:
         if not tab_id:
