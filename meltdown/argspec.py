@@ -493,6 +493,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "compact_details_3",
+            action="store_true",
+            info="Hide the third details frame in compact mode",
+        )
+
+        self.add_argument(
             "compact_buttons",
             action="store_true",
             info="Hide the buttons frame in compact mode",

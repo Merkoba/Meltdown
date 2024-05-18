@@ -77,6 +77,7 @@ class Args:
         self.compact_system = False
         self.compact_details_1 = False
         self.compact_details_2 = False
+        self.compact_details_3 = False
         self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
@@ -311,6 +312,7 @@ class Args:
             "compact_system",
             "compact_details_1",
             "compact_details_2",
+            "compact_details_3",
             "compact_file",
             "compact_buttons",
             "compact_model",

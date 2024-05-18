@@ -138,79 +138,6 @@ class Widgets:
 
         ToolTip(self.main_menu_button, tips["main_menu"])
 
-        # System
-        frame_data_system = widgetutils.make_frame()
-        self.system_frame = frame_data_system.frame
-
-        monitor_args = [
-            args.system_cpu,
-            args.system_ram,
-            args.system_temp,
-            args.system_gpu,
-            args.system_gpu_ram,
-            args.system_gpu_temp,
-        ]
-
-        self.system_disabled = not any(monitor_args)
-
-        if not self.system_disabled:
-            monitors = []
-
-            if args.system_cpu:
-                monitors.append("cpu")
-
-            if args.system_ram:
-                monitors.append("ram")
-
-            if args.system_temp:
-                monitors.append("temp")
-
-            if args.system_gpu:
-                monitors.append("gpu")
-
-            if args.system_gpu_ram:
-                monitors.append("gpu_ram")
-
-            if args.system_gpu_temp:
-                monitors.append("gpu_temp")
-
-            def make_monitor(name: str, label_text: str, mode: str) -> None:
-                label = widgetutils.make_label(
-                    frame_data_system, label_text, ignore_short=(not args.short_system)
-                )
-
-                label.configure(cursor="hand2")
-                setattr(self, name, tk.StringVar())
-                monitor_text = widgetutils.make_label(frame_data_system, "", padx=0)
-                monitor_text.configure(textvariable=getattr(self, name))
-                monitor_text.configure(cursor="hand2")
-                setattr(self, f"{name}_text", monitor_text)
-                tip = tips[f"system_{name}"]
-                ToolTip(label, tip)
-                ToolTip(monitor_text, tip)
-                getattr(self, name).set("000%")
-
-                label.bind("<Button-1>", lambda e: app.open_task_manager(mode))
-                monitor_text.bind("<Button-1>", lambda e: app.open_task_manager(mode))
-
-            if args.system_cpu:
-                make_monitor("cpu", "CPU", "normal")
-
-            if args.system_ram:
-                make_monitor("ram", "RAM", "normal")
-
-            if args.system_temp:
-                make_monitor("temp", "TMP", "normal")
-
-            if args.system_gpu:
-                make_monitor("gpu", "GPU", "gpu")
-
-            if args.system_gpu_ram:
-                make_monitor("gpu_ram", "GPU RAM", "gpu")
-
-            if args.system_gpu_temp:
-                make_monitor("gpu_temp", "GPU TMP", "gpu")
-
         # Details Container 1
         frame_data_details_1 = widgetutils.make_frame()
         self.details_frame_1 = frame_data_details_1.frame
@@ -239,16 +166,6 @@ class Widgets:
 
         ToolTip(self.details_button_right_1, tips["details_button"])
         self.details_frame_1.columnconfigure(1, weight=1)
-
-        # Details 1
-        details_data = FrameData(self.details_1)
-        details.add_users(self, details_data)
-        details.add_history(self, details_data)
-        details.add_context(self, details_data)
-        details.add_max_tokens(self, details_data)
-        details.add_threads(self, details_data)
-        details.add_gpu_layers(self, details_data)
-        details.add_temperature(self, details_data)
 
         # Details Container 2
         frame_data_details_2 = widgetutils.make_frame()
@@ -279,16 +196,59 @@ class Widgets:
         ToolTip(self.details_button_right_2, tips["details_button"])
         self.details_frame_2.columnconfigure(1, weight=1)
 
-        # Details 2
+        # Details Container 3
+        frame_data_details_3 = widgetutils.make_frame()
+        self.details_frame_3 = frame_data_details_3.frame
+        left_frame_3 = widgetutils.make_frame(self.details_frame_3, col=0, row=0)
+        left_frame_3.frame.grid_rowconfigure(0, weight=1)
+
+        self.details_button_left_3 = widgetutils.make_button(
+            left_frame_3, "<", lambda: widgets.details_left(3), style="alt"
+        )
+
+        ToolTip(self.details_button_left_3, tips["details_button"])
+
+        self.details_3, self.details_canvas_3 = widgetutils.make_scrollable_frame(
+            self.details_frame_3, 1
+        )
+
+        right_frame_3 = widgetutils.make_frame(self.details_frame_3, col=2, row=0)
+        right_frame_3.frame.grid_rowconfigure(0, weight=1)
+
+        self.details_button_right_3 = widgetutils.make_button(
+            right_frame_3,
+            ">",
+            lambda: widgets.details_right(3),
+            style="alt",
+        )
+
+        ToolTip(self.details_button_right_3, tips["details_button"])
+        self.details_frame_3.columnconfigure(1, weight=1)
+
+        # Details 1 Items
+        details_data_1 = FrameData(self.details_1)
+        details.add_monitors(self, details_data_1)
+
+        # Details 2 Items
         details_data_2 = FrameData(self.details_2)
-        details.add_format(self, details_data_2)
-        details.add_before(self, details_data_2)
-        details.add_after(self, details_data_2)
-        details.add_stop(self, details_data_2)
-        details.add_seed(self, details_data_2)
-        details.add_top_p(self, details_data_2)
-        details.add_top_k(self, details_data_2)
-        details.add_mlock(self, details_data_2)
+        details.add_users(self, details_data_2)
+        details.add_history(self, details_data_2)
+        details.add_context(self, details_data_2)
+        details.add_max_tokens(self, details_data_2)
+        details.add_threads(self, details_data_2)
+        details.add_gpu_layers(self, details_data_2)
+        details.add_temperature(self, details_data_2)
+
+        # Details 3 Items
+        details_data_3 = FrameData(self.details_3)
+        details.add_format(self, details_data_3)
+        details.add_before(self, details_data_3)
+        details.add_after(self, details_data_3)
+        details.add_stop(self, details_data_3)
+        details.add_seed(self, details_data_3)
+        details.add_top_p(self, details_data_3)
+        details.add_top_k(self, details_data_3)
+        details.add_mlock(self, details_data_3)
 
         # Buttons
         frame_data_buttons = widgetutils.make_frame()

@@ -47,7 +47,6 @@ class App:
         self.loading = False
         self.loaded = False
         self.checks_delay = 200
-        self.system_frame_visible = True
         self.autorun_delay = 250
         self.geometry_delay = 250
         self.check_geometry_after = ""
@@ -55,6 +54,9 @@ class App:
         self.close_enabled = True
         self.clear_enabled = True
         self.time_started = 0.0
+        self.details_1_enabled = True
+        self.details_2_enabled = True
+        self.details_3_enabled = True
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -230,15 +232,31 @@ class App:
         else:
             self.enable_compact()
 
+    def hide_details(self, num: int) -> None:
+        from .widgets import widgets
+
+        widget = getattr(widgets, f"details_frame_{num}")
+        assert(isinstance(widget, tk.Frame))
+        widget.grid_remove()
+        setattr(self, f"details_{num}_enabled", False)
+
+    def show_details(self, num: int) -> None:
+        from .widgets import widgets
+
+        widget = getattr(widgets, f"details_frame_{num}")
+        assert(isinstance(widget, tk.Frame))
+        widget.grid()
+        setattr(self, f"details_{num}_enabled", True)
+
     def enable_compact(self) -> None:
         from .widgets import widgets
         from .args import args
 
         confs = [
             args.compact_model,
-            args.compact_system,
             args.compact_details_1,
             args.compact_details_2,
+            args.compact_details_3,
             args.compact_buttons,
             args.compact_file,
             args.compact_input,
@@ -250,15 +268,14 @@ class App:
             if args.compact_model:
                 widgets.model_frame.grid_remove()
 
-            if args.compact_system:
-                widgets.system_frame.grid_remove()
-                self.system_frame_visible = False
-
             if args.compact_details_1:
-                widgets.details_frame_1.grid_remove()
+                self.hide_details(1)
 
             if args.compact_details_2:
-                widgets.details_frame_2.grid_remove()
+                self.hide_details(2)
+
+            if args.compact_details_3:
+                self.hide_details(3)
 
             if args.compact_buttons:
                 widgets.buttons_frame.grid_remove()
@@ -269,10 +286,8 @@ class App:
             if args.compact_input:
                 widgets.input_frame.grid_remove()
         else:
-            widgets.system_frame.grid_remove()
-            widgets.details_frame_1.grid_remove()
-            widgets.details_frame_2.grid_remove()
-            self.system_frame_visible = False
+            self.hide_details(2)
+            self.hide_details(3)
 
         self.after_compact(True)
 
@@ -280,13 +295,12 @@ class App:
         from .widgets import widgets
 
         widgets.model_frame.grid()
-        widgets.system_frame.grid()
         widgets.details_frame_1.grid()
         widgets.details_frame_2.grid()
+        widgets.details_frame_3.grid()
         widgets.buttons_frame.grid()
         widgets.file_frame.grid()
         widgets.input_frame.grid()
-        self.system_frame_visible = True
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:
@@ -546,17 +560,6 @@ class App:
             Menu.hide_all()
 
         ToolTip.hide_all()
-
-    def hide_frames(self) -> None:
-        from .widgets import widgets
-
-        widgets.model_frame.grid_remove()
-        widgets.system_frame.grid_remove()
-        widgets.details_frame_1.grid_remove()
-        widgets.details_frame_2.grid_remove()
-        widgets.buttons_frame.grid_remove()
-        widgets.file_frame.grid_remove()
-        widgets.input_frame.grid_remove()
 
     def autorun(self) -> None:
         from .args import args

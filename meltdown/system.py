@@ -147,7 +147,7 @@ class System:
         utils.sleep(1)
 
         while True:
-            if app.system_frame_visible:
+            if app.details_1_enabled:
                 try:
                     self.get_info()
                 except BaseException as e:
@@ -191,20 +191,11 @@ class System:
         self.check_color("gpu_ram", 0)
         self.check_color("gpu_temp", 0)
 
-    def show(self) -> None:
-        self.reset()
-        app.system_frame_visible = True
-        widgets.system_frame.grid()
-
-    def hide(self) -> None:
-        app.system_frame_visible = False
-        widgets.system_frame.grid_remove()
-
     def toggle(self) -> None:
-        if app.system_frame_visible:
-            self.hide()
+        if app.details_1_enabled:
+            app.show_details(1)
         else:
-            self.show()
+            app.hide_details(1)
 
 
 system = System()

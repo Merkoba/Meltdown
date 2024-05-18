@@ -1,10 +1,12 @@
 # Standard
+import tkinter as tk
 from typing import TYPE_CHECKING, Optional, List
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
 
 # Modules
+from .args import args
 from .app import app
 from .tooltips import ToolTip
 from .tips import tips
@@ -134,3 +136,42 @@ def add_stop(widgets: "Widgets", data: "FrameData") -> None:
 def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "mlock", "M-Lock")
     make_combobox(widgets, data, "mlock", ["yes", "no"], width=7)
+
+
+def add_monitors(widgets: "Widgets", data: "FrameData") -> None:
+    def make_monitor(name: str, label_text: str, mode: str) -> None:
+        label = widgetutils.make_label(
+            data, label_text, ignore_short=(not args.short_system)
+        )
+
+        label.configure(cursor="hand2")
+        setattr(widgets, name, tk.StringVar())
+        monitor_text = widgetutils.make_label(data, "", padx=0)
+        monitor_text.configure(textvariable=getattr(widgets, name))
+        monitor_text.configure(cursor="hand2")
+        setattr(widgets, f"{name}_text", monitor_text)
+        tip = tips[f"system_{name}"]
+        ToolTip(label, tip)
+        ToolTip(monitor_text, tip)
+        getattr(widgets, name).set("000%")
+
+        label.bind("<Button-1>", lambda e: app.open_task_manager(mode))
+        monitor_text.bind("<Button-1>", lambda e: app.open_task_manager(mode))
+
+    if args.system_cpu:
+        make_monitor("cpu", "CPU", "normal")
+
+    if args.system_ram:
+        make_monitor("ram", "RAM", "normal")
+
+    if args.system_temp:
+        make_monitor("temp", "TMP", "normal")
+
+    if args.system_gpu:
+        make_monitor("gpu", "GPU", "gpu")
+
+    if args.system_gpu_ram:
+        make_monitor("gpu_ram", "GPU RAM", "gpu")
+
+    if args.system_gpu_temp:
+        make_monitor("gpu_temp", "GPU TMP", "gpu")
