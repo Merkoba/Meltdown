@@ -286,6 +286,7 @@ class App:
             if args.compact_input:
                 widgets.input_frame.grid_remove()
         else:
+            self.hide_details(1)
             self.hide_details(2)
             self.hide_details(3)
 
