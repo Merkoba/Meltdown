@@ -15,18 +15,18 @@ from .framedata import FrameData
 def do_grid(
     widget: tk.Widget,
     col: int,
-    padx: Optional[int] = None,
-    pady: Optional[int] = None,
+    padx: Optional[Tuple[int, int]] = None,
+    pady: Optional[Tuple[int, int]] = None,
 ) -> None:
     if padx is not None:
         px = padx
     else:
-        px = app.theme.padx
+        px = (app.theme.padx, app.theme.padx)
 
     if pady is not None:
         py = pady
     else:
-        py = app.theme.pady
+        py = (app.theme.pady, app.theme.pady)
 
     widget.grid(row=0, column=col, padx=px, pady=py, sticky="ew")
 
@@ -101,7 +101,6 @@ def make_button(
     text: str,
     command: Optional[Callable[..., Any]] = None,
     bigger: bool = False,
-    pady: Optional[int] = None,
     style: Optional[str] = None,
     width: Optional[int] = None,
 ) -> ButtonBox:
@@ -115,7 +114,6 @@ def make_button(
     do_grid(
         widget,
         col=frame_data.col,
-        pady=pady,
     )
 
     frame_data.col += 1
@@ -125,8 +123,8 @@ def make_button(
 def make_label(
     frame_data: FrameData,
     text: str,
-    padx: Optional[int] = None,
-    pady: Optional[int] = None,
+    padx: Optional[Tuple[int, int]] = None,
+    pady: Optional[Tuple[int, int]] = None,
     ignore_short: bool = False,
     colons: bool = True,
 ) -> tk.Label:

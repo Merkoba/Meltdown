@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import TYPE_CHECKING, Optional, List
+from typing import TYPE_CHECKING, Optional, List, Tuple
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
@@ -23,7 +23,7 @@ def make_label(
     data: "FrameData",
     key: str,
     label: str,
-    padx: Optional[int] = None,
+    padx: Optional[Tuple[int, int]] = None,
 ) -> None:
     label_wid = widgetutils.make_label(data, label, padx=padx)
     setattr(widgets, f"{key}_label", label_wid)
@@ -56,7 +56,7 @@ def make_combobox(
 
 
 def add_users(widgets: "Widgets", data: "FrameData") -> None:
-    make_label(widgets, data, "user", "User", padx=0)
+    make_label(widgets, data, "user", "User", padx=(0, 0))
     make_entry(widgets, data, "avatar_user", width=4)
     make_entry(widgets, data, "name_user")
 
@@ -91,7 +91,7 @@ def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
 
 
 def add_format(widgets: "Widgets", data: "FrameData") -> None:
-    make_label(widgets, data, "format", "Format", padx=0)
+    make_label(widgets, data, "format", "Format", padx=(0, 0))
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
@@ -145,10 +145,10 @@ def add_monitors(widgets: "Widgets", data: "FrameData") -> None:
         nonlocal first
 
         if not first:
-            padx = 0
+            padx = (0, 0)
             first = True
         else:
-            padx = None
+            padx = (app.theme.padx, 0)
 
         label = widgetutils.make_label(
             data, label_text, ignore_short=(not args.short_system), padx=padx
@@ -156,7 +156,7 @@ def add_monitors(widgets: "Widgets", data: "FrameData") -> None:
 
         label.configure(cursor="hand2")
         setattr(widgets, name, tk.StringVar())
-        monitor_text = widgetutils.make_label(data, "")
+        monitor_text = widgetutils.make_label(data, "", padx=(0, app.theme.padx))
         monitor_text.configure(textvariable=getattr(widgets, name))
         monitor_text.configure(cursor="hand2")
         setattr(widgets, f"{name}_text", monitor_text)
