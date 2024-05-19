@@ -786,5 +786,11 @@ class CommandSpec:
             arg_req=True,
         )
 
+        self.add_cmd(
+            "profile",
+            "Show the current profile",
+            lambda a=None: app.open_profile(),
+        )
+
 
 command_spec = CommandSpec()

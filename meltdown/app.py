@@ -158,23 +158,18 @@ class App:
             return False
 
     def show_about(self) -> None:
-        from .args import args
         from .dialogs import Dialog
 
         title = self.manifest["title"]
-        description = self.manifest["description"]
         version = self.manifest["version"]
         author = self.manifest["author"]
         repo = self.manifest["repo"]
-        profile = args.profile
 
         lines = [
             f"{title} v{version}",
-            description,
             f"Developed by {author}",
             "All Rights Reserved",
             repo,
-            f"Profile: {profile}",
         ]
 
         cmds = []
@@ -796,6 +791,7 @@ class App:
         return None
 
     def open_profile(self) -> None:
+        from .args import args
         from .paths import paths
         from .dialogs import Dialog
 
@@ -810,7 +806,7 @@ class App:
         cmds.append(("Config", lambda: show_config()))
         cmds.append(("Data", lambda: show_data()))
 
-        Dialog.show_commands("Open directories", cmds)
+        Dialog.show_commands(f"Profile: {args.profile}", cmds)
 
     def show_info(self) -> None:
         from .dialogs import Dialog
