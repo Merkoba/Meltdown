@@ -199,6 +199,8 @@ class Args:
         self.title = ""
         self.icon = ""
         self.auto_scroll_delay = 500
+        self.padx = 5
+        self.pady = 5
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -401,6 +403,8 @@ class Args:
             "title",
             "icon",
             "auto_scroll_delay",
+            "padx",
+            "pady",
         ]
 
         for n_item in normals:

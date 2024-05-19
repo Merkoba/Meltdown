@@ -595,6 +595,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "padx",
+            type=int,
+            info="Horizontal padding around the edges",
+        )
+
+        self.add_argument(
+            "pady",
+            type=int,
+            info="Vertical padding around the edges",
+        )
+
+        self.add_argument(
             "terminal_height",
             type=int,
             info="Reserve these number of rows for the terminal",

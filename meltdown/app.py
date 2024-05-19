@@ -517,8 +517,11 @@ class App:
         self.show_window()
 
     def show_window(self) -> None:
-        pad = self.theme.padx
-        self.main_frame.grid(row=0, column=0, sticky="nsew", padx=pad, pady=pad)
+        from .args import args
+
+        padx = args.padx
+        pady = args.pady
+        self.main_frame.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
 
     def set_theme(self) -> None:
         from .config import config

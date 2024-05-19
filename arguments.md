@@ -818,6 +818,26 @@ Type: int
 
 ---
 
+### padx
+
+Horizontal padding around the edges
+
+Default: 5
+
+Type: int
+
+---
+
+### pady
+
+Vertical padding around the edges
+
+Default: 5
+
+Type: int
+
+---
+
 ### terminal-height
 
 Reserve these number of rows for the terminal
