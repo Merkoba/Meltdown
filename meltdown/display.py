@@ -609,8 +609,10 @@ class Display:
 
         output = self.get_output(tab_id)
 
-        if output:
-            output.scroll_up(more=more)
+        if not output:
+            return
+
+        output.scroll_up(more=more)
 
     def scroll_down(self, tab_id: Optional[str] = None, more: bool = False) -> None:
         if not tab_id:
@@ -618,8 +620,10 @@ class Display:
 
         output = self.get_output(tab_id)
 
-        if output:
-            output.scroll_down(more=more)
+        if not output:
+            return
+
+        output.scroll_down(more=more)
 
     def update_session(self) -> None:
         from .session import session
@@ -977,7 +981,6 @@ class Display:
     def enable_auto_scroll(self) -> None:
         self.auto_scroll_enabled = True
         self.check_auto_scroll()
-
         tab = self.get_current_tab()
 
         if not tab:
@@ -1000,7 +1003,6 @@ class Display:
             self.disable_auto_scroll()
         else:
             self.enable_auto_scroll()
-            self.check_auto_scroll()
 
     def check_auto_scroll(self) -> None:
         if args.auto_scroll_delay < 100:

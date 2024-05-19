@@ -18,6 +18,7 @@ class Bottom(tk.Frame):
         self.bottom_button = ButtonBox(
             self, text="Go To Bottom", command=self.to_bottom
         )
+
         ToolTip(self.bottom_button, tips["bottom_button"])
         self.bottom_button.grid(row=0, column=0, sticky="nsew")
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
@@ -27,6 +28,8 @@ class Bottom(tk.Frame):
             self, text="Auto-Scroll", command=self.auto_scroll, style="alt"
         )
 
+        tip = f"Delay: {args.auto_scroll_delay} ms"
+        ToolTip(self.auto_scroll_button, tip)
         self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
 
         self.grid_rowconfigure(0, weight=1)

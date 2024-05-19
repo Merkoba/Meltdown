@@ -353,18 +353,22 @@ class Output(tk.Text):
 
         def mousewheel_up() -> str:
             self.scroll_up(True)
+            display.disable_auto_scroll()
             return "break"
 
         def mousewheel_down() -> str:
             self.scroll_down(True)
+            display.disable_auto_scroll()
             return "break"
 
         def scroll_up(more: bool = False) -> str:
             self.scroll_up(True, more=more)
+            display.disable_auto_scroll()
             return "break"
 
         def scroll_down(more: bool = False) -> str:
             self.scroll_down(True, more=more)
+            display.disable_auto_scroll()
             return "break"
 
         def home() -> str:
