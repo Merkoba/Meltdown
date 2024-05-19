@@ -373,6 +373,7 @@ class Display:
         if not tab:
             return
 
+        self.disable_auto_scroll()
         tab.output.to_bottom()
         tab.bottom.hide()
 
