@@ -989,13 +989,8 @@ class Display:
             return
 
         self.auto_scroll_enabled = True
-        self.check_auto_scroll()
-        tab = self.get_current_tab()
-
-        if not tab:
-            return
-
         tab.bottom.on_auto_scroll_enabled()
+        self.schedule_auto_scroll()
 
     def disable_auto_scroll(self) -> None:
         self.auto_scroll_enabled = False
@@ -1021,6 +1016,9 @@ class Display:
             return
 
         display.scroll_down()
+        self.schedule_auto_scroll()
+
+    def schedule_auto_scroll(self) -> None:
         app.root.after(args.auto_scroll_delay, lambda: self.check_auto_scroll())
 
 
