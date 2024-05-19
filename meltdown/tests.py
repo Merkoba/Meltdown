@@ -64,11 +64,11 @@ format_test = {
         {
             "assistant": "Rendering LaTeX code as an image within a Tkinter Text widget can be achieved by using a combination of packages such as `mathjax` (to convert LaTeX to MathML) and `svglib`/`reportlab` (to convert MathML to SVG)"
         },
-        {"user": "Show me some hashes"},
+        {"user": "Show me 3 hashes"},
         {"assistant": "### The Title"},
-        {"user": "Show me some hashes"},
+        {"user": "Show me 2 hashes"},
         {"assistant": "## The Title"},
-        {"user": "Show me some hashes"},
+        {"user": "Show me 1 hash"},
         {"assistant": "#No Title\n# The Title"},
         {"user": "Show me a separator"},
         {"assistant": "First line\n---\nSecond line"},
