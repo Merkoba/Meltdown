@@ -91,25 +91,21 @@ def get_button(
     command: Optional[Callable[..., Any]] = None,
     style: Optional[str] = None,
     width: Optional[int] = None,
-    bigger: bool = False,
 ) -> ButtonBox:
-    return ButtonBox(parent, text, command, style=style, width=width, bigger=bigger)
+    return ButtonBox(parent, text, command, style=style, width=width)
 
 
 def make_button(
     frame_data: FrameData,
     text: str,
     command: Optional[Callable[..., Any]] = None,
-    bigger: bool = False,
     style: Optional[str] = None,
     width: Optional[int] = None,
 ) -> ButtonBox:
     if args.short_buttons:
         text = utils.shorten(text)
 
-    widget = get_button(
-        frame_data.frame, text, command, style=style, width=width, bigger=bigger
-    )
+    widget = get_button(frame_data.frame, text, command, style=style, width=width)
 
     do_grid(
         widget,

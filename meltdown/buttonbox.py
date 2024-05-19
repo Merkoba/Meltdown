@@ -17,11 +17,9 @@ class ButtonBox(tk.Frame):
         when: Optional[str] = None,
         style: Optional[str] = None,
         width: Optional[int] = None,
-        bigger: bool = False,
     ) -> None:
         super().__init__(parent)
         self.text = text
-        self.bigger = bigger
         style = style if style else "normal"
         when = when if when else "<ButtonRelease-1>"
         self.custom_width = width is not None
@@ -41,8 +39,8 @@ class ButtonBox(tk.Frame):
         return text
 
     def make(self) -> None:
+        pady = 0
         padx = app.theme.button_padx
-        pady = 2 if self.bigger else 0
         text = self.prepare_text(self.text)
 
         self.label = tk.Label(
