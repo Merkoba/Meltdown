@@ -1,7 +1,7 @@
 # Standard
 import inspect
 import tkinter as tk
-from typing import Any, Callable, Optional
+from typing import Any, Callable, Optional, Tuple
 
 # Modules
 from .app import app
@@ -139,5 +139,5 @@ class ButtonBox(tk.Frame):
     def get_text(self) -> str:
         return self.text
 
-    def set_font(self, font: str) -> None:
+    def set_font(self, font: Tuple[str, int, str]) -> None:
         self.label.configure(font=font)

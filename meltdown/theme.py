@@ -209,6 +209,9 @@ class Theme:
         if name == "button":
             return (fam, self.font_button_size + diff, "normal")
 
+        if name == "button_highlight":
+            return (fam, self.font_button_size + diff, "underline")
+
         if name == "combobox":
             return (fam, self.font_combobox_size + diff, "normal")
 

@@ -102,3 +102,9 @@ class Bottom(tk.Frame):
         from .display import display
 
         display.toggle_auto_scroll()
+
+    def on_auto_scroll_enabled(self) -> None:
+        self.auto_scroll_button.set_font(app.theme.font("button_highlight"))
+
+    def on_auto_scroll_disabled(self) -> None:
+        self.auto_scroll_button.set_font(app.theme.font("button"))

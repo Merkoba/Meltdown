@@ -220,7 +220,10 @@ class Display:
         self.print(header, tab_id=tab_id, modified=False)
 
     def get_current_tab(self) -> Optional[Tab]:
-        return self.current_tab_object
+        if hasattr(self, "current_tab_object"):
+            return self.current_tab_object
+
+        return None
 
     def get_current_output(self) -> Optional[Output]:
         return self.get_output(self.current_tab)
@@ -975,12 +978,29 @@ class Display:
         self.auto_scroll_enabled = True
         self.check_auto_scroll()
 
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.bottom.on_auto_scroll_enabled()
+
     def disable_auto_scroll(self) -> None:
         self.auto_scroll_enabled = False
 
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.bottom.on_auto_scroll_disabled()
+
     def toggle_auto_scroll(self) -> None:
-        self.auto_scroll_enabled = not self.auto_scroll_enabled
-        self.check_auto_scroll()
+        if self.auto_scroll_enabled:
+            self.disable_auto_scroll()
+        else:
+            self.enable_auto_scroll()
+            self.check_auto_scroll()
 
     def check_auto_scroll(self) -> None:
         if args.auto_scroll_delay < 100:
