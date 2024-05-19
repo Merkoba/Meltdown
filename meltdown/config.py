@@ -52,6 +52,7 @@ No need to greet me, just answer.
         self.default_stop = "<|im_start|> ;; <|im_end|>"
         self.default_mode = "text"
         self.default_theme = "dark"
+        self.default_last_log = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -78,10 +79,12 @@ No need to greet me, just answer.
         self.stop = self.default_stop
         self.mode = self.default_mode
         self.theme = self.default_theme
+        self.last_log = self.default_last_log
 
         self.locals = [
             "font_size",
             "font_family",
+            "last_log",
         ]
 
         self.clearables = [
@@ -316,6 +319,10 @@ No need to greet me, just answer.
             return self.set(key, widget.get())
 
         return False
+
+    def set_value(self, key: str, value: Any) -> None:
+        setattr(self, key, value)
+        self.save()
 
     def set(self, key: str, value: Any, on_change: bool = True) -> bool:
         from .model import model

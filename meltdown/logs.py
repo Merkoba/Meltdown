@@ -15,9 +15,6 @@ from .utils import utils
 
 
 class Logs:
-    def __init__(self) -> None:
-        self.last_log: Optional[Path] = None
-
     def menu(self, full: bool = True, tab_id: Optional[str] = None) -> None:
         cmds = []
 
@@ -37,7 +34,7 @@ class Logs:
 
     def save_file(
         self, text: str, name: str, ext: str, save_all: bool, overwrite: bool, mode: str
-    ) -> None:
+    ) -> str:
         text = text.strip()
         paths.logs.mkdir(parents=True, exist_ok=True)
         file_name = name + f".{ext}"
@@ -52,8 +49,6 @@ class Logs:
 
                 if num > 9999:
                     break
-
-        self.last_log = file_path
 
         with file_path.open("w", encoding="utf-8") as file:
             file.write(text)
@@ -75,6 +70,8 @@ class Logs:
             if cmd:
                 app.run_command([cmd, str(file_path)])
 
+        return str(file_path)
+
     def save(
         self,
         mode: str,
@@ -90,6 +87,7 @@ class Logs:
             return
 
         num = 0
+        last_log = ""
 
         if save_all:
             conversations = [
@@ -130,7 +128,9 @@ class Logs:
             else:
                 overwrite = True
 
-            self.save_file(text, name, ext, save_all, overwrite=overwrite, mode=mode)
+            last_log = self.save_file(
+                text, name, ext, save_all, overwrite=overwrite, mode=mode
+            )
 
         if save_all:
             if args.quiet or (not args.log_feedback):
@@ -140,6 +140,9 @@ class Logs:
             word = utils.singular_or_plural(num, "log", "logs")
             msg = f"{num} {f_type} {word} saved."
             display.print(utils.emoji_text(msg, "storage"))
+
+        if last_log:
+            config.set_value("last_log", last_log)
 
     def to_json(
         self,
@@ -185,10 +188,10 @@ class Logs:
         return full_text
 
     def open_last_log(self) -> None:
-        if not self.last_log:
+        if not config.last_log:
             return
 
-        app.open_generic(str(self.last_log))
+        app.open_generic(config.last_log)
 
 
 logs = Logs()
