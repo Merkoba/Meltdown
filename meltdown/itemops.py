@@ -48,6 +48,10 @@ def action(
             text = ""
             text += Output.get_prompt("user")
             text += user_text
+
+            if file:
+                text += f"\n\nFile: {file}"
+
             texts.append(text)
 
         if ai_text:
