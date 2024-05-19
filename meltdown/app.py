@@ -54,9 +54,13 @@ class App:
         self.close_enabled = True
         self.clear_enabled = True
         self.time_started = 0.0
-        self.details_1_enabled = True
-        self.details_2_enabled = True
-        self.details_3_enabled = True
+        self.model_frame_enabled = True
+        self.system_frame_enabled = True
+        self.details_1_frame_enabled = True
+        self.details_2_frame_enabled = True
+        self.buttons_frame_enabled = True
+        self.file_frame_enabled = True
+        self.input_frame_enabled = True
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -200,11 +204,10 @@ class App:
             self.update_bottom()
 
     def on_geometry_change(self) -> None:
-        from .widgets import widgets
+        from . import scrollers
 
         self.clear_geometry_after()
-        widgets.check_details_buttons(1)
-        widgets.check_details_buttons(2)
+        scrollers.check_all_buttons()
 
     def set_geometry(self) -> None:
         from .args import args
@@ -242,31 +245,31 @@ class App:
         else:
             self.enable_compact()
 
-    def hide_details(self, num: int) -> None:
+    def hide_frame(self, name: str) -> None:
         from .widgets import widgets
         from .system import system
 
-        widget = getattr(widgets, f"details_frame_{num}")
+        widget = getattr(widgets, f"{name}_frame")
         assert isinstance(widget, tk.Frame)
         widget.grid_remove()
-        setattr(self, f"details_{num}_enabled", False)
+        setattr(self, f"{name}_frame_enabled", False)
 
-        if num == 1:
+        if name == "system":
             system.reset()
 
-    def toggle_details(self, num: int) -> None:
-        if getattr(self, f"details_{num}_enabled"):
-            self.hide_details(num)
-        else:
-            self.show_details(num)
-
-    def show_details(self, num: int) -> None:
+    def show_frame(self, name: str) -> None:
         from .widgets import widgets
 
-        widget = getattr(widgets, f"details_frame_{num}")
+        widget = getattr(widgets, f"{name}_frame")
         assert isinstance(widget, tk.Frame)
         widget.grid()
-        setattr(self, f"details_{num}_enabled", True)
+        setattr(self, f"{name}_frame_enabled", True)
+
+    def toggle_frame(self, name: str) -> None:
+        if getattr(self, f"{name}_frame_enabled"):
+            self.hide_frame(name)
+        else:
+            self.show_frame(name)
 
     def enable_compact(self) -> None:
         from .widgets import widgets
@@ -286,43 +289,41 @@ class App:
 
         if custom:
             if args.compact_model:
-                widgets.model_frame.grid_remove()
+                self.hide_frame("model")
+
+            if args.compact_system:
+                self.hide_frame("system")
 
             if args.compact_details_1:
-                self.hide_details(1)
+                self.hide_frame("details_1")
 
             if args.compact_details_2:
-                self.hide_details(2)
-
-            if args.compact_details_3:
-                self.hide_details(3)
+                self.hide_frame("details_2")
 
             if args.compact_buttons:
-                widgets.buttons_frame.grid_remove()
+                self.hide_frame("buttons")
 
             if args.compact_file:
-                widgets.file_frame.grid_remove()
+                self.hide_frame("file")
 
             if args.compact_input:
-                widgets.input_frame.grid_remove()
+                self.hide_frame("input")
         else:
-            self.hide_details(1)
-            self.hide_details(2)
-            self.hide_details(3)
+            self.hide_frame("system")
+            self.hide_frame("details_1")
+            self.hide_frame("details_2")
 
         self.after_compact(True)
 
     def disable_compact(self) -> None:
-        from .widgets import widgets
+        self.show_frame("model")
+        self.show_frame("system")
+        self.show_frame("details_1")
+        self.show_frame("details_2")
+        self.show_frame("buttons")
+        self.show_frame("file")
+        self.show_frame("input")
 
-        self.show_details(1)
-        self.show_details(2)
-        self.show_details(3)
-
-        widgets.model_frame.grid()
-        widgets.buttons_frame.grid()
-        widgets.file_frame.grid()
-        widgets.input_frame.grid()
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:

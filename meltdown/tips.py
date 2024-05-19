@@ -5,7 +5,7 @@ tips = {
     "model_menu": "Open the model menu",
     "more_menu": "Show more options",
     "load_button": "Load or unload the model",
-    "details_button": "Scroll this row. Middle click for instant",
+    "scroller_button": "Scroll this row. Middle click for instant",
     "stop_button": "Stop generating the current response",
     "new_button": "Make a new tab",
     "clear_button": "Clear the conversation",

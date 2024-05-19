@@ -14,6 +14,10 @@ from .widgets import widgets
 from .args import args
 from .app import app
 from .utils import utils
+from .framedata import FrameData
+from .tooltips import ToolTip
+from .tips import tips
+from . import widgetutils
 
 
 class System:
@@ -147,7 +151,7 @@ class System:
         utils.sleep(1)
 
         while True:
-            if app.details_1_enabled:
+            if app.system_frame_enabled:
                 try:
                     self.get_info()
                 except BaseException as e:
@@ -191,5 +195,52 @@ class System:
         self.check_color("gpu_ram", 0)
         self.check_color("gpu_temp", 0)
 
+    def add_monitors(self, data: FrameData) -> None:
+        first = False
+
+        def make_monitor(name: str, label_text: str, mode: str) -> None:
+            nonlocal first
+
+            if not first:
+                padx = (0, 0)
+                first = True
+            else:
+                padx = (app.theme.padx, 0)
+
+            label = widgetutils.make_label(
+                data, label_text, ignore_short=(not args.short_system), padx=padx
+            )
+
+            label.configure(cursor="hand2")
+            setattr(widgets, name, tk.StringVar())
+            monitor_text = widgetutils.make_label(data, "", padx=(0, app.theme.padx))
+            monitor_text.configure(textvariable=getattr(widgets, name))
+            monitor_text.configure(cursor="hand2")
+            setattr(widgets, f"{name}_text", monitor_text)
+            tip = tips[f"system_{name}"]
+            ToolTip(label, tip)
+            ToolTip(monitor_text, tip)
+            getattr(widgets, name).set("000%")
+
+            label.bind("<Button-1>", lambda e: app.open_task_manager(mode))
+            monitor_text.bind("<Button-1>", lambda e: app.open_task_manager(mode))
+
+        if args.system_cpu:
+            make_monitor("cpu", "CPU", "normal")
+
+        if args.system_ram:
+            make_monitor("ram", "RAM", "normal")
+
+        if args.system_temp:
+            make_monitor("temp", "TMP", "normal")
+
+        if args.system_gpu:
+            make_monitor("gpu", "GPU", "gpu")
+
+        if args.system_gpu_ram:
+            make_monitor("gpu_ram", "GPU RAM", "gpu")
+
+        if args.system_gpu_temp:
+            make_monitor("gpu_temp", "GPU TMP", "gpu")
 
 system = System()

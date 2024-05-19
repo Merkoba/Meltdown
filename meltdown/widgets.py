@@ -24,8 +24,8 @@ from .tips import tips
 from .files import files
 from .utils import utils
 from .model import model
+from . import scrollers
 from . import widgetutils
-from . import details
 from . import close
 
 
@@ -87,6 +87,10 @@ class Widgets:
         self.mlock_label: tk.Label
         self.mlock: ttk.Combobox
 
+        self.scroller_system: tk.Frame
+        self.scroller_details_1: tk.Frame
+        self.scroller_details_2: tk.Frame
+
     def make(self) -> None:
         # Model
         app.main_frame.grid_columnconfigure(FrameData.frame_number, weight=1)
@@ -138,117 +142,119 @@ class Widgets:
 
         ToolTip(self.main_menu_button, tips["main_menu"])
 
-        # Details Container 1
-        frame_data_details_1 = widgetutils.make_frame()
-        self.details_frame_1 = frame_data_details_1.frame
-        left_frame_1 = widgetutils.make_frame(self.details_frame_1, col=0, row=0)
-        left_frame_1.frame.grid_rowconfigure(0, weight=1)
+        # Scroller System
+        frame_data_scroller_system = widgetutils.make_frame()
+        self.system_frame = frame_data_scroller_system.frame
 
-        self.details_button_left_1 = widgetutils.make_button(
-            left_frame_1, "<", lambda: widgets.details_left(1), style="alt"
+        left_frame_system = widgetutils.make_frame(
+            self.system_frame, col=0, row=0
         )
 
-        ToolTip(self.details_button_left_1, tips["details_button"])
+        left_frame_system.frame.grid_rowconfigure(0, weight=1)
 
-        self.details_1, self.details_canvas_1 = widgetutils.make_scrollable_frame(
-            self.details_frame_1, 1
+        self.scroller_button_left_system = widgetutils.make_button(
+            left_frame_system, "<", lambda: scrollers.scroller_left(1), style="alt"
         )
 
-        right_frame_1 = widgetutils.make_frame(self.details_frame_1, col=2, row=0)
-        right_frame_1.frame.grid_rowconfigure(0, weight=1)
+        ToolTip(self.scroller_button_left_system, tips["scroller_button"])
 
-        self.details_button_right_1 = widgetutils.make_button(
-            right_frame_1,
+        self.scroller_system, self.scroller_canvas_system = (
+            widgetutils.make_scrollable_frame(self.system_frame, 1)
+        )
+
+        right_frame_system = widgetutils.make_frame(
+            self.system_frame, col=2, row=0
+        )
+
+        right_frame_system.frame.grid_rowconfigure(0, weight=1)
+
+        self.scroller_button_right_system = widgetutils.make_button(
+            right_frame_system,
             ">",
-            lambda: widgets.details_right(1),
+            lambda: scrollers.scroller_right(1),
             style="alt",
         )
 
-        ToolTip(self.details_button_right_1, tips["details_button"])
-        self.details_frame_1.columnconfigure(1, weight=1)
+        ToolTip(self.scroller_button_right_system, tips["scroller_button"])
+        self.system_frame.columnconfigure(1, weight=1)
 
-        # Details Container 2
-        frame_data_details_2 = widgetutils.make_frame()
-        self.details_frame_2 = frame_data_details_2.frame
-        left_frame_2 = widgetutils.make_frame(self.details_frame_2, col=0, row=0)
-        left_frame_2.frame.grid_rowconfigure(0, weight=1)
+        # Scroller Details 1
+        frame_data_scroller_details_1 = widgetutils.make_frame()
+        self.details_1_frame = frame_data_scroller_details_1.frame
 
-        self.details_button_left_2 = widgetutils.make_button(
-            left_frame_2, "<", lambda: widgets.details_left(2), style="alt"
+        left_frame_details_1 = widgetutils.make_frame(
+            self.details_1_frame, col=0, row=0
         )
 
-        ToolTip(self.details_button_left_2, tips["details_button"])
+        left_frame_details_1.frame.grid_rowconfigure(0, weight=1)
 
-        self.details_2, self.details_canvas_2 = widgetutils.make_scrollable_frame(
-            self.details_frame_2, 1
-        )
-
-        right_frame_2 = widgetutils.make_frame(self.details_frame_2, col=2, row=0)
-        right_frame_2.frame.grid_rowconfigure(0, weight=1)
-
-        self.details_button_right_2 = widgetutils.make_button(
-            right_frame_2,
-            ">",
-            lambda: widgets.details_right(2),
+        self.scroller_button_left_details_1 = widgetutils.make_button(
+            left_frame_details_1,
+            "<",
+            lambda: scrollers.scroller_left("details_1"),
             style="alt",
         )
 
-        ToolTip(self.details_button_right_2, tips["details_button"])
-        self.details_frame_2.columnconfigure(1, weight=1)
+        ToolTip(self.scroller_button_left_details_1, tips["scroller_button"])
 
-        # Details Container 3
-        frame_data_details_3 = widgetutils.make_frame()
-        self.details_frame_3 = frame_data_details_3.frame
-        left_frame_3 = widgetutils.make_frame(self.details_frame_3, col=0, row=0)
-        left_frame_3.frame.grid_rowconfigure(0, weight=1)
-
-        self.details_button_left_3 = widgetutils.make_button(
-            left_frame_3, "<", lambda: widgets.details_left(3), style="alt"
+        self.scroller_details_1, self.scroller_canvas_details_1 = (
+            widgetutils.make_scrollable_frame(self.details_1_frame, 1)
         )
 
-        ToolTip(self.details_button_left_3, tips["details_button"])
-
-        self.details_3, self.details_canvas_3 = widgetutils.make_scrollable_frame(
-            self.details_frame_3, 1
+        right_frame_details_1 = widgetutils.make_frame(
+            self.details_1_frame, col=2, row=0
         )
 
-        right_frame_3 = widgetutils.make_frame(self.details_frame_3, col=2, row=0)
-        right_frame_3.frame.grid_rowconfigure(0, weight=1)
+        right_frame_details_1.frame.grid_rowconfigure(0, weight=1)
 
-        self.details_button_right_3 = widgetutils.make_button(
-            right_frame_3,
+        self.scroller_button_right_details_1 = widgetutils.make_button(
+            right_frame_details_1,
             ">",
-            lambda: widgets.details_right(3),
+            lambda: scrollers.scroller_right("details_1"),
             style="alt",
         )
 
-        ToolTip(self.details_button_right_3, tips["details_button"])
-        self.details_frame_3.columnconfigure(1, weight=1)
+        ToolTip(self.scroller_button_right_details_1, tips["scroller_button"])
+        self.details_1_frame.columnconfigure(1, weight=1)
 
-        # Details 1 Items
-        details_data_1 = FrameData(self.details_1)
-        details.add_monitors(self, details_data_1)
+        # Scroller Details 2
+        frame_data_scroller_details_2 = widgetutils.make_frame()
+        self.details_2_frame = frame_data_scroller_details_2.frame
 
-        # Details 2 Items
-        details_data_2 = FrameData(self.details_2)
-        details.add_users(self, details_data_2)
-        details.add_history(self, details_data_2)
-        details.add_context(self, details_data_2)
-        details.add_max_tokens(self, details_data_2)
-        details.add_threads(self, details_data_2)
-        details.add_gpu_layers(self, details_data_2)
-        details.add_temperature(self, details_data_2)
+        left_frame_details_2 = widgetutils.make_frame(
+            self.details_2_frame, col=0, row=0
+        )
 
-        # Details 3 Items
-        details_data_3 = FrameData(self.details_3)
-        details.add_format(self, details_data_3)
-        details.add_before(self, details_data_3)
-        details.add_after(self, details_data_3)
-        details.add_stop(self, details_data_3)
-        details.add_seed(self, details_data_3)
-        details.add_top_p(self, details_data_3)
-        details.add_top_k(self, details_data_3)
-        details.add_mlock(self, details_data_3)
+        left_frame_details_2.frame.grid_rowconfigure(0, weight=1)
+
+        self.scroller_button_left_details_2 = widgetutils.make_button(
+            left_frame_details_2,
+            "<",
+            lambda: scrollers.scroller_left("details_2"),
+            style="alt",
+        )
+
+        ToolTip(self.scroller_button_left_details_2, tips["scroller_button"])
+
+        self.scroller_details_2, self.scroller_canvas_details_2 = (
+            widgetutils.make_scrollable_frame(self.details_2_frame, 1)
+        )
+
+        right_frame_details_2 = widgetutils.make_frame(
+            self.details_2_frame, col=2, row=0
+        )
+
+        right_frame_details_2.frame.grid_rowconfigure(0, weight=1)
+
+        self.scroller_button_right_details_2 = widgetutils.make_button(
+            right_frame_details_2,
+            ">",
+            lambda: scrollers.scroller_right("details_2"),
+            style="alt",
+        )
+
+        ToolTip(self.scroller_button_right_details_2, tips["scroller_button"])
+        self.details_2_frame.columnconfigure(1, weight=1)
 
         # Buttons
         frame_data_buttons = widgetutils.make_frame()
@@ -349,7 +355,6 @@ class Widgets:
         self.systems_menu = Menu()
         self.files_menu = Menu()
         self.inputs_menu = Menu()
-        self.current_details = 1
 
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
@@ -388,15 +393,12 @@ class Widgets:
         inputcontrol.fill()
 
         self.fill()
-        self.setup_details()
         self.setup_binds()
         self.setup_widgets()
         self.add_generic_menus()
-        self.check_details_buttons(1)
-        self.check_details_buttons(2)
-        self.check_details_buttons(3)
         self.setup_tooltips()
         self.disable_stop_button()
+        scrollers.setup_scrollers()
 
         inputcontrol.focus()
 
@@ -426,37 +428,6 @@ class Widgets:
 
             if label:
                 self.append_tooltip(label, key)
-
-    def setup_details(self) -> None:
-        app.root.update_idletasks()
-        self.do_setup_details(1)
-        self.do_setup_details(2)
-        self.do_setup_details(3)
-
-    def do_setup_details(self, num: int) -> None:
-        details = getattr(self, f"details_{num}")
-        details.update_idletasks()
-        canvas = getattr(self, f"details_canvas_{num}")
-        canvas.update_idletasks()
-        canvas.configure(width=details.winfo_reqwidth())
-        canvas.configure(height=details.winfo_reqheight())
-        left = getattr(self, f"details_button_left_{num}")
-        right = getattr(self, f"details_button_right_{num}")
-
-        left.set_bind("<Button-4>", lambda e: widgets.details_left(num))
-        left.set_bind("<Button-5>", lambda e: widgets.details_right(num))
-        left.set_bind("<Button-2>", lambda e: widgets.details_start(num))
-
-        right.set_bind("<Button-4>", lambda e: widgets.details_left(num))
-        right.set_bind("<Button-5>", lambda e: widgets.details_right(num))
-        right.set_bind("<Button-2>", lambda e: widgets.details_end(num))
-
-        details.bind("<Button-4>", lambda e: widgets.details_left(num))
-        details.bind("<Button-5>", lambda e: widgets.details_right(num))
-
-        for child in details.winfo_children():
-            child.bind("<Button-4>", lambda e: widgets.details_left(num))
-            child.bind("<Button-5>", lambda e: widgets.details_right(num))
 
     def setup_widgets(self) -> None:
         def setup_entrybox(key: str, placeholder: str) -> None:
@@ -804,59 +775,6 @@ class Widgets:
             self.show_file_menu()
         elif widget == self.model:
             self.show_model_context()
-
-    def details_left(self, num: int) -> None:
-        canvas = getattr(self, f"details_canvas_{num}")
-        scroll_pos_left = canvas.xview()[0]
-
-        if scroll_pos_left == 0.0:
-            return
-
-        canvas.xview_scroll(-self.canvas_scroll, "units")
-        self.check_details_buttons(num)
-
-    def details_right(self, num: int) -> None:
-        canvas = getattr(self, f"details_canvas_{num}")
-        scroll_pos_right = canvas.xview()[1]
-
-        if scroll_pos_right == 1.0:
-            return
-
-        canvas.xview_scroll(self.canvas_scroll, "units")
-        self.check_details_buttons(num)
-
-    def details_start(self, num: int) -> None:
-        canvas = getattr(self, f"details_canvas_{num}")
-        canvas.xview_moveto(0)
-        self.check_details_buttons(num)
-
-    def details_end(self, num: int) -> None:
-        canvas = getattr(self, f"details_canvas_{num}")
-        canvas.xview_moveto(1.0)
-        self.check_details_buttons(num)
-
-    def check_details_buttons(self, num: int) -> None:
-        canvas = getattr(self, f"details_canvas_{num}")
-        scroll_pos_left = canvas.xview()[0]
-        scroll_pos_right = canvas.xview()[1]
-        ToolTip.hide_all()
-
-        left = getattr(self, f"details_button_left_{num}")
-        right = getattr(self, f"details_button_right_{num}")
-
-        if scroll_pos_left == 0:
-            left.set_style("disabled")
-            left.set_text("-")
-        else:
-            left.set_style("alt")
-            left.set_text("<")
-
-        if scroll_pos_right == 1.0:
-            right.set_style("disabled")
-            right.set_text("-")
-        else:
-            right.set_style("alt")
-            right.set_text(">")
 
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
