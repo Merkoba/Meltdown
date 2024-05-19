@@ -14,9 +14,11 @@ from .tips import tips
 class Bottom(tk.Frame):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         super().__init__(parent)
+        self.bottom_text = "Go To Bottom"
+        self.auto_scroll_text = "Auto-Scroll"
 
         self.bottom_button = ButtonBox(
-            self, text="Go To Bottom", command=self.to_bottom
+            self, text=self.bottom_text, command=self.to_bottom
         )
 
         ToolTip(self.bottom_button, tips["bottom_button"])
@@ -25,7 +27,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
 
         self.auto_scroll_button = ButtonBox(
-            self, text="Auto-Scroll", command=self.auto_scroll, style="alt"
+            self, text=self.auto_scroll_text, command=self.auto_scroll, style="alt"
         )
 
         tip = f"Delay: {args.auto_scroll_delay} ms"
@@ -61,7 +63,9 @@ class Bottom(tk.Frame):
     def show(self) -> None:
         if not args.bottom_autohide:
             self.bottom_button.set_style("normal")
-            self.bottom_button.set_text("Go To Bottom")
+            self.bottom_button.set_text(self.bottom_text)
+            self.auto_scroll_button.set_style("alt")
+            self.auto_scroll_button.set_text(self.auto_scroll_text)
             return
 
         if (not args.bottom) or self.visible or (not app.exists()):
@@ -74,6 +78,8 @@ class Bottom(tk.Frame):
         if not args.bottom_autohide:
             self.bottom_button.set_style("disabled")
             self.bottom_button.set_text("")
+            self.auto_scroll_button.set_style("disabled")
+            self.auto_scroll_button.set_text("")
             return
 
         if (not self.visible) or (not app.exists()):
