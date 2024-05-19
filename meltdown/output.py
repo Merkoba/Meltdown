@@ -268,6 +268,7 @@ class Output(tk.Text):
         self.separator = Output.marker_separator + args.separator
         self.checked_markers_user: List[int] = []
         self.checked_markers_ai: List[int] = []
+        self.last_scroll_y = ""
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -411,6 +412,10 @@ class Output(tk.Text):
         self.scrollbar.bind("<Button-1>", lambda e: self.on_click())
 
         def on_scroll(*args: Any) -> None:
+            if self.last_scroll_y == args[0]:
+                return
+
+            self.last_scroll_y = args[0]
             self.display.check_scroll_buttons(tab_id=self.tab_id)
             self.scrollbar.set(*args)
 
