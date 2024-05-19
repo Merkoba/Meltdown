@@ -279,7 +279,7 @@ class Session:
 
         if not args.quiet:
             name = path.name
-            msg = f"Session saved as {name}"
+            msg = f'Session saved as "{name}"'
             display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
