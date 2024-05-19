@@ -201,6 +201,7 @@ class Args:
         self.auto_scroll_delay = 500
         self.padx = 5
         self.pady = 5
+        self.show_auto_scroll = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -272,6 +273,7 @@ class Args:
             ("no_tabs_wheel", "tabs_wheel"),
             ("no_limit_tokens", "limit_tokens"),
             ("no_clean_names", "clean_names"),
+            ("no_auto_scroll", "show_auto_scroll"),
         ]
 
         for r_item in other_name:

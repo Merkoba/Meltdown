@@ -32,7 +32,9 @@ class Bottom(tk.Frame):
 
         tip = f"Delay: {args.auto_scroll_delay} ms"
         ToolTip(self.auto_scroll_button, tip)
-        self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
+
+        if args.show_auto_scroll:
+            self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
