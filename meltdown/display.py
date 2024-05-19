@@ -979,6 +979,14 @@ class Display:
         return name[: config.max_name_length].strip()
 
     def enable_auto_scroll(self) -> None:
+        tab = self.get_current_tab()
+
+        if not tab:
+            return
+
+        if tab.output.yview()[1] >= 0.9999:
+            return
+
         self.auto_scroll_enabled = True
         self.check_auto_scroll()
         tab = self.get_current_tab()

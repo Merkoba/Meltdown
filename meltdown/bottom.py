@@ -42,6 +42,7 @@ class Bottom(tk.Frame):
         self.visible = True
         self.delay = 500
         self.show_debouncer = ""
+        self.buttons_enabled = True
         self.grid(row=2, column=0, sticky="nsew")
 
         if args.bottom_autohide:
@@ -66,6 +67,7 @@ class Bottom(tk.Frame):
             self.bottom_button.set_text(self.bottom_text)
             self.auto_scroll_button.set_style("alt")
             self.auto_scroll_button.set_text(self.auto_scroll_text)
+            self.buttons_enabled = True
             return
 
         if (not args.bottom) or self.visible or (not app.exists()):
@@ -80,6 +82,7 @@ class Bottom(tk.Frame):
             self.bottom_button.set_text("")
             self.auto_scroll_button.set_style("disabled")
             self.auto_scroll_button.set_text("")
+            self.buttons_enabled = False
             return
 
         if (not self.visible) or (not app.exists()):
@@ -112,8 +115,20 @@ class Bottom(tk.Frame):
 
         display.toggle_auto_scroll()
 
+    def check_enabled(self) -> bool:
+        if (not self.visible) or (not self.buttons_enabled) or (not app.exists()):
+            return False
+
+        return True
+
     def on_auto_scroll_enabled(self) -> None:
+        if not self.check_enabled():
+            return
+
         self.auto_scroll_button.set_font(app.theme.font("button_highlight"))
 
     def on_auto_scroll_disabled(self) -> None:
+        if not self.check_enabled():
+            return
+
         self.auto_scroll_button.set_font(app.theme.font("button"))

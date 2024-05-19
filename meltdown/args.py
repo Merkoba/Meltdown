@@ -442,6 +442,9 @@ class Args:
         if not self.f8:
             self.f8 = f"{self.prefix}compact"
 
+        if not self.f9:
+            self.f9 = f"{self.prefix}autoscroll"
+
         if not self.f11:
             self.f11 = f"{self.prefix}fullscreen"
 
