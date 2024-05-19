@@ -734,7 +734,7 @@ Open the last log
 
 ### autoscroll
 
-Start automatic scrolling
+Toggle automatic scrolling
 
 ---
 
