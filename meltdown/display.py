@@ -59,7 +59,6 @@ class Display:
         self.max_old_tabs = 5
         self.max_tabs = 999
         self.auto_scroll_enabled = False
-        self.check_auto_scroll()
 
     def make(self) -> None:
         from .widgets import widgets
