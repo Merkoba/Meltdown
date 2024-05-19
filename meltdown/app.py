@@ -561,12 +561,24 @@ class App:
 
         if what == "commands":
             tab_id = display.make_tab("Commands", mode="ignore")
+
+            if not tab_id:
+                return
+
             commands.show_help(tab_id=tab_id, mode=mode)
         elif what == "arguments":
             tab_id = display.make_tab("Arguments", mode="ignore")
+
+            if not tab_id:
+                return
+
             args.show_help(tab_id=tab_id, mode=mode)
         elif what == "keyboard":
             tab_id = display.make_tab("Keyboard", mode="ignore")
+
+            if not tab_id:
+                return
+
             keyboard.show_help(tab_id=tab_id, mode=mode)
         else:
             return

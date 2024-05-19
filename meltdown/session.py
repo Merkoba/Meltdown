@@ -252,9 +252,12 @@ class Session:
             conversation.items = item["items"]
             self.conversations[conversation.id] = conversation
 
-            display.make_tab(
+            tab_id = display.make_tab(
                 conversation.name, conversation.id, select_tab=False, save=False
             )
+
+            if not tab_id:
+                break
 
     def save_state(self, name: Optional[str] = None) -> None:
         if not paths.sessions.exists():

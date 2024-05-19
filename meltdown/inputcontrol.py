@@ -255,6 +255,9 @@ class InputControl:
                 if not display.tab_is_empty(tab_id):
                     tab_id = display.make_tab()
 
+        if not tab_id:
+            return
+
         self.submit(tab_id=tab_id, text=text, file=file)
 
     def add_words(self, text: str) -> None:

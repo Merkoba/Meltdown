@@ -231,6 +231,10 @@ class Output(tk.Text):
         quoted = utils.smart_quotes(words)
         text = utils.replace_keywords(args.new_prompt, words=quoted)
         tab_id = display.make_tab()
+
+        if not tab_id:
+            return
+
         model.stream({"text": text}, tab_id)
 
     @staticmethod

@@ -32,4 +32,8 @@ def summarize(tab_id: Optional[str] = None) -> None:
     prompt["text"] += text
 
     tab_id = display.make_tab()
+
+    if not tab_id:
+        return
+
     model.stream(prompt, tab_id=tab_id)

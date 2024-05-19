@@ -57,7 +57,7 @@ class Display:
         self.num_tabs_open = 0
         self.tab_number = 1
         self.max_old_tabs = 5
-        self.max_tabs = 999
+        self.max_tabs = 9
         self.auto_scroll_enabled = False
 
     def make(self) -> None:
@@ -83,11 +83,12 @@ class Display:
         select_tab: bool = True,
         mode: str = "normal",
         save: bool = True,
-    ) -> str:
+    ) -> Optional[str]:
         from .session import session
 
         if self.num_tabs() >= self.max_tabs:
-            return ""
+            Dialog.show_message("Maximum tabs reached")
+            return None
 
         if not name:
             if args.name_mode == "random":
@@ -107,7 +108,7 @@ class Display:
             conversation_id = conversation.id
 
         if not conversation_id:
-            return ""
+            return None
 
         page = self.book.add(name, mode=mode)
         tab_id = page.id
@@ -742,6 +743,10 @@ class Display:
 
         if text:
             new_tab = self.make_tab(name=f"{name} Text", mode="ignore")
+
+            if not new_tab:
+                return
+
             self.print(text, tab_id=new_tab)
             self.to_top(tab_id=new_tab)
 
@@ -758,6 +763,10 @@ class Display:
 
         if text:
             new_tab = self.make_tab(name=f"{name} JSON", mode="ignore")
+
+            if not new_tab:
+                return
+
             self.print(text, tab_id=new_tab)
             self.to_top(tab_id=new_tab)
 
