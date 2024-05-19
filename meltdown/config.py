@@ -21,6 +21,7 @@ class Config:
         self.token_limit = 0.88
         self.max_name_length = 50
         self.max_file_name_length = 50
+        self.max_tabs = 999
 
         self.default_system = """
 Your name is ((name_ai)).
