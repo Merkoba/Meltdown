@@ -275,7 +275,6 @@ class App:
             self.show_frame(name)
 
     def enable_compact(self) -> None:
-        from .widgets import widgets
         from .args import args
 
         confs = [

@@ -5,6 +5,7 @@ def setup() -> None:
 
     check_all_buttons()
 
+
 def do_setup(name: str) -> None:
     from .widgets import widgets
 
@@ -64,59 +65,59 @@ def add_items() -> None:
     details.add_mlock(widgets, sd2)
 
 
-def to_left(num: int) -> None:
+def to_left(name: str) -> None:
     from .widgets import widgets
 
-    canvas = getattr(widgets, f"scroller_canvas_{num}")
+    canvas = getattr(widgets, f"scroller_canvas_{name}")
     scroll_pos_left = canvas.xview()[0]
 
     if scroll_pos_left == 0.0:
         return
 
     canvas.xview_scroll(-widgets.canvas_scroll, "units")
-    check_buttons(num)
+    check_buttons(name)
 
 
-def to_right(num: int) -> None:
+def to_right(name: str) -> None:
     from .widgets import widgets
 
-    canvas = getattr(widgets, f"scroller_canvas_{num}")
+    canvas = getattr(widgets, f"scroller_canvas_{name}")
     scroll_pos_right = canvas.xview()[1]
 
     if scroll_pos_right == 1.0:
         return
 
     canvas.xview_scroll(widgets.canvas_scroll, "units")
-    check_buttons(num)
+    check_buttons(name)
 
 
-def to_start(num: int) -> None:
+def to_start(name: str) -> None:
     from .widgets import widgets
 
-    canvas = getattr(widgets, f"scroller_canvas_{num}")
+    canvas = getattr(widgets, f"scroller_canvas_{name}")
     canvas.xview_moveto(0)
-    check_buttons(num)
+    check_buttons(name)
 
 
-def to_end(num: int) -> None:
+def to_end(name: str) -> None:
     from .widgets import widgets
 
-    canvas = getattr(widgets, f"scroller_canvas_{num}")
+    canvas = getattr(widgets, f"scroller_canvas_{name}")
     canvas.xview_moveto(1.0)
-    check_buttons(num)
+    check_buttons(name)
 
 
-def check_buttons(num: int) -> None:
+def check_buttons(name: str) -> None:
     from .widgets import widgets
     from .tooltips import ToolTip
 
-    canvas = getattr(widgets, f"scroller_canvas_{num}")
+    canvas = getattr(widgets, f"scroller_canvas_{name}")
     scroll_pos_left = canvas.xview()[0]
     scroll_pos_right = canvas.xview()[1]
     ToolTip.hide_all()
 
-    left = getattr(widgets, f"scroller_button_left_{num}")
-    right = getattr(widgets, f"scroller_button_right_{num}")
+    left = getattr(widgets, f"scroller_button_left_{name}")
+    right = getattr(widgets, f"scroller_button_right_{name}")
 
     if scroll_pos_left == 0:
         left.set_style("disabled")

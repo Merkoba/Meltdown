@@ -1,12 +1,10 @@
 # Standard
-import tkinter as tk
 from typing import TYPE_CHECKING, Optional, List, Tuple
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
 
 # Modules
-from .args import args
 from .app import app
 from .tooltips import ToolTip
 from .tips import tips

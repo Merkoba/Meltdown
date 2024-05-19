@@ -146,9 +146,7 @@ class Widgets:
         frame_data_scroller_system = widgetutils.make_frame()
         self.system_frame = frame_data_scroller_system.frame
 
-        left_frame_system = widgetutils.make_frame(
-            self.system_frame, col=0, row=0
-        )
+        left_frame_system = widgetutils.make_frame(self.system_frame, col=0, row=0)
 
         left_frame_system.frame.grid_rowconfigure(0, weight=1)
 
@@ -162,9 +160,7 @@ class Widgets:
             widgetutils.make_scrollable_frame(self.system_frame, 1)
         )
 
-        right_frame_system = widgetutils.make_frame(
-            self.system_frame, col=2, row=0
-        )
+        right_frame_system = widgetutils.make_frame(self.system_frame, col=2, row=0)
 
         right_frame_system.frame.grid_rowconfigure(0, weight=1)
 

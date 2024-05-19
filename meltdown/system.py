@@ -243,4 +243,5 @@ class System:
         if args.system_gpu_temp:
             make_monitor("gpu_temp", "GPU TMP", "gpu")
 
+
 system = System()
