@@ -1,17 +1,11 @@
-def setup_scrollers() -> None:
-    from .app import app
-
-    add_items()
-
-    app.root.update_idletasks()
-
-    do_setup_scroller("system")
-    do_setup_scroller("details_1")
-    do_setup_scroller("details_2")
+def setup() -> None:
+    do_setup("system")
+    do_setup("details_1")
+    do_setup("details_2")
 
     check_all_buttons()
 
-def do_setup_scroller(name: str) -> None:
+def do_setup(name: str) -> None:
     from .widgets import widgets
 
     scroller = getattr(widgets, f"scroller_{name}")
@@ -137,6 +131,7 @@ def check_buttons(num: int) -> None:
     else:
         right.set_style("alt")
         right.set_text(">")
+
 
 def check_all_buttons() -> None:
     check_buttons("system")

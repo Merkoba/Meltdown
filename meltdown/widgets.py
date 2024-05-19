@@ -153,7 +153,7 @@ class Widgets:
         left_frame_system.frame.grid_rowconfigure(0, weight=1)
 
         self.scroller_button_left_system = widgetutils.make_button(
-            left_frame_system, "<", lambda: scrollers.scroller_left(1), style="alt"
+            left_frame_system, "<", lambda: scrollers.to_left("system"), style="alt"
         )
 
         ToolTip(self.scroller_button_left_system, tips["scroller_button"])
@@ -171,7 +171,7 @@ class Widgets:
         self.scroller_button_right_system = widgetutils.make_button(
             right_frame_system,
             ">",
-            lambda: scrollers.scroller_right(1),
+            lambda: scrollers.to_right("system"),
             style="alt",
         )
 
@@ -191,7 +191,7 @@ class Widgets:
         self.scroller_button_left_details_1 = widgetutils.make_button(
             left_frame_details_1,
             "<",
-            lambda: scrollers.scroller_left("details_1"),
+            lambda: scrollers.to_left("details_1"),
             style="alt",
         )
 
@@ -210,7 +210,7 @@ class Widgets:
         self.scroller_button_right_details_1 = widgetutils.make_button(
             right_frame_details_1,
             ">",
-            lambda: scrollers.scroller_right("details_1"),
+            lambda: scrollers.to_right("details_1"),
             style="alt",
         )
 
@@ -230,7 +230,7 @@ class Widgets:
         self.scroller_button_left_details_2 = widgetutils.make_button(
             left_frame_details_2,
             "<",
-            lambda: scrollers.scroller_left("details_2"),
+            lambda: scrollers.to_left("details_2"),
             style="alt",
         )
 
@@ -249,7 +249,7 @@ class Widgets:
         self.scroller_button_right_details_2 = widgetutils.make_button(
             right_frame_details_2,
             ">",
-            lambda: scrollers.scroller_right("details_2"),
+            lambda: scrollers.to_right("details_2"),
             style="alt",
         )
 
@@ -391,6 +391,7 @@ class Widgets:
         from .display import display
 
         inputcontrol.fill()
+        scrollers.add_items()
 
         self.fill()
         self.setup_binds()
@@ -398,7 +399,7 @@ class Widgets:
         self.add_generic_menus()
         self.setup_tooltips()
         self.disable_stop_button()
-        scrollers.setup_scrollers()
+        scrollers.setup()
 
         inputcontrol.focus()
 
