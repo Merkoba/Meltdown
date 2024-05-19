@@ -270,7 +270,7 @@ class Output(tk.Text):
         self.separator = Output.marker_separator + args.separator
         self.checked_markers_user: List[int] = []
         self.checked_markers_ai: List[int] = []
-        self.last_scroll_y = ""
+        self.last_scroll_args: Optional[Tuple[str, str]] = None
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -414,12 +414,10 @@ class Output(tk.Text):
         self.scrollbar.bind("<Button-1>", lambda e: self.on_click())
 
         def on_scroll(*args: Any) -> None:
-            if self.last_scroll_y == args[0]:
+            if self.last_scroll_args == args:
                 return
 
-            self.last_scroll_y = args[0]
-            self.display.check_scroll_buttons(tab_id=self.tab_id)
-            self.scrollbar.set(*args)
+            self.on_scroll_action(*args)
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
@@ -573,6 +571,9 @@ class Output(tk.Text):
     def do_update_size(self) -> None:
         for snippet in self.snippets:
             snippet.update_size()
+
+        if self.last_scroll_args:
+            self.on_scroll_action(*self.last_scroll_args)
 
     def check_autoscroll(self, direction: str) -> None:
         if direction == "up":
@@ -972,3 +973,8 @@ class Output(tk.Text):
     def update_snippet_fonts(self) -> None:
         for snippet in self.snippets:
             snippet.update_font()
+
+    def on_scroll_action(self, *args: Any) -> None:
+        self.last_scroll_args = args
+        self.display.check_scroll_buttons(tab_id=self.tab_id)
+        self.scrollbar.set(*args)
