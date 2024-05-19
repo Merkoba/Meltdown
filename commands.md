@@ -720,6 +720,18 @@ Make up a random prompt
 
 ---
 
-### togglesystem
+### toggledetails1
 
-Toggle the system monitors
+Toggle details 1
+
+---
+
+### toggledetails2
+
+Toggle details 2
+
+---
+
+### toggledetails3
+
+Toggle details 3

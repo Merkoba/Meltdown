@@ -191,11 +191,5 @@ class System:
         self.check_color("gpu_ram", 0)
         self.check_color("gpu_temp", 0)
 
-    def toggle(self) -> None:
-        if app.details_1_enabled:
-            app.hide_details(1)
-        else:
-            app.show_details(1)
-
 
 system = System()

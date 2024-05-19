@@ -16,7 +16,6 @@ from .files import files
 from .output import Output
 from .keyboard import keyboard
 from .utils import utils
-from .system import system
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -740,9 +739,21 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "togglesystem",
-            "Toggle the system monitors",
-            lambda a=None: system.toggle(),
+            "toggledetails1",
+            "Toggle details 1",
+            lambda a=None: app.toggle_details(1),
+        )
+
+        self.add_cmd(
+            "toggledetails2",
+            "Toggle details 2",
+            lambda a=None: app.toggle_details(2),
+        )
+
+        self.add_cmd(
+            "toggledetails3",
+            "Toggle details 3",
+            lambda a=None: app.toggle_details(3),
         )
 
 

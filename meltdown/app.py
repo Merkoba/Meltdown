@@ -254,6 +254,12 @@ class App:
         if num == 1:
             system.reset()
 
+    def toggle_details(self, num: int) -> None:
+        if getattr(self, f"details_{num}_enabled"):
+            self.hide_details(num)
+        else:
+            self.show_details(num)
+
     def show_details(self, num: int) -> None:
         from .widgets import widgets
 
