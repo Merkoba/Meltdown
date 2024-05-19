@@ -475,6 +475,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "compact_system",
+            action="store_true",
+            info="Hide the system frame in compact mode",
+        )
+
+        self.add_argument(
             "compact_details_1",
             action="store_true",
             info="Hide the first details frame in compact mode",
@@ -484,12 +490,6 @@ class ArgSpec:
             "compact_details_2",
             action="store_true",
             info="Hide the second details frame in compact mode",
-        )
-
-        self.add_argument(
-            "compact_details_3",
-            action="store_true",
-            info="Hide the third details frame in compact mode",
         )
 
         self.add_argument(

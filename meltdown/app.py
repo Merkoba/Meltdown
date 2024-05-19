@@ -280,9 +280,9 @@ class App:
 
         confs = [
             args.compact_model,
+            args.compact_system,
             args.compact_details_1,
             args.compact_details_2,
-            args.compact_details_3,
             args.compact_buttons,
             args.compact_file,
             args.compact_input,

@@ -73,10 +73,10 @@ class Args:
         self.andchar = "&"
         self.commands = True
         self.compact = False
+        self.compact_system = False
         self.compact_model = False
         self.compact_details_1 = False
         self.compact_details_2 = False
-        self.compact_details_3 = False
         self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
@@ -309,9 +309,9 @@ class Args:
             "delay",
             "prefix",
             "andchar",
+            "compact_system",
             "compact_details_1",
             "compact_details_2",
-            "compact_details_3",
             "compact_file",
             "compact_buttons",
             "compact_model",
@@ -417,7 +417,7 @@ class Args:
             self.compact_model = True
             self.compact_details_1 = True
             self.compact_details_2 = True
-            self.compact_details_3 = True
+            self.compact_system = True
             self.compact_buttons = True
             self.compact_file = True
             self.compact_input = True
