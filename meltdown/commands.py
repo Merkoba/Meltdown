@@ -284,7 +284,7 @@ class Commands:
     def get_commandtext(self) -> str:
         sep = "\n\n---\n\n"
 
-        text = "## Commands\n\n"
+        text = "# Commands\n\n"
 
         text += "Commands can be chained:\n\n"
 

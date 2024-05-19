@@ -187,9 +187,9 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, self.pattern_path, "path")
 
         if self.enabled(who, "headers"):
-            self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_3")
+            self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_1")
             self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
-            self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_1")
+            self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_3")
 
         if self.enabled(who, "separators"):
             self.format_separators(start_ln, end_ln, who)

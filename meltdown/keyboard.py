@@ -491,11 +491,11 @@ class Keyboard:
     ) -> None:
         from .display import display
 
-        text = self.get_argtext(mode)
+        text = self.get_keyboardtext(mode)
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_argtext(self, mode: Optional[str] = None) -> str:
+    def get_keyboardtext(self, mode: Optional[str] = None) -> str:
         keys = list(self.commands.keys())
 
         if mode:
@@ -505,7 +505,7 @@ class Keyboard:
                 keys = [key for key in keys if mode in key]
 
         separator = "---"
-        lines = ["Keyboard Shortcuts:"]
+        lines = ["# Keyboard Shortcuts"]
         used_keys = []
 
         for key in keys:
@@ -579,7 +579,7 @@ class Keyboard:
             utils.msg(f"Invalid path: {pathstr}")
             return
 
-        text = self.get_argtext()
+        text = self.get_keyboardtext()
 
         with path.open("w", encoding="utf-8") as file:
             file.write(text)

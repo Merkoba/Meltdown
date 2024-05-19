@@ -471,7 +471,7 @@ class Args:
     def get_argtext(self) -> str:
         sep = "\n\n---\n\n"
 
-        text = "## Arguments\n\n"
+        text = "# Arguments\n\n"
 
         text += "Here are all the available command line arguments:"
 
