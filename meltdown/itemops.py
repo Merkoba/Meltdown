@@ -71,12 +71,21 @@ def action(
 
 
 def repeat(number: str, no_history: bool = False) -> None:
+    if not number:
+        number = "last"
+
     action("repeat", number, no_history=no_history)
 
 
 def copy(number: str) -> None:
+    if not number:
+        number = "last"
+
     action("copy", number)
 
 
 def select(number: str) -> None:
+    if not number:
+        number = "last"
+
     action("select", number)
