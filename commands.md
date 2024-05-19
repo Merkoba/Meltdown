@@ -1,4 +1,4 @@
-## Commands
+# Commands
 
 Commands can be chained:
 

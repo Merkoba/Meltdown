@@ -1,4 +1,4 @@
-## Arguments
+# Arguments
 
 Here are all the available command line arguments:
 
