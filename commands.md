@@ -738,6 +738,18 @@ Toggle automatic scrolling
 
 ---
 
+### enableautoscroll
+
+Enable automatic scrolling
+
+---
+
+### disableautoscroll
+
+Disable automatic scrolling
+
+---
+
 ### repeat
 
 Repeat the specified prompt
@@ -759,3 +771,9 @@ Copy the specified item
 ### selectitem
 
 Select the specified item
+
+---
+
+### profile
+
+Show the current profile
