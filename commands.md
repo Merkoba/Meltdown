@@ -720,18 +720,6 @@ Make up a random prompt
 
 ---
 
-### toggledetails1
+### toggleframe
 
-Toggle details 1
-
----
-
-### toggledetails2
-
-Toggle details 2
-
----
-
-### toggledetails3
-
-Toggle details 3
+Toggle a specific frame

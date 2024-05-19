@@ -266,6 +266,9 @@ class App:
         setattr(self, f"{name}_frame_enabled", True)
 
     def toggle_frame(self, name: str) -> None:
+        if not hasattr(self, f"{name}_frame_enabled"):
+            return
+
         if getattr(self, f"{name}_frame_enabled"):
             self.hide_frame(name)
         else:

@@ -739,21 +739,11 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "toggledetails1",
-            "Toggle details 1",
-            lambda a=None: app.toggle_details(1),
-        )
-
-        self.add_cmd(
-            "toggledetails2",
-            "Toggle details 2",
-            lambda a=None: app.toggle_details(2),
-        )
-
-        self.add_cmd(
-            "toggledetails3",
-            "Toggle details 3",
-            lambda a=None: app.toggle_details(3),
+            "toggleframe",
+            "Toggle a specific frame",
+            lambda a=None: app.toggle_frame(a),
+            type=str,
+            arg_req=True,
         )
 
 
