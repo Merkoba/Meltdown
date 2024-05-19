@@ -729,3 +729,9 @@ Toggle a specific frame
 ### lastlog
 
 Open the last log
+
+---
+
+### autoscroll
+
+Start automatic scrolling

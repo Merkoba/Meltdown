@@ -404,7 +404,7 @@ Action: store_false
 
 ---
 
-### no-auto-scroll
+### no-auto-bottom
 
 Don't scroll to the bottom when loading tabs
 
@@ -805,6 +805,16 @@ Show error messages
 Default: False
 
 Action: store_true
+
+---
+
+### auto-scroll-delay
+
+The delay in ms for each auto scroll tick
+
+Default: 500
+
+Type: int
 
 ---
 
