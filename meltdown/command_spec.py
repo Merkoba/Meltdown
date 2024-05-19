@@ -644,7 +644,6 @@ class CommandSpec:
             lambda a=None: delete.delete_items(number=a),
             extra=self.delcmd,
             type=str,
-            arg_req=True,
         )
 
         self.add_cmd(

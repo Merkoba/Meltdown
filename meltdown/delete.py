@@ -8,7 +8,7 @@ from .dialogs import Dialog
 
 
 def delete_items(
-    number: str,
+    number: Optional[str] = None,
     tab_id: Optional[str] = None,
     mode: str = "normal",
     force: bool = False,
@@ -42,6 +42,9 @@ def delete_items(
             return False
 
         return True
+
+    if not number:
+        number = "last"
 
     index = utils.get_index(number, tabconvo.convo.items)
 
