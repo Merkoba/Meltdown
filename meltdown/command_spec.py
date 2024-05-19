@@ -746,5 +746,11 @@ class CommandSpec:
             arg_req=True,
         )
 
+        self.add_cmd(
+            "lastlog",
+            "Open the last log",
+            lambda a=None: logs.open_last_log(),
+        )
+
 
 command_spec = CommandSpec()

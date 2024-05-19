@@ -723,3 +723,9 @@ Make up a random prompt
 ### toggleframe
 
 Toggle a specific frame
+
+---
+
+### lastlog
+
+Open the last log

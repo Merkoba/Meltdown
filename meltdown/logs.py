@@ -15,6 +15,9 @@ from .utils import utils
 
 
 class Logs:
+    def __init__(self) -> None:
+        self.last_log: Optional[Path] = None
+
     def menu(self, full: bool = True, tab_id: Optional[str] = None) -> None:
         cmds = []
 
@@ -49,6 +52,8 @@ class Logs:
 
                 if num > 9999:
                     break
+
+        self.last_log = file_path
 
         with file_path.open("w", encoding="utf-8") as file:
             file.write(text)
@@ -178,6 +183,12 @@ class Logs:
         full_text += utils.date() + "\n\n"
         full_text += text
         return full_text
+
+    def open_last_log(self) -> None:
+        if not self.last_log:
+            return
+
+        app.open_generic(str(self.last_log))
 
 
 logs = Logs()
