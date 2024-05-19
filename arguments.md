@@ -468,6 +468,14 @@ Action: store_false
 
 ---
 
+### no-auto-scroll
+
+Don't show the auto-scroll button
+
+Action: store_false
+
+---
+
 ### drag-and-drop
 
 Enable drag and drop
