@@ -57,8 +57,8 @@ class Conversation:
         if not tab:
             return
 
-        if not args.auto_scroll:
-            display.disable_auto_scroll(tab.tab_id)
+        if not args.auto_bottom:
+            display.disable_auto_bottom(tab.tab_id)
 
         for item in self.items:
             for key in item:
@@ -76,7 +76,7 @@ class Conversation:
                     continue
 
         display.format_text(tab.tab_id)
-        display.enable_auto_scroll(tab.tab_id)
+        display.enable_auto_bottom(tab.tab_id)
         display.check_scroll_buttons(tab.tab_id)
 
     def to_dict(self) -> Dict[str, Any]:

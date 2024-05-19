@@ -174,6 +174,8 @@ Multiple profiles.
 
 Read from text files.
 
+Auto-scroll.
+
 And more.
 
 ---

@@ -752,5 +752,11 @@ class CommandSpec:
             lambda a=None: logs.open_last_log(),
         )
 
+        self.add_cmd(
+            "autoscroll",
+            "Start automatic scrolling",
+            lambda a=None: display.enable_auto_scroll(),
+        )
+
 
 command_spec = CommandSpec()

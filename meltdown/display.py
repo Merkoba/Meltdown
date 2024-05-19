@@ -58,6 +58,8 @@ class Display:
         self.tab_number = 1
         self.max_old_tabs = 5
         self.max_tabs = 999
+        self.auto_scroll_enabled = False
+        self.check_auto_scroll()
 
     def make(self) -> None:
         from .widgets import widgets
@@ -172,6 +174,7 @@ class Display:
         if not tab.loaded:
             self.load_tab(tab.tab_id)
 
+        self.disable_auto_scroll()
         tab.output.reset_drag()
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -189,10 +192,16 @@ class Display:
         if not tabconvo:
             return
 
+        if not args.auto_bottom:
+            self.disable_auto_bottom(tab_id)
+
         self.show_header(tab_id)
 
         if tabconvo.convo.id != "ignore":
             self.show_intro(tab_id)
+
+        if not args.auto_bottom:
+            self.enable_auto_bottom(tab_id)
 
         tabconvo.convo.print()
         tabconvo.tab.loaded = True
@@ -500,6 +509,7 @@ class Display:
         yview = output.yview()
 
         if yview[1] >= 0.9999:
+            self.disable_auto_scroll()
             tab.bottom.hide()
         else:
             tab.bottom.show()
@@ -855,15 +865,15 @@ class Display:
 
         return tabconvo.convo.id == "ignore"
 
-    def enable_auto_scroll(self, tab_id: str) -> None:
+    def enable_auto_bottom(self, tab_id: str) -> None:
         tab = self.get_tab(tab_id)
 
         if not tab:
             return
 
-        tab.output.auto_scroll = True
+        tab.output.auto_bottom = True
 
-    def disable_auto_scroll(self, tab_id: Optional[str] = None) -> None:
+    def disable_auto_bottom(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -872,7 +882,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.auto_scroll = False
+        tab.output.auto_bottom = False
 
     def num_user_prompts(self, tab_id: Optional[str] = None) -> int:
         if not tab_id:
@@ -960,6 +970,23 @@ class Display:
 
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
+
+    def enable_auto_scroll(self) -> None:
+        self.auto_scroll_enabled = True
+        self.check_auto_scroll()
+
+    def disable_auto_scroll(self) -> None:
+        self.auto_scroll_enabled = False
+
+    def check_auto_scroll(self) -> None:
+        if args.auto_scroll_delay < 100:
+            return
+
+        if not self.auto_scroll_enabled:
+            return
+
+        display.scroll_down()
+        app.root.after(args.auto_scroll_delay, lambda: self.check_auto_scroll())
 
 
 display = Display()

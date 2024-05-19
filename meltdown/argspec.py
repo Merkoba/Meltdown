@@ -337,7 +337,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_auto_scroll",
+            "no_auto_bottom",
             action="store_false",
             info="Don't scroll to the bottom when loading tabs",
         )
@@ -586,6 +586,12 @@ class ArgSpec:
             "errors",
             action="store_true",
             info="Show error messages",
+        )
+
+        self.add_argument(
+            "auto_scroll_delay",
+            type=int,
+            info="The delay in ms for each auto scroll tick",
         )
 
         self.add_argument(

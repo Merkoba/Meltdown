@@ -263,7 +263,7 @@ class Output(tk.Text):
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
         self.snippets: List[Snippet] = []
-        self.auto_scroll = True
+        self.auto_bottom = True
         self.update_size_after = ""
         self.separator = Output.marker_separator + args.separator
         self.checked_markers_user: List[int] = []
@@ -455,14 +455,14 @@ class Output(tk.Text):
         self.checked_markers_ai = []
 
     def to_top(self) -> None:
-        self.auto_scroll = False
+        self.auto_bottom = False
         self.yview_moveto(0.0)
 
     def to_bottom(self, check: bool = False) -> None:
-        if check and (not self.auto_scroll):
+        if check and (not self.auto_bottom):
             return
 
-        self.auto_scroll = True
+        self.auto_bottom = True
         self.yview_moveto(1.0)
 
     def last_characters(self, n: int) -> str:
@@ -565,10 +565,10 @@ class Output(tk.Text):
 
     def check_autoscroll(self, direction: str) -> None:
         if direction == "up":
-            self.auto_scroll = False
+            self.auto_bottom = False
         elif direction == "down":
             if self.yview()[1] >= 1.0:
-                self.auto_scroll = True
+                self.auto_bottom = True
 
     def enable(self) -> None:
         if self.cget("state") != "normal":

@@ -147,7 +147,7 @@ class Args:
         self.confirm_exit = False
         self.fill_prompt = True
         self.scroll_lines = 1
-        self.auto_scroll = True
+        self.auto_bottom = True
         self.user_color = "auto"
         self.ai_color = "auto"
         self.drag_and_drop = False
@@ -198,6 +198,7 @@ class Args:
         self.border_color = ""
         self.title = ""
         self.icon = ""
+        self.auto_scroll_delay = 500
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -260,7 +261,7 @@ class Args:
             ("no_auto_name", "auto_name"),
             ("no_tab_double_click", "tab_double_click"),
             ("no_disable_buttons", "disable_buttons"),
-            ("no_auto_scroll", "auto_scroll"),
+            ("no_auto_bottom", "auto_bottom"),
             ("no_name_menu", "name_menu"),
             ("no_word_menu", "word_menu"),
             ("no_url_menu", "url_menu"),
@@ -399,6 +400,7 @@ class Args:
             "border_color",
             "title",
             "icon",
+            "auto_scroll_delay",
         ]
 
         for n_item in normals:
