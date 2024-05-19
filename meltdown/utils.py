@@ -318,5 +318,9 @@ class Utils:
         prompt = {"text": text}
         model.stream(prompt)
 
+    def remove_multiple_lines(self, text: str) -> str:
+        pattern = re.compile(r"\n{3,}")
+        return pattern.sub("\n\n", text)
+
 
 utils = Utils()

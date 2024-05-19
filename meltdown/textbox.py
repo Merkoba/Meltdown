@@ -129,7 +129,8 @@ class TextBox(tk.Text):
             self.ok()
 
     def get_text(self) -> str:
-        return self.get("1.0", tk.END).strip()
+        text = self.get("1.0", tk.END).strip()
+        return utils.remove_multiple_lines(text)
 
     def change_value(self) -> str:
         return self.get_text()
