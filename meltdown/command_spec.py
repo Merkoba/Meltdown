@@ -748,8 +748,8 @@ class CommandSpec:
 
         self.add_cmd(
             "autoscroll",
-            "Start automatic scrolling",
-            lambda a=None: display.enable_auto_scroll(),
+            "Toggle automatic scrolling",
+            lambda a=None: display.toggle_auto_scroll(),
         )
 
         self.add_cmd(
