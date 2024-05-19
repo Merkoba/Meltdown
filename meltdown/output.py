@@ -45,13 +45,15 @@ class Output(tk.Text):
         delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
-    def select_item() -> None:
+    def select_item(number: Optional[int] = None) -> None:
         output = Output.current_output()
 
         if not output:
             return
 
-        number = Output.clicked_number
+        if number is None:
+            number = Output.clicked_number
+
         start_ln, end_ln = output.get_item_text(number)
 
         if start_ln == 0:

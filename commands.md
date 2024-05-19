@@ -735,3 +735,27 @@ Open the last log
 ### autoscroll
 
 Start automatic scrolling
+
+---
+
+### repeat
+
+Repeat the specified prompt
+
+---
+
+### repeatclean
+
+Repeat the specified prompt (without history)
+
+---
+
+### copyitem
+
+Copy the specified item
+
+---
+
+### selectitem
+
+Select the specified item

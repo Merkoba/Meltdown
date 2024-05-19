@@ -16,6 +16,7 @@ from .files import files
 from .output import Output
 from .keyboard import keyboard
 from .utils import utils
+from . import itemops
 from . import summarize
 from . import menumanager
 from . import findmanager
@@ -756,6 +757,38 @@ class CommandSpec:
             "autoscroll",
             "Start automatic scrolling",
             lambda a=None: display.enable_auto_scroll(),
+        )
+
+        self.add_cmd(
+            "repeat",
+            "Repeat the specified prompt",
+            lambda a=None: itemops.repeat(a),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "repeatclean",
+            "Repeat the specified prompt (without history)",
+            lambda a=None: itemops.repeat(a, True),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "copyitem",
+            "Copy the specified item",
+            lambda a=None: itemops.copy(a),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "selectitem",
+            "Select the specified item",
+            lambda a=None: itemops.select(a),
+            type=str,
+            arg_req=True,
         )
 
 

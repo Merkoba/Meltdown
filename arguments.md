@@ -1042,7 +1042,7 @@ Type: str
 
 Command to assign to the F9 key
 
-Default: [Empty string]
+Default: "/autoscroll"
 
 Type: str
 

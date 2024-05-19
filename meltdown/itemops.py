@@ -58,5 +58,21 @@ def action(
 
         text = "\n\n".join(texts)
 
-        if text:
-            utils.copy(text, command=True)
+        if not text:
+            return
+
+        utils.copy(text, command=True)
+    elif mode == "select":
+        Output.select_item(index + 1)
+
+
+def repeat(number: str, no_history: bool = False) -> None:
+    action("repeat", number, no_history=no_history)
+
+
+def copy(number: str) -> None:
+    action("copy", number)
+
+
+def select(number: str) -> None:
+    action("select", number)
