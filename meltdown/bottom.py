@@ -14,13 +14,24 @@ from .tips import tips
 class Bottom(tk.Frame):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         super().__init__(parent)
-        self.button = ButtonBox(self, text="Go To Bottom", command=self.to_bottom)
-        ToolTip(self.button, tips["bottom_button"])
-        self.button.grid(row=0, column=0, sticky="nsew")
-        self.button.set_bind("<Button-4>", lambda e: self.scroll_up())
-        self.button.set_bind("<Button-5>", lambda e: self.scroll_down())
+
+        self.bottom_button = ButtonBox(
+            self, text="Go To Bottom", command=self.to_bottom
+        )
+        ToolTip(self.bottom_button, tips["bottom_button"])
+        self.bottom_button.grid(row=0, column=0, sticky="nsew")
+        self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
+        self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
+
+        self.auto_scroll_button = ButtonBox(
+            self, text="Auto-Scroll", command=self.auto_scroll, style="alt"
+        )
+
+        self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
+
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
+
         self.parent = parent
         self.tab_id = tab_id
         self.visible = True
@@ -46,8 +57,8 @@ class Bottom(tk.Frame):
 
     def show(self) -> None:
         if not args.bottom_autohide:
-            self.button.set_style("normal")
-            self.button.set_text("Go To Bottom")
+            self.bottom_button.set_style("normal")
+            self.bottom_button.set_text("Go To Bottom")
             return
 
         if (not args.bottom) or self.visible or (not app.exists()):
@@ -58,8 +69,8 @@ class Bottom(tk.Frame):
 
     def hide(self) -> None:
         if not args.bottom_autohide:
-            self.button.set_style("disabled")
-            self.button.set_text("")
+            self.bottom_button.set_style("disabled")
+            self.bottom_button.set_text("")
             return
 
         if (not self.visible) or (not app.exists()):
@@ -85,4 +96,9 @@ class Bottom(tk.Frame):
         display.scroll_down(self.tab_id)
 
     def set_text(self, text: str) -> None:
-        self.button.set_text(text)
+        self.bottom_button.set_text(text)
+
+    def auto_scroll(self) -> None:
+        from .display import display
+
+        display.toggle_auto_scroll()

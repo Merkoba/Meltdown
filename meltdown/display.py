@@ -978,6 +978,10 @@ class Display:
     def disable_auto_scroll(self) -> None:
         self.auto_scroll_enabled = False
 
+    def toggle_auto_scroll(self) -> None:
+        self.auto_scroll_enabled = not self.auto_scroll_enabled
+        self.check_auto_scroll()
+
     def check_auto_scroll(self) -> None:
         if args.auto_scroll_delay < 100:
             return
