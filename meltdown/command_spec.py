@@ -28,7 +28,6 @@ class CommandSpec:
     def __init__(self) -> None:
         self.force = "Use 'force' to force"
         self.file_name = "You can provide the file name"
-        self.sortfilter = "Use 'sort' or a word to filter"
         self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
         self.optdelay = "Optional delay in seconds"
         self.infos: List[str] = []
@@ -204,25 +203,19 @@ class CommandSpec:
         self.add_cmd(
             "commands",
             "Show the commands help",
-            lambda a=None: app.show_help("commands", mode=a),
-            extra=self.sortfilter,
-            type=str,
+            lambda a=None: app.show_help("commands"),
         )
 
         self.add_cmd(
             "arguments",
             "Show the arguments help",
-            lambda a=None: app.show_help("arguments", mode=a),
-            extra=self.sortfilter,
-            type=str,
+            lambda a=None: app.show_help("arguments"),
         )
 
         self.add_cmd(
             "keyboard",
             "Show the keyboard help",
-            lambda a=None: app.show_help("keyboard", mode=a),
-            extra=self.sortfilter,
-            type=str,
+            lambda a=None: app.show_help("keyboard"),
         )
 
         self.add_cmd(

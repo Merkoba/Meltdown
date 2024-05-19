@@ -464,9 +464,7 @@ class Args:
         if not self.gestures_down:
             self.gestures_down = f"{self.prefix}bottom"
 
-    def show_help(
-        self, tab_id: Optional[str] = None, mode: Optional[str] = None
-    ) -> None:
+    def show_help(self, tab_id: Optional[str] = None) -> None:
         from .display import display
 
         text = self.get_argtext()

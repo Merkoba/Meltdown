@@ -486,24 +486,15 @@ class Keyboard:
         self.shift = False
         self.ctrl_date = 0.0
 
-    def show_help(
-        self, tab_id: Optional[str] = None, mode: Optional[str] = None
-    ) -> None:
+    def show_help(self, tab_id: Optional[str] = None) -> None:
         from .display import display
 
-        text = self.get_keyboardtext(mode)
+        text = self.get_keyboardtext()
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_keyboardtext(self, mode: Optional[str] = None) -> str:
+    def get_keyboardtext(self) -> str:
         keys = list(self.commands.keys())
-
-        if mode:
-            if mode == "sort":
-                keys = list(sorted(keys))
-            else:
-                keys = [key for key in keys if mode in key]
-
         separator = "---"
         lines = ["# Keyboard Shortcuts"]
         used_keys = []
