@@ -11,7 +11,7 @@ tips = {
     "clear_button": "Clear the conversation",
     "close_button": "Close tabs. Middle click to close others",
     "top_button": "Scroll to the top. Middle click to auto-scroll upwards",
-    "bottom_button": "Scroll to the bottom",
+    "bottom_button": "Scroll to the bottom. Middle click to auto-scroll",
     "prev_button": f"Previous item in the input history. {prevnext}",
     "next_button": f"Next item in the input history. {prevnext}",
     "write_button": "Show a textbox for longer inputs. Middle click to maximize",
