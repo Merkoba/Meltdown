@@ -483,7 +483,7 @@ class Widgets:
         self.top_button.set_bind("<Button-2>", lambda e: autoscroll.enable("up"))
         self.top_button.set_bind("<Button-4>", lambda e: display.scroll_up())
         self.top_button.set_bind("<Button-5>", lambda e: display.scroll_down())
-        self.close_button.set_bind("<Button-2>", lambda e: close.close_other())
+        self.close_button.set_bind("<Button-2>", lambda e: close.close_all())
         inputcontrol.bind()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
