@@ -1,4 +1,5 @@
 prevnext = "Middle click to clear"
+middleprev = "Middle click to find previous"
 
 tips = {
     "main_menu": "Open the main menu",
@@ -118,9 +119,9 @@ tips = {
     ),
     "file": "The URL or path to a file",
     # Find
-    "find_next_i": "Find next match (case insensitive)",
-    "find_next": "Find next match (case sensitive)",
-    "find_bound_i": "Find next word-bound match (case insensitive)",
-    "find_bound": "Find next word-bound match (case sensitive)",
+    "find_next_i": f"Find next match (case insensitive). {middleprev}",
+    "find_next": f"Find next match (case sensitive). {middleprev}",
+    "find_bound_i": f"Find next word-bound match (case insensitive). {middleprev}",
+    "find_bound": f"Find next word-bound match (case sensitive). {middleprev}",
     "find_hide": "Hide the find bar (Esc)",
 }
