@@ -110,6 +110,9 @@ def close(
 
     cmds = []
 
+    if full and get_empty_tabs():
+        cmds.append(("Empty", lambda: close_empty()))
+
     if full and get_old_tabs():
         cmds.append(("Old", lambda: close_old()))
 
