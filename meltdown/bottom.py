@@ -72,17 +72,14 @@ class Bottom(tk.Frame):
             self.bottom_button.set_style("normal")
             self.bottom_button.set_text(self.bottom_text)
             self.auto_scroll_button.set_text(self.auto_scroll_text)
+            self.check_auto_scroll()
             self.buttons_enabled = True
             return
-
-        if autoscroll.enabled:
-            self.auto_scroll_button.set_style("active")
-        else:
-            self.auto_scroll_button.set_style("alt")
 
         if (not args.bottom) or self.visible or (not app.exists()):
             return
 
+        self.check_auto_scroll()
         self.visible = True
         self.show_debouncer = app.root.after(self.delay, self.do_show)
 
@@ -140,3 +137,9 @@ class Bottom(tk.Frame):
             return
 
         self.auto_scroll_button.set_style("alt")
+
+    def check_auto_scroll(self) -> None:
+        if autoscroll.enabled:
+            self.auto_scroll_button.set_style("active")
+        else:
+            self.auto_scroll_button.set_style("alt")
