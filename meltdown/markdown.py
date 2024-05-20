@@ -29,7 +29,7 @@ class Markdown:
         left_string = self.escape_chars(chars_left, "|")
         left = rf"(?:(?<=\s)|^|{left_string})"
 
-        chars_right = [".", ",", ";", "!", "?", ":", "/"]
+        chars_right = [".", ",", ";", "!", "?", ":", "/", ")", "]"]
         right_string = self.escape_chars(chars_right, "|")
         right = rf"(?=\s|$|{right_string})"
 
