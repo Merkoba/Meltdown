@@ -415,7 +415,7 @@ class Output(tk.Text):
         self.bind("<KeyPress-End>", lambda e: end())
         self.bind("<Configure>", lambda e: self.update_size())
 
-        self.scrollbar.bind("<Button-1>", lambda e: self.on_click())
+        self.scrollbar.bind("<Button-1>", lambda e: self.on_scrollbar_click())
 
         def on_scroll(*args: Any) -> None:
             if self.last_scroll_args == args:
@@ -982,3 +982,7 @@ class Output(tk.Text):
         self.last_scroll_args = args
         self.display.check_scroll_buttons(tab_id=self.tab_id)
         self.scrollbar.set(*args)
+
+    def on_scrollbar_click(self) -> None:
+        self.on_click()
+        self.display.disable_auto_scroll()
