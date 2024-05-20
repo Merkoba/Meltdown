@@ -437,17 +437,32 @@ class Args:
         if not self.f1:
             self.f1 = f"{self.prefix}help"
 
+        if not self.f2:
+            self.f2 = f"{self.prefix}findprev"
+
         if not self.f3:
-            self.f3 = f"{self.prefix}next"
+            self.f3 = f"{self.prefix}findnext"
+
+        if not self.f4:
+            self.f4 = f"{self.prefix}close"
 
         if not self.f5:
             self.f5 = f"{self.prefix}reset"
+
+        if not self.f6:
+            self.f6 = f"{self.prefix}delete"
+
+        if not self.f7:
+            self.f7 = f"{self.prefix}clear"
 
         if not self.f8:
             self.f8 = f"{self.prefix}compact"
 
         if not self.f9:
             self.f9 = f"{self.prefix}autoscroll"
+
+        if not self.f10:
+            self.f10 = f"{self.prefix}logtext"
 
         if not self.f11:
             self.f11 = f"{self.prefix}fullscreen"

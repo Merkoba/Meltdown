@@ -41,6 +41,21 @@ def find_next(case_insensitive: bool = True) -> None:
     tab.find.find_next(case_insensitive)
 
 
+def find_prev(case_insensitive: bool = True) -> None:
+    from .display import display
+
+    tab = display.get_current_tab()
+
+    if not tab:
+        return
+
+    if not tab.find.visible:
+        tab.find.show()
+        return
+
+    tab.find.find_next(case_insensitive, reverse=True)
+
+
 def hide_find() -> None:
     from .display import display
 

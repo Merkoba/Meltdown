@@ -83,6 +83,7 @@ class Find:
         no_match: bool = False,
         switch: bool = False,
         first_widget: Optional[tk.Widget] = None,
+        reverse: bool = False,
     ) -> None:
         if not self.visible:
             return
@@ -108,8 +109,15 @@ class Find:
 
         if self.current_match is not None:
             start_pos = widget.index(f"{self.current_match}+1c")
+        elif reverse:
+            start_pos = "end"
         else:
             start_pos = "1.0"
+
+        if reverse:
+            end_pos = "1.0"
+        else:
+            end_pos = "end"
 
         if not start_pos:
             return
@@ -129,15 +137,20 @@ class Find:
         else:
             nocase = False
 
-        match = self.widget.search(
-            full_query, start_pos, tk.END, regexp=True, nocase=nocase
+        match_ = self.widget.search(
+            full_query,
+            start_pos,
+            end_pos,
+            regexp=True,
+            nocase=nocase,
+            backwards=reverse,
         )
 
         output = self.get_output()
         assert output is not None
 
-        if match:
-            start_index = widget.index(match)
+        if match_:
+            start_index = widget.index(match_)
             end_index = widget.index(f"{start_index}+{len(query)}c")
             widget.tag_add("find", start_index, end_index)
             widget.tag_configure("find", background=app.theme.find_match_background)
@@ -158,7 +171,10 @@ class Find:
                 output.see(self.snippet_index)
                 self.snippet_focused = True
 
-            self.current_match = end_index
+            if reverse:
+                self.current_match = widget.index(f"{start_index}-{len(query)}c")
+            else:
+                self.current_match = end_index
         else:
             self.current_match = None
 
@@ -176,6 +192,7 @@ class Find:
                 no_match=False,
                 switch=True,
                 first_widget=first_widget,
+                reverse=reverse,
             )
 
     def next_snippet(self) -> bool:

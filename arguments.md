@@ -990,7 +990,7 @@ Type: str
 
 Command to assign to the F2 key
 
-Default: [Empty string]
+Default: "/findprev"
 
 Type: str
 
@@ -1000,7 +1000,7 @@ Type: str
 
 Command to assign to the F3 key
 
-Default: "/next"
+Default: "/findnext"
 
 Type: str
 
@@ -1010,7 +1010,7 @@ Type: str
 
 Command to assign to the F4 key
 
-Default: [Empty string]
+Default: "/close"
 
 Type: str
 
@@ -1030,7 +1030,7 @@ Type: str
 
 Command to assign to the F6 key
 
-Default: [Empty string]
+Default: "/delete"
 
 Type: str
 
@@ -1040,7 +1040,7 @@ Type: str
 
 Command to assign to the F7 key
 
-Default: [Empty string]
+Default: "/clear"
 
 Type: str
 
@@ -1070,7 +1070,7 @@ Type: str
 
 Command to assign to the F10 key
 
-Default: [Empty string]
+Default: "/logtext"
 
 Type: str
 

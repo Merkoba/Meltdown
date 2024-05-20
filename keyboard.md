@@ -92,7 +92,7 @@ Ctrl+Shift: Move tab to the right
 
 < SPACE >
 
-Ctrl: Show main menu
+Ctrl: Write an input
 
 ---
 
@@ -152,7 +152,7 @@ Ctrl: Resize window
 
 M
 
-Ctrl: Browse models
+Ctrl: Show the main menu
 
 ---
 

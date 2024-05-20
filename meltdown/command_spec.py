@@ -293,7 +293,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "next", "Find next text match", lambda a=None: findmanager.find_next()
+            "findprev",
+            "Find previous text match",
+            lambda a=None: findmanager.find_prev(),
+        )
+
+        self.add_cmd(
+            "findnext", "Find next text match", lambda a=None: findmanager.find_next()
         )
 
         self.add_cmd("scrollup", "Scroll up", lambda a=None: display.scroll_up())

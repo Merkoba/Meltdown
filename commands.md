@@ -282,7 +282,13 @@ Toggle fullscreen
 
 ---
 
-### next
+### findprev
+
+Find previous text match
+
+---
+
+### findnext
 
 Find next text match
 
