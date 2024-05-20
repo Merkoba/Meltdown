@@ -514,8 +514,8 @@ class App:
     def show_window(self) -> None:
         from .args import args
 
-        padx = args.padx
-        pady = args.pady
+        padx = args.border_size
+        pady = args.border_size
 
         self.main_frame.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
 

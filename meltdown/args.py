@@ -196,11 +196,10 @@ class Args:
         self.limit_tokens = True
         self.clean_names = True
         self.border_color = ""
+        self.border_size = 5
         self.title = ""
         self.icon = ""
         self.auto_scroll_delay = 500
-        self.padx = 5
-        self.pady = 5
         self.show_auto_scroll = True
 
     def parse(self) -> None:
@@ -402,11 +401,10 @@ class Args:
             "show_terminal",
             "drag_and_drop",
             "border_color",
+            "border_size",
             "title",
             "icon",
             "auto_scroll_delay",
-            "padx",
-            "pady",
         ]
 
         for n_item in normals:

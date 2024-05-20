@@ -595,21 +595,15 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "border_size",
+            type=int,
+            info="The size of the border",
+        )
+
+        self.add_argument(
             "auto_scroll_delay",
             type=int,
             info="The delay in ms for each auto scroll tick",
-        )
-
-        self.add_argument(
-            "padx",
-            type=int,
-            info="Horizontal padding around the edges",
-        )
-
-        self.add_argument(
-            "pady",
-            type=int,
-            info="Vertical padding around the edges",
         )
 
         self.add_argument(
