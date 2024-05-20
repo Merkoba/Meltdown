@@ -14,6 +14,9 @@ class AutoScroll:
     def enable(self, direction: Optional[str] = None) -> None:
         from .display import display
 
+        if self.enabled:
+            return
+
         tab = display.get_current_tab()
 
         if not tab:
@@ -38,6 +41,9 @@ class AutoScroll:
 
     def disable(self) -> None:
         from .display import display
+
+        if not self.enabled:
+            return
 
         self.enabled = False
 
