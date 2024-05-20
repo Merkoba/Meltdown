@@ -32,6 +32,7 @@ class Find:
         self.entry.placeholder = "Find..."
         self.entry.check_placeholder()
         self.current_match: Optional[str] = None
+        self.current_match_reverse: Optional[str] = None
         self.widget: Optional[tk.Text] = None
         self.visible = False
         self.snippet = -1
@@ -107,7 +108,9 @@ class Find:
         if not first_widget:
             first_widget = self.widget
 
-        if self.current_match is not None:
+        if reverse and (self.current_match_reverse is not None):
+            start_pos = widget.index(f"{self.current_match_reverse}+1c")
+        elif self.current_match is not None:
             start_pos = widget.index(f"{self.current_match}+1c")
         elif reverse:
             start_pos = "end"
@@ -171,12 +174,11 @@ class Find:
                 output.see(self.snippet_index)
                 self.snippet_focused = True
 
-            if reverse:
-                self.current_match = widget.index(f"{start_index}-{len(query)}c")
-            else:
-                self.current_match = end_index
+            self.current_match_reverse = widget.index(f"{start_index}-1c")
+            self.current_match = end_index
         else:
             self.current_match = None
+            self.current_match_reverse = None
 
             if no_match:
                 return

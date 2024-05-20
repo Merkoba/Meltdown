@@ -434,41 +434,22 @@ class Args:
         self.parser = ap.parser
 
     def fill_functions(self) -> None:
-        if not self.f1:
-            self.f1 = f"{self.prefix}help"
+        def add(num: int, func: str) -> None:
+            if not getattr(self, f"f{num}"):
+                setattr(self, f"f{num}", self.prefix + func)
 
-        if not self.f2:
-            self.f2 = f"{self.prefix}findprev"
-
-        if not self.f3:
-            self.f3 = f"{self.prefix}findnext"
-
-        if not self.f4:
-            self.f4 = f"{self.prefix}close"
-
-        if not self.f5:
-            self.f5 = f"{self.prefix}reset"
-
-        if not self.f6:
-            self.f6 = f"{self.prefix}delete"
-
-        if not self.f7:
-            self.f7 = f"{self.prefix}clear"
-
-        if not self.f8:
-            self.f8 = f"{self.prefix}compact"
-
-        if not self.f9:
-            self.f9 = f"{self.prefix}autoscroll"
-
-        if not self.f10:
-            self.f10 = f"{self.prefix}logtext"
-
-        if not self.f11:
-            self.f11 = f"{self.prefix}fullscreen"
-
-        if not self.f12:
-            self.f12 = f"{self.prefix}list"
+        add(1, "help")
+        add(2, "findprev")
+        add(3, "findnext")
+        add(4, "close")
+        add(5, "reset")
+        add(6, "delete")
+        add(7, "clear")
+        add(8, "compact")
+        add(9, "autoscroll")
+        add(10, "logtext")
+        add(11, "fullscreen")
+        add(12, "list")
 
     def fill_gestures(self) -> None:
         if not self.gestures_left:
