@@ -71,10 +71,14 @@ class Bottom(tk.Frame):
         if not args.bottom_autohide:
             self.bottom_button.set_style("normal")
             self.bottom_button.set_text(self.bottom_text)
-            self.auto_scroll_button.set_style("alt")
             self.auto_scroll_button.set_text(self.auto_scroll_text)
             self.buttons_enabled = True
             return
+
+        if autoscroll.enabled:
+            self.auto_scroll_button.set_style("active")
+        else:
+            self.auto_scroll_button.set_style("alt")
 
         if (not args.bottom) or self.visible or (not app.exists()):
             return
