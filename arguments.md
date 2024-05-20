@@ -816,31 +816,21 @@ Action: store_true
 
 ---
 
+### border-size
+
+The size of the border
+
+Default: 5
+
+Type: int
+
+---
+
 ### auto-scroll-delay
 
 The delay in ms for each auto scroll tick
 
 Default: 500
-
-Type: int
-
----
-
-### padx
-
-Horizontal padding around the edges
-
-Default: 5
-
-Type: int
-
----
-
-### pady
-
-Vertical padding around the edges
-
-Default: 5
 
 Type: int
 
