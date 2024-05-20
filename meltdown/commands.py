@@ -299,6 +299,10 @@ class Commands:
             text += sep
             text += f"### {key}\n\n"
             text += cmd["info"]
+            extra = cmd.get("extra")
+
+            if extra:
+                text += f"\n\n{extra}"
 
         text += "\n"
         return text

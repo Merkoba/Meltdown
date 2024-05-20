@@ -16,11 +16,15 @@ Here are all the available commands:
 
 Clear the conversation
 
+Use 'force' to force
+
 ---
 
 ### exit
 
 Exit the application
+
+Optional delay in seconds
 
 ---
 
@@ -106,11 +110,15 @@ Maximize the window
 
 Close current tab
 
+Use 'force' to force
+
 ---
 
 ### closeothers
 
 Close other tabs
+
+Use 'force' to force
 
 ---
 
@@ -118,11 +126,15 @@ Close other tabs
 
 Close all tabs
 
+Use 'force' to force
+
 ---
 
 ### closeold
 
 Close old tabs
+
+Use 'force' to force
 
 ---
 
@@ -130,17 +142,23 @@ Close old tabs
 
 Close empty tabs
 
+Use 'force' to force
+
 ---
 
 ### closeleft
 
 Close tabs to the left
 
+Use 'force' to force
+
 ---
 
 ### closeright
 
 Close tabs to the right
+
+Use 'force' to force
 
 ---
 
@@ -364,6 +382,8 @@ Save the current session
 
 Load a session
 
+You can provide the file name
+
 ---
 
 ### saveconfig
@@ -375,6 +395,8 @@ Save the current config
 ### loadconfig
 
 Load a config
+
+You can provide the file name
 
 ---
 
@@ -640,11 +662,15 @@ Summarize the conversation
 
 Remove a specific item of a conversation
 
+You can use a specific number, or words like 'first' and 'last'
+
 ---
 
 ### deleteabove
 
 Delete items above this item
+
+You can use a specific number, or words like 'first' and 'last'
 
 ---
 
@@ -652,11 +678,15 @@ Delete items above this item
 
 Delete items below this item
 
+You can use a specific number, or words like 'first' and 'last'
+
 ---
 
 ### deleteothers
 
 Delete the other items
+
+You can use a specific number, or words like 'first' and 'last'
 
 ---
 
@@ -741,6 +771,8 @@ Toggle automatic scrolling
 ### enableautoscroll
 
 Enable automatic scrolling
+
+Optional up or down argument
 
 ---
 
