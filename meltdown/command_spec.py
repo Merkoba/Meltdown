@@ -135,7 +135,7 @@ class CommandSpec:
         self.add_cmd(
             "close",
             "Close current tab",
-            lambda a=None: close.close_tab(force=a),
+            lambda a=None: close.close(force=a),
             extra=self.force,
             type="force",
         )
@@ -143,7 +143,7 @@ class CommandSpec:
         self.add_cmd(
             "closeothers",
             "Close other tabs",
-            lambda a=None: close.close_other_tabs(force=a),
+            lambda a=None: close.close_other(force=a),
             extra=self.force,
             type="force",
         )
@@ -151,7 +151,7 @@ class CommandSpec:
         self.add_cmd(
             "closeall",
             "Close all tabs",
-            lambda a=None: close.close_all_tabs(force=a),
+            lambda a=None: close.close_all(force=a),
             extra=self.force,
             type="force",
         )
@@ -159,7 +159,7 @@ class CommandSpec:
         self.add_cmd(
             "closeold",
             "Close old tabs",
-            lambda a=None: close.close_old_tabs(force=a),
+            lambda a=None: close.close_old(force=a),
             extra=self.force,
             type="force",
         )
@@ -167,7 +167,7 @@ class CommandSpec:
         self.add_cmd(
             "closeempty",
             "Close empty tabs",
-            lambda a=None: close.close_empty_tabs(force=a),
+            lambda a=None: close.close_empty(force=a),
             extra=self.force,
             type="force",
         )
@@ -175,7 +175,7 @@ class CommandSpec:
         self.add_cmd(
             "closeleft",
             "Close tabs to the left",
-            lambda a=None: close.close_tabs_left(force=a),
+            lambda a=None: close.close_left(force=a),
             extra=self.force,
             type="force",
         )
@@ -183,7 +183,7 @@ class CommandSpec:
         self.add_cmd(
             "closeright",
             "Close tabs to the right",
-            lambda a=None: close.close_tabs_right(force=a),
+            lambda a=None: close.close_right(force=a),
             extra=self.force,
             type="force",
         )

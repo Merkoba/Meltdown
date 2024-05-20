@@ -266,7 +266,7 @@ class Display:
     def on_tab_middle_click(self, tab_id: str) -> None:
         from . import close
 
-        close.close_tab(tab_id=tab_id, force_empty=True, full=False)
+        close.close(tab_id=tab_id, force_empty=True, full=False)
 
     def on_tabs_click(self) -> None:
         app.hide_all()
@@ -344,7 +344,7 @@ class Display:
     def tab_menu_close(self) -> None:
         from . import close
 
-        close.close_tab(tab_id=self.tab_menu_id, full=False)
+        close.close(tab_id=self.tab_menu_id, full=False)
 
     def tab_ids(self) -> List[str]:
         return self.book.ids()

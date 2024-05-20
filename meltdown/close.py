@@ -67,7 +67,7 @@ def get_other_tabs(tab_id: str) -> List[str]:
 # -----------------
 
 
-def close_tab(
+def close(
     tab_id: Optional[str] = None,
     force: bool = False,
     make_empty: bool = True,
@@ -111,19 +111,19 @@ def close_tab(
     cmds = []
 
     if full and get_old_tabs():
-        cmds.append(("Old", lambda: close_old_tabs()))
+        cmds.append(("Old", lambda: close_old()))
 
     if get_other_tabs(tab_id):
-        cmds.append(("Others", lambda: close_other_tabs(tab_id=tab_id)))
+        cmds.append(("Others", lambda: close_other(tab_id=tab_id)))
 
     if get_left_tabs(tab_id):
-        cmds.append(("Left", lambda: close_tabs_left(tab_id=tab_id)))
+        cmds.append(("Left", lambda: close_left(tab_id=tab_id)))
 
     if get_right_tabs(tab_id):
-        cmds.append(("Right", lambda: close_tabs_right(tab_id=tab_id)))
+        cmds.append(("Right", lambda: close_right(tab_id=tab_id)))
 
     if full:
-        cmds.append(("All", lambda: close_all_tabs()))
+        cmds.append(("All", lambda: close_all()))
 
     if not cmds:
         return
@@ -132,10 +132,10 @@ def close_tab(
     Dialog.show_commands("Close tab?", cmds)
 
 
-def close_all_tabs(force: bool = False, make_empty: bool = True) -> None:
+def close_all(force: bool = False, make_empty: bool = True) -> None:
     def action() -> None:
         for tab_id in display.tab_ids():
-            close_tab(tab_id=tab_id, force=True, make_empty=make_empty)
+            close(tab_id=tab_id, force=True, make_empty=make_empty)
 
     if force or (not args.confirm_close):
         action()
@@ -145,7 +145,7 @@ def close_all_tabs(force: bool = False, make_empty: bool = True) -> None:
     Dialog.show_confirm(f"Close all tabs ({n}) ?", lambda: action())
 
 
-def close_old_tabs(force: bool = False) -> None:
+def close_old(force: bool = False) -> None:
     ids = display.tab_ids()
 
     if len(ids) <= 1:
@@ -158,7 +158,7 @@ def close_old_tabs(force: bool = False) -> None:
 
     def action() -> None:
         for tab in tabs:
-            close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
+            close(tab_id=tab.tab_id, force=True, make_empty=True)
 
     if force or (not args.confirm_close):
         action()
@@ -168,7 +168,7 @@ def close_old_tabs(force: bool = False) -> None:
     Dialog.show_confirm(f"Close old tabs ({n}) ?", lambda: action())
 
 
-def close_other_tabs(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_other(force: bool = False, tab_id: Optional[str] = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 
@@ -176,7 +176,7 @@ def close_other_tabs(force: bool = False, tab_id: Optional[str] = None) -> None:
 
     def action() -> None:
         for tab_id in tab_ids:
-            close_tab(tab_id, force=True)
+            close(tab_id, force=True)
 
     if force or (not args.confirm_close):
         action()
@@ -186,7 +186,7 @@ def close_other_tabs(force: bool = False, tab_id: Optional[str] = None) -> None:
     Dialog.show_confirm(f"Close other tabs ({n}) ?", lambda: action())
 
 
-def close_tabs_left(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_left(force: bool = False, tab_id: Optional[str] = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 
@@ -197,7 +197,7 @@ def close_tabs_left(force: bool = False, tab_id: Optional[str] = None) -> None:
 
     def action() -> None:
         for tab_id in tab_ids:
-            close_tab(tab_id=tab_id, force=True)
+            close(tab_id=tab_id, force=True)
 
     if force or (not args.confirm_close):
         action()
@@ -207,7 +207,7 @@ def close_tabs_left(force: bool = False, tab_id: Optional[str] = None) -> None:
     Dialog.show_confirm(f"Close tabs to the left ({n}) ?", lambda: action())
 
 
-def close_tabs_right(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_right(force: bool = False, tab_id: Optional[str] = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 
@@ -218,7 +218,7 @@ def close_tabs_right(force: bool = False, tab_id: Optional[str] = None) -> None:
 
     def action() -> None:
         for tab_id in tab_ids:
-            close_tab(tab_id=tab_id, force=True)
+            close(tab_id=tab_id, force=True)
 
     if force or (not args.confirm_close):
         action()
@@ -228,7 +228,7 @@ def close_tabs_right(force: bool = False, tab_id: Optional[str] = None) -> None:
     Dialog.show_confirm(f"Close tabs to the right ({n}) ?", lambda: action())
 
 
-def close_empty_tabs(force: bool = False) -> None:
+def close_empty(force: bool = False) -> None:
     ids = display.tab_ids()
 
     if len(ids) <= 1:
@@ -241,7 +241,7 @@ def close_empty_tabs(force: bool = False) -> None:
 
     def action() -> None:
         for tab in tabs:
-            close_tab(tab_id=tab.tab_id, force=True, make_empty=True)
+            close(tab_id=tab.tab_id, force=True, make_empty=True)
 
     if force or (not args.confirm_close):
         action()

@@ -221,10 +221,10 @@ class Session:
 
     def reset(self) -> None:
         self.conversations = {}
-        close.close_all_tabs(force=True)
+        close.close_all(force=True)
 
     def load_items(self, path: Path) -> None:
-        close.close_all_tabs(force=True, make_empty=False)
+        close.close_all(force=True, make_empty=False)
 
         with path.open("r", encoding="utf-8") as file:
             try:
