@@ -129,10 +129,10 @@ class Bottom(tk.Frame):
         if not self.check_enabled():
             return
 
-        self.auto_scroll_button.set_font(app.theme.font("button_highlight"))
+        self.auto_scroll_button.set_style("active")
 
     def on_auto_scroll_disabled(self) -> None:
         if not self.check_enabled():
             return
 
-        self.auto_scroll_button.set_font(app.theme.font("button"))
+        self.auto_scroll_button.set_style("alt")
