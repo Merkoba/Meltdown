@@ -33,7 +33,7 @@ class ButtonBox(tk.Frame):
 
     def prepare_text(self, text: str) -> str:
         if (not self.custom_width) and (len(text) < 4):
-            space = "  "
+            space = " "
             text = f"{space}{text}{space}"
 
         return text
