@@ -292,6 +292,9 @@ class Keyboard:
                 display.make_tab()
                 inputcontrol.submit()
 
+        def on_ctrl_enter() -> None:
+            inputcontrol.submit(no_history=True)
+
         def on_esc() -> None:
             if widgets.find_focused():
                 findmanager.hide_find()
@@ -317,10 +320,10 @@ class Keyboard:
             "<Return>",
             lambda: on_enter(),
             on_shift=lambda: on_shift_enter(),
-            on_ctrl=lambda: inputcontrol.show_textbox(),
+            on_ctrl=lambda: on_ctrl_enter(),
             help="Submit prompt",
             shift_help="Make a tab and submit",
-            ctrl_help="Show input textbox",
+            ctrl_help="Submit without using history",
         )
 
         self.register(

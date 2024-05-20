@@ -12,7 +12,7 @@ Autocomplete commands
 
 Submit prompt
 
-Ctrl: Show input textbox
+Ctrl: Submit without using history
 
 Shift: Make a tab and submit
 
