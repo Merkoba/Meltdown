@@ -399,7 +399,7 @@ class Keyboard:
         )
 
         self.register(
-            "<space>", on_ctrl=lambda: run_command("main"), ctrl_help="Show main menu"
+            "<space>", on_ctrl=lambda: run_command("write"), ctrl_help="Write an input"
         )
 
         self.register("f", on_ctrl=lambda: run_command("find"), ctrl_help="Find text")
@@ -433,7 +433,7 @@ class Keyboard:
         )
 
         self.register(
-            "m", on_ctrl=lambda: run_command("browse"), ctrl_help="Browse models"
+            "m", on_ctrl=lambda: run_command("main"), ctrl_help="Show the main menu"
         )
 
         self.register(
