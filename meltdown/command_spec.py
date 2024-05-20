@@ -243,6 +243,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "findallprev",
+            "Find a text string among all tabs (backwards)",
+            lambda a=None: findmanager.find_all(a, reverse=True),
+            type=str,
+        )
+
+        self.add_cmd(
             "first",
             "Go to the first tab",
             lambda a=None: display.select_first_tab(),

@@ -67,14 +67,14 @@ def hide_find() -> None:
     tab.find.hide()
 
 
-def find_all(query: Optional[str] = None) -> None:
+def find_all(query: Optional[str] = None, reverse: bool = False) -> None:
     if query:
-        find_all_text(query)
+        find_all_text(query, reverse=reverse)
     else:
         Dialog.show_input("Find text in all tabs", lambda s: find_all_text(s))
 
 
-def find_all_text(query: str) -> None:
+def find_all_text(query: str, reverse: bool = False) -> None:
     from .session import session
     from .display import Tab, display
 
@@ -124,9 +124,13 @@ def find_all_text(query: str) -> None:
 
     tabs = []
     index = -1
+    ids = display.book.ids()
 
-    for page in display.book.pages:
-        tab = display.get_tab(page.id)
+    if reverse:
+        ids = list(reversed(ids))
+
+    for id_ in ids:
+        tab = display.get_tab(id_)
 
         if tab:
             tabs.append(tab)

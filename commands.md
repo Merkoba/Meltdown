@@ -222,6 +222,12 @@ Find a text string among all tabs
 
 ---
 
+### findallprev
+
+Find a text string among all tabs (backwards)
+
+---
+
 ### first
 
 Go to the first tab
