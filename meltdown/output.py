@@ -9,6 +9,7 @@ from .app import app
 from .args import args
 from .utils import utils
 from .gestures import Gestures
+from .autoscroll import autoscroll
 
 
 class Output(tk.Text):
@@ -360,22 +361,22 @@ class Output(tk.Text):
 
         def mousewheel_up() -> str:
             self.scroll_up(True)
-            display.disable_auto_scroll()
+            autoscroll.disable()
             return "break"
 
         def mousewheel_down() -> str:
             self.scroll_down(True)
-            display.disable_auto_scroll()
+            autoscroll.disable()
             return "break"
 
         def scroll_up(more: bool = False) -> str:
             self.scroll_up(True, more=more)
-            display.disable_auto_scroll()
+            autoscroll.disable()
             return "break"
 
         def scroll_down(more: bool = False) -> str:
             self.scroll_down(True, more=more)
-            display.disable_auto_scroll()
+            autoscroll.disable()
             return "break"
 
         def home() -> str:
@@ -985,4 +986,4 @@ class Output(tk.Text):
 
     def on_scrollbar_click(self) -> None:
         self.on_click()
-        self.display.disable_auto_scroll()
+        autoscroll.disable()

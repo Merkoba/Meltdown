@@ -13,6 +13,7 @@ from .book import Book, Page
 from .find import Find
 from .args import args
 from .utils import utils
+from .autoscroll import autoscroll
 
 if TYPE_CHECKING:
     from .session import Conversation
@@ -57,7 +58,6 @@ class Display:
         self.num_tabs_open = 0
         self.tab_number = 1
         self.max_old_tabs = 5
-        self.auto_scroll_enabled = False
 
     def make(self) -> None:
         from .widgets import widgets
@@ -173,7 +173,7 @@ class Display:
         if not tab.loaded:
             self.load_tab(tab.tab_id)
 
-        self.disable_auto_scroll()
+        autoscroll.disable()
         tab.output.reset_drag()
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -361,6 +361,7 @@ class Display:
         if not tab:
             return
 
+        autoscroll.disable()
         tab.output.to_top()
 
     def to_bottom(self, tab_id: Optional[str] = None) -> None:
@@ -372,7 +373,7 @@ class Display:
         if not tab:
             return
 
-        self.disable_auto_scroll()
+        autoscroll.disable()
         tab.output.to_bottom()
         tab.bottom.hide()
 
@@ -512,9 +513,15 @@ class Display:
         yview = output.yview()
 
         if yview[1] >= 0.9999:
-            self.disable_auto_scroll()
+            if autoscroll.direction == "down":
+                autoscroll.disable()
+
             tab.bottom.hide()
         else:
+            if yview[0] <= 0.0001:
+                if autoscroll.direction == "up":
+                    autoscroll.disable()
+
             tab.bottom.show()
 
             if args.scroll_percentage:
@@ -985,48 +992,6 @@ class Display:
 
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
-
-    def enable_auto_scroll(self) -> None:
-        tab = self.get_current_tab()
-
-        if not tab:
-            return
-
-        if tab.output.yview()[1] >= 0.9999:
-            return
-
-        self.auto_scroll_enabled = True
-        tab.bottom.on_auto_scroll_enabled()
-        self.schedule_auto_scroll()
-
-    def disable_auto_scroll(self) -> None:
-        self.auto_scroll_enabled = False
-
-        tab = self.get_current_tab()
-
-        if not tab:
-            return
-
-        tab.bottom.on_auto_scroll_disabled()
-
-    def toggle_auto_scroll(self) -> None:
-        if self.auto_scroll_enabled:
-            self.disable_auto_scroll()
-        else:
-            self.enable_auto_scroll()
-
-    def check_auto_scroll(self) -> None:
-        if args.auto_scroll_delay < 100:
-            return
-
-        if not self.auto_scroll_enabled:
-            return
-
-        display.scroll_down()
-        self.schedule_auto_scroll()
-
-    def schedule_auto_scroll(self) -> None:
-        app.root.after(args.auto_scroll_delay, lambda: self.check_auto_scroll())
 
 
 display = Display()

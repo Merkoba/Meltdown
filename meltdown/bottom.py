@@ -9,6 +9,7 @@ from .args import args
 from .buttonbox import ButtonBox
 from .tooltips import ToolTip
 from .tips import tips
+from .autoscroll import autoscroll
 
 
 class Bottom(tk.Frame):
@@ -35,6 +36,8 @@ class Bottom(tk.Frame):
 
         if args.show_auto_scroll:
             self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
+
+        self.auto_scroll_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -113,9 +116,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_text(text)
 
     def auto_scroll(self) -> None:
-        from .display import display
-
-        display.toggle_auto_scroll()
+        autoscroll.toggle()
 
     def check_enabled(self) -> bool:
         if (not self.visible) or (not self.buttons_enabled) or (not app.exists()):

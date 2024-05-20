@@ -16,6 +16,7 @@ from .files import files
 from .output import Output
 from .keyboard import keyboard
 from .utils import utils
+from .autoscroll import autoscroll
 from . import itemops
 from . import summarize
 from . import menumanager
@@ -30,6 +31,7 @@ class CommandSpec:
         self.file_name = "You can provide the file name"
         self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
         self.optdelay = "Optional delay in seconds"
+        self.autoscroll = "Optional up or down argument"
         self.infos: List[str] = []
         self.commands: Dict[str, Any] = {}
 
@@ -750,19 +752,21 @@ class CommandSpec:
         self.add_cmd(
             "autoscroll",
             "Toggle automatic scrolling",
-            lambda a=None: display.toggle_auto_scroll(),
+            lambda a=None: autoscroll.toggle(),
         )
 
         self.add_cmd(
             "enableautoscroll",
             "Enable automatic scrolling",
-            lambda a=None: display.enable_auto_scroll(),
+            lambda a=None: autoscroll.enable(a),
+            extra=self.autoscroll,
+            type=str,
         )
 
         self.add_cmd(
             "disableautoscroll",
             "Disable automatic scrolling",
-            lambda a=None: display.disable_auto_scroll(),
+            lambda a=None: autoscroll.disable(),
         )
 
         self.add_cmd(
