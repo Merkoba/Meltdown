@@ -276,7 +276,7 @@ class Model:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
-        prompt_no_history = prompt.get("no_history", False)
+        no_history = prompt.get("no_history", False)
 
         if prompt_file:
             if not utils.is_url(prompt_file) and (not Path(prompt_file).exists()):
@@ -316,7 +316,7 @@ class Model:
             system = utils.replace_keywords(config.system)
             messages.append({"role": "system", "content": system})
 
-        if tabconvo.convo.items and (config.history > 0) and (not prompt_no_history):
+        if tabconvo.convo.items and (config.history > 0) and (not no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
                 for key in item:
                     content = item[key]
