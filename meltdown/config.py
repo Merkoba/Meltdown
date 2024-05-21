@@ -200,7 +200,7 @@ No need to greet me, just answer.
 
         if not args.quiet:
             name = path.name
-            msg = f"Config saved as {name}"
+            msg = f'Config saved as "{name}"'
             display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
@@ -233,6 +233,11 @@ No need to greet me, just answer.
         with path.open("r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
+
+            if not args.quiet:
+                f_name = path.name
+                msg = f'Loaded config "{f_name}"'
+                display.print(utils.emoji_text(msg, "storage"))
 
     def apply(self, file: IO[str]) -> None:
         from .args import args
