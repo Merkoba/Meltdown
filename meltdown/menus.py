@@ -50,6 +50,7 @@ class Menu:
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
+        self.direct_geometry = False
 
     def add(
         self,
@@ -279,10 +280,19 @@ class Menu:
         h = min(window_height, cheight)
         self.canvas.configure(height=h)
 
+        self.canvas.update_idletasks()
+        self.container.update_idletasks()
+
         menu_width = self.canvas.winfo_reqwidth()
         menu_height = self.canvas.winfo_reqheight()
-        x = self.coords["x"] - app.main_frame.winfo_rootx()
-        y = self.coords["y"] - app.main_frame.winfo_rooty()
+
+        if self.direct_geometry:
+            x = self.coords["x"]
+            y = self.coords["y"]
+        else:
+            x = self.coords["x"] - app.main_frame.winfo_rootx()
+            y = self.coords["y"] - app.main_frame.winfo_rooty()
+
         gap = 10
 
         if x < 0:
@@ -394,7 +404,10 @@ class Menu:
             self.deselect(i)
 
     def show(
-        self, event: Optional[Any] = None, widget: Optional[tk.Widget] = None
+        self,
+        event: Optional[Any] = None,
+        widget: Optional[tk.Widget] = None,
+        direct: bool = False,
     ) -> None:
         Menu.hide_all()
 
@@ -410,6 +423,7 @@ class Menu:
         else:
             return
 
+        self.direct_geometry = direct
         self.event = event
         self.make()
 

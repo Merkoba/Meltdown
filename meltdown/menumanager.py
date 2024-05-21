@@ -57,8 +57,8 @@ class MainMenu:
 
         self.menu.separator()
 
-        self.menu.add("Theme", lambda e: theme_menu.show())
-        self.menu.add("Font", lambda e: font_menu.show())
+        self.menu.add("Theme", lambda e: theme_menu.show(e))
+        self.menu.add("Font", lambda e: font_menu.show(e))
 
         self.menu.separator()
 
@@ -263,7 +263,7 @@ class FontMenu:
 
     def show(self, event: Any = None) -> None:
         if event:
-            self.menu.show(event)
+            self.menu.show(event, direct=True)
         else:
             widget = get_main_button()
             self.menu.show(widget=widget)
@@ -428,7 +428,7 @@ class ThemeMenu:
 
     def show(self, event: Any = None) -> None:
         if event:
-            self.menu.show(event)
+            self.menu.show(event, direct=True)
         else:
             widget = get_main_button()
             self.menu.show(widget=widget)
