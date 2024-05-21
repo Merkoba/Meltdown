@@ -88,6 +88,7 @@ class App:
             utils.error(e)
 
         self.image_path = Path(self.here, "image.jpg")
+        self.portrait_path = Path(self.here, "portrait.jpg")
 
     def setup(self, time_started: float) -> None:
         self.time_started = time_started
@@ -843,7 +844,7 @@ class App:
         if args.portrait:
             image_path = Path(args.portrait)
         else:
-            image_path = Path(app.here / "portrait.jpg")
+            image_path = self.portrait_path
 
         if not image_path.exists():
             return
