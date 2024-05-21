@@ -839,6 +839,7 @@ class App:
         from .config import config
         from .dialogs import Dialog
         from .model import model
+        from .display import display
 
         name = config.name_ai if config.name_ai else "Your Friend"
 
@@ -851,8 +852,13 @@ class App:
             return
 
         def describe() -> None:
+            tab_id = display.current_tab
+
+            if not display.tab_is_empty(tab_id):
+                tab_id = display.make_tab()
+
             prompt = {"text": f"Hello {name}. Please describe yourself."}
-            model.stream(prompt)
+            model.stream(prompt, tab_id=tab_id)
 
         cmds = []
         cmds.append(("Describe", lambda a: describe()))
