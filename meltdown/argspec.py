@@ -463,6 +463,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_scroller_buttons",
+            action="store_true",
+            info="Don't show left and right scroller buttons",
+        )
+
+        self.add_argument(
             "no_exit",
             action="store_true",
             info="Disable exit commands",

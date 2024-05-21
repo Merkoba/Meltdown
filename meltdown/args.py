@@ -202,6 +202,7 @@ class Args:
         self.icon = ""
         self.auto_scroll_delay = 500
         self.show_auto_scroll = True
+        self.scroller_buttons = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -274,6 +275,7 @@ class Args:
             ("no_limit_tokens", "limit_tokens"),
             ("no_clean_names", "clean_names"),
             ("no_auto_scroll", "show_auto_scroll"),
+            ("no_scroller_buttons", "scroller_buttons"),
         ]
 
         for r_item in other_name:
