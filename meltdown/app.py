@@ -639,6 +639,12 @@ class App:
 
         Dialog.show_message(date)
 
+    def show_date(self) -> None:
+        from .dialogs import Dialog
+
+        text = utils.to_date(utils.now())
+        Dialog.show_message(text)
+
     def toggle_sticky(self) -> None:
         if self.sticky:
             self.disable_sticky()
@@ -812,8 +818,9 @@ class App:
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Memory", lambda: app.show_memory()))
+        cmds.append(("Date", lambda: app.show_date()))
         cmds.append(("Started", lambda: app.show_started()))
+        cmds.append(("Memory", lambda: app.show_memory()))
 
         Dialog.show_commands("Information", cmds)
 

@@ -329,9 +329,5 @@ class Commands:
         if args.after_stream:
             app.root.after(100, lambda: self.exec(args.after_stream))
 
-    def show_date(self) -> None:
-        text = utils.to_date(utils.now())
-        Dialog.show_message(text)
-
 
 commands = Commands()

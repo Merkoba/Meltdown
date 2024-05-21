@@ -697,7 +697,7 @@ class CommandSpec:
         self.add_cmd(
             "date",
             "Show the current date and time",
-            lambda a=None: commands.show_date(),
+            lambda a=None: app.show_date(),
         )
 
         self.add_cmd(
