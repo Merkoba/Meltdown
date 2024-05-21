@@ -279,9 +279,7 @@ class Model:
         prompt_no_history = prompt.get("no_history", False)
 
         if prompt_file:
-            if (not prompt_file.startswith("http")) and (
-                not Path(prompt_file).exists()
-            ):
+            if not utils.is_url(prompt_file) and (not Path(prompt_file).exists()):
                 display.print("Error: File not found.")
                 return
 
@@ -345,7 +343,7 @@ class Model:
         if prompt_file and (config.mode == "image"):
             content_items = []
 
-            if not prompt_file.startswith("http"):
+            if not utils.is_url(prompt_file):
                 converted = self.image_to_base64(prompt_file)
 
                 if not converted:
@@ -620,7 +618,7 @@ class Model:
     def read_file(self, path: str) -> str:
         text = ""
 
-        if path.startswith("http"):
+        if utils.is_url(path):
             try:
                 response = requests.get(path)
 

@@ -322,5 +322,9 @@ class Utils:
         pattern = re.compile(r"\n{3,}")
         return pattern.sub("\n\n", text)
 
+    def is_url(self, text: str) -> bool:
+        pattern = re.compile(r"https?://\S+")
+        return bool(pattern.match(text))
+
 
 utils = Utils()
