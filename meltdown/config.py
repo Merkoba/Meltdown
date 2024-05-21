@@ -427,10 +427,10 @@ No need to greet me, just answer.
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Reset", lambda: self.reset()))
-        cmds.append(("Load", lambda: self.load_state()))
-        cmds.append(("Save", lambda: self.save_state()))
-        Dialog.show_commands("Config Menu", commands=cmds)
+        cmds.append(("Reset", lambda a: self.reset()))
+        cmds.append(("Load", lambda a: self.load_state()))
+        cmds.append(("Save", lambda a: self.save_state()))
+        Dialog.show_dialog("Config Menu", commands=cmds)
 
     def set_command(self, command: str) -> None:
         from .display import display

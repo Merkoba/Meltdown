@@ -1191,5 +1191,11 @@ class ArgSpec:
             info="Use a specific icon for the window. png or gif",
         )
 
+        self.add_argument(
+            "portrait",
+            type=str,
+            info="Path to an image for the portrait of the AI",
+        )
+
 
 argspec = ArgSpec()

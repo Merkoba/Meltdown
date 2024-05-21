@@ -111,28 +111,28 @@ def close(
     cmds = []
 
     if full and get_empty_tabs():
-        cmds.append(("Empty", lambda: close_empty()))
+        cmds.append(("Empty", lambda a: close_empty()))
 
     if full and get_old_tabs():
-        cmds.append(("Old", lambda: close_old()))
+        cmds.append(("Old", lambda a: close_old()))
 
     if get_other_tabs(tab_id):
-        cmds.append(("Others", lambda: close_other(tab_id=tab_id)))
+        cmds.append(("Others", lambda a: close_other(tab_id=tab_id)))
 
     if get_left_tabs(tab_id):
-        cmds.append(("Left", lambda: close_left(tab_id=tab_id)))
+        cmds.append(("Left", lambda a: close_left(tab_id=tab_id)))
 
     if get_right_tabs(tab_id):
-        cmds.append(("Right", lambda: close_right(tab_id=tab_id)))
+        cmds.append(("Right", lambda a: close_right(tab_id=tab_id)))
 
     if full:
-        cmds.append(("All", lambda: close_all()))
+        cmds.append(("All", lambda a: close_all()))
 
     if not cmds:
         return
 
-    cmds.append(("Ok", lambda: action()))
-    Dialog.show_commands("Close tab?", cmds)
+    cmds.append(("Ok", lambda a: action()))
+    Dialog.show_dialog("Close tab?", cmds)
 
 
 def close_all(force: bool = False, make_empty: bool = True) -> None:

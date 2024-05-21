@@ -173,12 +173,12 @@ class App:
         ]
 
         cmds = []
-        cmds.append(("Commands", lambda: self.show_help("commands")))
-        cmds.append(("Arguments", lambda: self.show_help("arguments")))
-        cmds.append(("Keyboard", lambda: self.show_help("keyboard")))
-        cmds.append(("Ok", lambda: None))
+        cmds.append(("Commands", lambda a: self.show_help("commands")))
+        cmds.append(("Arguments", lambda a: self.show_help("arguments")))
+        cmds.append(("Keyboard", lambda a: self.show_help("keyboard")))
+        cmds.append(("Ok", lambda a: None))
 
-        Dialog.show_commands("\n".join(lines), cmds, image=self.image_path)
+        Dialog.show_dialog("\n".join(lines), cmds, image=self.image_path)
 
     def toggle_maximize(self) -> None:
         if self.root.attributes("-zoomed"):
@@ -820,7 +820,7 @@ class App:
         cmds.append(("Config", lambda: show_config()))
         cmds.append(("Data", lambda: show_data()))
 
-        Dialog.show_commands(f"Profile: {args.profile}", cmds)
+        Dialog.show_dialog(f"Profile: {args.profile}", cmds)
 
     def show_info(self) -> None:
         from .dialogs import Dialog
@@ -830,7 +830,13 @@ class App:
         cmds.append(("Started", lambda: app.show_started()))
         cmds.append(("Memory", lambda: app.show_memory()))
 
-        Dialog.show_commands("Information", cmds)
+        Dialog.show_dialog("Information", cmds)
+
+    def show_portrait(self) -> None:
+        from .config import config
+        from .dialogs import Dialog
+
+        Dialog.show_message(config.name_ai, self.image_path)
 
 
 app = App()

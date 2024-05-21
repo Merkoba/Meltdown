@@ -679,6 +679,7 @@ class Widgets:
 
     def model_icon_click(self) -> None:
         app.hide_all()
+        app.show_portrait()
 
     def show_recent_models(self) -> None:
         self.show_model_context(only_items=True)

@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, List, Optional, Tuple
+from typing import Any, Callable, List, Optional, Tuple, Dict
 from PIL import Image, ImageTk  # type: ignore
 from pathlib import Path
 
@@ -22,37 +22,29 @@ class Dialog:
         return Dialog.current_dialog is not None
 
     @staticmethod
-    def show_confirm(
-        text: str,
-        cmd_ok: Optional[Callable[..., Any]] = None,
-        cmd_cancel: Optional[Callable[..., Any]] = None,
-    ) -> None:
-        dialog = Dialog(text)
+    def get_entry() -> str:
+        if Dialog.current_dialog:
+            if Dialog.current_dialog.entry:
+                return Dialog.current_dialog.entry.get()
 
-        def ok() -> None:
-            dialog.hide()
-
-            if cmd_ok:
-                cmd_ok()
-
-        def cancel() -> None:
-            dialog.hide()
-
-            if cmd_cancel:
-                cmd_cancel()
-
-        dialog.make_button("Cancel", cancel)
-        dialog.make_button("Ok", ok)
-        dialog.highlight_button(1)
-        dialog.show()
+        return ""
 
     @staticmethod
-    def show_commands(
+    def show_dialog(
         text: str,
-        commands: List[Tuple[str, Callable[..., Any]]],
+        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
         image: Optional[Path] = None,
+        use_entry: bool = False,
+        entry_mode: str = "normal",
+        focus_hide_enabled: bool = True,
+        value: str = "",
+        top_frame: bool = False,
     ) -> None:
-        dialog = Dialog(text)
+        from .menus import Menu
+
+        dialog = Dialog(text, top_frame=top_frame)
+
+        # ------
 
         if image:
             img = Image.open(image)
@@ -65,10 +57,59 @@ class Dialog:
             label.mlt_image = photo  # type: ignore
             label.pack(side=tk.LEFT, padx=0, pady=8)
 
+        # ------
+
+        if use_entry:
+            dialog.entry = EntryBox(
+                dialog.top_frame,
+                font=app.theme.font(),
+                width=20,
+                justify="center",
+                style="Dialog.TEntry",
+                mode=entry_mode,
+            )
+
+            if value:
+                dialog.entry.insert(0, value)
+
+            def copy(text: Optional[str] = None) -> None:
+                if not text:
+                    text = dialog.entry.get()
+
+                if not text:
+                    return
+
+                utils.copy(text)
+                dialog.entry.focus_set()
+
+            def paste() -> None:
+                utils.paste(dialog.entry)
+                dialog.entry.focus_set()
+
+            def on_right_click(event: Any) -> None:
+                menu = Menu()
+                text = dialog.entry.get()
+                selected = dialog.entry.get_selected()
+
+                if text:
+                    menu.add(text="Copy", command=lambda e: copy(selected))
+
+                menu.add(text="Paste", command=lambda e: paste())
+                menu.show(event)
+
+            dialog.entry.bind("<Return>", lambda e: dialog.enter())
+            dialog.entry.bind("<Escape>", lambda e: dialog.hide())
+            dialog.entry.bind("<Down>", lambda e: dialog.root.focus_set())
+            dialog.entry.bind("<Button-3>", lambda e: on_right_click(e))
+            dialog.entry.pack(padx=3, pady=3)
+
+        # ------
+
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
-            def generic(func: Callable[..., Any]) -> None:
+            def generic(func: Callable[..., Any]) -> Dict[str, Any]:
+                ans = {"entry": Dialog.get_entry()}
                 dialog.hide()
-                func()
+                func(ans)
 
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
 
@@ -77,18 +118,35 @@ class Dialog:
                 make_cmd(cmd)
 
         dialog.highlight_last_button()
+        dialog.focus_hide_enabled = focus_hide_enabled
         dialog.show()
+
+        if use_entry:
+            dialog.root.bind("<Up>", lambda e: dialog.entry.focus_set())
+            dialog.entry.focus_end()
+
+    @staticmethod
+    def show_confirm(
+        text: str,
+        cmd_ok: Optional[Callable[..., Any]] = None,
+        cmd_cancel: Optional[Callable[..., Any]] = None,
+    ) -> None:
+        def ok() -> None:
+            if cmd_ok:
+                cmd_ok()
+
+        def cancel() -> None:
+            if cmd_cancel:
+                cmd_cancel()
+
+        Dialog.show_dialog(text, [("Ok", ok), ("Cancel", cancel)])
 
     @staticmethod
     def show_message(text: str) -> None:
-        dialog = Dialog(text)
-
         def ok() -> None:
-            dialog.hide()
+            pass
 
-        dialog.make_button("Ok", ok)
-        dialog.highlight_button(0)
-        dialog.show()
+        Dialog.show_dialog(text, [("Ok", ok)])
 
     @staticmethod
     def show_input(
@@ -98,70 +156,22 @@ class Dialog:
         value: str = "",
         mode: str = "normal",
     ) -> None:
-        from .menus import Menu
-
-        dialog = Dialog(text, top_frame=True)
-
-        entry = EntryBox(
-            dialog.top_frame,
-            font=app.theme.font(),
-            width=20,
-            justify="center",
-            style="Dialog.TEntry",
-            mode=mode,
-        )
-
-        def ok() -> None:
-            ans = entry.get()
-            dialog.hide()
-            cmd_ok(ans)
+        def ok(ans) -> None:
+            cmd_ok(ans["entry"])
 
         def cancel() -> None:
-            dialog.hide()
-
             if cmd_cancel:
                 cmd_cancel()
 
-        if value:
-            entry.insert(0, value)
-
-        def copy(text: Optional[str] = None) -> None:
-            if not text:
-                text = entry.get()
-
-            if not text:
-                return
-
-            utils.copy(text)
-            entry.focus_set()
-
-        def paste() -> None:
-            utils.paste(entry)
-            entry.focus_set()
-
-        def on_right_click(event: Any) -> None:
-            menu = Menu()
-            text = entry.get()
-            selected = entry.get_selected()
-
-            if text:
-                menu.add(text="Copy", command=lambda e: copy(selected))
-
-            menu.add(text="Paste", command=lambda e: paste())
-            menu.show(event)
-
-        entry.bind("<Return>", lambda e: dialog.enter())
-        entry.bind("<Escape>", lambda e: dialog.hide())
-        entry.bind("<Down>", lambda e: dialog.root.focus_set())
-        entry.bind("<Button-3>", lambda e: on_right_click(e))
-        dialog.root.bind("<Up>", lambda e: entry.focus_set())
-        entry.pack(padx=3, pady=3)
-        dialog.make_button("Cancel", cancel)
-        dialog.make_button("Ok", ok)
-        dialog.focus_hide_enabled = False
-        dialog.show()
-        dialog.highlight_button(1)
-        entry.focus_end()
+        Dialog.show_dialog(
+            text,
+            [("Cancel", cancel), ("Ok", ok)],
+            use_entry=True,
+            entry_mode=mode,
+            value=value,
+            top_frame=True,
+            focus_hide_enabled=False,
+        )
 
     @staticmethod
     def show_textbox(
@@ -232,6 +242,7 @@ class Dialog:
 
         self.highlighted = False
         self.current_button: Optional[int] = None
+        self.entry: Optional[EntryBox] = None
 
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())

@@ -203,6 +203,7 @@ class Args:
         self.auto_scroll_delay = 500
         self.show_auto_scroll = True
         self.scroller_buttons = True
+        self.portrait = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -409,6 +410,7 @@ class Args:
             "title",
             "icon",
             "auto_scroll_delay",
+            "portrait",
         ]
 
         for n_item in normals:
