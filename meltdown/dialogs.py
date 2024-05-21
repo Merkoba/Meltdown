@@ -161,7 +161,7 @@ class Dialog:
 
     @staticmethod
     def show_message(text: str) -> None:
-        def ok() -> None:
+        def ok(ans: Answer) -> None:
             pass
 
         Dialog.show_dialog(text, [("Ok", ok)])
