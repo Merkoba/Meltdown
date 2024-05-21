@@ -43,6 +43,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_scroller_buttons",
+            action="store_false",
+            info="Don't show left and right scroller buttons",
+        )
+
+        self.add_argument(
             "no_clean_names",
             action="store_false",
             info="Don't change names when saving files",
@@ -460,12 +466,6 @@ class ArgSpec:
             "compact",
             action="store_true",
             info="Start in compact mode",
-        )
-
-        self.add_argument(
-            "no_scroller_buttons",
-            action="store_true",
-            info="Don't show left and right scroller buttons",
         )
 
         self.add_argument(

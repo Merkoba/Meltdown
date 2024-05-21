@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-scroller-buttons
+
+Don't show left and right scroller buttons
+
+Action: store_false
+
+---
+
 ### no-clean-names
 
 Don't change names when saving files

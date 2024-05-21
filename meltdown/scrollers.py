@@ -2,6 +2,7 @@
 from typing import TYPE_CHECKING
 
 # Modules
+from .args import args
 from .tooltips import ToolTip
 from .tips import tips
 from . import widgetutils
@@ -151,4 +152,9 @@ def add(widgets: "Widgets", name: str) -> None:
 
     setattr(widgets, f"scroller_button_right_{name}", right_button)
     ToolTip(right_button, tips["scroller_button"])
+
+    if not args.scroller_buttons:
+        left_button.grid_remove()
+        right_button.grid_remove()
+
     frame_data.frame.columnconfigure(1, weight=1)
