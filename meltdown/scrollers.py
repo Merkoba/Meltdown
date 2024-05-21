@@ -34,37 +34,6 @@ def do_setup(name: str) -> None:
         child.bind("<Button-5>", lambda e: to_right(name))
 
 
-def add_items() -> None:
-    from .widgets import widgets
-    from .framedata import FrameData
-    from .system import system
-    from . import details
-
-    # Details 1 Items
-    system.add_monitors(FrameData(widgets.scroller_system))
-
-    # Details 2 Items
-    sd1 = FrameData(widgets.scroller_details_1)
-    details.add_users(widgets, sd1)
-    details.add_history(widgets, sd1)
-    details.add_context(widgets, sd1)
-    details.add_max_tokens(widgets, sd1)
-    details.add_threads(widgets, sd1)
-    details.add_gpu_layers(widgets, sd1)
-    details.add_temperature(widgets, sd1)
-
-    # Details 3 Items
-    sd2 = FrameData(widgets.scroller_details_2)
-    details.add_format(widgets, sd2)
-    details.add_before(widgets, sd2)
-    details.add_after(widgets, sd2)
-    details.add_stop(widgets, sd2)
-    details.add_seed(widgets, sd2)
-    details.add_top_p(widgets, sd2)
-    details.add_top_k(widgets, sd2)
-    details.add_mlock(widgets, sd2)
-
-
 def to_left(name: str) -> None:
     from .widgets import widgets
 

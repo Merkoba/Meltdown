@@ -111,6 +111,7 @@ tips = {
         " Separate each item with ;;"
     ),
     "mlock": "Keep the model in memory",
+    "logits": "Enable logits for all tokens. This might make it slower but can fix some problems",
     "before": "Add this to the beginning of the prompt",
     "after": "Add this to the end of the prompt",
     "mode": (

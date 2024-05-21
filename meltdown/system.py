@@ -195,7 +195,8 @@ class System:
         self.check_color("gpu_ram", 0)
         self.check_color("gpu_temp", 0)
 
-    def add_monitors(self, data: FrameData) -> None:
+    def add_items(self) -> None:
+        data = FrameData(widgets.scroller_system)
         first = False
 
         def make_monitor(name: str, label_text: str, mode: str) -> None:

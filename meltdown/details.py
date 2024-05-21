@@ -101,6 +101,11 @@ def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
     make_entry(widgets, data, "temperature")
 
 
+def add_logits(widgets: "Widgets", data: "FrameData") -> None:
+    make_label(widgets, data, "logits", "Logits")
+    make_combobox(widgets, data, "logits", ["normal", "all"], width=7)
+
+
 def add_seed(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "seed", "Seed")
     make_entry(widgets, data, "seed")
@@ -134,3 +139,30 @@ def add_stop(widgets: "Widgets", data: "FrameData") -> None:
 def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "mlock", "M-Lock")
     make_combobox(widgets, data, "mlock", ["yes", "no"], width=7)
+
+
+def add_items() -> None:
+    from .framedata import FrameData
+    from .widgets import widgets
+
+    # Details 1 Items
+    data = FrameData(widgets.scroller_details_1)
+    add_users(widgets, data)
+    add_history(widgets, data)
+    add_context(widgets, data)
+    add_max_tokens(widgets, data)
+    add_threads(widgets, data)
+    add_gpu_layers(widgets, data)
+    add_temperature(widgets, data)
+
+    # Details 2 Items
+    data = FrameData(widgets.scroller_details_2)
+    add_format(widgets, data)
+    add_before(widgets, data)
+    add_after(widgets, data)
+    add_stop(widgets, data)
+    add_seed(widgets, data)
+    add_top_p(widgets, data)
+    add_top_k(widgets, data)
+    add_mlock(widgets, data)
+    add_logits(widgets, data)

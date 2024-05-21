@@ -165,7 +165,11 @@ class Model:
 
         try:
             chat_handler = None
-            logits_all = False
+
+            if config.logits == "all":
+                logits_all = True
+            else:
+                logits_all = False
 
             if config.mode == "image":
                 mmproj = Path(Path(model).parent / "mmproj.gguf")
@@ -180,7 +184,6 @@ class Model:
                     return False
 
                 chat_handler = Llava15ChatHandler(clip_model_path=str(mmproj))
-                logits_all = True
 
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name

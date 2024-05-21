@@ -386,9 +386,12 @@ class Widgets:
 
     def setup(self) -> None:
         from .display import display
+        from .system import system
+        from . import details
 
         inputcontrol.fill()
-        scrollers.add_items()
+        system.add_items()
+        details.add_items()
 
         self.fill()
         self.setup_binds()
@@ -473,6 +476,7 @@ class Widgets:
         setup_combobox("format")
         setup_combobox("mlock")
         setup_combobox("mode")
+        setup_combobox("logits")
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
