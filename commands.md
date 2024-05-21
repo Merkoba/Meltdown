@@ -827,3 +827,9 @@ Show the current profile
 ### portrait
 
 Show the assistant's portrait
+
+---
+
+### theme
+
+Show the theme menu
