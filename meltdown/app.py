@@ -753,6 +753,7 @@ class App:
     def program(self, mode: str, cmd: Optional[str] = None) -> None:
         from .args import args
         from .display import display
+        from .dialogs import Dialog
 
         if not cmd:
             if mode == "text":
@@ -761,7 +762,14 @@ class App:
                 cmd = args.progjson or args.program
 
         if not cmd:
-            display.print("No program specified.")
+
+            def action(text: str) -> None:
+                if not text:
+                    return
+
+                self.program(mode, text)
+
+            Dialog.show_input("Program to use", lambda t: action(t))
             return
 
         tabconvo = display.get_tab_convo(None)

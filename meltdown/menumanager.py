@@ -3,7 +3,9 @@ import tkinter as tk
 from typing import Any
 
 # Modules
+from .app import app
 from .args import args
+from .config import config
 from .menus import Menu
 
 
@@ -32,8 +34,6 @@ def get_model_button() -> tk.Widget:
 
 class MainMenu:
     def __init__(self) -> None:
-        from .app import app
-        from .config import config
         from .session import session
         from .logs import logs
         from .commands import commands
@@ -144,6 +144,11 @@ class MoreMenu:
         self.menu.add("View Text", lambda e: display.view_text(), disabled=disable)
         self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
 
+        self.menu.separator()
+
+        self.menu.add("Prog Text", lambda e: app.program(mode="text"))
+        self.menu.add("Prog JSON", lambda e: app.program(mode="json"))
+
     def show(self, event: Any = None) -> None:
         self.make()
 
@@ -236,7 +241,6 @@ class TabMenu:
 
 class FontMenu:
     def __init__(self) -> None:
-        from .config import config
         from .display import display
         from .dialogs import Dialog
 
@@ -410,7 +414,6 @@ class PathMenu:
 
 class ThemeMenu:
     def __init__(self) -> None:
-        from .config import config
         from .dialogs import Dialog
 
         self.menu = Menu()
