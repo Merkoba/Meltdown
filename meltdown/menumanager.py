@@ -146,8 +146,8 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Prog Text", lambda e: app.program(mode="text"))
-        self.menu.add("Prog JSON", lambda e: app.program(mode="json"))
+        self.menu.add("Prog Text", lambda e: app.program(mode="text"), disabled=disable)
+        self.menu.add("Prog JSON", lambda e: app.program(mode="json"), disabled=disable)
 
     def show(self, event: Any = None) -> None:
         self.make()
