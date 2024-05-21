@@ -202,4 +202,28 @@ Ctrl: Reset the font size
 
 ---
 
-F1 to F12 to run functions (configurable through arguments)
+F1 to F12 to run commands (configurable through arguments)
+
+F1 = /help
+
+F2 = /findprev
+
+F3 = /findnext
+
+F4 = /close
+
+F5 = /reset
+
+F6 = /delete
+
+F7 = /clear
+
+F8 = /compact
+
+F9 = /autoscroll
+
+F10 = /logtext
+
+F11 = /fullscreen
+
+F12 = /list
