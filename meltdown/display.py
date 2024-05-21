@@ -529,6 +529,11 @@ class Display:
                 total_range = 1.0 - visible_range
                 perc = int((yview[0] / total_range) * 100)
                 tab.bottom.set_text(f"{perc}%")
+            elif args.scroll_percentage_reverse:
+                visible_range = yview[1] - yview[0]
+                total_range = 1.0 - visible_range
+                perc = int((1.0 - yview[1]) / total_range * 100)
+                tab.bottom.set_text(f"{perc}%")
 
         if args.disable_buttons:
             if yview[0] <= 0.0001:

@@ -445,6 +445,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "scroll_percentage_reverse",
+            action="store_true",
+            info="Show scroll percentage on the Go To Bottom button (reversed)",
+        )
+
+        self.add_argument(
             "only_text",
             action="store_true",
             info="Only show the text output. This is a preset that sets other arguments",

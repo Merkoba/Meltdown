@@ -173,6 +173,7 @@ class Args:
         self.no_exit = False
         self.disable_buttons = True
         self.scroll_percentage = False
+        self.scroll_percentage_reverse = False
         self.item_numbers = False
         self.name_menu = True
         self.word_menu = True
@@ -374,6 +375,7 @@ class Args:
             "no_exit",
             "summarize_prompt",
             "scroll_percentage",
+            "scroll_percentage_reverse",
             "item_numbers",
             "file",
             "image_prompt",
