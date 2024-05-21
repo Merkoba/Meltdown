@@ -838,6 +838,7 @@ class App:
         from .args import args
         from .config import config
         from .dialogs import Dialog
+        from .model import model
 
         name = config.name_ai if config.name_ai else "Your Friend"
 
@@ -849,7 +850,12 @@ class App:
         if not image_path.exists():
             return
 
+        def describe() -> None:
+            prompt = {"text": f"Hello {name}. Please describe yourself."}
+            model.stream(prompt)
+
         cmds = []
+        cmds.append(("Describe", lambda a: describe()))
         cmds.append(("Ok", lambda a: None))
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)

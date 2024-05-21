@@ -149,15 +149,15 @@ class Dialog:
         cmd_ok: Optional[Callable[..., Any]] = None,
         cmd_cancel: Optional[Callable[..., Any]] = None,
     ) -> None:
-        def ok() -> None:
+        def ok(ans: Answer) -> None:
             if cmd_ok:
                 cmd_ok()
 
-        def cancel() -> None:
+        def cancel(ans: Answer) -> None:
             if cmd_cancel:
                 cmd_cancel()
 
-        Dialog.show_dialog(text, [("Ok", ok), ("Cancel", cancel)])
+        Dialog.show_dialog(text, [("Cancel", cancel), ("Ok", ok)])
 
     @staticmethod
     def show_message(text: str) -> None:
@@ -177,7 +177,7 @@ class Dialog:
         def ok(ans: Answer) -> None:
             cmd_ok(ans["entry"])
 
-        def cancel() -> None:
+        def cancel(ans: Answer) -> None:
             if cmd_cancel:
                 cmd_cancel()
 
