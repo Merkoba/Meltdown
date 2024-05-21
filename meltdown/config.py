@@ -208,6 +208,7 @@ No need to greet me, just answer.
         from .paths import paths
         from .widgets import widgets
         from .display import display
+        from .model import model
 
         if not paths.configs.exists():
             paths.configs.mkdir(parents=True, exist_ok=True)
@@ -233,6 +234,7 @@ No need to greet me, just answer.
         with path.open("r", encoding="utf-8") as file:
             self.apply(file)
             widgets.fill()
+            model.unload(True)
 
             if not args.quiet:
                 f_name = path.name
@@ -398,8 +400,8 @@ No need to greet me, just answer.
                     setattr(self, key, default)
 
             widgets.fill()
-            self.save()
             model.unload(True)
+            self.save()
 
         if force:
             action()
