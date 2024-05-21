@@ -56,7 +56,7 @@ format_test = {
         {"assistant": "Here is a normal sentence"},
         {"user": "Loading dolphin-2_6-phi-2.Q5_K_M.gguf"},
         {"assistant": "Ok"},
-        {"user": "Here is a path /home/yo/file.txt"},
+        {"user": "Here is a path /home/yo"},
         {"assistant": "That is indeed /home/yo/file.txt"},
         {"user": 'This is "a quoted text"'},
         {"assistant": 'That is a "quoted text".'},

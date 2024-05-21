@@ -384,26 +384,14 @@ class UrlMenu:
 
         self.menu = Menu()
 
-        self.menu.add(text="Use", command=lambda e: Output.use_path())
+        self.menu.add(text="Use", command=lambda e: Output.use_url())
+        self.menu.separator()
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Explain", command=lambda e: Output.explain_words())
+        self.menu.add(text="Search", command=lambda e: Output.search_words())
+        self.menu.add(text="New", command=lambda e: Output.new_tab())
+        self.menu.separator()
         self.menu.add(text="Open", command=lambda e: Output.open_url())
-
-    def show(self, event: Any = None) -> None:
-        if event:
-            self.menu.show(event)
-        else:
-            return
-
-
-class PathMenu:
-    def __init__(self) -> None:
-        from .output import Output
-
-        self.menu = Menu()
-
-        self.menu.add(text="Use", command=lambda e: Output.use_path())
-        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
-        self.menu.add(text="Open", command=lambda e: Output.open_path())
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -444,6 +432,5 @@ font_family_menu = FontFamilyMenu()
 item_menu = ItemMenu()
 word_menu = WordMenu()
 url_menu = UrlMenu()
-path_menu = PathMenu()
 custom_menu = CustomMenu()
 theme_menu = ThemeMenu()

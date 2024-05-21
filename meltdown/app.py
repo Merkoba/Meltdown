@@ -378,11 +378,6 @@ class App:
 
         self.open_generic(url, args.browser)
 
-    def open_path(self, path: str) -> None:
-        from .args import args
-
-        self.open_generic(path, args.file_manager)
-
     def open_generic(self, arg: str, opener: Optional[str] = None) -> None:
         if not arg:
             return

@@ -83,13 +83,6 @@ class Output(tk.Text):
             app.open_url(words)
 
     @staticmethod
-    def open_path() -> None:
-        words = Output.get_words()
-
-        if words:
-            app.open_path(words)
-
-    @staticmethod
     def repeat_prompt(no_history: bool = False) -> None:
         from . import itemops
 
@@ -107,7 +100,7 @@ class Output(tk.Text):
         return Output.words.strip()
 
     @staticmethod
-    def use_path() -> None:
+    def use_url() -> None:
         from .widgets import widgets
 
         path = Output.get_words()
@@ -342,7 +335,7 @@ class Output(tk.Text):
 
         def on_path_click(event: Any) -> None:
             from .keyboard import keyboard
-            from .menumanager import path_menu
+            from .menumanager import url_menu
 
             if not args.path_menu:
                 return
@@ -350,10 +343,10 @@ class Output(tk.Text):
             Output.words = self.get_tagwords("path", event)
 
             if keyboard.ctrl:
-                Output.open_path()
+                Output.open_url()
                 return
 
-            path_menu.show(event)
+            url_menu.show(event)
 
         self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
 
