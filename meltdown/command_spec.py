@@ -823,5 +823,11 @@ class CommandSpec:
             lambda a=None: app.show_portrait(),
         )
 
+        self.add_cmd(
+            "theme",
+            "Show the theme menu",
+            lambda a=None: menumanager.theme_menu.show(),
+        )
+
 
 command_spec = CommandSpec()
