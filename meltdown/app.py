@@ -838,11 +838,12 @@ class App:
         from .config import config
         from .dialogs import Dialog
 
-        if not args.portrait:
-            return
-
         name = config.name_ai if config.name_ai else "Your Friend"
-        image_path = Path(args.portrait)
+
+        if args.portrait:
+            image_path = Path(args.portrait)
+        else:
+            image_path = Path(app.here / "portrait.jpg")
 
         if not image_path.exists():
             return
