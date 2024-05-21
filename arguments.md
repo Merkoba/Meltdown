@@ -1805,3 +1805,13 @@ Use a specific icon for the window. png or gif
 Default: [Empty string]
 
 Type: str
+
+---
+
+### portrait
+
+Path to an image for the portrait of the AI
+
+Default: [Empty string]
+
+Type: str

@@ -821,3 +821,9 @@ Select the specified item
 ### profile
 
 Show the current profile
+
+---
+
+### portrait
+
+Show the assistant's portrait
