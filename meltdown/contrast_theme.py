@@ -32,8 +32,8 @@ class ContrastTheme(Theme):
         self.button_foreground = "black"
         self.button_hover_background = "#1ae6e6"
 
-        self.button_alt_background = "#1ae6e6"
-        self.button_alt_hover_background = "#1ae6e6"
+        self.button_alt_background = "#3fbebe"
+        self.button_alt_hover_background = "#38f1f1"
 
         self.button_highlight_background = "#ffff00"
         self.button_highlight_hover_background = "#ffff00"
