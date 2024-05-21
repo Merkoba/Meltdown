@@ -13,6 +13,9 @@ from .utils import utils
 from . import widgetutils
 
 
+Answer = Dict[str, Any]
+
+
 class Dialog:
     current_dialog: Optional["Dialog"] = None
     current_textbox: Optional[tk.Widget] = None
@@ -39,6 +42,7 @@ class Dialog:
         focus_hide_enabled: bool = True,
         value: str = "",
         top_frame: bool = False,
+        image_width: int = 270,
     ) -> None:
         from .menus import Menu
 
@@ -49,7 +53,7 @@ class Dialog:
         if image:
             img = Image.open(image)
             width, height = img.size
-            new_width = 270
+            new_width = image_width
             new_height = int(new_width * height / width)
             img = img.resize((new_width, new_height))
             photo = ImageTk.PhotoImage(img)
@@ -73,6 +77,9 @@ class Dialog:
                 dialog.entry.insert(0, value)
 
             def copy(text: Optional[str] = None) -> None:
+                if not dialog.entry:
+                    return
+
                 if not text:
                     text = dialog.entry.get()
 
@@ -83,10 +90,16 @@ class Dialog:
                 dialog.entry.focus_set()
 
             def paste() -> None:
+                if not dialog.entry:
+                    return
+
                 utils.paste(dialog.entry)
                 dialog.entry.focus_set()
 
             def on_right_click(event: Any) -> None:
+                if not dialog.entry:
+                    return
+
                 menu = Menu()
                 text = dialog.entry.get()
                 selected = dialog.entry.get_selected()
@@ -97,6 +110,10 @@ class Dialog:
                 menu.add(text="Paste", command=lambda e: paste())
                 menu.show(event)
 
+            def entry_up() -> None:
+                dialog.root.focus_set()
+
+            dialog.root.bind("<Up>", lambda e: entry_up())
             dialog.entry.bind("<Return>", lambda e: dialog.enter())
             dialog.entry.bind("<Escape>", lambda e: dialog.hide())
             dialog.entry.bind("<Down>", lambda e: dialog.root.focus_set())
@@ -106,7 +123,7 @@ class Dialog:
         # ------
 
         def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
-            def generic(func: Callable[..., Any]) -> Dict[str, Any]:
+            def generic(func: Callable[..., Any]) -> None:
                 ans = {"entry": Dialog.get_entry()}
                 dialog.hide()
                 func(ans)
@@ -121,8 +138,7 @@ class Dialog:
         dialog.focus_hide_enabled = focus_hide_enabled
         dialog.show()
 
-        if use_entry:
-            dialog.root.bind("<Up>", lambda e: dialog.entry.focus_set())
+        if dialog.entry:
             dialog.entry.focus_end()
 
     @staticmethod
@@ -156,7 +172,7 @@ class Dialog:
         value: str = "",
         mode: str = "normal",
     ) -> None:
-        def ok(ans) -> None:
+        def ok(ans: Answer) -> None:
             cmd_ok(ans["entry"])
 
         def cancel() -> None:

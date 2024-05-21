@@ -817,5 +817,11 @@ class CommandSpec:
             lambda a=None: app.open_profile(),
         )
 
+        self.add_cmd(
+            "portrait",
+            "Show the assistant's portrait",
+            lambda a=None: app.show_portrait(),
+        )
+
 
 command_spec = CommandSpec()

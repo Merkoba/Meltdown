@@ -817,8 +817,8 @@ class App:
         def show_data() -> None:
             self.open_generic(str(paths.data_dir))
 
-        cmds.append(("Config", lambda: show_config()))
-        cmds.append(("Data", lambda: show_data()))
+        cmds.append(("Config", lambda a: show_config()))
+        cmds.append(("Data", lambda a: show_data()))
 
         Dialog.show_dialog(f"Profile: {args.profile}", cmds)
 
@@ -826,17 +826,28 @@ class App:
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Date", lambda: app.show_date()))
-        cmds.append(("Started", lambda: app.show_started()))
-        cmds.append(("Memory", lambda: app.show_memory()))
+        cmds.append(("Portrait", lambda a: app.show_portrait()))
+        cmds.append(("Date", lambda a: app.show_date()))
+        cmds.append(("Started", lambda a: app.show_started()))
+        cmds.append(("Memory", lambda a: app.show_memory()))
 
         Dialog.show_dialog("Information", cmds)
 
     def show_portrait(self) -> None:
+        from .args import args
         from .config import config
         from .dialogs import Dialog
 
-        Dialog.show_message(config.name_ai, self.image_path)
+        if not args.portrait:
+            return
+
+        name = config.name_ai if config.name_ai else "Your Friend"
+        image_path = Path(args.portrait)
+
+        if not image_path.exists():
+            return
+
+        Dialog.show_dialog(name, image=image_path, image_width=350)
 
 
 app = App()
