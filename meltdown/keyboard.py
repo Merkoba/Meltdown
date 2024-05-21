@@ -545,9 +545,13 @@ class Keyboard:
         lines.append(separator)
         lines.append("1 to 9 to jump to tabs")
         lines.append(separator)
-        lines.append("F1 to F12 to run functions (configurable through arguments)\n")
+        lines.append("F1 to F12 to run commands (configurable through arguments)")
 
-        return "\n\n".join(lines)
+        for n in range(1, 13):
+            cmd = getattr(args, f"f{n}")
+            lines.append(f"F{n} = {cmd}")
+
+        return "\n\n".join(lines) + "\n"
 
     def on_double_ctrl(self) -> None:
         commands.show_palette()
