@@ -163,6 +163,7 @@ def make_combobox(
     widget.bind_class("TCombobox", "<MouseWheel>", lambda e: "break")
     widget.bind_class("TCombobox", "<Button-4>", lambda e: "break")
     widget.bind_class("TCombobox", "<Button-5>", lambda e: "break")
+    widget.configure(cursor="hand2")
 
     do_grid(widget, col=frame_data.col)
     frame_data.col += 1

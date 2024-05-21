@@ -134,7 +134,9 @@ class Dialog:
             for cmd in commands:
                 make_cmd(cmd)
 
-        dialog.highlight_last_button()
+        if commands:
+            dialog.highlight_last_button()
+
         dialog.focus_hide_enabled = focus_hide_enabled
         dialog.show()
 

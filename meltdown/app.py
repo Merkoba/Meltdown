@@ -849,7 +849,10 @@ class App:
         if not image_path.exists():
             return
 
-        Dialog.show_dialog(name, image=image_path, image_width=350)
+        cmds = []
+        cmds.append(("Ok", lambda a: None))
+
+        Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
 
 app = App()

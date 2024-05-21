@@ -111,6 +111,7 @@ class Widgets:
 
         self.model_icon = widgetutils.make_label(frame_data_model, "", colons=False)
         self.model_icon_tooltip = ToolTip(self.model_icon, "")
+        self.model_icon.configure(cursor="hand2")
 
         if not args.model_icon:
             self.model_icon.grid_remove()
