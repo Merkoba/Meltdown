@@ -278,8 +278,14 @@ class Model:
         prompt_user = prompt.get("user", "").strip()
         prompt_no_history = prompt.get("no_history", False)
 
-        prompt_text = self.limit_tokens(prompt_text)
+        if prompt_file:
+            if (not prompt_file.startswith("http")) and (
+                not Path(prompt_file).exists()
+            ):
+                display.print("Error: File not found.")
+                return
 
+        prompt_text = self.limit_tokens(prompt_text)
         original_text = prompt_text
         original_file = prompt_file
 
