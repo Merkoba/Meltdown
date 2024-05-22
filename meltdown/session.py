@@ -88,8 +88,16 @@ class Conversation:
             "items": self.items,
         }
 
-    def to_json(self) -> str:
-        return json.dumps(self.to_dict(), indent=4)
+    def to_json(self, ensure_ascii: bool = True) -> str:
+        obj = self.to_dict()
+
+        if config.avatar_user:
+            obj["avatar_user"] = config.avatar_user
+
+        if config.avatar_ai:
+            obj["avatar_ai"] = config.avatar_ai
+
+        return json.dumps(obj, indent=4, ensure_ascii=ensure_ascii)
 
     def to_text(
         self,
@@ -104,25 +112,15 @@ class Conversation:
         for i, item in enumerate(self.items):
             for key in item:
                 if key == "user":
-                    if avatars:
-                        prompt = Output.get_prompt(
-                            "user", put_colons=False, generic=generic
-                        )
-                    else:
-                        prompt = Output.get_prompt(
-                            "user", show_avatar=False, put_colons=False, generic=generic
-                        )
+                    prompt = Output.get_prompt(
+                        "user", show_avatar=avatars, put_colons=False, generic=generic
+                    )
 
                     log += f"{prompt}: "
                 elif key == "assistant":
-                    if avatars:
-                        prompt = Output.get_prompt(
-                            "ai", put_colons=False, generic=generic
-                        )
-                    else:
-                        prompt = Output.get_prompt(
-                            "ai", show_avatar=False, put_colons=False, generic=generic
-                        )
+                    prompt = Output.get_prompt(
+                        "ai", show_avatar=avatars, put_colons=False, generic=generic
+                    )
 
                     log += f"{prompt}: "
                 else:
@@ -154,25 +152,15 @@ class Conversation:
         for i, item in enumerate(self.items):
             for key in item:
                 if key == "user":
-                    if avatars:
-                        prompt = Output.get_prompt(
-                            "user", put_colons=False, generic=generic
-                        )
-                    else:
-                        prompt = Output.get_prompt(
-                            "user", show_avatar=False, put_colons=False, generic=generic
-                        )
+                    prompt = Output.get_prompt(
+                        "user", show_avatar=avatars, put_colons=False, generic=generic
+                    )
 
                     log += f"**{prompt}**:"
                 elif key == "assistant":
-                    if avatars:
-                        prompt = Output.get_prompt(
-                            "ai", put_colons=False, generic=generic
-                        )
-                    else:
-                        prompt = Output.get_prompt(
-                            "ai", show_avatar=False, put_colons=False, generic=generic
-                        )
+                    prompt = Output.get_prompt(
+                        "ai", show_avatar=avatars, put_colons=False, generic=generic
+                    )
 
                     log += f"**{prompt}**:"
                 else:

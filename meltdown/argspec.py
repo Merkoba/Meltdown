@@ -79,6 +79,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_ascii_logs",
+            action="store_false",
+            info="Don't escape non-ascii chars in json logs",
+        )
+
+        self.add_argument(
             "no_one_space",
             action="store_false",
             info="Don't limit the text inputs to one space",

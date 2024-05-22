@@ -752,6 +752,7 @@ class App:
     def program(self, mode: str, cmd: Optional[str] = None) -> None:
         from .args import args
         from .display import display
+        from . import formats
 
         if not cmd:
             if mode == "text":
@@ -767,13 +768,13 @@ class App:
             return
 
         if mode == "text":
-            text = tabconvo.convo.to_text()
+            text = formats.to_text(tabconvo.convo)
             ext = "txt"
         elif mode == "json":
-            text = tabconvo.convo.to_json()
+            text = formats.to_json(tabconvo.convo)
             ext = "json"
         elif mode == "markdown":
-            text = tabconvo.convo.to_markdown()
+            text = formats.to_markdown(tabconvo.convo)
             ext = "markdown"
         else:
             return

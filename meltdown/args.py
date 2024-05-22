@@ -213,6 +213,7 @@ class Args:
         self.separate_logs = True
         self.names_on_logs = True
         self.one_space = True
+        self.ascii_logs = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -293,6 +294,7 @@ class Args:
             ("no_separate_logs", "separate_logs"),
             ("no_names_on_logs", "names_on_logs"),
             ("no_one_space", "one_space"),
+            ("no_ascii_logs", "ascii_logs"),
         ]
 
         for r_item in other_name:

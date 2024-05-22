@@ -12,6 +12,7 @@ from .session import session
 from .session import Conversation
 from .paths import paths
 from .utils import utils
+from . import formats
 
 
 class Logs:
@@ -181,7 +182,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        return conversation.to_json()
+        return formats.to_json(conversation)
 
     def to_text(
         self,
@@ -198,14 +199,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        avatars = args.avatars_in_logs
-        separate = args.separate_logs
-        files = args.files_in_logs
-        names = args.names_in_logs
-
-        text = conversation.to_text(
-            avatars=avatars, names=names, separate=separate, files=files
-        )
+        text = formats.to_text(conversation)
 
         if not text:
             return ""
@@ -231,14 +225,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        avatars = args.avatars_in_logs
-        separate = args.separate_logs
-        files = args.files_in_logs
-        names = args.names_in_logs
-
-        text = conversation.to_markdown(
-            avatars=avatars, names=names, separate=separate, files=files
-        )
+        text = formats.to_markdown(conversation)
 
         if not text:
             return ""
