@@ -151,6 +151,9 @@ class App:
                 display.print("Exit cancelled.")
 
     def exists(self) -> bool:
+        if not hasattr(self, "root"):
+            return False
+
         try:
             return bool(self.root.winfo_exists())
         except RuntimeError:

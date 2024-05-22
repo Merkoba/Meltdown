@@ -308,6 +308,9 @@ No need to greet me, just answer.
     def save(self) -> None:
         from .app import app
 
+        if not app.exists():
+            return
+
         self.clear_save()
         self.save_after = app.root.after(self.save_delay, lambda: self.do_save())
 

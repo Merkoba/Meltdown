@@ -162,6 +162,9 @@ class Session:
             self.save_after = ""
 
     def save(self) -> None:
+        if not app.exists():
+            return
+
         self.clear_save()
         self.save_after = app.root.after(config.save_delay, lambda: self.do_save())
 

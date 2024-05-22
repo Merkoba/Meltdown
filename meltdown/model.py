@@ -652,5 +652,19 @@ class Model:
             utils.error(e)
             return text
 
+    def show_name(self) -> None:
+        from .widgets import widgets
+        from .dialogs import Dialog
+
+        model_ = self.loaded_model
+
+        if not model_:
+            model_ = widgets.model.get()
+
+        if not model_:
+            return
+
+        Dialog.show_message(model_)
+
 
 model = Model()

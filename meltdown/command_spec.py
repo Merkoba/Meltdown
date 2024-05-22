@@ -829,5 +829,11 @@ class CommandSpec:
             lambda a=None: menumanager.theme_menu.show(),
         )
 
+        self.add_cmd(
+            "modelname",
+            "Show the model name",
+            lambda a=None: model.show_name(),
+        )
+
 
 command_spec = CommandSpec()
