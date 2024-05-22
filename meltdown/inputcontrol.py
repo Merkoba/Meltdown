@@ -93,17 +93,21 @@ class InputControl:
         self.input.focus_set()
         self.input.on_focus_change("in")
 
-    def apply_history(self) -> None:
-        inputs = files.get_list("inputs")
+    def apply_history(self, inputs: List[str]) -> None:
         text = inputs[self.history_index]
         self.set(text)
         self.input.focus_end()
 
-    def history_up(self) -> None:
+    def get_history_list(self, force_no_cmds: bool = False) -> List[str]:
         inputs = files.get_list("inputs")
 
-        if not self.input.get():
-            self.reset_history_index()
+        if force_no_cmds or (not args.command_history):
+            inputs = [i for i in inputs if (not commands.is_command(i))]
+
+        return inputs
+
+    def history_up(self) -> None:
+        inputs = self.get_history_list()
 
         if not inputs:
             return
@@ -117,10 +121,10 @@ class InputControl:
 
             self.history_index = (self.history_index + 1) % len(inputs)
 
-        self.apply_history()
+        self.apply_history(inputs)
 
     def history_down(self) -> None:
-        inputs = files.get_list("inputs")
+        inputs = self.get_history_list()
 
         if not inputs:
             return
@@ -134,7 +138,7 @@ class InputControl:
 
             self.history_index = (self.history_index - 1) % len(inputs)
 
-        self.apply_history()
+        self.apply_history(inputs)
 
     def set(self, text: str) -> None:
         self.input.set_text(text)
@@ -194,12 +198,15 @@ class InputControl:
                         text = args.image_prompt
 
             if text:
-                files.add_input(text)
-                self.add_words(text)
-
                 if args.commands:
                     if commands.exec(text):
+                        if args.command_history:
+                            files.add_input(text)
+
                         return
+
+                files.add_input(text)
+                self.add_words(text)
 
             if tab.mode == "ignore":
                 return
@@ -302,7 +309,8 @@ class InputControl:
             if text:
                 menu.add(text="Clear", command=lambda e: textbox.clear())
 
-            items = files.get_list("inputs")[: args.max_list_items]
+            inputs = self.get_history_list()
+            items = inputs[: args.max_list_items]
 
             if items:
                 menu.add(text="--- Recent ---", disabled=True)

@@ -43,6 +43,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_command_history",
+            action="store_false",
+            info="Don't include commands when cycling input history",
+        )
+
+        self.add_argument(
             "no_scroller_buttons",
             action="store_false",
             info="Don't show left and right scroller buttons",

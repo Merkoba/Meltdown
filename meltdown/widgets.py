@@ -429,7 +429,13 @@ class Widgets:
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
         assert isinstance(menu, Menu)
-        items = files.get_list(key_list)[: args.max_list_items]
+
+        if key_config == "input":
+            items = inputcontrol.get_history_list()
+        else:
+            items = files.get_list(key_list)
+
+        items = items[: args.max_list_items]
         menu.clear()
 
         if only_items:
