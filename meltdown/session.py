@@ -98,18 +98,22 @@ class Conversation:
             for key in item:
                 if key == "user":
                     if args.avatars_in_logs:
-                        log += Output.get_prompt("user")
+                        prompt = Output.get_prompt("user", put_colons=False)
                     else:
-                        log += Output.get_prompt(
-                            "user", show_avatar=False, colon_space=False
+                        prompt = Output.get_prompt(
+                            "user", show_avatar=False, put_colons=False
                         )
+
+                    log += f"{prompt}: "
                 elif key == "assistant":
                     if args.avatars_in_logs:
-                        log += Output.get_prompt("ai")
+                        prompt = Output.get_prompt("ai", put_colons=False)
                     else:
-                        log += Output.get_prompt(
-                            "ai", show_avatar=False, colon_space=False
+                        prompt = Output.get_prompt(
+                            "ai", show_avatar=False, put_colons=False
                         )
+
+                    log += f"{prompt}: "
                 else:
                     continue
 

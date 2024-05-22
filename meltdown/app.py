@@ -752,7 +752,6 @@ class App:
     def program(self, mode: str, cmd: Optional[str] = None) -> None:
         from .args import args
         from .display import display
-        from .dialogs import Dialog
 
         if not cmd:
             if mode == "text":
@@ -761,17 +760,6 @@ class App:
                 cmd = args.prog_json or args.program
             elif mode == "markdown":
                 cmd = args.prog_markdown or args.program
-
-        if not cmd:
-
-            def action(text: str) -> None:
-                if not text:
-                    return
-
-                self.program(mode, text)
-
-            Dialog.show_input("Program to use", lambda t: action(t))
-            return
 
         tabconvo = display.get_tab_convo(None)
 
@@ -797,7 +785,7 @@ class App:
         with path.open("w", encoding="utf-8") as file:
             file.write(text)
 
-        self.run_command([cmd, str(path)])
+        self.open_generic(str(path), opener=cmd)
 
     def focused(self) -> Optional[tk.Widget]:
         if app.exists():
