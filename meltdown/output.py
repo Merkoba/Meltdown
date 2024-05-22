@@ -1001,3 +1001,6 @@ class Output(tk.Text):
 
     def get_num_lines(self) -> int:
         return int(self.index("end-1c").split(".")[0])
+
+    def get_num_chars(self) -> int:
+        return len(self.get_text())

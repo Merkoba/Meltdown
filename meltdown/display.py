@@ -1010,5 +1010,17 @@ class Display:
         num = tab.output.get_num_lines()
         Dialog.show_message(f"Lines: {num}")
 
+    def show_num_chars(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        num = tab.output.get_num_chars()
+        Dialog.show_message(f"Chars: {num}")
+
 
 display = Display()
