@@ -837,7 +837,7 @@ class CommandSpec:
 
         self.add_cmd(
             "size",
-            "Show the number of lines and characters",
+            "Show some size and length data",
             lambda a=None: display.show_size(),
         )
 
