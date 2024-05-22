@@ -96,7 +96,7 @@ class Conversation:
         avatars: bool = False,
         names: bool = True,
         separate: bool = False,
-        files: bool = False,
+        files: bool = True,
     ) -> str:
         log = ""
         generic = not names
@@ -130,7 +130,7 @@ class Conversation:
 
                 log += item[key] + "\n\n"
 
-                if files:
+                if files and (key == "user"):
                     file = item.get("file", "")
 
                     if file:
@@ -146,7 +146,7 @@ class Conversation:
         avatars: bool = False,
         names: bool = True,
         separate: bool = False,
-        files: bool = False,
+        files: bool = True,
     ) -> str:
         log = ""
         generic = not names
@@ -180,7 +180,7 @@ class Conversation:
 
                 log += f" {item[key].strip()}\n\n"
 
-                if files:
+                if files and (key == "user"):
                     file = item.get("file", "")
 
                     if file:
