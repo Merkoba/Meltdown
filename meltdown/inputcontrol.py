@@ -279,7 +279,7 @@ class InputControl:
         added = False
 
         for word in words:
-            clean_word = "".join(e for e in word if e.isalnum())
+            clean_word = utils.clean_text(word)
             len_words = len(clean_word)
 
             if len_words < args.input_memory_min:

@@ -355,5 +355,12 @@ class Utils:
         num = chars / 1024
         return round(num, 2)
 
+    def clean_text(self, text: str) -> str:
+        allowed = (" ", "-", "_")
+        return "".join(e for e in text if e.isalnum() or (e in allowed))
+
+    def remove_multiple_spaces(self, text: str) -> str:
+        return " ".join(text.split())
+
 
 utils = Utils()
