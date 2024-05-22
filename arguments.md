@@ -890,7 +890,7 @@ Type: int
 
 The delay in ms for each auto scroll tick
 
-Default: 500
+Default: 720
 
 Type: int
 
