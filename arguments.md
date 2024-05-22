@@ -52,9 +52,9 @@ Action: store_false
 
 ---
 
-### no-text-wheel
+### no-display-wheel
 
-Don't enable mousewheel events on the text
+Don't enable mousewheel events on the display
 
 Action: store_false
 
@@ -600,9 +600,9 @@ Action: store_true
 
 ---
 
-### only-text
+### display-mode
 
-Only show the text. This is a preset that sets other arguments
+Only show the display. This is a preset that sets other arguments
 
 Default: False
 
@@ -1222,7 +1222,7 @@ Type: str
 
 ### scroll-lines
 
-How many lines to scroll the text
+How many lines to scroll the display
 
 Default: 1
 
@@ -1756,7 +1756,7 @@ Type: str
 
 ### on-shift-middle-click
 
-Commands to run when shift middle clicking the text
+Commands to run when shift middle clicking the display
 
 Default: [Empty string]
 
@@ -1766,7 +1766,7 @@ Type: str
 
 ### on-ctrl-middle-click
 
-Commands to run when ctrl middle clicking the text
+Commands to run when ctrl middle clicking the display
 
 Default: [Empty string]
 
@@ -1776,7 +1776,7 @@ Type: str
 
 ### on-ctrl-shift-middle-click
 
-Commands to run when ctrl shift middle clicking the text
+Commands to run when ctrl shift middle clicking the display
 
 Default: [Empty string]
 
