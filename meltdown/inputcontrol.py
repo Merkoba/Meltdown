@@ -279,7 +279,8 @@ class InputControl:
         added = False
 
         for word in words:
-            len_words = len(word)
+            clean_word = "".join(e for e in word if e.isalnum())
+            len_words = len(clean_word)
 
             if len_words < args.input_memory_min:
                 continue
@@ -287,12 +288,12 @@ class InputControl:
             if len_words > config.input_memory_max:
                 continue
 
-            if commands.is_command(word):
+            if commands.is_command(clean_word):
                 continue
 
-            if word not in self.autocomplete:
-                self.autocomplete.append(word)
-                terminal.add_word(word)
+            if clean_word not in self.autocomplete:
+                self.autocomplete.append(clean_word)
+                terminal.add_word(clean_word)
                 added = True
 
         if added:
