@@ -182,7 +182,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        return formats.to_json(conversation)
+        return formats.get_json(conversation)
 
     def to_text(
         self,
@@ -199,7 +199,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = formats.to_text(conversation)
+        text = formats.get_text(conversation)
 
         if not text:
             return ""
@@ -225,7 +225,7 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = formats.to_markdown(conversation)
+        text = formats.get_markdown(conversation)
 
         if not text:
             return ""

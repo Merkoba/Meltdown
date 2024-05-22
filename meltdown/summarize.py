@@ -6,6 +6,7 @@ from .args import args
 from .display import display
 from .model import model
 from .utils import utils
+from . import formats
 
 
 def summarize(tab_id: Optional[str] = None) -> None:
@@ -14,7 +15,7 @@ def summarize(tab_id: Optional[str] = None) -> None:
     if not tabconvo:
         return
 
-    text = tabconvo.convo.to_text()
+    text = formats.get_text_minimal(tabconvo.convo)
 
     if not text:
         text = display.get_text(tab_id)

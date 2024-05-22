@@ -616,16 +616,6 @@ class Output(tk.Text):
     def copy_all(self) -> None:
         utils.copy(self.get_text(), command=True)
 
-    def to_text(self) -> str:
-        from .display import display
-
-        tabconvo = display.get_tab_convo(self.tab_id)
-
-        if not tabconvo:
-            return ""
-
-        return tabconvo.convo.to_text()
-
     def prompt(self, who: str) -> None:
         from .display import display
 

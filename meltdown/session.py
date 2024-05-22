@@ -11,7 +11,6 @@ from .display import display
 from .paths import paths
 from .args import args
 from .dialogs import Dialog
-from .output import Output
 from .utils import utils
 from . import tests
 from . import close
@@ -87,97 +86,6 @@ class Conversation:
             "last_modified": self.last_modified,
             "items": self.items,
         }
-
-    def to_json(self, ensure_ascii: bool = True) -> str:
-        obj = self.to_dict()
-
-        if config.avatar_user:
-            obj["avatar_user"] = config.avatar_user
-
-        if config.avatar_ai:
-            obj["avatar_ai"] = config.avatar_ai
-
-        return json.dumps(obj, indent=4, ensure_ascii=ensure_ascii)
-
-    def to_text(
-        self,
-        avatars: bool = False,
-        names: bool = True,
-        separate: bool = False,
-        files: bool = True,
-    ) -> str:
-        log = ""
-        generic = not names
-
-        for i, item in enumerate(self.items):
-            for key in item:
-                if key == "user":
-                    prompt = Output.get_prompt(
-                        "user", show_avatar=avatars, put_colons=False, generic=generic
-                    )
-
-                    log += f"{prompt}: "
-                elif key == "assistant":
-                    prompt = Output.get_prompt(
-                        "ai", show_avatar=avatars, put_colons=False, generic=generic
-                    )
-
-                    log += f"{prompt}: "
-                else:
-                    continue
-
-                log += item[key] + "\n\n"
-
-                if files and (key == "user"):
-                    file = item.get("file", "")
-
-                    if file:
-                        log += f"File: {file}\n\n"
-
-            if (i < len(self.items) - 1) and separate:
-                log += "---\n\n"
-
-        return log.strip()
-
-    def to_markdown(
-        self,
-        avatars: bool = False,
-        names: bool = True,
-        separate: bool = False,
-        files: bool = True,
-    ) -> str:
-        log = ""
-        generic = not names
-
-        for i, item in enumerate(self.items):
-            for key in item:
-                if key == "user":
-                    prompt = Output.get_prompt(
-                        "user", show_avatar=avatars, put_colons=False, generic=generic
-                    )
-
-                    log += f"**{prompt}**:"
-                elif key == "assistant":
-                    prompt = Output.get_prompt(
-                        "ai", show_avatar=avatars, put_colons=False, generic=generic
-                    )
-
-                    log += f"**{prompt}**:"
-                else:
-                    continue
-
-                log += f" {item[key].strip()}\n\n"
-
-                if files and (key == "user"):
-                    file = item.get("file", "")
-
-                    if file:
-                        log += f"**File:** {file}\n\n"
-
-            if (i < len(self.items) - 1) and separate:
-                log += "---\n\n"
-
-        return log.strip()
 
 
 class Session:

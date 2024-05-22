@@ -768,13 +768,13 @@ class App:
             return
 
         if mode == "text":
-            text = formats.to_text(tabconvo.convo)
+            text = formats.get_text(tabconvo.convo)
             ext = "txt"
         elif mode == "json":
-            text = formats.to_json(tabconvo.convo)
+            text = formats.get_json(tabconvo.convo)
             ext = "json"
         elif mode == "markdown":
-            text = formats.to_markdown(tabconvo.convo)
+            text = formats.get_markdown(tabconvo.convo)
             ext = "markdown"
         else:
             return
