@@ -143,12 +143,15 @@ class MoreMenu:
         disable = (not modified) or ignored
         self.menu.add("View Text", lambda e: display.view_text(), disabled=disable)
         self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
-        self.menu.add("Markdown", lambda e: display.view_markdown(), disabled=disable)
+        self.menu.add("View MrkD", lambda e: display.view_markdown(), disabled=disable)
 
         self.menu.separator()
 
         self.menu.add("Prog Text", lambda e: app.program(mode="text"), disabled=disable)
         self.menu.add("Prog JSON", lambda e: app.program(mode="json"), disabled=disable)
+        self.menu.add(
+            "Prog MrkD", lambda e: app.program(mode="markdown"), disabled=disable
+        )
 
     def show(self, event: Any = None) -> None:
         self.make()

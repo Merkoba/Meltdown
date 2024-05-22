@@ -22,15 +22,16 @@ class Logs:
             cmds.append(("Save All", lambda a: self.save_all()))
 
         cmds.append(("Markdown", lambda a: self.to_markdown(tab_id=tab_id)))
-        cmds.append(("To JSON", lambda a: self.to_json(tab_id=tab_id)))
-        cmds.append(("To Text", lambda a: self.to_text(tab_id=tab_id)))
+        cmds.append(("JSON", lambda a: self.to_json(tab_id=tab_id)))
+        cmds.append(("Text", lambda a: self.to_text(tab_id=tab_id)))
 
         Dialog.show_dialog("Save conversation to a file?", cmds)
 
     def save_all(self) -> None:
         cmds = []
-        cmds.append(("To JSON", lambda a: self.to_json(True)))
-        cmds.append(("To Text", lambda a: self.to_text(True)))
+        cmds.append(("Markdown", lambda a: self.to_markdown(True)))
+        cmds.append(("JSON", lambda a: self.to_json(True)))
+        cmds.append(("Text", lambda a: self.to_text(True)))
         Dialog.show_dialog("Save all conversations?", cmds)
 
     def save_file(
