@@ -996,6 +996,16 @@ Type: str
 
 ---
 
+### on-log-markdown
+
+Command to execute when saving a markdown log file
+
+Default: [Empty string]
+
+Type: str
+
+---
+
 ### on-copy
 
 Command to execute when copying text
@@ -1528,9 +1538,9 @@ Type: str
 
 ---
 
-### progtext
+### prog-text
 
-Use this program as default for the progtext command
+Use this program as default for the prog text command
 
 Default: [Empty string]
 
@@ -1538,9 +1548,19 @@ Type: str
 
 ---
 
-### progjson
+### prog-json
 
-Use this program as default for the progjson command
+Use this program as default for the prog json command
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### prog-markdown
+
+Use this program as default for the prog markdown command
 
 Default: [Empty string]
 

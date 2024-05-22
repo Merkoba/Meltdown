@@ -709,6 +709,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "on_log_markdown",
+            type=str,
+            info="Command to execute when saving a markdown log file",
+        )
+
+        self.add_argument(
             "on_copy",
             type=str,
             info="Command to execute when copying text",
@@ -1031,15 +1037,21 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "progtext",
+            "prog_text",
             type=str,
-            info="Use this program as default for the progtext command",
+            info="Use this program as default for the prog text command",
         )
 
         self.add_argument(
-            "progjson",
+            "prog_json",
             type=str,
-            info="Use this program as default for the progjson command",
+            info="Use this program as default for the prog json command",
+        )
+
+        self.add_argument(
+            "prog_markdown",
+            type=str,
+            info="Use this program as default for the prog markdown command",
         )
 
         self.add_argument(

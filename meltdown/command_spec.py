@@ -629,6 +629,13 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "progmarkdown",
+            "Open a program using the markdown",
+            lambda a=None: app.program(mode="markdown", cmd=a),
+            type=str,
+        )
+
         self.add_cmd("submit", "Submit the input", lambda a=None: inputcontrol.submit())
 
         self.add_cmd(

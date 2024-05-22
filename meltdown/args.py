@@ -45,6 +45,7 @@ class Args:
         self.on_log = ""
         self.on_log_text = ""
         self.on_log_json = ""
+        self.on_log_markdown = ""
         self.on_copy = ""
         self.f1 = ""
         self.f2 = ""
@@ -130,8 +131,9 @@ class Args:
 
         self.errors = False
         self.log_errors = True
-        self.progtext = ""
-        self.progjson = ""
+        self.prog_text = ""
+        self.prog_json = ""
+        self.prog_markdown = ""
         self.program = ""
 
         self.gestures = True
@@ -355,10 +357,12 @@ class Args:
             "on_log",
             "on_log_text",
             "on_log_json",
+            "on_log_markdown",
             "on_copy",
             "errors",
-            "progtext",
-            "progjson",
+            "prog_text",
+            "prog_json",
+            "prog_markdown",
             "program",
             "gestures_threshold",
             "gestures_left",

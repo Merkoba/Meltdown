@@ -646,6 +646,12 @@ Open a program using the JSON
 
 ---
 
+### progmarkdown
+
+Open a program using the markdown
+
+---
+
 ### submit
 
 Submit the input

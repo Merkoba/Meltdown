@@ -65,6 +65,8 @@ class Logs:
                 cmd = args.on_log_text
             elif (mode == "json") and args.on_log_json:
                 cmd = args.on_log_json
+            elif (mode == "markdown") and args.on_log_markdown:
+                cmd = args.on_log_markdown
             elif args.on_log:
                 cmd = args.on_log
 

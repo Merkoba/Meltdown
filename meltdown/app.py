@@ -756,9 +756,11 @@ class App:
 
         if not cmd:
             if mode == "text":
-                cmd = args.progtext or args.program
+                cmd = args.prog_text or args.program
             elif mode == "json":
-                cmd = args.progjson or args.program
+                cmd = args.prog_json or args.program
+            elif mode == "markdown":
+                cmd = args.prog_markdown or args.program
 
         if not cmd:
 
@@ -782,6 +784,9 @@ class App:
         elif mode == "json":
             text = tabconvo.convo.to_json()
             ext = "json"
+        elif mode == "markdown":
+            text = tabconvo.convo.to_markdown()
+            ext = "markdown"
         else:
             return
 
