@@ -113,6 +113,9 @@ class Commands:
         if len(text) < 2:
             return False
 
+        if "\n" in text:
+            return False
+
         with_prefix = text.startswith(args.prefix)
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()

@@ -206,8 +206,9 @@ class InputControl:
 
                         return
 
-                files.add_input(text)
-                self.add_words(text)
+                if not "\n" in text:
+                    files.add_input(text)
+                    self.add_words(text)
 
             if tab.mode == "ignore":
                 return
