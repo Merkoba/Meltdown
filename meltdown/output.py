@@ -232,15 +232,28 @@ class Output(tk.Text):
         model.stream({"text": text}, tab_id)
 
     @staticmethod
-    def get_prompt(who: str, show_avatar: bool = True, colon_space: bool = True) -> str:
+    def get_prompt(
+        who: str,
+        show_avatar: bool = True,
+        colon_space: bool = True,
+        put_colons: bool = True,
+        markers: bool = True,
+    ) -> str:
         name = getattr(config, f"name_{who}")
         avatar = getattr(config, f"avatar_{who}")
 
-        colons = (
-            f"{Output.marker_space}:{Output.marker_space}"
-            if colon_space
-            else f":{Output.marker_space}"
-        )
+        if put_colons:
+            if markers:
+                marker = Output.marker_space
+            else:
+                marker = " "
+
+            if colon_space:
+                colons = f"{marker}:{marker}"
+            else:
+                colons = f":{marker}"
+        else:
+            colons = ""
 
         if args.avatars and show_avatar and avatar:
             if name:

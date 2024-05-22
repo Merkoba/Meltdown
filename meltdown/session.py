@@ -127,6 +127,46 @@ class Conversation:
 
         return log.strip()
 
+    def to_markdown(self) -> str:
+        log = ""
+
+        for i, item in enumerate(self.items):
+            for key in item:
+                if key == "user":
+                    if args.avatars_in_logs:
+                        prompt = Output.get_prompt("user", put_colons=False)
+                    else:
+                        prompt = Output.get_prompt(
+                            "user", show_avatar=False, put_colons=False
+                        )
+
+                    log += f"**{prompt}**:"
+                elif key == "assistant":
+                    if args.avatars_in_logs:
+                        prompt = Output.get_prompt("ai", put_colons=False)
+                    else:
+                        prompt = Output.get_prompt(
+                            "ai", show_avatar=False, put_colons=False
+                        )
+
+                    log += f"**{prompt}**:"
+                else:
+                    continue
+
+                log += f" {item[key].strip()}\n\n"
+
+                if args.files_in_logs:
+                    file = item.get("file", "")
+
+                    if file:
+                        log += f"File: {file}\n\n"
+
+            if i < len(self.items) - 1:
+                if args.separate_logs:
+                    log += "---\n\n"
+
+        return log.strip()
+
 
 class Session:
     def __init__(self) -> None:

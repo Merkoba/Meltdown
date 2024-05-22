@@ -101,6 +101,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "logmarkdown",
+            "Save conversation to a markdown file",
+            lambda a=None: logs.to_markdown(name=a),
+            type=str,
+        )
+
+        self.add_cmd(
             "logtextall",
             "Save all conversations to text files",
             lambda a=None: logs.to_text(True),
@@ -278,6 +285,10 @@ class CommandSpec:
         self.add_cmd("viewtext", "View raw text", lambda a=None: display.view_text())
 
         self.add_cmd("viewjson", "View raw JSON", lambda a=None: display.view_json())
+
+        self.add_cmd(
+            "viewmarkdown", "View raw Markdown", lambda a=None: display.view_markdown()
+        )
 
         self.add_cmd(
             "move",

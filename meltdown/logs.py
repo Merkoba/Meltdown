@@ -21,6 +21,7 @@ class Logs:
         if full:
             cmds.append(("Save All", lambda a: self.save_all()))
 
+        cmds.append(("Markdown", lambda a: self.to_markdown(tab_id=tab_id)))
         cmds.append(("To JSON", lambda a: self.to_json(tab_id=tab_id)))
         cmds.append(("To Text", lambda a: self.to_text(tab_id=tab_id)))
 
@@ -83,6 +84,8 @@ class Logs:
             ext = "txt"
         elif mode == "json":
             ext = "json"
+        elif mode == "markdown":
+            ext = "md"
         else:
             return
 
@@ -109,6 +112,8 @@ class Logs:
                 text = self.get_text(conversation)
             elif mode == "json":
                 text = self.get_json(conversation)
+            elif mode == "markdown":
+                text = self.get_markdown(conversation)
             else:
                 text = ""
 
@@ -152,6 +157,14 @@ class Logs:
     ) -> None:
         self.save("json", save_all, name, tab_id=tab_id)
 
+    def to_markdown(
+        self,
+        save_all: bool = False,
+        name: Optional[str] = None,
+        tab_id: Optional[str] = None,
+    ) -> None:
+        self.save("markdown", save_all, name, tab_id=tab_id)
+
     def get_json(self, conversation: Conversation) -> str:
         if not conversation:
             return ""
@@ -189,6 +202,32 @@ class Logs:
 
         date_saved = utils.to_date(utils.now())
         full_text += f"Saved: {date_saved}"
+
+        full_text += "\n\n---\n\n"
+        full_text += text
+
+        return full_text
+
+    def get_markdown(self, conversation: Conversation) -> str:
+        if not conversation:
+            return ""
+
+        if not conversation.items:
+            return ""
+
+        text = conversation.to_markdown()
+
+        if not text:
+            return ""
+
+        full_text = ""
+        full_text += f"# {conversation.name}\n\n"
+
+        date_created = utils.to_date(conversation.created)
+        full_text += f"**Created:** {date_created}\n"
+
+        date_saved = utils.to_date(utils.now())
+        full_text += f"**Saved:** {date_saved}"
 
         full_text += "\n\n---\n\n"
         full_text += text

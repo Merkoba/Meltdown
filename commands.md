@@ -58,6 +58,12 @@ Save conversation to a JSON file
 
 ---
 
+### logmarkdown
+
+Save conversation to a markdown file
+
+---
+
 ### logtextall
 
 Save all conversations to text files
@@ -267,6 +273,12 @@ View raw text
 ### viewjson
 
 View raw JSON
+
+---
+
+### viewmarkdown
+
+View raw Markdown
 
 ---
 
@@ -844,4 +856,4 @@ Show the model name
 
 ### size
 
-Show the number of lines and characters
+Show size and length information

@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-separate-logs
+
+Don't use separator in text logs
+
+Action: store_false
+
+---
+
 ### no-command-history
 
 Don't include commands when cycling input history
