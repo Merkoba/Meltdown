@@ -24,6 +24,7 @@ class Utils:
         self.error_logger: Optional[logging.Logger] = None
         self.console = Console()
         self.nouns: List[str] = []
+        self.protocols = ("http://", "https://")
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -332,18 +333,23 @@ class Utils:
         if not args.shorten_paths:
             return text
 
-        if not text.startswith("/"):
-            return text
+        if text.startswith("/"):
+            parts = text.split("/")
 
-        parts = text.split("/")
+            if len(parts) < 3:
+                return text
 
-        if len(parts) < 3:
-            return text
+            last_part = parts[-1]
+            rest_parts = [part[0] for part in parts[:-1] if part]
+            partstr = "/".join(rest_parts)
+            return f"/{partstr}/{last_part}"
 
-        last_part = parts[-1]
-        rest_parts = [part[0] for part in parts[:-1] if part]
-        partstr = "/".join(rest_parts)
-        return f"/{partstr}/{last_part}"
+        if self.is_url(text):
+            for protocol in self.protocols:
+                if text.startswith(protocol):
+                    return text[len(protocol) :]
+
+        return text
 
     def chars_to_kb(self, chars: int) -> float:
         num = chars / 1024
