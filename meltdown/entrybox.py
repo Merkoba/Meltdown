@@ -2,10 +2,11 @@
 import re
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional
+from typing import Any, Optional, Callable
 
 # Modules
 from .app import app
+from .args import args
 from .config import config
 from .tooltips import ToolTip
 
@@ -28,6 +29,7 @@ class EntryBox(ttk.Entry):
         self.trace_id = self.text_var.trace_add("write", self.on_write)
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
+        self.proc: Optional[Callable[..., Any]] = None
         self.name = ""
         self.last_text = ""
         self.do_binds()
@@ -115,6 +117,10 @@ class EntryBox(ttk.Entry):
     ) -> None:
         self.text_var.trace_remove("write", self.trace_id)
         self.delete(0, tk.END)
+
+        if self.proc:
+            text = self.proc(text)
+
         self.insert(0, self.get_clean_string(text))
         self.trace_id = self.text_var.trace_add("write", self.on_write)
 
@@ -206,7 +212,11 @@ class EntryBox(ttk.Entry):
 
     def get_clean_string(self, text: str) -> str:
         text = re.sub(r"\n+", " ", text)
-        return re.sub(r"\s+", " ", text).lstrip()
+
+        if args.one_space:
+            text = re.sub(r"\s+", " ", text).lstrip()
+
+        return text
 
     def clean_string(self) -> None:
         if self.placeholder_active:
@@ -247,3 +257,6 @@ class EntryBox(ttk.Entry):
             return "break"
 
         return ""
+
+    def set_proc(self, proc: Callable[..., Any]) -> None:
+        self.proc = proc

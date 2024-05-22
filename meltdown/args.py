@@ -212,6 +212,7 @@ class Args:
         self.shorten_paths = True
         self.separate_logs = True
         self.names_on_logs = True
+        self.one_space = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -291,6 +292,7 @@ class Args:
             ("no_shorten_paths", "shorten_paths"),
             ("no_separate_logs", "separate_logs"),
             ("no_names_on_logs", "names_on_logs"),
+            ("no_one_space", "one_space"),
         ]
 
         for r_item in other_name:
