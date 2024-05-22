@@ -835,5 +835,11 @@ class CommandSpec:
             lambda a=None: model.show_name(),
         )
 
+        self.add_cmd(
+            "numlines",
+            "Show the number of lines displayed",
+            lambda a=None: display.show_num_lines(),
+        )
+
 
 command_spec = CommandSpec()

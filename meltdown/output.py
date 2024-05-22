@@ -998,3 +998,6 @@ class Output(tk.Text):
     def on_scrollbar_click(self) -> None:
         self.on_click()
         autoscroll.disable()
+
+    def get_num_lines(self) -> int:
+        return int(self.index("end-1c").split(".")[0])

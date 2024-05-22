@@ -998,5 +998,17 @@ class Display:
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
 
+    def show_num_lines(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        num = tab.output.get_num_lines()
+        Dialog.show_message(f"Lines: {num}")
+
 
 display = Display()
