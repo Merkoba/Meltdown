@@ -185,7 +185,7 @@ class Args:
         self.file = ""
         self.image_prompt = "Describe this image"
         self.show_duration = False
-        self.separator = ""
+        self.separators = False
         self.help_prompt = "I need help!"
         self.explain_prompt = "What is ((words))?"
         self.new_prompt = "Tell me about ((words))"
@@ -396,7 +396,7 @@ class Args:
             "image_prompt",
             "show_duration",
             "avatars_in_logs",
-            "separator",
+            "separators",
             "markdown_snippets",
             "markdown_italic",
             "markdown_bold",

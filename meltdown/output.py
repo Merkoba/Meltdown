@@ -278,7 +278,6 @@ class Output(tk.Text):
         self.snippets: List[Snippet] = []
         self.auto_bottom = True
         self.update_size_after = ""
-        self.separator = Output.marker_separator + args.separator
         self.checked_markers_user: List[int] = []
         self.checked_markers_ai: List[int] = []
         self.last_scroll_args: Optional[Tuple[str, str]] = None
@@ -934,7 +933,12 @@ class Output(tk.Text):
         return count
 
     def separate(self) -> None:
-        self.print(self.separator)
+        if args.separators:
+            separator = Output.marker_separator + self.markdown.separator
+        else:
+            separator = Output.marker_separator
+
+        self.print(separator)
 
     def select_lines(self, start_ln: int, end_ln: int) -> None:
         self.tag_add("sel", f"{start_ln}.0", f"{end_ln}.end")

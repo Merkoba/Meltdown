@@ -673,7 +673,7 @@ class Display:
         if (who == "user") and to_bottom:
             self.to_bottom(tab_id)
 
-        if args.separator and (who == "user"):
+        if args.separators and (who == "user"):
             if tab.modified:
                 tab.output.separate()
 

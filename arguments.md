@@ -516,6 +516,16 @@ Action: store_false
 
 ---
 
+### separators
+
+Show separators between items
+
+Default: False
+
+Action: store_true
+
+---
+
 ### drag-and-drop
 
 Enable drag and drop
@@ -933,16 +943,6 @@ Max number of characters to show in a tab name
 Default: 0
 
 Type: int
-
----
-
-### separator
-
-Show this separator between messages
-
-Default: [Empty string]
-
-Type: str
 
 ---
 
