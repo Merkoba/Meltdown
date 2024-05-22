@@ -52,9 +52,9 @@ Action: store_false
 
 ---
 
-### no-output-wheel
+### no-text-wheel
 
-Don't enable mousewheel events on the output
+Don't enable mousewheel events on the text
 
 Action: store_false
 
@@ -602,7 +602,7 @@ Action: store_true
 
 ### only-text
 
-Only show the text output. This is a preset that sets other arguments
+Only show the text. This is a preset that sets other arguments
 
 Default: False
 
@@ -1222,7 +1222,7 @@ Type: str
 
 ### scroll-lines
 
-How many lines to scroll the output
+How many lines to scroll the text
 
 Default: 1
 
@@ -1756,7 +1756,7 @@ Type: str
 
 ### on-shift-middle-click
 
-Commands to run when shift middle clicking the output
+Commands to run when shift middle clicking the text
 
 Default: [Empty string]
 
@@ -1766,7 +1766,7 @@ Type: str
 
 ### on-ctrl-middle-click
 
-Commands to run when ctrl middle clicking the output
+Commands to run when ctrl middle clicking the text
 
 Default: [Empty string]
 
@@ -1776,7 +1776,7 @@ Type: str
 
 ### on-ctrl-shift-middle-click
 
-Commands to run when ctrl shift middle clicking the output
+Commands to run when ctrl shift middle clicking the text
 
 Default: [Empty string]
 

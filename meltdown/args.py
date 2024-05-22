@@ -115,7 +115,7 @@ class Args:
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
         self.tabs_wheel = True
-        self.output_wheel = True
+        self.text_wheel = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -275,7 +275,7 @@ class Args:
             ("no_path_menu", "path_menu"),
             ("no_files_in_logs", "files_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
-            ("no_output_wheel", "output_wheel"),
+            ("no_text_wheel", "text_wheel"),
             ("no_limit_tokens", "limit_tokens"),
             ("no_clean_names", "clean_names"),
             ("no_auto_scroll", "show_auto_scroll"),
