@@ -94,7 +94,7 @@ class Conversation:
     def to_text(self) -> str:
         log = ""
 
-        for item in self.items:
+        for i, item in enumerate(self.items):
             for key in item:
                 if key == "user":
                     if args.avatars_in_logs:
@@ -120,6 +120,10 @@ class Conversation:
 
                     if file:
                         log += f"File: {file}\n\n"
+
+            if i < len(self.items) - 1:
+                if args.separate_logs:
+                    log += "---\n\n"
 
         return log.strip()
 

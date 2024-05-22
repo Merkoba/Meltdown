@@ -182,9 +182,17 @@ class Logs:
             return ""
 
         full_text = ""
-        full_text += conversation.name + "\n"
-        full_text += utils.date() + "\n\n"
+        full_text += f"Name: {conversation.name}\n"
+
+        date_created = utils.to_date(conversation.created)
+        full_text += f"Created: {date_created}\n"
+
+        date_saved = utils.to_date(utils.now())
+        full_text += f"Saved: {date_saved}"
+
+        full_text += "\n\n---\n\n"
         full_text += text
+
         return full_text
 
     def open_last_log(self) -> None:

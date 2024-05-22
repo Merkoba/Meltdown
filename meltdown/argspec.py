@@ -43,6 +43,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_separate_logs",
+            action="store_false",
+            info="Don't use separator in text logs",
+        )
+
+        self.add_argument(
             "no_command_history",
             action="store_false",
             info="Don't include commands when cycling input history",
