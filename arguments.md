@@ -14,7 +14,7 @@ Action: version
 
 ### no-separate-logs
 
-Don't use separator in text logs
+Don't use separator in logs
 
 Action: store_false
 
@@ -46,7 +46,15 @@ Action: store_false
 
 ### no-files-in-logs
 
-Don't show files in text logs
+Don't show files in logs
+
+Action: store_false
+
+---
+
+### no-names-in-logs
+
+Don't show names in logs
 
 Action: store_false
 
@@ -516,6 +524,14 @@ Action: store_false
 
 ---
 
+### no-names-on-logs
+
+Don't use the user names on logs
+
+Action: store_false
+
+---
+
 ### separators
 
 Show separators between items
@@ -568,7 +584,7 @@ Action: store_true
 
 ### avatars-in-logs
 
-Show avatars in text logs
+Show avatars in logs
 
 Default: False
 
