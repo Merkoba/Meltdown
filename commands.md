@@ -842,12 +842,6 @@ Show the model name
 
 ---
 
-### lines
+### size
 
-Show the number of lines displayed
-
----
-
-### chars
-
-Show the number of characters displayed
+Show the number of lines and characters

@@ -998,7 +998,7 @@ class Display:
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
 
-    def show_num_lines(self, tab_id: Optional[str] = None) -> None:
+    def show_size(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -1007,20 +1007,11 @@ class Display:
         if not tab:
             return
 
-        num = tab.output.get_num_lines()
-        Dialog.show_message(f"Lines: {num}")
+        lines = tab.output.get_num_lines()
+        chars = tab.output.get_num_chars()
+        kbytes = utils.chars_to_kb(chars)
 
-    def show_num_chars(self, tab_id: Optional[str] = None) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        num = tab.output.get_num_chars()
-        Dialog.show_message(f"Chars: {num}")
+        Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
 
 display = Display()

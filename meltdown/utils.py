@@ -345,5 +345,9 @@ class Utils:
         partstr = "/".join(rest_parts)
         return f"/{partstr}/{last_part}"
 
+    def chars_to_kb(self, chars: int) -> float:
+        num = chars / 1024
+        return round(num, 2)
+
 
 utils = Utils()

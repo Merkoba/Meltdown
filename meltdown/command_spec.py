@@ -836,15 +836,9 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "lines",
-            "Show the number of lines displayed",
-            lambda a=None: display.show_num_lines(),
-        )
-
-        self.add_cmd(
-            "chars",
-            "Show the number of characters displayed",
-            lambda a=None: display.show_num_chars(),
+            "size",
+            "Show the number of lines and characters",
+            lambda a=None: display.show_size(),
         )
 
 
