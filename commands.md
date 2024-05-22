@@ -76,6 +76,12 @@ Save all conversations to JSON files
 
 ---
 
+### logmarkdownall
+
+Save all conversations to markdown files
+
+---
+
 ### resize
 
 Resize the window

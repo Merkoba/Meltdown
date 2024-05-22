@@ -119,6 +119,12 @@ class CommandSpec:
             lambda a=None: logs.to_json(True),
         )
 
+        self.add_cmd(
+            "logmarkdownall",
+            "Save all conversations to markdown files",
+            lambda a=None: logs.to_markdown(True),
+        )
+
         self.add_cmd("resize", "Resize the window", lambda a=None: app.resize())
 
         self.add_cmd(
