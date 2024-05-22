@@ -100,6 +100,7 @@ class InputControl:
 
     def get_history_list(self, force_no_cmds: bool = False) -> List[str]:
         inputs = files.get_list("inputs")
+        inputs = [i for i in inputs if (not "\n" in i)]
 
         if force_no_cmds or (not args.command_history):
             inputs = [i for i in inputs if (not commands.is_command(i))]
