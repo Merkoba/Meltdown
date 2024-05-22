@@ -52,6 +52,14 @@ Action: store_false
 
 ---
 
+### no-output-wheel
+
+Don't enable mousewheel events on the output
+
+Action: store_false
+
+---
+
 ### no-tooltips
 
 Don't show tooltips
