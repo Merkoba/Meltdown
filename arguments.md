@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-command-history
+
+Don't include commands when cycling input history
+
+Action: store_false
+
+---
+
 ### no-scroller-buttons
 
 Don't show left and right scroller buttons
