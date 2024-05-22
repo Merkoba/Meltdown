@@ -15,7 +15,7 @@ def summarize(tab_id: Optional[str] = None) -> None:
     if not tabconvo:
         return
 
-    text = formats.get_text_minimal(tabconvo.convo)
+    text = formats.get_text(tabconvo.convo, "minimal")
 
     if not text:
         text = display.get_text(tab_id)

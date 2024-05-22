@@ -31,22 +31,17 @@ def to_json(conversation: Conversation, ensure_ascii: bool = True) -> str:
 # ---
 
 
-def get_text(conversation: Conversation) -> str:
-    avatars = args.avatars_in_logs
-    separate = args.separate_logs
-    files = args.files_in_logs
-    names = args.names_in_logs
-
-    return to_text(
-        conversation, avatars=avatars, names=names, separate=separate, files=files
-    )
-
-
-def get_text_minimal(conversation: Conversation) -> str:
-    avatars = False
-    separate = False
-    files = False
-    names = True
+def get_text(conversation: Conversation, mode: str = "normal") -> str:
+    if mode == "minimal":
+        avatars = False
+        separate = False
+        files = False
+        names = True
+    else:
+        avatars = args.avatars_in_logs
+        separate = args.separate_logs
+        files = args.files_in_logs
+        names = args.names_in_logs
 
     return to_text(
         conversation, avatars=avatars, names=names, separate=separate, files=files
