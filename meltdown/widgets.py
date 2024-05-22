@@ -449,13 +449,15 @@ class Widgets:
             if not only_items:
                 menu.add(text="--- Recent ---", disabled=True)
 
+            short_paths = ("model", "file")
+
             def add_item(item: str) -> None:
                 def proc() -> None:
                     command(item)
 
                 text = item
 
-                if key_config == "model":
+                if key_config in short_paths:
                     text = utils.shorten_path(text)
 
                 text = text[: args.list_item_width]
