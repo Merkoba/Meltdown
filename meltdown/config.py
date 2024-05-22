@@ -206,9 +206,7 @@ No need to greet me, just answer.
     def load_state(self, name: Optional[str] = None) -> None:
         from .args import args
         from .paths import paths
-        from .widgets import widgets
         from .display import display
-        from .model import model
 
         if not paths.configs.exists():
             paths.configs.mkdir(parents=True, exist_ok=True)
@@ -233,13 +231,20 @@ No need to greet me, just answer.
 
         with path.open("r", encoding="utf-8") as file:
             self.apply(file)
-            widgets.fill()
-            model.unload(True)
+            self.after_load()
 
             if not args.quiet:
                 f_name = path.name
                 msg = f'Loaded config "{f_name}"'
                 display.print(utils.emoji_text(msg, "storage"))
+
+    def after_load(self) -> None:
+        from .widgets import widgets
+        from .model import model
+
+        widgets.fill()
+        model.unload(True)
+        self.save()
 
     def apply(self, file: IO[str]) -> None:
         from .args import args
@@ -380,8 +385,6 @@ No need to greet me, just answer.
         return True
 
     def reset(self, force: bool = False) -> None:
-        from .model import model
-        from .widgets import widgets
         from .dialogs import Dialog
 
         keep = ("model",)
@@ -399,9 +402,7 @@ No need to greet me, just answer.
                 if default is not None:
                     setattr(self, key, default)
 
-            widgets.fill()
-            model.unload(True)
-            self.save()
+            self.after_load()
 
         if force:
             action()
