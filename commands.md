@@ -833,3 +833,21 @@ Show the assistant's portrait
 ### theme
 
 Show the theme menu
+
+---
+
+### modelname
+
+Show the model name
+
+---
+
+### lines
+
+Show the number of lines displayed
+
+---
+
+### chars
+
+Show the number of characters displayed

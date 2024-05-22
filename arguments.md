@@ -52,6 +52,14 @@ Action: store_false
 
 ---
 
+### no-shorten-paths
+
+Don't shorten paths like model file names
+
+Action: store_false
+
+---
+
 ### no-display-wheel
 
 Don't enable mousewheel events on the display
