@@ -326,5 +326,24 @@ class Utils:
         pattern = re.compile(r"https?://\S+")
         return bool(pattern.match(text))
 
+    def shorten_path(self, text: str) -> str:
+        from .args import args
+
+        if not args.shorten_paths:
+            return text
+
+        if not text.startswith("/"):
+            return text
+
+        parts = text.split("/")
+
+        if len(parts) < 3:
+            return text
+
+        last_part = parts[-1]
+        rest_parts = [part[0] for part in parts[:-1] if part]
+        partstr = "/".join(rest_parts)
+        return f"/{partstr}/{last_part}"
+
 
 utils = Utils()

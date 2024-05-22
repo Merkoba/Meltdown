@@ -206,6 +206,7 @@ class Args:
         self.scroller_buttons = True
         self.portrait = ""
         self.command_history = True
+        self.shorten_paths = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -281,6 +282,7 @@ class Args:
             ("no_auto_scroll", "show_auto_scroll"),
             ("no_scroller_buttons", "scroller_buttons"),
             ("no_command_history", "command_history"),
+            ("no_shorten_paths", "shorten_paths"),
         ]
 
         for r_item in other_name:

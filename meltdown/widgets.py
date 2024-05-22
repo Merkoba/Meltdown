@@ -453,8 +453,15 @@ class Widgets:
                 def proc() -> None:
                     command(item)
 
+                text = item
+
+                if key_config == "model":
+                    text = utils.shorten_path(text)
+
+                text = text[: args.list_item_width]
+
                 menu.add(
-                    text=item[: args.list_item_width],
+                    text=text,
                     command=lambda e: proc(),
                 )
 

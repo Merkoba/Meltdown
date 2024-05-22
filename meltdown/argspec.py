@@ -73,6 +73,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_shorten_paths",
+            action="store_false",
+            info="Don't shorten paths like model file names",
+        )
+
+        self.add_argument(
             "no_display_wheel",
             action="store_false",
             info="Don't enable mousewheel events on the display",
