@@ -91,26 +91,37 @@ class Conversation:
     def to_json(self) -> str:
         return json.dumps(self.to_dict(), indent=4)
 
-    def to_text(self) -> str:
+    def to_text(
+        self,
+        avatars: bool = False,
+        names: bool = True,
+        separate: bool = False,
+        files: bool = False,
+    ) -> str:
         log = ""
+        generic = not names
 
         for i, item in enumerate(self.items):
             for key in item:
                 if key == "user":
-                    if args.avatars_in_logs:
-                        prompt = Output.get_prompt("user", put_colons=False)
+                    if avatars:
+                        prompt = Output.get_prompt(
+                            "user", put_colons=False, generic=generic
+                        )
                     else:
                         prompt = Output.get_prompt(
-                            "user", show_avatar=False, put_colons=False
+                            "user", show_avatar=False, put_colons=False, generic=generic
                         )
 
                     log += f"{prompt}: "
                 elif key == "assistant":
-                    if args.avatars_in_logs:
-                        prompt = Output.get_prompt("ai", put_colons=False)
+                    if avatars:
+                        prompt = Output.get_prompt(
+                            "ai", put_colons=False, generic=generic
+                        )
                     else:
                         prompt = Output.get_prompt(
-                            "ai", show_avatar=False, put_colons=False
+                            "ai", show_avatar=False, put_colons=False, generic=generic
                         )
 
                     log += f"{prompt}: "
@@ -119,38 +130,48 @@ class Conversation:
 
                 log += item[key] + "\n\n"
 
-                if args.files_in_logs:
+                if files:
                     file = item.get("file", "")
 
                     if file:
                         log += f"File: {file}\n\n"
 
-            if i < len(self.items) - 1:
-                if args.separate_logs:
-                    log += "---\n\n"
+            if (i < len(self.items) - 1) and separate:
+                log += "---\n\n"
 
         return log.strip()
 
-    def to_markdown(self) -> str:
+    def to_markdown(
+        self,
+        avatars: bool = False,
+        names: bool = True,
+        separate: bool = False,
+        files: bool = False,
+    ) -> str:
         log = ""
+        generic = not names
 
         for i, item in enumerate(self.items):
             for key in item:
                 if key == "user":
-                    if args.avatars_in_logs:
-                        prompt = Output.get_prompt("user", put_colons=False)
+                    if avatars:
+                        prompt = Output.get_prompt(
+                            "user", put_colons=False, generic=generic
+                        )
                     else:
                         prompt = Output.get_prompt(
-                            "user", show_avatar=False, put_colons=False
+                            "user", show_avatar=False, put_colons=False, generic=generic
                         )
 
                     log += f"**{prompt}**:"
                 elif key == "assistant":
-                    if args.avatars_in_logs:
-                        prompt = Output.get_prompt("ai", put_colons=False)
+                    if avatars:
+                        prompt = Output.get_prompt(
+                            "ai", put_colons=False, generic=generic
+                        )
                     else:
                         prompt = Output.get_prompt(
-                            "ai", show_avatar=False, put_colons=False
+                            "ai", show_avatar=False, put_colons=False, generic=generic
                         )
 
                     log += f"**{prompt}**:"
@@ -159,15 +180,14 @@ class Conversation:
 
                 log += f" {item[key].strip()}\n\n"
 
-                if args.files_in_logs:
+                if files:
                     file = item.get("file", "")
 
                     if file:
-                        log += f"File: {file}\n\n"
+                        log += f"**File:** {file}\n\n"
 
-            if i < len(self.items) - 1:
-                if args.separate_logs:
-                    log += "---\n\n"
+            if (i < len(self.items) - 1) and separate:
+                log += "---\n\n"
 
         return log.strip()
 

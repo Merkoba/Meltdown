@@ -238,8 +238,21 @@ class Output(tk.Text):
         colon_space: bool = True,
         put_colons: bool = True,
         markers: bool = True,
+        generic: bool = False,
     ) -> str:
-        name = getattr(config, f"name_{who}")
+        name = ""
+
+        if generic:
+            if who == "user":
+                name = "User"
+            elif who == "ai":
+                name = "Assistant"
+        else:
+            name = getattr(config, f"name_{who}")
+
+        if not name:
+            return ""
+
         avatar = getattr(config, f"avatar_{who}")
 
         if put_colons:

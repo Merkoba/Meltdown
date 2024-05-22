@@ -198,7 +198,14 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = conversation.to_text()
+        avatars = args.avatars_in_logs
+        separate = args.separate_logs
+        files = args.files_in_logs
+        names = args.names_in_logs
+
+        text = conversation.to_text(
+            avatars=avatars, names=names, separate=separate, files=files
+        )
 
         if not text:
             return ""
@@ -224,7 +231,14 @@ class Logs:
         if not conversation.items:
             return ""
 
-        text = conversation.to_markdown()
+        avatars = args.avatars_in_logs
+        separate = args.separate_logs
+        files = args.files_in_logs
+        names = args.names_in_logs
+
+        text = conversation.to_markdown(
+            avatars=avatars, names=names, separate=separate, files=files
+        )
 
         if not text:
             return ""

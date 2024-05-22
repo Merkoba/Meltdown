@@ -45,7 +45,7 @@ class ArgSpec:
         self.add_argument(
             "no_separate_logs",
             action="store_false",
-            info="Don't use separator in text logs",
+            info="Don't use separator in logs",
         )
 
         self.add_argument(
@@ -69,7 +69,13 @@ class ArgSpec:
         self.add_argument(
             "no_files_in_logs",
             action="store_false",
-            info="Don't show files in text logs",
+            info="Don't show files in logs",
+        )
+
+        self.add_argument(
+            "no_names_in_logs",
+            action="store_false",
+            info="Don't show names in logs",
         )
 
         self.add_argument(
@@ -421,6 +427,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_names_on_logs",
+            action="store_false",
+            info="Don't use the user names on logs",
+        )
+
+        self.add_argument(
             "separators",
             action="store_true",
             info="Show separators between items",
@@ -453,7 +465,7 @@ class ArgSpec:
         self.add_argument(
             "avatars_in_logs",
             action="store_true",
-            info="Show avatars in text logs",
+            info="Show avatars in logs",
         )
 
         self.add_argument(

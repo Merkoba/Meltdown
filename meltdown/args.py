@@ -108,6 +108,7 @@ class Args:
         self.log_feedback = True
         self.avatars_in_logs = False
         self.files_in_logs = True
+        self.names_in_logs = True
         self.browser = ""
         self.file_manager = ""
         self.wrap_textbox = True
@@ -210,6 +211,7 @@ class Args:
         self.command_history = True
         self.shorten_paths = True
         self.separate_logs = True
+        self.names_on_logs = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -278,6 +280,7 @@ class Args:
             ("no_url_menu", "url_menu"),
             ("no_path_menu", "path_menu"),
             ("no_files_in_logs", "files_in_logs"),
+            ("no_names_in_logs", "names_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
             ("no_display_wheel", "display_wheel"),
             ("no_limit_tokens", "limit_tokens"),
@@ -287,6 +290,7 @@ class Args:
             ("no_command_history", "command_history"),
             ("no_shorten_paths", "shorten_paths"),
             ("no_separate_logs", "separate_logs"),
+            ("no_names_on_logs", "names_on_logs"),
         ]
 
         for r_item in other_name:
