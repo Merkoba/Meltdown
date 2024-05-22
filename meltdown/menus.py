@@ -50,7 +50,6 @@ class Menu:
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
         self.items: List[MenuItem] = []
-        self.direct_geometry = False
 
     def add(
         self,
@@ -130,16 +129,16 @@ class Menu:
         if not self.container:
             return
 
-        def exec() -> None:
+        def exec(event: Any) -> None:
             if self.selected_index not in self.elements:
                 return
 
             item = self.items[self.selected_index]
 
             if item.command:
-                item.command(self.event)
+                item.command(event)
 
-        def cmd() -> None:
+        def cmd(event: Any) -> None:
             if self.selected_index not in self.elements:
                 return
 
@@ -149,7 +148,7 @@ class Menu:
                 return
 
             self.hide()
-            app.main_frame.after(10, lambda: exec())
+            app.main_frame.after(10, lambda: exec(event))
 
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)
@@ -175,7 +174,7 @@ class Menu:
         self.container.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
         self.container.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
         self.canvas.bind("<Escape>", lambda e: self.hide())
-        self.canvas.bind("<Return>", lambda e: cmd())
+        self.canvas.bind("<Return>", lambda e: cmd(e))
         self.canvas.bind("<Up>", lambda e: self.arrow_up())
         self.canvas.bind("<Down>", lambda e: self.arrow_down())
         self.elements: Dict[int, Dict[str, Any]] = {}
@@ -187,7 +186,7 @@ class Menu:
                 child.bind("<B1-Motion>", lambda e: on_motion(e))
                 child.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
                 child.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
-                child.bind("<ButtonRelease-1>", lambda e: cmd())
+                child.bind("<ButtonRelease-1>", lambda e: cmd(e))
                 bind_mouse(child)
 
         def make_item(item: MenuItem, i: int) -> None:
@@ -286,12 +285,8 @@ class Menu:
         menu_width = self.canvas.winfo_reqwidth()
         menu_height = self.canvas.winfo_reqheight()
 
-        if self.direct_geometry:
-            x = self.coords["x"]
-            y = self.coords["y"]
-        else:
-            x = self.coords["x"] - app.main_frame.winfo_rootx()
-            y = self.coords["y"] - app.main_frame.winfo_rooty()
+        x = self.coords["x"] - app.main_frame.winfo_rootx()
+        y = self.coords["y"] - app.main_frame.winfo_rooty()
 
         gap = 10
 
@@ -407,7 +402,6 @@ class Menu:
         self,
         event: Optional[Any] = None,
         widget: Optional[tk.Widget] = None,
-        direct: bool = False,
     ) -> None:
         Menu.hide_all()
 
@@ -423,7 +417,6 @@ class Menu:
         else:
             return
 
-        self.direct_geometry = direct
         self.event = event
         self.make()
 

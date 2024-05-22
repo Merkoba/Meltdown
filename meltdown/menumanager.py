@@ -267,7 +267,7 @@ class FontMenu:
 
     def show(self, event: Any = None) -> None:
         if event:
-            self.menu.show(event, direct=True)
+            self.menu.show(event)
         else:
             widget = get_main_button()
             self.menu.show(widget=widget)
@@ -420,7 +420,7 @@ class ThemeMenu:
 
     def show(self, event: Any = None) -> None:
         if event:
-            self.menu.show(event, direct=True)
+            self.menu.show(event)
         else:
             widget = get_main_button()
             self.menu.show(widget=widget)
