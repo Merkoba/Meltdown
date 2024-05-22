@@ -73,9 +73,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_text_wheel",
+            "no_display_wheel",
             action="store_false",
-            info="Don't enable mousewheel events on the text",
+            info="Don't enable mousewheel events on the display",
         )
 
         self.add_argument(
@@ -469,9 +469,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "only_text",
+            "display_mode",
             action="store_true",
-            info="Only show the text. This is a preset that sets other arguments",
+            info="Only show the display. This is a preset that sets other arguments",
         )
 
         self.add_argument(
@@ -846,7 +846,7 @@ class ArgSpec:
         self.add_argument(
             "scroll_lines",
             type=int,
-            info="How many lines to scroll the text",
+            info="How many lines to scroll the display",
         )
 
         self.add_argument(
@@ -1164,19 +1164,19 @@ class ArgSpec:
         self.add_argument(
             "on_shift_middle_click",
             type=str,
-            info="Commands to run when shift middle clicking the text",
+            info="Commands to run when shift middle clicking the display",
         )
 
         self.add_argument(
             "on_ctrl_middle_click",
             type=str,
-            info="Commands to run when ctrl middle clicking the text",
+            info="Commands to run when ctrl middle clicking the display",
         )
 
         self.add_argument(
             "on_ctrl_shift_middle_click",
             type=str,
-            info="Commands to run when ctrl shift middle clicking the text",
+            info="Commands to run when ctrl shift middle clicking the display",
         )
 
         self.add_argument(

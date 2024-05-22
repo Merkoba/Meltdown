@@ -115,7 +115,7 @@ class Args:
         self.task_manager_gpu = "auto"
         self.terminal = "auto"
         self.tabs_wheel = True
-        self.text_wheel = True
+        self.display_wheel = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -170,7 +170,7 @@ class Args:
         self.auto_name_length = 30
         self.tab_double_click = True
         self.arrow_mode = "history"
-        self.only_text = False
+        self.display_mode = False
         self.no_exit = False
         self.disable_buttons = True
         self.scroll_percentage = False
@@ -275,7 +275,7 @@ class Args:
             ("no_path_menu", "path_menu"),
             ("no_files_in_logs", "files_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
-            ("no_text_wheel", "text_wheel"),
+            ("no_display_wheel", "display_wheel"),
             ("no_limit_tokens", "limit_tokens"),
             ("no_clean_names", "clean_names"),
             ("no_auto_scroll", "show_auto_scroll"),
@@ -377,7 +377,7 @@ class Args:
             "name_mode",
             "auto_name_length",
             "arrow_mode",
-            "only_text",
+            "display_mode",
             "compact",
             "no_exit",
             "summarize_prompt",
@@ -428,7 +428,7 @@ class Args:
             if string_arg:
                 self.input = string_arg
 
-        if self.only_text:
+        if self.display_mode:
             self.compact = True
             self.compact_model = True
             self.compact_details_1 = True

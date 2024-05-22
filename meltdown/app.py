@@ -334,7 +334,7 @@ class App:
     def check_compact(self) -> None:
         from .args import args
 
-        if args.compact or args.only_text:
+        if args.compact or args.display_mode:
             self.enable_compact()
         else:
             self.disable_compact()
