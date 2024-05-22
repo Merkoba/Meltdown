@@ -73,6 +73,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_output_wheel",
+            action="store_false",
+            info="Don't enable mousewheel events on the output",
+        )
+
+        self.add_argument(
             "no_tooltips",
             action="store_false",
             info="Don't show tooltips",

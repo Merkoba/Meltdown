@@ -845,26 +845,44 @@ class Output(tk.Text):
         return ""
 
     def tab_left(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.tab_left()
         return "break"
 
     def tab_right(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.tab_right()
         return "break"
 
     def increase_font(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.increase_font()
         return "break"
 
     def decrease_font(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.decrease_font()
         return "break"
 
     def move_left(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.move_tab_left()
         return "break"
 
     def move_right(self) -> str:
+        if not args.output_wheel:
+            return ""
+
         self.display.move_tab_right()
         return "break"
 
