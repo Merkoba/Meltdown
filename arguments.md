@@ -628,6 +628,16 @@ Action: store_true
 
 ---
 
+### test2
+
+Make a test tab for debugging (2)
+
+Default: False
+
+Action: store_true
+
+---
+
 ### item-numbers
 
 Add numbers to each message
@@ -1717,6 +1727,18 @@ Type: str
 ### markdown-snippets
 
 Markdown mode for snippets
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-lists
+
+Markdown mode for lists
 
 Default: "ai"
 
