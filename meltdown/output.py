@@ -440,7 +440,7 @@ class Output(tk.Text):
             if self.last_scroll_args == args:
                 return
 
-            self.on_scroll_action(*args)
+            self.scroll_action(*args)
 
         self.scrollbar.configure(command=self.yview)
         self.configure(yscrollcommand=on_scroll)
@@ -595,8 +595,7 @@ class Output(tk.Text):
         for snippet in self.snippets:
             snippet.update_size()
 
-        if self.last_scroll_args:
-            self.on_scroll_action(*self.last_scroll_args)
+        self.update_scroll()
 
     def check_auto_bottom(self, direction: str) -> None:
         if direction == "up":
@@ -1008,10 +1007,14 @@ class Output(tk.Text):
         for snippet in self.snippets:
             snippet.update_font()
 
-    def on_scroll_action(self, *args: Any) -> None:
+    def scroll_action(self, *args: Any) -> None:
         self.last_scroll_args = args
         self.display.check_scroll_buttons(tab_id=self.tab_id)
         self.scrollbar.set(*args)
+
+    def update_scroll(self) -> None:
+        if self.last_scroll_args:
+            self.scroll_action(*self.last_scroll_args)
 
     def on_scrollbar_click(self) -> None:
         self.on_click()

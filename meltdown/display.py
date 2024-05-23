@@ -1052,5 +1052,16 @@ class Display:
 
         Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
+    def update_scroll(self, tab_id: Optional[str] = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        tab.output.update_scroll()
+
 
 display = Display()

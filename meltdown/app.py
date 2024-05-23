@@ -328,11 +328,13 @@ class App:
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:
+        from .display import display
         from .inputcontrol import inputcontrol
 
         self.update()
         inputcontrol.focus()
         self.compact_enabled = enabled
+        display.update_scroll()
 
     def check_compact(self) -> None:
         from .args import args
