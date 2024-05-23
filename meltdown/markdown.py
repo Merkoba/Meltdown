@@ -375,7 +375,7 @@ class Markdown:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
 
-        if (who == "user") or (who == "ai"):
+        if who in ("user", "ai"):
             index = lines[0].index(f":{Output.marker_space}") + 2
             lines[0] = lines[0][index:]
 
