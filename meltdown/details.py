@@ -53,14 +53,17 @@ def make_combobox(
     ToolTip(combo_wid, tips[key])
 
 
+width_1 = 10
+
+
 def add_users(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "user", "User", padx=(0, 0))
     make_entry(widgets, data, "avatar_user", width=4)
-    make_entry(widgets, data, "name_user", width=10)
+    make_entry(widgets, data, "name_user", width=width_1)
 
     make_label(widgets, data, "ai", "AI")
     make_entry(widgets, data, "avatar_ai", width=4)
-    make_entry(widgets, data, "name_ai", width=10)
+    make_entry(widgets, data, "name_ai", width=width_1)
 
 
 def add_history(widgets: "Widgets", data: "FrameData") -> None:
@@ -93,7 +96,7 @@ def add_format(widgets: "Widgets", data: "FrameData") -> None:
     values = ["auto"]
     fmts = sorted([item for item in formats._chat_handlers])
     values.extend(fmts)
-    make_combobox(widgets, data, "format", values, width=14)
+    make_combobox(widgets, data, "format", values, width=13)
 
 
 def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
@@ -123,17 +126,17 @@ def add_top_k(widgets: "Widgets", data: "FrameData") -> None:
 
 def add_before(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "before", "Before")
-    make_entry(widgets, data, "before", width=11)
+    make_entry(widgets, data, "before", width=width_1)
 
 
 def add_after(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "after", "After")
-    make_entry(widgets, data, "after", width=11)
+    make_entry(widgets, data, "after", width=width_1)
 
 
 def add_stop(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "stop", "Stop")
-    make_entry(widgets, data, "stop", width=11)
+    make_entry(widgets, data, "stop", width=width_1)
 
 
 def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
