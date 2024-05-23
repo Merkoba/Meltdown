@@ -632,10 +632,8 @@ class Output(tk.Text):
             text = prompt
 
         # Add invisible markers
-        if who == "user":
-            text = f"{Output.marker_user}{text}"
-        elif who == "ai":
-            text = f"{Output.marker_ai}{text}"
+        marker = getattr(Output, f"marker_{who}")
+        text = f"{marker}{text}"
 
         self.print(text)
         start_index = self.index(f"end - {len(prompt) + 1}c")

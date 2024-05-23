@@ -66,15 +66,9 @@ def to_text(
 
     for i, item in enumerate(conversation.items):
         for key in item:
-            if key == "user":
+            if key in ("user", "ai"):
                 prompt = Output.get_prompt(
                     "user", show_avatar=avatars, put_colons=False, generic=generic
-                )
-
-                log += f"{prompt}: "
-            elif key == "ai":
-                prompt = Output.get_prompt(
-                    "ai", show_avatar=avatars, put_colons=False, generic=generic
                 )
 
                 log += f"{prompt}: "
@@ -121,15 +115,9 @@ def to_markdown(
 
     for i, item in enumerate(conversation.items):
         for key in item:
-            if key == "user":
+            if key in ("user", "ai"):
                 prompt = Output.get_prompt(
-                    "user", show_avatar=avatars, put_colons=False, generic=generic
-                )
-
-                log += f"**{prompt}**:"
-            elif key == "ai":
-                prompt = Output.get_prompt(
-                    "ai", show_avatar=avatars, put_colons=False, generic=generic
+                    key, show_avatar=avatars, put_colons=False, generic=generic
                 )
 
                 log += f"**{prompt}**:"
