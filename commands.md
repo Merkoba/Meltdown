@@ -792,6 +792,18 @@ Toggle a specific frame
 
 ---
 
+### showframe
+
+Show a specific frame
+
+---
+
+### hideframe
+
+Hide a specific frame
+
+---
+
 ### lastlog
 
 Open the last log

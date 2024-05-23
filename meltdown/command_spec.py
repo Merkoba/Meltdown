@@ -790,6 +790,22 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "showframe",
+            "Show a specific frame",
+            lambda a=None: app.show_frame_cmd(a),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
+            "hideframe",
+            "Hide a specific frame",
+            lambda a=None: app.hide_frame_cmd(a),
+            type=str,
+            arg_req=True,
+        )
+
+        self.add_cmd(
             "lastlog",
             "Open the last log",
             lambda a=None: logs.open_last_log(),

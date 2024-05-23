@@ -239,10 +239,20 @@ class App:
         self.update_bottom()
 
     def toggle_compact(self) -> None:
+        from .display import display
+
         if self.compact_enabled:
             self.disable_compact()
         else:
             self.enable_compact()
+
+        display.update_scroll()
+
+    def hide_frame_cmd(self, name: str) -> None:
+        from .display import display
+
+        self.hide_frame(name)
+        display.update_scroll()
 
     def hide_frame(self, name: str) -> None:
         from .widgets import widgets
@@ -255,6 +265,12 @@ class App:
 
         if name == "system":
             system.reset()
+
+    def show_frame_cmd(self, name: str) -> None:
+        from .display import display
+
+        self.show_frame(name)
+        display.update_scroll()
 
     def show_frame(self, name: str) -> None:
         from .widgets import widgets
