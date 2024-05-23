@@ -399,10 +399,12 @@ class Output(tk.Text):
 
         def home() -> str:
             self.to_top()
+            autoscroll.disable()
             return "break"
 
         def end() -> str:
             self.to_bottom()
+            autoscroll.disable()
             return "break"
 
         self.gestures = Gestures(self, self, self.on_right_click)
