@@ -19,6 +19,12 @@ def get_json(conversation: Conversation) -> str:
 def to_json(conversation: Conversation, ensure_ascii: bool = True) -> str:
     obj = conversation.to_dict()
 
+    if config.name_user:
+        obj["name_user"] = config.name_user
+
+    if config.name_ai:
+        obj["name_ai"] = config.name_ai
+
     if config.avatar_user:
         obj["avatar_user"] = config.avatar_user
 

@@ -56,11 +56,11 @@ def make_combobox(
 def add_users(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "user", "User", padx=(0, 0))
     make_entry(widgets, data, "avatar_user", width=4)
-    make_entry(widgets, data, "name_user")
+    make_entry(widgets, data, "name_user", width=10)
 
     make_label(widgets, data, "ai", "AI")
     make_entry(widgets, data, "avatar_ai", width=4)
-    make_entry(widgets, data, "name_ai")
+    make_entry(widgets, data, "name_ai", width=10)
 
 
 def add_history(widgets: "Widgets", data: "FrameData") -> None:
@@ -103,7 +103,7 @@ def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
 
 def add_logits(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "logits", "Logits")
-    make_combobox(widgets, data, "logits", ["normal", "all"], width=7)
+    make_combobox(widgets, data, "logits", ["normal", "all"], width=8)
 
 
 def add_seed(widgets: "Widgets", data: "FrameData") -> None:
