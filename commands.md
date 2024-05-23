@@ -850,7 +850,7 @@ Show the current profile
 
 ### portrait
 
-Show the assistant's portrait
+Show the AI's portrait
 
 ---
 
