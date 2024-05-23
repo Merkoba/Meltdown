@@ -519,7 +519,7 @@ class Model:
             print_buffer(True)
 
         if tokens:
-            log_dict["assistant"] = "".join(tokens).strip()
+            log_dict["ai"] = "".join(tokens).strip()
             tabconvo.convo.add(log_dict)
 
             if args.show_duration:

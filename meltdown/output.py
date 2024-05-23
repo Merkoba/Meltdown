@@ -246,7 +246,7 @@ class Output(tk.Text):
             if who == "user":
                 name = "User"
             elif who == "ai":
-                name = "Assistant"
+                name = "AI"
         else:
             name = getattr(config, f"name_{who}")
 

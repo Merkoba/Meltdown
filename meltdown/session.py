@@ -69,7 +69,7 @@ class Conversation:
                         to_bottom=False,
                         file=item.get("file", ""),
                     )
-                elif key == "assistant":
+                elif key == "ai":
                     display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
                 else:
                     continue

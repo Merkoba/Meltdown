@@ -851,7 +851,7 @@ class CommandSpec:
 
         self.add_cmd(
             "portrait",
-            "Show the assistant's portrait",
+            "Show the AI's portrait",
             lambda a=None: app.show_portrait(),
         )
 

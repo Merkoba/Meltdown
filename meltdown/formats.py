@@ -72,7 +72,7 @@ def to_text(
                 )
 
                 log += f"{prompt}: "
-            elif key == "assistant":
+            elif key == "ai":
                 prompt = Output.get_prompt(
                     "ai", show_avatar=avatars, put_colons=False, generic=generic
                 )
@@ -127,7 +127,7 @@ def to_markdown(
                 )
 
                 log += f"**{prompt}**:"
-            elif key == "assistant":
+            elif key == "ai":
                 prompt = Output.get_prompt(
                     "ai", show_avatar=avatars, put_colons=False, generic=generic
                 )

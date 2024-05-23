@@ -34,7 +34,7 @@ def action(
         return
 
     user_text = item.get("user")
-    ai_text = item.get("assistant")
+    ai_text = item.get("ai")
     file = item.get("file", "")
 
     if mode == "repeat":
