@@ -615,7 +615,12 @@ class Display:
         for tab in self.tabs.values():
             tab.output.update_font()
 
-    def scroll_up(self, tab_id: Optional[str] = None, more: bool = False) -> None:
+    def scroll_up(
+        self,
+        tab_id: Optional[str] = None,
+        more: bool = False,
+        disable_auto_scroll: bool = False,
+    ) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -623,10 +628,18 @@ class Display:
 
         if not output:
             return
+
+        if disable_auto_scroll:
+            autoscroll.disable()
 
         output.scroll_up(more=more)
 
-    def scroll_down(self, tab_id: Optional[str] = None, more: bool = False) -> None:
+    def scroll_down(
+        self,
+        tab_id: Optional[str] = None,
+        more: bool = False,
+        disable_auto_scroll: bool = False,
+    ) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -634,6 +647,9 @@ class Display:
 
         if not output:
             return
+
+        if disable_auto_scroll:
+            autoscroll.disable()
 
         output.scroll_down(more=more)
 
