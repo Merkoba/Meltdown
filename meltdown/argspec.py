@@ -493,6 +493,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "test2",
+            action="store_true",
+            info="Make a test tab for debugging (2)",
+        )
+
+        self.add_argument(
             "item_numbers",
             action="store_true",
             info="Add numbers to each message",

@@ -167,9 +167,11 @@ class Markdown:
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
         if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
+            end_ln = int(self.widget.index("end").split(".")[0])
 
         if self.enabled(who, "lists"):
             self.format_lists(start_ln, end_ln, who)
+            end_ln = int(self.widget.index("end").split(".")[0])
 
         if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
@@ -216,13 +218,13 @@ class Markdown:
             if not line.strip():
                 continue
 
-            match = MatchItem(start_ln + i, list(re.finditer(pattern, line)))
+            match_ = MatchItem(start_ln + i, list(re.finditer(pattern, line)))
 
-            if match.items:
-                matches.append(match)
+            if match_.items:
+                matches.append(match_)
 
-        for match_ in reversed(matches):
-            items = match_.items
+        for mtch in reversed(matches):
+            items = mtch.items
             indices: List[IndexItem] = []
 
             for item in reversed(items):
@@ -241,8 +243,8 @@ class Markdown:
                 for _ in range(0, 999):
                     start = self.widget.search(
                         all,
-                        f"{match_.line}.{search_col}",
-                        stopindex=f"{match_.line}.end",
+                        f"{mtch.line}.{search_col}",
+                        stopindex=f"{mtch.line}.end",
                     )
 
                     if not start:

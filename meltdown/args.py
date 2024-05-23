@@ -36,6 +36,7 @@ class Args:
         self.reorder = True
         self.tab_numbers = False
         self.test = False
+        self.test2 = False
         self.alt_palette = False
         self.width = -1
         self.height = -1
@@ -306,6 +307,7 @@ class Args:
             "width",
             "height",
             "test",
+            "test2",
             "config",
             "session",
             "tab_numbers",

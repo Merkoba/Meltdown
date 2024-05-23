@@ -204,6 +204,8 @@ class Session:
 
         if args.test:
             items.append(tests.format_test)
+        elif args.test2:
+            items.append(tests.format_test_2)
 
         if not items:
             return
