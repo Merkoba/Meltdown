@@ -60,6 +60,14 @@ Action: store_false
 
 ---
 
+### no-ascii-logs
+
+Don't escape non-ascii chars in json logs
+
+Action: store_false
+
+---
+
 ### no-one-space
 
 Don't limit the text inputs to one space

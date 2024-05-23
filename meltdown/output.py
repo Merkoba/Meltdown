@@ -537,7 +537,7 @@ class Output(tk.Text):
         self.yview_moveto(self.yview()[0] - lines)
 
         if check:
-            self.check_autoscroll("up")
+            self.check_auto_bottom("up")
 
     def scroll_down(self, check: bool = False, more: bool = False) -> None:
         lines = self.get_scroll_lines()
@@ -548,7 +548,7 @@ class Output(tk.Text):
         self.yview_moveto(self.yview()[0] + lines)
 
         if check:
-            self.check_autoscroll("down")
+            self.check_auto_bottom("down")
 
     def get_tab(self) -> Optional[Any]:
         return self.display.get_tab(self.tab_id)
@@ -598,7 +598,7 @@ class Output(tk.Text):
         if self.last_scroll_args:
             self.on_scroll_action(*self.last_scroll_args)
 
-    def check_autoscroll(self, direction: str) -> None:
+    def check_auto_bottom(self, direction: str) -> None:
         if direction == "up":
             self.auto_bottom = False
         elif direction == "down":
