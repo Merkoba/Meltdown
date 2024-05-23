@@ -23,6 +23,7 @@ from . import menumanager
 from . import findmanager
 from . import delete
 from . import close
+from . import formats
 
 
 class CommandSpec:
@@ -632,21 +633,21 @@ class CommandSpec:
         self.add_cmd(
             "progtext",
             "Open a program using the text",
-            lambda a=None: app.program(mode="text", cmd=a),
+            lambda a=None: formats.program(mode="text", cmd=a),
             type=str,
         )
 
         self.add_cmd(
             "progjson",
             "Open a program using the JSON",
-            lambda a=None: app.program(mode="json", cmd=a),
+            lambda a=None: formats.program(mode="json", cmd=a),
             type=str,
         )
 
         self.add_cmd(
             "progmarkdown",
             "Open a program using the markdown",
-            lambda a=None: app.program(mode="markdown", cmd=a),
+            lambda a=None: formats.program(mode="markdown", cmd=a),
             type=str,
         )
 

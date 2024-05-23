@@ -751,45 +751,6 @@ class App:
         self.do_checks()
         app.root.after(self.checks_delay, self.start_checks)
 
-    def program(self, mode: str, cmd: Optional[str] = None) -> None:
-        from .args import args
-        from .display import display
-        from . import formats
-
-        if not cmd:
-            if mode == "text":
-                cmd = args.prog_text or args.program
-            elif mode == "json":
-                cmd = args.prog_json or args.program
-            elif mode == "markdown":
-                cmd = args.prog_markdown or args.program
-
-        tabconvo = display.get_tab_convo(None)
-
-        if not tabconvo:
-            return
-
-        if mode == "text":
-            text = formats.get_text(tabconvo.convo)
-            ext = "txt"
-        elif mode == "json":
-            text = formats.get_json(tabconvo.convo)
-            ext = "json"
-        elif mode == "markdown":
-            text = formats.get_markdown(tabconvo.convo)
-            ext = "markdown"
-        else:
-            return
-
-        tmpdir = tempfile.gettempdir()
-        name = f"mlt_{utils.now_int()}.{ext}"
-        path = Path(tmpdir, name)
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
-
-        self.open_generic(str(path), opener=cmd)
-
     def focused(self) -> Optional[tk.Widget]:
         if app.exists():
             widget = self.root.focus_get()

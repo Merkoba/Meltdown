@@ -1,11 +1,17 @@
 # Standard
 import json
+import tempfile
+from pathlib import Path
+from typing import Optional
 
 # Modules
+from .app import app
 from .args import args
+from .utils import utils
 from .config import config
 from .session import Conversation
 from .output import Output
+from .display import display
 
 
 # ---
@@ -136,3 +142,45 @@ def to_markdown(
             log += "---\n\n"
 
     return log.strip()
+
+
+# ---
+
+
+def program(mode: str, cmd: Optional[str] = None) -> None:
+    if not cmd:
+        if mode == "text":
+            cmd = args.prog_text or args.program
+        elif mode == "json":
+            cmd = args.prog_json or args.program
+        elif mode == "markdown":
+            cmd = args.prog_markdown or args.program
+
+    tabconvo = display.get_tab_convo(None)
+
+    if not tabconvo:
+        return
+
+    if not tabconvo.convo.items:
+        return
+
+    if mode == "text":
+        text = get_text(tabconvo.convo)
+        ext = "txt"
+    elif mode == "json":
+        text = get_json(tabconvo.convo)
+        ext = "json"
+    elif mode == "markdown":
+        text = get_markdown(tabconvo.convo)
+        ext = "markdown"
+    else:
+        return
+
+    tmpdir = tempfile.gettempdir()
+    name = f"mlt_{utils.now_int()}.{ext}"
+    path = Path(tmpdir, name)
+
+    with path.open("w", encoding="utf-8") as file:
+        file.write(text)
+
+    app.open_generic(str(path), opener=cmd)
