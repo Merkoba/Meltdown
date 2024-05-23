@@ -103,6 +103,9 @@ class Markdown:
         # Separator line
         self.pattern_separator = r"^-{3,}$"
 
+        # Bullet list
+        self.pattern_lists = r"(^|(?<=\n\n))[*-] [^\n]+(?:\n[ \t]*[*-] [^\n]+)*"
+
     def format_all(self) -> None:
         start_ln = 1
         end_ln = int(self.widget.index("end").split(".")[0])
@@ -164,6 +167,9 @@ class Markdown:
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
         if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
+
+        if self.enabled(who, "lists"):
+            self.format_lists(start_ln, end_ln, who)
 
         if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
@@ -352,6 +358,72 @@ class Markdown:
                     self.widget.window_create(f"{start_line} -1 lines", window=snippet)
 
             self.widget.snippets.append(snippet)
+
+    def format_lists(self, start_ln: int, end_ln: int, who: str) -> None:
+        lines = self.get_lines(start_ln, end_ln, who)
+        text = "\n".join(lines)
+        matches = []
+
+        for match_ in re.finditer(
+            self.pattern_lists, text, flags=re.MULTILINE | re.DOTALL
+        ):
+            content_start = match_.start(0)
+            line_1 = self.get_line_number(text, content_start)
+            start_line = f"{start_ln + line_1}.0"
+
+            content_end = match_.end(0)
+            line_2 = self.get_line_number(text, content_end)
+            end_line = f"{start_ln + line_2}.0"
+
+            matches.append((start_line, end_line, content_start, match_.group(0)))
+
+        for start_line, end_line, content_start, mtch in reversed(matches):
+            items = []
+            symbol = "•"
+            space_1 = "  "
+            space_2 = "  "
+
+            line_1 = text[:content_start].count("\n")
+            line_2 = len(mtch.split("\n"))
+
+            items = [
+                f"{space_1}{symbol}{space_2}{line[2:]}"
+                for line in lines[line_1 : line_1 + line_2]
+                if line.startswith("*") or line.startswith("-")
+            ]
+
+            txt = "\n".join(items)
+
+            content_below = self.widget.get(
+                f"{end_line} +1 lines linestart", f"{end_line} +1 lines lineend"
+            ).strip()
+
+            if content_below:
+                txt += "\n"
+
+            if content_start == 0:
+                end_of_line_above = f"{start_line} lineend"
+                chars = len(lines[0])
+                right_bit = f"{end_of_line_above} -{chars} chars"
+                self.widget.delete(right_bit, end_of_line_above)
+                self.widget.insert(end_of_line_above, "\n\n")
+
+                self.widget.delete(
+                    f"{start_line} +1 lines", f"{end_line} +2 lines lineend"
+                )
+
+                self.widget.insert(f"{start_line} +1 lines", txt)
+            else:
+                content_above = self.widget.get(
+                    f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
+                ).strip()
+
+                if content_above:
+                    txt = f"\n{txt}"
+
+                self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
+
+                self.widget.insert(start_line, txt)
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []

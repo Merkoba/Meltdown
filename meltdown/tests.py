@@ -74,5 +74,11 @@ format_test = {
         {"ai": "First line\n---\nSecond line"},
         {"user": "Quoted header"},
         {"ai": '## "What is this"'},
+        {"user": "Bullets"},
+        {"ai": "- One\n- Two\n- Three"},
+        {"user": "Bullets"},
+        {"ai": "- One\n- Two\n- Three\naaaaaaaa"},
+        {"user": "Bullets"},
+        {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
     ],
 }

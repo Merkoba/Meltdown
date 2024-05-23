@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from typing import Any, Callable, List, Optional, Tuple, Dict
-from PIL import Image, ImageTk  # type: ignore
+from PIL import Image, ImageTk
 from pathlib import Path
 
 # Modules
@@ -56,8 +56,8 @@ class Dialog:
             new_width = image_width
             new_height = int(new_width * height / width)
             img = img.resize((new_width, new_height))
-            photo = ImageTk.PhotoImage(img)
-            label = tk.Label(dialog.image_frame, image=photo)
+            photo = ImageTk.PhotoImage(img)  # type: ignore
+            label = tk.Label(dialog.image_frame, image=photo)  # type: ignore
             label.mlt_image = photo  # type: ignore
             label.pack(side=tk.LEFT, padx=0, pady=8)
 

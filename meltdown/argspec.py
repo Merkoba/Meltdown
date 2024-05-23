@@ -1154,6 +1154,13 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "markdown_lists",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for lists",
+        )
+
+        self.add_argument(
             "markdown_italic",
             type=str,
             choices=self.markdown_choices,
