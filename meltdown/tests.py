@@ -76,6 +76,8 @@ format_test = {
         {"ai": '## "What is this"'},
         {"user": "Bullets"},
         {"ai": "- One\n- Two\n- Three\naaaaaaaa"},
+        {"user": "Bullets"},
+        {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
     ],
 }
 
@@ -90,6 +92,6 @@ format_test_2 = {
         {"user": "Bullets"},
         {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
         {"user": "Some case"},
-        {"ai": "* **Levixs**"},
+        {"ai": "\n* **Levixs**\n\n- aaaa\n- bbbb"},
     ],
 }
