@@ -184,3 +184,64 @@ def program(mode: str, cmd: Optional[str] = None) -> None:
         file.write(text)
 
     app.open_generic(str(path), opener=cmd)
+
+
+# ---
+
+
+def view_text(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_text(tabconvo.convo)
+    name = display.get_tab_name(tabconvo.tab.tab_id)
+
+    if text:
+        new_tab = display.make_tab(name=f"{name} Text", mode="ignore")
+
+        if not new_tab:
+            return
+
+        display.print(text, tab_id=new_tab)
+        display.to_top(tab_id=new_tab)
+
+
+def view_json(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_json(tabconvo.convo)
+    name = display.get_tab_name(tabconvo.tab.tab_id)
+
+    if text:
+        new_tab = display.make_tab(name=f"{name} JSON", mode="ignore")
+
+        if not new_tab:
+            return
+
+        display.print(text, tab_id=new_tab)
+        display.to_top(tab_id=new_tab)
+
+
+def view_markdown(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_markdown(tabconvo.convo)
+    name = display.get_tab_name(tabconvo.tab.tab_id)
+
+    if text:
+        new_tab = display.make_tab(name=f"{name} Markdown", mode="ignore")
+
+        if not new_tab:
+            return
+
+        display.print(text, tab_id=new_tab)
+        display.format_text(tab_id=new_tab, mode="all")
+        display.to_top(tab_id=new_tab)

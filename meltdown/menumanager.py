@@ -142,9 +142,9 @@ class MoreMenu:
         self.menu.separator()
 
         disable = (not modified) or ignored
-        self.menu.add("View Text", lambda e: display.view_text(), disabled=disable)
-        self.menu.add("View JSON", lambda e: display.view_json(), disabled=disable)
-        self.menu.add("View MrkD", lambda e: display.view_markdown(), disabled=disable)
+        self.menu.add("View Text", lambda e: formats.view_text(), disabled=disable)
+        self.menu.add("View JSON", lambda e: formats.view_json(), disabled=disable)
+        self.menu.add("View MrkD", lambda e: formats.view_markdown(), disabled=disable)
 
         self.menu.separator()
 

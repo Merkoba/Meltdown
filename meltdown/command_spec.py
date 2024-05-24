@@ -289,12 +289,12 @@ class CommandSpec:
             type="force",
         )
 
-        self.add_cmd("viewtext", "View raw text", lambda a=None: display.view_text())
+        self.add_cmd("viewtext", "View raw text", lambda a=None: formats.view_text())
 
-        self.add_cmd("viewjson", "View raw JSON", lambda a=None: display.view_json())
+        self.add_cmd("viewjson", "View raw JSON", lambda a=None: formats.view_json())
 
         self.add_cmd(
-            "viewmarkdown", "View raw Markdown", lambda a=None: display.view_markdown()
+            "viewmarkdown", "View raw Markdown", lambda a=None: formats.view_markdown()
         )
 
         self.add_cmd(

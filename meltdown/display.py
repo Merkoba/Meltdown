@@ -759,67 +759,6 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def view_text(self, tab_id: Optional[str] = None) -> None:
-        from .logs import logs
-
-        tabconvo = self.get_tab_convo(tab_id)
-
-        if not tabconvo:
-            return
-
-        text = logs.get_text(tabconvo.convo)
-        name = self.get_tab_name(tabconvo.tab.tab_id)
-
-        if text:
-            new_tab = self.make_tab(name=f"{name} Text", mode="ignore")
-
-            if not new_tab:
-                return
-
-            self.print(text, tab_id=new_tab)
-            self.to_top(tab_id=new_tab)
-
-    def view_json(self, tab_id: Optional[str] = None) -> None:
-        from .logs import logs
-
-        tabconvo = self.get_tab_convo(tab_id)
-
-        if not tabconvo:
-            return
-
-        text = logs.get_json(tabconvo.convo)
-        name = self.get_tab_name(tabconvo.tab.tab_id)
-
-        if text:
-            new_tab = self.make_tab(name=f"{name} JSON", mode="ignore")
-
-            if not new_tab:
-                return
-
-            self.print(text, tab_id=new_tab)
-            self.to_top(tab_id=new_tab)
-
-    def view_markdown(self, tab_id: Optional[str] = None) -> None:
-        from .logs import logs
-
-        tabconvo = self.get_tab_convo(tab_id)
-
-        if not tabconvo:
-            return
-
-        text = logs.get_markdown(tabconvo.convo)
-        name = self.get_tab_name(tabconvo.tab.tab_id)
-
-        if text:
-            new_tab = self.make_tab(name=f"{name} Markdown", mode="ignore")
-
-            if not new_tab:
-                return
-
-            self.print(text, tab_id=new_tab)
-            self.format_text(tab_id=new_tab, mode="all")
-            self.to_top(tab_id=new_tab)
-
     def move_tab(self, tab_id: Optional[str] = None) -> None:
         if len(self.tab_ids()) <= 1:
             return

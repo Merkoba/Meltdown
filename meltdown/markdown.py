@@ -167,11 +167,9 @@ class Markdown:
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
         if self.enabled(who, "snippets"):
             self.format_snippets(start_ln, end_ln)
-            end_ln = int(self.widget.index("end").split(".")[0])
 
         if self.enabled(who, "lists"):
             self.format_lists(start_ln, end_ln, who)
-            end_ln = int(self.widget.index("end").split(".")[0])
 
         if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
@@ -281,7 +279,7 @@ class Markdown:
                     f"{index_item.start} + {len(index_item.content)}c",
                 )
 
-    def format_snippets(self, start_ln: int, end_ln: int) -> None:
+    def format_snippets(self, start_ln: int, end_ln: int) -> bool:
         from .snippet import Snippet
 
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
@@ -361,7 +359,9 @@ class Markdown:
 
             self.widget.snippets.append(snippet)
 
-    def format_lists(self, start_ln: int, end_ln: int, who: str) -> None:
+        return len(matches) > 0
+
+    def format_lists(self, start_ln: int, end_ln: int, who: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
         text = "\n".join(lines)
         matches = []
@@ -387,10 +387,11 @@ class Markdown:
 
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
+            line_end = line_1 + line_2
 
             items = [
                 f"{space_1}{symbol}{space_2}{line[2:]}"
-                for line in lines[line_1 : line_1 + line_2]
+                for line in lines[line_1:line_end]
                 if line.startswith("*") or line.startswith("-")
             ]
 
@@ -400,19 +401,21 @@ class Markdown:
                 f"{end_line} +1 lines linestart", f"{end_line} +1 lines lineend"
             ).strip()
 
-            if content_below:
-                txt += "\n"
-
             if content_start == 0:
                 end_of_line_above = f"{start_line} lineend"
                 chars = len(lines[0])
                 right_bit = f"{end_of_line_above} -{chars} chars"
                 self.widget.delete(right_bit, end_of_line_above)
-                self.widget.insert(end_of_line_above, "\n\n")
+                self.widget.insert(end_of_line_above, "\n\n\n")
 
                 self.widget.delete(
-                    f"{start_line} +1 lines", f"{end_line} +2 lines lineend"
+                    f"{start_line} +1 lines", f"{end_line} +3 lines lineend"
                 )
+
+                txt = f"\n{txt}"
+
+                if content_below:
+                    txt += "\n"
 
                 self.widget.insert(f"{start_line} +1 lines", txt)
             else:
@@ -423,9 +426,13 @@ class Markdown:
                 if content_above:
                     txt = f"\n{txt}"
 
-                self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
+                if content_below:
+                    txt += "\n"
 
+                self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
+
+        return len(matches) > 0
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []

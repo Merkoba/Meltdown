@@ -75,11 +75,7 @@ format_test = {
         {"user": "Quoted header"},
         {"ai": '## "What is this"'},
         {"user": "Bullets"},
-        {"ai": "- One\n- Two\n- Three"},
-        {"user": "Bullets"},
         {"ai": "- One\n- Two\n- Three\naaaaaaaa"},
-        {"user": "Bullets"},
-        {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
     ],
 }
 
@@ -87,6 +83,12 @@ format_test_2 = {
     "id": "ignore",
     "name": "Test 2",
     "items": [
+        {"user": "Bullets"},
+        {"ai": "- One\n- Two\n- Three\n- Cuatro"},
+        {"user": "Bullets"},
+        {"ai": "- One\n- Two\n- Three\naaaaaaaa"},
+        {"user": "Bullets"},
+        {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
         {"user": "Some case"},
         {"ai": "* **Levixs**"},
     ],
