@@ -1,6 +1,6 @@
 prevnext = "Middle click to clear"
 middleprev = "Middle click to find previous"
-scroll = "Right click to scroll one step. Middle click to auto-scroll"
+scroll = "Right click to scroll one step. Middle click to auto-scroll. Wheel to scroll"
 
 tips = {
     "main_menu": "Open the main menu",
