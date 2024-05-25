@@ -266,7 +266,7 @@ class FontMenu:
         self.menu.add("Set Font", lambda e: set_font())
         self.menu.add("Bigger Font", lambda e: display.increase_font())
         self.menu.add("Smaller Font", lambda e: display.decrease_font())
-        self.menu.add("Font Family", lambda e: font_family_menu.show())
+        self.menu.add("Font Family", lambda e: font_family_menu.show(e))
         self.menu.separator()
         self.menu.add("Reset Font", lambda e: display.reset_font())
 

@@ -81,17 +81,35 @@ format_test = {
     ],
 }
 
+str1 = """
+In our example, the `metadata.json` file contains the following key-value pairs:
+
+* name: The human-readable name of the app.
+* description: A brief description of what the app does.
+* version: The version number of the app.
+* main: The entry point (program) that should be run when the user launches the app.
+
+This information is used by the Flatpak runtime to display the app's name, description, and icon in the application menu, as well as provide a consistent user experience across different platforms.
+
+In our case, the `metadata.json` file tells the system that the main entry point of our Flatpak is the `run` script we created earlier.
+""".strip()
+
+code1 = """
+```js
+this is some
+code lines
+```
+
+`highlight` thing
+"""
+
 format_test_2 = {
     "id": "ignore",
     "name": "Test 2",
     "items": [
-        {"user": "Bullets"},
-        {"ai": "- One\n- Two\n- Three\n- Cuatro"},
-        {"user": "Bullets"},
-        {"ai": "- One\n- Two\n- Three\naaaaaaaa"},
-        {"user": "Bullets"},
-        {"ai": "Hello\n- Uno\n- Dos\n- Tres\n44444"},
-        {"user": "Some case"},
-        {"ai": "\n* **Levixs**\n\n- aaaa\n- bbbb"},
+        {"user": "Backticks test"},
+        {"ai": str1},
+        {"user": "Code test 1"},
+        {"ai": code1},
     ],
 }

@@ -303,8 +303,6 @@ class Markdown:
         if len(matches) == 0:
             return end_ln
 
-        retval = 0
-
         for start_line, end_line, language in reversed(matches):
             snippet_text = self.widget.get(
                 f"{start_line} linestart", f"{end_line} lineend"
@@ -338,11 +336,6 @@ class Markdown:
                 )
 
                 self.widget.window_create(f"{start_line} +1 lines", window=snippet)
-
-                if retval == 0:
-                    retval = int(
-                        self.widget.index(f"{start_line} +1 lines").split(".")[0]
-                    )
             else:
                 start_of_line_above = f"{start_line} -2 lines linestart"
                 end_of_line_above = f"{start_line} -2 lines lineend"
@@ -359,9 +352,6 @@ class Markdown:
                     )
 
                     self.widget.window_create(start_line, window=snippet)
-
-                    if retval == 0:
-                        retval = int(self.widget.index(start_line).split(".")[0])
                 else:
                     self.widget.delete(
                         f"{start_line} -1 lines linestart",
@@ -370,14 +360,9 @@ class Markdown:
 
                     self.widget.window_create(f"{start_line} -1 lines", window=snippet)
 
-                    if retval == 0:
-                        retval = int(
-                            self.widget.index(f"{start_line} -1 lines").split(".")[0]
-                        )
-
             self.widget.snippets.append(snippet)
 
-        return retval
+        return end_ln + 2
 
     def format_lists(self, start_ln: int, end_ln: int, who: str) -> int:
         lines = self.get_lines(start_ln, end_ln, who)
@@ -399,8 +384,6 @@ class Markdown:
 
         if len(matches) == 0:
             return end_ln
-
-        retval = 0
 
         for start_line, end_line, content_start, mtch in reversed(matches):
             items = []
@@ -424,8 +407,6 @@ class Markdown:
                 f"{end_line} +1 lines linestart", f"{end_line} +1 lines lineend"
             ).strip()
 
-            lns = len(items) + 1
-
             if content_start == 0:
                 end_of_line_above = f"{start_line} lineend"
                 chars = len(lines[0])
@@ -443,11 +424,6 @@ class Markdown:
                     txt += "\n"
 
                 self.widget.insert(f"{start_line} +1 lines", txt)
-
-                if retval == 0:
-                    retval = int(
-                        self.widget.index(f"{start_line} + {lns} lines").split(".")[0]
-                    )
             else:
                 content_above = self.widget.get(
                     f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
@@ -462,14 +438,7 @@ class Markdown:
                 self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
 
-                if retval == 0:
-                    retval = int(
-                        self.widget.index(f"{start_line} + {lns - 1} lines").split(".")[
-                            0
-                        ]
-                    )
-
-        return retval
+        return end_ln + 2
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []
