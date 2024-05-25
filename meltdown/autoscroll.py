@@ -54,11 +54,11 @@ class AutoScroll:
 
         tab.bottom.on_auto_scroll_disabled()
 
-    def toggle(self) -> None:
+    def toggle(self, direction: Optional[str] = None) -> None:
         if self.enabled:
             self.disable()
         else:
-            self.enable()
+            self.enable(direction=direction)
 
     def check(self) -> None:
         from .display import display

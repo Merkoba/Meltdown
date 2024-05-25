@@ -27,6 +27,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
         self.bottom_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
+        self.bottom_button.set_bind("<Button-3>", lambda e: self.scroll_down())
 
         self.auto_scroll_button = ButtonBox(
             self, text=self.auto_scroll_text, command=self.auto_scroll, style="alt"
