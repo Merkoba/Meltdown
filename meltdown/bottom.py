@@ -108,11 +108,13 @@ class Bottom(tk.Frame):
     def scroll_up(self) -> None:
         from .display import display
 
+        ToolTip.hide_all()
         display.scroll_up(self.tab_id)
 
     def scroll_down(self) -> None:
         from .display import display
 
+        ToolTip.hide_all()
         display.scroll_down(self.tab_id)
 
     def set_text(self, text: str) -> None:
