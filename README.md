@@ -254,6 +254,8 @@ If you use AMD you might want to use this:
 CMAKE_ARGS="-DLLAMA_VULKAN=on" scripts/venv.sh
 ```
 
+There's a `scripts/venv_amd.sh` that does this.
+
 To run the program, use `run.sh` in the root dir.
 
 ---
