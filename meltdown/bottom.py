@@ -109,13 +109,13 @@ class Bottom(tk.Frame):
         from .display import display
 
         ToolTip.hide_all()
-        display.scroll_up(self.tab_id)
+        display.scroll_up(self.tab_id, disable_auto_scroll=True)
 
     def scroll_down(self) -> None:
         from .display import display
 
         ToolTip.hide_all()
-        display.scroll_down(self.tab_id)
+        display.scroll_down(self.tab_id, disable_auto_scroll=True)
 
     def set_text(self, text: str) -> None:
         self.bottom_button.set_text(text)

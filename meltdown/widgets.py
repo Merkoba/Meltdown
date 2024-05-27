@@ -866,11 +866,11 @@ class Widgets:
 
     def scroll_up(self) -> None:
         ToolTip.hide_all()
-        display.scroll_up()
+        display.scroll_up(disable_auto_scroll=True)
 
     def scroll_down(self) -> None:
         ToolTip.hide_all()
-        display.scroll_down()
+        display.scroll_down(disable_auto_scroll=True)
 
 
 widgets: Widgets = Widgets()
