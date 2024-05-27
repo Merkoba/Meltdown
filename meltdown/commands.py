@@ -223,7 +223,7 @@ class Commands:
     def show_help(self, tab_id: Optional[str] = None) -> None:
         from .display import display
 
-        text = self.get_commandtext()
+        text = "aaaaaa\nbbbb\n`hello`"
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 

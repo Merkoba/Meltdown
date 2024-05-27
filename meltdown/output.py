@@ -794,7 +794,7 @@ class Output(tk.Text):
     def find_text(self, query: str) -> str:
         return self.search(query, "1.0", tk.END, regexp=True, nocase=True)
 
-    def get_markers(self, force_all: bool = False) -> Tuple[List[Dict[str, Any]], int]:
+    def get_markers(self, force_all: bool = False) -> List[Dict[str, Any]]:
         markers = []
         lines = self.get_text().split("\n")
         number_user = 0
@@ -822,7 +822,7 @@ class Output(tk.Text):
                 self.checked_markers_ai.append(number_ai)
                 markers.append({"who": "ai", "line": start_ln})
 
-        return (markers, len(lines))
+        return markers
 
     def reset_drag(self) -> None:
         self.gestures.reset_drag()

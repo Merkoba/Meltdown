@@ -115,7 +115,7 @@ class Markdown:
         if args.markdown == "none":
             return
 
-        markers, num_lines = self.widget.get_markers()
+        markers = self.widget.get_markers()
         ranges: List[Tuple[str, int, int]] = []
 
         def add(who: str, start_ln: int, end_ln: int) -> None:
@@ -137,7 +137,7 @@ class Markdown:
             if i < len(markers) - 1:
                 end_ln = int(markers[i + 1]["line"] - 1)
             else:
-                end_ln = num_lines
+                end_ln = self.last_line()
 
             add(who, start_ln, end_ln)
 
@@ -472,7 +472,7 @@ class Markdown:
         return separator.join(clean)
 
     def next_marker(self, start_ln: int) -> int:
-        markers, num_lines = self.widget.get_markers(True)
+        markers = self.widget.get_markers(True)
 
         for i, marker in enumerate(markers):
             if marker["line"] == start_ln:
