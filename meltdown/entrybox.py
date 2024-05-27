@@ -134,7 +134,7 @@ class EntryBox(ttk.Entry):
         self, text: str, check_placeholder: bool = True, index: int = -1
     ) -> None:
         if self.placeholder_active:
-            self.delete(0, tk.END)
+            self.disable_placeholder()
 
         insert_index = self.index(tk.INSERT)
         end_index = self.index(tk.END)
@@ -143,7 +143,6 @@ class EntryBox(ttk.Entry):
             index = insert_index
 
         at_end = end_index == index
-
         self.insert(index, text)
 
         if at_end:
@@ -193,7 +192,7 @@ class EntryBox(ttk.Entry):
         if not self.placeholder:
             return
 
-        text = self.text_var.get()
+        text = self.get_text()
 
         if self.focused:
             self.disable_placeholder()
@@ -270,4 +269,4 @@ class EntryBox(ttk.Entry):
         if text[-1] == " ":
             return
 
-        self.insert(tk.END, " ")
+        self.insert_text(" ")
