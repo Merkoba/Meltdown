@@ -1,6 +1,6 @@
 # Standard
 import re
-from typing import List, Any, Tuple, Optional, Dict
+from typing import List, Any, Tuple
 
 # Modules
 from .args import args
@@ -135,7 +135,7 @@ class Markdown:
             start_ln = item["line"]
 
             if i < len(markers) - 1:
-                end_ln = markers[i + 1]["line"] - 1
+                end_ln = int(markers[i + 1]["line"] - 1)
             else:
                 end_ln = num_lines
 
@@ -477,7 +477,7 @@ class Markdown:
         for i, marker in enumerate(markers):
             if marker["line"] == start_ln:
                 if i < len(markers) - 1:
-                    return markers[i + 1]["line"] - 1
+                    return int(markers[i + 1]["line"] - 1)
 
         return self.last_line()
 
