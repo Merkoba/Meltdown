@@ -1,6 +1,6 @@
 # Standard
 import re
-from typing import List, Any, Tuple
+from typing import List, Any, Tuple, Optional, Dict
 
 # Modules
 from .args import args
@@ -108,7 +108,7 @@ class Markdown:
 
     def format_all(self) -> None:
         start_ln = 1
-        end_ln = int(self.widget.index("end").split(".")[0])
+        end_ln = self.last_line()
         self.format_section("nobody", start_ln, end_ln)
 
     def format(self) -> None:
@@ -166,10 +166,12 @@ class Markdown:
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
         if self.enabled(who, "snippets"):
-            end_ln = self.format_snippets(start_ln, end_ln)
+            if self.format_snippets(start_ln, end_ln):
+                end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "lists"):
-            end_ln = self.format_lists(start_ln, end_ln, who)
+            if self.format_lists(start_ln, end_ln, who):
+                end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
@@ -279,7 +281,7 @@ class Markdown:
                     f"{index_item.start} + {len(index_item.content)}c",
                 )
 
-    def format_snippets(self, start_ln: int, end_ln: int) -> int:
+    def format_snippets(self, start_ln: int, end_ln: int) -> bool:
         from .snippet import Snippet
 
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
@@ -299,9 +301,6 @@ class Markdown:
             end_line = f"{start_ln + line_2}.0"
 
             matches.append((start_line, end_line, language))
-
-        if len(matches) == 0:
-            return end_ln
 
         for start_line, end_line, language in reversed(matches):
             snippet_text = self.widget.get(
@@ -362,9 +361,9 @@ class Markdown:
 
             self.widget.snippets.append(snippet)
 
-        return end_ln + 2
+        return len(matches) > 0
 
-    def format_lists(self, start_ln: int, end_ln: int, who: str) -> int:
+    def format_lists(self, start_ln: int, end_ln: int, who: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
         text = "\n".join(lines)
         matches = []
@@ -381,9 +380,6 @@ class Markdown:
             end_line = f"{start_ln + line_2}.0"
 
             matches.append((start_line, end_line, content_start, match_.group(0)))
-
-        if len(matches) == 0:
-            return end_ln
 
         for start_line, end_line, content_start, mtch in reversed(matches):
             items = []
@@ -438,7 +434,7 @@ class Markdown:
                 self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
 
-        return end_ln + 2
+        return len(matches) > 0
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []
@@ -474,3 +470,16 @@ class Markdown:
     def escape_chars(self, chars: List[str], separator: str = "") -> str:
         clean = [utils.escape_regex(c) for c in chars]
         return separator.join(clean)
+
+    def next_marker(self, start_ln: int) -> int:
+        markers, num_lines = self.widget.get_markers(True)
+
+        for i, marker in enumerate(markers):
+            if marker["line"] == start_ln:
+                if i < len(markers) - 1:
+                    return markers[i + 1]["line"] - 1
+
+        return self.last_line()
+
+    def last_line(self) -> int:
+        return int(self.widget.index("end").split(".")[0])
