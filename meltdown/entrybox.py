@@ -260,3 +260,14 @@ class EntryBox(ttk.Entry):
 
     def set_proc(self, proc: Callable[..., Any]) -> None:
         self.proc = proc
+
+    def smart_space(self) -> None:
+        text = self.text_var.get()
+
+        if not text:
+            return
+
+        if text[-1] == " ":
+            return
+
+        self.insert(tk.END, " ")

@@ -350,6 +350,8 @@ class WordMenu:
 
         self.menu = Menu()
 
+        self.menu.add(text="Use", command=lambda e: Output.use_words())
+        self.menu.separator()
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())

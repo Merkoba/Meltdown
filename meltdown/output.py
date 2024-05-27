@@ -10,6 +10,7 @@ from .args import args
 from .utils import utils
 from .gestures import Gestures
 from .autoscroll import autoscroll
+from .inputcontrol import inputcontrol
 
 
 class Output(tk.Text):
@@ -103,8 +104,15 @@ class Output(tk.Text):
     def use_url() -> None:
         from .widgets import widgets
 
-        path = Output.get_words()
-        widgets.set_file(path)
+        words = Output.get_words()
+        widgets.set_file(words)
+
+    @staticmethod
+    def use_words() -> None:
+        words = Output.get_words()
+        inputcontrol.input.smart_space()
+        inputcontrol.input.insert_text(f'"{words}"')
+        inputcontrol.focus()
 
     @staticmethod
     def copy_words() -> None:
