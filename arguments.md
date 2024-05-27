@@ -68,6 +68,14 @@ Action: store_false
 
 ---
 
+### no-quote-used-words
+
+Don't add quotes to used words
+
+Action: store_false
+
+---
+
 ### no-one-space
 
 Don't limit the text inputs to one space
