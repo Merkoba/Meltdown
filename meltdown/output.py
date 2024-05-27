@@ -361,40 +361,8 @@ class Output(tk.Text):
             lambda e: self.on_name_click(e),
         )
 
-        def on_url_click(event: Any) -> None:
-            from .keyboard import keyboard
-            from .menumanager import url_menu
-
-            if not args.url_menu:
-                return
-
-            Output.words = self.get_tagwords("url", event)
-
-            if keyboard.ctrl:
-                Output.open_url()
-                return
-
-            url_menu.show(event)
-
-        self.tag_bind("url", "<ButtonRelease-1>", lambda e: on_url_click(e))
-
-        def on_path_click(event: Any) -> None:
-            from .keyboard import keyboard
-            from .menumanager import url_menu
-
-            if not args.path_menu:
-                return
-
-            Output.words = self.get_tagwords("path", event)
-
-            if keyboard.ctrl:
-                Output.open_url()
-                return
-
-            url_menu.show(event)
-
-        self.tag_bind("path", "<ButtonRelease-1>", lambda e: on_path_click(e))
-
+        self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
+        self.tag_bind("path", "<ButtonRelease-1>", lambda e: self.on_path_click(e))
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def mousewheel_up() -> str:
@@ -750,6 +718,14 @@ class Output(tk.Text):
                 self.on_name_click(event)
                 return True
 
+            if tag == "url":
+                self.on_url_click(event)
+                return True
+
+            if tag == "path":
+                self.on_path_click(event)
+                return True
+
         seltext = self.get_selected_text(widget)
 
         Output.words = ""
@@ -1048,3 +1024,33 @@ class Output(tk.Text):
 
     def get_num_chars(self) -> int:
         return len(self.get_text())
+
+    def on_url_click(self, event: Any) -> None:
+        from .keyboard import keyboard
+        from .menumanager import url_menu
+
+        if not args.url_menu:
+            return
+
+        Output.words = self.get_tagwords("url", event)
+
+        if keyboard.ctrl:
+            Output.open_url()
+            return
+
+        url_menu.show(event)
+
+    def on_path_click(self, event: Any) -> None:
+        from .keyboard import keyboard
+        from .menumanager import url_menu
+
+        if not args.path_menu:
+            return
+
+        Output.words = self.get_tagwords("path", event)
+
+        if keyboard.ctrl:
+            Output.open_url()
+            return
+
+        url_menu.show(event)
