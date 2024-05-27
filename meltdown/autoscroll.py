@@ -56,6 +56,11 @@ class AutoScroll:
 
     def toggle(self, direction: Optional[str] = None) -> None:
         if self.enabled:
+            if direction:
+                if direction != self.direction:
+                    self.direction = direction
+                    return
+
             self.disable()
         else:
             self.enable(direction=direction)

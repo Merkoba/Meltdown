@@ -27,7 +27,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
         self.bottom_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
-        self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.scroll_down())
+        self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.auto_scroll())
 
         self.auto_scroll_button = ButtonBox(
             self, text=self.auto_scroll_text, command=self.auto_scroll, style="alt"
@@ -121,7 +121,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_text(text)
 
     def auto_scroll(self) -> None:
-        autoscroll.toggle()
+        autoscroll.toggle("down")
 
     def check_enabled(self) -> bool:
         if (not self.visible) or (not self.buttons_enabled) or (not app.exists()):

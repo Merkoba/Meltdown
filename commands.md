@@ -814,6 +814,8 @@ Open the last log
 
 Toggle automatic scrolling
 
+Optional up or down argument
+
 ---
 
 ### enableautoscroll
