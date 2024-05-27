@@ -85,6 +85,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_quote_used_words",
+            action="store_false",
+            info="Don't add quotes to used words",
+        )
+
+        self.add_argument(
             "no_one_space",
             action="store_false",
             info="Don't limit the text inputs to one space",

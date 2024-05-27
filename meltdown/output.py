@@ -109,9 +109,20 @@ class Output(tk.Text):
 
     @staticmethod
     def use_words() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
         words = Output.get_words()
+        output.deselect_all()
         inputcontrol.input.smart_space()
-        s_words = utils.smart_quotes(words)
+
+        if args.quote_used_words:
+            s_words = utils.smart_quotes(words)
+        else:
+            s_words = words
+
         inputcontrol.input.insert_text(s_words)
         inputcontrol.focus()
 
