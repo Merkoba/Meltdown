@@ -381,7 +381,7 @@ class Widgets:
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
         self.top_button.set_bind("<Button-2>", lambda e: autoscroll.toggle("up"))
-        self.top_button.set_bind("<Button-3>", lambda e: self.scroll_up())
+        self.top_button.set_bind("<ButtonRelease-3>", lambda e: self.scroll_up())
         self.top_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.top_button.set_bind("<Button-5>", lambda e: self.scroll_down())
         self.close_button.set_bind("<Button-2>", lambda e: close.close_all())
