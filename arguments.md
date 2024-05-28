@@ -996,6 +996,36 @@ Type: int
 
 ---
 
+### order-char
+
+Character to use on ordered lists like . or )
+
+Default: "."
+
+Type: str
+
+---
+
+### list-space-1
+
+Space to the left of the list items
+
+Default: "  "
+
+Type: str
+
+---
+
+### list-space-2
+
+Space to the right of the list items
+
+Default: "  "
+
+Type: str
+
+---
+
 ### config
 
 Name or path of a config file to use

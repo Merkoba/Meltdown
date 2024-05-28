@@ -27,12 +27,15 @@ class ArgParser:
     def string_arg(self) -> str:
         return " ".join(self.args.string_arg)
 
-    def get_value(self, attr: str, key: Optional[str] = None) -> None:
+    def get_value(
+        self, attr: str, key: Optional[str] = None, no_strip: bool = False
+    ) -> None:
         value = getattr(self.args, attr)
 
         if value is not None:
-            if isinstance(value, str):
-                value = value.strip()
+            if not no_strip:
+                if isinstance(value, str):
+                    value = value.strip()
 
             obj = key if key else attr
             self.set(obj, value)

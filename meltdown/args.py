@@ -119,6 +119,7 @@ class Args:
         self.terminal = "auto"
         self.tabs_wheel = True
         self.display_wheel = True
+        self.order_char = "."
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -218,6 +219,8 @@ class Args:
         self.one_space = True
         self.ascii_logs = False
         self.quote_used_words = True
+        self.list_space_1 = "  "
+        self.list_space_2 = "  "
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -443,6 +446,15 @@ class Args:
 
         for n_item in normals:
             ap.get_value(n_item)
+
+        no_strip = [
+            "order_char",
+            "list_space_1",
+            "list_space_2",
+        ]
+
+        for ns_item in no_strip:
+            ap.get_value(ns_item, no_strip=True)
 
         if not sys.stdin.isatty():
             self.input = sys.stdin.read()

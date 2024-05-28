@@ -397,8 +397,8 @@ class Markdown:
 
         for start_line, end_line, content_start, mtch in reversed(matches):
             symbol = "•"
-            space_1 = "  "
-            space_2 = "  "
+            space_1 = args.list_space_1
+            space_2 = args.list_space_2
 
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
@@ -406,12 +406,13 @@ class Markdown:
 
             if mode == "ordered":
                 n = 1
+                char = args.order_char.rstrip()
                 items = []
 
                 for line in lines[line_1:line_end]:
                     if re.match(r"^\d+", line):
                         c_line = re.sub(r"^\d+[.)]", "", line).strip()
-                        items.append(f"{space_1}{n}){space_2}{c_line}")
+                        items.append(f"{space_1}{n}{char}{space_2}{c_line}")
                         n += 1
             else:
                 items = [
