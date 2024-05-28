@@ -1030,7 +1030,7 @@ Type: str
 
 Space to the left of the list items (ordered)
 
-Default: "  "
+Default: "[Space][Space]"
 
 Type: str
 
@@ -1040,7 +1040,7 @@ Type: str
 
 Space to the right of the list items (ordered)
 
-Default: "  "
+Default: "[Space][Space]"
 
 Type: str
 
@@ -1050,7 +1050,7 @@ Type: str
 
 Space to the left of the list items (unordered)
 
-Default: "  "
+Default: "[Space][Space]"
 
 Type: str
 
@@ -1060,7 +1060,7 @@ Type: str
 
 Space to the right of the list items (unordered)
 
-Default: "  "
+Default: "[Space][Space]"
 
 Type: str
 
@@ -1150,7 +1150,7 @@ Type: str
 
 Text to use when using an image without a text prompt
 
-Default: "Describe this image"
+Default: "Describe[Space]this[Space]image"
 
 Type: str
 
@@ -1490,7 +1490,7 @@ Type: str
 
 What text to use for the help prompt
 
-Default: "I need help!"
+Default: "I[Space]need[Space]help!"
 
 Type: str
 
@@ -1500,7 +1500,7 @@ Type: str
 
 What text to use for the explain prompt
 
-Default: "What is ((words))?"
+Default: "What[Space]is[Space]((words))?"
 
 Type: str
 
@@ -1510,7 +1510,7 @@ Type: str
 
 What text to use for the new prompt
 
-Default: "Tell me about ((words))"
+Default: "Tell[Space]me[Space]about[Space]((words))"
 
 Type: str
 
@@ -1796,7 +1796,7 @@ Type: str
 
 The instruction to tell the AI to summarize a conversation
 
-Default: "Summarize this, without addressing me"
+Default: "Summarize[Space]this,[Space]without[Space]addressing[Space]me"
 
 Type: str
 

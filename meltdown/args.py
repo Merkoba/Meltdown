@@ -554,6 +554,7 @@ class Args:
                     if defvalue == "":
                         defvalue = "[Empty string]"
                     else:
+                        defvalue = defvalue.replace(" ", "[Space]")
                         defvalue = f'"{defvalue}"'
 
                 text += "\n\n"
