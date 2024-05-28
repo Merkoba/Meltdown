@@ -110,7 +110,7 @@ class Markdown:
 
         # Bullet list (unordered)
         self.pattern_list_unordered = (
-            r"(^|(?<=\n\n))[*-] [^\n]+(?:\n[ \t]*[*-] [^\n]+)*"
+            r"(^|(?<=\n\n))[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
         )
 
     def format_all(self) -> None:
