@@ -399,7 +399,9 @@ class Markdown:
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
             line_end = line_1 + line_2
-            spaced = text.count("\n\n") > 0
+            spaced = False
+            sliced = lines[line_1:line_end]
+            spaced = not all([line.strip() for line in sliced])
 
             if mode == "ordered":
                 n = 1
@@ -409,7 +411,7 @@ class Markdown:
                 space_1 = args.ordered_space_1
                 space_2 = args.ordered_space_2
 
-                for line in lines[line_1:line_end]:
+                for line in sliced:
                     if re.match(r"^\d+", line):
                         c_line = re.sub(r"^\d+[.)]", "", line).strip()
                         items.append(f"{space_1}{n}{char}{space_2}{c_line}")
@@ -421,7 +423,7 @@ class Markdown:
 
                 items = [
                     f"{space_1}{symbol}{space_2}{line[2:].strip()}"
-                    for line in lines[line_1:line_end]
+                    for line in sliced
                     if line.startswith("*") or line.startswith("-")
                 ]
 
