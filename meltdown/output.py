@@ -367,32 +367,32 @@ class Output(tk.Text):
 
         def mousewheel_up() -> str:
             self.scroll_up(True)
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         def mousewheel_down() -> str:
             self.scroll_down(True)
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         def scroll_up(more: bool = False) -> str:
             self.scroll_up(True, more=more)
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         def scroll_down(more: bool = False) -> str:
             self.scroll_down(True, more=more)
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         def home() -> str:
             self.to_top()
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         def end() -> str:
             self.to_bottom()
-            autoscroll.disable()
+            autoscroll.stop()
             return "break"
 
         self.gestures = Gestures(self, self, self.on_right_click)
@@ -1017,7 +1017,7 @@ class Output(tk.Text):
 
     def on_scrollbar_click(self) -> None:
         self.on_click()
-        autoscroll.disable()
+        autoscroll.stop()
 
     def get_num_lines(self) -> int:
         return int(self.index("end-1c").split(".")[0])

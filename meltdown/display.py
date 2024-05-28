@@ -173,7 +173,7 @@ class Display:
         if not tab.loaded:
             self.load_tab(tab.tab_id)
 
-        autoscroll.disable()
+        autoscroll.stop()
         tab.output.reset_drag()
         inputcontrol.focus()
         self.check_scroll_buttons()
@@ -361,7 +361,7 @@ class Display:
         if not tab:
             return
 
-        autoscroll.disable()
+        autoscroll.stop()
         tab.output.to_top()
 
     def to_bottom(self, tab_id: Optional[str] = None) -> None:
@@ -373,7 +373,7 @@ class Display:
         if not tab:
             return
 
-        autoscroll.disable()
+        autoscroll.stop()
         tab.output.to_bottom()
         tab.bottom.hide()
 
@@ -514,13 +514,13 @@ class Display:
 
         if yview[1] >= 0.9999:
             if autoscroll.direction == "down":
-                autoscroll.disable()
+                autoscroll.stop()
 
             tab.bottom.hide()
         else:
             if yview[0] <= 0.0001:
                 if autoscroll.direction == "up":
-                    autoscroll.disable()
+                    autoscroll.stop()
 
             tab.bottom.show()
 
@@ -630,7 +630,7 @@ class Display:
             return
 
         if disable_auto_scroll:
-            autoscroll.disable()
+            autoscroll.stop()
 
         output.scroll_up(more=more)
 
@@ -649,7 +649,7 @@ class Display:
             return
 
         if disable_auto_scroll:
-            autoscroll.disable()
+            autoscroll.stop()
 
         output.scroll_down(more=more)
 

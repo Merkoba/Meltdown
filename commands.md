@@ -818,17 +818,17 @@ Optional up or down argument
 
 ---
 
-### enableautoscroll
+### startautoscroll
 
-Enable automatic scrolling
+Start automatic scrolling
 
 Optional up or down argument
 
 ---
 
-### disableautoscroll
+### autoscrollstop
 
-Disable automatic scrolling
+Stop automatic scrolling
 
 ---
 

@@ -820,17 +820,17 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "enableautoscroll",
-            "Enable automatic scrolling",
-            lambda a=None: autoscroll.enable(a),
+            "startautoscroll",
+            "Start automatic scrolling",
+            lambda a=None: autoscroll.start(a),
             extra=self.autoscroll,
             type=str,
         )
 
         self.add_cmd(
-            "disableautoscroll",
-            "Disable automatic scrolling",
-            lambda a=None: autoscroll.disable(),
+            "autoscrollstop",
+            "Stop automatic scrolling",
+            lambda a=None: autoscroll.stop(),
         )
 
         self.add_cmd(

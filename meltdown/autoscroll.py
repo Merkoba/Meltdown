@@ -11,7 +11,7 @@ class AutoScroll:
         self.enabled = False
         self.direction = "down"
 
-    def enable(self, direction: Optional[str] = None) -> None:
+    def start(self, direction: Optional[str] = None) -> None:
         from .display import display
 
         if self.enabled:
@@ -39,7 +39,7 @@ class AutoScroll:
         tab.bottom.on_auto_scroll_enabled()
         self.schedule_auto_scroll()
 
-    def disable(self) -> None:
+    def stop(self) -> None:
         from .display import display
 
         if not self.enabled:
@@ -55,15 +55,17 @@ class AutoScroll:
         tab.bottom.on_auto_scroll_disabled()
 
     def toggle(self, direction: Optional[str] = None) -> None:
-        if self.enabled:
-            if direction:
-                if direction != self.direction:
-                    self.direction = direction
-                    return
+        if not direction:
+            direction = "down"
 
-            self.disable()
+        if self.enabled:
+            if direction != self.direction:
+                self.direction = direction
+                return
+
+            self.stop()
         else:
-            self.enable(direction=direction)
+            self.start(direction=direction)
 
     def check(self) -> None:
         from .display import display
