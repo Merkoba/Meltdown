@@ -556,6 +556,16 @@ Action: store_false
 
 ---
 
+### open-on-log
+
+Open program automatically on log
+
+Default: False
+
+Action: store_true
+
+---
+
 ### separators
 
 Show separators between items

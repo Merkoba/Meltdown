@@ -63,17 +63,20 @@ class Logs:
 
             cmd = ""
 
-            if (mode == "text") and args.on_log_text:
-                cmd = args.on_log_text
-            elif (mode == "json") and args.on_log_json:
-                cmd = args.on_log_json
-            elif (mode == "markdown") and args.on_log_markdown:
-                cmd = args.on_log_markdown
-            elif args.on_log:
-                cmd = args.on_log
+            if args.open_on_log:
+                app.open_generic(str(file_path))
+            else:
+                if (mode == "text") and args.on_log_text:
+                    cmd = args.on_log_text
+                elif (mode == "json") and args.on_log_json:
+                    cmd = args.on_log_json
+                elif (mode == "markdown") and args.on_log_markdown:
+                    cmd = args.on_log_markdown
+                elif args.on_log:
+                    cmd = args.on_log
 
-            if cmd:
-                app.run_command([cmd, str(file_path)])
+                if cmd:
+                    app.run_command([cmd, str(file_path)])
 
         return str(file_path)
 

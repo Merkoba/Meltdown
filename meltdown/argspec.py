@@ -451,6 +451,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "open_on_log",
+            action="store_true",
+            info="Open program automatically on log",
+        )
+
+        self.add_argument(
             "separators",
             action="store_true",
             info="Show separators between items",

@@ -224,6 +224,7 @@ class Args:
         self.one_space = True
         self.ascii_logs = False
         self.quote_used_words = True
+        self.open_on_log = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -445,6 +446,7 @@ class Args:
             "icon",
             "auto_scroll_delay",
             "portrait",
+            "open_on_log",
         ]
 
         for n_item in normals:
