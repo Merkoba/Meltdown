@@ -105,7 +105,7 @@ class Markdown:
 
         # Bullet list (ordered)
         self.pattern_list_ordered = (
-            r"(^|(?<=\n\n))\d+[.)] [^\n]+(?:\n[ \t]*\d+[.)] [^\n]+)*"
+            r"(^|(?<=\n\n))\d+[.)] [^\n]+(?:\n{1,2}[ \t]*\d+[.)] [^\n]+)*"
         )
 
         # Bullet list (unordered)
@@ -399,6 +399,7 @@ class Markdown:
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
             line_end = line_1 + line_2
+            spaced = text.count("\n\n") > 0
 
             if mode == "ordered":
                 n = 1
@@ -424,7 +425,10 @@ class Markdown:
                     if line.startswith("*") or line.startswith("-")
                 ]
 
-            txt = "\n".join(items)
+            if spaced:
+                txt = "\n\n".join(items)
+            else:
+                txt = "\n".join(items)
 
             content_below = self.widget.get(
                 f"{end_line} +1 lines linestart", f"{end_line} +1 lines lineend"
