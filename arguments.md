@@ -996,9 +996,9 @@ Type: int
 
 ---
 
-### order-char
+### ordered-char
 
-Character to use on ordered lists like . or )
+Character to use on ordered lists
 
 Default: "."
 
@@ -1006,9 +1006,19 @@ Type: str
 
 ---
 
-### list-space-1
+### unordered-char
 
-Space to the left of the list items
+Character to use on unordered lists
+
+Default: "•"
+
+Type: str
+
+---
+
+### ordered-space-1
+
+Space to the left of the list items (ordered)
 
 Default: "  "
 
@@ -1016,9 +1026,29 @@ Type: str
 
 ---
 
-### list-space-2
+### ordered-space-2
 
-Space to the right of the list items
+Space to the right of the list items (ordered)
+
+Default: "  "
+
+Type: str
+
+---
+
+### unordered-space-1
+
+Space to the left of the list items (unordered)
+
+Default: "  "
+
+Type: str
+
+---
+
+### unordered-space-2
+
+Space to the right of the list items (unordered)
 
 Default: "  "
 

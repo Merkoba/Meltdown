@@ -715,21 +715,39 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "order_char",
+            "ordered_char",
             type=str,
-            info="Character to use on ordered lists like . or )",
+            info="Character to use on ordered lists",
         )
 
         self.add_argument(
-            "list_space_1",
+            "unordered_char",
             type=str,
-            info="Space to the left of the list items",
+            info="Character to use on unordered lists",
         )
 
         self.add_argument(
-            "list_space_2",
+            "ordered_space_1",
             type=str,
-            info="Space to the right of the list items",
+            info="Space to the left of the list items (ordered)",
+        )
+
+        self.add_argument(
+            "ordered_space_2",
+            type=str,
+            info="Space to the right of the list items (ordered)",
+        )
+
+        self.add_argument(
+            "unordered_space_1",
+            type=str,
+            info="Space to the left of the list items (unordered)",
+        )
+
+        self.add_argument(
+            "unordered_space_2",
+            type=str,
+            info="Space to the right of the list items (unordered)",
         )
 
         self.add_argument(

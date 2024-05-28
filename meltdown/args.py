@@ -119,7 +119,12 @@ class Args:
         self.terminal = "auto"
         self.tabs_wheel = True
         self.display_wheel = True
-        self.order_char = "."
+        self.ordered_char = "."
+        self.unordered_char = "•"
+        self.ordered_space_1 = "  "
+        self.ordered_space_2 = "  "
+        self.unordered_space_1 = "  "
+        self.unordered_space_2 = "  "
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -219,8 +224,6 @@ class Args:
         self.one_space = True
         self.ascii_logs = False
         self.quote_used_words = True
-        self.list_space_1 = "  "
-        self.list_space_2 = "  "
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -448,9 +451,12 @@ class Args:
             ap.get_value(n_item)
 
         no_strip = [
-            "order_char",
-            "list_space_1",
-            "list_space_2",
+            "ordered_char",
+            "unordered_char",
+            "ordered_space_1",
+            "ordered_space_2",
+            "unordered_space_1",
+            "unordered_space_2",
         ]
 
         for ns_item in no_strip:
