@@ -526,10 +526,10 @@ class Args:
         display.format_text(tab_id=tab_id, mode="all")
 
     def get_argtext(self) -> str:
+        from .utils import utils
+
         sep = "\n\n---\n\n"
-
         text = "# Arguments\n\n"
-
         text += "Here are all the available command line arguments:"
 
         for key in argspec.arguments:
@@ -553,8 +553,11 @@ class Args:
                 if isinstance(defvalue, str):
                     if defvalue == "":
                         defvalue = "[Empty string]"
+                    elif defvalue.strip() == "":
+                        spaces = defvalue.count(" ")
+                        ds = utils.singular_or_plural(spaces, "space", "spaces")
+                        defvalue = f"[{spaces} {ds}]"
                     else:
-                        defvalue = defvalue.replace(" ", "[Space]")
                         defvalue = f'"{defvalue}"'
 
                 text += "\n\n"
