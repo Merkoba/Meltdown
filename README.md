@@ -92,9 +92,7 @@ Horizontally scrollable snippet text areas to show code.
 
 Custom keyboard system.
 
-Markdown for triple backticks and single backticks.
-
-Markdown for bold and italic.
+Over 16 markdown implementations.
 
 URL highlighting and handling.
 
