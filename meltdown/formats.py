@@ -74,7 +74,7 @@ def to_text(
         for key in item:
             if key in ("user", "ai"):
                 prompt = Output.get_prompt(
-                    "user", show_avatar=avatars, put_colons=False, generic=generic
+                    key, show_avatar=avatars, put_colons=False, generic=generic
                 )
 
                 log += f"{prompt}: "
