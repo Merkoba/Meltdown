@@ -103,8 +103,15 @@ class Markdown:
         # Separator line
         self.pattern_separator = r"^-{3,}$"
 
-        # Bullet list
-        self.pattern_lists = r"(^|(?<=\n\n))[*-] [^\n]+(?:\n[ \t]*[*-] [^\n]+)*"
+        # Bullet list (ordered)
+        self.pattern_list_ordered = (
+            r"(^|(?<=\n\n))\d+\. [^\n]+(?:\n[ \t]*\d+\. [^\n]+)*"
+        )
+
+        # Bullet list (unordered)
+        self.pattern_list_unordered = (
+            r"(^|(?<=\n\n))[*-] [^\n]+(?:\n[ \t]*[*-] [^\n]+)*"
+        )
 
     def format_all(self) -> None:
         start_ln = 1
@@ -169,8 +176,12 @@ class Markdown:
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
 
-        if self.enabled(who, "lists"):
-            if self.format_lists(start_ln, end_ln, who):
+        if self.enabled(who, "lists_ordered"):
+            if self.format_lists(start_ln, end_ln, who, "ordered"):
+                end_ln = self.next_marker(start_ln)
+
+        if self.enabled(who, "lists_unordered"):
+            if self.format_lists(start_ln, end_ln, who, "unordered"):
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "bold"):
@@ -363,14 +374,17 @@ class Markdown:
 
         return len(matches) > 0
 
-    def format_lists(self, start_ln: int, end_ln: int, who: str) -> bool:
+    def format_lists(self, start_ln: int, end_ln: int, who: str, mode: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
         text = "\n".join(lines)
         matches = []
 
-        for match_ in re.finditer(
-            self.pattern_lists, text, flags=re.MULTILINE | re.DOTALL
-        ):
+        if mode == "ordered":
+            pattern = self.pattern_list_ordered
+        else:
+            pattern = self.pattern_list_unordered
+
+        for match_ in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
             content_start = match_.start(0)
             line_1 = self.get_line_number(text, content_start)
             start_line = f"{start_ln + line_1}.0"
@@ -382,7 +396,6 @@ class Markdown:
             matches.append((start_line, end_line, content_start, match_.group(0)))
 
         for start_line, end_line, content_start, mtch in reversed(matches):
-            items = []
             symbol = "•"
             space_1 = "  "
             space_2 = "  "
@@ -391,11 +404,21 @@ class Markdown:
             line_2 = len(mtch.split("\n"))
             line_end = line_1 + line_2
 
-            items = [
-                f"{space_1}{symbol}{space_2}{line[2:]}"
-                for line in lines[line_1:line_end]
-                if line.startswith("*") or line.startswith("-")
-            ]
+            if mode == "ordered":
+                n = 1
+                items = []
+
+                for line in lines[line_1:line_end]:
+                    if re.match(r"^\d+", line):
+                        c_line = re.sub(r"^\d+[.)]", "", line).strip()
+                        items.append(f"{space_1}{n}){space_2}{c_line}")
+                        n += 1
+            else:
+                items = [
+                    f"{space_1}{symbol}{space_2}{line[2:].strip()}"
+                    for line in lines[line_1:line_end]
+                    if line.startswith("*") or line.startswith("-")
+                ]
 
             txt = "\n".join(items)
 

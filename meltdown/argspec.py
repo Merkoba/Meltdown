@@ -1166,10 +1166,17 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "markdown_lists",
+            "markdown_lists_ordered",
             type=str,
             choices=self.markdown_choices,
-            info="Markdown mode for lists",
+            info="Markdown mode for lists (ordered)",
+        )
+
+        self.add_argument(
+            "markdown_lists_unordered",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for lists (unordered)",
         )
 
         self.add_argument(

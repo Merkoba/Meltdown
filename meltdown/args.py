@@ -122,7 +122,8 @@ class Args:
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
-        self.markdown_lists = "ai"
+        self.markdown_lists_ordered = "ai"
+        self.markdown_lists_unordered = "ai"
         self.markdown_italic = "ai"
         self.markdown_bold = "ai"
         self.markdown_highlights = "ai"
@@ -411,7 +412,8 @@ class Args:
             "avatars_in_logs",
             "separators",
             "markdown_snippets",
-            "markdown_lists",
+            "markdown_lists_ordered",
+            "markdown_lists_unordered",
             "markdown_italic",
             "markdown_bold",
             "markdown_highlights",

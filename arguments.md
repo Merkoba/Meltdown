@@ -1744,9 +1744,21 @@ Type: str
 
 ---
 
-### markdown-lists
+### markdown-lists-ordered
 
-Markdown mode for lists
+Markdown mode for lists (ordered)
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-lists-unordered
+
+Markdown mode for lists (unordered)
 
 Default: "ai"
 
