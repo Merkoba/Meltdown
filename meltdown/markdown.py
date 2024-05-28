@@ -406,10 +406,9 @@ class Markdown:
             if mode == "ordered":
                 n = 1
                 char = args.ordered_char.rstrip()
-                items = []
-
                 space_1 = args.ordered_space_1
                 space_2 = args.ordered_space_2
+                items = []
 
                 for line in sliced:
                     if re.match(r"^\d+", line):
@@ -417,12 +416,12 @@ class Markdown:
                         items.append(f"{space_1}{n}{char}{space_2}{c_line}")
                         n += 1
             else:
-                symbol = args.unordered_char.rstrip()
+                char = args.unordered_char.rstrip()
                 space_1 = args.unordered_space_1
                 space_2 = args.unordered_space_2
 
                 items = [
-                    f"{space_1}{symbol}{space_2}{line[2:].strip()}"
+                    f"{space_1}{char}{space_2}{line[2:].strip()}"
                     for line in sliced
                     if line.startswith("*") or line.startswith("-")
                 ]
