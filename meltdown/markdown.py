@@ -105,7 +105,7 @@ class Markdown:
 
         # Bullet list (ordered)
         self.pattern_list_ordered = (
-            r"(^|(?<=\n\n))\d+\. [^\n]+(?:\n[ \t]*\d+\. [^\n]+)*"
+            r"(^|(?<=\n\n))\d+[.)] [^\n]+(?:\n[ \t]*\d+[.)] [^\n]+)*"
         )
 
         # Bullet list (unordered)
