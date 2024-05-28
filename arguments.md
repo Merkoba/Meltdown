@@ -1804,9 +1804,9 @@ Type: str
 
 ---
 
-### markdown-lists-ordered
+### markdown-ordered
 
-Markdown mode for lists (ordered)
+Markdown mode for ordered lists
 
 Default: "ai"
 
@@ -1816,9 +1816,9 @@ Type: str
 
 ---
 
-### markdown-lists-unordered
+### markdown-unordered
 
-Markdown mode for lists (unordered)
+Markdown mode for unordered lists
 
 Default: "ai"
 

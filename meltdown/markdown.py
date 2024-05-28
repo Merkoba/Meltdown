@@ -176,11 +176,11 @@ class Markdown:
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
 
-        if self.enabled(who, "lists_ordered"):
+        if self.enabled(who, "ordered"):
             if self.format_lists(start_ln, end_ln, who, "ordered"):
                 end_ln = self.next_marker(start_ln)
 
-        if self.enabled(who, "lists_unordered"):
+        if self.enabled(who, "unordered"):
             if self.format_lists(start_ln, end_ln, who, "unordered"):
                 end_ln = self.next_marker(start_ln)
 
