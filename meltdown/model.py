@@ -10,6 +10,7 @@ import requests  # type: ignore
 from llama_cpp import Llama, ChatCompletionChunk  # type: ignore
 from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
 from openai import OpenAI  # type: ignore
+from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
 
 # Modules
 from .app import app
@@ -454,27 +455,15 @@ class Model:
             self.release_lock()
             return
 
-        tokens: List[str] = []
+        ans = ""
 
         if args.stream:
-            buffer: List[str] = []
-            broken = self.process_stream(output, tokens, buffer, tab_id)
-
-            if not broken:
-                self.print_buffer(buffer, tab_id)
+            ans = self.process_stream(output, tab_id)
         else:
-            try:
-                response = output.choices[0].message.content.strip()
+            ans = self.process_instant(output, tab_id)
 
-                if response:
-                    display.prompt("ai", tab_id=tab_id)
-                    display.insert(response, tab_id=tab_id)
-                    tokens = [response]
-            except BaseException as e:
-                utils.error(e)
-
-        if tokens:
-            log_dict["ai"] = "".join(tokens).strip()
+        if ans:
+            log_dict["ai"] = ans.strip()
             tabconvo.convo.add(log_dict)
 
             if args.show_duration:
@@ -488,15 +477,15 @@ class Model:
     def process_stream(
         self,
         output: Generator[ChatCompletionChunk, None, None],
-        tokens: List[str],
-        buffer: List[str],
         tab_id: str,
-    ) -> bool:
+    ) -> str:
         broken = False
         added_name = False
         token_printed = False
         last_token = " "
         buffer_date = 0.0
+        tokens: List[str] = []
+        buffer: List[str] = []
 
         if args.stream:
             try:
@@ -538,7 +527,23 @@ class Model:
             except BaseException as e:
                 utils.error(e)
 
-        return broken
+        if not broken:
+            self.print_buffer(buffer, tab_id)
+
+        return "".join(tokens)
+
+    def process_instant(self, output: ChatCompletion, tab_id: str) -> str:
+        try:
+            response = output.choices[0].message.content.strip()
+
+            if response:
+                display.prompt("ai", tab_id=tab_id)
+                display.insert(response, tab_id=tab_id)
+                return str(response)
+        except BaseException as e:
+            utils.error(e)
+
+        return ""
 
     def print_buffer(self, buffer: List[str], tab_id: str) -> None:
         if not len(buffer):
