@@ -118,6 +118,8 @@ No need to greet me, just answer.
 
         self.validations: Dict[str, Callable[..., Any]] = {
             "history": lambda x: max(0, x),
+            "name_user": lambda x: self.get_default("name_user") if not x else x,
+            "name_ai": lambda x: self.get_default("name_ai") if not x else x,
         }
 
     def defaults(self) -> Dict[str, Any]:

@@ -270,9 +270,6 @@ class Output(tk.Text):
         else:
             name = getattr(config, f"name_{who}")
 
-        if not name:
-            return ""
-
         avatar = getattr(config, f"avatar_{who}")
 
         if put_colons:
