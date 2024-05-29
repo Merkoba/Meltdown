@@ -127,6 +127,8 @@ class Args:
         self.unordered_space_2 = "  "
         self.ordered_spacing = "auto"
         self.unordered_spacing = "auto"
+        self.ordered_indent = 1
+        self.unordered_indent = 0.72
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -451,6 +453,8 @@ class Args:
             "open_on_log",
             "ordered_spacing",
             "unordered_spacing",
+            "ordered_indent",
+            "unordered_indent",
         ]
 
         for n_item in normals:

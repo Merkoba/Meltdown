@@ -472,6 +472,17 @@ class Markdown:
                 self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
 
+            ind_line = int(start_line.split(".")[0])
+
+            for _ in items:
+                ln = f"{ind_line}.0"
+                self.widget.tag_add(f"indent_{mode}", ln, f"{ln} lineend")
+
+                if spaced:
+                    ind_line += 2
+                else:
+                    ind_line += 1
+
         return len(matches) > 0
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:

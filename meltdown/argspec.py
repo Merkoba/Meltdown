@@ -679,6 +679,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "ordered_indent",
+            type=int,
+            info="Indent on wrapped lines of ordered lists",
+        )
+
+        self.add_argument(
+            "unordered_indent",
+            type=int,
+            info="Indent on wrapped lines of unordered lists",
+        )
+
+        self.add_argument(
             "border_size",
             type=int,
             info="The size of the border",

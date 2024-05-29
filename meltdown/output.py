@@ -751,9 +751,11 @@ class Output(tk.Text):
             return
 
         tags = self.tag_names(current_index)
+        single = len(tags) == 1
+        exclude = ("sel", "indent_ordered", "indent_unordered")
 
         if tags:
-            if ("sel" in tags) and (len(tags) == 1):
+            if single and (tags[0] in exclude):
                 self.configure(cursor="xterm")
             else:
                 self.configure(cursor="hand2")
@@ -985,6 +987,12 @@ class Output(tk.Text):
         self.tag_configure("header_2", font=app.theme.get_header_font(2))
         self.tag_configure("header_3", font=app.theme.get_header_font(3))
         self.tag_configure("separator", font=app.theme.get_separator_font())
+
+        o_ind = args.ordered_indent
+        self.tag_configure("indent_ordered", lmargin1="0c", lmargin2=f"{o_ind}c")
+
+        u_ind = args.unordered_indent
+        self.tag_configure("indent_unordered", lmargin1="0c", lmargin2=f"{u_ind}c")
 
         if args.colors:
             if args.user_color == "auto":
