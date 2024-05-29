@@ -7,9 +7,8 @@ from typing import List, Tuple, Dict, Any, Generator
 
 # Libraries
 import requests  # type: ignore
-from llama_cpp import Llama  # type: ignore
+from llama_cpp import Llama, ChatCompletionChunk  # type: ignore
 from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
-from llama_cpp import ChatCompletionChunk
 from openai import OpenAI  # type: ignore
 
 # Modules
