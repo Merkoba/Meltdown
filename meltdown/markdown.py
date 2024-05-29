@@ -399,9 +399,15 @@ class Markdown:
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
             line_end = line_1 + line_2
-            spaced = False
             sliced = lines[line_1:line_end]
-            spaced = not all([line.strip() for line in sliced])
+            spacing_mode = getattr(args, f"{mode}_spacing")
+
+            if spacing_mode == "never":
+                spaced = False
+            elif spacing_mode == "always":
+                spaced = True
+            else:
+                spaced = not all([line.strip() for line in sliced])
 
             if mode == "ordered":
                 n = 1

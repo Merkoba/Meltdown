@@ -1325,5 +1325,19 @@ class ArgSpec:
             info="Path to an image for the portrait of the AI",
         )
 
+        self.add_argument(
+            "ordered_spacing",
+            type=str,
+            choices=["auto", "never", "always"],
+            info="How to space between ordered list items",
+        )
+
+        self.add_argument(
+            "unordered_spacing",
+            type=str,
+            choices=["auto", "never", "always"],
+            info="How to space between unordered list items",
+        )
+
 
 argspec = ArgSpec()

@@ -2011,3 +2011,27 @@ Path to an image for the portrait of the AI
 Default: [Empty string]
 
 Type: str
+
+---
+
+### ordered-spacing
+
+How to space between ordered list items
+
+Default: "auto"
+
+Choices: "auto", "never", "always"
+
+Type: str
+
+---
+
+### unordered-spacing
+
+How to space between unordered list items
+
+Default: "auto"
+
+Choices: "auto", "never", "always"
+
+Type: str

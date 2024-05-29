@@ -125,6 +125,8 @@ class Args:
         self.ordered_space_2 = "  "
         self.unordered_space_1 = "  "
         self.unordered_space_2 = "  "
+        self.ordered_spacing = "auto"
+        self.unordered_spacing = "auto"
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -447,6 +449,8 @@ class Args:
             "auto_scroll_delay",
             "portrait",
             "open_on_log",
+            "ordered_spacing",
+            "unordered_spacing",
         ]
 
         for n_item in normals:
