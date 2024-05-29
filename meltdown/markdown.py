@@ -38,7 +38,8 @@ class Markdown:
         protocols = rf"({protocols_string})"
 
         self.separator = "───────────────────"
-        self.indents: List[Tuple[str, int]] = []
+        self.marker_indent_ordered = "\u200b\u200c\u200b"
+        self.marker_indent_unordered = "\u200c\u200b\u200c"
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
@@ -118,6 +119,7 @@ class Markdown:
         start_ln = 1
         end_ln = self.last_line()
         self.format_section("nobody", start_ln, end_ln)
+        self.indent_lines()
 
     def format(self) -> None:
         if args.markdown == "none":
@@ -152,6 +154,8 @@ class Markdown:
         for who, start_ln, end_ln in reversed(ranges):
             self.format_section(who, start_ln, end_ln)
 
+        self.indent_lines()
+
     def enabled(self, who: str, what: str) -> bool:
         if who == "nobody":
             return True
@@ -173,8 +177,6 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        self.indents = []
-
         if self.enabled(who, "snippets"):
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
@@ -212,8 +214,6 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_1")
             self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
             self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_3")
-
-        self.indent_lines()
 
         if self.enabled(who, "separators"):
             self.format_separators(start_ln, end_ln, who)
@@ -406,6 +406,7 @@ class Markdown:
             line_end = line_1 + line_2
             sliced = lines[line_1:line_end]
             spacing_mode = getattr(args, f"{mode}_spacing")
+            marker = getattr(self, f"marker_indent_{mode}")
 
             if spacing_mode == "never":
                 spaced = False
@@ -423,19 +424,21 @@ class Markdown:
 
                 for line in sliced:
                     if re.match(r"^\d+", line):
+                        left = f"{space_1}{n}{char}{space_2}"
                         c_line = re.sub(r"^\d+[.)]", "", line).strip()
-                        items.append(f"{space_1}{n}{char}{space_2}{c_line}")
+                        items.append(f"{marker}{left}{c_line}")
                         n += 1
             else:
                 char = args.unordered_char.rstrip()
                 space_1 = args.unordered_space_1
                 space_2 = args.unordered_space_2
+                items = []
 
-                items = [
-                    f"{space_1}{char}{space_2}{line[2:].strip()}"
-                    for line in sliced
-                    if line.startswith("*") or line.startswith("-")
-                ]
+                for line in sliced:
+                    if line.startswith("*") or line.startswith("-"):
+                        left = f"{space_1}{char}{space_2}"
+                        c_line = line[2:].strip()
+                        items.append(f"{marker}{left}{c_line}")
 
             if spaced:
                 txt = "\n\n".join(items)
@@ -476,16 +479,6 @@ class Markdown:
 
                 self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
-
-            ind_line = int(start_line.split(".")[0])
-
-            for _ in items:
-                self.indents.append((mode, ind_line))
-
-                if spaced:
-                    ind_line += 2
-                else:
-                    ind_line += 1
 
         return len(matches) > 0
 
@@ -538,9 +531,18 @@ class Markdown:
         return int(self.widget.index("end").split(".")[0])
 
     def indent_lines(self) -> None:
-        if not self.indents:
-            return
+        lines = self.widget.get("1.0", "end").split("\n")
 
-        for mode, line in self.indents:
-            ln = f"{line}.0"
-            self.widget.tag_add(f"indent_{mode}", ln, f"{ln} lineend")
+        def get_lns(marker: str) -> List[int]:
+            return [i + 1 for i, line in enumerate(lines) if line.startswith(marker)]
+
+        def add_tags(lns: List[int], name: str) -> None:
+            for line in lns:
+                ln = f"{line}.0"
+                self.widget.tag_add(name, ln, f"{ln} lineend")
+
+        or_lines = get_lns(self.marker_indent_ordered)
+        add_tags(or_lines, "indent_ordered")
+
+        un_lines = get_lns(self.marker_indent_unordered)
+        add_tags(un_lines, "indent_unordered")

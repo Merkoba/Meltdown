@@ -101,11 +101,13 @@ list1 = """
 """.strip()
 
 list2 = """
-* what
-
-* is
-
-* this thing
+* what asdasf asdfasd fasdf sdf
+* is asdasf asdfasd fasdf sdf
+* this thing asdasf asdfasd fasdf sdf
+hello
+* aasf asdasf asdfasd fasdf sdf
+* aasfasd asdasf asdfasd fasdf sdf
+* aasfasd asdasf asdfasd fasdf sdf
 """.strip()
 
 format_test_2 = {
