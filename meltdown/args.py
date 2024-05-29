@@ -518,30 +518,43 @@ class Args:
         if not self.gestures_down:
             self.gestures_down = f"{self.prefix}bottom"
 
-    def show_help(self, tab_id: Optional[str] = None) -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+    ) -> None:
         from .display import display
 
-        text = self.get_argtext()
+        text = self.get_argtext(filter_text)
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_argtext(self) -> str:
+    def get_argtext(self, filter_text: Optional[str] = None) -> str:
         from .utils import utils
 
         sep = "\n\n---\n\n"
-        text = "# Arguments\n\n"
-        text += "Here are all the available command line arguments:"
+        text = ""
+        filter_lower = ""
+
+        if not filter_text:
+            text = "# Arguments\n\n"
+            text += "Here are all the available command line arguments:"
+        else:
+            filter_lower = filter_text.lower()
 
         for key in argspec.arguments:
             if key == "string_arg":
                 continue
 
             arg = argspec.arguments[key]
+            info = arg.get("help", "")
+
+            if filter_text:
+                if filter_lower not in key.lower():
+                    if filter_lower not in info.lower():
+                        continue
+
             text += sep
             name = key.replace("_", "-")
             text += f"### {name}"
-
-            info = arg.get("help")
 
             if info:
                 text += "\n\n"
@@ -589,7 +602,7 @@ class Args:
                 text += f"Type: {argtype.__name__}"
 
         text += "\n"
-        return text
+        return text.lstrip()
 
     def make_argumentdoc(self, pathstr: str) -> None:
         from .utils import utils

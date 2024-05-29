@@ -221,19 +221,22 @@ class CommandSpec:
         self.add_cmd(
             "commands",
             "Show the commands help",
-            lambda a=None: app.show_help("commands"),
+            lambda a=None: app.show_help("commands", a),
+            type=str,
         )
 
         self.add_cmd(
             "arguments",
             "Show the arguments help",
-            lambda a=None: app.show_help("arguments"),
+            lambda a=None: app.show_help("arguments", a),
+            type=str,
         )
 
         self.add_cmd(
             "keyboard",
             "Show the keyboard help",
-            lambda a=None: app.show_help("keyboard"),
+            lambda a=None: app.show_help("keyboard", a),
+            type=str,
         )
 
         self.add_cmd(

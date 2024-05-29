@@ -489,14 +489,16 @@ class Keyboard:
         self.shift = False
         self.ctrl_date = 0.0
 
-    def show_help(self, tab_id: Optional[str] = None) -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+    ) -> None:
         from .display import display
 
-        text = self.get_keyboardtext()
+        text = self.get_keyboardtext(filter_text)
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_keyboardtext(self) -> str:
+    def get_keyboardtext(self, filter_text: Optional[str] = None) -> str:
         keys = list(self.commands.keys())
         separator = "---"
         lines = ["# Keyboard Shortcuts"]
@@ -550,6 +552,9 @@ class Keyboard:
         for n in range(1, 13):
             cmd = getattr(args, f"f{n}")
             lines.append(f"F{n} = {cmd}")
+
+        if filter_text:
+            lines = [line for line in lines if filter_text.lower() in line.lower()]
 
         return "\n\n".join(lines) + "\n"
 

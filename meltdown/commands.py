@@ -220,10 +220,12 @@ class Commands:
         prompt = {"text": text}
         model.stream(prompt)
 
-    def show_help(self, tab_id: Optional[str] = None) -> None:
+    def show_help(
+        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+    ) -> None:
         from .display import display
 
-        text = "aaaaaa\nbbbb\n`hello`"
+        text = self.get_commandtext(filter_text)
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
@@ -282,33 +284,41 @@ class Commands:
             if key in self.commands:
                 self.commands[key]["date"] = cmds[key].get("date", 0.0)
 
-    def get_commandtext(self) -> str:
+    def get_commandtext(self, filter_text: Optional[str] = None) -> str:
         sep = "\n\n---\n\n"
+        text = ""
 
-        text = "# Commands\n\n"
+        if not filter_text:
+            text += "# Commands\n\n"
+            text += "Commands can be chained:\n\n"
 
-        text += "Commands can be chained:\n\n"
+            text += "```\n"
+            text += "/tab 2 & /sleep 0.5 & /select\n"
+            text += "```\n\n"
 
-        text += "```\n"
-        text += "/tab 2 & /sleep 0.5 & /select\n"
-        text += "```\n\n"
+            text += "This will select tab 2, then wait 500ms, then select all.\n\n"
 
-        text += "This will select tab 2, then wait 500ms, then select all.\n\n"
-
-        text += "Here are all the available commands:"
+            text += "Here are all the available commands:"
 
         for key in self.commands:
             cmd = self.commands[key]
-            text += sep
-            text += f"### {key}\n\n"
-            text += cmd["info"]
+            txt = ""
+            txt += sep
+            txt += f"### {key}\n\n"
+            txt += cmd["info"]
             extra = cmd.get("extra")
 
             if extra:
-                text += f"\n\n{extra}"
+                txt += f"\n\n{extra}"
+
+            if filter_text:
+                if filter_text.lower() not in txt.lower():
+                    continue
+
+            text += txt
 
         text += "\n"
-        return text
+        return text.lstrip()
 
     def make_commandoc(self, pathstr: str) -> None:
         from .display import display
