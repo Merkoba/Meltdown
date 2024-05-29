@@ -202,17 +202,23 @@ Ask for help
 
 Show the commands help
 
+You can filter by text
+
 ---
 
 ### arguments
 
 Show the arguments help
 
+You can filter by text
+
 ---
 
 ### keyboard
 
 Show the keyboard help
+
+You can filter by text
 
 ---
 

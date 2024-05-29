@@ -33,6 +33,7 @@ class CommandSpec:
         self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
         self.optdelay = "Optional delay in seconds"
         self.autoscroll = "Optional up or down argument"
+        self.helpcmd = "You can filter by text"
         self.infos: List[str] = []
         self.commands: Dict[str, Any] = {}
 
@@ -222,6 +223,7 @@ class CommandSpec:
             "commands",
             "Show the commands help",
             lambda a=None: app.show_help("commands", a),
+            extra=self.helpcmd,
             type=str,
         )
 
@@ -229,6 +231,7 @@ class CommandSpec:
             "arguments",
             "Show the arguments help",
             lambda a=None: app.show_help("arguments", a),
+            extra=self.helpcmd,
             type=str,
         )
 
@@ -236,6 +239,7 @@ class CommandSpec:
             "keyboard",
             "Show the keyboard help",
             lambda a=None: app.show_help("keyboard", a),
+            extra=self.helpcmd,
             type=str,
         )
 
