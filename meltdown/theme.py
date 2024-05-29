@@ -16,9 +16,9 @@ class Theme:
         self.monospace_family = "monospace"
 
         self.font_size = 14
-        self.font_menu_size = 14
-        self.font_textbox_size = 14
         self.font_entry_size = 14
+        self.font_menu_size = 13
+        self.font_textbox_size = 13
         self.font_combobox_size = 13
         self.font_tab_size = 12
         self.font_tab_highlight_size = 12
