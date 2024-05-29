@@ -362,5 +362,12 @@ class Utils:
     def remove_multiple_spaces(self, text: str) -> str:
         return " ".join(text.split())
 
+    def bullet_points(self, text: str) -> str:
+        char = "•"
+        return f"{char} {text}"
+
+    def replace_linebreaks(self, text: str) -> str:
+        return " ".join(text.split("\n"))
+
 
 utils = Utils()

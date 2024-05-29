@@ -323,7 +323,9 @@ class InputControl:
                     textbox.set_text(item)
                     textbox.focus_end()
 
-                menu.add(text=item[: args.list_item_width], command=lambda e: proc())
+                f_text = utils.bullet_points(item[: args.list_item_width])
+                f_text = utils.replace_linebreaks(f_text)
+                menu.add(text=f_text, command=lambda e: proc())
 
             for item in items:
                 add_item(item)
