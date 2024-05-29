@@ -38,6 +38,7 @@ class Markdown:
         protocols = rf"({protocols_string})"
 
         self.separator = "───────────────────"
+        self.indents: List[Tuple[str, int]] = []
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
@@ -172,6 +173,8 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
+        self.indents = []
+
         if self.enabled(who, "snippets"):
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
@@ -209,6 +212,8 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_1")
             self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
             self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_3")
+
+        self.indent_lines()
 
         if self.enabled(who, "separators"):
             self.format_separators(start_ln, end_ln, who)
@@ -475,8 +480,7 @@ class Markdown:
             ind_line = int(start_line.split(".")[0])
 
             for _ in items:
-                ln = f"{ind_line}.0"
-                self.widget.tag_add(f"indent_{mode}", ln, f"{ln} lineend")
+                self.indents.append((mode, ind_line))
 
                 if spaced:
                     ind_line += 2
@@ -532,3 +536,11 @@ class Markdown:
 
     def last_line(self) -> int:
         return int(self.widget.index("end").split(".")[0])
+
+    def indent_lines(self) -> None:
+        if not self.indents:
+            return
+
+        for mode, line in self.indents:
+            ln = f"{line}.0"
+            self.widget.tag_add(f"indent_{mode}", ln, f"{ln} lineend")
