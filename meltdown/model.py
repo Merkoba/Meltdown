@@ -3,12 +3,13 @@ import base64
 import threading
 from pathlib import Path
 from typing import Optional
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple, Dict, Any, Generator
 
 # Libraries
 import requests  # type: ignore
 from llama_cpp import Llama  # type: ignore
 from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
+from llama_cpp import ChatCompletionChunk
 from openai import OpenAI  # type: ignore
 
 # Modules
@@ -272,7 +273,9 @@ class Model:
         self.stream_thread.daemon = True
         self.stream_thread.start()
 
-    def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
+    def prepare_stream(
+        self, prompt: Dict[str, str], tab_id: str
+    ) -> Optional[Tuple[List[Dict[str, str]], Dict[str, str]]]:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
@@ -281,18 +284,18 @@ class Model:
         if prompt_file:
             if not utils.is_url(prompt_file) and (not Path(prompt_file).exists()):
                 display.print("Error: File not found.")
-                return
+                return None
 
         prompt_text = self.limit_tokens(prompt_text)
         original_text = prompt_text
         original_file = prompt_file
 
         if (not prompt_text) and (not prompt_file):
-            return
+            return None
 
         if not self.loaded_model:
             utils.msg("Model not loaded")
-            return
+            return None
 
         if config.before:
             prompt_text = self.check_dot(config.before) + prompt_text
@@ -303,10 +306,10 @@ class Model:
         tabconvo = display.get_tab_convo(tab_id)
 
         if not tabconvo:
-            return
+            return None
 
         if tabconvo.tab.mode == "ignore":
-            return
+            return None
 
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
         log_dict["file"] = original_file
@@ -329,7 +332,7 @@ class Model:
         prompt_text = utils.replace_keywords(prompt_text)
 
         if (not prompt_text) and (not prompt_file):
-            return
+            return None
 
         file_text = ""
 
@@ -347,7 +350,7 @@ class Model:
                 converted = self.image_to_base64(prompt_file)
 
                 if not converted:
-                    return
+                    return None
 
                 prompt_file = converted
 
@@ -369,19 +372,25 @@ class Model:
             "user", text=prompt_user, tab_id=tab_id, original=o_text, file=original_file
         )
 
+        display.stream_started(tab_id)
+        return messages, log_dict
+
+    def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
+        prepared = self.prepare_stream(prompt, tab_id)
+
+        if not prepared:
+            return
+
+        tabconvo = display.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
         now = utils.now()
         self.stream_date = now
-        stream = args.stream
-        display.stream_started(tab_id)
-        stop_list = config.stop.split(";;") if config.stop else None
-
-        if stop_list:
-            stop_list = [item.strip() for item in stop_list]
-
+        messages, log_dict = prepared
         self.stream_loading = True
         self.lock.acquire()
-
-        # ------------------------------------
 
         if self.model_is_gpt(config.model):
             try:
@@ -391,14 +400,14 @@ class Model:
                     return
 
                 output = self.gpt_client.chat.completions.create(
-                    stream=stream,
-                    model=config.model,
                     messages=messages,
+                    stream=args.stream,
+                    model=config.model,
                     max_tokens=config.max_tokens,
                     temperature=config.temperature,
                     top_p=config.top_p,
                     seed=config.seed,
-                    stop=stop_list,
+                    stop=self.get_stop_list(),
                 )
             except BaseException as e:
                 utils.error(e)
@@ -421,14 +430,14 @@ class Model:
 
             try:
                 output = self.model.create_chat_completion_openai_v1(
-                    stream=stream,
                     messages=messages,
+                    stream=args.stream,
                     max_tokens=config.max_tokens,
                     temperature=config.temperature,
                     top_k=config.top_k,
                     top_p=config.top_p,
                     seed=config.seed,
-                    stop=stop_list,
+                    stop=self.get_stop_list(),
                 )
             except BaseException as e:
                 utils.error(e)
@@ -446,31 +455,51 @@ class Model:
             self.release_lock()
             return
 
+        tokens: List[str] = []
+
+        if args.stream:
+            buffer: List[str] = []
+            broken = self.process_stream(output, tokens, buffer, tab_id)
+
+            if not broken:
+                self.print_buffer(buffer, tab_id)
+        else:
+            try:
+                response = output.choices[0].message.content.strip()
+
+                if response:
+                    display.prompt("ai", tab_id=tab_id)
+                    display.insert(response, tab_id=tab_id)
+                    tokens = [response]
+            except BaseException as e:
+                utils.error(e)
+
+        if tokens:
+            log_dict["ai"] = "".join(tokens).strip()
+            tabconvo.convo.add(log_dict)
+
+            if args.show_duration:
+                diff = utils.now() - now
+                seconds = int(round(diff))
+                word = utils.singular_or_plural(seconds, "second", "seconds")
+                display.print(f"Duration: {seconds} {word}", tab_id=tab_id)
+
+        self.release_lock()
+
+    def process_stream(
+        self,
+        output: Generator[ChatCompletionChunk, None, None],
+        tokens: List[str],
+        buffer: List[str],
+        tab_id: str,
+    ) -> bool:
+        broken = False
         added_name = False
         token_printed = False
         last_token = " "
-        tokens: List[str] = []
-        buffer: List[str] = []
         buffer_date = 0.0
-        broken = False
 
-        def print_buffer(force: bool = False) -> None:
-            nonlocal buffer_date
-
-            if not len(buffer):
-                return
-
-            datenow = utils.now()
-
-            if not force:
-                if (datenow - buffer_date) < args.delay:
-                    return
-
-            buffer_date = datenow
-            display.insert("".join(buffer), tab_id=tab_id)
-            buffer.clear()
-
-        if stream:
+        if args.stream:
             try:
                 for chunk in output:
                     if self.stop_stream_thread.is_set():
@@ -502,33 +531,22 @@ class Model:
 
                             tokens.append(token)
                             buffer.append(token)
-                            print_buffer()
-            except BaseException as e:
-                utils.error(e)
-        else:
-            try:
-                response = output.choices[0].message.content.strip()
+                            now = utils.now()
 
-                if response:
-                    display.prompt("ai", tab_id=tab_id)
-                    display.insert(response, tab_id=tab_id)
+                            if (now - buffer_date) >= args.delay:
+                                self.print_buffer(buffer, tab_id)
+                                buffer_date = now
             except BaseException as e:
                 utils.error(e)
 
-        if not broken:
-            print_buffer(True)
+        return broken
 
-        if tokens:
-            log_dict["ai"] = "".join(tokens).strip()
-            tabconvo.convo.add(log_dict)
+    def print_buffer(self, buffer: List[str], tab_id: str) -> None:
+        if not len(buffer):
+            return
 
-            if args.show_duration:
-                diff = utils.now() - now
-                seconds = int(round(diff))
-                word = utils.singular_or_plural(seconds, "second", "seconds")
-                display.print(f"Duration: {seconds} {word}", tab_id=tab_id)
-
-        self.release_lock()
+        display.insert("".join(buffer), tab_id=tab_id)
+        buffer.clear()
 
     def load_or_unload(self) -> None:
         if self.model_loading:
@@ -665,6 +683,14 @@ class Model:
             return
 
         Dialog.show_message(model_)
+
+    def get_stop_list(self) -> Optional[List[str]]:
+        stop_list = config.stop.split(";;") if config.stop else None
+
+        if stop_list:
+            stop_list = [item.strip() for item in stop_list]
+
+        return stop_list
 
 
 model = Model()
