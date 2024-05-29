@@ -487,48 +487,54 @@ class Model:
         tokens: List[str] = []
         buffer: List[str] = []
 
-        if args.stream:
-            try:
-                for chunk in output:
-                    if self.stop_stream_thread.is_set():
-                        broken = True
-                        break
+        def print_buffer() -> None:
+            if not len(buffer):
+                return
 
-                    delta = chunk.choices[0].delta
+            display.insert("".join(buffer), tab_id=tab_id)
+            buffer.clear()
 
-                    if hasattr(delta, "content"):
-                        if not added_name:
-                            display.prompt("ai", tab_id=tab_id)
-                            added_name = True
+        try:
+            for chunk in output:
+                if self.stop_stream_thread.is_set():
+                    broken = True
+                    break
 
-                        token = delta.content
+                delta = chunk.choices[0].delta
 
-                        if token == "\n":
-                            if not token_printed:
-                                continue
-                        elif token == " ":
-                            if last_token == " ":
-                                continue
+                if hasattr(delta, "content"):
+                    if not added_name:
+                        display.prompt("ai", tab_id=tab_id)
+                        added_name = True
 
-                        last_token = token
+                    token = delta.content
 
-                        if token is not None:
-                            if not token_printed:
-                                token = token.lstrip()
-                                token_printed = True
+                    if token == "\n":
+                        if not token_printed:
+                            continue
+                    elif token == " ":
+                        if last_token == " ":
+                            continue
 
-                            tokens.append(token)
-                            buffer.append(token)
-                            now = utils.now()
+                    last_token = token
 
-                            if (now - buffer_date) >= args.delay:
-                                self.print_buffer(buffer, tab_id)
-                                buffer_date = now
-            except BaseException as e:
-                utils.error(e)
+                    if token is not None:
+                        if not token_printed:
+                            token = token.lstrip()
+                            token_printed = True
+
+                        tokens.append(token)
+                        buffer.append(token)
+                        now = utils.now()
+
+                        if (now - buffer_date) >= args.delay:
+                            print_buffer()
+                            buffer_date = now
+        except BaseException as e:
+            utils.error(e)
 
         if not broken:
-            self.print_buffer(buffer, tab_id)
+            print_buffer()
 
         return "".join(tokens)
 
@@ -544,13 +550,6 @@ class Model:
             utils.error(e)
 
         return ""
-
-    def print_buffer(self, buffer: List[str], tab_id: str) -> None:
-        if not len(buffer):
-            return
-
-        display.insert("".join(buffer), tab_id=tab_id)
-        buffer.clear()
 
     def load_or_unload(self) -> None:
         if self.model_loading:
