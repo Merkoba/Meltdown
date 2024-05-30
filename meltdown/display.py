@@ -1005,4 +1005,5 @@ class Display:
 
         tab.output.update_scroll()
 
+
 display = Display()

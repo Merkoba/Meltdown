@@ -6,7 +6,6 @@
 # pacman: python-gitpython
 import os
 import git
-import time
 import json
 from pathlib import Path
 

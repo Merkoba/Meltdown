@@ -109,8 +109,7 @@ def run_program(text: str) -> None:
         if not ans:
             return
 
-        cmd = [ans, text]
-        app.run_command(cmd)
+        app.prog_text(ans, text)
 
     if args.item_program:
         action(args.item_program)

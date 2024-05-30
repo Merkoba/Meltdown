@@ -393,6 +393,12 @@ class App:
         files.write(path, text)
         self.run_command([cmd, str(path)])
 
+    def prog_text(self, cmd: str, text: str) -> None:
+        items = cmd.split(" ")
+        items = list(filter(None, items))
+        items.append(text)
+        app.run_command(items)
+
     def open_url(self, url: str) -> None:
         from .args import args
 
@@ -871,7 +877,7 @@ class App:
         if not text:
             return
 
-        cmd = [args.response_program, text]
-        self.run_command(cmd)
+        self.prog_text(args.response_program, text)
+
 
 app = App()

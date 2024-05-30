@@ -137,7 +137,7 @@ class Model:
 
             if not self.gpt_key:
                 display.print(
-                    "Error: OpenAI API key not found. Use the main menu to set it."
+                    "Error: OpenAI API key not found. Use the model menu to set it."
                 )
 
                 self.clear_model()
