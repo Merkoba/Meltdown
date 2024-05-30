@@ -39,7 +39,6 @@ class Dialog:
         image: Optional[Path] = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
-        focus_hide_enabled: bool = True,
         value: str = "",
         top_frame: bool = False,
         image_width: int = 270,
@@ -137,7 +136,6 @@ class Dialog:
         if commands:
             dialog.highlight_last_button()
 
-        dialog.focus_hide_enabled = focus_hide_enabled
         dialog.show()
 
         if dialog.entry:
@@ -224,10 +222,13 @@ class Dialog:
             on_right_click=on_right_click,
         )
 
-        dialog.make_button("Max", textbox.max)
+        def do_max() -> None:
+            dialog.focus_hide_enabled = False
+            textbox.max()
+
+        dialog.make_button("Max", lambda: do_max())
         dialog.make_button("Cancel", textbox.cancel)
         dialog.make_button("Ok", textbox.ok)
-        dialog.focus_hide_enabled = False
 
         dialog.show()
         dialog.highlight_last_button()
