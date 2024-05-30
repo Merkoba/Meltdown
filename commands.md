@@ -913,3 +913,9 @@ Show the model name
 ### size
 
 Show size and length information
+
+---
+
+### save
+
+Save the last used config

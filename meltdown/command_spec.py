@@ -916,7 +916,7 @@ class CommandSpec:
 
         self.add_cmd(
             "save",
-            "Save to the last loaded config",
+            "Save the last used config",
             lambda a=None: config.save_last(),
         )
 
