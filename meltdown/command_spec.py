@@ -914,5 +914,11 @@ class CommandSpec:
             lambda a=None: display.show_size(),
         )
 
+        self.add_cmd(
+            "save",
+            "Save to the last loaded config",
+            lambda a=None: config.save_last(),
+        )
+
 
 command_spec = CommandSpec()

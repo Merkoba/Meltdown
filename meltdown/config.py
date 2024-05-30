@@ -47,13 +47,14 @@ No need to greet me, just answer.
         self.default_threads = 6
         self.default_mlock = "yes"
         self.default_theme = "dark"
-        self.default_gpu_layers = 27
+        self.default_gpu_layers = 33
         self.default_stop = "<|im_start|> ;; <|im_end|>"
         self.default_mode = "text"
         self.default_theme = "dark"
         self.default_last_log = ""
         self.default_logits = "normal"
         self.default_last_program = ""
+        self.default_last_config = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -83,6 +84,7 @@ No need to greet me, just answer.
         self.last_log = self.default_last_log
         self.logits = self.default_logits
         self.last_program = self.default_last_program
+        self.last_config = self.default_last_config
 
         self.locals = [
             "theme",
@@ -90,6 +92,7 @@ No need to greet me, just answer.
             "font_family",
             "last_log",
             "last_program",
+            "last_config",
         ]
 
         self.clearables = [
@@ -202,11 +205,12 @@ No need to greet me, just answer.
                 filetypes=[("Config Files", "*.json")],
             )
 
-            if not file_path:
-                return
+        if not file_path:
+            return
 
-        conf = self.get_string()
         path = Path(file_path)
+        self.last_config = path.stem
+        conf = self.get_string()
         files.write(path, conf)
 
         if not args.quiet:
@@ -240,6 +244,7 @@ No need to greet me, just answer.
 
             return
 
+        self.last_config = path.stem
         self.apply(path)
         self.after_load()
 
@@ -498,6 +503,12 @@ No need to greet me, just answer.
         if hasattr(self, text):
             value = getattr(self, text)
             display.print(f"{text}: {value}")
+
+    def save_last(self) -> None:
+        if not self.last_config:
+            return
+
+        self.save_state(self.last_config)
 
 
 config = Config()
