@@ -97,11 +97,11 @@ def select(number: str) -> None:
     action("select", number)
 
 
-def prog(number: str) -> None:
+def program(number: str) -> None:
     if not number:
         number = "last"
 
-    action("prog", number)
+    action("program", number)
 
 
 def run_program(text: str) -> None:

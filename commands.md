@@ -880,6 +880,12 @@ Select the specified item
 
 ---
 
+### progitem
+
+Run a program with the specified item
+
+---
+
 ### profile
 
 Show the current profile

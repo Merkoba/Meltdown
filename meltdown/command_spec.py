@@ -878,6 +878,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "progitem",
+            "Run a program with the specified item",
+            lambda a=None: itemops.program(number=a),
+            type=str,
+        )
+
+        self.add_cmd(
             "profile",
             "Show the current profile",
             lambda a=None: app.open_profile(),
