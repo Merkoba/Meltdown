@@ -188,7 +188,6 @@ class Dialog:
             entry_mode=mode,
             value=value,
             top_frame=True,
-            focus_hide_enabled=False,
         )
 
     @staticmethod
