@@ -71,8 +71,7 @@ class Files:
         if not text:
             return
 
-        if len(text) > config.list_item_max_length:
-            return
+        text = text[: config.list_item_max_length]
 
         if not getattr(self, f"{key}_loaded"):
             self.load_list(key)
