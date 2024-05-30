@@ -129,6 +129,7 @@ class MoreMenu:
         num_tabs = display.num_tabs()
         modified = display.is_modified()
         ignored = display.is_ignored()
+        unmod = (not modified) or ignored
         single = num_tabs == 1
 
         self.menu.add("Find", lambda e: findmanager.find())
@@ -136,27 +137,26 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Copy Text", lambda e: formats.copy_text())
-        self.menu.add("Copy JSON", lambda e: formats.copy_json())
-        self.menu.add("Copy MrkD", lambda e: formats.copy_markdown())
+        self.menu.add("Copy Text", lambda e: formats.copy_text(), disabled=unmod)
+        self.menu.add("Copy JSON", lambda e: formats.copy_json(), disabled=unmod)
+        self.menu.add("Copy MrkD", lambda e: formats.copy_markdown(), disabled=unmod)
 
         self.menu.separator()
 
-        disable = (not modified) or ignored
-        self.menu.add("View Text", lambda e: formats.view_text(), disabled=disable)
-        self.menu.add("View JSON", lambda e: formats.view_json(), disabled=disable)
-        self.menu.add("View MrkD", lambda e: formats.view_markdown(), disabled=disable)
+        self.menu.add("View Text", lambda e: formats.view_text(), disabled=unmod)
+        self.menu.add("View JSON", lambda e: formats.view_json(), disabled=unmod)
+        self.menu.add("View MrkD", lambda e: formats.view_markdown(), disabled=unmod)
 
         self.menu.separator()
 
         self.menu.add(
-            "Prog Text", lambda e: formats.program(mode="text"), disabled=disable
+            "Prog Text", lambda e: formats.program(mode="text"), disabled=unmod
         )
         self.menu.add(
-            "Prog JSON", lambda e: formats.program(mode="json"), disabled=disable
+            "Prog JSON", lambda e: formats.program(mode="json"), disabled=unmod
         )
         self.menu.add(
-            "Prog MrkD", lambda e: formats.program(mode="markdown"), disabled=disable
+            "Prog MrkD", lambda e: formats.program(mode="markdown"), disabled=unmod
         )
 
     def show(self, event: Any = None) -> None:
@@ -182,22 +182,22 @@ class TabMenu:
         num_tabs = display.num_tabs()
         modified = display.is_modified()
         ignored = display.is_ignored()
+        unmod = (not modified) or ignored
         single = num_tabs == 1
 
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
         self.menu.separator()
-        disable = (not modified) or ignored
 
         self.menu.add(
             "Save Log",
             lambda e: logs.menu(full=False, tab_id=display.tab_menu_id),
-            disabled=disable,
+            disabled=unmod,
         )
 
         self.menu.add(
             "Summarize",
             lambda e: summarize.summarize(tab_id=display.tab_menu_id),
-            disabled=disable,
+            disabled=unmod,
         )
 
         self.menu.separator()
@@ -212,12 +212,10 @@ class TabMenu:
             disabled=single,
         )
 
-        disable = (not modified) or ignored
-
         self.menu.add(
             "Clear",
             lambda e: display.clear(tab_id=display.tab_menu_id),
-            disabled=disable,
+            disabled=unmod,
         )
 
         self.menu.separator()
