@@ -94,7 +94,7 @@ def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
 def add_format(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "format", "Format", padx=(0, 0))
     values = ["auto"]
-    fmts = sorted([item for item in formats._chat_handlers])
+    fmts = sorted(formats._chat_handlers)
     values.extend(fmts)
     make_combobox(widgets, data, "format", values, width=13)
 

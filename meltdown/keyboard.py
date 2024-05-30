@@ -516,13 +516,11 @@ class Keyboard:
             used_keys.append(upkey)
 
             if all(
-                [
-                    (not value.help)
-                    and (not value.ctrl_help)
-                    and (not value.shift_help)
-                    and (not value.ctrl_shift_help)
-                    for value in data
-                ]
+                (not value.help)
+                and (not value.ctrl_help)
+                and (not value.shift_help)
+                and (not value.ctrl_shift_help)
+                for value in data
             ):
                 continue
 

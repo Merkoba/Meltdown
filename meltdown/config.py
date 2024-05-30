@@ -412,7 +412,7 @@ No need to greet me, just answer.
             return
 
         Dialog.show_confirm(
-            "This will remove your custom configs" "\nand refresh the widgets", action
+            "This will remove your custom configs\nand refresh the widgets", action
         )
 
     def reset_one(self, key: str, focus: bool = True, on_change: bool = True) -> None:

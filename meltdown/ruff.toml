@@ -37,7 +37,9 @@ select = [
     "SIM114",
     "SIM118",
     "SIM210",
+    "C4",
 ]
 exclude = [
     "pyperclip.py",
+    "tests.py",
 ]

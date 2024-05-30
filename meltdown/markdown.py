@@ -283,8 +283,8 @@ class Markdown:
 
                     indices.append(IndexItem(start, end, content))
 
-            sorted_indices = reversed(
-                sorted(indices, key=lambda x: int(x.start.split(".")[1]))
+            sorted_indices = sorted(
+                indices, key=lambda x: int(x.start.split(".")[1]), reverse=True
             )
 
             for index_item in sorted_indices:
@@ -413,7 +413,7 @@ class Markdown:
             elif spacing_mode == "always":
                 spaced = True
             else:
-                spaced = not all([line.strip() for line in sliced])
+                spaced = not all(line.strip() for line in sliced)
 
             if mode == "ordered":
                 n = 1
