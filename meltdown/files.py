@@ -33,21 +33,20 @@ class Files:
             path.parent.mkdir(parents=True, exist_ok=True)
             path.touch(exist_ok=True)
 
-        with path.open("r", encoding="utf-8") as file:
-            name = f"{key}_list"
+        name = f"{key}_list"
 
-            try:
-                items = json.load(file)
-            except BaseException:
-                items = []
+        try:
+            items = self.load(path)
+        except BaseException:
+            items = []
 
-                if hasattr(self, name):
-                    item = getattr(self, name)
+            if hasattr(self, name):
+                item = getattr(self, name)
 
-                    if item:
-                        items.append(item)
+                if item:
+                    items.append(item)
 
-            setattr(self, name, items)
+        setattr(self, name, items)
 
     def add_model(self, text: str) -> None:
         self.add_to_list("models", text)
