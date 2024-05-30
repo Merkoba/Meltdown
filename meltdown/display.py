@@ -809,7 +809,7 @@ class Display:
                 self.tabs[key].streaming = False
 
     def clear_tab_streaming(self) -> None:
-        for key in self.tabs.keys():
+        for key in self.tabs:
             self.tabs[key].streaming = False
 
     def toggle_scroll(self) -> None:

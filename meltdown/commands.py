@@ -193,13 +193,13 @@ class Commands:
 
     def try_to_run(self, cmd: str, argument: str) -> bool:
         # Check normal
-        for key in self.commands.keys():
+        for key in self.commands:
             if cmd == key:
                 self.run(key, argument)
                 return True
 
         # Similarity on keys
-        for key in self.commands.keys():
+        for key in self.commands:
             if utils.check_match(cmd, key):
                 self.run(key, argument)
                 return True
@@ -207,7 +207,7 @@ class Commands:
         return False
 
     def get_similar_alias(self, cmd: str) -> Optional[str]:
-        for key in self.aliases.keys():
+        for key in self.aliases:
             if utils.check_match(cmd, key):
                 return key
 

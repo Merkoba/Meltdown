@@ -34,6 +34,9 @@ select = [
     "RUF",
     "E401",
     "E721",
+    "SIM114",
+    "SIM118",
+    "SIM210",
 ]
 exclude = [
     "pyperclip.py",

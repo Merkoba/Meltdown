@@ -188,7 +188,7 @@ class Model:
 
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
-            mlock = True if (config.mlock == "yes") else False
+            mlock = config.mlock == "yes"
             display.to_bottom(tab_id)
 
             if args.model_feedback and (not args.quiet):

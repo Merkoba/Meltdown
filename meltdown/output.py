@@ -646,9 +646,7 @@ class Output(tk.Text):
             if last_chars:
                 if last_chars == "\n\n":
                     pass
-                elif last_chars == "\n":
-                    left = "\n"
-                elif last_chars[-1] == "\n":
+                elif (last_chars == "\n") or (last_chars[-1] == "\n"):
                     left = "\n"
                 else:
                     left = "\n\n"
