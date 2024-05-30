@@ -245,3 +245,48 @@ def view_markdown(tab_id: Optional[str] = None) -> None:
         display.print(text, tab_id=new_tab)
         display.format_text(tab_id=new_tab, mode="all")
         display.to_top(tab_id=new_tab)
+
+
+# ---
+
+
+def copy_text(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_text(tabconvo.convo)
+
+    if not text:
+        return
+
+    utils.copy(text)
+
+
+def copy_json(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_json(tabconvo.convo)
+
+    if not text:
+        return
+
+    utils.copy(text)
+
+
+def copy_markdown(tab_id: Optional[str] = None) -> None:
+    tabconvo = display.get_tab_convo(tab_id)
+
+    if not tabconvo:
+        return
+
+    text = get_markdown(tabconvo.convo)
+
+    if not text:
+        return
+
+    utils.copy(text)

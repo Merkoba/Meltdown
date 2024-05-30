@@ -1540,7 +1540,7 @@ Type: str
 
 Minimum number of characters for input words to be remembered
 
-Default: 6
+Default: 5
 
 Type: int
 

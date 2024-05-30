@@ -296,6 +296,14 @@ class CommandSpec:
             type="force",
         )
 
+        self.add_cmd("copytext", "Copy raw text", lambda a=None: formats.copy_text())
+
+        self.add_cmd("copyjson", "Copy raw JSON", lambda a=None: formats.copy_json())
+
+        self.add_cmd(
+            "copymarkdown", "Copy raw Markdown", lambda a=None: formats.copy_markdown()
+        )
+
         self.add_cmd("viewtext", "View raw text", lambda a=None: formats.view_text())
 
         self.add_cmd("viewjson", "View raw JSON", lambda a=None: formats.view_json())

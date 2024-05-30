@@ -136,8 +136,9 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Copy All", lambda e: display.copy_output())
-        self.menu.add("Select All", lambda e: display.select_output())
+        self.menu.add("Copy Text", lambda e: formats.copy_text())
+        self.menu.add("Copy JSON", lambda e: formats.copy_json())
+        self.menu.add("Copy MrkD", lambda e: formats.copy_markdown())
 
         self.menu.separator()
 

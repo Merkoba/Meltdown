@@ -414,6 +414,7 @@ class Output(tk.Text):
         self.bind("<Prior>", lambda e: scroll_up())
         self.bind("<Control-Prior>", lambda e: scroll_up(True))
         self.bind("<Shift-Prior>", lambda e: scroll_up(True))
+        self.bind("<Control-KeyRelease-a>", lambda e: self.select_all())
         self.bind("<Next>", lambda e: scroll_down())
         self.bind("<Control-Next>", lambda e: scroll_down(True))
         self.bind("<Shift-Next>", lambda e: scroll_down(True))

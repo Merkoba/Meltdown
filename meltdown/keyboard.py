@@ -141,7 +141,9 @@ class Keyboard:
                     return
 
             # Focus the input and insert char
-            if (len(event.keysym.strip()) == 1) or (event.char in chars):
+            if (not self.ctrl) and (
+                (len(event.keysym.strip()) == 1) or (event.char in chars)
+            ):
                 inputcontrol.focus()
                 inputcontrol.input.insert_text(event.char)
             elif event.keysym in syms:

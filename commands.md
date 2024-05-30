@@ -276,6 +276,24 @@ Reset all configs
 
 ---
 
+### copytext
+
+Copy raw text
+
+---
+
+### copyjson
+
+Copy raw JSON
+
+---
+
+### copymarkdown
+
+Copy raw Markdown
+
+---
+
 ### viewtext
 
 View raw text
