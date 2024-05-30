@@ -352,7 +352,7 @@ class InputControl:
         if not text:
             text = self.input.get().strip()
 
-        if add_line:
+        if text and add_line:
             text += "\n"
 
         self.clear()
