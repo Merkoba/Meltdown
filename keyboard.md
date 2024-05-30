@@ -14,7 +14,7 @@ Submit prompt
 
 Ctrl: Submit without using history
 
-Shift: Make a tab and submit
+Shift: Show the Write textbox and add a line
 
 ---
 
@@ -92,7 +92,7 @@ Ctrl+Shift: Move tab to the right
 
 < SPACE >
 
-Ctrl: Write an input
+Ctrl: Show the Write textbox
 
 ---
 
