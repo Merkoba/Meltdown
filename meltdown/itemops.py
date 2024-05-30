@@ -116,4 +116,4 @@ def run_program(text: str) -> None:
         action(args.item_program)
         return
 
-    Dialog.show_input("Define program", lambda a: action(a))
+    Dialog.show_input("Run program", lambda a: action(a))
