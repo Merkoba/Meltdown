@@ -733,6 +733,7 @@ class App:
             widgets.disable_stop_button()
             display.stream_stopped()
             commands.after_stream()
+            self.check_response_file()
 
         if args.disable_buttons:
             model_empty = widgets.model.get() == ""
@@ -837,5 +838,25 @@ class App:
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
+    def check_response_file(self) -> None:
+        from .args import args
+        from .model import model
+
+        if not args.response_file:
+            return
+
+        path = Path(args.response_file)
+        path.touch(exist_ok=True)
+
+        if not path.exists():
+            return
+
+        text = model.last_response
+
+        if not text:
+            return
+
+        with path.open("w", encoding="utf-8") as file:
+            file.write(text)
 
 app = App()

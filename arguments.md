@@ -2085,3 +2085,13 @@ Default: "auto"
 Choices: "auto", "never", "always"
 
 Type: str
+
+---
+
+### response-file
+
+Save the latest response to this file
+
+Default: [Empty string]
+
+Type: str

@@ -39,6 +39,7 @@ class Model:
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
         self.gpt_client = None
+        self.last_response = ""
 
         self.gpts: List[Tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
@@ -460,8 +461,11 @@ class Model:
         else:
             ans = self.process_instant(output, tab_id)
 
-        if ans:
-            log_dict["ai"] = ans.strip()
+        res = ans.strip()
+
+        if res:
+            log_dict["ai"] = res
+            self.last_response = res
             tabconvo.convo.add(log_dict)
 
             if args.show_duration:

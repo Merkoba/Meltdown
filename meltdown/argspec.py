@@ -1370,5 +1370,11 @@ class ArgSpec:
             info="How to space between unordered list items",
         )
 
+        self.add_argument(
+            "response_file",
+            type=str,
+            info="Save the latest response to this file",
+        )
+
 
 argspec = ArgSpec()
