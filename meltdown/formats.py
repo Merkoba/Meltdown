@@ -12,6 +12,7 @@ from .config import config
 from .session import Conversation
 from .output import Output
 from .display import display
+from .files import files
 
 
 # ---
@@ -179,10 +180,7 @@ def program(mode: str, cmd: Optional[str] = None) -> None:
     tmpdir = tempfile.gettempdir()
     name = f"mlt_{utils.now_int()}.{ext}"
     path = Path(tmpdir, name)
-
-    with path.open("w", encoding="utf-8") as file:
-        file.write(text)
-
+    files.write(path, text)
     app.open_generic(str(path), opener=cmd)
 
 

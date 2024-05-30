@@ -97,5 +97,10 @@ class Files:
             file = self.files_list[0]
             app.open_generic(file)
 
+    def write(self, path: Path, text: str) -> None:
+        with path.open("w", encoding="utf-8") as file:
+            file.write(text)
+
+
 
 files = Files()

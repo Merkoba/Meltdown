@@ -176,6 +176,7 @@ No need to greet me, just answer.
         from .display import display
         from .paths import paths
         from .args import args
+        from .files import files
 
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
@@ -194,9 +195,7 @@ No need to greet me, just answer.
 
         conf = self.get_string()
         path = Path(file_path)
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(conf)
+        files.write(path, conf)
 
         if not args.quiet:
             name = path.name

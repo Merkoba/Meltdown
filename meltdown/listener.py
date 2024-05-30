@@ -6,8 +6,9 @@ import tempfile
 # Modules
 from .args import args
 from .app import app
-from .inputcontrol import inputcontrol
 from .utils import utils
+from .files import files
+from .inputcontrol import inputcontrol
 
 
 def start() -> None:
@@ -37,9 +38,7 @@ def do_start() -> None:
                 text = file.read().strip()
 
                 if text:
-                    with path.open("w", encoding="utf-8") as file_2:
-                        file_2.write("")
-
+                    files.write(path, "")
                     inputcontrol.submit(text=text)
 
         utils.sleep(args.listener_delay)

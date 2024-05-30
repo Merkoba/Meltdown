@@ -12,6 +12,7 @@ from .paths import paths
 from .args import args
 from .dialogs import Dialog
 from .utils import utils
+from .files import files
 from . import tests
 from . import close
 
@@ -141,8 +142,7 @@ class Session:
         if not paths.session.exists():
             paths.session.parent.mkdir(parents=True, exist_ok=True)
 
-        with paths.session.open("w", encoding="utf-8") as file:
-            file.write(self.to_json())
+        files.write(paths.session, self.to_json())
 
     def load_arg(self) -> None:
         try:
@@ -245,9 +245,7 @@ class Session:
                 return
 
         path = Path(file_path)
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(self.to_json())
+        files.write(path, self.to_json())
 
         if not args.quiet:
             name = path.name

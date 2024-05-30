@@ -1,6 +1,7 @@
 # Standard
 import sys
 from typing import List, Optional
+from pathlib import Path
 
 # Modules
 from .app import app
@@ -625,7 +626,7 @@ class Args:
     def make_argumentdoc(self, pathstr: str) -> None:
         from .utils import utils
         from .display import display
-        from pathlib import Path
+        from .files import files
 
         path = Path(pathstr)
 
@@ -634,10 +635,7 @@ class Args:
             return
 
         text = self.get_argtext()
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
-
+        files.write(path, text)
         msg = f"Saved to {path}"
         display.print(msg)
         utils.msg(msg)

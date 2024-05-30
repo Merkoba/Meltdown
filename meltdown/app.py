@@ -385,13 +385,12 @@ class App:
             utils.error(e)
 
     def file_command(self, cmd: str, text: str) -> None:
+        from .files import files
+
         tmpdir = tempfile.gettempdir()
         name = f"mlt_file_{utils.now_int()}.txt"
         path = Path(tmpdir, name)
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
-
+        files.write(path, text)
         self.run_command([cmd, str(path)])
 
     def open_url(self, url: str) -> None:
@@ -842,6 +841,7 @@ class App:
     def check_response_file(self) -> None:
         from .args import args
         from .model import model
+        from .files import files
 
         if not args.response_file:
             return
@@ -857,8 +857,7 @@ class App:
         if not text:
             return
 
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
+        files.write(path, text)
 
     def check_response_prog(self) -> None:
         from .args import args

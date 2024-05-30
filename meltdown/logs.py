@@ -12,6 +12,7 @@ from .session import session
 from .session import Conversation
 from .paths import paths
 from .utils import utils
+from .files import files
 from . import formats
 
 
@@ -53,8 +54,7 @@ class Logs:
                 if num > 9999:
                     break
 
-        with file_path.open("w", encoding="utf-8") as file:
-            file.write(text)
+        files.write(file_path, text)
 
         if not save_all:
             if not args.quiet and args.log_feedback:

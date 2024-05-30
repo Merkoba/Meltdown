@@ -330,10 +330,7 @@ class Commands:
             return
 
         text = self.get_commandtext()
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
-
+        files.write(path, text)
         msg = f"Saved to {path}"
         display.print(msg)
         utils.msg(msg)

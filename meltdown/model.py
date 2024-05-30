@@ -19,6 +19,7 @@ from .config import config
 from .display import display
 from .tips import tips
 from .utils import utils
+from .files import files
 
 
 PromptArg = Dict[str, Any]
@@ -607,8 +608,7 @@ class Model:
                 path.parent.mkdir(parents=True, exist_ok=True)
                 Path.touch(paths.apikey, exist_ok=True)
 
-            with path.open("w", encoding="utf-8") as file:
-                file.write(key)
+            files.write(path, key)
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text), mode="password")
 

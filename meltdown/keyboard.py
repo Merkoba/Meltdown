@@ -12,6 +12,7 @@ from .commands import commands
 from .tooltips import ToolTip
 from .args import args
 from .utils import utils
+from .files import files
 
 
 KbCmd = Optional[Callable[..., Any]]
@@ -583,10 +584,7 @@ class Keyboard:
             return
 
         text = self.get_keyboardtext()
-
-        with path.open("w", encoding="utf-8") as file:
-            file.write(text)
-
+        files.write(path, text)
         msg = f"Saved to {path}"
         display.print(msg)
         utils.msg(msg)
