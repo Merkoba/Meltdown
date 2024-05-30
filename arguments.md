@@ -1540,7 +1540,27 @@ Type: str
 
 Minimum number of characters for input words to be remembered
 
-Default: 4
+Default: 6
+
+Type: int
+
+---
+
+### input-memory-max
+
+Maximum number of characters for input words to be remembered
+
+Default: 30
+
+Type: int
+
+---
+
+### input-memory-max-items
+
+Maximum number of input memory items to remember
+
+Default: 1000
 
 Type: int
 
