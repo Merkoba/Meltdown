@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from typing import List, Union
+from typing import Union
 
 # Modules
 from .inputcontrol import inputcontrol
@@ -19,7 +19,7 @@ InputWidget = Union[EntryBox, TextBox, None]
 class AutoComplete:
     def __init__(self) -> None:
         self.index = 0
-        self.matches: List[str] = []
+        self.matches: list[str] = []
         self.match = ""
         self.word = ""
         self.pos = 0

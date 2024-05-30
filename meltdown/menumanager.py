@@ -375,12 +375,15 @@ class CustomMenu:
 
         self.menu = Menu()
 
-        for item in args.custom_prompts:
+        def add(item: str) -> None:
             split = item.split("=")
             word = split[0].strip()
             prompt = "=".join(split[1:]).strip()
 
             self.menu.add(text=word, command=lambda e: Output.custom_prompt(prompt))
+
+        for item in args.custom_prompts:
+            add(item)
 
     def show(self, event: Any = None) -> None:
         if event:

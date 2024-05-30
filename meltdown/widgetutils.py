@@ -170,5 +170,5 @@ def make_combobox(
     return widget
 
 
-def set_select(widget: ttk.Combobox, value: Union[str, int, float]) -> None:
+def set_select(widget: ttk.Combobox, value: Union[str, float]) -> None:
     widget.set(str(value))

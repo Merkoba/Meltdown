@@ -256,7 +256,7 @@ class Markdown:
                 if tag == "header_3":
                     pass
 
-                for _ in range(0, 999):
+                for _ in range(999):
                     start = self.widget.search(
                         all,
                         f"{mtch.line}.{search_col}",
@@ -435,7 +435,7 @@ class Markdown:
                 items = []
 
                 for line in sliced:
-                    if line.startswith("*") or line.startswith("-"):
+                    if line.startswith(("*", "-")):
                         left = f"{space_1}{char}{space_2}"
                         c_line = line[2:].strip()
                         items.append(f"{marker}{left}{c_line}")

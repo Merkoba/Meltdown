@@ -38,6 +38,15 @@ select = [
     "SIM118",
     "SIM210",
     "C4",
+    "W",
+    "FLY",
+    "PT",
+    "PYI",
+    "PIE",
+    "ICN",
+    "B",
+    "S113",
+    "UP",
 ]
 exclude = [
     "pyperclip.py",

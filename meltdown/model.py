@@ -642,7 +642,7 @@ class Model:
 
         if utils.is_url(path):
             try:
-                response = requests.get(path)
+                response = requests.get(path, timeout=5)
 
                 if response.status_code == 200:
                     text = str(response.text)
