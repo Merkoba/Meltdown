@@ -1060,6 +1060,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "list_item_max_length",
+            type=int,
+            info="Maximum length of the text of list items",
+        )
+
+        self.add_argument(
             "listener_delay",
             type=float,
             info="Delay for the listener checks",

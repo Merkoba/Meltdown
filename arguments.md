@@ -1566,6 +1566,16 @@ Type: int
 
 ---
 
+### list-item-max-length
+
+Maximum length of the text of list items
+
+Default: 200
+
+Type: int
+
+---
+
 ### listener-delay
 
 Delay for the listener checks
