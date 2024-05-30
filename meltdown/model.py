@@ -455,8 +455,6 @@ class Model:
             self.release_lock()
             return
 
-        ans = ""
-
         if args.stream:
             ans = self.process_stream(output, tab_id)
         else:
