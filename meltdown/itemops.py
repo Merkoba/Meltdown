@@ -109,7 +109,7 @@ def run_program(text: str) -> None:
         if not ans:
             return
 
-        app.prog_text(ans, text)
+        app.run_program(ans, text)
 
     if args.item_program:
         action(args.item_program)

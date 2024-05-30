@@ -393,7 +393,7 @@ class App:
         files.write(path, text)
         self.run_command([cmd, str(path)])
 
-    def prog_text(self, cmd: str, text: str) -> None:
+    def run_program(self, cmd: str, text: str) -> None:
         items = cmd.split(" ")
         items = list(filter(None, items))
         items.append(text)
@@ -877,7 +877,7 @@ class App:
         if not text:
             return
 
-        self.prog_text(args.response_program, text)
+        self.run_program(args.response_program, text)
 
 
 app = App()

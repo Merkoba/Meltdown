@@ -76,7 +76,7 @@ class Logs:
                     cmd = args.on_log
 
                 if cmd:
-                    app.run_command([cmd, str(file_path)])
+                    app.run_program(cmd, str(file_path))
 
         return str(file_path)
 
