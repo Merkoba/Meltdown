@@ -53,6 +53,7 @@ No need to greet me, just answer.
         self.default_theme = "dark"
         self.default_last_log = ""
         self.default_logits = "normal"
+        self.default_last_program = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -81,11 +82,14 @@ No need to greet me, just answer.
         self.theme = self.default_theme
         self.last_log = self.default_last_log
         self.logits = self.default_logits
+        self.last_program = self.default_last_program
 
         self.locals = [
+            "theme",
             "font_size",
             "font_family",
             "last_log",
+            "last_program",
         ]
 
         self.clearables = [

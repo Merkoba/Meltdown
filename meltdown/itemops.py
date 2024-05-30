@@ -3,15 +3,13 @@ from typing import Optional
 
 # Modules
 from .app import app
+from .config import config
 from .args import args
 from .utils import utils
 from .dialogs import Dialog
 
 
 class ItemOps:
-    def __init__(self) -> None:
-        self.last_program = ""
-
     def action(
         self,
         mode: str,
@@ -112,14 +110,14 @@ class ItemOps:
             if not ans:
                 return
 
-            self.last_program = ans
+            config.set_value("last_program", ans)
             app.run_program(ans, text)
 
         if args.item_program:
             action(args.item_program)
             return
 
-        Dialog.show_input("Run program", lambda a: action(a), value=self.last_program)
+        Dialog.show_input("Run program", lambda a: action(a), value=config.last_program)
 
 
 itemops = ItemOps()
