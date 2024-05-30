@@ -2098,9 +2098,19 @@ Type: str
 
 ---
 
-### response-prog
+### response-program
 
 Run a program with the latest response as the argument
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### item-program
+
+Run a program with the selected item's response as the argument
 
 Default: [Empty string]
 

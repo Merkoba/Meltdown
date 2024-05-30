@@ -1377,9 +1377,15 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "response_prog",
+            "response_program",
             type=str,
             info="Run a program with the latest response as the argument",
+        )
+
+        self.add_argument(
+            "item_program",
+            type=str,
+            info="Run a program with the selected item's response as the argument",
         )
 
 

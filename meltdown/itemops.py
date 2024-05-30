@@ -2,7 +2,10 @@
 from typing import Optional
 
 # Modules
+from .app import app
+from .args import args
 from .utils import utils
+from .dialogs import Dialog
 
 
 def action(
@@ -68,6 +71,9 @@ def action(
         utils.copy(text, command=True)
     elif mode == "select":
         Output.select_item(index + 1)
+    elif mode == "program":
+        if ai_text:
+            run_program(ai_text)
 
 
 def repeat(number: str, no_history: bool = False) -> None:
@@ -89,3 +95,25 @@ def select(number: str) -> None:
         number = "last"
 
     action("select", number)
+
+
+def prog(number: str) -> None:
+    if not number:
+        number = "last"
+
+    action("prog", number)
+
+
+def run_program(text: str) -> None:
+    def action(ans: str) -> None:
+        if not ans:
+            return
+
+        cmd = [ans, text]
+        app.run_command(cmd)
+
+    if args.item_program:
+        action(args.item_program)
+        return
+
+    Dialog.show_input("Define program", lambda a: action(a))

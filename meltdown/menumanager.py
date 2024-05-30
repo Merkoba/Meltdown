@@ -308,6 +308,7 @@ class ItemMenu:
 
         self.menu.add(text="Copy", command=lambda e: Output.copy_item())
         self.menu.add(text="Select", command=lambda e: Output.select_item())
+        self.menu.add(text="Program", command=lambda e: Output.program_item())
         self.menu.separator()
         self.menu.add(text="Delete", command=lambda e: Output.delete_items())
 
