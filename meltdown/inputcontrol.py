@@ -87,7 +87,13 @@ class InputControl:
     def show_menu(self, event: Optional[Any] = None) -> None:
         from .widgets import widgets
 
-        widgets.show_menu_items("input", "inputs", lambda s: self.set(s), event)
+        def action(text: str) -> None:
+            if "\n" in text:
+                self.show_textbox(text=text)
+            else:
+                self.set(text)
+
+        widgets.show_menu_items("input", "inputs", lambda s: action(s), event)
 
     def focus(self) -> None:
         self.input.focus_set()
@@ -98,9 +104,13 @@ class InputControl:
         self.set(text)
         self.input.focus_end()
 
-    def get_history_list(self, force_no_cmds: bool = False) -> List[str]:
+    def get_history_list(
+        self, force_no_cmds: bool = False, no_multi: bool = False
+    ) -> List[str]:
         inputs = files.get_list("inputs")
-        inputs = [i for i in inputs if (not "\n" in i)]
+
+        if no_multi:
+            inputs = [i for i in inputs if (not "\n" in i)]
 
         if force_no_cmds or (not args.command_history):
             inputs = [i for i in inputs if (not commands.is_command(i))]
@@ -108,7 +118,7 @@ class InputControl:
         return inputs
 
     def history_up(self) -> None:
-        inputs = self.get_history_list()
+        inputs = self.get_history_list(no_multi=True)
 
         if not inputs:
             return
@@ -125,7 +135,7 @@ class InputControl:
         self.apply_history(inputs)
 
     def history_down(self) -> None:
-        inputs = self.get_history_list()
+        inputs = self.get_history_list(no_multi=True)
 
         if not inputs:
             return
@@ -204,11 +214,12 @@ class InputControl:
                         if args.command_history:
                             files.add_input(text)
 
+                        self.add_words(text)
+
                         return
 
-                if not "\n" in text:
-                    files.add_input(text)
-                    self.add_words(text)
+                files.add_input(text)
+                self.add_words(text)
 
             if tab.mode == "ignore":
                 return
@@ -285,7 +296,7 @@ class InputControl:
             if len_words < args.input_memory_min:
                 continue
 
-            if len_words > config.input_memory_max:
+            if len_words > args.input_memory_max:
                 continue
 
             if commands.is_command(clean_word):
@@ -296,10 +307,13 @@ class InputControl:
                 terminal.add_word(clean_word)
                 added = True
 
+            n = args.input_memory_max_items
+            self.autocomplete = self.autocomplete[-n:]
+
         if added:
             files.save(paths.autocomplete, self.autocomplete)
 
-    def show_textbox(self, maxed: bool = False) -> None:
+    def show_textbox(self, maxed: bool = False, text: Optional[str] = None) -> None:
         from .textbox import TextBox
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
@@ -335,7 +349,9 @@ class InputControl:
         def action(ans: Dict[str, Any]) -> None:
             self.submit(text=ans["text"], scroll=False)
 
-        text = self.input.get().strip()
+        if not text:
+            text = self.input.get().strip()
+
         self.clear()
 
         Dialog.show_textbox(

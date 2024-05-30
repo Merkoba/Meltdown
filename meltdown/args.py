@@ -89,7 +89,9 @@ class Args:
         self.terminal_height = 3
         self.terminal_vi = False
         self.input_memory = True
-        self.input_memory_min = 4
+        self.input_memory_min = 6
+        self.input_memory_max = 30
+        self.input_memory_max_items = 1000
         self.listener = False
         self.listener_delay = 0.5
         self.sticky = False
@@ -373,6 +375,8 @@ class Args:
             "after_stream",
             "tabs_always",
             "input_memory_min",
+            "input_memory_max",
+            "input_memory_max_items",
             "browser",
             "file_manager",
             "font_diff",

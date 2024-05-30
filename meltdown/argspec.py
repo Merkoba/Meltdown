@@ -1048,6 +1048,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "input_memory_max",
+            type=int,
+            info="Maximum number of characters for input words to be remembered",
+        )
+
+        self.add_argument(
+            "input_memory_max_items",
+            type=int,
+            info="Maximum number of input memory items to remember",
+        )
+
+        self.add_argument(
             "listener_delay",
             type=float,
             info="Delay for the listener checks",
