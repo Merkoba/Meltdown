@@ -7,6 +7,7 @@ from pathlib import Path
 
 # Modules
 from .app import app
+from .config import config
 from .widgets import widgets
 from .display import display
 from .model import model
@@ -16,7 +17,6 @@ from .commands import commands
 from .keyboard import keyboard
 from .inputcontrol import inputcontrol
 from .utils import utils
-from .files import files
 from .paths import paths
 from .system import system
 from . import terminal
@@ -49,7 +49,7 @@ def main() -> None:
 
             sys.exit(0)
 
-    files.load()
+    config.load()
     app.prepare()
     widgets.make()
     model.setup()

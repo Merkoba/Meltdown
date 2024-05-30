@@ -1,6 +1,5 @@
 # Standard
 import re
-import json
 from typing import Any, Dict, List, Optional
 from pathlib import Path
 
@@ -273,12 +272,11 @@ class Commands:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):
             return
 
-        with paths.commands.open("r", encoding="utf-8") as file:
-            try:
-                cmds = json.load(file)
-            except BaseException as e:
-                utils.error(e)
-                cmds = {}
+        try:
+            cmds = files.load(paths.commands)
+        except BaseException as e:
+            utils.error(e)
+            cmds = {}
 
         for key in cmds:
             if key in self.commands:

@@ -1,5 +1,4 @@
 # Standard
-import json
 from typing import Any, Optional, List, Dict
 
 # Libraries
@@ -246,12 +245,11 @@ class InputControl:
         path = paths.autocomplete
 
         if path.exists() and path.is_file():
-            with path.open("r", encoding="utf-8") as file:
-                try:
-                    self.autocomplete = json.load(file)
-                except BaseException as e:
-                    utils.error(e)
-                    self.autocomplete = []
+            try:
+                self.autocomplete = files.load(path)
+            except BaseException as e:
+                utils.error(e)
+                self.autocomplete = []
         else:
             self.autocomplete = []
 

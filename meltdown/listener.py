@@ -34,11 +34,10 @@ def do_start() -> None:
 
     while True:
         if path.exists() and path.is_file():
-            with path.open("r", encoding="utf-8") as file:
-                text = file.read().strip()
+            text = files.read(path)
 
-                if text:
-                    files.write(path, "")
-                    inputcontrol.submit(text=text)
+            if text:
+                files.write(path, "")
+                inputcontrol.submit(text=text)
 
         utils.sleep(args.listener_delay)

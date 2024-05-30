@@ -126,8 +126,7 @@ class Model:
         from .paths import paths
 
         try:
-            with paths.apikey.open("r", encoding="utf-8") as file:
-                self.gpt_key = file.read().strip()
+            self.gpt_key = files.read(paths.apikey)
         except BaseException as e:
             utils.error(e)
             self.gpt_key = ""
@@ -651,8 +650,7 @@ class Model:
                 utils.error(e)
         else:
             try:
-                with Path(path).open("r", encoding="utf-8") as file:
-                    text = file.read()
+                text = files.read(Path(path))
             except BaseException as e:
                 utils.error(e)
 

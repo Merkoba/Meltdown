@@ -193,14 +193,13 @@ class Session:
     def load_items(self, path: Path) -> None:
         close.close_all(force=True, make_empty=False)
 
-        with path.open("r", encoding="utf-8") as file:
-            try:
-                items = json.load(file)
-            except BaseException:
-                if not args.quiet:
-                    utils.msg("Creating empty session.json")
+        try:
+            items = files.load(path)
+        except BaseException:
+            if not args.quiet:
+                utils.msg("Creating empty session.json")
 
-                items = []
+            items = []
 
         if args.test:
             items.append(tests.format_test)

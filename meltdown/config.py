@@ -172,6 +172,14 @@ No need to greet me, just answer.
 
         return json.dumps(conf)
 
+    def load(self) -> None:
+        from .args import args
+
+        if args.config:
+            self.load_arg()
+        else:
+            self.load_file()
+
     def save_state(self, name: Optional[str] = None) -> None:
         from .display import display
         from .paths import paths

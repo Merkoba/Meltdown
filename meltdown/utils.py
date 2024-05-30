@@ -162,10 +162,10 @@ class Utils:
 
     def random_noun(self) -> str:
         from .paths import paths
+        from .files import files
 
         if not self.nouns:
-            with paths.nouns.open("r", encoding="utf-8") as file:
-                self.nouns = file.read().strip().splitlines()
+            self.nouns = files.read(paths.nouns).splitlines()
 
         return random.choice(self.nouns)
 

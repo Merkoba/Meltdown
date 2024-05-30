@@ -26,12 +26,6 @@ class Files:
         with path.open("w", encoding="utf-8") as file:
             json.dump(dictionary, file, indent=4)
 
-    def load(self) -> None:
-        if args.config:
-            config.load_arg()
-        else:
-            config.load_file()
-
     def load_list(self, key: str) -> None:
         path: Path = getattr(paths, key)
 
@@ -97,10 +91,17 @@ class Files:
             file = self.files_list[0]
             app.open_generic(file)
 
+    def load(self, path: Path) -> Any:
+        with path.open("r", encoding="utf-8") as file:
+            return json.load(file)
+
+    def read(self, path: Path) -> str:
+        with path.open("r", encoding="utf-8") as file:
+            return file.read().strip()
+
     def write(self, path: Path, text: str) -> None:
         with path.open("w", encoding="utf-8") as file:
             file.write(text)
-
 
 
 files = Files()
