@@ -2,7 +2,7 @@
 from typing import TYPE_CHECKING, Optional, List, Tuple
 
 # Libraries
-from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as formats  # type: ignore
+from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore
 
 # Modules
 from .app import app
@@ -94,7 +94,7 @@ def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
 def add_format(widgets: "Widgets", data: "FrameData") -> None:
     make_label(widgets, data, "format", "Format", padx=(0, 0))
     values = ["auto"]
-    fmts = sorted(formats._chat_handlers)
+    fmts = sorted(Formats._chat_handlers)
     values.extend(fmts)
     make_combobox(widgets, data, "format", values, width=13)
 

@@ -109,7 +109,7 @@ class InputControl:
         inputs = files.get_list("inputs")
 
         if no_multi:
-            inputs = [i for i in inputs if (not "\n" in i)]
+            inputs = [i for i in inputs if ("\n" not in i)]
 
         if force_no_cmds or (not args.command_history):
             inputs = [i for i in inputs if (not commands.is_command(i))]

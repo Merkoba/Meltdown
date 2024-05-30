@@ -32,6 +32,7 @@ select = [
     "PERF",
     "RUF",
     "E401",
+    "E713",
     "E721",
     "SIM103",
     "SIM114",
@@ -47,6 +48,7 @@ select = [
     "B",
     "S113",
     "UP",
+    "N",
 ]
 exclude = [
     "pyperclip.py",
