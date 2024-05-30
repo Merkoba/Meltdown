@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import Any, Dict, Optional, Callable, IO
+from typing import Any, Dict, Optional, Callable
 from tkinter import filedialog
 from pathlib import Path
 
@@ -236,14 +236,13 @@ No need to greet me, just answer.
 
             return
 
-        with path.open("r", encoding="utf-8") as file:
-            self.apply(file)
-            self.after_load()
+        self.apply(path)
+        self.after_load()
 
-            if not args.quiet:
-                f_name = path.name
-                msg = f'Loaded config "{f_name}"'
-                display.print(utils.emoji_text(msg, "storage"))
+        if not args.quiet:
+            f_name = path.name
+            msg = f'Loaded config "{f_name}"'
+            display.print(utils.emoji_text(msg, "storage"))
 
     def after_load(self) -> None:
         from .widgets import widgets
@@ -253,11 +252,12 @@ No need to greet me, just answer.
         model.unload(True)
         self.save()
 
-    def apply(self, file: IO[str]) -> None:
+    def apply(self, path: Path) -> None:
         from .args import args
+        from .files import files
 
         try:
-            conf = json.load(file)
+            conf = files.load(path)
         except BaseException:
             if not args.quiet:
                 utils.msg("Creating empty config.json")
@@ -274,8 +274,7 @@ No need to greet me, just answer.
             paths.config.parent.mkdir(parents=True, exist_ok=True)
             paths.config.touch(exist_ok=True)
 
-        with paths.config.open("r", encoding="utf-8") as file:
-            self.apply(file)
+        self.apply(paths.config)
 
     def load_arg(self) -> None:
         from .args import args
@@ -297,9 +296,8 @@ No need to greet me, just answer.
                 self.load_file()
                 return
 
-            with path.open("r", encoding="utf-8") as file:
-                self.apply(file)
-                self.save()
+            self.apply(path)
+            self.save()
         except BaseException as e:
             utils.error(e)
             args.config = ""
