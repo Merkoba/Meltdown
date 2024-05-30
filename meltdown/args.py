@@ -491,7 +491,7 @@ class Args:
             string_arg = ap.string_arg()
 
             if string_arg:
-                self.input = string_arg
+                self.input = string_arg[:2000]
 
         if self.display_mode:
             self.compact = True
