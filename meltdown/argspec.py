@@ -14,6 +14,7 @@ class ArgSpec:
         self.arguments: Dict[str, Any] = {}
         self.infos: List[str] = []
         self.markdown_choices = ["user", "ai", "both", "none"]
+        self.list_choices = ["auto", "never", "always"]
 
         self.add_arguments()
 
@@ -1358,14 +1359,14 @@ class ArgSpec:
         self.add_argument(
             "ordered_spacing",
             type=str,
-            choices=["auto", "never", "always"],
+            choices=self.list_choices,
             info="How to space between ordered list items",
         )
 
         self.add_argument(
             "unordered_spacing",
             type=str,
-            choices=["auto", "never", "always"],
+            choices=self.list_choices,
             info="How to space between unordered list items",
         )
 
