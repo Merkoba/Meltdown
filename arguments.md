@@ -2095,3 +2095,13 @@ Save the latest response to this file
 Default: [Empty string]
 
 Type: str
+
+---
+
+### response-prog
+
+Run a program with the latest response as the argument
+
+Default: [Empty string]
+
+Type: str

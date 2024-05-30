@@ -1376,5 +1376,11 @@ class ArgSpec:
             info="Save the latest response to this file",
         )
 
+        self.add_argument(
+            "response_prog",
+            type=str,
+            info="Run a program with the latest response as the argument",
+        )
+
 
 argspec = ArgSpec()

@@ -233,6 +233,7 @@ class Args:
         self.open_on_log = False
         self.list_item_max_length = 200
         self.response_file = ""
+        self.response_prog = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -463,6 +464,7 @@ class Args:
             "unordered_indent",
             "list_item_max_length",
             "response_file",
+            "response_prog",
         ]
 
         for n_item in normals:

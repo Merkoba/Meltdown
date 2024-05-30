@@ -734,6 +734,7 @@ class App:
             display.stream_stopped()
             commands.after_stream()
             self.check_response_file()
+            self.check_response_prog()
 
         if args.disable_buttons:
             model_empty = widgets.model.get() == ""
@@ -858,5 +859,20 @@ class App:
 
         with path.open("w", encoding="utf-8") as file:
             file.write(text)
+
+    def check_response_prog(self) -> None:
+        from .args import args
+        from .model import model
+
+        if not args.response_prog:
+            return
+
+        text = model.last_response
+
+        if not text:
+            return
+
+        cmd = [args.response_prog, text]
+        self.run_command(cmd)
 
 app = App()
