@@ -367,7 +367,8 @@ class Utils:
         return f"{char} {text}"
 
     def replace_linebreaks(self, text: str) -> str:
-        return " ".join(text.split("\n"))
+        text = " ".join(text.split("\n"))
+        return self.remove_multiple_spaces(text)
 
 
 utils = Utils()
