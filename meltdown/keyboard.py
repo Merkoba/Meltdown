@@ -292,8 +292,7 @@ class Keyboard:
             if widgets.find_focused():
                 findmanager.find_next(False)
             else:
-                display.make_tab()
-                inputcontrol.submit()
+                inputcontrol.write(add_line=True)
 
         def on_ctrl_enter() -> None:
             inputcontrol.submit(no_history=True)
@@ -325,7 +324,7 @@ class Keyboard:
             on_shift=lambda: on_shift_enter(),
             on_ctrl=lambda: on_ctrl_enter(),
             help="Submit prompt",
-            shift_help="Make a tab and submit",
+            shift_help="Show the Write textbox and add a line",
             ctrl_help="Submit without using history",
         )
 
@@ -402,7 +401,9 @@ class Keyboard:
         )
 
         self.register(
-            "<space>", on_ctrl=lambda: run_command("write"), ctrl_help="Write an input"
+            "<space>",
+            on_ctrl=lambda: run_command("write"),
+            ctrl_help="Show the Write textbox",
         )
 
         self.register("f", on_ctrl=lambda: run_command("find"), ctrl_help="Find text")

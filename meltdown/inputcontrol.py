@@ -58,10 +58,10 @@ class InputControl:
 
         if args.write_button:
             write_button = widgetutils.make_button(
-                frame_data, "Write", lambda: self.show_textbox()
+                frame_data, "Write", lambda: self.write()
             )
 
-            write_button.set_bind("<Button-2>", lambda e: self.show_textbox(True))
+            write_button.set_bind("<Button-2>", lambda e: self.write(True))
             ToolTip(write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
@@ -88,7 +88,7 @@ class InputControl:
 
         def action(text: str) -> None:
             if "\n" in text:
-                self.show_textbox(text=text)
+                self.write(text=text)
             else:
                 self.set(text)
 
@@ -311,7 +311,9 @@ class InputControl:
         if added:
             files.save(paths.autocomplete, self.autocomplete)
 
-    def show_textbox(self, maxed: bool = False, text: Optional[str] = None) -> None:
+    def write(
+        self, maxed: bool = False, text: Optional[str] = None, add_line: bool = False
+    ) -> None:
         from .textbox import TextBox
 
         def on_right_click(event: Any, textbox: TextBox) -> None:
@@ -350,6 +352,9 @@ class InputControl:
         if not text:
             text = self.input.get().strip()
 
+        if add_line:
+            text += "\n"
+
         self.clear()
 
         Dialog.show_textbox(
@@ -365,7 +370,7 @@ class InputControl:
         if arg:
             self.submit(text=arg)
         else:
-            self.show_textbox(maxed=maxed)
+            self.write(maxed=maxed)
 
     def paste(self) -> None:
         utils.paste(self.input)
