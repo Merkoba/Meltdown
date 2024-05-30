@@ -17,7 +17,7 @@ from .output import Output
 from .keyboard import keyboard
 from .utils import utils
 from .autoscroll import autoscroll
-from . import itemops
+from .itemops import itemops
 from . import summarize
 from . import menumanager
 from . import findmanager

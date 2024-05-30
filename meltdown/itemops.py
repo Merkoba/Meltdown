@@ -8,111 +8,118 @@ from .utils import utils
 from .dialogs import Dialog
 
 
-def action(
-    mode: str, number: str, tab_id: Optional[str] = None, no_history: bool = False
-) -> None:
-    from .model import model
-    from .display import display
-    from .output import Output
+class ItemOps:
+    def __init__(self) -> None:
+        self.last_program = ""
 
-    tabconvo = display.get_tab_convo(tab_id)
+    def action(
+        self,
+        mode: str,
+        number: str,
+        tab_id: Optional[str] = None,
+        no_history: bool = False,
+    ) -> None:
+        from .model import model
+        from .display import display
+        from .output import Output
 
-    if not tabconvo:
-        return
+        tabconvo = display.get_tab_convo(tab_id)
 
-    if not tabconvo.convo.items:
-        return
-
-    index = utils.get_index(number, tabconvo.convo.items)
-
-    if index < 0:
-        return
-
-    if index >= len(tabconvo.convo.items):
-        return
-
-    item = tabconvo.convo.items[index]
-
-    if not item:
-        return
-
-    user_text = item.get("user")
-    ai_text = item.get("ai")
-    file = item.get("file", "")
-
-    if mode == "repeat":
-        if user_text:
-            prompt = {"text": user_text, "file": file, "no_history": no_history}
-            model.stream(prompt, tabconvo.tab.tab_id)
-    elif mode == "copy":
-        texts = []
-
-        if user_text:
-            text = ""
-            text += Output.get_prompt("user", put_colons=False)
-            text += f": {user_text}"
-
-            if file:
-                text += f"\n\nFile: {file}"
-
-            texts.append(text)
-
-        if ai_text:
-            text = ""
-            text += Output.get_prompt("ai", put_colons=False)
-            text += f": {ai_text}"
-            texts.append(text)
-
-        text = "\n\n".join(texts)
-
-        if not text:
+        if not tabconvo:
             return
 
-        utils.copy(text, command=True)
-    elif mode == "select":
-        Output.select_item(index + 1)
-    elif mode == "program":
-        if ai_text:
-            run_program(ai_text)
-
-
-def repeat(number: str, no_history: bool = False) -> None:
-    if not number:
-        number = "last"
-
-    action("repeat", number, no_history=no_history)
-
-
-def copy(number: str) -> None:
-    if not number:
-        number = "last"
-
-    action("copy", number)
-
-
-def select(number: str) -> None:
-    if not number:
-        number = "last"
-
-    action("select", number)
-
-
-def program(number: str) -> None:
-    if not number:
-        number = "last"
-
-    action("program", number)
-
-
-def run_program(text: str) -> None:
-    def action(ans: str) -> None:
-        if not ans:
+        if not tabconvo.convo.items:
             return
 
-        app.run_program(ans, text)
+        index = utils.get_index(number, tabconvo.convo.items)
 
-    if args.item_program:
-        action(args.item_program)
-        return
+        if index < 0:
+            return
 
-    Dialog.show_input("Run program", lambda a: action(a))
+        if index >= len(tabconvo.convo.items):
+            return
+
+        item = tabconvo.convo.items[index]
+
+        if not item:
+            return
+
+        user_text = item.get("user")
+        ai_text = item.get("ai")
+        file = item.get("file", "")
+
+        if mode == "repeat":
+            if user_text:
+                prompt = {"text": user_text, "file": file, "no_history": no_history}
+                model.stream(prompt, tabconvo.tab.tab_id)
+        elif mode == "copy":
+            texts = []
+
+            if user_text:
+                text = ""
+                text += Output.get_prompt("user", put_colons=False)
+                text += f": {user_text}"
+
+                if file:
+                    text += f"\n\nFile: {file}"
+
+                texts.append(text)
+
+            if ai_text:
+                text = ""
+                text += Output.get_prompt("ai", put_colons=False)
+                text += f": {ai_text}"
+                texts.append(text)
+
+            text = "\n\n".join(texts)
+
+            if not text:
+                return
+
+            utils.copy(text, command=True)
+        elif mode == "select":
+            Output.select_item(index + 1)
+        elif mode == "program":
+            if ai_text:
+                self.run_program(ai_text)
+
+    def repeat(self, number: str, no_history: bool = False) -> None:
+        if not number:
+            number = "last"
+
+        self.action("repeat", number, no_history=no_history)
+
+    def copy(self, number: str) -> None:
+        if not number:
+            number = "last"
+
+        self.action("copy", number)
+
+    def select(self, number: str) -> None:
+        if not number:
+            number = "last"
+
+        self.action("select", number)
+
+    def program(self, number: str) -> None:
+        if not number:
+            number = "last"
+
+        self.action("program", number)
+
+    def run_program(self, text: str) -> None:
+        def action(ans: str) -> None:
+            if not ans:
+                return
+
+            self.last_program = ans
+            app.run_program(ans, text)
+
+        if args.item_program:
+            action(args.item_program)
+            return
+
+        Dialog.show_input("Run program", lambda a: action(a), value=self.last_program)
+
+
+itemops = ItemOps()

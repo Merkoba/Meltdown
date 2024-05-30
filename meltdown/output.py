@@ -11,6 +11,7 @@ from .utils import utils
 from .gestures import Gestures
 from .autoscroll import autoscroll
 from .inputcontrol import inputcontrol
+from .itemops import itemops
 
 
 class Output(tk.Text):
@@ -65,8 +66,6 @@ class Output(tk.Text):
 
     @staticmethod
     def program_item() -> None:
-        from . import itemops
-
         output = Output.current_output()
 
         if not output:
@@ -78,8 +77,6 @@ class Output(tk.Text):
 
     @staticmethod
     def copy_item() -> None:
-        from . import itemops
-
         output = Output.current_output()
 
         if not output:
@@ -98,8 +95,6 @@ class Output(tk.Text):
 
     @staticmethod
     def repeat_prompt(no_history: bool = False) -> None:
-        from . import itemops
-
         output = Output.current_output()
 
         if not output:
