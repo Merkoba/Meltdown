@@ -726,7 +726,7 @@ class Display:
         text = text.rstrip(" ,.;")
         self.do_rename_tab(tab_id, text)
 
-    def has_messages(self, tab_id: str) -> bool:
+    def has_messages(self, tab_id: Optional[str] = None) -> bool:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -854,16 +854,19 @@ class Display:
     def on_num_tabs_change(self, num: int) -> None:
         self.num_tabs_open = num
 
-    def is_modified(self) -> bool:
-        tab = self.get_current_tab()
+    def is_modified(self, tab_id: Optional[str] = None) -> bool:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
 
         if not tab:
             return False
 
         return tab.modified
 
-    def is_ignored(self) -> bool:
-        tabconvo = self.get_tab_convo()
+    def is_ignored(self, tab_id: Optional[str] = None) -> bool:
+        tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
             return False

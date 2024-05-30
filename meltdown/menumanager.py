@@ -127,9 +127,9 @@ class MoreMenu:
 
         self.menu.clear()
         num_tabs = display.num_tabs()
-        modified = display.is_modified()
+        messages = display.has_messages()
         ignored = display.is_ignored()
-        unmod = (not modified) or ignored
+        unmod = (not messages) or ignored
         single = num_tabs == 1
 
         self.menu.add("Find", lambda e: findmanager.find())
@@ -180,9 +180,9 @@ class TabMenu:
 
         self.menu.clear()
         num_tabs = display.num_tabs()
-        modified = display.is_modified()
-        ignored = display.is_ignored()
-        unmod = (not modified) or ignored
+        messages = display.has_messages(display.tab_menu_id)
+        ignored = display.is_ignored(display.tab_menu_id)
+        unmod = (not messages) or ignored
         single = num_tabs == 1
 
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
