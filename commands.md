@@ -372,7 +372,7 @@ Load the model
 
 ---
 
-### unload
+### unloadmodel
 
 Unload the model
 

@@ -393,7 +393,9 @@ class CommandSpec:
 
         self.add_cmd("loadmodel", "Load the model", lambda a=None: model.load())
 
-        self.add_cmd("unload", "Unload the model", lambda a=None: model.unload(True))
+        self.add_cmd(
+            "unloadmodel", "Unload the model", lambda a=None: model.unload(True)
+        )
 
         self.add_cmd(
             "context",
