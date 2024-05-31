@@ -391,7 +391,7 @@ class CommandSpec:
             lambda a=None: display.scroll_down(more=True, disable_auto_scroll=True),
         )
 
-        self.add_cmd("load", "Load the model", lambda a=None: model.load())
+        self.add_cmd("loadmodel", "Load the model", lambda a=None: model.load())
 
         self.add_cmd("unload", "Unload the model", lambda a=None: model.unload(True))
 
@@ -943,6 +943,12 @@ class CommandSpec:
             "save",
             "Save the last used config",
             lambda a=None: config.save_last(),
+        )
+
+        self.add_cmd(
+            "load",
+            "Load the last used config",
+            lambda a=None: config.load_last(),
         )
 
 

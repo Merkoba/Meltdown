@@ -511,5 +511,11 @@ No need to greet me, just answer.
 
         self.save_state(self.last_config)
 
+    def load_last(self) -> None:
+        if not self.last_config:
+            return
+
+        self.load_state(self.last_config)
+
 
 config = Config()

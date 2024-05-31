@@ -366,7 +366,7 @@ Scroll down more
 
 ---
 
-### load
+### loadmodel
 
 Load the model
 
@@ -919,3 +919,9 @@ Show size and length information
 ### save
 
 Save the last used config
+
+---
+
+### load
+
+Load the last used config
