@@ -575,7 +575,7 @@ class CommandSpec:
         self.add_cmd(
             "fontfamily",
             "Set the font family",
-            lambda a=None: display.set_font_family(a),
+            lambda a=None: display.pick_font_family(a),
             type=str,
         )
 

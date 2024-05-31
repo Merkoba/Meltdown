@@ -593,13 +593,21 @@ class Display:
 
         self.apply_font_size(new_size)
 
-    def set_font_family(self, name: Optional[str] = None) -> None:
-        from .menumanager import font_family_menu
+    def pick_font_family(self, name: Optional[str] = None) -> None:
+        def action(name: str) -> None:
+            self.set_font_family(name)
 
-        if not name:
-            font_family_menu.show()
+        if name:
+            action(name)
             return
 
+        cmds = []
+        cmds.append(("Mono", lambda a: action("monospace")))
+        cmds.append(("Serif", lambda a: action("serif")))
+        cmds.append(("Sans", lambda a: action("sans-serif")))
+        Dialog.show_dialog("Font Family", cmds)
+
+    def set_font_family(self, name: Optional[str] = None) -> None:
         if name not in ["sans-serif", "sans", "monospace", "mono", "serif"]:
             return
 

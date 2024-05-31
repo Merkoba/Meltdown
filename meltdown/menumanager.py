@@ -247,27 +247,9 @@ class FontMenu:
         self.menu.add("Set Font", lambda e: set_font())
         self.menu.add("Bigger Font", lambda e: display.increase_font())
         self.menu.add("Smaller Font", lambda e: display.decrease_font())
-        self.menu.add("Font Family", lambda e: font_family_menu.show(e))
+        self.menu.add("Font Family", lambda e: display.pick_font_family())
         self.menu.separator()
         self.menu.add("Reset Font", lambda e: display.reset_font())
-
-    def show(self, event: Any = None) -> None:
-        if event:
-            self.menu.show(event)
-        else:
-            widget = get_main_button()
-            self.menu.show(widget=widget)
-
-
-class FontFamilyMenu:
-    def __init__(self) -> None:
-        from .display import display
-
-        self.menu = Menu()
-
-        self.menu.add("Serif", lambda e: display.set_font_family("serif"))
-        self.menu.add("Sans-Serif", lambda e: display.set_font_family("sans-serif"))
-        self.menu.add("Monospace", lambda e: display.set_font_family("monospace"))
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -429,7 +411,6 @@ gpt_menu = GPTMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()
-font_family_menu = FontFamilyMenu()
 item_menu = ItemMenu()
 word_menu = WordMenu()
 url_menu = UrlMenu()
