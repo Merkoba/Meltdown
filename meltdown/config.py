@@ -1,6 +1,7 @@
 # Standard
 import json
-from typing import Any, Optional, Callable
+from typing import Any, Optional
+from collections.abc import Callable
 from tkinter import filedialog
 from pathlib import Path
 

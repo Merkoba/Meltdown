@@ -1,6 +1,7 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable
+from typing import Any
+from collections.abc import Callable
 
 # Modules
 from .args import args

@@ -1,7 +1,8 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional, Callable
+from typing import Any, Optional
+from collections.abc import Callable
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore

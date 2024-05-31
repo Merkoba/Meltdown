@@ -1,7 +1,8 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Callable, Any, Optional
+from typing import Any, Optional
+from collections.abc import Callable
 
 # Modules
 from .app import app

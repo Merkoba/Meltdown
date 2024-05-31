@@ -1,6 +1,7 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, Optional
+from typing import Any, Optional
+from collections.abc import Callable
 from PIL import Image, ImageTk
 from pathlib import Path
 

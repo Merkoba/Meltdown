@@ -2,7 +2,8 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
-from typing import Optional, Any, Callable
+from typing import Optional, Any
+from collections.abc import Callable
 from pathlib import Path
 
 # Libraries
