@@ -194,6 +194,10 @@ No need to greet me, just answer.
         from .args import args
         from .files import files
 
+        if name == "last":
+            self.save_last()
+            return
+
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
         else:
@@ -223,6 +227,10 @@ No need to greet me, just answer.
         from .args import args
         from .paths import paths
         from .display import display
+
+        if name == "last":
+            self.load_last()
+            return
 
         if not paths.configs.exists():
             paths.configs.mkdir(parents=True, exist_ok=True)

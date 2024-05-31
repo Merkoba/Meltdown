@@ -333,7 +333,7 @@ class Keyboard:
             "<Escape>",
             lambda: on_esc(),
             on_shift=lambda: run_command("taskmanager"),
-            on_ctrl=lambda: run_command("unloadmodel"),
+            on_ctrl=lambda: run_command("unload"),
             help="Clear input, select active, stop model stream, go to bottom",
             shift_help="Open task manager",
             ctrl_help="Unload model",

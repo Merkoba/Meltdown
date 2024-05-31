@@ -366,13 +366,13 @@ Scroll down more
 
 ---
 
-### loadmodel
+### load
 
 Load the model
 
 ---
 
-### unloadmodel
+### unload
 
 Unload the model
 
@@ -444,13 +444,15 @@ You can provide the file name
 
 Save the current config
 
+You can use 'last'
+
 ---
 
 ### loadconfig
 
 Load a config
 
-You can provide the file name
+You can use 'last'
 
 ---
 
@@ -913,15 +915,3 @@ Show the model name
 ### size
 
 Show size and length information
-
----
-
-### save
-
-Save the last used config
-
----
-
-### load
-
-Load the last used config

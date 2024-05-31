@@ -59,6 +59,7 @@ class CommandSpec:
         self.optdelay = "Optional delay in seconds"
         self.autoscroll = "Optional up or down argument"
         self.helpcmd = "You can filter by text"
+        self.config_state = "You can use 'last'"
         self.infos: list[str] = []
         self.commands: dict[str, Any] = {}
 
@@ -391,11 +392,9 @@ class CommandSpec:
             lambda a=None: display.scroll_down(more=True, disable_auto_scroll=True),
         )
 
-        self.add_cmd("loadmodel", "Load the model", lambda a=None: model.load())
+        self.add_cmd("load", "Load the model", lambda a=None: model.load())
 
-        self.add_cmd(
-            "unloadmodel", "Unload the model", lambda a=None: model.unload(True)
-        )
+        self.add_cmd("unload", "Unload the model", lambda a=None: model.unload(True))
 
         self.add_cmd(
             "context",
@@ -460,6 +459,7 @@ class CommandSpec:
             "saveconfig",
             "Save the current config",
             lambda a=None: config.save_state(name=a),
+            extra=self.config_state,
             type=str,
         )
 
@@ -467,7 +467,7 @@ class CommandSpec:
             "loadconfig",
             "Load a config",
             lambda a=None: config.load_state(name=a),
-            extra=self.file_name,
+            extra=self.config_state,
             type=str,
         )
 
@@ -939,18 +939,6 @@ class CommandSpec:
             "size",
             "Show size and length information",
             lambda a=None: display.show_size(),
-        )
-
-        self.add_cmd(
-            "save",
-            "Save the last used config",
-            lambda a=None: config.save_last(),
-        )
-
-        self.add_cmd(
-            "load",
-            "Load the last used config",
-            lambda a=None: config.load_last(),
         )
 
 
