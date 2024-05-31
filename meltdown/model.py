@@ -312,8 +312,11 @@ class Model:
         if tabconvo.tab.mode == "ignore":
             return None
 
-        log_dict = {"user": prompt_user if prompt_user else prompt_text}
+        log_dict = {}
+        log_dict["date"] = utils.now()
+        log_dict["user"] = prompt_user if prompt_user else prompt_text
         log_dict["file"] = original_file
+
         messages: list[dict[str, Any]] = []
 
         if config.system:
