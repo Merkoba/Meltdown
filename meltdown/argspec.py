@@ -5,6 +5,30 @@ from typing import Any
 from .app import app
 
 
+class DuplicateArgumentError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Duplicate argument: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
+class MissingInfoError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Missing info for argument: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
+class DuplicateInfoError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Duplicate info for argument: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
 class ArgSpec:
     def __init__(self) -> None:
         self.title = app.manifest["title"]
@@ -20,13 +44,13 @@ class ArgSpec:
 
     def add_argument(self, key: str, info: str, **kwargs: Any) -> None:
         if key in self.arguments:
-            raise Exception(f"Duplicate argument: {key}")
+            raise DuplicateArgumentError(key)
 
         if not info:
-            raise Exception(f"Missing info for argument: {key}")
+            raise MissingInfoError(key)
 
         if info in self.infos:
-            raise Exception(f"Duplicate info for argument: {key}")
+            raise DuplicateInfoError(key)
 
         self.arguments[key] = {
             "help": info,

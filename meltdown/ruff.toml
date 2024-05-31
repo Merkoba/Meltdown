@@ -49,6 +49,8 @@ select = [
     "S113",
     "UP",
     "N",
+    "F",
+    "TRY",
 ]
 exclude = [
     "pyperclip.py",

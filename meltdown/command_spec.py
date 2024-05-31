@@ -27,6 +27,30 @@ from . import close
 from . import formats
 
 
+class DuplicateCommandError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Duplicate command: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
+class MissingInfoError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Missing info for command: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
+class DuplicateInfoError(Exception):
+    def __init__(self, key: str) -> None:
+        self.message = f"Duplicate info for command: {key}"
+
+    def __str__(self) -> str:
+        return self.message
+
+
 class CommandSpec:
     def __init__(self) -> None:
         self.force = "Use 'force' to force"
@@ -44,13 +68,13 @@ class CommandSpec:
         self, key: str, info: str, action: Callable[..., Any], **kwargs: Any
     ) -> None:
         if key in self.commands:
-            raise Exception(f"Duplicate command: {key}")
+            raise DuplicateCommandError(key)
 
         if not info:
-            raise Exception(f"Missing info for command: {key}")
+            raise MissingInfoError(key)
 
         if info in self.infos:
-            raise Exception(f"Duplicate info for command: {key}")
+            raise DuplicateInfoError(key)
 
         self.commands[key] = {
             "info": info,

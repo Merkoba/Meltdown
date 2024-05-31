@@ -149,11 +149,9 @@ class Display:
         try:
             num = int(what)
             self.select_tab_by_number(num)
-            return
         except BaseException as e:
+            self.book.select_by_name(what)
             utils.error(e)
-
-        self.book.select_by_name(what)
 
     def update_current_tab(self) -> None:
         tab_id = self.book.current()
