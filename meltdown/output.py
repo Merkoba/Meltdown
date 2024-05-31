@@ -463,17 +463,11 @@ class Output(tk.Text):
         self.configure_tags()
 
         for tag in (
-            "bold",
-            "italic",
-            "highlight",
-            "quote",
+            *self.word_tags,
             "url",
             "path",
             "name_user",
             "name_ai",
-            "header_1",
-            "header_2",
-            "header_3",
         ):
             self.tag_lower(tag)
 
