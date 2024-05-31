@@ -328,6 +328,16 @@ class Output(tk.Text):
         self.checked_markers_ai: list[int] = []
         self.last_scroll_args: Optional[tuple[str, str]] = None
 
+        self.word_tags = (
+            "bold",
+            "italic",
+            "highlight",
+            "quote",
+            "header_1",
+            "header_2",
+            "header_3",
+        )
+
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
         parent.grid_columnconfigure(1, weight=0)
@@ -349,18 +359,9 @@ class Output(tk.Text):
             self.deselect_all()
             self.show_word_menu(event)
 
-        tags = (
-            "bold",
-            "italic",
-            "highlight",
-            "quote",
-            "header_1",
-            "header_2",
-            "header_3",
-        )
-
-        for tag in tags:
-            self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
+        if args.word_menu:
+            for tag in self.word_tags:
+                self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
         self.tag_bind(
             "name_user",
@@ -374,8 +375,12 @@ class Output(tk.Text):
             lambda e: self.on_name_click(e, "ai"),
         )
 
-        self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
-        self.tag_bind("path", "<ButtonRelease-1>", lambda e: self.on_path_click(e))
+        if args.url_menu:
+            self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
+
+        if args.path_menu:
+            self.tag_bind("path", "<ButtonRelease-1>", lambda e: self.on_path_click(e))
+
         self.bind("<Motion>", lambda e: self.on_motion(e))
 
         def mousewheel_up() -> str:
@@ -781,8 +786,15 @@ class Output(tk.Text):
         if tags:
             if all(tag in exclude for tag in tags):
                 self.configure(cursor="xterm")
-            else:
-                self.configure(cursor="hand2")
+            elif any(tag in self.word_tags for tag in tags):
+                if args.word_menu:
+                    self.configure(cursor="hand2")
+            elif any(tag in ["url"] for tag in tags):
+                if args.url_menu:
+                    self.configure(cursor="hand2")
+            elif any(tag in ["path"] for tag in tags):
+                if args.path_menu:
+                    self.configure(cursor="hand2")
         else:
             self.configure(cursor="xterm")
 

@@ -33,7 +33,7 @@ class Markdown:
         right_string = self.escape_chars(chars_right, "|")
         right = rf"(?=\s|$|{right_string})"
 
-        protocols_list = ["http://", "https://", "ftp://", "www."]
+        protocols_list = ["http://", "https://", "www.", "ftp://", "sftp://", "ssh://"]
         protocols_string = self.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
 
