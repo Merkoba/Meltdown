@@ -795,6 +795,9 @@ class Output(tk.Text):
             elif any(tag in ["path"] for tag in tags):
                 if args.path_menu:
                     self.configure(cursor="hand2")
+            elif any(tag in ["name_user", "name_ai"] for tag in tags):
+                if args.name_menu:
+                    self.configure(cursor="hand2")
         else:
             self.configure(cursor="xterm")
 
