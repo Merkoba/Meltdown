@@ -430,13 +430,15 @@ Show the main menu
 
 Save the current session
 
+You can provide a file name. You can use 'last'
+
 ---
 
 ### loadsession
 
 Load a session
 
-You can provide the file name
+You can provide a file name. You can use 'last'
 
 ---
 
@@ -444,7 +446,7 @@ You can provide the file name
 
 Save the current config
 
-You can use 'last'
+You can provide a file name. You can use 'last'
 
 ---
 
@@ -452,7 +454,7 @@ You can use 'last'
 
 Load a config
 
-You can use 'last'
+You can provide a file name. You can use 'last'
 
 ---
 

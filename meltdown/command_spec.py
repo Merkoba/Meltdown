@@ -54,12 +54,11 @@ class DuplicateInfoError(Exception):
 class CommandSpec:
     def __init__(self) -> None:
         self.force = "Use 'force' to force"
-        self.file_name = "You can provide the file name"
         self.delcmd = "You can use a specific number, or words like 'first' and 'last'"
         self.optdelay = "Optional delay in seconds"
         self.autoscroll = "Optional up or down argument"
         self.helpcmd = "You can filter by text"
-        self.config_state = "You can use 'last'"
+        self.state_info = "You can provide a file name. You can use 'last'"
         self.infos: list[str] = []
         self.commands: dict[str, Any] = {}
 
@@ -444,6 +443,7 @@ class CommandSpec:
             "savesession",
             "Save the current session",
             lambda a=None: session.save_state(name=a),
+            extra=self.state_info,
             type=str,
         )
 
@@ -451,7 +451,7 @@ class CommandSpec:
             "loadsession",
             "Load a session",
             lambda a=None: session.load_state(name=a),
-            extra=self.file_name,
+            extra=self.state_info,
             type=str,
         )
 
@@ -459,7 +459,7 @@ class CommandSpec:
             "saveconfig",
             "Save the current config",
             lambda a=None: config.save_state(name=a),
-            extra=self.config_state,
+            extra=self.state_info,
             type=str,
         )
 
@@ -467,7 +467,7 @@ class CommandSpec:
             "loadconfig",
             "Load a config",
             lambda a=None: config.load_state(name=a),
-            extra=self.config_state,
+            extra=self.state_info,
             type=str,
         )
 

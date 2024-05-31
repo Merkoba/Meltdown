@@ -56,6 +56,7 @@ No need to greet me, just answer.
         self.default_logits = "normal"
         self.default_last_program = ""
         self.default_last_config = ""
+        self.default_last_session = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -86,6 +87,7 @@ No need to greet me, just answer.
         self.logits = self.default_logits
         self.last_program = self.default_last_program
         self.last_config = self.default_last_config
+        self.last_session = self.default_last_session
 
         self.locals = [
             "theme",
@@ -94,6 +96,7 @@ No need to greet me, just answer.
             "last_log",
             "last_program",
             "last_config",
+            "last_session",
         ]
 
         self.clearables = [

@@ -228,6 +228,10 @@ class Session:
                 break
 
     def save_state(self, name: Optional[str] = None) -> None:
+        if name == "last":
+            self.save_last()
+            return
+
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
@@ -244,6 +248,7 @@ class Session:
                 return
 
         path = Path(file_path)
+        config.set_value("last_session", path.stem)
         files.write(path, self.to_json())
 
         if not args.quiet:
@@ -252,6 +257,10 @@ class Session:
             display.print(utils.emoji_text(msg, "storage"))
 
     def load_state(self, name: Optional[str] = None) -> None:
+        if name == "last":
+            self.load_last()
+            return
+
         if not paths.sessions.exists():
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
@@ -275,6 +284,7 @@ class Session:
 
         try:
             self.load_items(path)
+            config.set_value("last_session", path.stem)
             display.select_last_tab()
             self.save()
         except BaseException as e:
@@ -325,6 +335,18 @@ class Session:
         cmds.append(("Load", lambda a: self.load_state()))
         cmds.append(("Save", lambda a: self.save_state()))
         Dialog.show_dialog("Session Menu", commands=cmds)
+
+    def save_last(self) -> None:
+        if not config.last_session:
+            return
+
+        self.save_state(config.last_session)
+
+    def load_last(self) -> None:
+        if not config.last_session:
+            return
+
+        self.load_state(config.last_session)
 
 
 session = Session()
