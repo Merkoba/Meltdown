@@ -2125,3 +2125,13 @@ Run a program with the selected item's response as the argument
 Default: [Empty string]
 
 Type: str
+
+---
+
+### taps-command
+
+What command to run on double taps
+
+Default: "/palette"
+
+Type: str

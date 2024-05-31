@@ -686,6 +686,24 @@ Open a program using the markdown
 
 ---
 
+### usetext
+
+Use the current text (text)
+
+---
+
+### usejson
+
+Use the current text (JSON)
+
+---
+
+### usemarkdown
+
+Use the current text (markdown)
+
+---
+
 ### submit
 
 Submit the input

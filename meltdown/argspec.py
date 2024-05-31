@@ -1418,5 +1418,11 @@ class ArgSpec:
             info="Run a program with the selected item's response as the argument",
         )
 
+        self.add_argument(
+            "taps_command",
+            type=str,
+            info="What command to run on double taps",
+        )
+
 
 argspec = ArgSpec()

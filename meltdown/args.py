@@ -27,6 +27,7 @@ class Args:
         self.system_delay = 3
         self.keyboard = True
         self.taps = True
+        self.taps_command = ""
         self.wrap = True
         self.stream = True
         self.maximize = False
@@ -470,6 +471,7 @@ class Args:
             "response_program",
             "item_program",
             "item_program_both",
+            "taps_command",
         ]
 
         for n_item in normals:
@@ -540,6 +542,9 @@ class Args:
 
         if not self.gestures_down:
             self.gestures_down = f"{self.prefix}bottom"
+
+        if not self.taps_command:
+            self.taps_command = f"{self.prefix}palette"
 
     def show_help(
         self, tab_id: Optional[str] = None, filter_text: Optional[str] = None

@@ -562,7 +562,10 @@ class Keyboard:
         return "\n\n".join(lines) + "\n"
 
     def on_double_ctrl(self) -> None:
-        commands.show_palette()
+        if not args.taps_command:
+            return
+
+        commands.exec(args.taps_command)
 
     def up_arrow(self) -> None:
         if args.arrow_mode == "history":
