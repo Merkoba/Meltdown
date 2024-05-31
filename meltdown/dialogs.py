@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, List, Optional, Tuple, Dict
+from typing import Any, Callable, Optional, Tuple
 from PIL import Image, ImageTk
 from pathlib import Path
 
@@ -13,7 +13,7 @@ from .utils import utils
 from . import widgetutils
 
 
-Answer = Dict[str, Any]
+Answer = dict[str, Any]
 
 
 class Dialog:
@@ -35,7 +35,7 @@ class Dialog:
     @staticmethod
     def show_dialog(
         text: str,
-        commands: Optional[List[Tuple[str, Callable[..., Any]]]] = None,
+        commands: Optional[list[Tuple[str, Callable[..., Any]]]] = None,
         image: Optional[Path] = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
@@ -254,7 +254,7 @@ class Dialog:
         Dialog.hide_all()
 
         self.id = id
-        self.buttons: List[ButtonBox] = []
+        self.buttons: list[ButtonBox] = []
 
         self.make(text, with_top_frame=top_frame)
 

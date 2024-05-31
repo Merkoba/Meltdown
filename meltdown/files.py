@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import Any, List
+from typing import Any
 from pathlib import Path
 
 # Modules
@@ -12,10 +12,10 @@ from .args import args
 
 class Files:
     def __init__(self) -> None:
-        self.models_list: List[str] = []
-        self.inputs_list: List[str] = []
-        self.systems_list: List[str] = []
-        self.files_list: List[str] = []
+        self.models_list: list[str] = []
+        self.inputs_list: list[str] = []
+        self.systems_list: list[str] = []
+        self.files_list: list[str] = []
 
         self.models_loaded = False
         self.inputs_loaded = False
@@ -78,7 +78,7 @@ class Files:
         path = getattr(paths, key)
         self.save(path, new_items)
 
-    def get_list(self, what: str) -> List[str]:
+    def get_list(self, what: str) -> list[str]:
         if not getattr(self, f"{what}_loaded"):
             self.load_list(what)
 

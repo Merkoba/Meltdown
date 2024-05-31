@@ -1,6 +1,6 @@
 # Standard
 import re
-from typing import List, Any, Tuple
+from typing import Any, Tuple
 
 # Modules
 from .args import args
@@ -9,7 +9,7 @@ from .utils import utils
 
 
 class MatchItem:
-    def __init__(self, line: int, items: List[re.Match[Any]]) -> None:
+    def __init__(self, line: int, items: list[re.Match[Any]]) -> None:
         self.line = line
         self.items = items
 
@@ -126,7 +126,7 @@ class Markdown:
             return
 
         markers = self.widget.get_markers()
-        ranges: List[Tuple[str, int, int]] = []
+        ranges: list[Tuple[str, int, int]] = []
 
         def add(who: str, start_ln: int, end_ln: int) -> None:
             ranges.append((who, start_ln, end_ln))
@@ -227,7 +227,7 @@ class Markdown:
         tag: str,
         no_replace: bool = False,
     ) -> None:
-        matches: List[MatchItem] = []
+        matches: list[MatchItem] = []
         lines = self.get_lines(start_ln, end_ln, who)
 
         for i, line in enumerate(lines):
@@ -241,7 +241,7 @@ class Markdown:
 
         for mtch in reversed(matches):
             items = mtch.items
-            indices: List[IndexItem] = []
+            indices: list[IndexItem] = []
 
             for item in reversed(items):
                 all = item.group("all")
@@ -500,7 +500,7 @@ class Markdown:
                 f"{start_ln + i}.0 + {len(self.separator)}c",
             )
 
-    def get_lines(self, start_ln: int, end_ln: int, who: str) -> List[str]:
+    def get_lines(self, start_ln: int, end_ln: int, who: str) -> list[str]:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
 
@@ -513,7 +513,7 @@ class Markdown:
     def get_line_number(self, text: str, index: int) -> int:
         return text.count("\n", 0, index)
 
-    def escape_chars(self, chars: List[str], separator: str = "") -> str:
+    def escape_chars(self, chars: list[str], separator: str = "") -> str:
         clean = [utils.escape_regex(c) for c in chars]
         return separator.join(clean)
 
@@ -533,10 +533,10 @@ class Markdown:
     def indent_lines(self) -> None:
         lines = self.widget.get("1.0", "end").split("\n")
 
-        def get_lns(marker: str) -> List[int]:
+        def get_lns(marker: str) -> list[int]:
             return [i + 1 for i, line in enumerate(lines) if line.startswith(marker)]
 
-        def add_tags(lns: List[int], name: str) -> None:
+        def add_tags(lns: list[int], name: str) -> None:
             for line in lns:
                 ln = f"{line}.0"
                 self.widget.tag_add(name, ln, f"{ln} lineend")

@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, List, Optional, Dict, Tuple
+from typing import Any, Optional, Tuple
 
 # Modules
 from .config import config
@@ -313,11 +313,11 @@ class Output(tk.Text):
         self.scrollbar = ttk.Scrollbar(parent, style="Normal.Vertical.TScrollbar")
         self.scrollbar.configure(cursor="arrow")
         self.tab_id = tab_id
-        self.snippets: List[Snippet] = []
+        self.snippets: list[Snippet] = []
         self.auto_bottom = True
         self.update_size_after = ""
-        self.checked_markers_user: List[int] = []
-        self.checked_markers_ai: List[int] = []
+        self.checked_markers_user: list[int] = []
+        self.checked_markers_ai: list[int] = []
         self.last_scroll_args: Optional[Tuple[str, str]] = None
 
         parent.grid_rowconfigure(0, weight=1)
@@ -796,7 +796,7 @@ class Output(tk.Text):
     def find_text(self, query: str) -> str:
         return self.search(query, "1.0", tk.END, regexp=True, nocase=True)
 
-    def get_markers(self, force_all: bool = False) -> List[Dict[str, Any]]:
+    def get_markers(self, force_all: bool = False) -> list[dict[str, Any]]:
         markers = []
         lines = self.get_text().split("\n")
         number_user = 0

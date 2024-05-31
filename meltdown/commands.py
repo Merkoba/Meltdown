@@ -1,6 +1,6 @@
 # Standard
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 from pathlib import Path
 
 # Modules
@@ -20,16 +20,16 @@ class QueueItem:
 
 
 class Queue:
-    def __init__(self, items: List[QueueItem], wait: float = 0.0) -> None:
+    def __init__(self, items: list[QueueItem], wait: float = 0.0) -> None:
         self.items = items
         self.wait = wait
 
 
 class Commands:
     def __init__(self) -> None:
-        self.commands: Dict[str, Dict[str, Any]] = {}
+        self.commands: dict[str, dict[str, Any]] = {}
         self.loop_delay = 25
-        self.queues: List[Queue] = []
+        self.queues: list[Queue] = []
 
     def setup(self) -> None:
         prefix = utils.escape_regex(args.prefix)

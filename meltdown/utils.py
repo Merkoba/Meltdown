@@ -8,7 +8,7 @@ import inspect
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional, Tuple, List, Any
+from typing import Union, Optional, Tuple, Any
 from pathlib import Path
 from datetime import datetime
 
@@ -23,7 +23,7 @@ class Utils:
     def __init__(self) -> None:
         self.error_logger: Optional[logging.Logger] = None
         self.console = Console()
-        self.nouns: List[str] = []
+        self.nouns: list[str] = []
         self.protocols = ("http://", "https://")
 
     def similarity(self, a: str, b: str) -> float:
@@ -256,7 +256,7 @@ class Utils:
 
         return plural
 
-    def get_index(self, arg: str, items: List[Any]) -> int:
+    def get_index(self, arg: str, items: list[Any]) -> int:
         if not items:
             return -1
 

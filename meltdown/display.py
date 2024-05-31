@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import List, Dict, Any, Optional, TYPE_CHECKING
+from typing import Any, Optional, TYPE_CHECKING
 
 # Modules
 from .app import app
@@ -65,7 +65,7 @@ class Display:
         self.book = Book(widgets.display_frame)
         self.book.on_change = lambda: self.on_tab_change()
 
-        self.tabs: Dict[str, Tab] = {}
+        self.tabs: dict[str, Tab] = {}
         self.tab_list_menu = Menu()
 
         self.book.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
@@ -346,7 +346,7 @@ class Display:
 
         close.close(tab_id=self.tab_menu_id, full=False)
 
-    def tab_ids(self) -> List[str]:
+    def tab_ids(self) -> list[str]:
         return self.book.ids()
 
     def index(self, tab_id: str) -> int:

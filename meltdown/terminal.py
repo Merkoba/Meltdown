@@ -1,6 +1,6 @@
 # Standard
 import threading
-from typing import Any, Generator, List
+from typing import Any, Generator
 
 # Libraries
 from prompt_toolkit import PromptSession
@@ -18,7 +18,7 @@ from .utils import utils
 
 
 completer: Completer
-words: List[str] = []
+words: list[str] = []
 
 
 class SlashCompleter(Completer):

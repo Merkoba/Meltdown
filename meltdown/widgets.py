@@ -2,7 +2,7 @@
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
-from typing import Optional, Any, Callable, Dict
+from typing import Optional, Any, Callable
 from pathlib import Path
 
 # Libraries
@@ -710,7 +710,7 @@ class Widgets:
     ) -> None:
         from .textbox import TextBox
 
-        def action(ans: Dict[str, Any]) -> None:
+        def action(ans: dict[str, Any]) -> None:
             config.set("system", ans["text"])
 
         def reset(textbox: TextBox) -> None:

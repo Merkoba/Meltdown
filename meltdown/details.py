@@ -1,5 +1,5 @@
 # Standard
-from typing import TYPE_CHECKING, Optional, List, Tuple
+from typing import TYPE_CHECKING, Optional, Tuple
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore
@@ -44,7 +44,7 @@ def make_combobox(
     widgets: "Widgets",
     data: "FrameData",
     key: str,
-    values: List[str],
+    values: list[str],
     width: Optional[int] = None,
 ) -> None:
     width = width or 15

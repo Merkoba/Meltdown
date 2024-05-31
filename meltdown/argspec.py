@@ -1,5 +1,5 @@
 # Standard
-from typing import Any, Dict, List
+from typing import Any
 
 # Modules
 from .app import app
@@ -10,9 +10,9 @@ class ArgSpec:
         self.title = app.manifest["title"]
         self.version = app.manifest["version"]
         self.vinfo = f"{self.title} {self.version}"
-        self.defaults: Dict[str, Any] = {}
-        self.arguments: Dict[str, Any] = {}
-        self.infos: List[str] = []
+        self.defaults: dict[str, Any] = {}
+        self.arguments: dict[str, Any] = {}
+        self.infos: list[str] = []
         self.markdown_choices = ["user", "ai", "both", "none"]
         self.list_choices = ["auto", "never", "always"]
 

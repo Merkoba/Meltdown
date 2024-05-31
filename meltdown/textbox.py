@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Dict, Optional, Callable
+from typing import Any, Optional, Callable
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore
@@ -109,7 +109,7 @@ class TextBox(tk.Text):
 
         self.on_right_click(event, self)
 
-    def get_ans(self) -> Dict[str, Any]:
+    def get_ans(self) -> dict[str, Any]:
         return {"text": self.get_text(), "maxed": self.maxed}
 
     def ok(self) -> None:

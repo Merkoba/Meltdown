@@ -10,7 +10,7 @@ import platform
 import urllib.parse
 import tkinter as tk
 from pathlib import Path
-from typing import List, Any, Optional
+from typing import Any, Optional
 
 # Libraries
 import psutil  # type: ignore
@@ -373,7 +373,7 @@ class App:
 
         return opener
 
-    def run_command(self, cmd: List[str]) -> None:
+    def run_command(self, cmd: list[str]) -> None:
         try:
             subprocess.Popen(
                 cmd,
@@ -421,7 +421,7 @@ class App:
         url = base_url + urllib.parse.urlencode(query_params)
         self.open_url(url)
 
-    def get_terminal(self) -> List[str]:
+    def get_terminal(self) -> list[str]:
         from .args import args
 
         cmd = []

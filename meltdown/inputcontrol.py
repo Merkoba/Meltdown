@@ -1,5 +1,5 @@
 # Standard
-from typing import Any, Optional, List, Dict
+from typing import Any, Optional
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore
@@ -23,7 +23,7 @@ class InputControl:
     def __init__(self) -> None:
         self.history_index = -1
         self.input: EntryBox
-        self.autocomplete: List[str] = []
+        self.autocomplete: list[str] = []
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -98,14 +98,14 @@ class InputControl:
         self.input.focus_set()
         self.input.on_focus_change("in")
 
-    def apply_history(self, inputs: List[str]) -> None:
+    def apply_history(self, inputs: list[str]) -> None:
         text = inputs[self.history_index]
         self.set(text)
         self.input.focus_end()
 
     def get_history_list(
         self, force_no_cmds: bool = False, no_multi: bool = False
-    ) -> List[str]:
+    ) -> list[str]:
         inputs = files.get_list("inputs")
 
         if no_multi:
@@ -346,7 +346,7 @@ class InputControl:
 
             menu.show(event)
 
-        def action(ans: Dict[str, Any]) -> None:
+        def action(ans: dict[str, Any]) -> None:
             self.submit(text=ans["text"], scroll=False)
 
         if not text:

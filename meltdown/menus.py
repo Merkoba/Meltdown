@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import List, Callable, Any, Optional, Dict
+from typing import Callable, Any, Optional
 
 # Modules
 from .app import app
@@ -49,7 +49,7 @@ class Menu:
 
     def __init__(self) -> None:
         self.container: Optional[tk.Frame] = None
-        self.items: List[MenuItem] = []
+        self.items: list[MenuItem] = []
 
     def add(
         self,
@@ -177,8 +177,8 @@ class Menu:
         self.canvas.bind("<Return>", lambda e: cmd(e))
         self.canvas.bind("<Up>", lambda e: self.arrow_up())
         self.canvas.bind("<Down>", lambda e: self.arrow_down())
-        self.elements: Dict[int, Dict[str, Any]] = {}
-        self.separators: List[SeparatorBox] = []
+        self.elements: dict[int, dict[str, Any]] = {}
+        self.separators: list[SeparatorBox] = []
 
         def bind_mouse(parent: tk.Widget) -> None:
             for child in parent.winfo_children():

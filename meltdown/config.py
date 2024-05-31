@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import Any, Dict, Optional, Callable
+from typing import Any, Optional, Callable
 from tkinter import filedialog
 from pathlib import Path
 
@@ -121,14 +121,14 @@ No need to greet me, just answer.
 
         self.modes = ["text", "image"]
 
-        self.validations: Dict[str, Callable[..., Any]] = {
+        self.validations: dict[str, Callable[..., Any]] = {
             "history": lambda x: max(0, x),
             "name_user": lambda x: self.get_default("name_user") if not x else x,
             "name_ai": lambda x: self.get_default("name_ai") if not x else x,
         }
 
-    def defaults(self) -> Dict[str, Any]:
-        items: Dict[str, Any] = {}
+    def defaults(self) -> dict[str, Any]:
+        items: dict[str, Any] = {}
 
         for key in dir(self):
             if key.startswith("default_"):

@@ -1,5 +1,5 @@
 # Standard
-from typing import Union, List
+from typing import Union
 
 # Modules
 from .app import app
@@ -13,7 +13,7 @@ class Changes:
         self.widget = widget
         self.changes_delay = config.changes_delay
         self.changes_after = ""
-        self.changes: List[str] = [""]
+        self.changes: list[str] = [""]
         self.changes_index = 0
 
         widget.bind("<Control-KeyPress-z>", lambda e: self.undo())

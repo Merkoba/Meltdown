@@ -1,5 +1,5 @@
 # Standard
-from typing import List, TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional
 
 # Modules
 from .args import args
@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from .display import Tab
 
 
-def get_old_tabs() -> List["Tab"]:
+def get_old_tabs() -> list["Tab"]:
     ids = display.tab_ids()
     old_tabs = []
 
@@ -31,7 +31,7 @@ def get_old_tabs() -> List["Tab"]:
     return old_tabs
 
 
-def get_empty_tabs() -> List["Tab"]:
+def get_empty_tabs() -> list["Tab"]:
     ids = display.tab_ids()
     empty_tabs = []
 
@@ -47,19 +47,19 @@ def get_empty_tabs() -> List["Tab"]:
     return empty_tabs
 
 
-def get_left_tabs(tab_id: str) -> List[str]:
+def get_left_tabs(tab_id: str) -> list[str]:
     tab_ids = display.tab_ids()
     index = display.index(tab_id)
     return tab_ids[:index]
 
 
-def get_right_tabs(tab_id: str) -> List[str]:
+def get_right_tabs(tab_id: str) -> list[str]:
     tab_ids = display.tab_ids()
     index = display.index(tab_id)
     return tab_ids[index + 1 :]
 
 
-def get_other_tabs(tab_id: str) -> List[str]:
+def get_other_tabs(tab_id: str) -> list[str]:
     ids = display.tab_ids()
     return [tid for tid in ids if tid != tab_id]
 

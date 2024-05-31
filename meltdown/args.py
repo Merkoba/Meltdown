@@ -1,6 +1,6 @@
 # Standard
 import sys
-from typing import List, Optional
+from typing import Optional
 from pathlib import Path
 
 # Modules
@@ -62,8 +62,8 @@ class Args:
         self.f11 = ""
         self.f12 = ""
         self.input = ""
-        self.aliases: List[str] = []
-        self.tasks: List[str] = []
+        self.aliases: list[str] = []
+        self.tasks: list[str] = []
         self.max_tab_width = 0
         self.old_tabs_minutes = 30
         self.max_list_items = 10
@@ -207,7 +207,7 @@ class Args:
         self.explain_prompt = "What is ((words))?"
         self.new_prompt = "Tell me about ((words))"
         self.summarize_prompt = "Summarize this, without addressing me"
-        self.custom_prompts: List[str] = []
+        self.custom_prompts: list[str] = []
         self.on_shift_middle_click = ""
         self.on_ctrl_middle_click = ""
         self.on_ctrl_shift_middle_click = ""

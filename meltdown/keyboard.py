@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, Optional, Dict, List
+from typing import Any, Callable, Optional
 from pathlib import Path
 
 # Modules
@@ -52,7 +52,7 @@ class Keyboard:
         self.shift = False
         self.ctrl_date = 0.0
         self.double_tap_delay = 0.28
-        self.commands: Dict[str, List[KbItem]] = {}
+        self.commands: dict[str, list[KbItem]] = {}
 
     def block(self) -> None:
         self.block_date = utils.now()

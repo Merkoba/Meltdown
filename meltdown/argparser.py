@@ -1,10 +1,10 @@
 # Standard
 import argparse
-from typing import Any, Dict, Optional
+from typing import Any, Optional
 
 
 class ArgParser:
-    def __init__(self, title: str, argdefs: Dict[str, Any], obj: Any):
+    def __init__(self, title: str, argdefs: dict[str, Any], obj: Any):
         parser = argparse.ArgumentParser(description=title)
         argdefs["string_arg"] = {"nargs": "*"}
 

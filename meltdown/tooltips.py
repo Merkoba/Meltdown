@@ -1,7 +1,7 @@
 # Standard
 import re
 import tkinter as tk
-from typing import Any, Optional, List, ClassVar
+from typing import Any, Optional, ClassVar
 
 # Modules
 from .app import app
@@ -14,7 +14,7 @@ def clean_string(text: str) -> str:
 
 
 class ToolTip:
-    tooltips: ClassVar[List["ToolTip"]] = []
+    tooltips: ClassVar[list["ToolTip"]] = []
     current_tooltip: ClassVar[Optional["ToolTip"]] = None
     block_date: ClassVar[float] = 0.0
 

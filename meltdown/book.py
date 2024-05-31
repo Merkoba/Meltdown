@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import List, Optional, Any, Callable
+from typing import Optional, Any, Callable
 
 # Modules
 from .app import app
@@ -106,7 +106,7 @@ class Book(tk.Frame):
     def __init__(self, parent: tk.Frame) -> None:
         super().__init__(parent)
         self.parent = parent
-        self.pages: List[Page] = []
+        self.pages: list[Page] = []
         self.tabs_enabled = True
         self.tabs_manual = False
 
@@ -375,7 +375,7 @@ class Book(tk.Frame):
 
         return self.pages[index]
 
-    def ids(self) -> List[str]:
+    def ids(self) -> list[str]:
         return [page.id for page in self.pages]
 
     def add_tab(self, page: Page) -> None:

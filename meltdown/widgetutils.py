@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Union, Callable, Optional, List, Tuple
+from typing import Any, Union, Callable, Optional, Tuple
 
 # Modules
 from .app import app
@@ -144,7 +144,7 @@ def make_label(
 
 def make_combobox(
     frame_data: FrameData,
-    values: Optional[List[Any]] = None,
+    values: Optional[list[Any]] = None,
     width: Optional[int] = None,
 ) -> ttk.Combobox:
     v = values if values else ["empty"]

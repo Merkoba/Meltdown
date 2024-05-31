@@ -3,7 +3,7 @@ import base64
 import threading
 from pathlib import Path
 from typing import Optional
-from typing import List, Tuple, Dict, Any, Generator
+from typing import Tuple, Any, Generator
 
 # Libraries
 import requests  # type: ignore
@@ -22,7 +22,7 @@ from .utils import utils
 from .files import files
 
 
-PromptArg = Dict[str, Any]
+PromptArg = dict[str, Any]
 
 
 class Model:
@@ -42,7 +42,7 @@ class Model:
         self.gpt_client = None
         self.last_response = ""
 
-        self.gpts: List[Tuple[str, str]] = [
+        self.gpts: list[Tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
             ("gpt-4o", "GPT 4o"),
         ]
@@ -263,7 +263,7 @@ class Model:
             self.load(prompt, tab_id)
             return
 
-        def wrapper(prompt: Dict[str, str], tab_id: str) -> None:
+        def wrapper(prompt: dict[str, str], tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
             self.do_stream(prompt, tab_id)
@@ -275,8 +275,8 @@ class Model:
         self.stream_thread.start()
 
     def prepare_stream(
-        self, prompt: Dict[str, str], tab_id: str
-    ) -> Optional[Tuple[List[Dict[str, str]], Dict[str, str]]]:
+        self, prompt: dict[str, str], tab_id: str
+    ) -> Optional[Tuple[list[dict[str, str]], dict[str, str]]]:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
@@ -314,7 +314,7 @@ class Model:
 
         log_dict = {"user": prompt_user if prompt_user else prompt_text}
         log_dict["file"] = original_file
-        messages: List[Dict[str, Any]] = []
+        messages: list[dict[str, Any]] = []
 
         if config.system:
             system = utils.replace_keywords(config.system)
@@ -376,7 +376,7 @@ class Model:
         display.stream_started(tab_id)
         return messages, log_dict
 
-    def do_stream(self, prompt: Dict[str, str], tab_id: str) -> None:
+    def do_stream(self, prompt: dict[str, str], tab_id: str) -> None:
         prepared = self.prepare_stream(prompt, tab_id)
 
         if not prepared:
@@ -486,8 +486,8 @@ class Model:
         token_printed = False
         last_token = " "
         buffer_date = 0.0
-        tokens: List[str] = []
-        buffer: List[str] = []
+        tokens: list[str] = []
+        buffer: list[str] = []
 
         def print_buffer() -> None:
             if not len(buffer):
@@ -687,7 +687,7 @@ class Model:
 
         Dialog.show_message(model_)
 
-    def get_stop_list(self) -> Optional[List[str]]:
+    def get_stop_list(self) -> Optional[list[str]]:
         stop_list = config.stop.split(";;") if config.stop else None
 
         if stop_list:

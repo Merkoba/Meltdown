@@ -1,6 +1,6 @@
 # Standard
 import json
-from typing import List, Dict, Any, Optional
+from typing import Any, Optional
 from tkinter import filedialog
 from pathlib import Path
 
@@ -23,7 +23,7 @@ class Conversation:
     ) -> None:
         self.id = _id
         self.name = name
-        self.items: List[Dict[str, str]] = []
+        self.items: list[dict[str, str]] = []
         self.last_modified = last_modified
 
         if created == 0.0:
@@ -31,7 +31,7 @@ class Conversation:
         else:
             self.created = created
 
-    def add(self, context_dict: Dict[str, str]) -> None:
+    def add(self, context_dict: dict[str, str]) -> None:
         self.last_modified = utils.now()
         self.items.append(context_dict)
         self.limit()
@@ -79,7 +79,7 @@ class Conversation:
         display.enable_auto_bottom(tab.tab_id)
         display.check_scroll_buttons(tab.tab_id)
 
-    def to_dict(self) -> Dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "id": self.id,
             "name": self.name,
@@ -91,7 +91,7 @@ class Conversation:
 
 class Session:
     def __init__(self) -> None:
-        self.conversations: Dict[str, Conversation] = {}
+        self.conversations: dict[str, Conversation] = {}
         self.save_after = ""
 
     def add(self, name: str, conv_id: Optional[str] = None) -> Conversation:

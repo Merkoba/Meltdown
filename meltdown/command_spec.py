@@ -1,5 +1,5 @@
 # Standard
-from typing import Any, List, Callable, Dict
+from typing import Any, Callable
 
 # Modules
 from .app import app
@@ -34,8 +34,8 @@ class CommandSpec:
         self.optdelay = "Optional delay in seconds"
         self.autoscroll = "Optional up or down argument"
         self.helpcmd = "You can filter by text"
-        self.infos: List[str] = []
-        self.commands: Dict[str, Any] = {}
+        self.infos: list[str] = []
+        self.commands: dict[str, Any] = {}
 
         self.add_commands()
 
