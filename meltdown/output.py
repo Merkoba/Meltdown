@@ -20,6 +20,7 @@ class Output(tk.Text):
     marker_ai = "\u200c\u200c\u200c"
     marker_separator = "\u200d\u200d\u200d"
     marker_space = "\u00a0"
+    clicked_who = ""
     words = ""
 
     @staticmethod
@@ -73,7 +74,10 @@ class Output(tk.Text):
 
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
-        itemops.action(f"program_{mode}", tab_id=tab_id, number=arg)
+
+        itemops.action(
+            f"program_{mode}", tab_id=tab_id, number=arg, who=Output.clicked_who
+        )
 
     @staticmethod
     def copy_item() -> None:
@@ -357,13 +361,13 @@ class Output(tk.Text):
         self.tag_bind(
             "name_user",
             "<ButtonRelease-1>",
-            lambda e: self.on_name_click(e),
+            lambda e: self.on_name_click(e, "user"),
         )
 
         self.tag_bind(
             "name_ai",
             "<ButtonRelease-1>",
-            lambda e: self.on_name_click(e),
+            lambda e: self.on_name_click(e, "ai"),
         )
 
         self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
@@ -718,8 +722,12 @@ class Output(tk.Text):
         tags = widget.tag_names(current_index)
 
         for tag in tags:
-            if (tag == "name_user") or (tag == "name_ai"):
-                self.on_name_click(event)
+            if tag == "name_user":
+                self.on_name_click(event, "user")
+                return True
+
+            if tag == "name_ai":
+                self.on_name_click(event, "ai")
                 return True
 
             if tag == "url":
@@ -903,7 +911,7 @@ class Output(tk.Text):
         self.display.move_tab_right()
         return "break"
 
-    def on_name_click(self, event: Any) -> None:
+    def on_name_click(self, event: Any, who: str) -> None:
         from .menumanager import item_menu
         from .keyboard import keyboard
 
@@ -918,6 +926,7 @@ class Output(tk.Text):
             return
 
         Output.clicked_number = number
+        Output.clicked_who = who
 
         if keyboard.ctrl or keyboard.shift:
             Output.select_item()

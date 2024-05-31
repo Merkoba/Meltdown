@@ -16,6 +16,7 @@ class ItemOps:
         number: str,
         tab_id: Optional[str] = None,
         no_history: bool = False,
+        who: Optional[str] = None,
     ) -> None:
         from .model import model
         from .display import display
@@ -78,11 +79,19 @@ class ItemOps:
         elif mode == "select":
             Output.select_item(index + 1)
         elif mode == "program_file":
-            if ai_text:
-                self.run_program_file(ai_text)
+            if who == "user":
+                if user_text:
+                    self.run_program_file(user_text)
+            elif who == "ai":
+                if ai_text:
+                    self.run_program_file(ai_text)
         elif mode == "program_text":
-            if ai_text:
-                self.run_program_text(ai_text)
+            if who == "user":
+                if user_text:
+                    self.run_program_text(user_text)
+            elif who == "ai":
+                if ai_text:
+                    self.run_program_text(ai_text)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
