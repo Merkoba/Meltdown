@@ -403,6 +403,7 @@ class Menu:
         self,
         event: Optional[Any] = None,
         widget: Optional[tk.Widget] = None,
+        selected: Optional[int] = None,
     ) -> None:
         Menu.hide_all()
 
@@ -425,6 +426,9 @@ class Menu:
             Menu.current_menu = self
             self.canvas.update_idletasks()
             self.focus()
+
+        if selected:
+            self.select_item(selected)
 
     def hide(self) -> None:
         from .keyboard import keyboard

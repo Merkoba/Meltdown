@@ -297,10 +297,15 @@ class Display:
                 text=page.name, command=lambda e: command(), underline=underline
             )
 
+        selected = 0
+
         for i, page in enumerate(self.book.pages):
             add_item(page, i + 1)
 
-        self.tab_list_menu.show(event, widget=widget)
+            if page.id == self.current_tab:
+                selected = i
+
+        self.tab_list_menu.show(event, widget=widget, selected=selected)
 
     def rename_tab(
         self, tab_id: Optional[str] = None, name: Optional[str] = None
