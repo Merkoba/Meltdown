@@ -725,33 +725,37 @@ class Output(tk.Text):
             widget = self
 
         current_index = widget.index(tk.CURRENT)
-        tags = widget.tag_names(current_index)
-
-        for tag in tags:
-            if tag == "name_user":
-                self.on_name_click(event, "user")
-                return True
-
-            if tag == "name_ai":
-                self.on_name_click(event, "ai")
-                return True
-
-            if tag == "url":
-                self.on_url_click(event)
-                return True
-
-            if tag == "path":
-                self.on_path_click(event)
-                return True
-
         seltext = self.get_selected_text(widget)
+        tags = widget.tag_names(current_index)
+        tag_words = ""
+
+        if tags:
+            tag_words = self.get_tagwords(tags[0], event).strip()
+
+        if consider_tags:
+            for tag in tags:
+                if tag == "name_user":
+                    self.on_name_click(event, "user")
+                    return True
+
+                if tag == "name_ai":
+                    self.on_name_click(event, "ai")
+                    return True
+
+                if tag == "url":
+                    self.on_url_click(event)
+                    return True
+
+                if tag == "path":
+                    self.on_path_click(event)
+                    return True
 
         Output.words = ""
 
-        if seltext:
+        if seltext and tag_words:
             Output.words = seltext.strip()
         elif consider_tags and tags:
-            Output.words = self.get_tagwords(tags[0], event).strip()
+            Output.words = tag_words
 
         if not Output.words:
             return False
