@@ -120,7 +120,7 @@ class Output(tk.Text):
         from .widgets import widgets
 
         words = Output.get_words()
-        words = words.rstrip(".,")
+        words = words.rstrip(".,:;")
         widgets.set_file(words)
 
     @staticmethod
