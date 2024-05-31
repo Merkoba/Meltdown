@@ -141,7 +141,7 @@ class ItemOps:
     def run_program_file(self, text: str) -> None:
         from . import formats
 
-        formats.program("text", text=text)
+        formats.do_program("text", text=text)
 
 
 itemops = ItemOps()

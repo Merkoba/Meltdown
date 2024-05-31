@@ -675,22 +675,40 @@ class CommandSpec:
         self.add_cmd(
             "progtext",
             "Open a program using the text",
-            lambda a=None: formats.program(mode="text", cmd=a),
+            lambda a=None: formats.do_program(mode="text", cmd=a),
             type=str,
         )
 
         self.add_cmd(
             "progjson",
             "Open a program using the JSON",
-            lambda a=None: formats.program(mode="json", cmd=a),
+            lambda a=None: formats.do_program(mode="json", cmd=a),
             type=str,
         )
 
         self.add_cmd(
             "progmarkdown",
             "Open a program using the markdown",
-            lambda a=None: formats.program(mode="markdown", cmd=a),
+            lambda a=None: formats.do_program(mode="markdown", cmd=a),
             type=str,
+        )
+
+        self.add_cmd(
+            "usetext",
+            "Use the current text (text)",
+            lambda a=None: formats.do_use("text"),
+        )
+
+        self.add_cmd(
+            "usejson",
+            "Use the current text (JSON)",
+            lambda a=None: formats.do_use("json"),
+        )
+
+        self.add_cmd(
+            "usemarkdown",
+            "Use the current text (markdown)",
+            lambda a=None: formats.do_use("markdown"),
         )
 
         self.add_cmd("submit", "Submit the input", lambda a=None: inputcontrol.submit())

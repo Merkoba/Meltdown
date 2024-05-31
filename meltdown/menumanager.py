@@ -137,27 +137,9 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Copy Text", lambda e: formats.copy_text(), disabled=unmod)
-        self.menu.add("Copy JSON", lambda e: formats.copy_json(), disabled=unmod)
-        self.menu.add("Copy MrkD", lambda e: formats.copy_markdown(), disabled=unmod)
-
-        self.menu.separator()
-
-        self.menu.add("View Text", lambda e: formats.view_text(), disabled=unmod)
-        self.menu.add("View JSON", lambda e: formats.view_json(), disabled=unmod)
-        self.menu.add("View MrkD", lambda e: formats.view_markdown(), disabled=unmod)
-
-        self.menu.separator()
-
-        self.menu.add(
-            "Prog Text", lambda e: formats.program(mode="text"), disabled=unmod
-        )
-        self.menu.add(
-            "Prog JSON", lambda e: formats.program(mode="json"), disabled=unmod
-        )
-        self.menu.add(
-            "Prog MrkD", lambda e: formats.program(mode="markdown"), disabled=unmod
-        )
+        self.menu.add("Use Text", lambda e: formats.do_use("text"), disabled=unmod)
+        self.menu.add("Use JSON", lambda e: formats.do_use("json"), disabled=unmod)
+        self.menu.add("Use MrkD", lambda e: formats.do_use("markdown"), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
         self.make()

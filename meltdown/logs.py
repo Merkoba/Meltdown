@@ -147,13 +147,7 @@ class Logs:
             if args.quiet or (not args.log_feedback):
                 return
 
-            if mode == "text":
-                f_type = "text"
-            elif mode == "json":
-                f_type = "JSON"
-            elif mode == "markdown":
-                f_type = "markdown"
-
+            f_type = formats.get_name(mode)
             word = utils.singular_or_plural(num, "log", "logs")
             msg = f"{num} {f_type} {word} saved."
             display.print(utils.emoji_text(msg, "storage"))

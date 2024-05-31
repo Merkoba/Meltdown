@@ -13,6 +13,7 @@ from .session import Conversation
 from .output import Output
 from .display import display
 from .files import files
+from .dialogs import Dialog
 
 
 # ---
@@ -148,7 +149,9 @@ def to_markdown(
 # ---
 
 
-def program(mode: str, cmd: Optional[str] = None, text: Optional[str] = None) -> None:
+def do_program(
+    mode: str, cmd: Optional[str] = None, text: Optional[str] = None
+) -> None:
     if not cmd:
         if mode == "text":
             cmd = args.program_text or args.program
@@ -187,6 +190,15 @@ def program(mode: str, cmd: Optional[str] = None, text: Optional[str] = None) ->
 
 
 # ---
+
+
+def do_view(mode: str) -> None:
+    if mode == "text":
+        view_text()
+    elif mode == "json":
+        view_json()
+    elif mode == "markdown":
+        view_markdown()
 
 
 def view_text(tab_id: Optional[str] = None) -> None:
@@ -250,6 +262,15 @@ def view_markdown(tab_id: Optional[str] = None) -> None:
 # ---
 
 
+def do_copy(mode: str) -> None:
+    if mode == "text":
+        copy_text()
+    elif mode == "json":
+        copy_json()
+    elif mode == "markdown":
+        copy_markdown()
+
+
 def copy_text(tab_id: Optional[str] = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
@@ -290,3 +311,32 @@ def copy_markdown(tab_id: Optional[str] = None) -> None:
         return
 
     utils.copy(text)
+
+
+# ---
+
+
+def do_use(mode: str) -> None:
+    cmds = []
+    cmds.append(("Program", lambda a: do_program(mode)))
+    cmds.append(("View", lambda a: do_view(mode)))
+    cmds.append(("Copy", lambda a: do_copy(mode)))
+    name = get_name(mode, True)
+    Dialog.show_dialog(f"Use {name}", cmds)
+
+
+def get_name(mode: str, capitalize: bool = False) -> str:
+    name = ""
+
+    if mode == "text":
+        name = "text"
+    elif mode == "json":
+        name = "JSON"
+    elif mode == "markdown":
+        name = "markdown"
+
+    if capitalize:
+        if name != "JSON":
+            name = name.capitalize()
+
+    return name
