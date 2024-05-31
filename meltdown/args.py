@@ -148,9 +148,9 @@ class Args:
 
         self.errors = False
         self.log_errors = True
-        self.prog_text = ""
-        self.prog_json = ""
-        self.prog_markdown = ""
+        self.program_text = ""
+        self.program_json = ""
+        self.program_markdown = ""
         self.program = ""
 
         self.gestures = True
@@ -394,9 +394,9 @@ class Args:
             "on_log_markdown",
             "on_copy",
             "errors",
-            "prog_text",
-            "prog_json",
-            "prog_markdown",
+            "program_text",
+            "program_json",
+            "program_markdown",
             "program",
             "gestures_threshold",
             "gestures_left",

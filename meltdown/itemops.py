@@ -77,9 +77,12 @@ class ItemOps:
             utils.copy(text, command=True)
         elif mode == "select":
             Output.select_item(index + 1)
-        elif mode == "program":
+        elif mode == "program_file":
             if ai_text:
-                self.run_program(ai_text)
+                self.run_program_file(ai_text)
+        elif mode == "program_text":
+            if ai_text:
+                self.run_program_text(ai_text)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -105,7 +108,7 @@ class ItemOps:
 
         self.action("program", number)
 
-    def run_program(self, text: str) -> None:
+    def run_program_text(self, text: str) -> None:
         def action(ans: str) -> None:
             if not ans:
                 return
@@ -118,6 +121,11 @@ class ItemOps:
             return
 
         Dialog.show_input("Run program", lambda a: action(a), value=config.last_program)
+
+    def run_program_file(self, text: str) -> None:
+        from . import formats
+
+        formats.program("text", text=text)
 
 
 itemops = ItemOps()

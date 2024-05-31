@@ -148,14 +148,14 @@ def to_markdown(
 # ---
 
 
-def program(mode: str, cmd: Optional[str] = None) -> None:
+def program(mode: str, cmd: Optional[str] = None, text: Optional[str] = None) -> None:
     if not cmd:
         if mode == "text":
-            cmd = args.prog_text or args.program
+            cmd = args.program_text or args.program
         elif mode == "json":
-            cmd = args.prog_json or args.program
+            cmd = args.program_json or args.program
         elif mode == "markdown":
-            cmd = args.prog_markdown or args.program
+            cmd = args.program_markdown or args.program
 
     tabconvo = display.get_tab_convo(None)
 
@@ -165,7 +165,9 @@ def program(mode: str, cmd: Optional[str] = None) -> None:
     if not tabconvo.convo.items:
         return
 
-    if mode == "text":
+    if text:
+        ext = "txt"
+    elif mode == "text":
         text = get_text(tabconvo.convo)
         ext = "txt"
     elif mode == "json":

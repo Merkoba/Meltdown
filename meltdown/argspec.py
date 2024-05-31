@@ -1170,19 +1170,19 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "prog_text",
+            "program_text",
             type=str,
             info="Use this program as default for the prog text command",
         )
 
         self.add_argument(
-            "prog_json",
+            "program_json",
             type=str,
             info="Use this program as default for the prog json command",
         )
 
         self.add_argument(
-            "prog_markdown",
+            "program_markdown",
             type=str,
             info="Use this program as default for the prog markdown command",
         )

@@ -1708,7 +1708,7 @@ Type: str
 
 ---
 
-### prog-text
+### program-text
 
 Use this program as default for the prog text command
 
@@ -1718,7 +1718,7 @@ Type: str
 
 ---
 
-### prog-json
+### program-json
 
 Use this program as default for the prog json command
 
@@ -1728,7 +1728,7 @@ Type: str
 
 ---
 
-### prog-markdown
+### program-markdown
 
 Use this program as default for the prog markdown command
 

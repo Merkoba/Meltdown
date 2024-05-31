@@ -65,7 +65,7 @@ class Output(tk.Text):
         output.select_lines(start_ln, end_ln)
 
     @staticmethod
-    def program_item() -> None:
+    def program_item(mode: str) -> None:
         output = Output.current_output()
 
         if not output:
@@ -73,7 +73,7 @@ class Output(tk.Text):
 
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
-        itemops.action("program", tab_id=tab_id, number=arg)
+        itemops.action(f"program_{mode}", tab_id=tab_id, number=arg)
 
     @staticmethod
     def copy_item() -> None:
