@@ -25,6 +25,7 @@ class Config:
         self.default_system = """
 Your name is ((name_ai)).
 You are talking to ((name_user)).
+No need to introduce yourself.
 No need to greet me, just answer.
 """.strip()
 
