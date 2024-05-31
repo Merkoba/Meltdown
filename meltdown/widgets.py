@@ -253,7 +253,10 @@ class Widgets:
     def get_widget(self, key: str) -> Optional[tk.Widget]:
         if hasattr(self, key):
             widget = getattr(self, key)
-            assert isinstance(widget, tk.Widget)
+
+            if not isinstance(widget, tk.Widget):
+                return None
+
             return widget
 
         return None
@@ -430,7 +433,8 @@ class Widgets:
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
-        assert isinstance(menu, Menu)
+        if not isinstance(menu, Menu):
+            return
 
         if key_config == "input":
             items = inputcontrol.get_history_list()
@@ -609,7 +613,8 @@ class Widgets:
         if not widget:
             return
 
-        assert isinstance(widget, Gettable)
+        if not isinstance(widget, Gettable):
+            return
 
         if not text:
             text = widget.get()

@@ -161,7 +161,9 @@ class Find:
         )
 
         output = self.get_output()
-        assert output is not None
+
+        if not output:
+            return
 
         if match_:
             start_index = widget.index(match_)
@@ -211,7 +213,9 @@ class Find:
     def next_snippet(self) -> bool:
         self.snippet += 1
         output = self.get_output()
-        assert output is not None
+
+        if not output:
+            return False
 
         if self.snippet >= len(output.snippets):
             return False
@@ -225,7 +229,10 @@ class Find:
     def change_widget(self) -> None:
         if not self.next_snippet():
             self.widget = self.get_output()
-            assert self.widget is not None
+
+            if not self.widget:
+                return
+
             self.snippet = -1
             self.snippet_focused = False
             self.snippet_index = "1.0"
@@ -250,7 +257,9 @@ class Find:
             self.widget = widget
         else:
             self.widget = self.get_output()
-            assert self.widget is not None
+
+            if not self.widget:
+                return
 
         self.visible = True
 

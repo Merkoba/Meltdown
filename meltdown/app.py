@@ -259,7 +259,10 @@ class App:
         from .system import system
 
         widget = getattr(widgets, f"{name}_frame")
-        assert isinstance(widget, tk.Frame)
+
+        if not isinstance(widget, tk.Frame):
+            return
+
         widget.grid_remove()
         setattr(self, f"{name}_frame_enabled", False)
 
@@ -276,7 +279,10 @@ class App:
         from .widgets import widgets
 
         widget = getattr(widgets, f"{name}_frame")
-        assert isinstance(widget, tk.Frame)
+
+        if not isinstance(widget, tk.Frame):
+            return
+
         widget.grid()
         setattr(self, f"{name}_frame_enabled", True)
 

@@ -133,7 +133,8 @@ class Utils:
         from .entrybox import EntryBox
         from .textbox import TextBox
 
-        assert isinstance(widget, (EntryBox, TextBox))
+        if not isinstance(widget, (EntryBox, TextBox)):
+            return
 
         text = self.get_paste()
 

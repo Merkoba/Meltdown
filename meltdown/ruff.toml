@@ -28,6 +28,7 @@ select = [
     "PYI",
     "PIE",
     "ICN",
+    "S101",
     "S113",
     "UP",
     "TRY",
