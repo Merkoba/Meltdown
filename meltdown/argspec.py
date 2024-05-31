@@ -476,6 +476,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "item_program_both",
+            action="store_true",
+            info="Send user and AI to item programs",
+        )
+
+        self.add_argument(
             "open_on_log",
             action="store_true",
             info="Open program automatically on log",

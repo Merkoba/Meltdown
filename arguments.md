@@ -556,6 +556,16 @@ Action: store_false
 
 ---
 
+### item-program-both
+
+Send user and AI to item programs
+
+Default: False
+
+Action: store_true
+
+---
+
 ### open-on-log
 
 Open program automatically on log

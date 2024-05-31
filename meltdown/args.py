@@ -236,6 +236,7 @@ class Args:
         self.response_file = ""
         self.response_program = ""
         self.item_program = ""
+        self.item_program_both = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -468,6 +469,7 @@ class Args:
             "response_file",
             "response_program",
             "item_program",
+            "item_program_both",
         ]
 
         for n_item in normals:

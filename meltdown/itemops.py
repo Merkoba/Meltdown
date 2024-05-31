@@ -45,6 +45,7 @@ class ItemOps:
 
         user_text = item.get("user")
         ai_text = item.get("ai")
+        both_text = f"User: {user_text}\n\nAI: {ai_text}"
         file = item.get("file", "")
 
         if mode == "repeat":
@@ -85,6 +86,9 @@ class ItemOps:
             elif who == "ai":
                 if ai_text:
                     self.run_program_file(ai_text)
+            elif who == "both":
+                if user_text and ai_text:
+                    self.run_program_file(both_text)
         elif mode == "program_text":
             if who == "user":
                 if user_text:
@@ -92,6 +96,9 @@ class ItemOps:
             elif who == "ai":
                 if ai_text:
                     self.run_program_text(ai_text)
+            elif who == "both":
+                if user_text and ai_text:
+                    self.run_program_text(both_text)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:

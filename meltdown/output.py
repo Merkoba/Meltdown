@@ -75,9 +75,12 @@ class Output(tk.Text):
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
 
-        itemops.action(
-            f"program_{mode}", tab_id=tab_id, number=arg, who=Output.clicked_who
-        )
+        if args.item_program_both:
+            who = "both"
+        else:
+            who = Output.clicked_who
+
+        itemops.action(f"program_{mode}", tab_id=tab_id, number=arg, who=who)
 
     @staticmethod
     def copy_item() -> None:
