@@ -3,7 +3,7 @@ import base64
 import threading
 from pathlib import Path
 from typing import Optional
-from typing import Tuple, Any, Generator
+from typing import Any, Generator
 
 # Libraries
 import requests  # type: ignore
@@ -42,7 +42,7 @@ class Model:
         self.gpt_client = None
         self.last_response = ""
 
-        self.gpts: list[Tuple[str, str]] = [
+        self.gpts: list[tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
             ("gpt-4o", "GPT 4o"),
         ]
@@ -276,7 +276,7 @@ class Model:
 
     def prepare_stream(
         self, prompt: dict[str, str], tab_id: str
-    ) -> Optional[Tuple[list[dict[str, str]], dict[str, str]]]:
+    ) -> Optional[tuple[list[dict[str, str]], dict[str, str]]]:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()

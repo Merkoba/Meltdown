@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional, Tuple
+from typing import Any, Optional
 
 # Modules
 from .config import config
@@ -318,7 +318,7 @@ class Output(tk.Text):
         self.update_size_after = ""
         self.checked_markers_user: list[int] = []
         self.checked_markers_ai: list[int] = []
-        self.last_scroll_args: Optional[Tuple[str, str]] = None
+        self.last_scroll_args: Optional[tuple[str, str]] = None
 
         parent.grid_rowconfigure(0, weight=1)
         parent.grid_columnconfigure(0, weight=1)
@@ -781,7 +781,7 @@ class Output(tk.Text):
 
         return "1.0"
 
-    def get_snippet_index_2(self, snippet: tk.Widget) -> Tuple[str, int]:
+    def get_snippet_index_2(self, snippet: tk.Widget) -> tuple[str, int]:
         index = 0
 
         for element in self.dump("1.0", "end"):
@@ -948,7 +948,7 @@ class Output(tk.Text):
     def select_lines(self, start_ln: int, end_ln: int) -> None:
         self.tag_add("sel", f"{start_ln}.0", f"{end_ln}.end")
 
-    def get_item_text(self, number: int) -> Tuple[int, int]:
+    def get_item_text(self, number: int) -> tuple[int, int]:
         lines = self.get_text().split("\n")
         start_ln = 0
         end_ln = 0

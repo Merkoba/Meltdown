@@ -1,6 +1,6 @@
 # Standard
 import re
-from typing import Any, Tuple
+from typing import Any
 
 # Modules
 from .args import args
@@ -126,7 +126,7 @@ class Markdown:
             return
 
         markers = self.widget.get_markers()
-        ranges: list[Tuple[str, int, int]] = []
+        ranges: list[tuple[str, int, int]] = []
 
         def add(who: str, start_ln: int, end_ln: int) -> None:
             ranges.append((who, start_ln, end_ln))

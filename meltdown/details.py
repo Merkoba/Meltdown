@@ -1,5 +1,5 @@
 # Standard
-from typing import TYPE_CHECKING, Optional, Tuple
+from typing import TYPE_CHECKING, Optional
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore
@@ -21,7 +21,7 @@ def make_label(
     data: "FrameData",
     key: str,
     label: str,
-    padx: Optional[Tuple[int, int]] = None,
+    padx: Optional[tuple[int, int]] = None,
 ) -> None:
     label_wid = widgetutils.make_label(data, label, padx=padx)
     setattr(widgets, f"{key}_label", label_wid)

@@ -1,6 +1,6 @@
 # Standard
 import tkinter as tk
-from typing import Any, Callable, Optional, Tuple
+from typing import Any, Callable, Optional
 from PIL import Image, ImageTk
 from pathlib import Path
 
@@ -35,7 +35,7 @@ class Dialog:
     @staticmethod
     def show_dialog(
         text: str,
-        commands: Optional[list[Tuple[str, Callable[..., Any]]]] = None,
+        commands: Optional[list[tuple[str, Callable[..., Any]]]] = None,
         image: Optional[Path] = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
@@ -121,7 +121,7 @@ class Dialog:
 
         # ------
 
-        def make_cmd(cmd: Tuple[str, Callable[..., Any]]) -> None:
+        def make_cmd(cmd: tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
                 ans = {"entry": Dialog.get_entry()}
                 dialog.hide()

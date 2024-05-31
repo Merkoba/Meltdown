@@ -1,6 +1,5 @@
 # Standard
 from tkinter import ttk
-from typing import Tuple
 
 # Modules
 from .config import config
@@ -164,7 +163,7 @@ class Theme:
 
         return font
 
-    def get_output_font(self, smaller: bool = False) -> Tuple[str, int]:
+    def get_output_font(self, smaller: bool = False) -> tuple[str, int]:
         ff = self.get_font_family()
         size = config.font_size
 
@@ -173,28 +172,28 @@ class Theme:
 
         return (ff, size)
 
-    def get_snippet_font(self) -> Tuple[str, int]:
+    def get_snippet_font(self) -> tuple[str, int]:
         from .args import args
 
         return (args.snippets_font, config.font_size)
 
-    def get_bold_font(self) -> Tuple[str, int, str]:
+    def get_bold_font(self) -> tuple[str, int, str]:
         ff = self.get_font_family()
         return (ff, config.font_size, "bold")
 
-    def get_italic_font(self) -> Tuple[str, int, str]:
+    def get_italic_font(self) -> tuple[str, int, str]:
         ff = self.get_font_family()
         return (ff, config.font_size, "italic")
 
-    def get_header_font(self, num: int) -> Tuple[str, int, str]:
+    def get_header_font(self, num: int) -> tuple[str, int, str]:
         ff = self.get_font_family()
         return (ff, config.font_size + num, "bold")
 
-    def get_separator_font(self) -> Tuple[str, int]:
+    def get_separator_font(self) -> tuple[str, int]:
         ff = self.monospace_family
         return (ff, config.font_size)
 
-    def font(self, name: str = "font") -> Tuple[str, int, str]:
+    def font(self, name: str = "font") -> tuple[str, int, str]:
         from .args import args
 
         diff = args.font_diff

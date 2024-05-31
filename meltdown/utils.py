@@ -8,7 +8,7 @@ import inspect
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional, Tuple, Any
+from typing import Union, Optional, Any
 from pathlib import Path
 from datetime import datetime
 
@@ -85,7 +85,7 @@ class Utils:
         num = round(start - end, 2)
         return f"{name} in {num} seconds"
 
-    def check_time(self, name: str, last_time: float) -> Tuple[str, float]:
+    def check_time(self, name: str, last_time: float) -> tuple[str, float]:
         time_now = self.now()
         seconds_str = self.seconds_string(name, time_now, last_time)
         return seconds_str, time_now

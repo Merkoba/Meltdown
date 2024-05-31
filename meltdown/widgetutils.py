@@ -1,7 +1,7 @@
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Union, Callable, Optional, Tuple
+from typing import Any, Union, Callable, Optional
 
 # Modules
 from .app import app
@@ -15,8 +15,8 @@ from .framedata import FrameData
 def do_grid(
     widget: tk.Widget,
     col: int,
-    padx: Optional[Tuple[int, int]] = None,
-    pady: Optional[Tuple[int, int]] = None,
+    padx: Optional[tuple[int, int]] = None,
+    pady: Optional[tuple[int, int]] = None,
 ) -> None:
     if padx is not None:
         px = padx
@@ -47,7 +47,7 @@ def make_frame(
     return FrameData(frame)
 
 
-def make_scrollable_frame(parent: tk.Frame, col: int) -> Tuple[tk.Frame, tk.Canvas]:
+def make_scrollable_frame(parent: tk.Frame, col: int) -> tuple[tk.Frame, tk.Canvas]:
     canvas = tk.Canvas(parent)
     scrollbar = tk.Scrollbar(parent, orient="horizontal", command=canvas.xview)
     frame = tk.Frame(canvas, background=app.theme.background_color)
@@ -119,8 +119,8 @@ def make_button(
 def make_label(
     frame_data: FrameData,
     text: str,
-    padx: Optional[Tuple[int, int]] = None,
-    pady: Optional[Tuple[int, int]] = None,
+    padx: Optional[tuple[int, int]] = None,
+    pady: Optional[tuple[int, int]] = None,
     ignore_short: bool = False,
     colons: bool = True,
 ) -> tk.Label:
