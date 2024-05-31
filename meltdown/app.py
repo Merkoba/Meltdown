@@ -885,5 +885,19 @@ class App:
 
         self.run_program(args.response_program, text)
 
+    def pick_theme(self) -> None:
+        from .config import config
+        from .dialogs import Dialog
+
+        def action(name: str) -> None:
+            config.set("theme", name)
+            Dialog.show_message("Reset to apply changes.")
+
+        cmds = []
+        cmds.append(("Contrast", lambda a: action("contrast")))
+        cmds.append(("Light", lambda a: action("light")))
+        cmds.append(("Dark", lambda a: action("dark")))
+        Dialog.show_dialog("Color Theme", cmds)
+
 
 app = App()

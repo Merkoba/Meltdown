@@ -944,7 +944,7 @@ class CommandSpec:
         self.add_cmd(
             "theme",
             "Show the theme menu",
-            lambda a=None: menumanager.theme_menu.show(),
+            lambda a=None: app.pick_theme(),
         )
 
         self.add_cmd(

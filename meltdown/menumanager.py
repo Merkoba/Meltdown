@@ -57,7 +57,7 @@ class MainMenu:
 
         self.menu.separator()
 
-        self.menu.add("Theme", lambda e: theme_menu.show(e))
+        self.menu.add("Theme", lambda e: app.pick_theme())
         self.menu.add("Font", lambda e: font_menu.show(e))
 
         self.menu.separator()
@@ -383,28 +383,6 @@ class UrlMenu:
             return
 
 
-class ThemeMenu:
-    def __init__(self) -> None:
-        from .dialogs import Dialog
-
-        self.menu = Menu()
-
-        def action(theme: str) -> None:
-            config.set("theme", theme)
-            Dialog.show_message("Reset to apply changes.")
-
-        self.menu.add("Dark", lambda e: action("dark"))
-        self.menu.add("Light", lambda e: action("light"))
-        self.menu.add("Contrast", lambda e: action("contrast"))
-
-    def show(self, event: Any = None) -> None:
-        if event:
-            self.menu.show(event)
-        else:
-            widget = get_main_button()
-            self.menu.show(widget=widget)
-
-
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
@@ -415,4 +393,3 @@ item_menu = ItemMenu()
 word_menu = WordMenu()
 url_menu = UrlMenu()
 custom_menu = CustomMenu()
-theme_menu = ThemeMenu()
