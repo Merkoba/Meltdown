@@ -711,7 +711,9 @@ class Output(tk.Text):
         except tk.TclError:
             return ""
 
-    def show_word_menu(self, event: Any, widget: Optional[tk.Text] = None) -> bool:
+    def show_word_menu(
+        self, event: Any, widget: Optional[tk.Text] = None, consider_tags: bool = True
+    ) -> bool:
         from .menumanager import word_menu
         from .keyboard import keyboard
 
@@ -747,7 +749,7 @@ class Output(tk.Text):
 
         if seltext:
             Output.words = seltext.strip()
-        elif tags:
+        elif consider_tags and tags:
             Output.words = self.get_tagwords(tags[0], event).strip()
 
         if not Output.words:
@@ -769,11 +771,10 @@ class Output(tk.Text):
             return
 
         tags = self.tag_names(current_index)
-        single = len(tags) == 1
         exclude = ("sel", "indent_ordered", "indent_unordered")
 
         if tags:
-            if single and (tags[0] in exclude):
+            if all(tag in exclude for tag in tags):
                 self.configure(cursor="xterm")
             else:
                 self.configure(cursor="hand2")
@@ -846,7 +847,7 @@ class Output(tk.Text):
     def on_right_click(self, event: Any, widget: Optional[tk.Text] = None) -> None:
         from .menumanager import tab_menu
 
-        if not self.show_word_menu(event, widget):
+        if not self.show_word_menu(event, widget, consider_tags=False):
             tab_menu.show(event)
 
     def on_click(self) -> None:
