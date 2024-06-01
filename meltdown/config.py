@@ -407,7 +407,7 @@ No need to greet me, just answer.
 
         if on_change:
             if (key == "font_size") or (key == "font_family"):
-                self.on_font_change()
+                self.on_font_change(key)
 
             if key in self.model_keys:
                 model.unload()
@@ -456,10 +456,10 @@ No need to greet me, just answer.
         self.set(key, default, on_change=on_change)
         widgets.fill_widget(key, getattr(self, key), focus=focus)
 
-    def on_font_change(self) -> None:
+    def on_font_change(self, key: str) -> None:
         from .display import display
 
-        display.update_font()
+        display.update_font(key)
 
     def menu(self) -> None:
         from .dialogs import Dialog

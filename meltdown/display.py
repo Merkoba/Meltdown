@@ -622,9 +622,13 @@ class Display:
         config.reset_one("font_size", False)
         config.reset_one("font_family")
 
-    def update_font(self) -> None:
+    def update_font(self, key: str) -> None:
         for tab in self.tabs.values():
             tab.output.update_font()
+
+            if key == "font_family":
+                if tab.modified:
+                    self.refresh(tab.tab_id)
 
     def scroll_up(
         self,
