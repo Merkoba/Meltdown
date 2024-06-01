@@ -86,17 +86,9 @@ class Logs:
         name: Optional[str] = None,
         tab_id: Optional[str] = None,
     ) -> None:
-        if mode == "text":
-            ext = "txt"
-        elif mode == "json":
-            ext = "json"
-        elif mode == "markdown":
-            ext = "md"
-        else:
-            return
-
         num = 0
         last_log = ""
+        ext = formats.get_ext(mode)
 
         if save_all:
             conversations = [

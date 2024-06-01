@@ -168,18 +168,17 @@ def do_program(
     if not tabconvo.convo.items:
         return
 
-    if mode == "text":
-        text = get_text(tabconvo.convo)
-        ext = "txt"
-    elif mode == "json":
-        text = get_json(tabconvo.convo)
-        ext = "json"
-    elif mode == "markdown":
-        text = get_markdown(tabconvo.convo)
-        ext = "markdown"
-    else:
-        return
+    if not text:
+        if mode == "text":
+            text = get_text(tabconvo.convo)
+        elif mode == "json":
+            text = get_json(tabconvo.convo)
+        elif mode == "markdown":
+            text = get_markdown(tabconvo.convo)
+        else:
+            return
 
+    ext = get_ext(mode)
     tmpdir = tempfile.gettempdir()
     name = f"mlt_{utils.now_int()}.{ext}"
     path = Path(tmpdir, name)
@@ -338,3 +337,16 @@ def get_name(mode: str, capitalize: bool = False) -> str:
             name = name.capitalize()
 
     return name
+
+
+def get_ext(mode: str) -> str:
+    ext = ""
+
+    if mode == "text":
+        ext = "txt"
+    elif mode == "json":
+        ext = "json"
+    elif mode == "markdown":
+        ext = "md"
+
+    return ext
