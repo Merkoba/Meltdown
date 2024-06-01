@@ -758,30 +758,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "ordered_space_1",
-            type=str,
-            info="Space to the left of the list items (ordered)",
-        )
-
-        self.add_argument(
-            "ordered_space_2",
-            type=str,
-            info="Space to the right of the list items (ordered)",
-        )
-
-        self.add_argument(
-            "unordered_space_1",
-            type=str,
-            info="Space to the left of the list items (unordered)",
-        )
-
-        self.add_argument(
-            "unordered_space_2",
-            type=str,
-            info="Space to the right of the list items (unordered)",
-        )
-
-        self.add_argument(
             "config",
             type=str,
             info="Name or path of a config file to use",

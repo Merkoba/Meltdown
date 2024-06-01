@@ -1028,46 +1028,6 @@ Type: str
 
 ---
 
-### ordered-space-1
-
-Space to the left of the list items (ordered)
-
-Default: [2 spaces]
-
-Type: str
-
----
-
-### ordered-space-2
-
-Space to the right of the list items (ordered)
-
-Default: [2 spaces]
-
-Type: str
-
----
-
-### unordered-space-1
-
-Space to the left of the list items (unordered)
-
-Default: [2 spaces]
-
-Type: str
-
----
-
-### unordered-space-2
-
-Space to the right of the list items (unordered)
-
-Default: [2 spaces]
-
-Type: str
-
----
-
 ### config
 
 Name or path of a config file to use

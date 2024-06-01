@@ -125,10 +125,6 @@ class Args:
         self.display_wheel = True
         self.ordered_char = "."
         self.unordered_char = "•"
-        self.ordered_space_1 = "  "
-        self.ordered_space_2 = "  "
-        self.unordered_space_1 = "  "
-        self.unordered_space_2 = "  "
         self.ordered_spacing = "auto"
         self.unordered_spacing = "auto"
 
@@ -474,10 +470,6 @@ class Args:
         no_strip = [
             "ordered_char",
             "unordered_char",
-            "ordered_space_1",
-            "ordered_space_2",
-            "unordered_space_1",
-            "unordered_space_2",
         ]
 
         for ns_item in no_strip:
