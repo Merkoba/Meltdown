@@ -932,6 +932,12 @@ Show the model name
 
 ---
 
-### size
+### info
 
 Show size and length information
+
+---
+
+### size
+
+Set the width height of the window ([w]x[h])

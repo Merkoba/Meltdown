@@ -899,5 +899,8 @@ class App:
         cmds.append(("Dark", lambda a: action("dark")))
         Dialog.show_dialog("Color Theme", cmds)
 
+    def set_size(self, dimensions: str) -> None:
+        self.root.geometry(dimensions)
+
 
 app = App()

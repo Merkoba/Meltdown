@@ -955,9 +955,17 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "size",
+            "info",
             "Show size and length information",
             lambda a=None: display.show_size(),
+        )
+
+        self.add_cmd(
+            "size",
+            "Set the width height of the window ([w]x[h])",
+            lambda a=None: app.set_size(a),
+            type=str,
+            arg_req=True,
         )
 
 
