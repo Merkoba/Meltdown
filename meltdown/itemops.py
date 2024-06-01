@@ -79,26 +79,16 @@ class ItemOps:
             utils.copy(text, command=True)
         elif mode == "select":
             Output.select_item(index + 1)
-        elif mode == "program_file":
+        elif mode == "use":
             if who == "user":
                 if user_text:
-                    self.run_program_file(user_text)
+                    self.use_item(user_text)
             elif who == "ai":
                 if ai_text:
-                    self.run_program_file(ai_text)
+                    self.use_item(ai_text)
             elif who == "both":
                 if user_text and ai_text:
-                    self.run_program_file(both_text)
-        elif mode == "program_text":
-            if who == "user":
-                if user_text:
-                    self.run_program_text(user_text)
-            elif who == "ai":
-                if ai_text:
-                    self.run_program_text(ai_text)
-            elif who == "both":
-                if user_text and ai_text:
-                    self.run_program_text(both_text)
+                    self.use_item(both_text)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -124,7 +114,20 @@ class ItemOps:
 
         self.action("program", number)
 
-    def run_program_text(self, text: str) -> None:
+    def use_item(self, text: str) -> None:
+        from . import formats
+
+        def action(mode: str) -> None:
+            formats.do_program(mode, text=text)
+
+        cmds = []
+        cmds.append(("Program", lambda a: self.run_program(text)))
+        cmds.append(("Markdown", lambda a: action("markdown")))
+        cmds.append(("JSON", lambda a: action("json")))
+        cmds.append(("Text", lambda a: action("text")))
+        Dialog.show_dialog("Use with File", cmds)
+
+    def run_program(self, text: str) -> None:
         def action(ans: str) -> None:
             if not ans:
                 return
@@ -137,18 +140,6 @@ class ItemOps:
             return
 
         Dialog.show_input("Run Program", lambda a: action(a), value=config.last_program)
-
-    def run_program_file(self, text: str) -> None:
-        from . import formats
-
-        def action(mode: str) -> None:
-            formats.do_program(mode, text=text)
-
-        cmds = []
-        cmds.append(("Markdown", lambda a: action("markdown")))
-        cmds.append(("JSON", lambda a: action("json")))
-        cmds.append(("Text", lambda a: action("text")))
-        Dialog.show_dialog("Use with File", cmds)
 
 
 itemops = ItemOps()

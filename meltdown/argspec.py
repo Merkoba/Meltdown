@@ -476,9 +476,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "item_program_both",
+            "use_item_both",
             action="store_true",
-            info="Send user and AI to item programs",
+            info="Use user and AI text when using items",
         )
 
         self.add_argument(
