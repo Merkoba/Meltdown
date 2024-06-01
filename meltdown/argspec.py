@@ -116,12 +116,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_one_space",
-            action="store_false",
-            info="Don't limit the text inputs to one space",
-        )
-
-        self.add_argument(
             "no_tabs_wheel",
             action="store_false",
             info="Don't enable mousewheel events on the tabs bar",

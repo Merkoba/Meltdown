@@ -229,7 +229,6 @@ class Args:
         self.shorten_paths = True
         self.separate_logs = True
         self.names_on_logs = True
-        self.one_space = True
         self.ascii_logs = False
         self.quote_used_words = True
         self.open_on_log = False
@@ -317,7 +316,6 @@ class Args:
             ("no_shorten_paths", "shorten_paths"),
             ("no_separate_logs", "separate_logs"),
             ("no_names_on_logs", "names_on_logs"),
-            ("no_one_space", "one_space"),
             ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
         ]

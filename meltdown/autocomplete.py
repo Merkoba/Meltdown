@@ -53,6 +53,9 @@ class AutoComplete:
             if not self.widget:
                 return
 
+            if not isinstance(self.widget, EntryBox):
+                return
+
             if self.index >= len(self.matches):
                 self.index = 0
 
@@ -72,7 +75,7 @@ class AutoComplete:
             if self.match:
                 self.widget.delete_text(self.pos, len(self.missing))
 
-            self.widget.insert_text(missing, index=self.pos)
+            self.widget.insert_text(missing, index=self.pos, smart_space=True)
 
             self.index += 1
             self.match = match

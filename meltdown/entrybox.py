@@ -7,7 +7,6 @@ from collections.abc import Callable
 
 # Modules
 from .app import app
-from .args import args
 from .config import config
 from .tooltips import ToolTip
 
@@ -132,7 +131,11 @@ class EntryBox(ttk.Entry):
             self.changes.on_change()
 
     def insert_text(
-        self, text: str, check_placeholder: bool = True, index: int = -1
+        self,
+        text: str,
+        check_placeholder: bool = True,
+        index: int = -1,
+        smart_space: bool = False,
     ) -> None:
         if self.placeholder_active:
             self.disable_placeholder()
@@ -144,6 +147,12 @@ class EntryBox(ttk.Entry):
             index = insert_index
 
         at_end = end_index == index
+
+        if at_end:
+            if smart_space:
+                if text[-1] != " ":
+                    text += " "
+
         self.insert(index, text)
 
         if at_end:
@@ -211,12 +220,7 @@ class EntryBox(ttk.Entry):
         self.xview(pos - 10)
 
     def get_clean_string(self, text: str) -> str:
-        text = re.sub(r"\n+", " ", text)
-
-        if args.one_space:
-            text = re.sub(r"\s+", " ", text).lstrip()
-
-        return text
+        return re.sub(r"\n+", " ", text)
 
     def clean_string(self) -> None:
         if self.placeholder_active:
