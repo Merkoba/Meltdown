@@ -141,7 +141,14 @@ class ItemOps:
     def run_program_file(self, text: str) -> None:
         from . import formats
 
-        formats.do_program("text", text=text)
+        def action(mode: str) -> None:
+            formats.do_program(mode, text=text)
+
+        cmds = []
+        cmds.append(("Markdown", lambda a: action("markdown")))
+        cmds.append(("JSON", lambda a: action("json")))
+        cmds.append(("Text", lambda a: action("text")))
+        Dialog.show_dialog("Use with File", cmds)
 
 
 itemops = ItemOps()

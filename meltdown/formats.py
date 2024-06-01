@@ -168,9 +168,7 @@ def do_program(
     if not tabconvo.convo.items:
         return
 
-    if text:
-        ext = "txt"
-    elif mode == "text":
+    if mode == "text":
         text = get_text(tabconvo.convo)
         ext = "txt"
     elif mode == "json":
