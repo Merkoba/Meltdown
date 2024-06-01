@@ -932,6 +932,12 @@ Show the model name
 
 ---
 
-### info
+### size
 
 Show size and length information
+
+---
+
+### info
+
+Show the info dialog
