@@ -123,7 +123,7 @@ class ItemOps:
         from . import formats
 
         def action(mode: str) -> None:
-            formats.do_program(mode, text=text)
+            formats.do_open(mode, text=text)
 
         cmds = []
         cmds.append(("Program", lambda a: self.run_program(text)))
