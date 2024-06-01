@@ -673,21 +673,21 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "progtext",
+            "opentext",
             "Open a program using the text",
             lambda a=None: formats.do_open(mode="text", cmd=a),
             type=str,
         )
 
         self.add_cmd(
-            "progjson",
+            "openjson",
             "Open a program using the JSON",
             lambda a=None: formats.do_open(mode="json", cmd=a),
             type=str,
         )
 
         self.add_cmd(
-            "progmarkdown",
+            "openmarkdown",
             "Open a program using the markdown",
             lambda a=None: formats.do_open(mode="markdown", cmd=a),
             type=str,

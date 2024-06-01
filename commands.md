@@ -668,19 +668,19 @@ Show the GPT menu
 
 ---
 
-### progtext
+### opentext
 
 Open a program using the text
 
 ---
 
-### progjson
+### openjson
 
 Open a program using the JSON
 
 ---
 
-### progmarkdown
+### openmarkdown
 
 Open a program using the markdown
 
