@@ -415,6 +415,9 @@ class Markdown:
             else:
                 spaced = not all(line.strip() for line in sliced)
 
+            space_1 = ""
+            space_2 = "  "
+
             if mode == "ordered":
                 n = 1
                 char = args.ordered_char.rstrip()
@@ -422,8 +425,9 @@ class Markdown:
 
                 for line in sliced:
                     if re.match(r"^\d+", line):
+                        left = f"{space_1}{n}{char}{space_2}"
                         c_line = re.sub(r"^\d+[.)]", "", line).strip()
-                        items.append(f"{marker}{char}{c_line}")
+                        items.append(f"{marker}{left}{c_line}")
                         n += 1
             else:
                 char = args.unordered_char.rstrip()
@@ -431,8 +435,9 @@ class Markdown:
 
                 for line in sliced:
                     if line.startswith(("*", "-")):
+                        left = f"{space_1}{char}{space_2}"
                         c_line = line[2:].strip()
-                        items.append(f"{marker}{char}{c_line}")
+                        items.append(f"{marker}{left}{c_line}")
 
             if spaced:
                 txt = "\n\n".join(items)
