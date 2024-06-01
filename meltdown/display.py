@@ -994,21 +994,6 @@ class Display:
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
 
-    def show_size(self, tab_id: Optional[str] = None) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        tab = self.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        lines = tab.output.get_num_lines()
-        chars = tab.output.get_num_chars()
-        kbytes = utils.chars_to_kb(chars)
-
-        Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
-
     def update_scroll(self, tab_id: Optional[str] = None) -> None:
         if not tab_id:
             tab_id = self.current_tab

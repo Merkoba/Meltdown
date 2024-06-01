@@ -816,10 +816,11 @@ class App:
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Portrait", lambda a: app.show_portrait()))
-        cmds.append(("Date", lambda a: app.show_date()))
-        cmds.append(("Started", lambda a: app.show_started()))
-        cmds.append(("Memory", lambda a: app.show_memory()))
+        cmds.append(("Portrait", lambda a: self.show_portrait()))
+        cmds.append(("Size", lambda a: self.show_size()))
+        cmds.append(("Date", lambda a: self.show_date()))
+        cmds.append(("Started", lambda a: self.show_started()))
+        cmds.append(("Memory", lambda a: self.show_memory()))
 
         Dialog.show_dialog("Information", cmds)
 
@@ -854,6 +855,24 @@ class App:
         cmds.append(("Ok", lambda a: None))
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
+
+    def show_size(self, tab_id: Optional[str] = None) -> None:
+        from .dialogs import Dialog
+        from .display import display
+
+        if not tab_id:
+            tab_id = display.current_tab
+
+        tab = display.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        lines = tab.output.get_num_lines()
+        chars = tab.output.get_num_chars()
+        kbytes = utils.chars_to_kb(chars)
+
+        Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
     def check_response_file(self) -> None:
         from .args import args

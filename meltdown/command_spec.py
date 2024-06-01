@@ -960,9 +960,15 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "info",
+            "size",
             "Show size and length information",
             lambda a=None: display.show_size(),
+        )
+
+        self.add_cmd(
+            "info",
+            "Show the info dialog",
+            lambda a=None: app.show_info(),
         )
 
 
