@@ -233,7 +233,12 @@ class App:
 
         self.root.after(100, lambda: action())
 
-    def resize(self) -> None:
+    def resize(self, dims: Optional[str] = None) -> None:
+        if dims:
+            dims = dims.replace(" ", "")
+            self.root.geometry(dims)
+            return
+
         self.unmaximize(False)
         self.set_geometry()
         self.update_bottom()
@@ -898,9 +903,6 @@ class App:
         cmds.append(("Light", lambda a: action("light")))
         cmds.append(("Dark", lambda a: action("dark")))
         Dialog.show_dialog("Color Theme", cmds)
-
-    def set_size(self, dimensions: str) -> None:
-        self.root.geometry(dimensions)
 
 
 app = App()

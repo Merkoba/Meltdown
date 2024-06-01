@@ -152,7 +152,12 @@ class CommandSpec:
             lambda a=None: logs.to_markdown(True),
         )
 
-        self.add_cmd("resize", "Resize the window", lambda a=None: app.resize())
+        self.add_cmd(
+            "resize",
+            "Resize the window. You can provide dimensions like 800x600",
+            lambda a=None: app.resize(a),
+            type=str,
+        )
 
         self.add_cmd(
             "stop", "Stop the current stream", lambda a=None: model.stop_stream()
@@ -958,14 +963,6 @@ class CommandSpec:
             "info",
             "Show size and length information",
             lambda a=None: display.show_size(),
-        )
-
-        self.add_cmd(
-            "size",
-            "Set the width height of the window ([w]x[h])",
-            lambda a=None: app.set_size(a),
-            type=str,
-            arg_req=True,
         )
 
 

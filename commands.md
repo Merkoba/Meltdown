@@ -84,7 +84,7 @@ Save all conversations to markdown files
 
 ### resize
 
-Resize the window
+Resize the window. You can provide dimensions like 800x600
 
 ---
 
@@ -935,9 +935,3 @@ Show the model name
 ### info
 
 Show size and length information
-
----
-
-### size
-
-Set the width height of the window ([w]x[h])
