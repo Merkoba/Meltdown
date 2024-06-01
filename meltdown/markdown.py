@@ -540,6 +540,14 @@ class Markdown:
                 ln = f"{line}.0"
                 self.widget.tag_add(name, ln, f"{ln} lineend")
 
+                try:
+                    space = lines[line - 1].index(" ")
+                    ln = f"{line}.0"
+                    ln_end = f"{line}.{space}"
+                    self.widget.tag_add("bold_alt", ln, ln_end)
+                except BaseException:
+                    pass
+
         or_lines = get_lns(self.marker_indent_ordered)
         add_tags(or_lines, "indent_ordered")
 

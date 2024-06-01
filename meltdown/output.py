@@ -1015,6 +1015,7 @@ class Output(tk.Text):
         self.tag_configure("url", underline=True)
         self.tag_configure("path", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
+        self.tag_configure("bold_alt", font=app.theme.get_bold_font())
         self.tag_configure("italic", font=app.theme.get_italic_font())
         self.tag_configure("quote", font=app.theme.get_bold_font())
         self.tag_configure("header_1", font=app.theme.get_header_font(1))
