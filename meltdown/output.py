@@ -1022,11 +1022,21 @@ class Output(tk.Text):
         self.tag_configure("header_3", font=app.theme.get_header_font(3))
         self.tag_configure("separator", font=app.theme.get_separator_font())
 
-        o_ind = args.ordered_indent
-        self.tag_configure("indent_ordered", lmargin1="0c", lmargin2=f"{o_ind}c")
+        if config.font_family == "sans-serif":
+            o_2 = "25p"
+            u_2 = "17p"
+        elif config.font_family == "monospace":
+            o_2 = "40p"
+            u_2 = "30p"
+        elif config.font_family == "serif":
+            o_2 = "25p"
+            u_2 = "25p"
+        else:
+            o_2 = "25p"
+            u_2 = "20p"
 
-        u_ind = args.unordered_indent
-        self.tag_configure("indent_unordered", lmargin1="0c", lmargin2=f"{u_ind}c")
+        self.tag_configure("indent_ordered", lmargin1="5p", lmargin2=o_2)
+        self.tag_configure("indent_unordered", lmargin1="5p", lmargin2=u_2)
 
         if args.colors:
             if args.user_color == "auto":

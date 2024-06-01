@@ -938,26 +938,6 @@ Action: store_true
 
 ---
 
-### ordered-indent
-
-Indent on wrapped lines of ordered lists
-
-Default: 1
-
-Type: int
-
----
-
-### unordered-indent
-
-Indent on wrapped lines of unordered lists
-
-Default: 0.72
-
-Type: int
-
----
-
 ### border-size
 
 The size of the border

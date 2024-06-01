@@ -418,7 +418,7 @@ class Markdown:
             if mode == "ordered":
                 n = 1
                 char = args.ordered_char.rstrip()
-                space_1 = args.ordered_space_1
+                space_1 = ""
                 space_2 = args.ordered_space_2
                 items = []
 
@@ -430,7 +430,7 @@ class Markdown:
                         n += 1
             else:
                 char = args.unordered_char.rstrip()
-                space_1 = args.unordered_space_1
+                space_1 = ""
                 space_2 = args.unordered_space_2
                 items = []
 
