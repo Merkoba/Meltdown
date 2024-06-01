@@ -31,7 +31,7 @@ No need to greet me, just answer.
 
         self.default_avatar_user = "🥶"
         self.default_avatar_ai = "🫠"
-        self.default_name_user = "Joe"
+        self.default_name_user = "Man"
         self.default_name_ai = "Melt"
         self.default_context = 2048
         self.default_max_tokens = 2048
