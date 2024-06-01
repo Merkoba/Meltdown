@@ -605,6 +605,7 @@ class Display:
         cmds.append(("Mono", lambda a: action("monospace")))
         cmds.append(("Serif", lambda a: action("serif")))
         cmds.append(("Sans", lambda a: action("sans-serif")))
+
         Dialog.show_dialog("Font Family", cmds)
 
     def set_font_family(self, name: Optional[str] = None) -> None:
@@ -784,6 +785,7 @@ class Display:
         cmds = []
         cmds.append(("To Start", lambda a: self.move_tab_to_start(tab_id)))
         cmds.append(("To End", lambda a: self.move_tab_to_end(tab_id)))
+
         Dialog.show_dialog("Move tab?", cmds)
 
     def move_tab_to_start(self, tab_id: Optional[str] = None) -> None:

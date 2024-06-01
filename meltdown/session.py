@@ -334,6 +334,7 @@ class Session:
         cmds = []
         cmds.append(("Load", lambda a: self.load_state()))
         cmds.append(("Save", lambda a: self.save_state()))
+
         Dialog.show_dialog("Session Menu", commands=cmds)
 
     def save_last(self) -> None:

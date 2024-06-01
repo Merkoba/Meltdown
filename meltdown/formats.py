@@ -317,6 +317,7 @@ def do_use(mode: str) -> None:
     cmds.append(("View", lambda a: do_view(mode)))
     cmds.append(("Copy", lambda a: do_copy(mode)))
     name = get_name(mode, True)
+
     Dialog.show_dialog(f"Use {name}", cmds)
 
 

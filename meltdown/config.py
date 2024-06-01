@@ -468,6 +468,7 @@ No need to greet me, just answer.
         cmds.append(("Reset", lambda a: self.reset()))
         cmds.append(("Load", lambda a: self.load_state()))
         cmds.append(("Save", lambda a: self.save_state()))
+
         Dialog.show_dialog("Config Menu", commands=cmds)
 
     def set_command(self, command: str) -> None:

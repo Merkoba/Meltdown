@@ -921,6 +921,7 @@ class App:
         cmds.append(("Contrast", lambda a: action("contrast")))
         cmds.append(("Light", lambda a: action("light")))
         cmds.append(("Dark", lambda a: action("dark")))
+
         Dialog.show_dialog("Color Theme", cmds)
 
 
