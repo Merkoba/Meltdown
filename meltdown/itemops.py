@@ -129,7 +129,7 @@ class ItemOps:
         cmds.append(("Program", lambda a: self.run_program(text)))
         cmds.append(("Markdown", lambda a: action("markdown")))
         cmds.append(("Text", lambda a: action("text")))
-        Dialog.show_dialog("Use with File", cmds)
+        Dialog.show_dialog("Use Item", cmds)
 
     def run_program(self, text: str) -> None:
         def action(ans: str) -> None:
