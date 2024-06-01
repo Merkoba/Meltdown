@@ -429,7 +429,7 @@ class Keyboard:
 
         self.register(
             "p",
-            on_ctrl=lambda: run_command("prevtab"),
+            on_ctrl=lambda: run_command("prev"),
             ctrl_help="Go to the previous tab",
         )
 

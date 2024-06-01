@@ -814,7 +814,7 @@ Show the arguments used
 
 ---
 
-### prevtab
+### prev
 
 Go to the previous tab
 

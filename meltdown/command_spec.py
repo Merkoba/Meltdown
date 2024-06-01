@@ -824,7 +824,7 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "prevtab",
+            "prev",
             "Go to the previous tab",
             lambda a=None: display.goto_prev_tab(),
         )
