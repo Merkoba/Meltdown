@@ -114,7 +114,7 @@ class ItemOps:
 
         who = "ai"
 
-        if args.use_item_both:
+        if args.use_both:
             who = "both"
 
         self.action("use", number, who=who)
@@ -139,8 +139,8 @@ class ItemOps:
             config.set_value("last_program", ans)
             app.run_program(ans, text)
 
-        if args.item_program:
-            action(args.item_program)
+        if args.use_program:
+            action(args.use_program)
             return
 
         Dialog.show_input("Run Program", lambda a: action(a), value=config.last_program)

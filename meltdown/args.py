@@ -236,8 +236,8 @@ class Args:
         self.list_item_max_length = 200
         self.response_file = ""
         self.response_program = ""
-        self.item_program = ""
-        self.use_item_both = False
+        self.use_program = ""
+        self.use_both = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -469,8 +469,8 @@ class Args:
             "list_item_max_length",
             "response_file",
             "response_program",
-            "item_program",
-            "use_item_both",
+            "use_program",
+            "use_both",
             "taps_command",
         ]
 

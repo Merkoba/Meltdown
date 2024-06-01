@@ -556,7 +556,7 @@ Action: store_false
 
 ---
 
-### use-item-both
+### use-both
 
 Use user and AI text when using items
 
@@ -2118,7 +2118,7 @@ Type: str
 
 ---
 
-### item-program
+### use-program
 
 Run a program with the selected item's response as the argument
 

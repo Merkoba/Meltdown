@@ -75,7 +75,7 @@ class Output(tk.Text):
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
 
-        if args.use_item_both:
+        if args.use_both:
             who = "both"
         else:
             who = Output.clicked_who

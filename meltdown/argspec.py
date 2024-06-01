@@ -476,7 +476,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "use_item_both",
+            "use_both",
             action="store_true",
             info="Use user and AI text when using items",
         )
@@ -1413,7 +1413,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "item_program",
+            "use_program",
             type=str,
             info="Run a program with the selected item's response as the argument",
         )
