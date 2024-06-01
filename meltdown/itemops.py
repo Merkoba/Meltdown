@@ -136,7 +136,7 @@ class ItemOps:
             action(args.item_program)
             return
 
-        Dialog.show_input("Run program", lambda a: action(a), value=config.last_program)
+        Dialog.show_input("Run Program", lambda a: action(a), value=config.last_program)
 
     def run_program_file(self, text: str) -> None:
         from . import formats
