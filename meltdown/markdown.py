@@ -4,6 +4,7 @@ from typing import Any
 
 # Modules
 from .args import args
+from .config import config
 from .output import Output
 from .utils import utils
 
@@ -416,7 +417,11 @@ class Markdown:
                 spaced = not all(line.strip() for line in sliced)
 
             space_1 = ""
-            space_2 = "  "
+
+            if config.font_family == "monospace":
+                space_2 = " "
+            else:
+                space_2 = "  "
 
             if mode == "ordered":
                 n = 1
