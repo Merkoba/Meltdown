@@ -76,14 +76,6 @@ Action: store_false
 
 ---
 
-### no-one-space
-
-Don't limit the text inputs to one space
-
-Action: store_false
-
----
-
 ### no-tabs-wheel
 
 Don't enable mousewheel events on the tabs bar
