@@ -266,13 +266,13 @@ class Menu:
         self.canvas.update_idletasks()
         self.container.update_idletasks()
 
+        gap = 10
         window_width = app.main_frame.winfo_width()
         window_height = app.main_frame.winfo_height()
-
         cwidth = self.container.winfo_reqwidth()
 
         # Limit height to 500 or window height if smaller
-        cheight = min(500, self.container.winfo_reqheight())
+        cheight = min(500, (window_height - gap), self.container.winfo_reqheight())
 
         # Limit width to fit the container
         self.canvas.configure(width=cwidth)
@@ -288,8 +288,6 @@ class Menu:
 
         x = self.coords["x"] - app.main_frame.winfo_rootx()
         y = self.coords["y"] - app.main_frame.winfo_rooty()
-
-        gap = 10
 
         if x < 0:
             x = gap
