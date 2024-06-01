@@ -1,4 +1,5 @@
 # Standard
+import json
 from typing import Optional
 
 # Modules
@@ -123,7 +124,6 @@ class ItemOps:
         cmds = []
         cmds.append(("Program", lambda a: self.run_program(text)))
         cmds.append(("Markdown", lambda a: action("markdown")))
-        cmds.append(("JSON", lambda a: action("json")))
         cmds.append(("Text", lambda a: action("text")))
         Dialog.show_dialog("Use with File", cmds)
 
