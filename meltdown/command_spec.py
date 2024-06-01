@@ -833,6 +833,7 @@ class CommandSpec:
             "nothing",
             "Do nothing",
             lambda a=None: None,
+            skip_palette=True,
         )
 
         self.add_cmd(
