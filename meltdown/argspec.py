@@ -470,6 +470,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_bold_lists",
+            action="store_false",
+            info="Don't use bold on list characters",
+        )
+
+        self.add_argument(
             "use_both",
             action="store_true",
             info="Use user and AI text when using items",
