@@ -1,5 +1,4 @@
 # Standard
-import json
 from typing import Optional
 
 # Modules
@@ -83,13 +82,13 @@ class ItemOps:
         elif mode == "use":
             if who == "user":
                 if user_text:
-                    self.use_item(user_text)
+                    self.do_use_item(user_text)
             elif who == "ai":
                 if ai_text:
-                    self.use_item(ai_text)
+                    self.do_use_item(ai_text)
             elif who == "both":
                 if user_text and ai_text:
-                    self.use_item(both_text)
+                    self.do_use_item(both_text)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -109,13 +108,18 @@ class ItemOps:
 
         self.action("select", number)
 
-    def program(self, number: str) -> None:
+    def use_item(self, number: str) -> None:
         if not number:
             number = "last"
 
-        self.action("program", number)
+        who = "ai"
 
-    def use_item(self, text: str) -> None:
+        if args.use_item_both:
+            who = "both"
+
+        self.action("use", number, who=who)
+
+    def do_use_item(self, text: str) -> None:
         from . import formats
 
         def action(mode: str) -> None:

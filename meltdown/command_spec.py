@@ -923,9 +923,9 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "progitem",
-            "Run a program with the specified item",
-            lambda a=None: itemops.program(number=a),
+            "use",
+            "Use the specified item",
+            lambda a=None: itemops.use_item(number=a),
             type=str,
         )
 
