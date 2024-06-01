@@ -902,9 +902,9 @@ Select the specified item
 
 ---
 
-### progitem
+### use
 
-Run a program with the specified item
+Use the specified item
 
 ---
 

@@ -556,9 +556,9 @@ Action: store_false
 
 ---
 
-### item-program-both
+### use-item-both
 
-Send user and AI to item programs
+Use user and AI text when using items
 
 Default: False
 
