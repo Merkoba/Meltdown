@@ -135,7 +135,7 @@ class EntryBox(ttk.Entry):
         text: str,
         check_placeholder: bool = True,
         index: int = -1,
-        smart_space: bool = False,
+        add_space: bool = False,
     ) -> None:
         if self.placeholder_active:
             self.disable_placeholder()
@@ -149,7 +149,7 @@ class EntryBox(ttk.Entry):
         at_end = end_index == index
 
         if at_end:
-            if smart_space:
+            if add_space:
                 if text[-1] != " ":
                     text += " "
 
@@ -266,6 +266,9 @@ class EntryBox(ttk.Entry):
         self.proc = proc
 
     def smart_space(self) -> None:
+        if self.placeholder_active:
+            return
+
         text = self.text_var.get()
 
         if not text:
