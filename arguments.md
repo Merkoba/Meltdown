@@ -548,6 +548,14 @@ Action: store_false
 
 ---
 
+### no-bold-lists
+
+Don't use bold on list characters
+
+Action: store_false
+
+---
+
 ### use-both
 
 Use user and AI text when using items
