@@ -529,7 +529,7 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "setinput",
+            "type",
             "Set the input to this text",
             lambda a=None: inputcontrol.set(text=a),
             type=str,

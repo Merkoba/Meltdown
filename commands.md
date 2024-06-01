@@ -524,7 +524,7 @@ Write an input prompt and maximize
 
 ---
 
-### setinput
+### type
 
 Set the input to this text
 
