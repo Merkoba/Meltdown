@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # Standard
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 # Modules
 from .args import args
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from .display import Tab
 
 
-def get_old_tabs() -> list["Tab"]:
+def get_old_tabs() -> list[Tab]:
     ids = display.tab_ids()
     old_tabs = []
 
@@ -33,7 +33,7 @@ def get_old_tabs() -> list["Tab"]:
     return old_tabs
 
 
-def get_empty_tabs() -> list["Tab"]:
+def get_empty_tabs() -> list[Tab]:
     ids = display.tab_ids()
     empty_tabs = []
 
@@ -70,7 +70,7 @@ def get_other_tabs(tab_id: str) -> list[str]:
 
 
 def close(
-    tab_id: Optional[str] = None,
+    tab_id: str | None = None,
     force: bool = False,
     make_empty: bool = True,
     force_empty: bool = False,
@@ -173,7 +173,7 @@ def close_old(force: bool = False) -> None:
     Dialog.show_confirm(f"Close old tabs ({n}) ?", lambda: action())
 
 
-def close_other(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_other(force: bool = False, tab_id: str | None = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 
@@ -191,7 +191,7 @@ def close_other(force: bool = False, tab_id: Optional[str] = None) -> None:
     Dialog.show_confirm(f"Close other tabs ({n}) ?", lambda: action())
 
 
-def close_left(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_left(force: bool = False, tab_id: str | None = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 
@@ -212,7 +212,7 @@ def close_left(force: bool = False, tab_id: Optional[str] = None) -> None:
     Dialog.show_confirm(f"Close tabs to the left ({n}) ?", lambda: action())
 
 
-def close_right(force: bool = False, tab_id: Optional[str] = None) -> None:
+def close_right(force: bool = False, tab_id: str | None = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import json
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 from tkinter import filedialog
 from pathlib import Path
@@ -151,7 +151,7 @@ No need to greet me, just answer.
 
         return None
 
-    def get_default(self, key: str) -> Optional[Any]:
+    def get_default(self, key: str) -> Any | None:
         name = f"default_{key}"
 
         if hasattr(self, name):
@@ -194,7 +194,7 @@ No need to greet me, just answer.
         else:
             self.load_file()
 
-    def save_state(self, name: Optional[str] = None) -> None:
+    def save_state(self, name: str | None = None) -> None:
         from .display import display
         from .paths import paths
         from .args import args
@@ -229,7 +229,7 @@ No need to greet me, just answer.
             msg = f'Config saved as "{name}"'
             display.print(utils.emoji_text(msg, "storage"))
 
-    def load_state(self, name: Optional[str] = None) -> None:
+    def load_state(self, name: str | None = None) -> None:
         from .args import args
         from .paths import paths
         from .display import display
@@ -508,7 +508,7 @@ No need to greet me, just answer.
         if not args.quiet:
             display.print(f"{key}: {value}")
 
-    def command(self, text: Optional[str] = None) -> None:
+    def command(self, text: str | None = None) -> None:
         from .display import display
 
         if not text:

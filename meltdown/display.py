@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from typing import Any, Optional, TYPE_CHECKING
+from typing import Any, TYPE_CHECKING
 
 # Modules
 from .app import app
@@ -44,7 +44,7 @@ class Tab:
 
 
 class TabConvo:
-    def __init__(self, tab: "Tab", convo: "Conversation") -> None:
+    def __init__(self, tab: Tab, convo: Conversation) -> None:
         self.tab = tab
         self.convo = convo
 
@@ -79,8 +79,8 @@ class Display:
 
     def make_tab(
         self,
-        name: Optional[str] = None,
-        conversation_id: Optional[str] = None,
+        name: str | None = None,
+        conversation_id: str | None = None,
         select_tab: bool = True,
         mode: str = "normal",
         save: bool = True,
@@ -218,29 +218,29 @@ class Display:
         header = f"Created: {nice_date}"
         self.print(header, tab_id=tab_id, modified=False)
 
-    def get_current_tab(self) -> Optional[Tab]:
+    def get_current_tab(self) -> Tab | None:
         if hasattr(self, "current_tab_object"):
             return self.current_tab_object
 
         return None
 
-    def get_current_output(self) -> Optional[Output]:
+    def get_current_output(self) -> Output | None:
         return self.get_output(self.current_tab)
 
-    def get_current_bottom(self) -> Optional[Bottom]:
+    def get_current_bottom(self) -> Bottom | None:
         return self.get_bottom(self.current_tab)
 
-    def get_tab(self, tab_id: str) -> Optional[Tab]:
+    def get_tab(self, tab_id: str) -> Tab | None:
         return self.tabs.get(tab_id)
 
-    def get_tab_by_conversation_id(self, conversation_id: str) -> Optional[Tab]:
+    def get_tab_by_conversation_id(self, conversation_id: str) -> Tab | None:
         for tab in self.tabs.values():
             if tab.conversation_id == conversation_id:
                 return tab
 
         return None
 
-    def get_output(self, tab_id: str) -> Optional[Output]:
+    def get_output(self, tab_id: str) -> Output | None:
         tab = self.get_tab(tab_id)
 
         if tab:
@@ -248,7 +248,7 @@ class Display:
 
         return None
 
-    def get_bottom(self, tab_id: str) -> Optional[Bottom]:
+    def get_bottom(self, tab_id: str) -> Bottom | None:
         tab = self.get_tab(tab_id)
 
         if tab:
@@ -309,9 +309,7 @@ class Display:
 
         self.tab_list_menu.show(event, widget=widget, selected=selected)
 
-    def rename_tab(
-        self, tab_id: Optional[str] = None, name: Optional[str] = None
-    ) -> None:
+    def rename_tab(self, tab_id: str | None = None, name: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -357,7 +355,7 @@ class Display:
     def index(self, tab_id: str) -> int:
         return self.book.index(tab_id)
 
-    def to_top(self, tab_id: Optional[str] = None) -> None:
+    def to_top(self, tab_id: str | None = None) -> None:
         if tab_id:
             tab = self.get_tab(tab_id)
         else:
@@ -369,7 +367,7 @@ class Display:
         autoscroll.stop()
         tab.output.to_top()
 
-    def to_bottom(self, tab_id: Optional[str] = None) -> None:
+    def to_bottom(self, tab_id: str | None = None) -> None:
         if tab_id:
             tab = self.get_tab(tab_id)
         else:
@@ -390,7 +388,7 @@ class Display:
 
         output.copy_all()
 
-    def clear(self, tab_id: Optional[str] = None, force: bool = False) -> None:
+    def clear(self, tab_id: str | None = None, force: bool = False) -> None:
         from .session import session
 
         tabconvo = self.get_tab_convo(tab_id)
@@ -443,7 +441,7 @@ class Display:
             output.deselect_all()
 
     def print(
-        self, text: str, tab_id: Optional[str] = None, modified: bool = True
+        self, text: str, tab_id: str | None = None, modified: bool = True
     ) -> None:
         if not app.exists():
             return
@@ -461,7 +459,7 @@ class Display:
         if modified:
             tab.modified = True
 
-    def insert(self, text: str, tab_id: Optional[str] = None) -> None:
+    def insert(self, text: str, tab_id: str | None = None) -> None:
         if not app.exists():
             return
 
@@ -476,7 +474,7 @@ class Display:
         tab.output.insert_text(text)
         tab.modified = True
 
-    def get_tab_name(self, tab_id: Optional[str] = None) -> str:
+    def get_tab_name(self, tab_id: str | None = None) -> str:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -499,7 +497,7 @@ class Display:
         session.remove(tab.conversation_id)
         del self.tabs[tab_id]
 
-    def check_scroll_buttons(self, tab_id: Optional[str] = None) -> None:
+    def check_scroll_buttons(self, tab_id: str | None = None) -> None:
         from .widgets import widgets
 
         if not tab_id:
@@ -555,7 +553,7 @@ class Display:
     def apply_font_size(self, size: int) -> None:
         config.set("font_size", size)
 
-    def set_font_size(self, text: Optional[str] = None) -> None:
+    def set_font_size(self, text: str | None = None) -> None:
         from .menumanager import font_menu
 
         if not text:
@@ -595,7 +593,7 @@ class Display:
 
         self.apply_font_size(new_size)
 
-    def pick_font_family(self, name: Optional[str] = None) -> None:
+    def pick_font_family(self, name: str | None = None) -> None:
         def action(name: str) -> None:
             self.set_font_family(name)
 
@@ -610,7 +608,7 @@ class Display:
 
         Dialog.show_dialog("Font Family", cmds)
 
-    def set_font_family(self, name: Optional[str] = None) -> None:
+    def set_font_family(self, name: str | None = None) -> None:
         if name not in ["sans-serif", "sans", "monospace", "mono", "serif"]:
             return
 
@@ -635,7 +633,7 @@ class Display:
 
     def scroll_up(
         self,
-        tab_id: Optional[str] = None,
+        tab_id: str | None = None,
         more: bool = False,
         disable_auto_scroll: bool = False,
     ) -> None:
@@ -654,7 +652,7 @@ class Display:
 
     def scroll_down(
         self,
-        tab_id: Optional[str] = None,
+        tab_id: str | None = None,
         more: bool = False,
         disable_auto_scroll: bool = False,
     ) -> None:
@@ -676,7 +674,7 @@ class Display:
 
         session.update()
 
-    def hide_bottom(self, tab_id: Optional[str] = None) -> None:
+    def hide_bottom(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -690,11 +688,11 @@ class Display:
     def prompt(
         self,
         who: str,
-        text: Optional[str] = None,
-        tab_id: Optional[str] = None,
+        text: str | None = None,
+        tab_id: str | None = None,
         to_bottom: bool = True,
-        original: Optional[str] = None,
-        file: Optional[str] = None,
+        original: str | None = None,
+        file: str | None = None,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -744,7 +742,7 @@ class Display:
         text = text.rstrip(" ,.;")
         self.do_rename_tab(tab_id, text)
 
-    def has_messages(self, tab_id: Optional[str] = None) -> bool:
+    def has_messages(self, tab_id: str | None = None) -> bool:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -760,7 +758,7 @@ class Display:
 
         return not bool(tabconvo.convo.items)
 
-    def format_text(self, tab_id: Optional[str] = None, mode: str = "normal") -> None:
+    def format_text(self, tab_id: str | None = None, mode: str = "normal") -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -777,7 +775,7 @@ class Display:
     def select_last_tab(self) -> None:
         self.book.select_last()
 
-    def move_tab(self, tab_id: Optional[str] = None) -> None:
+    def move_tab(self, tab_id: str | None = None) -> None:
         if len(self.tab_ids()) <= 1:
             return
 
@@ -790,14 +788,14 @@ class Display:
 
         Dialog.show_dialog("Move tab?", cmds)
 
-    def move_tab_to_start(self, tab_id: Optional[str] = None) -> None:
+    def move_tab_to_start(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
         self.book.move_to_start(tab_id)
         self.update_session()
 
-    def move_tab_to_end(self, tab_id: Optional[str] = None) -> None:
+    def move_tab_to_end(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -873,7 +871,7 @@ class Display:
     def on_num_tabs_change(self, num: int) -> None:
         self.num_tabs_open = num
 
-    def is_modified(self, tab_id: Optional[str] = None) -> bool:
+    def is_modified(self, tab_id: str | None = None) -> bool:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -884,7 +882,7 @@ class Display:
 
         return tab.modified
 
-    def is_ignored(self, tab_id: Optional[str] = None) -> bool:
+    def is_ignored(self, tab_id: str | None = None) -> bool:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -900,7 +898,7 @@ class Display:
 
         tab.output.auto_bottom = True
 
-    def disable_auto_bottom(self, tab_id: Optional[str] = None) -> None:
+    def disable_auto_bottom(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -911,7 +909,7 @@ class Display:
 
         tab.output.auto_bottom = False
 
-    def num_user_prompts(self, tab_id: Optional[str] = None) -> int:
+    def num_user_prompts(self, tab_id: str | None = None) -> int:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -922,7 +920,7 @@ class Display:
 
         return tab.num_user_prompts
 
-    def refresh(self, tab_id: Optional[str] = None) -> None:
+    def refresh(self, tab_id: str | None = None) -> None:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -931,7 +929,7 @@ class Display:
         self.reset_tab(tabconvo.tab)
         tabconvo.convo.print()
 
-    def get_tab_convo(self, tab_id: Optional[str] = None) -> Optional[TabConvo]:
+    def get_tab_convo(self, tab_id: str | None = None) -> TabConvo | None:
         from .session import session
 
         if not tab_id:
@@ -949,7 +947,7 @@ class Display:
 
         return TabConvo(tab, conversation)
 
-    def get_num_items(self, tab_id: Optional[str] = None) -> int:
+    def get_num_items(self, tab_id: str | None = None) -> int:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -957,7 +955,7 @@ class Display:
 
         return len(tabconvo.convo.items)
 
-    def get_text(self, tab_id: Optional[str] = None) -> str:
+    def get_text(self, tab_id: str | None = None) -> str:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -998,7 +996,7 @@ class Display:
     def prepare_name(self, name: str) -> str:
         return name[: config.max_name_length].strip()
 
-    def update_scroll(self, tab_id: Optional[str] = None) -> None:
+    def update_scroll(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 from PIL import Image, ImageTk
 from pathlib import Path
@@ -20,8 +20,8 @@ Answer = dict[str, Any]
 
 
 class Dialog:
-    current_dialog: Optional["Dialog"] = None
-    current_textbox: Optional[tk.Widget] = None
+    current_dialog: Dialog | None = None
+    current_textbox: tk.Widget | None = None
 
     @staticmethod
     def open() -> bool:
@@ -38,8 +38,8 @@ class Dialog:
     @staticmethod
     def show_dialog(
         text: str,
-        commands: Optional[list[tuple[str, Callable[..., Any]]]] = None,
-        image: Optional[Path] = None,
+        commands: list[tuple[str, Callable[..., Any]]] | None = None,
+        image: Path | None = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
         value: str = "",
@@ -78,7 +78,7 @@ class Dialog:
             if value:
                 dialog.entry.insert(0, value)
 
-            def copy(text: Optional[str] = None) -> None:
+            def copy(text: str | None = None) -> None:
                 if not dialog.entry:
                     return
 
@@ -147,8 +147,8 @@ class Dialog:
     @staticmethod
     def show_confirm(
         text: str,
-        cmd_ok: Optional[Callable[..., Any]] = None,
-        cmd_cancel: Optional[Callable[..., Any]] = None,
+        cmd_ok: Callable[..., Any] | None = None,
+        cmd_cancel: Callable[..., Any] | None = None,
     ) -> None:
         def ok(ans: Answer) -> None:
             if cmd_ok:
@@ -171,7 +171,7 @@ class Dialog:
     def show_input(
         text: str,
         cmd_ok: Callable[..., Any],
-        cmd_cancel: Optional[Callable[..., Any]] = None,
+        cmd_cancel: Callable[..., Any] | None = None,
         value: str = "",
         mode: str = "normal",
     ) -> None:
@@ -196,10 +196,10 @@ class Dialog:
         id: str,
         text: str,
         cmd_ok: Callable[..., Any],
-        cmd_cancel: Optional[Callable[..., Any]] = None,
+        cmd_cancel: Callable[..., Any] | None = None,
         value: str = "",
         start_maximized: bool = False,
-        on_right_click: Optional[Callable[..., Any]] = None,
+        on_right_click: Callable[..., Any] | None = None,
     ) -> None:
         from .textbox import TextBox
 
@@ -262,8 +262,8 @@ class Dialog:
         self.make(text, with_top_frame=top_frame)
 
         self.highlighted = False
-        self.current_button: Optional[int] = None
-        self.entry: Optional[EntryBox] = None
+        self.current_button: int | None = None
+        self.entry: EntryBox | None = None
 
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())

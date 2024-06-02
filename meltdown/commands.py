@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import re
-from typing import Any, Optional
+from typing import Any
 from pathlib import Path
 
 # Modules
@@ -122,7 +122,7 @@ class Commands:
         return with_prefix and second_char.isalpha()
 
     def exec(
-        self, text: str, queue: Optional[Queue] = None, is_alias: bool = False
+        self, text: str, queue: Queue | None = None, is_alias: bool = False
     ) -> bool:
         from .inputcontrol import inputcontrol
 
@@ -158,7 +158,7 @@ class Commands:
         return True
 
     def run(
-        self, cmd: str, argument: Optional[str] = None, update_date: bool = False
+        self, cmd: str, argument: str | None = None, update_date: bool = False
     ) -> None:
         item = self.commands.get(cmd)
 
@@ -218,7 +218,7 @@ class Commands:
 
         return False
 
-    def get_similar_alias(self, cmd: str) -> Optional[str]:
+    def get_similar_alias(self, cmd: str) -> str | None:
         for key in self.aliases:
             if utils.check_match(cmd, key):
                 return key
@@ -233,7 +233,7 @@ class Commands:
         model.stream(prompt)
 
     def show_help(
-        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+        self, tab_id: str | None = None, filter_text: str | None = None
     ) -> None:
         from .display import display
 
@@ -295,7 +295,7 @@ class Commands:
             if key in self.commands:
                 self.commands[key]["date"] = cmds[key].get("date", 0.0)
 
-    def get_commandtext(self, filter_text: Optional[str] = None) -> str:
+    def get_commandtext(self, filter_text: str | None = None) -> str:
         sep = "\n\n---\n\n"
         text = ""
 

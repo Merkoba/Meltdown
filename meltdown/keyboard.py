@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from typing import Any
 from collections.abc import Callable
 from pathlib import Path
-from __future__ import annotations
 
 # Modules
 from .app import app
@@ -504,7 +505,7 @@ class Keyboard:
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_keyboardtext(self, filter_text: Optional[str] = None) -> str:
+    def get_keyboardtext(self, filter_text: str | None = None) -> str:
         keys = list(self.commands.keys())
         separator = "---"
         lines = ["# Keyboard Shortcuts"]

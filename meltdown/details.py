@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # Standard
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore
@@ -19,11 +19,11 @@ if TYPE_CHECKING:
 
 
 def make_label(
-    widgets: "Widgets",
-    data: "FrameData",
+    widgets: Widgets,
+    data: FrameData,
     key: str,
     label: str,
-    padx: Optional[tuple[int, int]] = None,
+    padx: tuple[int, int] | None = None,
 ) -> None:
     label_wid = widgetutils.make_label(data, label, padx=padx)
     setattr(widgets, f"{key}_label", label_wid)
@@ -31,10 +31,10 @@ def make_label(
 
 
 def make_entry(
-    widgets: "Widgets",
-    data: "FrameData",
+    widgets: Widgets,
+    data: FrameData,
     key: str,
-    width: Optional[int] = None,
+    width: int | None = None,
 ) -> None:
     width = width or app.theme.entry_width_small
     entry_wid = widgetutils.make_entry(data, width=width)
@@ -43,11 +43,11 @@ def make_entry(
 
 
 def make_combobox(
-    widgets: "Widgets",
-    data: "FrameData",
+    widgets: Widgets,
+    data: FrameData,
     key: str,
     values: list[str],
-    width: Optional[int] = None,
+    width: int | None = None,
 ) -> None:
     width = width or 15
     combo_wid = widgetutils.make_combobox(data, values=values, width=width)
@@ -58,7 +58,7 @@ def make_combobox(
 width_1 = 10
 
 
-def add_users(widgets: "Widgets", data: "FrameData") -> None:
+def add_users(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "user", "User", padx=(0, 0))
     make_entry(widgets, data, "avatar_user", width=4)
     make_entry(widgets, data, "name_user", width=width_1)
@@ -68,32 +68,32 @@ def add_users(widgets: "Widgets", data: "FrameData") -> None:
     make_entry(widgets, data, "name_ai", width=width_1)
 
 
-def add_history(widgets: "Widgets", data: "FrameData") -> None:
+def add_history(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "history", "History")
     make_entry(widgets, data, "history")
 
 
-def add_context(widgets: "Widgets", data: "FrameData") -> None:
+def add_context(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "context", "Context")
     make_entry(widgets, data, "context")
 
 
-def add_max_tokens(widgets: "Widgets", data: "FrameData") -> None:
+def add_max_tokens(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "max_tokens", "Max Tokens")
     make_entry(widgets, data, "max_tokens")
 
 
-def add_threads(widgets: "Widgets", data: "FrameData") -> None:
+def add_threads(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "threads", "Threads")
     make_entry(widgets, data, "threads")
 
 
-def add_gpu_layers(widgets: "Widgets", data: "FrameData") -> None:
+def add_gpu_layers(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "gpu_layers", "GPU Layers")
     make_entry(widgets, data, "gpu_layers")
 
 
-def add_format(widgets: "Widgets", data: "FrameData") -> None:
+def add_format(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "format", "Format", padx=(0, 0))
     values = ["auto"]
     fmts = sorted(Formats._chat_handlers)
@@ -101,47 +101,47 @@ def add_format(widgets: "Widgets", data: "FrameData") -> None:
     make_combobox(widgets, data, "format", values, width=13)
 
 
-def add_temperature(widgets: "Widgets", data: "FrameData") -> None:
+def add_temperature(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "temperature", "Temperature")
     make_entry(widgets, data, "temperature")
 
 
-def add_logits(widgets: "Widgets", data: "FrameData") -> None:
+def add_logits(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "logits", "Logits")
     make_combobox(widgets, data, "logits", ["normal", "all"], width=8)
 
 
-def add_seed(widgets: "Widgets", data: "FrameData") -> None:
+def add_seed(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "seed", "Seed")
     make_entry(widgets, data, "seed")
 
 
-def add_top_p(widgets: "Widgets", data: "FrameData") -> None:
+def add_top_p(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "top_p", "Top P")
     make_entry(widgets, data, "top_p")
 
 
-def add_top_k(widgets: "Widgets", data: "FrameData") -> None:
+def add_top_k(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "top_k", "Top K")
     make_entry(widgets, data, "top_k")
 
 
-def add_before(widgets: "Widgets", data: "FrameData") -> None:
+def add_before(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "before", "Before")
     make_entry(widgets, data, "before", width=width_1)
 
 
-def add_after(widgets: "Widgets", data: "FrameData") -> None:
+def add_after(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "after", "After")
     make_entry(widgets, data, "after", width=width_1)
 
 
-def add_stop(widgets: "Widgets", data: "FrameData") -> None:
+def add_stop(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "stop", "Stop")
     make_entry(widgets, data, "stop", width=width_1)
 
 
-def add_mlock(widgets: "Widgets", data: "FrameData") -> None:
+def add_mlock(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "mlock", "M-Lock")
     make_combobox(widgets, data, "mlock", ["yes", "no"], width=7)
 

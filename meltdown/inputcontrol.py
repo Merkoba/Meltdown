@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 # Standard
-from typing import Any, Optional
+from typing import Any
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore
@@ -82,7 +82,7 @@ class InputControl:
     def bind(self) -> None:
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
-    def show_menu(self, event: Optional[Any] = None) -> None:
+    def show_menu(self, event: Any | None = None) -> None:
         from .widgets import widgets
 
         def action(text: str) -> None:
@@ -173,10 +173,10 @@ class InputControl:
 
     def submit(
         self,
-        tab_id: Optional[str] = None,
-        text: Optional[str] = None,
+        tab_id: str | None = None,
+        text: str | None = None,
         scroll: bool = True,
-        file: Optional[str] = None,
+        file: str | None = None,
         no_history: bool = False,
     ) -> None:
         from .model import model
@@ -310,7 +310,7 @@ class InputControl:
             files.save(paths.autocomplete, self.autocomplete)
 
     def write(
-        self, maxed: bool = False, text: Optional[str] = None, add_line: bool = False
+        self, maxed: bool = False, text: str | None = None, add_line: bool = False
     ) -> None:
         from .textbox import TextBox
 
@@ -364,7 +364,7 @@ class InputControl:
             start_maximized=maxed,
         )
 
-    def input_command(self, text: Optional[str] = None, maxed: bool = False) -> None:
+    def input_command(self, text: str | None = None, maxed: bool = False) -> None:
         if text:
             self.submit(text=text)
         else:
