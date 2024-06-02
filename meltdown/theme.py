@@ -153,6 +153,9 @@ class Theme:
         self.textbox_foreground = "black"
         self.textbox_insert = "black"
 
+        self.quotes_color = "#0adeff"
+        self.italic_color = "#df6cff"
+
     def get_font_family(self) -> str:
         if config.font_family == "monospace":
             font = self.monospace_family

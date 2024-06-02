@@ -12,6 +12,22 @@ Action: version
 
 ---
 
+### no-color-italic
+
+Don't apply color to italic text
+
+Action: store_false
+
+---
+
+### no-color-quotes
+
+Don't apply color to quotes
+
+Action: store_false
+
+---
+
 ### no-separate-logs
 
 Don't use separator in logs

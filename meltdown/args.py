@@ -233,6 +233,9 @@ class Args:
         self.use_program = ""
         self.use_both = False
 
+        self.color_italic = True
+        self.color_quotes = True
+
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
 
@@ -314,6 +317,8 @@ class Args:
             ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
             ("no_bold_lists", "bold_lists"),
+            ("no_color_italic", "color_italic"),
+            ("no_color_quotes", "color_quotes"),
         ]
 
         for r_item in other_name:

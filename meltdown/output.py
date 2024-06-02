@@ -1016,8 +1016,15 @@ class Output(tk.Text):
         self.tag_configure("path", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
         self.tag_configure("bold_alt", font=app.theme.get_bold_font())
+
         self.tag_configure("italic", font=app.theme.get_italic_font())
-        self.tag_configure("quote", font=app.theme.get_bold_font())
+
+        if args.color_italic:
+            self.tag_configure("italic", foreground=app.theme.italic_color)
+
+        if args.color_quotes:
+            self.tag_configure("quote", foreground=app.theme.quotes_color)
+
         self.tag_configure("header_1", font=app.theme.get_header_font(1))
         self.tag_configure("header_2", font=app.theme.get_header_font(2))
         self.tag_configure("header_3", font=app.theme.get_header_font(3))

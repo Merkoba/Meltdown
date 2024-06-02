@@ -68,6 +68,18 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_color_italic",
+            action="store_false",
+            info="Don't apply color to italic text",
+        )
+
+        self.add_argument(
+            "no_color_quotes",
+            action="store_false",
+            info="Don't apply color to quotes",
+        )
+
+        self.add_argument(
             "no_separate_logs",
             action="store_false",
             info="Don't use separator in logs",
