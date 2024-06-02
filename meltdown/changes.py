@@ -1,5 +1,4 @@
-# Standard
-from typing import Union
+from __future__ import annotations
 
 # Modules
 from .app import app
@@ -9,7 +8,7 @@ from .textbox import TextBox
 
 
 class Changes:
-    def __init__(self, widget: Union[EntryBox, TextBox]) -> None:
+    def __init__(self, widget: EntryBox | TextBox) -> None:
         self.widget = widget
         self.changes_delay = config.changes_delay
         self.changes_after = ""

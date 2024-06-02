@@ -2,7 +2,6 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from typing import Union
 
 # Modules
 from .inputcontrol import inputcontrol
@@ -13,7 +12,7 @@ from .entrybox import EntryBox
 from .textbox import TextBox
 
 
-InputWidget = Union[EntryBox, TextBox, None]
+InputWidget = EntryBox | TextBox | None
 
 
 class AutoComplete:
