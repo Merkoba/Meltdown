@@ -4,20 +4,8 @@ from typing import Any
 
 # Modules
 from .app import app
-from .args import args
 from .config import config
 from .menus import Menu
-
-
-def get_more_button() -> tk.Widget:
-    from .widgets import widgets
-
-    if args.more_button:
-        widget = widgets.more_menu_button
-    else:
-        widget = widgets.stop_button
-
-    return widget
 
 
 def get_main_button() -> tk.Widget:
@@ -142,12 +130,14 @@ class MoreMenu:
         self.menu.add("Use MrkD", lambda e: formats.do_use("markdown"), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
+        from .widgets import widgets
+
         self.make()
 
         if event:
             self.menu.show(event)
         else:
-            widget = get_more_button()
+            widget = widgets.more_menu_button
             self.menu.show(widget=widget)
 
 

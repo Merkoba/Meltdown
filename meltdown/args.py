@@ -103,7 +103,6 @@ class Args:
         self.after_stream = ""
         self.clean_slate = True
         self.tabs_always = False
-        self.more_button = True
         self.model_icon = True
         self.model_feedback = True
         self.time = True
@@ -180,7 +179,6 @@ class Args:
         self.drag_and_drop = False
         self.use_keywords = True
         self.snippets_font = "monospace"
-        self.show_prevnext = True
         self.short_labels = False
         self.show_labels = True
         self.short_buttons = False
@@ -281,7 +279,6 @@ class Args:
             ("no_header", "show_header"),
             ("no_clean_slate", "clean_slate"),
             ("no_emojis", "emojis"),
-            ("no_more_button", "more_button"),
             ("no_model_icon", "model_icon"),
             ("no_model_feedback", "model_feedback"),
             ("no_input_memory", "input_memory"),
@@ -300,7 +297,6 @@ class Args:
             ("no_confirm_delete", "confirm_delete"),
             ("no_fill_prompt", "fill_prompt"),
             ("no_keywords", "use_keywords"),
-            ("no_prevnext", "show_prevnext"),
             ("no_labels", "show_labels"),
             ("no_syntax_highlighting", "syntax_highlighting"),
             ("no_auto_name", "auto_name"),

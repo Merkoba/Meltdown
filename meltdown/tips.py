@@ -1,4 +1,3 @@
-prevnext = "Middle click to clear"
 middleprev = "Middle click to find previous"
 scroll = "Right click to scroll one step. Middle click to auto-scroll. Wheel to scroll"
 
@@ -14,8 +13,9 @@ tips = {
     "close_button": "Close tabs. Middle click to close all tabs",
     "top_button": f"Scroll to the top. {scroll}",
     "bottom_button": f"Scroll to the bottom. {scroll}",
-    "prev_button": f"Previous item in the input history. {prevnext}",
-    "next_button": f"Next item in the input history. {prevnext}",
+    "clear_input_button": "Clear the input",
+    "prev_button": "Previous item in the input history",
+    "next_button": "Next item in the input history",
     "write_button": "Show a textbox for longer inputs. Middle click to maximize",
     "submit_button": "Send the prompt to the AI. Middle click to avoid using history",
     "browse_file_button": "Browse for a file to use",

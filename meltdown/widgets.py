@@ -196,11 +196,7 @@ class Widgets:
         )
 
         ToolTip(self.more_menu_button, tips["more_menu"])
-
-        if not args.more_button:
-            self.more_menu_button.grid_remove()
-        else:
-            frame_data_buttons.expand()
+        frame_data_buttons.expand()
 
         # Display
         app.main_frame.grid_rowconfigure(FrameData.frame_number, weight=1)

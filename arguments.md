@@ -364,14 +364,6 @@ Action: store_false
 
 ---
 
-### no-more-button
-
-Don't show the More button
-
-Action: store_false
-
----
-
 ### no-model-icon
 
 Don't show the model icon
@@ -503,14 +495,6 @@ Action: store_false
 ### no-keywords
 
 Don't do keyword replacements like ((now))
-
-Action: store_false
-
----
-
-### no-prevnext
-
-Don't show the Prev and Next buttons
 
 Action: store_false
 

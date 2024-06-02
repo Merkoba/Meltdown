@@ -42,18 +42,20 @@ class InputControl:
             self.input.drop_target_register(DND_TEXT)  # type: ignore
             self.input.dnd_bind("<<Drop>>", lambda e: self.on_text_dropped(e))  # type: ignore
 
+        clear_button = widgetutils.make_button(frame_data, "x", lambda: self.clear())
+
+        ToolTip(clear_button, tips["clear_input_button"])
+
         prev_button = widgetutils.make_button(
-            frame_data, "< Prev", lambda: self.history_up()
+            frame_data, "<", lambda: self.history_up()
         )
 
-        prev_button.set_bind("<Button-2>", lambda e: self.clear())
         ToolTip(prev_button, tips["prev_button"])
 
         next_button = widgetutils.make_button(
-            frame_data, "Next >", lambda: self.history_down()
+            frame_data, ">", lambda: self.history_down()
         )
 
-        next_button.set_bind("<Button-2>", lambda e: self.clear())
         ToolTip(next_button, tips["next_button"])
 
         if args.write_button:
@@ -73,11 +75,6 @@ class InputControl:
         )
 
         ToolTip(submit_button, tips["submit_button"])
-
-        if not args.show_prevnext:
-            prev_button.grid_remove()
-            next_button.grid_remove()
-
         self.input.bind_mousewheel()
 
     def bind(self) -> None:

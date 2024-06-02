@@ -333,12 +333,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_more_button",
-            action="store_false",
-            info="Don't show the More button",
-        )
-
-        self.add_argument(
             "no_model_icon",
             action="store_false",
             info="Don't show the model icon",
@@ -438,12 +432,6 @@ class ArgSpec:
             "no_keywords",
             action="store_false",
             info="Don't do keyword replacements like ((now))",
-        )
-
-        self.add_argument(
-            "no_prevnext",
-            action="store_false",
-            info="Don't show the Prev and Next buttons",
         )
 
         self.add_argument(
