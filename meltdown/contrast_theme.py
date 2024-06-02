@@ -83,6 +83,4 @@ class ContrastTheme(Theme):
         self.textbox_foreground = "white"
         self.textbox_insert = "white"
 
-        self.quotes_color = "#1d99ff"
-        self.list_color = "#1d99ff"
-        self.italic_color = "#ff3a99"
+        self.effect_color = "#1d99ff"

@@ -127,7 +127,6 @@ class Args:
         self.unordered_char = "•"
         self.ordered_spacing = "auto"
         self.unordered_spacing = "auto"
-        self.color_list = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -135,12 +134,18 @@ class Args:
         self.markdown_unordered = "ai"
         self.markdown_italic = "ai"
         self.markdown_bold = "ai"
-        self.markdown_highlights = "ai"
-        self.markdown_quotes = "both"
-        self.markdown_urls = "both"
-        self.markdown_paths = "both"
-        self.markdown_headers = "ai"
-        self.markdown_separators = "ai"
+        self.markdown_highlight = "ai"
+        self.markdown_quote = "both"
+        self.markdown_url = "both"
+        self.markdown_path = "both"
+        self.markdown_header = "ai"
+        self.markdown_separator = "ai"
+
+        self.italic_effects = "italic_color"
+        self.bold_effects = "bold"
+        self.highlight_effects = "underline"
+        self.quote_effects = "color"
+        self.list_effects = "color"
 
         self.errors = False
         self.log_errors = True
@@ -232,8 +237,6 @@ class Args:
         self.response_program = ""
         self.use_program = ""
         self.use_both = False
-        self.color_italic = True
-        self.color_quotes = True
         self.theme = ""
 
     def parse(self) -> None:
@@ -316,9 +319,6 @@ class Args:
             ("no_names_on_logs", "names_on_logs"),
             ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
-            ("no_color_italic", "color_italic"),
-            ("no_color_quotes", "color_quotes"),
-            ("no_color_list", "color_list"),
         ]
 
         for r_item in other_name:
@@ -437,12 +437,12 @@ class Args:
             "markdown_unordered",
             "markdown_italic",
             "markdown_bold",
-            "markdown_highlights",
-            "markdown_quotes",
-            "markdown_urls",
-            "markdown_paths",
-            "markdown_headers",
-            "markdown_separators",
+            "markdown_highlight",
+            "markdown_quote",
+            "markdown_url",
+            "markdown_path",
+            "markdown_header",
+            "markdown_separator",
             "help_prompt",
             "explain_prompt",
             "new_prompt",
@@ -470,6 +470,11 @@ class Args:
             "use_both",
             "taps_command",
             "theme",
+            "italic_effects",
+            "bold_effects",
+            "highlight_effects",
+            "quote_effects",
+            "list_effects",
         ]
 
         for n_item in normals:

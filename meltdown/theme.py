@@ -153,9 +153,7 @@ class Theme:
         self.textbox_foreground = "black"
         self.textbox_insert = "black"
 
-        self.quotes_color = "#0adeff"
-        self.list_color = "#0adeff"
-        self.italic_color = "#df6cff"
+        self.effect_color = "#0adeff"
 
     def get_font_family(self) -> str:
         if config.font_family == "monospace":
@@ -188,6 +186,10 @@ class Theme:
     def get_italic_font(self) -> tuple[str, int, str]:
         ff = self.get_font_family()
         return (ff, config.font_size, "italic")
+
+    def get_bold_italic_font(self) -> tuple[str, int, str]:
+        ff = self.get_font_family()
+        return (ff, config.font_size, "bold italic")
 
     def get_header_font(self, num: int) -> tuple[str, int, str]:
         ff = self.get_font_family()

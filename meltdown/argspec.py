@@ -1273,42 +1273,42 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "markdown_highlights",
+            "markdown_highlight",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for highlights",
         )
 
         self.add_argument(
-            "markdown_quotes",
+            "markdown_quote",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for quotes",
         )
 
         self.add_argument(
-            "markdown_urls",
+            "markdown_url",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for URLs",
         )
 
         self.add_argument(
-            "markdown_paths",
+            "markdown_path",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for paths",
         )
 
         self.add_argument(
-            "markdown_headers",
+            "markdown_header",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for headers",
         )
 
         self.add_argument(
-            "markdown_separators",
+            "markdown_separator",
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for separators",
@@ -1405,6 +1405,36 @@ class ArgSpec:
             type=str,
             choices=["dark", "light", "contrast"],
             info="What color theme to use",
+        )
+
+        self.add_argument(
+            "italic_effects",
+            type=str,
+            info="Effects to apply to italic text",
+        )
+
+        self.add_argument(
+            "bold_effects",
+            type=str,
+            info="Effects to apply to bold text",
+        )
+
+        self.add_argument(
+            "highlight_effects",
+            type=str,
+            info="Effects to apply to highlight text",
+        )
+
+        self.add_argument(
+            "quote_effects",
+            type=str,
+            info="Effects to apply to quote text",
+        )
+
+        self.add_argument(
+            "list_effects",
+            type=str,
+            info="Effects to apply to list characters on the left",
         )
 
 

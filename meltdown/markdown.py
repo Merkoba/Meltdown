@@ -197,26 +197,26 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, self.pattern_italic_1, "italic")
             self.do_format(start_ln, end_ln, who, self.pattern_italic_2, "italic")
 
-        if self.enabled(who, "highlights"):
+        if self.enabled(who, "highlight"):
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_1, "highlight")
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_2, "highlight")
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_3, "highlight")
 
-        if self.enabled(who, "quotes"):
+        if self.enabled(who, "quote"):
             self.do_format(start_ln, end_ln, who, self.pattern_quote, "quote", True)
 
-        if self.enabled(who, "urls"):
+        if self.enabled(who, "url"):
             self.do_format(start_ln, end_ln, who, self.pattern_url, "url")
 
-        if self.enabled(who, "paths"):
+        if self.enabled(who, "path"):
             self.do_format(start_ln, end_ln, who, self.pattern_path, "path")
 
-        if self.enabled(who, "headers"):
+        if self.enabled(who, "header"):
             self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_1")
             self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
             self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_3")
 
-        if self.enabled(who, "separators"):
+        if self.enabled(who, "separator"):
             self.format_separators(start_ln, end_ln, who)
 
     def do_format(
@@ -549,7 +549,7 @@ class Markdown:
                     space = lines[line - 1].index(" ")
                     ln = f"{line}.0"
                     ln_end = f"{line}.{space}"
-                    self.widget.tag_add("list_char", ln, ln_end)
+                    self.widget.tag_add("list", ln, ln_end)
                 except BaseException:
                     pass
 

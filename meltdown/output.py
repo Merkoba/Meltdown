@@ -1011,18 +1011,14 @@ class Output(tk.Text):
             foreground=app.theme.output_selection_foreground,
         )
 
-        self.tag_configure("highlight", underline=True)
+        self.add_effects("bold")
+        self.add_effects("italic")
+        self.add_effects("highlight")
+        self.add_effects("quote")
+        self.add_effects("list")
+
         self.tag_configure("url", underline=True)
         self.tag_configure("path", underline=True)
-        self.tag_configure("bold", font=app.theme.get_bold_font())
-
-        self.tag_configure("italic", font=app.theme.get_italic_font())
-
-        if args.color_italic:
-            self.tag_configure("italic", foreground=app.theme.italic_color)
-
-        if args.color_quotes:
-            self.tag_configure("quote", foreground=app.theme.quotes_color)
 
         self.tag_configure("header_1", font=app.theme.get_header_font(1))
         self.tag_configure("header_2", font=app.theme.get_header_font(2))
@@ -1033,9 +1029,6 @@ class Output(tk.Text):
         self.tag_configure("indent_ordered", lmargin1="0c", lmargin2=indt)
         self.tag_configure("indent_unordered", lmargin1="0c", lmargin2=indt)
 
-        if args.color_list:
-            self.tag_configure("list_char", foreground=app.theme.list_color)
-
         if args.colors:
             if args.user_color == "auto":
                 self.tag_configure("name_user", foreground=app.theme.user_color)
@@ -1045,6 +1038,22 @@ class Output(tk.Text):
                 self.tag_configure("name_ai", foreground=app.theme.ai_color)
             else:
                 self.tag_configure("name_ai", foreground=args.ai_color)
+
+    def add_effects(self, tag: str) -> None:
+        effects = getattr(args, f"{tag}_effects").split("_")
+
+        if all(effect in effects for effect in ("bold", "italic")):
+            self.tag_configure(tag, font=app.theme.get_bold_italic_font())
+        elif "bold" in effects:
+            self.tag_configure(tag, font=app.theme.get_bold_font())
+        elif "italic" in effects:
+            self.tag_configure(tag, font=app.theme.get_italic_font())
+
+        if "color" in effects:
+            self.tag_configure(tag, foreground=app.theme.effect_color)
+
+        if "underline" in effects:
+            self.tag_configure(tag, underline=True)
 
     def set_font(self) -> None:
         self.configure(font=app.theme.get_output_font())
