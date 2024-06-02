@@ -104,7 +104,7 @@ class PyperclipException(RuntimeError):
 class PyperclipWindowsException(PyperclipException):
     def __init__(self, message):
         message += " (%s)" % ctypes.WinError()
-        super(PyperclipWindowsException, self).__init__(message)
+        super().__init__(message)
 
 
 class PyperclipTimeoutException(PyperclipException):
@@ -353,12 +353,12 @@ def init_dev_clipboard_clipboard():
         if "\r" in text:
             warnings.warn("Pyperclip cannot handle \\r characters on Cygwin.")
 
-        fo = open("/dev/clipboard", "wt")
+        fo = open("/dev/clipboard", "w")
         fo.write(text)
         fo.close()
 
     def paste_dev_clipboard():
-        fo = open("/dev/clipboard", "rt")
+        fo = open("/dev/clipboard")
         content = fo.read()
         fo.close()
         return content
@@ -367,7 +367,7 @@ def init_dev_clipboard_clipboard():
 
 
 def init_no_clipboard():
-    class ClipboardUnavailable(object):
+    class ClipboardUnavailable:
         def __call__(self, *args, **kwargs):
             raise PyperclipException(EXCEPT_MSG)
 
@@ -384,9 +384,9 @@ def init_no_clipboard():
 
 
 # Windows-related clipboard functions:
-class CheckedCall(object):
+class CheckedCall:
     def __init__(self, f):
-        super(CheckedCall, self).__setattr__("f", f)
+        super().__setattr__("f", f)
 
     def __call__(self, *args):
         ret = self.f(*args)
@@ -627,7 +627,7 @@ def determine_clipboard():
         return init_windows_clipboard()
 
     if platform.system() == "Linux" and os.path.isfile("/proc/version"):
-        with open("/proc/version", "r") as f:
+        with open("/proc/version") as f:
             if "microsoft" in f.read().lower():
                 return init_wsl_clipboard()
 
