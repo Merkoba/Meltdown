@@ -555,7 +555,7 @@ class Output(tk.Text):
         if check:
             self.check_auto_bottom("down")
 
-    def get_tab(self) -> Any | None:
+    def get_tab(self) -> Any:
         return self.display.get_tab(self.tab_id)
 
     def format_text(self, mode: str = "normal") -> None:

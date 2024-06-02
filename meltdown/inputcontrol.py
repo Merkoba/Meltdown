@@ -82,7 +82,7 @@ class InputControl:
     def bind(self) -> None:
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
-    def show_menu(self, event: Any | None = None) -> None:
+    def show_menu(self, event: Any = None) -> None:
         from .widgets import widgets
 
         def action(text: str) -> None:

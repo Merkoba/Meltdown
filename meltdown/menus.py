@@ -401,7 +401,7 @@ class Menu:
 
     def show(
         self,
-        event: Any | None = None,
+        event: Any = None,
         widget: tk.Widget | None = None,
         selected: int | None = None,
     ) -> None:

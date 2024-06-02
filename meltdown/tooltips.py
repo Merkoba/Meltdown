@@ -43,7 +43,7 @@ class ToolTip:
         self.delay = 600
         self.text = clean_string(text)
         self.tooltip: tk.Frame | None = None
-        self.current_event: Any | None = None
+        self.current_event: Any = None
 
         if bind:
             self.widget.bind("<Enter>", lambda e: self.schedule())

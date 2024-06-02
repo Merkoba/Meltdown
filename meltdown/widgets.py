@@ -427,7 +427,7 @@ class Widgets:
         key_config: str,
         key_list: str,
         command: Callable[..., Any],
-        event: Any | None = None,
+        event: Any = None,
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
@@ -483,9 +483,7 @@ class Widgets:
             if widget:
                 menu.show(widget=widget)
 
-    def show_model_context(
-        self, event: Any | None = None, only_items: bool = False
-    ) -> None:
+    def show_model_context(self, event: Any = None, only_items: bool = False) -> None:
         if model.model_loading:
             return
 
@@ -497,9 +495,7 @@ class Widgets:
             only_items=only_items,
         )
 
-    def show_file_context(
-        self, event: Any | None = None, only_items: bool = False
-    ) -> None:
+    def show_file_context(self, event: Any = None, only_items: bool = False) -> None:
         self.show_menu_items(
             "file",
             "files",
@@ -508,7 +504,7 @@ class Widgets:
             only_items=only_items,
         )
 
-    def show_file_menu(self, event: Any | None = None) -> None:
+    def show_file_menu(self, event: Any = None) -> None:
         self.show_menu_items("file", "files", lambda s: self.set_file(s), event)
 
     def show_model(self) -> None:

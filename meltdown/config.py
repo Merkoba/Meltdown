@@ -151,7 +151,7 @@ No need to greet me, just answer.
 
         return None
 
-    def get_default(self, key: str) -> Any | None:
+    def get_default(self, key: str) -> Any:
         name = f"default_{key}"
 
         if hasattr(self, name):
