@@ -3,7 +3,7 @@ from __future__ import annotations
 # Standard
 import inspect
 import tkinter as tk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 
 # Modules
@@ -16,10 +16,10 @@ class ButtonBox(tk.Frame):
         self,
         parent: tk.Frame,
         text: str,
-        command: Optional[Callable[..., Any]] = None,
-        when: Optional[str] = None,
-        style: Optional[str] = None,
-        width: Optional[int] = None,
+        command: Callable[..., Any] | None = None,
+        when: str | None = None,
+        style: str | None = None,
+        width: int | None = None,
     ) -> None:
         super().__init__(parent)
         self.text = text

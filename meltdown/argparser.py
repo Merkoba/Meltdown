@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import argparse
-from typing import Any, Optional
+from typing import Any
 
 
 class ArgParser:
@@ -30,7 +30,7 @@ class ArgParser:
         return " ".join(self.args.string_arg)
 
     def get_value(
-        self, attr: str, key: Optional[str] = None, no_strip: bool = False
+        self, attr: str, key: str | None = None, no_strip: bool = False
     ) -> None:
         value = getattr(self.args, attr)
 

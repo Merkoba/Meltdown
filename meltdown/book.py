@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from typing import Optional, Any
+from typing import Any
 from collections.abc import Callable
 
 # Modules
@@ -24,7 +24,7 @@ class TabWidget:
 class Page:
     notebox_id = 0
 
-    def __init__(self, parent: "Book", name: str, mode: str) -> None:
+    def __init__(self, parent: Book, name: str, mode: str) -> None:
         self.parent = parent
         self.name = name
         self.mode = mode
@@ -85,7 +85,7 @@ class Page:
 
         return -1
 
-    def set_tab_text(self, index: Optional[int] = None) -> None:
+    def set_tab_text(self, index: int | None = None) -> None:
         text = self.name
 
         if args.max_tab_width:
@@ -151,8 +151,8 @@ class Book(tk.Frame):
         self.content_container.grid_columnconfigure(0, weight=1)
         self.content_container.grid_rowconfigure(0, weight=1)
 
-        self.current_page: Optional[Page] = None
-        self.drag_page: Optional[Page] = None
+        self.current_page: Page | None = None
+        self.drag_page: Page | None = None
         self.dragging = False
 
         padx = app.theme.padx
@@ -171,13 +171,13 @@ class Book(tk.Frame):
                 "<Double-Button-1>", lambda e: self.tabs_double_click()
             )
 
-        self.on_tab_right_click: Optional[Callable[..., Any]] = None
-        self.on_tab_middle_click: Optional[Callable[..., Any]] = None
-        self.on_tabs_click: Optional[Callable[..., Any]] = None
-        self.on_tabs_double_click: Optional[Callable[..., Any]] = None
-        self.on_change: Optional[Callable[..., Any]] = None
-        self.on_reorder: Optional[Callable[..., Any]] = None
-        self.on_num_tabs_change: Optional[Callable[..., Any]] = None
+        self.on_tab_right_click: Callable[..., Any] | None = None
+        self.on_tab_middle_click: Callable[..., Any] | None = None
+        self.on_tabs_click: Callable[..., Any] | None = None
+        self.on_tabs_double_click: Callable[..., Any] | None = None
+        self.on_change: Callable[..., Any] | None = None
+        self.on_reorder: Callable[..., Any] | None = None
+        self.on_num_tabs_change: Callable[..., Any] | None = None
 
         self.discover_debouncer = ""
         self.discover_delay = 250
@@ -365,14 +365,14 @@ class Book(tk.Frame):
             else:
                 page.content.grid()
 
-    def get_page_by_id(self, id: str) -> Optional[Page]:
+    def get_page_by_id(self, id: str) -> Page | None:
         for page in self.pages:
             if page.id == id:
                 return page
 
         return None
 
-    def get_page_by_index(self, index: int) -> Optional[Page]:
+    def get_page_by_index(self, index: int) -> Page | None:
         if index < 0 or index >= len(self.pages):
             return None
 
@@ -522,7 +522,7 @@ class Book(tk.Frame):
     def get_center_x(self, page: Page) -> int:
         return page.tab.frame.winfo_rootx() + page.tab.frame.winfo_width() // 2
 
-    def get_page_at_x(self, x: int) -> Optional[Page]:
+    def get_page_at_x(self, x: int) -> Page | None:
         for page in self.pages:
             tab_x = page.tab.frame.winfo_rootx()
             tab_width = page.tab.frame.winfo_width()
@@ -611,7 +611,7 @@ class Book(tk.Frame):
                 self.select(id)
                 return
 
-    def move_left(self, page: Optional[Page] = None) -> None:
+    def move_left(self, page: Page | None = None) -> None:
         if not page:
             page = self.current_page
 
@@ -630,7 +630,7 @@ class Book(tk.Frame):
         if self.on_reorder:
             self.on_reorder()
 
-    def move_right(self, page: Optional[Page] = None) -> None:
+    def move_right(self, page: Page | None = None) -> None:
         if not page:
             page = self.current_page
 
@@ -688,7 +688,7 @@ class Book(tk.Frame):
         else:
             self.show_tabs()
 
-    def check_num_tabs_change(self) -> Optional[int]:
+    def check_num_tabs_change(self) -> int | None:
         if self.on_num_tabs_change:
             if self.num_tabs_after:
                 app.root.after_cancel(self.num_tabs_after)

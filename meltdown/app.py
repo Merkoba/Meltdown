@@ -12,7 +12,7 @@ import platform
 import urllib.parse
 import tkinter as tk
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
 # Libraries
 import psutil  # type: ignore
@@ -110,7 +110,7 @@ class App:
         self.autorun()
         self.root.mainloop()
 
-    def exit(self, seconds: Optional[int] = None, force: bool = False) -> None:
+    def exit(self, seconds: int | None = None, force: bool = False) -> None:
         from .args import args
         from .display import display
         from .dialogs import Dialog
@@ -235,7 +235,7 @@ class App:
 
         self.root.after(100, lambda: action())
 
-    def resize(self, dims: Optional[str] = None) -> None:
+    def resize(self, dims: str | None = None) -> None:
         if dims:
             dims = dims.replace(" ", "")
             self.root.geometry(dims)
@@ -417,7 +417,7 @@ class App:
 
         self.open_generic(url, args.browser)
 
-    def open_generic(self, arg: str, opener: Optional[str] = None) -> None:
+    def open_generic(self, arg: str, opener: str | None = None) -> None:
         if not arg:
             return
 
@@ -591,7 +591,7 @@ class App:
     def unfullscreen(self) -> None:
         self.root.attributes("-fullscreen", False)
 
-    def show_help(self, what: str, filter_text: Optional[str] = None) -> None:
+    def show_help(self, what: str, filter_text: str | None = None) -> None:
         from .display import display
         from .commands import commands
         from .keyboard import keyboard
@@ -791,7 +791,7 @@ class App:
         self.do_checks()
         app.root.after(self.checks_delay, self.start_checks)
 
-    def focused(self) -> Optional[tk.Widget]:
+    def focused(self) -> tk.Widget | None:
         if app.exists():
             widget = self.root.focus_get()
 
@@ -862,7 +862,7 @@ class App:
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
-    def show_size(self, tab_id: Optional[str] = None) -> None:
+    def show_size(self, tab_id: str | None = None) -> None:
         from .dialogs import Dialog
         from .display import display
 
