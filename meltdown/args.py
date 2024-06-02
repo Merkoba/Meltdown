@@ -132,7 +132,8 @@ class Args:
         self.markdown_snippets = "ai"
         self.markdown_ordered = "ai"
         self.markdown_unordered = "ai"
-        self.markdown_italic = "ai"
+        self.markdown_italic_asterisk = "ai"
+        self.markdown_italic_underscore = "ai"
         self.markdown_bold = "ai"
         self.markdown_highlight = "ai"
         self.markdown_quote = "both"
@@ -435,7 +436,8 @@ class Args:
             "markdown_snippets",
             "markdown_ordered",
             "markdown_unordered",
-            "markdown_italic",
+            "markdown_italic_asterisk",
+            "markdown_italic_underscore",
             "markdown_bold",
             "markdown_highlight",
             "markdown_quote",

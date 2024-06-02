@@ -1854,9 +1854,21 @@ Type: str
 
 ---
 
-### markdown-italic
+### markdown-italic-asterisk
 
-Markdown mode for italic
+Markdown mode for italic with one asterisk
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-italic-underscore
+
+Markdown mode for italic with one underscore
 
 Default: "ai"
 

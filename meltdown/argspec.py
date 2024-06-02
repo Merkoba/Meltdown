@@ -1262,10 +1262,17 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "markdown_italic",
+            "markdown_italic_asterisk",
             type=str,
             choices=self.markdown_choices,
-            info="Markdown mode for italic",
+            info="Markdown mode for italic with one asterisk",
+        )
+
+        self.add_argument(
+            "markdown_italic_underscore",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for italic with one underscore",
         )
 
         self.add_argument(

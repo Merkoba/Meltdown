@@ -94,29 +94,15 @@ This information is used by the Flatpak runtime to display the app's name, descr
 In our case, the `metadata.json` file tells the system that the main entry point of our Flatpak is the `run` script we created earlier.
 """.strip()
 
-list1 = """
-* what
-* is
-* this thing
-""".strip()
-
-list2 = """
-* what asdasf asdfasd fasdf sdf
-* is asdasf asdfasd fasdf sdf
-* this thing asdasf asdfasd fasdf sdf
-hello
-* aasf asdasf asdfasd fasdf sdf
-* aasfasd asdasf asdfasd fasdf sdf
-* aasfasd asdasf asdfasd fasdf sdf
+test1 = """
+Here is *an italic* and here is _another one_
 """.strip()
 
 format_test_2 = {
     "id": "ignore",
     "name": "Test 2",
     "items": [
-        {"user": "List test 1"},
-        {"ai": list1},
-        {"user": "List test 2"},
-        {"ai": list2},
+        {"user": "Test 1"},
+        {"ai": test1},
     ],
 }

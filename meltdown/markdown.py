@@ -57,12 +57,12 @@ class Markdown:
         )
 
         # Italic with one asterisk
-        self.pattern_italic_1 = (
+        self.pattern_italic_asterisk = (
             rf"{left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}"
         )
 
         # Italic with one underscore
-        self.pattern_italic_2 = (
+        self.pattern_italic_underscore = (
             rf"{left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}"
         )
 
@@ -193,9 +193,15 @@ class Markdown:
         if self.enabled(who, "bold"):
             self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
 
-        if self.enabled(who, "italic"):
-            self.do_format(start_ln, end_ln, who, self.pattern_italic_1, "italic")
-            self.do_format(start_ln, end_ln, who, self.pattern_italic_2, "italic")
+        if self.enabled(who, "italic_asterisk"):
+            self.do_format(
+                start_ln, end_ln, who, self.pattern_italic_asterisk, "italic"
+            )
+
+        if self.enabled(who, "italic_underscore"):
+            self.do_format(
+                start_ln, end_ln, who, self.pattern_italic_underscore, "italic"
+            )
 
         if self.enabled(who, "highlight"):
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_1, "highlight")
