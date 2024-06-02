@@ -1,6 +1,5 @@
 [lint]
 select = [
-    "F",
     "T",
     "Q",
     "W",
