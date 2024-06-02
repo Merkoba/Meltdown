@@ -23,12 +23,12 @@ from . import widgetutils
 
 class System:
     def __init__(self) -> None:
-        self.cpu: int = None
-        self.ram: int = None
-        self.temp: int = None
-        self.gpu_use: int = None
-        self.gpu_ram: int = None
-        self.gpu_temp: int = None
+        self.cpu: int | None = None
+        self.ram: int | None = None
+        self.temp: int | None = None
+        self.gpu_use: int | None = None
+        self.gpu_ram: int | None = None
+        self.gpu_temp: int | None = None
 
     def set_widget(self, widget: tk.StringVar, text: str) -> None:
         if app.exists():
