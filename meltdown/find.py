@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 # Standard
 import re
 import tkinter as tk
-from typing import Optional
 
 # Modules
 from .app import app
@@ -31,9 +32,9 @@ class Find:
         self.entry.grid(row=0, column=0, sticky="ew", padx=4)
         self.entry.placeholder = "Find..."
         self.entry.check_placeholder()
-        self.current_match: Optional[str] = None
-        self.current_match_reverse: Optional[str] = None
-        self.widget: Optional[tk.Text] = None
+        self.current_match: str | None = None
+        self.current_match_reverse: str | None = None
+        self.widget: tk.Text | None = None
         self.visible = False
         self.snippet = -1
         self.snippet_focused = False
@@ -83,7 +84,7 @@ class Find:
         self.root.grid(row=0, column=0, sticky="ew")
         self.root.grid_remove()
 
-    def get_output(self) -> Optional[Output]:
+    def get_output(self) -> Output | None:
         from .display import display
 
         return display.get_output(self.tab_id)
@@ -94,7 +95,7 @@ class Find:
         bound: bool = False,
         no_match: bool = False,
         switch: bool = False,
-        first_widget: Optional[tk.Widget] = None,
+        first_widget: tk.Widget | None = None,
         reverse: bool = False,
     ) -> None:
         if not self.visible:
@@ -243,8 +244,8 @@ class Find:
 
     def show(
         self,
-        widget: Optional[tk.Text] = None,
-        query: Optional[str] = None,
+        widget: tk.Text | None = None,
+        query: str | None = None,
     ) -> None:
         if self.widget:
             self.clear()

@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import re
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 
 # Modules
@@ -29,7 +31,7 @@ class EntryBox(ttk.Entry):
         self.trace_id = self.text_var.trace_add("write", self.on_write)
         self.configure(textvariable=self.text_var)
         self.placeholder_active = False
-        self.proc: Optional[Callable[..., Any]] = None
+        self.proc: Callable[..., Any] | None = None
         self.name = ""
         self.last_text = ""
         self.do_binds()
@@ -68,7 +70,7 @@ class EntryBox(ttk.Entry):
     def get_text(self) -> str:
         return self.get()
 
-    def get_selected(self) -> Optional[str]:
+    def get_selected(self) -> str | None:
         try:
             start = self.index(tk.SEL_FIRST)
             end = self.index(tk.SEL_LAST)

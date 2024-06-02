@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 # Standard
 import sys
-from typing import Optional
 from pathlib import Path
 
 # Modules
@@ -554,7 +555,7 @@ class Args:
             self.taps_command = f"{self.prefix}palette"
 
     def show_help(
-        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+        self, tab_id: str | None = None, filter_text: str | None = None
     ) -> None:
         from .display import display
 
@@ -562,7 +563,7 @@ class Args:
         display.print(text, tab_id=tab_id)
         display.format_text(tab_id=tab_id, mode="all")
 
-    def get_argtext(self, filter_text: Optional[str] = None) -> str:
+    def get_argtext(self, filter_text: str | None = None) -> str:
         from .utils import utils
 
         sep = "\n\n---\n\n"

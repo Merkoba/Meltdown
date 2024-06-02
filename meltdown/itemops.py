@@ -1,5 +1,4 @@
-# Standard
-from typing import Optional
+from __future__ import annotations
 
 # Modules
 from .app import app
@@ -14,9 +13,9 @@ class ItemOps:
         self,
         mode: str,
         number: str,
-        tab_id: Optional[str] = None,
+        tab_id: str | None = None,
         no_history: bool = False,
-        who: Optional[str] = None,
+        who: str | None = None,
     ) -> None:
         from .model import model
         from .display import display

@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 # Standard
 import json
 import tempfile
 from pathlib import Path
-from typing import Optional
 
 # Modules
 from .app import app
@@ -149,7 +150,7 @@ def to_markdown(
 # ---
 
 
-def do_open(mode: str, cmd: Optional[str] = None, text: Optional[str] = None) -> None:
+def do_open(mode: str, cmd: str | None = None, text: str | None = None) -> None:
     if not cmd:
         if mode == "text":
             cmd = args.program_text or args.program
@@ -196,7 +197,7 @@ def do_view(mode: str) -> None:
         view_markdown()
 
 
-def view_text(tab_id: Optional[str] = None) -> None:
+def view_text(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:
@@ -215,7 +216,7 @@ def view_text(tab_id: Optional[str] = None) -> None:
         display.to_top(tab_id=new_tab)
 
 
-def view_json(tab_id: Optional[str] = None) -> None:
+def view_json(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:
@@ -234,7 +235,7 @@ def view_json(tab_id: Optional[str] = None) -> None:
         display.to_top(tab_id=new_tab)
 
 
-def view_markdown(tab_id: Optional[str] = None) -> None:
+def view_markdown(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:
@@ -266,7 +267,7 @@ def do_copy(mode: str) -> None:
         copy_markdown()
 
 
-def copy_text(tab_id: Optional[str] = None) -> None:
+def copy_text(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:
@@ -280,7 +281,7 @@ def copy_text(tab_id: Optional[str] = None) -> None:
     utils.copy(text)
 
 
-def copy_json(tab_id: Optional[str] = None) -> None:
+def copy_json(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:
@@ -294,7 +295,7 @@ def copy_json(tab_id: Optional[str] = None) -> None:
     utils.copy(text)
 
 
-def copy_markdown(tab_id: Optional[str] = None) -> None:
+def copy_markdown(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:

@@ -1,5 +1,4 @@
-# Standard
-from typing import Optional
+from __future__ import annotations
 
 # Modules
 from .args import args
@@ -8,8 +7,8 @@ from .dialogs import Dialog
 
 
 def delete_items(
-    number: Optional[str] = None,
-    tab_id: Optional[str] = None,
+    number: str | None = None,
+    tab_id: str | None = None,
     mode: str = "normal",
     force: bool = False,
 ) -> None:

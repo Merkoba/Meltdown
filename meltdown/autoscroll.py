@@ -1,5 +1,4 @@
-# Standard
-from typing import Optional
+from __future__ import annotations
 
 # Modules
 from .app import app
@@ -11,7 +10,7 @@ class AutoScroll:
         self.enabled = False
         self.direction = "down"
 
-    def start(self, direction: Optional[str] = None) -> None:
+    def start(self, direction: str | None = None) -> None:
         from .display import display
 
         if self.enabled:
@@ -54,7 +53,7 @@ class AutoScroll:
 
         tab.bottom.on_auto_scroll_disabled()
 
-    def toggle(self, direction: Optional[str] = None) -> None:
+    def toggle(self, direction: str | None = None) -> None:
         if not direction:
             direction = "down"
 

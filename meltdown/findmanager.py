@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 # Standard
 import re
 import tkinter as tk
-from typing import Optional
 
 # Modules
 from .app import app
@@ -9,9 +10,9 @@ from .dialogs import Dialog
 
 
 def find(
-    tab_id: Optional[str] = None,
-    widget: Optional[tk.Text] = None,
-    query: Optional[str] = None,
+    tab_id: str | None = None,
+    widget: tk.Text | None = None,
+    query: str | None = None,
 ) -> None:
     from .display import display
 
@@ -67,7 +68,7 @@ def hide_find() -> None:
     tab.find.hide()
 
 
-def find_all(query: Optional[str] = None, reverse: bool = False) -> None:
+def find_all(query: str | None = None, reverse: bool = False) -> None:
     if query:
         find_all_text(query, reverse=reverse)
     else:
