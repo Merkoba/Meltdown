@@ -1878,7 +1878,7 @@ Type: str
 
 ---
 
-### markdown-highlights
+### markdown-highlight
 
 Markdown mode for highlights
 
@@ -1890,7 +1890,7 @@ Type: str
 
 ---
 
-### markdown-quotes
+### markdown-quote
 
 Markdown mode for quotes
 
@@ -1902,7 +1902,7 @@ Type: str
 
 ---
 
-### markdown-urls
+### markdown-url
 
 Markdown mode for URLs
 
@@ -1914,7 +1914,7 @@ Type: str
 
 ---
 
-### markdown-paths
+### markdown-path
 
 Markdown mode for paths
 
@@ -1926,7 +1926,7 @@ Type: str
 
 ---
 
-### markdown-headers
+### markdown-header
 
 Markdown mode for headers
 
@@ -1938,7 +1938,7 @@ Type: str
 
 ---
 
-### markdown-separators
+### markdown-separator
 
 Markdown mode for separators
 
@@ -2101,5 +2101,55 @@ What color theme to use
 Default: [Empty string]
 
 Choices: "dark", "light", "contrast"
+
+Type: str
+
+---
+
+### bold-effects
+
+Effects to apply to bold text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "bold"
+
+Type: str
+
+---
+
+### italic-effects
+
+Effects to apply to italic text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "italic_color"
+
+Type: str
+
+---
+
+### highlight-effects
+
+Effects to apply to highlight text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "color"
+
+Type: str
+
+---
+
+### quote-effects
+
+Effects to apply to quote text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "color"
+
+Type: str
+
+---
+
+### list-effects
+
+Effects to apply to list characters on the left. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "color"
 
 Type: str
