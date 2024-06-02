@@ -180,14 +180,6 @@ class Theme:
 
         return (args.snippets_font, config.font_size)
 
-    def get_bold_font(self) -> tuple[str, int, str]:
-        ff = self.get_font_family()
-        return (ff, config.font_size, "bold")
-
-    def get_italic_font(self) -> tuple[str, int, str]:
-        ff = self.get_font_family()
-        return (ff, config.font_size, "italic")
-
     def get_custom_font(
         self, font_family: str = "normal", effects: str = "", size: Optional[int] = None
     ) -> tuple[str, int, str]:
@@ -201,9 +193,8 @@ class Theme:
         f_size = size if size else outfont[1]
         return (ff, f_size, effects)
 
-    def get_header_font(self, num: int) -> tuple[str, int, str]:
-        ff = self.get_font_family()
-        return (ff, config.font_size + (4 - num), "bold")
+    def get_header_size(self, num: int) -> int:
+        return config.font_size + (4 - num)
 
     def get_separator_font(self) -> tuple[str, int]:
         ff = self.monospace_family

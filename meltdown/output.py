@@ -1018,9 +1018,9 @@ class Output(tk.Text):
         self.add_effects("list")
         self.add_effects("url")
         self.add_effects("path")
-        self.add_effects("header_1", app.theme.get_header_font(1)[1])
-        self.add_effects("header_2", app.theme.get_header_font(2)[1])
-        self.add_effects("header_3", app.theme.get_header_font(3)[1])
+        self.add_effects("header_1", app.theme.get_header_size(1))
+        self.add_effects("header_2", app.theme.get_header_size(2))
+        self.add_effects("header_3", app.theme.get_header_size(3))
 
         self.tag_configure("separator", font=app.theme.get_separator_font())
 
