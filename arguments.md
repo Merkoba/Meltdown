@@ -2120,7 +2120,7 @@ Type: str
 
 ### bold-effects
 
-Effects to apply to bold text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to bold text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "bold"
 
@@ -2130,7 +2130,7 @@ Type: str
 
 ### italic-effects
 
-Effects to apply to italic text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to italic text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "italic_color"
 
@@ -2140,7 +2140,7 @@ Type: str
 
 ### highlight-effects
 
-Effects to apply to highlight text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to highlight text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "color"
 
@@ -2150,7 +2150,7 @@ Type: str
 
 ### quote-effects
 
-Effects to apply to quote text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to quote text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "color"
 
@@ -2160,7 +2160,7 @@ Type: str
 
 ### list-effects
 
-Effects to apply to list characters on the left. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to list characters on the left. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "color"
 
@@ -2170,7 +2170,7 @@ Type: str
 
 ### url-effects
 
-Effects to apply to URL text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to URL text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "underline"
 
@@ -2180,7 +2180,7 @@ Type: str
 
 ### path-effects
 
-Effects to apply to path text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to path text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "underline"
 
@@ -2190,9 +2190,9 @@ Type: str
 
 ### header-1-effects
 
-Effects to apply to headers (Level 1). bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to headers (Level 1). bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
-Default: [Empty string]
+Default: "bold"
 
 Type: str
 
@@ -2200,9 +2200,9 @@ Type: str
 
 ### header-2-effects
 
-Effects to apply to headers (Level 2). bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to headers (Level 2). bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
-Default: [Empty string]
+Default: "bold"
 
 Type: str
 
@@ -2210,8 +2210,8 @@ Type: str
 
 ### header-3-effects
 
-Effects to apply to headers (Level 3). bold, italic, color, underline. Separated by _, for example: "bold_color"
+Effects to apply to headers (Level 3). bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
-Default: [Empty string]
+Default: "bold"
 
 Type: str
