@@ -1015,7 +1015,6 @@ class Output(tk.Text):
         self.tag_configure("url", underline=True)
         self.tag_configure("path", underline=True)
         self.tag_configure("bold", font=app.theme.get_bold_font())
-        self.tag_configure("bold_alt", font=app.theme.get_bold_font())
 
         self.tag_configure("italic", font=app.theme.get_italic_font())
 
@@ -1033,6 +1032,9 @@ class Output(tk.Text):
         indt = "0.33c"
         self.tag_configure("indent_ordered", lmargin1="0c", lmargin2=indt)
         self.tag_configure("indent_unordered", lmargin1="0c", lmargin2=indt)
+
+        if args.color_list:
+            self.tag_configure("list_char", foreground=app.theme.list_color)
 
         if args.colors:
             if args.user_color == "auto":

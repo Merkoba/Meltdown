@@ -127,7 +127,7 @@ class Args:
         self.unordered_char = "•"
         self.ordered_spacing = "auto"
         self.unordered_spacing = "auto"
-        self.bold_lists = True
+        self.color_list = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -316,9 +316,9 @@ class Args:
             ("no_names_on_logs", "names_on_logs"),
             ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
-            ("no_bold_lists", "bold_lists"),
             ("no_color_italic", "color_italic"),
             ("no_color_quotes", "color_quotes"),
+            ("no_color_list", "color_list"),
         ]
 
         for r_item in other_name:

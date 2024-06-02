@@ -154,6 +154,7 @@ class Theme:
         self.textbox_insert = "black"
 
         self.quotes_color = "#0adeff"
+        self.list_color = "#0adeff"
         self.italic_color = "#df6cff"
 
     def get_font_family(self) -> str:

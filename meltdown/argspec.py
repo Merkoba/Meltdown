@@ -482,9 +482,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_bold_lists",
+            "no_color_list",
             action="store_false",
-            info="Don't use bold on list characters",
+            info="Don't color the list characters",
         )
 
         self.add_argument(

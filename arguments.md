@@ -564,9 +564,9 @@ Action: store_false
 
 ---
 
-### no-bold-lists
+### no-color-list
 
-Don't use bold on list characters
+Don't color the list characters
 
 Action: store_false
 
