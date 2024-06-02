@@ -1024,9 +1024,10 @@ class Output(tk.Text):
 
         self.tag_configure("separator", font=app.theme.get_separator_font())
 
-        indt = "0.33c"
-        self.tag_configure("indent_ordered", lmargin1="0c", lmargin2=indt)
-        self.tag_configure("indent_unordered", lmargin1="0c", lmargin2=indt)
+        ind1 = "0c"
+        ind2 = "0.33c"
+        self.tag_configure("indent_ordered", lmargin1=ind1, lmargin2=ind2)
+        self.tag_configure("indent_unordered", lmargin1=ind1, lmargin2=ind2)
 
         if args.colors:
             if args.user_color == "auto":
