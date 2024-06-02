@@ -11,6 +11,7 @@ import urllib.parse
 import tkinter as tk
 from pathlib import Path
 from typing import Any, Optional
+from __future__ import annotations
 
 # Libraries
 import psutil  # type: ignore

@@ -1,6 +1,7 @@
 # Standard
 from tkinter import ttk
 from typing import Optional
+from __future__ import annotations
 
 # Modules
 from .config import config

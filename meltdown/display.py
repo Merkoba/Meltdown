@@ -1,6 +1,7 @@
 # Standard
 import tkinter as tk
 from typing import Any, Optional, TYPE_CHECKING
+from __future__ import annotations
 
 # Modules
 from .app import app

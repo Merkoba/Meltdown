@@ -1,5 +1,6 @@
 # Standard
 from typing import TYPE_CHECKING, Optional
+from __future__ import annotations
 
 # Libraries
 from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore

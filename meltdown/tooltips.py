@@ -2,6 +2,7 @@
 import re
 import tkinter as tk
 from typing import Any, Optional, ClassVar
+from __future__ import annotations
 
 # Modules
 from .app import app

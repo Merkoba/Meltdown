@@ -1,6 +1,7 @@
 # Standard
 import argparse
 from typing import Any, Optional
+from __future__ import annotations
 
 
 class ArgParser:

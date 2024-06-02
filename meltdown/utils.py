@@ -11,6 +11,7 @@ from difflib import SequenceMatcher
 from typing import Union, Optional, Any
 from pathlib import Path
 from datetime import datetime
+from __future__ import annotations
 
 # Libraries
 from rich.console import Console  # type: ignore

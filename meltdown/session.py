@@ -3,6 +3,7 @@ import json
 from typing import Any, Optional
 from tkinter import filedialog
 from pathlib import Path
+from __future__ import annotations
 
 # Modules
 from .app import app

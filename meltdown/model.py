@@ -4,6 +4,7 @@ import threading
 from pathlib import Path
 from typing import Optional
 from typing import Any, Generator
+from __future__ import annotations
 
 # Libraries
 import requests  # type: ignore

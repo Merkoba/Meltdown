@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any, Union, Optional
 from collections.abc import Callable
+from __future__ import annotations
 
 # Modules
 from .app import app

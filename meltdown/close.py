@@ -1,5 +1,6 @@
 # Standard
 from typing import TYPE_CHECKING, Optional
+from __future__ import annotations
 
 # Modules
 from .args import args

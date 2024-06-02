@@ -4,6 +4,7 @@ from typing import Any, Optional
 from collections.abc import Callable
 from PIL import Image, ImageTk
 from pathlib import Path
+from __future__ import annotations
 
 # Modules
 from .app import app

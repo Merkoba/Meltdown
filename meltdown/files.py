@@ -2,6 +2,7 @@
 import json
 from typing import Any
 from pathlib import Path
+from __future__ import annotations
 
 # Modules
 from .app import app

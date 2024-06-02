@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any, Optional
 from collections.abc import Callable
+from __future__ import annotations
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore

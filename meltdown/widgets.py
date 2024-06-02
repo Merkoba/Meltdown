@@ -5,6 +5,7 @@ from tkinter import ttk
 from typing import Optional, Any
 from collections.abc import Callable
 from pathlib import Path
+from __future__ import annotations
 
 # Libraries
 from tkinterdnd2 import DND_FILES  # type: ignore
