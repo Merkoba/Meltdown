@@ -553,10 +553,14 @@ class App:
         self.main_frame.grid(row=0, column=0, sticky="nsew", padx=padx, pady=pady)
 
     def set_theme(self) -> None:
+        from .args import args
         from .config import config
         from .light_theme import LightTheme
         from .dark_theme import DarkTheme
         from .contrast_theme import ContrastTheme
+
+        if args.theme:
+            config.set_value("theme", args.theme)
 
         if config.theme == "light":
             self.theme = LightTheme()

@@ -232,9 +232,9 @@ class Args:
         self.response_program = ""
         self.use_program = ""
         self.use_both = False
-
         self.color_italic = True
         self.color_quotes = True
+        self.theme = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -469,6 +469,7 @@ class Args:
             "use_program",
             "use_both",
             "taps_command",
+            "theme",
         ]
 
         for n_item in normals:

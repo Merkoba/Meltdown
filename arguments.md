@@ -2091,3 +2091,15 @@ What command to run on double taps
 Default: "/palette"
 
 Type: str
+
+---
+
+### theme
+
+What color theme to use
+
+Default: [Empty string]
+
+Choices: "dark", "light", "contrast"
+
+Type: str

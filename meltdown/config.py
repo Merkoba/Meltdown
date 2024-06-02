@@ -367,6 +367,9 @@ No need to greet me, just answer.
         return False
 
     def set_value(self, key: str, value: Any) -> None:
+        if getattr(self, key) == value:
+            return
+
         setattr(self, key, value)
         self.save()
 

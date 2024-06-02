@@ -71,3 +71,6 @@ class LightTheme(Theme):
         self.find_background = "#8799C2"
         self.find_match_background = "#677577"
         self.find_match_foreground = "white"
+
+        self.quotes_color = "#0a74ff"
+        self.italic_color = "#ff3a99"

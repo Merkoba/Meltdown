@@ -1400,5 +1400,12 @@ class ArgSpec:
             info="What command to run on double taps",
         )
 
+        self.add_argument(
+            "theme",
+            type=str,
+            choices=["dark", "light", "contrast"],
+            info="What color theme to use",
+        )
+
 
 argspec = ArgSpec()
