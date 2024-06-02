@@ -1,8 +1,9 @@
 # Standard
 import tkinter as tk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 from pathlib import Path
+from __future__ import annotations
 
 # Modules
 from .app import app
@@ -16,8 +17,8 @@ from .utils import utils
 from .files import files
 
 
-KbCmd = Optional[Callable[..., Any]]
-KbHelp = Optional[str]
+KbCmd = Callable[..., Any] | None
+KbHelp = str | None
 
 
 class KbItem:
@@ -27,7 +28,7 @@ class KbItem:
         on_ctrl: KbCmd,
         on_shift: KbCmd,
         on_ctrl_shift: KbCmd,
-        widget: Optional[tk.Widget],
+        widget: tk.Widget | None,
         return_break: bool,
         help: KbHelp,
         shift_help: KbHelp,
@@ -229,16 +230,16 @@ class Keyboard:
     def register(
         self,
         key: str,
-        command: Optional[Callable[..., Any]] = None,
-        on_ctrl: Optional[Callable[..., Any]] = None,
-        on_shift: Optional[Callable[..., Any]] = None,
-        on_ctrl_shift: Optional[Callable[..., Any]] = None,
-        help: Optional[str] = None,
-        shift_help: Optional[str] = None,
-        ctrl_help: Optional[str] = None,
-        ctrl_shift_help: Optional[str] = None,
+        command: Callable[..., Any] | None = None,
+        on_ctrl: Callable[..., Any] | None = None,
+        on_shift: Callable[..., Any] | None = None,
+        on_ctrl_shift: Callable[..., Any] | None = None,
+        help: str | None = None,
+        shift_help: str | None = None,
+        ctrl_help: str | None = None,
+        ctrl_shift_help: str | None = None,
         return_break: bool = False,
-        widget: Optional[tk.Widget] = None,
+        widget: tk.Widget | None = None,
     ) -> None:
         def add(key: str) -> None:
             if not self.commands.get(key):
@@ -495,7 +496,7 @@ class Keyboard:
         self.ctrl_date = 0.0
 
     def show_help(
-        self, tab_id: Optional[str] = None, filter_text: Optional[str] = None
+        self, tab_id: str | None = None, filter_text: str | None = None
     ) -> None:
         from .display import display
 

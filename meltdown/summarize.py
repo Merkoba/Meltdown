@@ -1,5 +1,4 @@
-# Standard
-from typing import Optional
+from __future__ import annotations
 
 # Modules
 from .args import args
@@ -9,7 +8,7 @@ from .utils import utils
 from . import formats
 
 
-def summarize(tab_id: Optional[str] = None) -> None:
+def summarize(tab_id: str | None = None) -> None:
     tabconvo = display.get_tab_convo(tab_id)
 
     if not tabconvo:

@@ -1,11 +1,12 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import filedialog
 from tkinter import ttk
-from typing import Optional, Any
+from typing import Any
 from collections.abc import Callable
 from pathlib import Path
-from __future__ import annotations
 
 # Libraries
 from tkinterdnd2 import DND_FILES  # type: ignore
@@ -247,7 +248,7 @@ class Widgets:
         self.files_menu = Menu()
         self.inputs_menu = Menu()
 
-    def get_widget(self, key: str) -> Optional[tk.Widget]:
+    def get_widget(self, key: str) -> tk.Widget | None:
         if hasattr(self, key):
             widget = getattr(self, key)
 
@@ -426,7 +427,7 @@ class Widgets:
         key_config: str,
         key_list: str,
         command: Callable[..., Any],
-        event: Optional[Any] = None,
+        event: Any | None = None,
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
@@ -483,7 +484,7 @@ class Widgets:
                 menu.show(widget=widget)
 
     def show_model_context(
-        self, event: Optional[Any] = None, only_items: bool = False
+        self, event: Any | None = None, only_items: bool = False
     ) -> None:
         if model.model_loading:
             return
@@ -497,7 +498,7 @@ class Widgets:
         )
 
     def show_file_context(
-        self, event: Optional[Any] = None, only_items: bool = False
+        self, event: Any | None = None, only_items: bool = False
     ) -> None:
         self.show_menu_items(
             "file",
@@ -507,7 +508,7 @@ class Widgets:
             only_items=only_items,
         )
 
-    def show_file_menu(self, event: Optional[Any] = None) -> None:
+    def show_file_menu(self, event: Any | None = None) -> None:
         self.show_menu_items("file", "files", lambda s: self.set_file(s), event)
 
     def show_model(self) -> None:
@@ -604,7 +605,7 @@ class Widgets:
     def load_or_unload(self) -> None:
         model.load_or_unload()
 
-    def copy(self, key: str, text: Optional[str] = None) -> None:
+    def copy(self, key: str, text: str | None = None) -> None:
         widget = self.get_widget(key)
 
         if not widget:
@@ -708,9 +709,7 @@ class Widgets:
     def show_recent_files(self) -> None:
         self.show_file_context(only_items=True)
 
-    def write_system_prompt(
-        self, text: Optional[str] = None, maxed: bool = False
-    ) -> None:
+    def write_system_prompt(self, text: str | None = None, maxed: bool = False) -> None:
         from .textbox import TextBox
 
         def action(ans: dict[str, Any]) -> None:
@@ -798,9 +797,7 @@ class Widgets:
 
         more_menu.show(event)
 
-    def get_dir(
-        self, what: Optional[str] = None, list: Optional[str] = None
-    ) -> Optional[str]:
+    def get_dir(self, what: str | None = None, list: str | None = None) -> str | None:
         items = []
 
         if what:

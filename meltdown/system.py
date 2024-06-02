@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import json
 import subprocess
 import threading
 import tkinter as tk
-from typing import Optional
 from pathlib import Path
 
 # Libraries
@@ -22,12 +23,12 @@ from . import widgetutils
 
 class System:
     def __init__(self) -> None:
-        self.cpu: Optional[int] = None
-        self.ram: Optional[int] = None
-        self.temp: Optional[int] = None
-        self.gpu_use: Optional[int] = None
-        self.gpu_ram: Optional[int] = None
-        self.gpu_temp: Optional[int] = None
+        self.cpu: int = None
+        self.ram: int = None
+        self.temp: int = None
+        self.gpu_use: int = None
+        self.gpu_ram: int = None
+        self.gpu_temp: int = None
 
     def set_widget(self, widget: tk.StringVar, text: str) -> None:
         if app.exists():

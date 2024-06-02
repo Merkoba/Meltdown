@@ -1,7 +1,9 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
 
 # Modules
@@ -16,7 +18,7 @@ class MenuItem:
     def __init__(
         self,
         text: str,
-        command: Optional[Callable[..., Any]] = None,
+        command: Callable[..., Any] | None = None,
         separator: bool = False,
         disabled: bool = False,
         tooltip: str = "",
@@ -36,7 +38,7 @@ class MenuItem:
 
 
 class Menu:
-    current_menu: Optional["Menu"] = None
+    current_menu: Menu | None = None
 
     @staticmethod
     def hide_all() -> None:
@@ -49,13 +51,13 @@ class Menu:
             Menu.current_menu.focus()
 
     def __init__(self) -> None:
-        self.container: Optional[tk.Frame] = None
+        self.container: tk.Frame | None = None
         self.items: list[MenuItem] = []
 
     def add(
         self,
         text: str,
-        command: Optional[Callable[..., Any]] = None,
+        command: Callable[..., Any] | None = None,
         disabled: bool = False,
         tooltip: str = "",
         underline: bool = False,
@@ -399,9 +401,9 @@ class Menu:
 
     def show(
         self,
-        event: Optional[Any] = None,
-        widget: Optional[tk.Widget] = None,
-        selected: Optional[int] = None,
+        event: Any | None = None,
+        widget: tk.Widget | None = None,
+        selected: int | None = None,
     ) -> None:
         Menu.hide_all()
 

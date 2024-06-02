@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 # Standard
 import re
 import tkinter as tk
-from typing import Any, Optional, ClassVar
-from __future__ import annotations
+from typing import Any, ClassVar
 
 # Modules
 from .app import app
@@ -15,8 +16,8 @@ def clean_string(text: str) -> str:
 
 
 class ToolTip:
-    tooltips: ClassVar[list["ToolTip"]] = []
-    current_tooltip: ClassVar[Optional["ToolTip"]] = None
+    tooltips: ClassVar[list[ToolTip]] = []
+    current_tooltip: ClassVar[ToolTip | None] = None
     block_date: ClassVar[float] = 0.0
 
     @staticmethod
@@ -29,7 +30,7 @@ class ToolTip:
         ToolTip.block_date = utils.now()
 
     @staticmethod
-    def get_tooltip(widget: tk.Widget) -> Optional["ToolTip"]:
+    def get_tooltip(widget: tk.Widget) -> ToolTip | None:
         for tooltip in ToolTip.tooltips:
             if tooltip.widget == widget:
                 return tooltip
@@ -41,8 +42,8 @@ class ToolTip:
         self.widget = widget
         self.delay = 600
         self.text = clean_string(text)
-        self.tooltip: Optional[tk.Frame] = None
-        self.current_event: Optional[Any] = None
+        self.tooltip: tk.Frame | None = None
+        self.current_event: Any | None = None
 
         if bind:
             self.widget.bind("<Enter>", lambda e: self.schedule())

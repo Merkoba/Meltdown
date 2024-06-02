@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 # Standard
 import re
 from typing import Any
-from __future__ import annotations
 
 # Modules
 from .args import args

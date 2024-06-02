@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 # Standard
 from typing import Any, Optional
-from __future__ import annotations
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore

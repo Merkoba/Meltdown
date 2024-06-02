@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 # Standard
 import re
 from typing import Any, Optional
 from pathlib import Path
-from __future__ import annotations
 
 # Modules
 from .app import app

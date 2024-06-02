@@ -1,7 +1,8 @@
+from __future__ import annotations
+
 # Standard
 import threading
 from typing import Any, Generator
-from __future__ import annotations
 
 # Libraries
 from prompt_toolkit import PromptSession

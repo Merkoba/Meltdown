@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import json
-from typing import Any, Optional
+from typing import Any
 from tkinter import filedialog
 from pathlib import Path
-from __future__ import annotations
 
 # Modules
 from .app import app
@@ -95,7 +96,7 @@ class Session:
         self.conversations: dict[str, Conversation] = {}
         self.save_after = ""
 
-    def add(self, name: str, conv_id: Optional[str] = None) -> Conversation:
+    def add(self, name: str, conv_id: str | None = None) -> Conversation:
         if not conv_id:
             conv_id = str(utils.now())
 
@@ -109,7 +110,7 @@ class Session:
             del self.conversations[conversation_id]
             self.save()
 
-    def get_conversation(self, conversation_id: str) -> Optional[Conversation]:
+    def get_conversation(self, conversation_id: str) -> Conversation | None:
         return self.conversations.get(conversation_id)
 
     def change_name(self, conversation_id: str, name: str) -> None:
@@ -228,7 +229,7 @@ class Session:
             if not tab_id:
                 break
 
-    def save_state(self, name: Optional[str] = None) -> None:
+    def save_state(self, name: str | None = None) -> None:
         if name == "last":
             self.save_last()
             return
@@ -257,7 +258,7 @@ class Session:
             msg = f'Session saved as "{name}"'
             display.print(utils.emoji_text(msg, "storage"))
 
-    def load_state(self, name: Optional[str] = None) -> None:
+    def load_state(self, name: str | None = None) -> None:
         if name == "last":
             self.load_last()
             return

@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional
+from typing import Any
 from collections.abc import Callable
-from __future__ import annotations
 
 # Libraries
 from tkinterdnd2 import DND_TEXT  # type: ignore
@@ -22,8 +23,8 @@ class TextBox(tk.Text):
         dialog: Dialog,
         text: str,
         cmd_ok: Callable[..., Any],
-        cmd_cancel: Optional[Callable[..., Any]] = None,
-        on_right_click: Optional[Callable[..., Any]] = None,
+        cmd_cancel: Callable[..., Any] | None = None,
+        on_right_click: Callable[..., Any] | None = None,
     ) -> None:
         from .changes import Changes
 
@@ -88,7 +89,7 @@ class TextBox(tk.Text):
         self.bind("<Left>", lambda e: self.on_left())
         self.bind("<Right>", lambda e: self.on_right())
 
-    def get_selected_text(self, widget: Optional[tk.Text] = None) -> str:
+    def get_selected_text(self, widget: tk.Text | None = None) -> str:
         if not widget:
             widget = self
 

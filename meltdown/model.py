@@ -1,10 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import base64
 import threading
 from pathlib import Path
-from typing import Optional
 from typing import Any, Generator
-from __future__ import annotations
 
 # Libraries
 import requests  # type: ignore
@@ -34,7 +34,7 @@ class Model:
         self.stream_thread = threading.Thread()
         self.streaming = False
         self.stream_loading = False
-        self.model: Optional[Llama] = None
+        self.model: Llama | None = None
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
@@ -68,9 +68,7 @@ class Model:
     def model_is_gpt(self, name: str) -> bool:
         return any(name == gpt[0] for gpt in self.gpts)
 
-    def load(
-        self, prompt: Optional[PromptArg] = None, tab_id: Optional[str] = None
-    ) -> None:
+    def load(self, prompt: PromptArg | None = None, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = display.current_tab
 
@@ -132,7 +130,7 @@ class Model:
             utils.error(e)
             self.gpt_key = ""
 
-    def load_gpt(self, tab_id: str, prompt: Optional[PromptArg] = None) -> None:
+    def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
         try:
             self.read_gpt_key()
 
@@ -244,7 +242,7 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
-    def stream(self, prompt: PromptArg, tab_id: Optional[str] = None) -> None:
+    def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
         if self.is_loading():
             utils.msg("(Stream) Slow down!")
             return
@@ -277,7 +275,7 @@ class Model:
 
     def prepare_stream(
         self, prompt: dict[str, str], tab_id: str
-    ) -> Optional[tuple[list[dict[str, str]], dict[str, str]]]:
+    ) -> tuple[list[dict[str, str]], dict[str, str]] | None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
@@ -626,7 +624,7 @@ class Model:
 
         return text + ". "
 
-    def image_to_base64(self, path_str: str) -> Optional[str]:
+    def image_to_base64(self, path_str: str) -> str | None:
         path = Path(path_str)
 
         try:
@@ -691,7 +689,7 @@ class Model:
 
         Dialog.show_message(model_)
 
-    def get_stop_list(self) -> Optional[list[str]]:
+    def get_stop_list(self) -> list[str] | None:
         stop_list = config.stop.split(";;") if config.stop else None
 
         if stop_list:

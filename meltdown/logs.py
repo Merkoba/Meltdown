@@ -1,6 +1,7 @@
+from __future__ import annotations
+
 # Standard
 from pathlib import Path
-from typing import Optional
 
 # Modules
 from .app import app
@@ -17,7 +18,7 @@ from . import formats
 
 
 class Logs:
-    def menu(self, full: bool = True, tab_id: Optional[str] = None) -> None:
+    def menu(self, full: bool = True, tab_id: str | None = None) -> None:
         cmds = []
 
         if full:
@@ -85,8 +86,8 @@ class Logs:
         self,
         mode: str,
         save_all: bool,
-        name: Optional[str] = None,
-        tab_id: Optional[str] = None,
+        name: str | None = None,
+        tab_id: str | None = None,
     ) -> None:
         num = 0
         last_log = ""
@@ -152,16 +153,16 @@ class Logs:
     def to_json(
         self,
         save_all: bool = False,
-        name: Optional[str] = None,
-        tab_id: Optional[str] = None,
+        name: str | None = None,
+        tab_id: str | None = None,
     ) -> None:
         self.save("json", save_all, name, tab_id=tab_id)
 
     def to_markdown(
         self,
         save_all: bool = False,
-        name: Optional[str] = None,
-        tab_id: Optional[str] = None,
+        name: str | None = None,
+        tab_id: str | None = None,
     ) -> None:
         self.save("markdown", save_all, name, tab_id=tab_id)
 
@@ -177,8 +178,8 @@ class Logs:
     def to_text(
         self,
         save_all: bool = False,
-        name: Optional[str] = None,
-        tab_id: Optional[str] = None,
+        name: str | None = None,
+        tab_id: str | None = None,
     ) -> None:
         self.save("text", save_all, name, tab_id=tab_id)
 

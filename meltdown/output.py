@@ -1,8 +1,9 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Optional
-from __future__ import annotations
+from typing import Any
 
 # Modules
 from .config import config
@@ -25,7 +26,7 @@ class Output(tk.Text):
     words = ""
 
     @staticmethod
-    def current_output() -> Optional["Output"]:
+    def current_output() -> Output | None:
         from .display import display
 
         return display.get_current_output()
@@ -50,7 +51,7 @@ class Output(tk.Text):
         delete.delete_items(tab_id=tab_id, number=arg, mode=mode)
 
     @staticmethod
-    def select_item(number: Optional[int] = None) -> None:
+    def select_item(number: int | None = None) -> None:
         output = Output.current_output()
 
         if not output:
@@ -327,7 +328,7 @@ class Output(tk.Text):
         self.update_size_after = ""
         self.checked_markers_user: list[int] = []
         self.checked_markers_ai: list[int] = []
-        self.last_scroll_args: Optional[tuple[str, str]] = None
+        self.last_scroll_args: tuple[str, str] | None = None
 
         self.word_tags = (
             "bold",
@@ -554,7 +555,7 @@ class Output(tk.Text):
         if check:
             self.check_auto_bottom("down")
 
-    def get_tab(self) -> Optional[Any]:
+    def get_tab(self) -> Any | None:
         return self.display.get_tab(self.tab_id)
 
     def format_text(self, mode: str = "normal") -> None:
@@ -701,7 +702,7 @@ class Output(tk.Text):
 
         return ""  # Return an empty string if no tagged word is found
 
-    def get_selected_text(self, widget: Optional[tk.Text] = None) -> str:
+    def get_selected_text(self, widget: tk.Text | None = None) -> str:
         if not widget:
             widget = self
 
@@ -713,7 +714,7 @@ class Output(tk.Text):
             return ""
 
     def show_word_menu(
-        self, event: Any, widget: Optional[tk.Text] = None, consider_tags: bool = True
+        self, event: Any, widget: tk.Text | None = None, consider_tags: bool = True
     ) -> bool:
         from .menumanager import word_menu
         from .keyboard import keyboard
@@ -859,7 +860,7 @@ class Output(tk.Text):
         for snippet in self.snippets:
             snippet.gestures.reset_drag()
 
-    def on_right_click(self, event: Any, widget: Optional[tk.Text] = None) -> None:
+    def on_right_click(self, event: Any, widget: tk.Text | None = None) -> None:
         from .menumanager import tab_menu
 
         if not self.show_word_menu(event, widget, consider_tags=False):
@@ -1040,7 +1041,7 @@ class Output(tk.Text):
             else:
                 self.tag_configure("name_ai", foreground=args.ai_color)
 
-    def add_effects(self, tag: str, size: Optional[int] = None) -> None:
+    def add_effects(self, tag: str, size: int | None = None) -> None:
         effects = getattr(args, f"{tag}_effects").split("_")
         f_effects = ("bold", "italic")
         l_effects = [effect for effect in effects if effect in f_effects]

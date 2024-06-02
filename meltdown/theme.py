@@ -1,7 +1,7 @@
+from __future__ import annotations
+
 # Standard
 from tkinter import ttk
-from typing import Optional
-from __future__ import annotations
 
 # Modules
 from .config import config
@@ -182,7 +182,7 @@ class Theme:
         return (args.snippets_font, config.font_size)
 
     def get_custom_font(
-        self, font_family: str = "normal", effects: str = "", size: Optional[int] = None
+        self, font_family: str = "normal", effects: str = "", size: int | None = None
     ) -> tuple[str, int, str]:
         outfont = self.get_output_font()
 

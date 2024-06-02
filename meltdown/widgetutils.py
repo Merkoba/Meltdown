@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
-from typing import Any, Union, Optional
+from typing import Any
 from collections.abc import Callable
-from __future__ import annotations
 
 # Modules
 from .app import app
@@ -17,8 +18,8 @@ from .framedata import FrameData
 def do_grid(
     widget: tk.Widget,
     col: int,
-    padx: Optional[tuple[int, int]] = None,
-    pady: Optional[tuple[int, int]] = None,
+    padx: tuple[int, int] | None = None,
+    pady: tuple[int, int] | None = None,
 ) -> None:
     if padx is not None:
         px = padx
@@ -34,9 +35,9 @@ def do_grid(
 
 
 def make_frame(
-    parent: Optional[tk.Frame] = None,
+    parent: tk.Frame | None = None,
     col: int = 0,
-    row: Optional[int] = None,
+    row: int | None = None,
 ) -> FrameData:
     p = app.main_frame if not parent else parent
     frame = tk.Frame(p)
@@ -72,7 +73,7 @@ def make_scrollable_frame(parent: tk.Frame, col: int) -> tuple[tk.Frame, tk.Canv
 def make_entry(
     frame_data: FrameData,
     value: str = "",
-    width: Optional[int] = None,
+    width: int | None = None,
 ) -> EntryBox:
     w = width if width else app.theme.entry_width
 
@@ -90,9 +91,9 @@ def make_entry(
 def get_button(
     parent: tk.Frame,
     text: str,
-    command: Optional[Callable[..., Any]] = None,
-    style: Optional[str] = None,
-    width: Optional[int] = None,
+    command: Callable[..., Any] | None = None,
+    style: str | None = None,
+    width: int | None = None,
 ) -> ButtonBox:
     return ButtonBox(parent, text, command, style=style, width=width)
 
@@ -100,9 +101,9 @@ def get_button(
 def make_button(
     frame_data: FrameData,
     text: str,
-    command: Optional[Callable[..., Any]] = None,
-    style: Optional[str] = None,
-    width: Optional[int] = None,
+    command: Callable[..., Any] | None = None,
+    style: str | None = None,
+    width: int | None = None,
 ) -> ButtonBox:
     if args.short_buttons:
         text = utils.shorten(text)
@@ -121,8 +122,8 @@ def make_button(
 def make_label(
     frame_data: FrameData,
     text: str,
-    padx: Optional[tuple[int, int]] = None,
-    pady: Optional[tuple[int, int]] = None,
+    padx: tuple[int, int] | None = None,
+    pady: tuple[int, int] | None = None,
     ignore_short: bool = False,
     colons: bool = True,
 ) -> tk.Label:
@@ -146,8 +147,8 @@ def make_label(
 
 def make_combobox(
     frame_data: FrameData,
-    values: Optional[list[Any]] = None,
-    width: Optional[int] = None,
+    values: list[Any] | None = None,
+    width: int | None = None,
 ) -> ttk.Combobox:
     v = values if values else ["empty"]
     w = width if width else app.theme.combobox_width
@@ -172,5 +173,5 @@ def make_combobox(
     return widget
 
 
-def set_select(widget: ttk.Combobox, value: Union[str, float]) -> None:
+def set_select(widget: ttk.Combobox, value: str | float) -> None:
     widget.set(str(value))

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Standard
 import re
 import time
@@ -8,10 +10,9 @@ import inspect
 import tkinter as tk
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
-from typing import Union, Optional, Any
+from typing import Any
 from pathlib import Path
 from datetime import datetime
-from __future__ import annotations
 
 # Libraries
 from rich.console import Console  # type: ignore
@@ -22,7 +23,7 @@ from . import pyperclip
 
 class Utils:
     def __init__(self) -> None:
-        self.error_logger: Optional[logging.Logger] = None
+        self.error_logger: logging.Logger | None = None
         self.console = Console()
         self.nouns: list[str] = []
         self.protocols = ("http://", "https://")
@@ -47,7 +48,7 @@ class Utils:
     def msg(self, text: str) -> None:
         self.console.print(text)
 
-    def error(self, error: Union[str, BaseException]) -> None:
+    def error(self, error: str | BaseException) -> None:
         from .args import args
 
         caller = inspect.stack()[1]
@@ -171,7 +172,7 @@ class Utils:
 
         return random.choice(self.nouns)
 
-    def replace_keywords(self, content: str, words: Optional[str] = None) -> str:
+    def replace_keywords(self, content: str, words: str | None = None) -> str:
         from .args import args
         from .config import config
         from .display import display

@@ -1,9 +1,10 @@
+from __future__ import annotations
+
 # Standard
 import inspect
 import tkinter as tk
 from typing import Any, Optional
 from collections.abc import Callable
-from __future__ import annotations
 
 # Modules
 from .app import app

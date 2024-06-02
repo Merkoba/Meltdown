@@ -1,10 +1,11 @@
+from __future__ import annotations
+
 # Standard
 import json
 from typing import Any, Optional
 from collections.abc import Callable
 from tkinter import filedialog
 from pathlib import Path
-from __future__ import annotations
 
 # Modules
 from .utils import utils
