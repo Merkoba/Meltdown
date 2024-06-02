@@ -1408,15 +1408,15 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "italic_effects",
-            type=str,
-            info="Effects to apply to italic text",
-        )
-
-        self.add_argument(
             "bold_effects",
             type=str,
             info="Effects to apply to bold text",
+        )
+
+        self.add_argument(
+            "italic_effects",
+            type=str,
+            info="Effects to apply to italic text",
         )
 
         self.add_argument(

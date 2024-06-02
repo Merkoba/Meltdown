@@ -141,9 +141,9 @@ class Args:
         self.markdown_header = "ai"
         self.markdown_separator = "ai"
 
-        self.italic_effects = "italic_color"
         self.bold_effects = "bold"
-        self.highlight_effects = "underline"
+        self.italic_effects = "italic_color"
+        self.highlight_effects = "color"
         self.quote_effects = "color"
         self.list_effects = "color"
 
@@ -470,8 +470,8 @@ class Args:
             "use_both",
             "taps_command",
             "theme",
-            "italic_effects",
             "bold_effects",
+            "italic_effects",
             "highlight_effects",
             "quote_effects",
             "list_effects",
