@@ -39,9 +39,7 @@ class ArgSpec:
         self.infos: list[str] = []
         self.markdown_choices = ["user", "ai", "both", "none"]
         self.list_choices = ["auto", "never", "always"]
-        self.effects_info = (
-            'bold, italic, color, underline. Separated by _, for example: "bold_color"'
-        )
+        self.effects_info = 'bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"'
 
         self.add_arguments()
 

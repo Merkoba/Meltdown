@@ -1,5 +1,6 @@
 # Standard
 from tkinter import ttk
+from typing import Optional
 
 # Modules
 from .config import config
@@ -187,13 +188,22 @@ class Theme:
         ff = self.get_font_family()
         return (ff, config.font_size, "italic")
 
-    def get_bold_italic_font(self) -> tuple[str, int, str]:
-        ff = self.get_font_family()
-        return (ff, config.font_size, "bold italic")
+    def get_custom_font(
+        self, font_family: str = "normal", effects: str = "", size: Optional[int] = None
+    ) -> tuple[str, int, str]:
+        outfont = self.get_output_font()
+
+        if font_family == "monospace":
+            ff = self.monospace_family
+        else:
+            ff = outfont[0]
+
+        f_size = size if size else outfont[1]
+        return (ff, f_size, effects)
 
     def get_header_font(self, num: int) -> tuple[str, int, str]:
         ff = self.get_font_family()
-        return (ff, config.font_size + num, "bold")
+        return (ff, config.font_size + (4 - num), "bold")
 
     def get_separator_font(self) -> tuple[str, int]:
         ff = self.monospace_family

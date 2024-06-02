@@ -1018,9 +1018,9 @@ class Output(tk.Text):
         self.add_effects("list")
         self.add_effects("url")
         self.add_effects("path")
-        self.add_effects("header_1", app.theme.get_header_font(1))
-        self.add_effects("header_2", app.theme.get_header_font(2))
-        self.add_effects("header_3", app.theme.get_header_font(3))
+        self.add_effects("header_1", app.theme.get_header_font(1)[1])
+        self.add_effects("header_2", app.theme.get_header_font(2)[1])
+        self.add_effects("header_3", app.theme.get_header_font(3)[1])
 
         self.tag_configure("separator", font=app.theme.get_separator_font())
 
@@ -1038,19 +1038,16 @@ class Output(tk.Text):
             else:
                 self.tag_configure("name_ai", foreground=args.ai_color)
 
-    def add_effects(
-        self, tag: str, font: Optional[tuple[str, int, str]] = None
-    ) -> None:
+    def add_effects(self, tag: str, size: Optional[int] = None) -> None:
         effects = getattr(args, f"{tag}_effects").split("_")
+        f_effects = ("bold", "italic")
+        l_effects = [effect for effect in effects if effect in f_effects]
+        s_effects = " ".join(list(set(l_effects)))
+        font_family = "monospace" if "monospace" in effects else "normal"
 
-        if font:
-            self.tag_configure(tag, font=font)
-        elif all(effect in effects for effect in ("bold", "italic")):
-            self.tag_configure(tag, font=app.theme.get_bold_italic_font())
-        elif "bold" in effects:
-            self.tag_configure(tag, font=app.theme.get_bold_font())
-        elif "italic" in effects:
-            self.tag_configure(tag, font=app.theme.get_italic_font())
+        self.tag_configure(
+            tag, font=app.theme.get_custom_font(font_family, s_effects, size)
+        )
 
         if "color" in effects:
             self.tag_configure(tag, foreground=app.theme.effect_color)

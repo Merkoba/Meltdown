@@ -149,9 +149,9 @@ class Args:
         self.list_effects = "color"
         self.url_effects = "underline"
         self.path_effects = "underline"
-        self.header_1_effects = ""
-        self.header_2_effects = ""
-        self.header_3_effects = ""
+        self.header_1_effects = "bold"
+        self.header_2_effects = "bold"
+        self.header_3_effects = "bold"
 
         self.errors = False
         self.log_errors = True
