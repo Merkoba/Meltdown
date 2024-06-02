@@ -72,7 +72,7 @@ class Commands:
                         if item.argument and queue.items:
                             queue.wait = float(item.argument) * 1000.0
                     elif self.aliases.get(item.cmd):
-                        self.exec(self.aliases[item.cmd], queue)
+                        self.exec(self.aliases[item.cmd], queue, is_alias=True)
                     elif not self.try_to_run(item.cmd, item.argument):
                         similar = self.get_similar_alias(item.cmd)
 
@@ -119,10 +119,21 @@ class Commands:
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
-    def exec(self, text: str, queue: Optional[Queue] = None) -> bool:
+    def exec(
+        self, text: str, queue: Optional[Queue] = None, is_alias: bool = False
+    ) -> bool:
+        from .inputcontrol import inputcontrol
+
         text = text.strip()
 
+        if not text:
+            return False
+
         if not self.is_command(text):
+            if is_alias:
+                inputcontrol.input_command(text)
+                return True
+
             return False
 
         cmds = re.split(self.cmd_pattern, text)

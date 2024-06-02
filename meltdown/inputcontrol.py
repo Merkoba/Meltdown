@@ -214,7 +214,6 @@ class InputControl:
                             files.add_input(text)
 
                         self.add_words(text)
-
                         return
 
                 files.add_input(text)
@@ -366,9 +365,9 @@ class InputControl:
             start_maximized=maxed,
         )
 
-    def input_command(self, arg: Optional[str] = None, maxed: bool = False) -> None:
-        if arg:
-            self.submit(text=arg)
+    def input_command(self, text: Optional[str] = None, maxed: bool = False) -> None:
+        if text:
+            self.submit(text=text)
         else:
             self.write(maxed=maxed)
 
