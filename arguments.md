@@ -2165,3 +2165,53 @@ Effects to apply to list characters on the left. bold, italic, color, underline.
 Default: "color"
 
 Type: str
+
+---
+
+### url-effects
+
+Effects to apply to URL text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "underline"
+
+Type: str
+
+---
+
+### path-effects
+
+Effects to apply to path text. bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: "underline"
+
+Type: str
+
+---
+
+### header-1-effects
+
+Effects to apply to headers (Level 1). bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### header-2-effects
+
+Effects to apply to headers (Level 2). bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### header-3-effects
+
+Effects to apply to headers (Level 3). bold, italic, color, underline. Separated by _, for example: "bold_color"
+
+Default: [Empty string]
+
+Type: str

@@ -1447,5 +1447,35 @@ class ArgSpec:
             info=f"Effects to apply to list characters on the left. {self.effects_info}",
         )
 
+        self.add_argument(
+            "url_effects",
+            type=str,
+            info=f"Effects to apply to URL text. {self.effects_info}",
+        )
+
+        self.add_argument(
+            "path_effects",
+            type=str,
+            info=f"Effects to apply to path text. {self.effects_info}",
+        )
+
+        self.add_argument(
+            "header_1_effects",
+            type=str,
+            info=f"Effects to apply to headers (Level 1). {self.effects_info}",
+        )
+
+        self.add_argument(
+            "header_2_effects",
+            type=str,
+            info=f"Effects to apply to headers (Level 2). {self.effects_info}",
+        )
+
+        self.add_argument(
+            "header_3_effects",
+            type=str,
+            info=f"Effects to apply to headers (Level 3). {self.effects_info}",
+        )
+
 
 argspec = ArgSpec()

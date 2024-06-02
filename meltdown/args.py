@@ -147,6 +147,11 @@ class Args:
         self.highlight_effects = "color"
         self.quote_effects = "color"
         self.list_effects = "color"
+        self.url_effects = "underline"
+        self.path_effects = "underline"
+        self.header_1_effects = ""
+        self.header_2_effects = ""
+        self.header_3_effects = ""
 
         self.errors = False
         self.log_errors = True
@@ -477,6 +482,11 @@ class Args:
             "highlight_effects",
             "quote_effects",
             "list_effects",
+            "url_effects",
+            "path_effects",
+            "header_1_effects",
+            "header_2_effects",
+            "header_3_effects",
         ]
 
         for n_item in normals:
