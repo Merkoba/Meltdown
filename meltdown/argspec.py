@@ -900,7 +900,7 @@ class ArgSpec:
             "alias",
             type=str,
             action="append",
-            info='Define an alias to run commands. Format is "[word] = [commands]". You can use direct text aliases to use as prompts like "hello = How are you?"',
+            info='Define an alias to run commands. Format is "[word] = [commands]"',
         )
 
         self.add_argument(

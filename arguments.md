@@ -1258,7 +1258,7 @@ Type: str
 
 ### alias
 
-Define an alias to run commands. Format is "[word] = [commands]". You can use direct text aliases to use as prompts like "hello = How are you?"
+Define an alias to run commands. Format is "[word] = [commands]"
 
 Action: append
 
