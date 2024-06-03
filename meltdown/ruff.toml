@@ -1,4 +1,5 @@
 [lint]
+
 select = [
     "T",
     "Q",
@@ -33,6 +34,7 @@ select = [
     "PLR5501",
     "PLR1711",
 ]
+
 exclude = [
     "pyperclip.py",
     "tests.py",
