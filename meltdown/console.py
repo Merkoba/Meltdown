@@ -89,7 +89,7 @@ class Console:
             try:
                 text = self.session.prompt("Input: ")
             except KeyboardInterrupt:
-                app.exit(force=True)
+                app.destroy()
                 return
             except Exception:
                 continue

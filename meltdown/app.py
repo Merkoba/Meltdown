@@ -139,6 +139,16 @@ class App:
         self.exit_after = self.root.after(d, lambda: self.do_exit())
 
     def do_exit(self) -> None:
+        from .console import console
+
+        if console.session:
+            console.session.app.exit(
+                exception=KeyboardInterrupt, style="class:aborting"
+            )
+        else:
+            self.destroy()
+
+    def destroy(self) -> None:
         self.root.destroy()
 
     def cancel_exit(self, feedback: bool = False) -> None:
