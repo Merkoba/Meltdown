@@ -104,7 +104,7 @@ class App:
     def run(self) -> None:
         from .args import args
 
-        if not args.show_terminal:
+        if not args.show_console:
             signal.signal(signal.SIGINT, self.sigint_handler)
 
         self.autorun()
@@ -136,7 +136,10 @@ class App:
                 word = utils.singular_or_plural(secs, "second", "seconds")
                 display.print(f"Exiting in {secs} {word}.")
 
-        self.exit_after = self.root.after(d, lambda: self.root.destroy())
+        self.exit_after = self.root.after(d, lambda: self.do_exit())
+
+    def do_exit(self) -> None:
+        self.root.destroy()
 
     def cancel_exit(self, feedback: bool = False) -> None:
         from .args import args

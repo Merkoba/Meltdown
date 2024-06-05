@@ -596,9 +596,9 @@ Action: store_true
 
 ---
 
-### show-terminal
+### show-console
 
-Enable the interactive terminal
+Enable the interactive console
 
 Default: False
 
@@ -846,9 +846,9 @@ Action: store_true
 
 ---
 
-### terminal-vi
+### console-vi
 
-Use vi mode in the terminal
+Use vi mode in the console
 
 Default: False
 
@@ -966,9 +966,9 @@ Type: int
 
 ---
 
-### terminal-height
+### console-height
 
-Reserve these number of rows for the terminal
+Reserve these number of rows for the console
 
 Default: 3
 
@@ -1650,7 +1650,7 @@ Type: str
 
 ### terminal
 
-Which terminal to use
+Which terminal to use when opening programs
 
 Default: "auto"
 

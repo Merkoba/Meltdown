@@ -277,7 +277,7 @@ class InputControl:
         self.submit(tab_id=tab_id, text=text, file=file)
 
     def add_words(self, text: str) -> None:
-        from . import terminal
+        from . import console
 
         if not args.input_memory:
             return
@@ -300,7 +300,7 @@ class InputControl:
 
             if clean_word not in self.autocomplete:
                 self.autocomplete.append(clean_word)
-                terminal.add_word(clean_word)
+                console.add_word(clean_word)
                 added = True
 
             n = args.input_memory_max_items

@@ -1,10 +1,10 @@
-llama_cpp_python ~= 0.2.76
+llama_cpp_python ~= 0.2.77
 psutil ~= 5.9.8
 appdirs ~= 1.4.4
 openai ~= 1.13.3
 Pygments ~= 2.17.2
 pillow ~= 10.3.0
-prompt-toolkit ~= 3.0.43
+prompt-toolkit ~= 3.0.46
 rich ~= 13.7.1
 tkinterdnd2-universal ~= 1.7.3
 requests ~= 2.31.0

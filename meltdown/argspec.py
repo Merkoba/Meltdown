@@ -501,9 +501,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "show_terminal",
+            "show_console",
             action="store_true",
-            info="Enable the interactive terminal",
+            info="Enable the interactive console",
         )
 
         self.add_argument(
@@ -651,9 +651,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "terminal_vi",
+            "console_vi",
             action="store_true",
-            info="Use vi mode in the terminal",
+            info="Use vi mode in the console",
         )
 
         self.add_argument(
@@ -723,9 +723,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "terminal_height",
+            "console_height",
             type=int,
-            info="Reserve these number of rows for the terminal",
+            info="Reserve these number of rows for the console",
         )
 
         self.add_argument(
@@ -1137,7 +1137,7 @@ class ArgSpec:
         self.add_argument(
             "terminal",
             type=str,
-            info="Which terminal to use",
+            info="Which terminal to use when opening programs",
         )
 
         self.add_argument(

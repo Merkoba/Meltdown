@@ -19,7 +19,7 @@ from .inputcontrol import inputcontrol
 from .utils import utils
 from .paths import paths
 from .system import system
-from . import terminal
+from .console import console
 from . import tasks
 from . import listener
 
@@ -62,7 +62,7 @@ def main() -> None:
     inputcontrol.setup()
     app.setup(now)
     system.start()
-    terminal.start()
+    console.start()
     listener.start()
     tasks.start_all()
 

@@ -88,9 +88,9 @@ class Args:
         self.show_intro = True
         self.show_header = True
         self.autorun = ""
-        self.show_terminal = False
-        self.terminal_height = 3
-        self.terminal_vi = False
+        self.show_console = False
+        self.console_height = 3
+        self.console_vi = False
         self.input_memory = True
         self.input_memory_min = 5
         self.input_memory_max = 30
@@ -371,8 +371,8 @@ class Args:
             "compact_model",
             "compact_input",
             "autorun",
-            "terminal_height",
-            "terminal_vi",
+            "console_height",
+            "console_vi",
             "verbose",
             "markdown",
             "listener",
@@ -456,7 +456,7 @@ class Args:
             "temporary",
             "clean",
             "profile",
-            "show_terminal",
+            "show_console",
             "drag_and_drop",
             "border_color",
             "border_size",
