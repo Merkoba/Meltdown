@@ -277,7 +277,7 @@ class InputControl:
         self.submit(tab_id=tab_id, text=text, file=file)
 
     def add_words(self, text: str) -> None:
-        from . import console
+        from .console import console
 
         if not args.input_memory:
             return

@@ -62,11 +62,6 @@ class Console:
     def do_start(self) -> None:
         kb = KeyBindings()
 
-        @kb.add("c-c")
-        def _(event: Any):
-            event.app.exit(exception=KeyboardInterrupt, style="class:aborting")
-            app.exit(force=True)
-
         @kb.add("c-v")
         def _(event: Any) -> None:
             clipboard_data = utils.get_paste()
@@ -91,12 +86,11 @@ class Console:
             key_bindings=kb,
         )
 
-        self.session.exit()
-
         while True:
             try:
                 text = self.session.prompt("Input: ")
             except KeyboardInterrupt:
+                app.exit(force=True)
                 return
             except Exception:
                 continue
