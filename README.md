@@ -278,6 +278,14 @@ If you want to enable, it use the `--drag-and-drop` flag.
 
 ---
 
+## Console
+
+To enable the console use `--show-console`.
+
+This allows you to send actions from the terminal that launched the program.
+
+---
+
 ## Keywords
 
 There are some keywords you can use in commands:
