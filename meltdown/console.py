@@ -41,14 +41,14 @@ class SlashCompleter(Completer):
                 if word.startswith(text):
                     yield Completion(word, start_position=-len(text))
 
+
 class Console:
     def __init__(self) -> None:
-        self.session: PromptSession[Any] = None
+        self.session: PromptSession[Any] | None = None
 
     def add_word(self, word: str) -> None:
         if word not in words:
             words.append(word)
-
 
     def start(self) -> None:
         if not args.show_console:
@@ -57,7 +57,6 @@ class Console:
         thread = threading.Thread(target=lambda: self.do_start())
         thread.daemon = True
         thread.start()
-
 
     def do_start(self) -> None:
         kb = KeyBindings()
