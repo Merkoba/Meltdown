@@ -946,6 +946,16 @@ Action: store_true
 
 ---
 
+### auto-unload
+
+Auto-unload the model after this number of minutes after last use. 0 to disable
+
+Default: 0
+
+Type: int
+
+---
+
 ### border-size
 
 The size of the border

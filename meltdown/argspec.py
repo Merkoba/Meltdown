@@ -711,6 +711,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "auto_unload",
+            type=int,
+            info="Auto-unload the model after this number of minutes after last use. 0 to disable",
+        )
+
+        self.add_argument(
             "border_size",
             type=int,
             info="The size of the border",

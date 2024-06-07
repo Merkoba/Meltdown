@@ -243,6 +243,7 @@ class Args:
         self.use_program = ""
         self.use_both = False
         self.theme = ""
+        self.auto_unload = 0
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -484,6 +485,7 @@ class Args:
             "header_1_effects",
             "header_2_effects",
             "header_3_effects",
+            "auto_unload",
         ]
 
         for n_item in normals:

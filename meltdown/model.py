@@ -52,6 +52,7 @@ class Model:
 
     def setup(self) -> None:
         self.update_icon()
+        self.start_auto_unload()
 
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
@@ -119,6 +120,7 @@ class Model:
         self.loaded_model = ""
         self.model_loading = False
         self.loaded_format = ""
+        self.stream_date = 0.0
         self.update_icon()
 
     def read_gpt_key(self) -> None:
@@ -222,7 +224,8 @@ class Model:
         self.update_icon()
 
         if args.model_feedback and (not args.quiet):
-            msg, now = utils.check_time("Model loaded", now)
+            text = utils.emoji_text("Model loaded", "local")
+            msg, now = utils.check_time(text, now)
             display.print(msg)
 
         self.release_lock()
@@ -697,5 +700,25 @@ class Model:
 
         return stop_list
 
+    def start_auto_unload(self) -> None:
+        if (args.auto_unload < 1):
+            return
+
+        thread = threading.Thread(target=lambda: self.auto_unload_loop())
+        thread.daemon = True
+        thread.start()
+
+    def auto_unload_loop(self) -> None:
+        utils.sleep(10)
+
+        while True:
+            if self.loaded_model and (self.stream_date > 0):
+                seconds = utils.now() - self.stream_date
+                minutes = seconds / 60
+
+                if minutes >= args.auto_unload:
+                    self.unload()
+
+            utils.sleep(10)
 
 model = Model()
