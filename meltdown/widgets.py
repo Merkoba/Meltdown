@@ -539,7 +539,10 @@ class Widgets:
 
     def enable_load_button(self) -> None:
         if app.exists():
-            self.load_button.set_style("normal")
+            if model.loaded_model:
+                self.load_button.set_style("active")
+            else:
+                self.load_button.set_style("normal")
 
     def disable_load_button(self) -> None:
         if app.exists():

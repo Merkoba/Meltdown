@@ -749,12 +749,14 @@ class App:
             if not self.loaded:
                 self.loaded = True
                 widgets.load_button.set_text("Unload")
+                widgets.load_button.set_style("active")
 
                 self.update()
                 widgets.model.move_to_end()
         elif self.loaded:
             self.loaded = False
             widgets.load_button.set_text("Load")
+            widgets.load_button.set_style("normal")
 
             self.update()
             widgets.model.move_to_end()
