@@ -701,7 +701,7 @@ class Model:
         return stop_list
 
     def start_auto_unload(self) -> None:
-        if (args.auto_unload < 1):
+        if args.auto_unload < 1:
             return
 
         thread = threading.Thread(target=lambda: self.auto_unload_loop())
@@ -720,5 +720,6 @@ class Model:
                     self.unload()
 
             utils.sleep(10)
+
 
 model = Model()
