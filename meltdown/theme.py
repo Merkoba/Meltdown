@@ -137,8 +137,8 @@ class Theme:
         self.tooltip_border = "#959595"
         self.tooltip_border_width = 3
 
-        self.padx = 5
-        self.pady = 5
+        self.padx = 4
+        self.pady = 4
 
         self.frame_padx = 0
         self.frame_pady = 0
