@@ -377,6 +377,18 @@ class Output(tk.Text):
             lambda e: self.on_name_click(e, "ai"),
         )
 
+        self.tag_bind(
+            "name_user",
+            "<ButtonRelease-2>",
+            lambda e: self.on_name_middle_click(e, "user"),
+        )
+
+        self.tag_bind(
+            "name_ai",
+            "<ButtonRelease-2>",
+            lambda e: self.on_name_middle_click(e, "ai"),
+        )
+
         if args.url_menu:
             self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
 
@@ -953,6 +965,17 @@ class Output(tk.Text):
             return
 
         item_menu.show(event)
+
+    def on_name_middle_click(self, event: Any, who: str) -> None:
+        self.deselect_all()
+        number = self.get_number()
+
+        if number == 0:
+            return
+
+        Output.clicked_number = number
+        Output.clicked_who = who
+        Output.delete_items()
 
     def get_number(self) -> int:
         line_number = int(self.index("current").split(".")[0])
