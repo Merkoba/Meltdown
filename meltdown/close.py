@@ -85,12 +85,12 @@ def close(
     if not tab_id:
         return
 
-    # if not force:
-    #     picked = display.get_picked()
+    if not force:
+        picked = display.get_picked()
 
-    #     if picked:
-    #         close_picked()
-    #         return
+        if picked:
+            close_picked()
+            return
 
     tab = display.get_tab(tab_id)
 
@@ -105,7 +105,6 @@ def close(
             force = True
 
     def action() -> None:
-        print(tab_id)
         display.book.close(tab_id)
         display.update_current_tab()
         display.remove_tab(tab_id)
@@ -272,8 +271,9 @@ def close_picked(force: bool = False) -> None:
 
     def action() -> None:
         for tab in tabs:
-            print(tab.tab_id)
-            # close(tab_id=tab.tab_id, force=True, make_empty=True)
+            close(tab_id=tab.tab_id, force=True, make_empty=True)
+
+        display.unpick()
 
     if force or (not args.confirm_close):
         action()

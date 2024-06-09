@@ -1012,9 +1012,14 @@ class Display:
 
         for page in picked:
             tab = self.get_tab(page.id_)
-            tabs.append(tab)
+
+            if tab:
+                tabs.append(tab)
 
         return tabs
+
+    def unpick(self) -> None:
+        self.book.unpick()
 
 
 display = Display()

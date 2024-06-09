@@ -476,7 +476,7 @@ class Book(tk.Frame):
         if not page:
             return
 
-        index = self.index(id)
+        index = self.index(id_)
         was_current = self.current_page == self.pages[index]
         page.tab.frame.grid_forget()
         page.content.grid_forget()
@@ -622,7 +622,7 @@ class Book(tk.Frame):
             if page.id_ == id_:
                 self.pages.insert(0, self.pages.pop(self.pages.index(page)))
                 self.update_tab_columns()
-                self.select(id)
+                self.select(id_)
                 return
 
     def move_to_end(self, id_: str) -> None:
@@ -630,7 +630,7 @@ class Book(tk.Frame):
             if page.id_ == id_:
                 self.pages.append(self.pages.pop(self.pages.index(page)))
                 self.update_tab_columns()
-                self.select(id)
+                self.select(id_)
                 return
 
     def move_left(self, page: Page | None = None) -> None:
@@ -724,6 +724,9 @@ class Book(tk.Frame):
             self.on_num_tabs_change(len(self.pages))
 
     def pick_range(self, id_: str) -> None:
+        if not self.current_page:
+            return
+
         self.unpick()
         ids = self.ids()
         index = ids.index(id_)
@@ -739,9 +742,16 @@ class Book(tk.Frame):
 
     def pick_one(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
+
+        if not page:
+            return
+
         self.pick(page)
 
     def pick(self, page: Page) -> None:
+        if not self.current_page:
+            return
+
         page.tab.frame.configure(background="red")
         self.current_page.tab.frame.configure(background="red")
         page.picked = True
