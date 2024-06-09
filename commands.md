@@ -908,6 +908,12 @@ Use the specified item
 
 ---
 
+### info
+
+Show information about the specified item
+
+---
+
 ### profile
 
 Show the current profile
@@ -938,6 +944,6 @@ Show size and length information
 
 ---
 
-### info
+### information
 
 Show the info dialog

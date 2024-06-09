@@ -109,8 +109,8 @@ def find_all_text(query: str, reverse: bool = False) -> None:
             return False
 
         for item in conversation.items:
-            for key in item:
-                value = item[key]
+            for key in ["user", "ai", "file"]:
+                value = getattr(item, key)
 
                 if find(value):
                     if not tab.loaded:

@@ -19,13 +19,21 @@ from . import tests
 from . import close
 
 
+class Item:
+    def __init__(self, date: float, user: str, ai: str, file: str = "") -> None:
+        self.date = date
+        self.user = user
+        self.ai = ai
+        self.file = file
+
+
 class Conversation:
     def __init__(
         self, _id: str, name: str, created: float = 0.0, last_modified: float = 0.0
     ) -> None:
         self.id = _id
         self.name = name
-        self.items: list[dict[str, str]] = []
+        self.items: list[Item] = []
         self.last_modified = last_modified
 
         if created == 0.0:
@@ -33,9 +41,16 @@ class Conversation:
         else:
             self.created = created
 
-    def add(self, context_dict: dict[str, str]) -> None:
+    def add(self, data: dict[str, Any]) -> None:
+        item = Item(
+            float(data["date"]),
+            str(data["user"]),
+            str(data["ai"]),
+            str(data["file"]),
+        )
+
         self.last_modified = utils.now()
-        self.items.append(context_dict)
+        self.items.append(item)
         self.limit()
         session.do_save()
 
@@ -63,19 +78,15 @@ class Conversation:
             display.disable_auto_bottom(tab.tab_id)
 
         for item in self.items:
-            for key in item:
-                if key == "user":
-                    display.prompt(
-                        "user",
-                        item[key],
-                        tab_id=tab.tab_id,
-                        to_bottom=False,
-                        file=item.get("file", ""),
-                    )
-                elif key == "ai":
-                    display.prompt("ai", item[key], tab_id=tab.tab_id, to_bottom=False)
-                else:
-                    continue
+            display.prompt(
+                "user",
+                getattr(item, "user"),
+                tab_id=tab.tab_id,
+                to_bottom=False,
+                file=item.file,
+            )
+
+            display.prompt("ai", item.ai, tab_id=tab.tab_id, to_bottom=False)
 
         display.format_text(tab.tab_id)
         display.enable_auto_bottom(tab.tab_id)

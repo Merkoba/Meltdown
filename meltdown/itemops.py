@@ -42,11 +42,12 @@ class ItemOps:
         if not item:
             return
 
-        date = item.get("date")
-        user_text = item.get("user")
-        ai_text = item.get("ai")
+        date = item.date
+        user_text = item.user
+        ai_text = item.ai
+        file = item.file
+
         both_text = f"User: {user_text}\n\nAI: {ai_text}"
-        file = item.get("file", "")
 
         if mode == "repeat":
             if user_text:
@@ -90,7 +91,8 @@ class ItemOps:
                 if user_text and ai_text:
                     self.do_use_item(both_text)
         elif mode == "info":
-            self.do_show_info(date)
+            if date:
+                self.do_show_info(date)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -159,8 +161,9 @@ class ItemOps:
 
         self.action("info", number, who=who)
 
-    def do_show_info(self, date: str) -> None:
+    def do_show_info(self, date: float) -> None:
         n_date = utils.to_date(date)
         Dialog.show_message(n_date)
+
 
 itemops = ItemOps()

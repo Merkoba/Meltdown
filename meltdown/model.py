@@ -327,8 +327,8 @@ class Model:
 
         if tabconvo.convo.items and (config.history > 0) and (not no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
-                for key in item:
-                    content = item[key]
+                for key in ["user", "ai"]:
+                    content = getattr(item, key)
 
                     if key == "user":
                         content = utils.replace_keywords(content)

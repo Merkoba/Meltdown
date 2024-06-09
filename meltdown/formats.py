@@ -74,20 +74,16 @@ def to_text(
     generic = not names
 
     for i, item in enumerate(conversation.items):
-        for key in item:
-            if key in ("user", "ai"):
-                prompt = Output.get_prompt(
-                    key, show_avatar=avatars, put_colons=False, generic=generic
-                )
+        for key in ["user", "ai"]:
+            prompt = Output.get_prompt(
+                key, show_avatar=avatars, put_colons=False, generic=generic
+            )
 
-                log += f"{prompt}: "
-            else:
-                continue
-
-            log += item[key] + "\n\n"
+            log += f"{prompt}: "
+            log += getattr(item, key) + "\n\n"
 
             if files and (key == "user"):
-                file = item.get("file", "")
+                file = item.file
 
                 if file:
                     log += f"File: {file}\n\n"
@@ -123,20 +119,16 @@ def to_markdown(
     generic = not names
 
     for i, item in enumerate(conversation.items):
-        for key in item:
-            if key in ("user", "ai"):
-                prompt = Output.get_prompt(
-                    key, show_avatar=avatars, put_colons=False, generic=generic
-                )
+        for key in ["user", "ai"]:
+            prompt = Output.get_prompt(
+                key, show_avatar=avatars, put_colons=False, generic=generic
+            )
 
-                log += f"**{prompt}**:"
-            else:
-                continue
-
-            log += f" {item[key].strip()}\n\n"
+            log += f"**{prompt}**:"
+            log += f" {getattr(item, key).strip()}\n\n"
 
             if files and (key == "user"):
-                file = item.get("file", "")
+                file = item.file
 
                 if file:
                     log += f"**File:** {file}\n\n"
