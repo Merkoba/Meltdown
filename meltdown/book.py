@@ -752,16 +752,26 @@ class Book(tk.Frame):
         if not self.current_page:
             return
 
-        color = app.theme.tab_picked_border
-        page.tab.frame.configure(background=color)
-        self.current_page.tab.frame.configure(background=color)
-        page.picked = True
-        self.current_page.picked = True
+        pick_value = not page.picked
+
+        if pick_value:
+            self.do_pick(page)
+        else:
+            self.do_unpick(page)
 
     def unpick(self) -> None:
         for page in self.pages:
-            page.tab.frame.configure(background=app.theme.tab_border)
-            page.picked = False
+            self.do_unpick(page)
+
+    def do_pick(self, page: Page) -> None:
+        color = app.theme.tab_picked_border
+        page.tab.frame.configure(background=color)
+        page.picked = True
+
+    def do_unpick(self, page: Page) -> None:
+        color = app.theme.tab_border
+        page.tab.frame.configure(background=color)
+        page.picked = False
 
     def get_picked(self) -> list[Page]:
         return [page for page in self.pages if page.picked]
