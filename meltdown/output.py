@@ -376,6 +376,13 @@ class Output(tk.Text):
             for tag in self.word_tags:
                 self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
+        def on_list_click(event: Any) -> None:
+            self.deselect_all()
+            self.show_list_menu(event)
+
+        if args.word_menu:
+            self.tag_bind("list", "<ButtonRelease-1>", lambda e: on_list_click(e))
+
         self.tag_bind(
             "name_user",
             "<ButtonRelease-1>",
@@ -791,6 +798,18 @@ class Output(tk.Text):
         word_menu.show(event)
         return True
 
+    def show_list_menu(self, event: Any) -> None:
+        from .menumanager import word_menu
+
+        if not args.list_menu:
+            return False
+
+        current_index = self.index(tk.CURRENT)
+        line = int(current_index.split(".")[0])
+        text = self.get(f"{line}.0", f"{line}.end")
+        Output.words = text.split(" ", 1)[1].strip()
+        word_menu.show(event)
+
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
         char = self.get(current_index)
@@ -816,6 +835,9 @@ class Output(tk.Text):
                     self.configure(cursor="hand2")
             elif any(tag in ["name_user", "name_ai"] for tag in tags):
                 if args.name_menu:
+                    self.configure(cursor="hand2")
+            elif any(tag in ["list"] for tag in tags):
+                if args.list_menu:
                     self.configure(cursor="hand2")
         else:
             self.configure(cursor="xterm")

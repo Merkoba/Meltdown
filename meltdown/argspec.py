@@ -177,6 +177,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_list_menu",
+            action="store_false",
+            info="Don't show a menu when clicking list chars",
+        )
+
+        self.add_argument(
             "no_scrollbars",
             action="store_false",
             info="Don't show scrollbars",

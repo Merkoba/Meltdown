@@ -205,6 +205,7 @@ class Args:
         self.word_menu = True
         self.url_menu = True
         self.path_menu = True
+        self.list_menu = True
         self.file = ""
         self.image_prompt = "Describe this image"
         self.show_duration = False
@@ -309,6 +310,7 @@ class Args:
             ("no_word_menu", "word_menu"),
             ("no_url_menu", "url_menu"),
             ("no_path_menu", "path_menu"),
+            ("no_list_menu", "list_menu"),
             ("no_files_in_logs", "files_in_logs"),
             ("no_names_in_logs", "names_in_logs"),
             ("no_tabs_wheel", "tabs_wheel"),
