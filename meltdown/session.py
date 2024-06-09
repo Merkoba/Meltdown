@@ -35,7 +35,7 @@ class Item:
         self.ai = ai
         self.file = file
 
-    def to_dict(self):
+    def to_dict(self) -> dict[str, Any]:
         return {
             "date": self.date,
             "user": self.user,
