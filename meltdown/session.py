@@ -20,11 +20,28 @@ from . import close
 
 
 class Item:
+    @staticmethod
+    def from_dict(data: dict[str, Any]) -> Item:
+        return Item(
+            float(data["date"]),
+            str(data["user"]),
+            str(data["ai"]),
+            str(data["file"]),
+        )
+
     def __init__(self, date: float, user: str, ai: str, file: str = "") -> None:
         self.date = date
         self.user = user
         self.ai = ai
         self.file = file
+
+    def to_dict(self):
+        return {
+            "date": self.date,
+            "user": self.user,
+            "ai": self.ai,
+            "file": self.file,
+        }
 
 
 class Conversation:
@@ -42,13 +59,7 @@ class Conversation:
             self.created = created
 
     def add(self, data: dict[str, Any]) -> None:
-        item = Item(
-            float(data["date"]),
-            str(data["user"]),
-            str(data["ai"]),
-            str(data["file"]),
-        )
-
+        item = Item.from_dict(data)
         self.last_modified = utils.now()
         self.items.append(item)
         self.limit()
@@ -80,7 +91,7 @@ class Conversation:
         for item in self.items:
             display.prompt(
                 "user",
-                getattr(item, "user"),
+                item.user,
                 tab_id=tab.tab_id,
                 to_bottom=False,
                 file=item.file,
@@ -93,12 +104,14 @@ class Conversation:
         display.check_scroll_buttons(tab.tab_id)
 
     def to_dict(self) -> dict[str, Any]:
+        item_list = [item.to_dict() for item in self.items]
+
         return {
             "id": self.id,
             "name": self.name,
             "created": self.created,
             "last_modified": self.last_modified,
-            "items": self.items,
+            "items": item_list,
         }
 
 
@@ -223,18 +236,21 @@ class Session:
             return
 
         for item in items:
-            conversation = Conversation(
+            convo = Conversation(
                 item["id"],
                 name=item["name"],
                 created=item.get("created", 0.0),
                 last_modified=item.get("last_modified", 0.0),
             )
 
-            conversation.items = item["items"]
-            self.conversations[conversation.id] = conversation
+            for it in item["items"]:
+                item_obj = Item.from_dict(it)
+                convo.items.append(item_obj)
+
+            self.conversations[convo.id] = convo
 
             tab_id = display.make_tab(
-                conversation.name, conversation.id, select_tab=False, save=False
+                convo.name, convo.id, select_tab=False, save=False
             )
 
             if not tab_id:
