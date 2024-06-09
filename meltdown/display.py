@@ -111,7 +111,13 @@ class Display:
         if not conversation_id:
             return ""
 
-        page = self.book.add(name, mode=mode)
+        convo = session.get_conversation(conversation_id)
+        title = ""
+
+        if convo and convo.items:
+            title = convo.items[0].ai
+
+        page = self.book.add(name, mode=mode, title=title)
         tab_id = page.id_
         find = Find(page.content, tab_id)
         output_frame = tk.Frame(page.content)
@@ -1033,8 +1039,7 @@ class Display:
             return
 
         item = tabconvo.convo.items[0]
-        text = item.ai[: args.tab_title_length].strip()
-        self.book.update_title(tab_id, text)
+        self.book.update_title(tab_id, item.ai)
 
 
 display = Display()

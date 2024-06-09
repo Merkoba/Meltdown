@@ -24,7 +24,7 @@ class TabWidget:
 class Page:
     notebox_id = 0
 
-    def __init__(self, parent: Book, name: str, mode: str) -> None:
+    def __init__(self, parent: Book, name: str, mode: str, title: str) -> None:
         self.parent = parent
         self.name = name
         self.mode = mode
@@ -32,7 +32,7 @@ class Page:
         self.content = self.make_content_widget()
         self.id_ = f"page_{Page.notebox_id}"
         self.picked = False
-        self.title = ""
+        self.title = title
         Page.notebox_id += 1
 
     def make_tab_widget(self) -> TabWidget:
@@ -64,7 +64,7 @@ class Page:
         )
 
         label.configure(cursor="hand2")
-        tooltip = ToolTip(frame, text=self.name)
+        tooltip = ToolTip(frame, text=self.title)
         return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
@@ -74,8 +74,10 @@ class Page:
         return frame
 
     def update_tooltip(self) -> None:
-        text = self.title if self.title else self.name
-        self.tab.tooltip.set_text(text)
+        if not self.title:
+            return
+
+        self.tab.tooltip.set_text(self.title)
         self.parent.update_tabs()
         self.parent.discover()
 
@@ -269,8 +271,9 @@ class Book(tk.Frame):
             "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
         )
 
-    def add(self, name: str, mode: str) -> Page:
-        page = Page(self, name, mode=mode)
+    def add(self, name: str, mode: str, title: str) -> Page:
+        title = self.clean_title(title)
+        page = Page(self, name, mode=mode, title=title)
         self.pages.append(page)
         self.current_page = page
         self.add_tab(page)
@@ -475,7 +478,6 @@ class Book(tk.Frame):
 
         page.name = name
         page.set_tab_text()
-        page.update_tooltip()
 
     def close(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
@@ -822,11 +824,14 @@ class Book(tk.Frame):
     def get_picked(self) -> list[Page]:
         return [page for page in self.pages if page.picked]
 
-    def update_title(self, id_: str, text: str) -> None:
+    def update_title(self, id_: str, title: str) -> None:
         page = self.get_page_by_id(id_)
 
         if not page:
             return
 
-        page.title = text
+        page.title = self.clean_title(title)
         page.update_tooltip()
+
+    def clean_title(self, title: str) -> str:
+        return title[: args.tab_title_length].strip()
