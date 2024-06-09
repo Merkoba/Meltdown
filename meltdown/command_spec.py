@@ -236,6 +236,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "closepicked",
+            "Close picked tabs",
+            lambda a=None: close.close_picked(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
             "refresh",
             "Refresh the conversation",
             lambda a=None: display.refresh(),

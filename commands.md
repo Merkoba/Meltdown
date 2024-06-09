@@ -174,6 +174,14 @@ Use 'force' to force
 
 ---
 
+### closepicked
+
+Close picked tabs
+
+Use 'force' to force
+
+---
+
 ### refresh
 
 Refresh the conversation
