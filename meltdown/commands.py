@@ -202,11 +202,11 @@ class Commands:
                 self.run(key, argument)
                 return True
 
-        # Similarity on keys
-        for key in self.commands:
-            if utils.check_match(cmd, key):
-                self.run(key, argument)
-                return True
+        most_similar = utils.most_similar(cmd, list(self.commands.keys()))
+
+        if most_similar:
+            self.run(most_similar, argument)
+            return True
 
         return False
 

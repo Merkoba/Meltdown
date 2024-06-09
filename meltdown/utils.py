@@ -43,6 +43,22 @@ class Utils:
 
         return False
 
+    def most_similar(self, text: str, items: list[str]) -> str | None:
+        from .config import config
+
+        best_match: str | None = None
+        best_ratio = 0.0
+
+        for item in items:
+            ratio = self.similarity(text, item)
+
+            if ratio >= config.similar_threshold:
+                if ratio > best_ratio:
+                    best_ratio = ratio
+                    best_match = item
+
+        return best_match
+
     def escape_regex(self, chars: str) -> str:
         escaped_chars = [re.escape(char) for char in chars]
         return "".join(escaped_chars)
