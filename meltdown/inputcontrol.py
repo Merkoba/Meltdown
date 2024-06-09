@@ -26,6 +26,7 @@ class InputControl:
         self.history_index = -1
         self.input: EntryBox
         self.autocomplete: list[str] = []
+        self.last_delete_press = 0.0
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -381,6 +382,16 @@ class InputControl:
 
     def on_delete(self) -> bool:
         from . import close
+
+        if Dialog.open():
+            return
+
+        now = utils.now()
+        last_press = self.last_delete_press
+        self.last_delete_press = now
+
+        if (now - last_press) < 0.2:
+            return False
 
         text = self.input.get()
 
