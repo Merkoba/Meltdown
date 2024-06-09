@@ -202,6 +202,7 @@ class Display:
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)
 
+        self.update_title(tab_id)
         tabconvo.convo.print()
         tabconvo.tab.loaded = True
 
@@ -816,6 +817,7 @@ class Display:
         self.book.remove_highlights()
         self.clear_tab_streaming()
         self.format_text(self.tab_streaming)
+        self.update_title(self.tab_streaming)
 
     def set_tab_streaming(self, tab_id: str) -> None:
         for key, values in self.tabs.items():
@@ -1020,6 +1022,19 @@ class Display:
 
     def unpick(self) -> None:
         self.book.unpick()
+
+    def update_title(self, tab_id: str) -> None:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        if not tabconvo.convo.items:
+            return
+
+        item = tabconvo.convo.items[0]
+        text = item.ai[: config.extra_title_length].strip()
+        self.book.update_title(tab_id, text)
 
 
 display = Display()

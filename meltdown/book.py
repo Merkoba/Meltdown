@@ -32,6 +32,7 @@ class Page:
         self.content = self.make_content_widget()
         self.id_ = f"page_{Page.notebox_id}"
         self.picked = False
+        self.extra_title = ""
         Page.notebox_id += 1
 
     def make_tab_widget(self) -> TabWidget:
@@ -75,9 +76,13 @@ class Page:
     def change_name(self, name: str) -> None:
         self.name = name
         self.set_tab_text()
-        self.tab.tooltip.set_text(name)
+        text = f"{self.name}\n{self.extra_title}"
+        self.tab.tooltip.set_text(text)
         self.parent.update_tabs()
         self.parent.discover()
+
+    def update_name(self) -> None:
+        self.change_name(self.name)
 
     def get_index(self) -> int:
         for i, page in enumerate(self.parent.pages):
@@ -468,10 +473,12 @@ class Book(tk.Frame):
         return ""
 
     def change_name(self, id_: str, name: str) -> None:
-        for page in self.pages:
-            if page.id_ == id_:
-                page.change_name(name)
-                return
+        page = self.get_page_by_id(id_)
+
+        if not page:
+            return
+
+        page.change_name(name)
 
     def close(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
@@ -817,3 +824,12 @@ class Book(tk.Frame):
 
     def get_picked(self) -> list[Page]:
         return [page for page in self.pages if page.picked]
+
+    def update_title(self, id_: str, text: str) -> None:
+        page = self.get_page_by_id(id_)
+
+        if not page:
+            return
+
+        page.extra_title = text
+        page.update_name()
