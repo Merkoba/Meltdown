@@ -75,7 +75,8 @@ class Page:
         return frame
 
     def update_tooltip(self) -> None:
-        self.tab.tooltip.set_text(self.title)
+        text = self.title if self.title else "Empty Tab"
+        self.tab.tooltip.set_text(text)
 
     def get_index(self) -> int:
         for i, page in enumerate(self.parent.pages):
@@ -276,6 +277,7 @@ class Book(tk.Frame):
         self.add_content(page.content)
         self.check_max_tabs()
         self.check_num_tabs_change()
+        page.update_tooltip()
         return page
 
     def check_max_tabs(self) -> None:
