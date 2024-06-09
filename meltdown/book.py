@@ -833,4 +833,5 @@ class Book(tk.Frame):
 
     def clean_title(self, title: str) -> str:
         title = utils.trim_words(title, args.tab_title_length)
-        return utils.replace_linebreaks(title).strip()
+        title = utils.replace_linebreaks(title).strip()
+        return utils.remove_trails(title)

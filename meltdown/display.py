@@ -745,7 +745,7 @@ class Display:
         text = text.replace("\n", " ").strip()
         text = utils.remove_multiple_spaces(text)
         text = utils.trim_words(text, args.auto_name_length)
-        text = text.rstrip(" ,.;")
+        text = utils.remove_trails(text)
         self.do_rename_tab(tab_id, text)
 
     def has_messages(self, tab_id: str | None = None) -> bool:

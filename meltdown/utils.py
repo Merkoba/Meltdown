@@ -434,5 +434,8 @@ class Utils:
 
         return trimmed.strip()
 
+    def remove_trails(self, text: str) -> str:
+        return text.rstrip(" ,.;")
+
 
 utils = Utils()
