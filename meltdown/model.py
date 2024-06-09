@@ -332,8 +332,13 @@ class Model:
 
                     if key == "user":
                         content = utils.replace_keywords(content)
+                        role = "user"
+                    elif key == "ai":
+                        role = "assistant"
+                    else:
+                        continue
 
-                    messages.append({"role": key, "content": content})
+                    messages.append({"role": role, "content": content})
 
         prompt_text = utils.replace_keywords(prompt_text)
 
