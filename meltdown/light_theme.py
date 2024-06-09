@@ -25,6 +25,7 @@ class LightTheme(Theme):
         self.tab_selected_foreground = "white"
         self.tabs_container_color = "#BABABA"
         self.tab_border = "#37373D"
+        self.tab_picked_border = "#21ffff"
 
         self.button_background = "#6A7B83"
         self.button_foreground = "white"

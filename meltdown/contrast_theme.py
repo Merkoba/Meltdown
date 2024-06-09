@@ -49,6 +49,7 @@ class ContrastTheme(Theme):
         self.tab_selected_foreground = "black"
         self.tab_border = "white"
         self.tabs_container_color = "black"
+        self.tab_picked_border = "#ff0000"
 
         self.system_normal = "#1ae6e6"
         self.system_heavy = "#FF6B6B"
