@@ -802,7 +802,7 @@ class Output(tk.Text):
         from .menumanager import word_menu
 
         if not args.list_menu:
-            return False
+            return
 
         current_index = self.index(tk.CURRENT)
         line = int(current_index.split(".")[0])

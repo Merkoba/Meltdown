@@ -1,11 +1,18 @@
 from __future__ import annotations
 
+# Standard
+from typing import TYPE_CHECKING
+
 # Modules
 from .app import app
 from .config import config
 from .args import args
 from .utils import utils
 from .dialogs import Dialog
+
+
+if TYPE_CHECKING:
+    from .session import Item
 
 
 class ItemOps:
@@ -42,7 +49,6 @@ class ItemOps:
         if not item:
             return
 
-        date = item.date
         user_text = item.user
         ai_text = item.ai
         file = item.file
@@ -91,8 +97,7 @@ class ItemOps:
                 if user_text and ai_text:
                     self.do_use_item(both_text)
         elif mode == "info":
-            if date:
-                self.do_show_info(date)
+            self.do_show_info(item)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -161,12 +166,28 @@ class ItemOps:
 
         self.action("info", number, who=who)
 
-    def do_show_info(self, date: float) -> None:
-        n_date = utils.to_date(date)
-        n_date += "\n"
-        n_date += utils.time_ago(date, utils.now())
+    def do_show_info(self, item: Item) -> None:
+        text = ""
 
-        Dialog.show_message(n_date)
+        if item.date:
+            text += utils.to_date(item.date)
+            text += "\n"
+            text += utils.time_ago(item.date, utils.now())
+
+        if text:
+            text += "\n"
+
+        w_user = len(utils.get_words(item.user))
+        w_ai = len(utils.get_words(item.ai))
+        text += f"\nWords User: {w_user}"
+        text += f"\nWords AI: {w_ai}"
+
+        l_user = len(item.user)
+        l_ai = len(item.ai)
+        text += f"\n\nChars User: {l_user}"
+        text += f"\nChars AI: {l_ai}"
+
+        Dialog.show_message(text)
 
 
 itemops = ItemOps()

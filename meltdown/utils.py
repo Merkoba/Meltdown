@@ -391,5 +391,8 @@ class Utils:
         text = " ".join(text.split("\n"))
         return self.remove_multiple_spaces(text)
 
+    def get_words(self, text: str) -> list[str]:
+        return re.findall(r"\w+", text)
+
 
 utils = Utils()
