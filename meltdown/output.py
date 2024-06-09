@@ -150,7 +150,7 @@ class Output(tk.Text):
         if args.quote_used_words:
             s_words = utils.smart_quotes(words)
         else:
-            s_words = words
+            s_words = words.strip('"')
 
         inputcontrol.input.insert_text(s_words)
         inputcontrol.focus()
