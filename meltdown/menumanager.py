@@ -213,7 +213,7 @@ class TabMenu:
 
             if widget:
                 if mode == "normal":
-                    display.tab_menu_id = page.id
+                    display.tab_menu_id = page.id_
 
                 self.make()
                 self.menu.show(widget=widget)

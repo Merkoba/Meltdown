@@ -112,7 +112,7 @@ class Display:
             return ""
 
         page = self.book.add(name, mode=mode)
-        tab_id = page.id
+        tab_id = page.id_
         find = Find(page.content, tab_id)
         output_frame = tk.Frame(page.content)
         output_frame.grid(row=1, column=0, sticky="nsew")
@@ -285,9 +285,9 @@ class Display:
 
         def add_item(page: Page, num: int) -> None:
             def command() -> None:
-                return self.select_tab(page.id)
+                return self.select_tab(page.id_)
 
-            tab = self.get_tab(page.id)
+            tab = self.get_tab(page.id_)
 
             if not tab:
                 return
@@ -303,7 +303,7 @@ class Display:
         for i, page in enumerate(self.book.pages):
             add_item(page, i + 1)
 
-            if page.id == self.current_tab:
+            if page.id_ == self.current_tab:
                 selected = i
 
         self.tab_list_menu.show(event, widget=widget, selected=selected)
@@ -1005,6 +1005,16 @@ class Display:
             return
 
         tab.output.update_scroll()
+
+    def get_picked(self) -> list[Tab]:
+        picked = self.book.get_picked()
+        tabs = []
+
+        for page in picked:
+            tab = self.get_tab(page.id_)
+            tabs.append(tab)
+
+        return tabs
 
 
 display = Display()

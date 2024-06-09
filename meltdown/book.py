@@ -30,7 +30,8 @@ class Page:
         self.mode = mode
         self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
-        self.id = f"page_{Page.notebox_id}"
+        self.id_ = f"page_{Page.notebox_id}"
+        self.picked = False
         Page.notebox_id += 1
 
     def make_tab_widget(self) -> TabWidget:
@@ -184,6 +185,15 @@ class Book(tk.Frame):
         self.num_tabs_after = ""
 
     def tab_click(self, id_: str) -> None:
+        from .keyboard import keyboard
+
+        if keyboard.shift:
+            self.pick_range(id_)
+            return
+        elif keyboard.ctrl:
+            self.pick_one(id_)
+            return
+
         self.unpick()
         self.end_tab_drag()
         self.select(id_)
@@ -202,19 +212,11 @@ class Book(tk.Frame):
 
     def tab_middle_click(self, page: Page) -> None:
         if self.on_tab_middle_click:
-            self.on_tab_middle_click(page.id)
+            self.on_tab_middle_click(page.id_)
 
     def bind_tab_click(self, page: Page) -> None:
         self.bind_recursive(
-            "<ButtonRelease-1>", lambda e: self.tab_click(page.id), page.tab.frame
-        )
-
-        self.bind_recursive(
-            "<Shift-ButtonRelease-1>", lambda e: self.tab_range(page.id), page.tab.frame
-        )
-
-        self.bind_recursive(
-            "<Control-ButtonRelease-1>", lambda e: self.tab_pick(page.id), page.tab.frame
+            "<ButtonRelease-1>", lambda e: self.tab_click(page.id_), page.tab.frame
         )
 
     def mousewheel_up(self, ctrl: bool = False, shift: bool = False) -> None:
@@ -253,7 +255,7 @@ class Book(tk.Frame):
 
     def bind_tab_right_click(self, page: Page) -> None:
         self.bind_recursive(
-            "<Button-3>", lambda e: self.tab_right_click(e, page.id), page.tab.frame
+            "<Button-3>", lambda e: self.tab_right_click(e, page.id_), page.tab.frame
         )
 
     def bind_tab_middle_click(self, page: Page) -> None:
@@ -292,7 +294,7 @@ class Book(tk.Frame):
         if not self.current_page:
             return ""
 
-        return self.current_page.id
+        return self.current_page.id_
 
     def select(self, id_: str) -> bool:
         if len(self.pages) == 0:
@@ -301,7 +303,7 @@ class Book(tk.Frame):
         page = self.get_page_by_id(id_)
 
         if page:
-            self.hide_all_except(page.id)
+            self.hide_all_except(page.id_)
             self.current_page = page
             self.scroll_to_page(page)
             self.unpick()
@@ -318,13 +320,13 @@ class Book(tk.Frame):
         if len(self.pages) == 0:
             return
 
-        self.select(self.pages[0].id)
+        self.select(self.pages[0].id_)
 
     def select_last(self) -> None:
         if len(self.pages) == 0:
             return
 
-        self.select(self.pages[-1].id)
+        self.select(self.pages[-1].id_)
 
     def select_by_index(self, index: int) -> None:
         if len(self.pages) == 0:
@@ -335,7 +337,7 @@ class Book(tk.Frame):
         elif index >= len(self.pages):
             index = len(self.pages) - 1
 
-        self.select(self.pages[index].id)
+        self.select(self.pages[index].id_)
 
     def select_by_name(self, name: str) -> None:
         closest = ""
@@ -345,11 +347,11 @@ class Book(tk.Frame):
             page_name = page.name.lower()
 
             if page_name == name:
-                closest = page.id
+                closest = page.id_
                 break
 
             if page_name.startswith(name):
-                closest = page.id
+                closest = page.id_
 
         if closest:
             self.select(closest)
@@ -359,7 +361,7 @@ class Book(tk.Frame):
             return
 
         for page in self.pages:
-            if page.id == self.current_page.id:
+            if page.id_ == self.current_page.id_:
                 page.tab.inner.configure(background=app.theme.tab_selected_background)
                 page.tab.label.configure(background=app.theme.tab_selected_background)
                 page.tab.label.configure(foreground=app.theme.tab_selected_foreground)
@@ -370,14 +372,14 @@ class Book(tk.Frame):
 
     def hide_all_except(self, id_: str) -> None:
         for page in self.pages:
-            if page.id != id_:
+            if page.id_ != id_:
                 page.content.grid_remove()
             else:
                 page.content.grid()
 
     def get_page_by_id(self, id_: str) -> Page | None:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 return page
 
         return None
@@ -389,7 +391,7 @@ class Book(tk.Frame):
         return self.pages[index]
 
     def ids(self) -> list[str]:
-        return [page.id for page in self.pages]
+        return [page.id_ for page in self.pages]
 
     def add_tab(self, page: Page) -> None:
         self.bind_tab_click(page)
@@ -406,7 +408,7 @@ class Book(tk.Frame):
 
     def index(self, id_: str) -> int:
         for i, page in enumerate(self.pages):
-            if page.id == id_:
+            if page.id_ == id_:
                 return i
 
         return -1
@@ -418,7 +420,7 @@ class Book(tk.Frame):
         if not self.current_page:
             return
 
-        index = self.index(self.current_page.id)
+        index = self.index(self.current_page.id_)
         length = len(self.pages)
 
         if index == 0:
@@ -431,7 +433,7 @@ class Book(tk.Frame):
 
         ToolTip.hide_all()
         page = self.pages[index]
-        self.select(page.id)
+        self.select(page.id_)
 
     def select_right(self) -> None:
         if len(self.pages) == 0:
@@ -440,7 +442,7 @@ class Book(tk.Frame):
         if not self.current_page:
             return
 
-        index = self.index(self.current_page.id)
+        index = self.index(self.current_page.id_)
         length = len(self.pages)
 
         if index == length - 1:
@@ -453,18 +455,18 @@ class Book(tk.Frame):
 
         ToolTip.hide_all()
         page = self.pages[index]
-        self.select(page.id)
+        self.select(page.id_)
 
     def get_name(self, id_: str) -> str:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 return page.name
 
         return ""
 
     def change_name(self, id_: str, name: str) -> None:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 page.change_name(name)
                 return
 
@@ -484,9 +486,9 @@ class Book(tk.Frame):
             self.current_page = None
         elif was_current:
             if index == len(self.pages):
-                self.select(self.pages[index - 1].id)
+                self.select(self.pages[index - 1].id_)
             else:
-                self.select(self.pages[index].id)
+                self.select(self.pages[index].id_)
 
         self.update_tab_columns()
         self.discover()
@@ -494,7 +496,17 @@ class Book(tk.Frame):
         self.check_num_tabs_change()
 
     def do_tab_drag(self, event: Any, page: Page) -> None:
+        from .keyboard import keyboard
+
+        if keyboard.ctrl or keyboard.shift:
+            return
+
         if not args.reorder:
+            return
+
+        picked = self.get_picked()
+
+        if len(picked) > 1:
             return
 
         if not self.dragging:
@@ -502,7 +514,7 @@ class Book(tk.Frame):
             self.drag_page = page
             self.drag_index = self.pages.index(page)
             self.drag_x = event.x_root
-            self.select(page.id)
+            self.select(page.id_)
             return
 
         if not self.drag_page:
@@ -607,7 +619,7 @@ class Book(tk.Frame):
 
     def move_to_start(self, id_: str) -> None:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 self.pages.insert(0, self.pages.pop(self.pages.index(page)))
                 self.update_tab_columns()
                 self.select(id)
@@ -615,7 +627,7 @@ class Book(tk.Frame):
 
     def move_to_end(self, id_: str) -> None:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 self.pages.append(self.pages.pop(self.pages.index(page)))
                 self.update_tab_columns()
                 self.select(id)
@@ -635,7 +647,7 @@ class Book(tk.Frame):
 
         self.pages.insert(index - 1, self.pages.pop(index))
         self.update_tab_columns()
-        self.select(page.id)
+        self.select(page.id_)
 
         if self.on_reorder:
             self.on_reorder()
@@ -654,14 +666,14 @@ class Book(tk.Frame):
 
         self.pages.insert(index + 1, self.pages.pop(index))
         self.update_tab_columns()
-        self.select(page.id)
+        self.select(page.id_)
 
         if self.on_reorder:
             self.on_reorder()
 
     def highlight(self, id_: str) -> None:
         for page in self.pages:
-            if page.id == id_:
+            if page.id_ == id_:
                 page.tab.label.configure(font=app.theme.font("tab_highlight"))
             else:
                 page.tab.label.configure(font=app.theme.font("tab"))
@@ -711,11 +723,11 @@ class Book(tk.Frame):
         if self.on_num_tabs_change:
             self.on_num_tabs_change(len(self.pages))
 
-    def tab_range(self, id_: str) -> None:
+    def pick_range(self, id_: str) -> None:
         self.unpick()
         ids = self.ids()
         index = ids.index(id_)
-        start = ids.index(self.current_page.id)
+        start = ids.index(self.current_page.id_)
         end = index
 
         if start > end:
@@ -725,14 +737,20 @@ class Book(tk.Frame):
             if start <= i <= end:
                 self.pick(page)
 
-    def tab_pick(self, id_: str) -> None:
+    def pick_one(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
         self.pick(page)
 
     def pick(self, page: Page) -> None:
         page.tab.frame.configure(background="red")
         self.current_page.tab.frame.configure(background="red")
+        page.picked = True
+        self.current_page.picked = True
 
     def unpick(self) -> None:
         for page in self.pages:
             page.tab.frame.configure(background=app.theme.tab_border)
+            page.picked = False
+
+    def get_picked(self) -> list[Page]:
+        return [page for page in self.pages if page.picked]
