@@ -196,7 +196,6 @@ class Commands:
         files.save(paths.commands, cmds)
 
     def try_to_run(self, cmd: str, argument: str) -> bool:
-        # Check normal
         for key in self.commands:
             if cmd == key:
                 self.run(key, argument)
