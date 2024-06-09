@@ -17,6 +17,7 @@ from typing import Any
 # Libraries
 import psutil  # type: ignore
 from tkinterdnd2 import TkinterDnD  # type: ignore
+from rich.console import Console  # type: ignore
 
 # Modules
 from .theme import Theme
@@ -28,8 +29,13 @@ class App:
         self.here = Path(__file__).parent.expanduser().resolve()
         manifest_path = Path(self.here, "manifest.json")
 
-        with manifest_path.open("r", encoding="utf-8") as file:
-            self.manifest = json.load(file)
+        try:
+            with manifest_path.open("r", encoding="utf-8") as file:
+                self.manifest = json.load(file)
+        except BaseException:
+            console = Console()
+            console.print("Error parsing manifest.json")
+            sys.exit(1)
 
         title = self.manifest["title"]
 
