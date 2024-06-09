@@ -321,7 +321,7 @@ class InputControl:
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
 
-            text = textbox.get_t
+            text = textbox.get_text()
             menu.add(text="Copy", command=lambda e: textbox.copy())
             menu.add(text="Paste", command=lambda e: textbox.paste())
 
@@ -384,7 +384,7 @@ class InputControl:
         from . import close
 
         if Dialog.open():
-            return
+            return False
 
         now = utils.now()
         last_press = self.last_delete_press

@@ -297,7 +297,7 @@ class Book(tk.Frame):
 
         return self.current_page.id_
 
-    def select(self, id_: str) -> bool:
+    def select(self, id_: str, unpick: bool = True) -> bool:
         if len(self.pages) == 0:
             return False
 
@@ -307,7 +307,9 @@ class Book(tk.Frame):
             self.hide_all_except(page.id_)
             self.current_page = page
             self.scroll_to_page(page)
-            self.unpick()
+
+            if unpick:
+                self.unpick()
 
             if self.on_change:
                 self.on_change()
@@ -505,17 +507,12 @@ class Book(tk.Frame):
         if not args.reorder:
             return
 
-        picked = self.get_picked()
-
-        if len(picked) > 1:
-            return
-
         if not self.dragging:
             self.dragging = True
             self.drag_page = page
             self.drag_index = self.pages.index(page)
             self.drag_x = event.x_root
-            self.select(page.id_)
+            self.select(page.id_, False)
             return
 
         if not self.drag_page:
@@ -534,11 +531,35 @@ class Book(tk.Frame):
 
         old_index = self.pages.index(self.drag_page)
         new_index = self.pages.index(new_page)
+        direction = ""
+
+        if new_index < old_index:
+            direction = "left"
+        elif new_index > old_index:
+            direction = "right"
+
+        if not direction:
+            return
 
         self.drag_index = new_index
         self.drag_x = event.x_root
 
-        self.pages.insert(new_index, self.pages.pop(old_index))
+        if self.drag_page.picked:
+            picked = self.get_picked()
+
+            if direction == "right":
+                picked.reverse()
+
+            for i, picked_page in enumerate(picked):
+                if direction == "left":
+                    old_index = self.pages.index(picked_page)
+                    self.pages.insert(new_index + i, self.pages.pop(old_index))
+                elif direction == "right":
+                    old_index = self.pages.index(picked_page)
+                    self.pages.insert(new_index - i, self.pages.pop(old_index))
+        else:
+            self.pages.insert(new_index, self.pages.pop(old_index))
+
         self.scroll_to_page(new_page)
         self.update_tab_columns()
 
