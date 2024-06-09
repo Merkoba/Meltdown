@@ -156,6 +156,14 @@ Action: store_false
 
 ---
 
+### no-list-menu
+
+Don't show a menu when clicking list chars
+
+Action: store_false
+
+---
+
 ### no-scrollbars
 
 Don't show scrollbars
