@@ -33,10 +33,12 @@ class Utils:
         return matcher.ratio()
 
     def check_match(self, a: str, b: str) -> bool:
+        from .config import config
+
         if a == b:
             return True
 
-        if self.similarity(a, b) >= 0.8:
+        if self.similarity(a, b) >= config.similar_threshold:
             return True
 
         return False
