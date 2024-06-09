@@ -24,157 +24,44 @@
 
 ---
 
-## Features <a name="features"></a>
 
-Load models from your file system (only tested with gguf for now).
+## Installation <a name="installation"></a>
 
-Or use ChatGPT with your personal api key.
+You can install it with [pipx](https://pypi.org/project/pipx/):
 
-Stream responses in real time.
+```sh
+pipx install git+https://github.com/Merkoba/Meltdown --force
+```
 
-Various configs to tweak the responses like `seed`, `max_tokens`, `top_p`, `top_k`, `temperature`.
+Which provides the `meltdown` command.
 
-Configs to tweak llama.cpp like the number of threads to use or mem-lock.
+---
 
-Context is saved to use on future prompts, optionally.
+To install it with `Vulkan` support (GPU), you can do this:
 
-All fields have context menus to perform some actions.
+```sh
+CMAKE_ARGS="-DLLAMA_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
+```
 
-Recent text inputs get saved and you can access them with the context menus.
+---
 
-Cycle through input history to avoid typing things again.
+To install manually, use a virtual env and `requirements.txt`.
 
-Save logs of the conversations.
+You can use `scripts/venv.sh` to automate this.
 
-Config changes get remembered.
+If you use AMD you might want to use this:
 
-Save and load config files.
+```sh
+CMAKE_ARGS="-DLLAMA_VULKAN=on" scripts/venv.sh
+```
 
-Prepend and append text automatically to your prompts.
+There's a `scripts/venv_amd.sh` that does this.
 
-Show system CPU, RAM, and temperature. GPU info as well. Click to open `btop` etc.
+To run the program, use `run.sh` in the root dir.
 
-Multiple chat formats available like `chatml`, `alpaca`, `vicuna`, `llama-2`, etc.
+---
 
-Multiple tabs, each with their own history.
-
-Sessions are remembered, can also be saved and loaded from files.
-
-Context menus that are filterable and respond to keyboard.
-
-Keyboard and mouse shortcuts.
-
-GUI completely based on Python's `Tkinter`, no big dependencies.
-
-Installable through `pipx` with a single command.
-
-Should be cross-platform, but only tested on Linux for now.
-
-Several custom widgets made specifically for this program.
-
-Starts instantly and only loads the models and conversations when needed.
-
-Commands like `/clear`, `/stop`, `/log`, etc.
-
-Change the font size of the output.
-
-The conversation tabs can be re-ordered by dragging.
-
-Buttons change color to reflect program state.
-
-Autocomplete commands with Tab.
-
-Scrollable config panel to pack more configs.
-
-Close single tabs, all tabs, old tabs, to the left, to the right, or others.
-
-Horizontally scrollable snippet text areas to show code.
-
-Custom keyboard system.
-
-Over 16 markdown implementations.
-
-URL highlighting and handling.
-
-Explain words, selections, highlights.
-
-Search for words on a search engine.
-
-Programming language syntax highlighting.
-
-Dark and light themes.
-
-Command similarity check ( >= 0.8 ).
-
-Load config and session files.
-
-Click and double-click words.
-
-Start new conversations based on some words.
-
-Perform commands automatically upong saving log files.
-
-Tab list with filterable menu.
-
-Find text, case sensitive and insensitive.
-
-Find word-bound text or use regex.
-
-Dialog buttons that respond to keyboard.
-
-View text and view JSON raw modes.
-
-Find across all open tabs.
-
-Select tabs with keyboard numbers.
-
-Command palette with recent usage remembered.
-
-Double ctrl tap (to open the palette).
-
-Run a program upon saving a log.
-
-Save logs of all conversations at once.
-
-Can be started with a prompt to use automatically.
-
-Text can be piped to the program as the input.
-
-Create up to 3 tasks to run commands periodically automatically.
-
-Create command aliases that run other commands.
-
-Send prompt input and commands through the terminal.
-
-Powerful input line prompt for the terminal, with autocomplete, memory, and vi mode.
-
-Optional listener that checks a file periodically to use as input.
-
-GPU support for faster responses.
-
-Dialog text box window for longer inputs.
-
-Automatic error logging to file.
-
-Textbox editing that can be maximized.
-
-Mouse gestures to perform actions.
-
-High contrast theme.
-
-Summarize conversations.
-
-Remove specific items from the conversation.
-
-Custom prompts to elaborate on words further.
-
-Multiple profiles.
-
-Read from text files.
-
-Auto-scroll.
-
-And more.
+More information [here](https://github.com/abetlen/llama-cpp-python).
 
 ---
 
@@ -219,46 +106,6 @@ Set `Mode` to `images`.
 Now you can use the `File` field to include a URL or path to an image.
 
 And you can use the input to include text as normal.
-
----
-
-## Installation <a name="installation"></a>
-
-You can install it with [pipx](https://pypi.org/project/pipx/):
-
-```sh
-pipx install git+https://github.com/Merkoba/Meltdown --force
-```
-
-Which provides the `meltdown` command.
-
----
-
-To install it with `Vulkan` support (GPU), you can do this:
-
-```sh
-CMAKE_ARGS="-DLLAMA_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
-```
-
----
-
-To install manually, use a virtual env and `requirements.txt`.
-
-You can use `scripts/venv.sh` to automate this.
-
-If you use AMD you might want to use this:
-
-```sh
-CMAKE_ARGS="-DLLAMA_VULKAN=on" scripts/venv.sh
-```
-
-There's a `scripts/venv_amd.sh` that does this.
-
-To run the program, use `run.sh` in the root dir.
-
----
-
-More information [here](https://github.com/abetlen/llama-cpp-python).
 
 ---
 
