@@ -936,6 +936,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "info",
+            "Show information about the specified item",
+            lambda a=None: itemops.show_info(number=a),
+            type=str,
+        )
+
+        self.add_cmd(
             "profile",
             "Show the current profile",
             lambda a=None: app.open_profile(),
@@ -966,7 +973,7 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "info",
+            "information",
             "Show the info dialog",
             lambda a=None: app.show_info(),
         )
