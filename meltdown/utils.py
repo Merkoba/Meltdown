@@ -253,7 +253,7 @@ class Utils:
         words = re.split(r"[\s-]", text)
         return "".join(word[0].upper() for word in words if word)
 
-    def singular_or_plural(self, num: int, singular: str, plural: str) -> str:
+    def singular_or_plural(self, num: float, singular: str, plural: str) -> str:
         if num == 1:
             return singular
 
@@ -293,9 +293,27 @@ class Utils:
             word = self.singular_or_plural(minutes, "minute", "minutes")
             return f"{minutes} {word} ago"
 
-        hours = int(minutes // 60)
-        word = self.singular_or_plural(hours, "hour", "hours")
-        return f"{hours} {word} ago"
+        hours = minutes / 60
+
+        if hours < 24:
+            word = self.singular_or_plural(hours, "hour", "hours")
+            return f"{hours:.1f} {word} ago"
+
+        days = hours / 24
+
+        if days < 30:
+            word = self.singular_or_plural(days, "day", "days")
+            return f"{days:.1f} {word} ago"
+
+        months = days / 30
+
+        if months < 12:
+            word = self.singular_or_plural(months, "month", "months")
+            return f"{months:.1f} {word} ago"
+
+        years = months / 12
+        word = self.singular_or_plural(years, "year", "years")
+        return f"{years:.1f} {word} ago"
 
     def smart_quotes(self, text: str) -> str:
         if text.startswith('"') and text.endswith('"'):

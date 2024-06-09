@@ -23,10 +23,10 @@ class Item:
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Item:
         return Item(
-            float(data["date"]),
-            str(data["user"]),
-            str(data["ai"]),
-            str(data["file"]),
+            float(data.get("date", 0)),
+            str(data.get("user", "")),
+            str(data.get("ai", "")),
+            str(data.get("file", "")),
         )
 
     def __init__(self, date: float, user: str, ai: str, file: str = "") -> None:
