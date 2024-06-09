@@ -106,11 +106,15 @@ class Keyboard:
         elif is_shift:
             self.shift = True
 
+        if self.blocked():
+            return
+
         if event.keysym != "Tab":
             autocomplete.reset()
 
-        if self.blocked():
-            return
+        if event.keysym == "Delete":
+            if inputcontrol.on_delete():
+                return
 
         ToolTip.hide_all()
 

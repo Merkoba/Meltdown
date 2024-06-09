@@ -94,6 +94,9 @@ class InputControl:
         widgets.show_menu_items("input", "inputs", lambda s: action(s), event)
 
     def focus(self) -> None:
+        if Dialog.open():
+            return
+
         self.input.focus_set()
         self.input.on_focus_change("in")
 
@@ -317,7 +320,7 @@ class InputControl:
         def on_right_click(event: Any, textbox: TextBox) -> None:
             menu = Menu()
 
-            text = textbox.get_text()
+            text = textbox.get_t
             menu.add(text="Copy", command=lambda e: textbox.copy())
             menu.add(text="Paste", command=lambda e: textbox.paste())
 
@@ -375,6 +378,17 @@ class InputControl:
 
     def on_text_dropped(self, event: Any) -> None:
         self.set(event.data)
+
+    def on_delete(self) -> bool:
+        from . import close
+
+        text = self.input.get()
+
+        if not text:
+            close.close()
+            return True
+
+        return False
 
 
 inputcontrol = InputControl()

@@ -189,6 +189,7 @@ class Book(tk.Frame):
 
         if keyboard.shift:
             self.pick_range(id_)
+            return
 
         if keyboard.ctrl:
             self.pick_one(id_)
