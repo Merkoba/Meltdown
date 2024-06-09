@@ -915,6 +915,7 @@ class Output(tk.Text):
         app.hide_all(hide_dialog=False)
         self.deselect_all()
         self.reset_drag()
+        self.display.unpick()
 
     def on_middle_click(self, ctrl: bool = False, shift: bool = False) -> str:
         from .commands import commands

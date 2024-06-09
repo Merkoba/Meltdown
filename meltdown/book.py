@@ -298,7 +298,7 @@ class Book(tk.Frame):
         return self.current_page.id_
 
     def select(self, id_: str, unpick: bool = True) -> bool:
-        if len(self.pages) == 0:
+        if not self.pages:
             return False
 
         page = self.get_page_by_id(id_)
@@ -320,19 +320,19 @@ class Book(tk.Frame):
         return False
 
     def select_first(self) -> None:
-        if len(self.pages) == 0:
+        if not self.pages:
             return
 
         self.select(self.pages[0].id_)
 
     def select_last(self) -> None:
-        if len(self.pages) == 0:
+        if not self.pages:
             return
 
         self.select(self.pages[-1].id_)
 
     def select_by_index(self, index: int) -> None:
-        if len(self.pages) == 0:
+        if not self.pages:
             return
 
         if index < 0:
@@ -417,7 +417,7 @@ class Book(tk.Frame):
         return -1
 
     def select_left(self) -> None:
-        if len(self.pages) == 0:
+        if not self.pages:
             return
 
         if not self.current_page:
@@ -439,7 +439,7 @@ class Book(tk.Frame):
         self.select(page.id_)
 
     def select_right(self) -> None:
-        if len(self.pages) == 0:
+        if not self.pages:
             return
 
         if not self.current_page:
@@ -485,7 +485,7 @@ class Book(tk.Frame):
         page.content.grid_forget()
         self.pages.pop(index)
 
-        if len(self.pages) == 0:
+        if not self.pages:
             self.current_page = None
         elif was_current:
             if index == len(self.pages):
@@ -797,7 +797,12 @@ class Book(tk.Frame):
             self.do_unpick(page)
 
     def unpick(self) -> None:
-        for page in self.pages:
+        picked = self.get_picked()
+
+        if not picked:
+            return
+
+        for page in picked:
             self.do_unpick(page)
 
     def do_pick(self, page: Page) -> None:
