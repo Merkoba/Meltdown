@@ -744,7 +744,7 @@ class Display:
 
         text = text.replace("\n", " ").strip()
         text = utils.remove_multiple_spaces(text)
-        text = text[: args.auto_name_length]
+        text = utils.trim_words(text, args.auto_name_length)
         text = text.rstrip(" ,.;")
         self.do_rename_tab(tab_id, text)
 

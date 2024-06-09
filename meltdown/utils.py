@@ -412,5 +412,25 @@ class Utils:
     def get_words(self, text: str) -> list[str]:
         return re.findall(r"\w+", text)
 
+    def trim_words(self, text: str, length: int) -> str:
+        from .config import config
+
+        trimmed = ""
+
+        if len(text) <= length:
+            trimmed = text
+        else:
+            trimmed_text = text[:length]
+            last_space_index = trimmed_text.rfind(" ")
+
+            if (last_space_index > -1) and (len(text) - last_space_index >= config.trim_threshold):
+                trimmed = trimmed_text
+            elif last_space_index > -1:
+                trimmed = trimmed_text[:last_space_index]
+            else:
+                trimmed = trimmed_text
+
+        return trimmed.strip()
+
 
 utils = Utils()
