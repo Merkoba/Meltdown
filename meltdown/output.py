@@ -85,6 +85,17 @@ class Output(tk.Text):
         itemops.action("use", tab_id=tab_id, number=arg, who=who)
 
     @staticmethod
+    def show_info() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        tab_id = output.tab_id
+        arg = str(Output.clicked_number)
+        itemops.action("info", tab_id=tab_id, number=arg)
+
+    @staticmethod
     def copy_item() -> None:
         output = Output.current_output()
 

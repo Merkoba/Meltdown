@@ -42,6 +42,7 @@ class ItemOps:
         if not item:
             return
 
+        date = item.get("date")
         user_text = item.get("user")
         ai_text = item.get("ai")
         both_text = f"User: {user_text}\n\nAI: {ai_text}"
@@ -88,6 +89,8 @@ class ItemOps:
             elif who == "both":
                 if user_text and ai_text:
                     self.do_use_item(both_text)
+        elif mode == "info":
+            self.show_info(date)
 
     def repeat(self, number: str, no_history: bool = False) -> None:
         if not number:
@@ -145,5 +148,8 @@ class ItemOps:
 
         Dialog.show_input("Run Program", lambda a: action(a), value=config.last_program)
 
+    def show_info(self, date: str) -> None:
+        n_date = utils.to_date(date)
+        Dialog.show_message(n_date)
 
 itemops = ItemOps()

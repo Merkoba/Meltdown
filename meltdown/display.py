@@ -215,8 +215,7 @@ class Display:
             return
 
         nice_date = utils.to_date(tabconvo.convo.created)
-        header = f"Created: {nice_date}"
-        self.print(header, tab_id=tab_id, modified=False)
+        self.print(nice_date, tab_id=tab_id, modified=False)
 
     def get_current_tab(self) -> Tab | None:
         if hasattr(self, "current_tab_object"):
