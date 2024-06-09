@@ -8,6 +8,7 @@ from collections.abc import Callable
 # Modules
 from .app import app
 from .args import args
+from .utils import utils
 from .tooltips import ToolTip
 
 
@@ -834,4 +835,5 @@ class Book(tk.Frame):
         page.update_tooltip()
 
     def clean_title(self, title: str) -> str:
-        return title[: args.tab_title_length].strip()
+        title = title[: args.tab_title_length].strip()
+        return utils.replace_linebreaks(title).strip()
