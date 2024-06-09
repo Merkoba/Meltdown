@@ -28,11 +28,11 @@ class Page:
         self.parent = parent
         self.name = name
         self.mode = mode
+        self.title = title
+        self.picked = False
         self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
         self.id_ = f"page_{Page.notebox_id}"
-        self.picked = False
-        self.title = title
         Page.notebox_id += 1
 
     def make_tab_widget(self) -> TabWidget:
