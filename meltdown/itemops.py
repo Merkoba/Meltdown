@@ -163,6 +163,9 @@ class ItemOps:
 
     def do_show_info(self, date: float) -> None:
         n_date = utils.to_date(date)
+        n_date += "\n"
+        n_date += utils.time_ago(date, utils.now())
+
         Dialog.show_message(n_date)
 
 
