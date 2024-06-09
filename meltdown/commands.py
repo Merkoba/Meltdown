@@ -211,11 +211,7 @@ class Commands:
         return False
 
     def get_similar_alias(self, cmd: str) -> str | None:
-        for key in self.aliases:
-            if utils.check_match(cmd, key):
-                return key
-
-        return None
+        return utils.most_similar(cmd, list(self.aliases.keys()))
 
     def help(self) -> None:
         from .model import model
