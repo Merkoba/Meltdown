@@ -529,8 +529,10 @@ class Book(tk.Frame):
         if not new_page:
             return
 
+        picked = self.get_picked()
         old_index = self.pages.index(self.drag_page)
         new_index = self.pages.index(new_page)
+        difference = abs(new_index - old_index)
         direction = ""
 
         if new_index < old_index:
@@ -541,22 +543,35 @@ class Book(tk.Frame):
         if not direction:
             return
 
+        if picked:
+            if direction == "left":
+                if self.pages.index(picked[0]) == 0:
+                    return
+            elif direction == "right":
+                if self.pages.index(picked[-1]) == len(self.pages) - 1:
+                    return
+
         self.drag_index = new_index
         self.drag_x = event.x_root
 
         if self.drag_page.picked:
-            picked = self.get_picked()
-
             if direction == "right":
                 picked.reverse()
 
-            for i, picked_page in enumerate(picked):
+            leader = self.pages.index(picked[0])
+
+            if direction == "left":
+                leader -= difference
+            elif direction == "right":
+                leader += difference
+
+            for i, p_page in enumerate(picked):
                 if direction == "left":
-                    old_index = self.pages.index(picked_page)
-                    self.pages.insert(new_index + i, self.pages.pop(old_index))
+                    old_index = self.pages.index(p_page)
+                    self.pages.insert(leader + i, self.pages.pop(old_index))
                 elif direction == "right":
-                    old_index = self.pages.index(picked_page)
-                    self.pages.insert(new_index - i, self.pages.pop(old_index))
+                    old_index = self.pages.index(p_page)
+                    self.pages.insert(leader - i, self.pages.pop(old_index))
         else:
             self.pages.insert(new_index, self.pages.pop(old_index))
 
