@@ -752,8 +752,9 @@ class Book(tk.Frame):
         if not self.current_page:
             return
 
-        page.tab.frame.configure(background="red")
-        self.current_page.tab.frame.configure(background="red")
+        color = app.theme.tab_picked_border
+        page.tab.frame.configure(background=color)
+        self.current_page.tab.frame.configure(background=color)
         page.picked = True
         self.current_page.picked = True
 

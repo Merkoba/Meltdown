@@ -121,6 +121,7 @@ class Theme:
         self.tab_selected_foreground = "white"
         self.tab_border = "#6A7B83"
         self.tabs_container_color = "#2B303B"
+        self.tab_picked_border = "#4cc2af"
         self.tab_border_width = 1
         self.tab_padx = 10
         self.tab_pady = 0
