@@ -1033,7 +1033,7 @@ class Display:
             return
 
         item = tabconvo.convo.items[0]
-        text = item.ai[: config.extra_title_length].strip()
+        text = item.ai[: args.tab_title_length].strip()
         self.book.update_title(tab_id, text)
 
 

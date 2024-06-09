@@ -954,6 +954,16 @@ Action: store_true
 
 ---
 
+### tab-title-length
+
+The extra title is the answer added after the tab name in the tooltips of the tabs
+
+Default: 230
+
+Type: int
+
+---
+
 ### auto-unload
 
 Auto-unload the model after this number of minutes after last use. 0 to disable

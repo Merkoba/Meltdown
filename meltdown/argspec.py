@@ -717,6 +717,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "tab_title_length",
+            type=int,
+            info="The extra title is the answer added after the tab name in the tooltips of the tabs",
+        )
+
+        self.add_argument(
             "auto_unload",
             type=int,
             info="Auto-unload the model after this number of minutes after last use. 0 to disable",
