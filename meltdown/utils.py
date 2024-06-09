@@ -287,7 +287,7 @@ class Utils:
             word = self.singular_or_plural(seconds, "second", "seconds")
             return f"{seconds} {word} ago"
 
-        minutes = int(seconds // 60)
+        minutes = seconds // 60
 
         if minutes < 60:
             word = self.singular_or_plural(minutes, "minute", "minutes")
