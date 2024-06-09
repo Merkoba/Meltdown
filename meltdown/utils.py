@@ -423,7 +423,9 @@ class Utils:
             t_text = text[:length]
             space_index = t_text.rfind(" ")
 
-            if (space_index > -1) and (len(text) - space_index >= config.trim_threshold):
+            if (space_index > -1) and (
+                len(text) - space_index >= config.trim_threshold
+            ):
                 trimmed = t_text
             elif space_index > -1:
                 trimmed = t_text[:space_index]
