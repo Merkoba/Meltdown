@@ -420,15 +420,15 @@ class Utils:
         if len(text) <= length:
             trimmed = text
         else:
-            trimmed_text = text[:length]
-            last_space_index = trimmed_text.rfind(" ")
+            t_text = text[:length]
+            space_index = t_text.rfind(" ")
 
-            if (last_space_index > -1) and (len(text) - last_space_index >= config.trim_threshold):
-                trimmed = trimmed_text
-            elif last_space_index > -1:
-                trimmed = trimmed_text[:last_space_index]
+            if (space_index > -1) and (len(text) - space_index >= config.trim_threshold):
+                trimmed = t_text
+            elif space_index > -1:
+                trimmed = t_text[:space_index]
             else:
-                trimmed = trimmed_text
+                trimmed = t_text
 
         return trimmed.strip()
 

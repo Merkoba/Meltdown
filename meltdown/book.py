@@ -75,12 +75,7 @@ class Page:
         return frame
 
     def update_tooltip(self) -> None:
-        if not self.title:
-            return
-
         self.tab.tooltip.set_text(self.title)
-        self.parent.update_tabs()
-        self.parent.discover()
 
     def get_index(self) -> int:
         for i, page in enumerate(self.parent.pages):
@@ -479,6 +474,8 @@ class Book(tk.Frame):
 
         page.name = name
         page.set_tab_text()
+        self.update_tabs()
+        self.discover()
 
     def close(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
