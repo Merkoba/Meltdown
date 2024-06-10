@@ -37,26 +37,6 @@ class App:
             console.print("Error parsing manifest.json")
             sys.exit(1)
 
-        title = self.manifest["title"]
-
-        prompts = [
-            "How are you?",
-            "What are you doing?",
-            "List 5 interesting things",
-        ]
-
-        prompts = [f"%@{prompt}%@" for prompt in prompts]
-
-        self.intro = [
-            f"Welcome to {title}.",
-            "Write a `prompt` and press Enter.",
-            "Type /about to learn more.",
-        ]
-
-        if prompts:
-            prompts.insert(0, "")
-            self.intro.extend(prompts)
-
         self.root: tk.Tk
         self.main_frame: tk.Frame
         self.theme: Theme
@@ -109,6 +89,31 @@ class App:
 
         self.image_path = Path(self.here, "image.jpg")
         self.portrait_path = Path(self.here, "portrait.jpg")
+
+    def build_intro(self) -> None:
+        from .args import args
+
+        title = self.manifest["title"]
+        uselinks = args.intro_uselinks
+
+        if not uselinks:
+            uselinks = [
+                "How are you?",
+                "What are you doing?",
+                "List 5 interesting things",
+            ]
+
+        uselinks = [f"%@{prompt}%@" for prompt in uselinks]
+
+        self.intro = [
+            f"Welcome to {title}.",
+            "Write a `prompt` and press Enter.",
+            "Type /about to learn more.",
+        ]
+
+        if uselinks:
+            uselinks.insert(0, "")
+            self.intro.extend(uselinks)
 
     def setup(self, time_started: float) -> None:
         self.time_started = time_started
@@ -549,6 +554,8 @@ class App:
 
     def prepare(self) -> None:
         from .args import args
+
+        self.build_intro()
 
         if args.drag_and_drop:
             self.root = TkinterDnD.Tk(className=self.manifest["program"])
