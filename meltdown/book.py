@@ -666,11 +666,15 @@ class Book(tk.Frame):
         if picked:
             i = 0
 
-            for page in picked:
-                self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+            for pg in picked:
+                self.pages.insert(i, self.pages.pop(self.pages.index(pg)))
                 i += 1
         else:
             page = self.get_page_by_id(id_)
+
+            if not page:
+                return
+
             self.pages.insert(0, self.pages.pop(self.pages.index(page)))
 
         self.update_tab_columns()
@@ -683,11 +687,15 @@ class Book(tk.Frame):
             i = len(self.pages) - 1
             picked.reverse()
 
-            for page in picked:
-                self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+            for pg in picked:
+                self.pages.insert(i, self.pages.pop(self.pages.index(pg)))
                 i -= 1
         else:
             page = self.get_page_by_id(id_)
+
+            if not page:
+                return
+
             self.pages.append(self.pages.pop(self.pages.index(page)))
 
         self.update_tab_columns()
