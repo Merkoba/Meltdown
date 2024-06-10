@@ -442,5 +442,8 @@ class Utils:
         text = utils.trim_words(text, length)
         return utils.remove_trails(text)
 
+    def last_slash(self, text: str) -> str:
+        return text.split("/")[-1]
+
 
 utils = Utils()

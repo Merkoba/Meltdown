@@ -187,6 +187,9 @@ class ItemOps:
         text += f"\n\nChars User: {l_user}"
         text += f"\nChars AI: {l_ai}"
 
+        if item.model:
+            text += f"\n\n{item.model}"
+
         Dialog.show_message(text)
 
 

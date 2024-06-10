@@ -27,13 +27,15 @@ class Item:
             str(data.get("user", "")),
             str(data.get("ai", "")),
             str(data.get("file", "")),
+            str(data.get("model", "")),
         )
 
-    def __init__(self, date: float, user: str, ai: str, file: str) -> None:
+    def __init__(self, date: float, user: str, ai: str, file: str, model: str) -> None:
         self.date = date
         self.user = user
         self.ai = ai
         self.file = file
+        self.model = model
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -41,6 +43,7 @@ class Item:
             "user": self.user,
             "ai": self.ai,
             "file": self.file,
+            "model": self.model,
         }
 
 
