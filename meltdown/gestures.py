@@ -6,6 +6,7 @@ from collections.abc import Callable
 # Modules
 from .args import args
 from .commands import commands
+from .menus import Menu
 
 
 class Gestures:
@@ -53,6 +54,7 @@ class Gestures:
             if x_diff > y_diff:
                 if x_diff >= args.gestures_threshold:
                     if (self.drag_x < self.drag_x_start) and args.gestures_left:
+                        Menu.hide_all()
                         commands.exec(args.gestures_left)
                     elif args.gestures_right:
                         commands.exec(args.gestures_right)
@@ -60,8 +62,10 @@ class Gestures:
                     return
             elif y_diff >= args.gestures_threshold:
                 if (self.drag_y < self.drag_y_start) and args.gestures_up:
+                    Menu.hide_all()
                     commands.exec(args.gestures_up)
                 elif args.gestures_down:
+                    Menu.hide_all()
                     commands.exec(args.gestures_down)
 
                 return
