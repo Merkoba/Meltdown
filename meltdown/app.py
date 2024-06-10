@@ -41,7 +41,7 @@ class App:
 
         prompts = [
             "How are you?",
-            "I want to learn something",
+            "What are you doing?",
             "List 5 interesting things",
         ]
 
