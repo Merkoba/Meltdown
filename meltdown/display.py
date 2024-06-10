@@ -204,11 +204,14 @@ class Display:
 
         if tabconvo.convo.id != "ignore":
             self.show_intro(tab_id)
+            self.format_text(tab_id, mode="all", force=True)
 
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)
 
-        tabconvo.convo.print()
+        if tabconvo.convo.items:
+            tabconvo.convo.print()
+
         tabconvo.tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
@@ -760,7 +763,9 @@ class Display:
 
         return not bool(tabconvo.convo.items)
 
-    def format_text(self, tab_id: str | None = None, mode: str = "normal") -> None:
+    def format_text(
+        self, tab_id: str | None = None, mode: str = "normal", force: bool = False
+    ) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -769,7 +774,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.format_text(mode=mode)
+        tab.output.format_text(mode=mode, force=force)
 
     def select_first_tab(self) -> None:
         self.book.select_first()

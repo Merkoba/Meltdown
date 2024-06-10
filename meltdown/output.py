@@ -588,13 +588,13 @@ class Output(tk.Text):
     def get_tab(self) -> Any:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self, mode: str = "normal") -> None:
+    def format_text(self, mode: str = "normal", force: bool = False) -> None:
         tab = self.get_tab()
 
         if not tab:
             return
 
-        if not tab.modified:
+        if (not force) and (not tab.modified):
             return
 
         if tab.mode == "ignore":

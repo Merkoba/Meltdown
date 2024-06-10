@@ -41,7 +41,7 @@ class App:
 
         self.intro = [
             f"Welcome to {title}.",
-            "Write a prompt and press Enter.",
+            "Write a `prompt` and press Enter.",
             "Type /about to learn more.",
         ]
 
