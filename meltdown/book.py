@@ -796,7 +796,7 @@ class Book(tk.Frame):
 
         for i, page in enumerate(self.pages):
             if start <= i <= end:
-                self.pick(page)
+                self.do_pick(page)
 
     def pick_one(self, id_: str) -> None:
         page = self.get_page_by_id(id_)
