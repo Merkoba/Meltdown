@@ -813,6 +813,9 @@ class Book(tk.Frame):
         pick_value = not page.picked
 
         if pick_value:
+            if not self.get_picked():
+                self.do_pick(self.current_page)
+
             self.do_pick(page)
         else:
             self.do_unpick(page)
