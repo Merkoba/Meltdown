@@ -78,7 +78,7 @@ class Model:
                 "You must configure a model first."
                 " It can be a local model which you can download"
                 " from the HuggingFace website (or elsewhere), or a remote ChatGPT model by"
-                " using your API key. Check the main menu on the top right.",
+                " using your API key. Check the model menu on the top right.",
                 tab_id=tab_id,
             )
 
