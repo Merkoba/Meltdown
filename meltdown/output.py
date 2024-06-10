@@ -912,7 +912,7 @@ class Output(tk.Text):
             tab_menu.show(event)
 
     def on_click(self) -> None:
-        app.hide_all(hide_dialog=False)
+        app.hide_all()
         self.deselect_all()
         self.reset_drag()
         self.display.unpick()
