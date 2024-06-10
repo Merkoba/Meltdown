@@ -24,7 +24,7 @@ class Config:
         self.max_file_name_length = 50
         self.max_tabs = 999
         self.similar_threshold = 0.7
-        self.trim_threshold = 4
+        self.trim_threshold = 10
 
         self.default_system = """
 Your name is ((name_ai)).

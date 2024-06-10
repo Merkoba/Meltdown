@@ -416,16 +416,20 @@ class Utils:
         from .config import config
 
         trimmed = ""
+        len_text = len(text)
 
-        if len(text) <= length:
+        if len_text <= length:
             trimmed = text
         else:
             t_text = text[:length]
             space_index = t_text.rfind(" ")
 
-            if (space_index > -1) and (
-                len(text) - space_index >= config.trim_threshold
-            ):
+            if space_index > -1:
+                diff = len(t_text) - len(t_text[:space_index])
+            else:
+                diff = 0
+
+            if (space_index > -1) and (diff >= config.trim_threshold):
                 trimmed = t_text
             elif space_index > -1:
                 trimmed = t_text[:space_index]
