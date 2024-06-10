@@ -190,6 +190,7 @@ class Display:
 
         text = "\n".join(app.intro)
         display.print(text, tab_id=tab_id, modified=False)
+        self.format_text(tab_id, mode="all", force=True)
 
     def load_tab(self, tab_id: str) -> None:
         tabconvo = self.get_tab_convo(tab_id)
@@ -204,7 +205,6 @@ class Display:
 
         if tabconvo.convo.id != "ignore":
             self.show_intro(tab_id)
-            self.format_text(tab_id, mode="all", force=True)
 
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)
