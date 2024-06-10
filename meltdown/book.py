@@ -661,42 +661,32 @@ class Book(tk.Frame):
         self.scroll_to_page(self.current_page)
 
     def move_to_start(self, id_: str) -> None:
-        picked = self.get_picked()
+        pages = self.picked_or_page(id_)
 
-        if picked:
-            i = 0
+        if not pages:
+            return
 
-            for pg in picked:
-                self.pages.insert(i, self.pages.pop(self.pages.index(pg)))
-                i += 1
-        else:
-            page = self.get_page_by_id(id_)
+        i = 0
 
-            if not page:
-                return
-
-            self.pages.insert(0, self.pages.pop(self.pages.index(page)))
+        for page in pages:
+            self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+            i += 1
 
         self.update_tab_columns()
         self.select(id_)
 
     def move_to_end(self, id_: str) -> None:
-        picked = self.get_picked()
+        pages = self.picked_or_page(id_)
 
-        if picked:
-            i = len(self.pages) - 1
-            picked.reverse()
+        if not pages:
+            return
 
-            for pg in picked:
-                self.pages.insert(i, self.pages.pop(self.pages.index(pg)))
-                i -= 1
-        else:
-            page = self.get_page_by_id(id_)
+        i = len(self.pages) - 1
+        pages.reverse()
 
-            if not page:
-                return
-
-            self.pages.append(self.pages.pop(self.pages.index(page)))
+        for page in pages:
+            self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+            i -= 1
 
         self.update_tab_columns()
         self.select(id_)
@@ -862,3 +852,14 @@ class Book(tk.Frame):
         title = utils.trim_words(title, args.tab_title_length)
         title = utils.replace_linebreaks(title).strip()
         return utils.remove_trails(title)
+
+    def picked_or_page(self, id_: str) -> list[Page]:
+        pages = self.get_picked()
+
+        if not pages:
+            page = self.get_page_by_id(id_)
+
+            if page:
+                pages.append(page)
+
+        return pages
