@@ -717,9 +717,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "tab_title_length",
+            "tab_tooltip_length",
             type=int,
-            info="The extra title is the answer added after the tab name in the tooltips of the tabs",
+            info="Max length for tab tooltips",
         )
 
         self.add_argument(

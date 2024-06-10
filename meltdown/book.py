@@ -269,7 +269,7 @@ class Book(tk.Frame):
         )
 
     def add(self, name: str, mode: str, title: str) -> Page:
-        title = self.clean_title(title)
+        title = self.clean_tooltip(title)
         page = Page(self, name, mode=mode, title=title)
         self.pages.append(page)
         self.current_page = page
@@ -848,11 +848,11 @@ class Book(tk.Frame):
         if not page:
             return
 
-        page.title = self.clean_title(title)
+        page.title = self.clean_tooltip(title)
         page.update_tooltip()
 
-    def clean_title(self, title: str) -> str:
-        return utils.compact_text(title, args.tab_title_length)
+    def clean_tooltip(self, title: str) -> str:
+        return utils.compact_text(title, args.tab_tooltip_length)
 
     def picked_or_page(self, id_: str) -> list[Page]:
         pages = self.get_picked()
