@@ -852,7 +852,7 @@ class Book(tk.Frame):
         page.update_tooltip()
 
     def clean_title(self, title: str) -> str:
-        title = utils.replace_linebreaks(title).strip()
+        title = utils.replace_linebreaks(title)
         title = utils.trim_words(title, args.tab_title_length)
         return utils.remove_trails(title)
 
