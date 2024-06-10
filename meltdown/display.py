@@ -112,12 +112,12 @@ class Display:
             return ""
 
         convo = session.get_conversation(conversation_id)
-        title = ""
+        tooltip = ""
 
         if convo and convo.items:
-            title = convo.items[0].ai
+            tooltip = convo.items[0].ai
 
-        page = self.book.add(name, mode=mode, title=title)
+        page = self.book.add(name, mode=mode, tooltip=tooltip)
         tab_id = page.id_
         find = Find(page.content, tab_id)
         output_frame = tk.Frame(page.content)
@@ -208,7 +208,6 @@ class Display:
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)
 
-        self.update_title(tab_id)
         tabconvo.convo.print()
         tabconvo.tab.loaded = True
 
@@ -826,7 +825,7 @@ class Display:
         self.book.remove_highlights()
         self.clear_tab_streaming()
         self.format_text(self.tab_streaming)
-        self.update_title(self.tab_streaming)
+        self.update_tooltip(self.tab_streaming)
 
     def set_tab_streaming(self, tab_id: str) -> None:
         for key, values in self.tabs.items():
@@ -1032,7 +1031,7 @@ class Display:
     def unpick(self) -> None:
         self.book.unpick()
 
-    def update_title(self, tab_id: str) -> None:
+    def update_tooltip(self, tab_id: str) -> None:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -1042,7 +1041,7 @@ class Display:
             return
 
         item = tabconvo.convo.items[0]
-        self.book.update_title(tab_id, item.ai)
+        self.book.update_tooltip(tab_id, item.ai)
 
 
 display = Display()

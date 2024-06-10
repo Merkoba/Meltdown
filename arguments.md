@@ -954,9 +954,9 @@ Action: store_true
 
 ---
 
-### tab-title-length
+### tab-tooltip-length
 
-The extra title is the answer added after the tab name in the tooltips of the tabs
+Max length for tab tooltips
 
 Default: 235
 

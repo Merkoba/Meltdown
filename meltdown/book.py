@@ -25,11 +25,11 @@ class TabWidget:
 class Page:
     notebox_id = 0
 
-    def __init__(self, parent: Book, name: str, mode: str, title: str) -> None:
+    def __init__(self, parent: Book, name: str, mode: str, tooltip: str) -> None:
         self.parent = parent
         self.name = name
         self.mode = mode
-        self.title = title
+        self.tooltip = tooltip
         self.picked = False
         self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
@@ -65,7 +65,7 @@ class Page:
         )
 
         label.configure(cursor="hand2")
-        tooltip = ToolTip(frame, text=self.title)
+        tooltip = ToolTip(frame, text=self.tooltip)
         return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
@@ -75,7 +75,7 @@ class Page:
         return frame
 
     def update_tooltip(self) -> None:
-        text = self.title if self.title else "Empty Tab"
+        text = self.tooltip if self.tooltip else "Empty Tab"
         self.tab.tooltip.set_text(text)
 
     def get_index(self) -> int:
@@ -268,9 +268,9 @@ class Book(tk.Frame):
             "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
         )
 
-    def add(self, name: str, mode: str, title: str) -> Page:
-        title = self.clean_tooltip(title)
-        page = Page(self, name, mode=mode, title=title)
+    def add(self, name: str, mode: str, tooltip: str) -> Page:
+        tooltip = self.clean_tooltip(tooltip)
+        page = Page(self, name, mode=mode, tooltip=tooltip)
         self.pages.append(page)
         self.current_page = page
         self.add_tab(page)
@@ -842,17 +842,17 @@ class Book(tk.Frame):
     def get_picked(self) -> list[Page]:
         return [page for page in self.pages if page.picked]
 
-    def update_title(self, id_: str, title: str) -> None:
+    def update_tooltip(self, id_: str, tooltip: str) -> None:
         page = self.get_page_by_id(id_)
 
         if not page:
             return
 
-        page.title = self.clean_tooltip(title)
+        page.tooltip = self.clean_tooltip(tooltip)
         page.update_tooltip()
 
-    def clean_tooltip(self, title: str) -> str:
-        return utils.compact_text(title, args.tab_tooltip_length)
+    def clean_tooltip(self, tooltip: str) -> str:
+        return utils.compact_text(tooltip, args.tab_tooltip_length)
 
     def picked_or_page(self, id_: str) -> list[Page]:
         pages = self.get_picked()
