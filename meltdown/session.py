@@ -29,7 +29,7 @@ class Item:
             str(data.get("file", "")),
         )
 
-    def __init__(self, date: float, user: str, ai: str, file: str = "") -> None:
+    def __init__(self, date: float, user: str, ai: str, file: str) -> None:
         self.date = date
         self.user = user
         self.ai = ai
