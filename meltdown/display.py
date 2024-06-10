@@ -30,6 +30,7 @@ class Tab:
         find: Find,
         bottom: Bottom,
         mode: str,
+        no_intro: bool,
     ) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
@@ -41,6 +42,7 @@ class Tab:
         self.loaded = False
         self.streaming = False
         self.num_user_prompts = 0
+        self.no_intro = no_intro
 
 
 class TabConvo:
@@ -84,6 +86,7 @@ class Display:
         select_tab: bool = True,
         mode: str = "normal",
         save: bool = True,
+        no_intro: bool = False,
     ) -> str:
         from .session import session
 
@@ -124,7 +127,11 @@ class Display:
         output_frame.grid(row=1, column=0, sticky="nsew")
         output = Output(output_frame, tab_id)
         bottom = Bottom(page.content, tab_id)
-        tab = Tab(conversation_id, tab_id, output, find, bottom, mode=mode)
+
+        tab = Tab(
+            conversation_id, tab_id, output, find, bottom, mode=mode, no_intro=no_intro
+        )
+
         self.tabs[tab_id] = tab
 
         if select_tab:
@@ -211,7 +218,8 @@ class Display:
 
         if tabconvo.convo.id != "ignore":
             if not tabconvo.convo.items:
-                self.show_intro(tab_id)
+                if not tabconvo.tab.no_intro:
+                    self.show_intro(tab_id)
 
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)

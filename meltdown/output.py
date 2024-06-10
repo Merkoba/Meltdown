@@ -273,7 +273,7 @@ class Output(tk.Text):
 
         quoted = utils.smart_quotes(words)
         text = utils.replace_keywords(args.new_prompt, words=quoted)
-        tab_id = display.make_tab()
+        tab_id = display.make_tab(no_intro=True)
 
         if not tab_id:
             return
