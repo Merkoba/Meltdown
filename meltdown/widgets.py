@@ -708,67 +708,6 @@ class Widgets:
     def show_recent_files(self) -> None:
         self.show_file_context(only_items=True)
 
-    def write_system_prompt(self, text: str | None = None, maxed: bool = False) -> None:
-        from .textbox import TextBox
-
-        def action(ans: dict[str, Any]) -> None:
-            config.set("system", ans["text"])
-
-        def reset(textbox: TextBox) -> None:
-            value = config.get_default("system")
-
-            if value:
-                textbox.set_text(value)
-                config.reset_one("system")
-
-            textbox.focus_end()
-
-        def on_right_click(event: Any, textbox: TextBox) -> None:
-            menu = Menu()
-
-            text = textbox.get_text()
-            menu.add(text="Copy", command=lambda e: textbox.copy())
-            menu.add(text="Paste", command=lambda e: textbox.paste())
-
-            if text:
-                menu.add(text="Clear", command=lambda e: textbox.clear())
-
-            if text != config.get_default("system"):
-                menu.add(text="Reset", command=lambda e: reset(textbox))
-
-            items = files.get_list("systems")[: args.max_list_items]
-
-            if items:
-                menu.add(text="--- Recent ---", disabled=True)
-
-            def add_item(item: str) -> None:
-                def proc() -> None:
-                    config.set("system", item)
-                    textbox.set_text(item)
-                    textbox.focus_end()
-
-                f_text = utils.bullet_points(item[: args.list_item_width])
-                f_text = utils.replace_linebreaks(f_text)
-                menu.add(text=f_text, command=lambda e: proc())
-
-            for item in items:
-                add_item(item)
-
-            menu.show(event)
-
-        if text:
-            config.set("system", text)
-            return
-
-        Dialog.show_textbox(
-            "system",
-            "System Prompt",
-            lambda a: action(a),
-            value=config.system,
-            start_maximized=maxed,
-            on_right_click=on_right_click,
-        )
-
     def check_move_to_end(self, key: str) -> None:
         if key in ["model", "file"]:
             widget = widgets.get_widget(key)

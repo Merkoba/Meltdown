@@ -57,6 +57,9 @@ class Files:
         self.add_to_list("inputs", text)
 
     def add_system(self, text: str) -> None:
+        if text == config.default_system:
+            return
+
         self.add_to_list("systems", text)
 
     def add_file(self, text: str) -> None:

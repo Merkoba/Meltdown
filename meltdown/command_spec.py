@@ -21,6 +21,7 @@ from .autoscroll import autoscroll
 from .itemops import itemops
 from . import summarize
 from . import menumanager
+from . import system_prompt
 from . import findmanager
 from . import delete
 from . import close
@@ -659,7 +660,7 @@ class CommandSpec:
         self.add_cmd(
             "system",
             "Write the system prompt",
-            lambda a=None: widgets.write_system_prompt(a),
+            lambda a=None: system_prompt.write(a),
             type=str,
         )
 

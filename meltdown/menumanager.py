@@ -6,6 +6,7 @@ from typing import Any
 from .app import app
 from .config import config
 from .menus import Menu
+from . import system_prompt
 
 
 def get_main_button() -> tk.Widget:
@@ -25,11 +26,10 @@ class MainMenu:
         from .session import session
         from .logs import logs
         from .commands import commands
-        from .widgets import widgets
 
         self.menu = Menu()
 
-        self.menu.add("System", lambda e: widgets.write_system_prompt())
+        self.menu.add("System", lambda e: system_prompt.write())
 
         self.menu.separator()
 
