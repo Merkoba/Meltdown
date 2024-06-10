@@ -69,12 +69,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_intro_nouns",
-            action="store_false",
-            info="Don't suggest nouns at the end of the intro",
-        )
-
-        self.add_argument(
             "no_color_italic",
             action="store_false",
             info="Don't apply color to italic text",

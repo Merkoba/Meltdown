@@ -196,12 +196,6 @@ class Display:
             return
 
         text = "\n".join(app.intro)
-
-        if args.intro_nouns:
-            nouns = utils.random_nouns(2)
-            nouns = [f"`{noun}`" for noun in nouns]
-            text += f"\n{' | '.join(nouns)}"
-
         display.print(text, tab_id=tab_id, modified=False)
         self.format_text(tab_id, mode="all", force=True)
 
