@@ -462,11 +462,12 @@ class Book(tk.Frame):
         self.select(page.id_)
 
     def get_name(self, id_: str) -> str:
-        for page in self.pages:
-            if page.id_ == id_:
-                return page.name
+        page = self.get_page_by_id(id_)
 
-        return ""
+        if not page:
+            return ""
+
+        return page.name
 
     def change_name(self, id_: str, name: str) -> None:
         page = self.get_page_by_id(id_)
@@ -592,7 +593,7 @@ class Book(tk.Frame):
             tab_x = page.tab.frame.winfo_rootx()
             tab_width = page.tab.frame.winfo_width()
 
-            if tab_x <= x <= tab_x + tab_width:
+            if tab_x <= x <= (tab_x + tab_width):
                 return page
 
         return None
