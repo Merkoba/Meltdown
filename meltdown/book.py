@@ -852,8 +852,8 @@ class Book(tk.Frame):
         page.update_tooltip()
 
     def clean_title(self, title: str) -> str:
-        title = utils.trim_words(title, args.tab_title_length)
         title = utils.replace_linebreaks(title).strip()
+        title = utils.trim_words(title, args.tab_title_length)
         return utils.remove_trails(title)
 
     def picked_or_page(self, id_: str) -> list[Page]:
