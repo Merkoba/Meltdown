@@ -2150,6 +2150,16 @@ Type: str
 
 ---
 
+### uselink-effects
+
+Effects to apply to uselinks. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
+
+Default: "color"
+
+Type: str
+
+---
+
 ### highlight-effects
 
 Effects to apply to highlight text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"

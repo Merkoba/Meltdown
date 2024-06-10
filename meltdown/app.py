@@ -54,7 +54,7 @@ class App:
         ]
 
         if prompts:
-            prompts.insert(0, f"")
+            prompts.insert(0, "")
             self.intro.extend(prompts)
 
         self.root: tk.Tk

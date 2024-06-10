@@ -171,3 +171,11 @@ Name of the current tab.
 ### ((noun))
 
 Random noun.
+
+---
+
+### %@sometext%@
+
+This is a special syntax to create `uselinks`.
+
+These are used to prompt directly on click.
