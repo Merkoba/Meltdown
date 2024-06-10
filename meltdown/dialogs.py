@@ -193,7 +193,7 @@ class Dialog:
 
     @staticmethod
     def show_textbox(
-        id: str,
+        id_: str,
         text: str,
         cmd_ok: Callable[..., Any],
         cmd_cancel: Callable[..., Any] | None = None,
@@ -207,7 +207,7 @@ class Dialog:
             curr = Dialog.current_dialog
 
             if curr:
-                if curr.id == id:
+                if curr.id_ == id_:
                     tb = Dialog.current_textbox
 
                     if tb:
@@ -215,7 +215,7 @@ class Dialog:
 
                     return
 
-        dialog = Dialog(text, top_frame=True, id=id)
+        dialog = Dialog(text, top_frame=True, id_=id_)
 
         textbox = TextBox(
             dialog,
@@ -253,10 +253,10 @@ class Dialog:
         if Dialog.current_dialog:
             Dialog.current_dialog.focus()
 
-    def __init__(self, text: str, top_frame: bool = False, id: str = "") -> None:
+    def __init__(self, text: str, top_frame: bool = False, id_: str = "") -> None:
         Dialog.hide_all()
 
-        self.id = id
+        self.id_ = id_
         self.buttons: list[ButtonBox] = []
 
         self.make(text, with_top_frame=top_frame)

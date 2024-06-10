@@ -792,7 +792,13 @@ class Display:
         cmds.append(("To Start", lambda a: self.move_tab_to_start(tab_id)))
         cmds.append(("To End", lambda a: self.move_tab_to_end(tab_id)))
 
-        Dialog.show_dialog("Move tab?", cmds)
+        picked = self.get_picked()
+
+        if picked:
+            n = len(picked)
+            Dialog.show_dialog(f"Move tabs? ({n})", cmds)
+        else:
+            Dialog.show_dialog("Move tab?", cmds)
 
     def move_tab_to_start(self, tab_id: str | None = None) -> None:
         if not tab_id:

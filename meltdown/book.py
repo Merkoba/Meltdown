@@ -661,20 +661,37 @@ class Book(tk.Frame):
         self.scroll_to_page(self.current_page)
 
     def move_to_start(self, id_: str) -> None:
-        for page in self.pages:
-            if page.id_ == id_:
-                self.pages.insert(0, self.pages.pop(self.pages.index(page)))
-                self.update_tab_columns()
-                self.select(id_)
-                return
+        picked = self.get_picked()
+
+        if picked:
+            i = 0
+
+            for page in picked:
+                self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+                i += 1
+        else:
+            page = self.get_page_by_id(id_)
+            self.pages.insert(0, self.pages.pop(self.pages.index(page)))
+
+        self.update_tab_columns()
+        self.select(id_)
 
     def move_to_end(self, id_: str) -> None:
-        for page in self.pages:
-            if page.id_ == id_:
-                self.pages.append(self.pages.pop(self.pages.index(page)))
-                self.update_tab_columns()
-                self.select(id_)
-                return
+        picked = self.get_picked()
+
+        if picked:
+            i = len(self.pages) - 1
+            picked.reverse()
+
+            for page in picked:
+                self.pages.insert(i, self.pages.pop(self.pages.index(page)))
+                i -= 1
+        else:
+            page = self.get_page_by_id(id_)
+            self.pages.append(self.pages.pop(self.pages.index(page)))
+
+        self.update_tab_columns()
+        self.select(id_)
 
     def move_left(self, page: Page | None = None) -> None:
         if not page:
