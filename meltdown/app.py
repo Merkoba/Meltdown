@@ -527,11 +527,13 @@ class App:
 
     def on_focus_out(self, event: Any) -> None:
         from .keyboard import keyboard
+        from .display import display
 
         what = str(event.widget)
 
         if what == ".":
             keyboard.reset()
+            display.unpick()
 
     def prepare(self) -> None:
         from .args import args
