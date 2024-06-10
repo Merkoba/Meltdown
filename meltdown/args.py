@@ -145,6 +145,7 @@ class Args:
         self.bold_effects = "bold"
         self.italic_effects = "italic_color"
         self.highlight_effects = "color"
+        self.uselink_effects = "color"
         self.quote_effects = "color"
         self.list_effects = "color"
         self.url_effects = "underline"
@@ -481,6 +482,7 @@ class Args:
             "bold_effects",
             "italic_effects",
             "highlight_effects",
+            "uselink_effects",
             "quote_effects",
             "list_effects",
             "url_effects",

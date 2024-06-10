@@ -1434,6 +1434,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "uselink_effects",
+            type=str,
+            info=f"Effects to apply to uselinks. {self.effects_info}",
+        )
+
+        self.add_argument(
             "highlight_effects",
             type=str,
             info=f"Effects to apply to highlight text. {self.effects_info}",

@@ -376,6 +376,12 @@ class Output(tk.Text):
             for tag in self.word_tags:
                 self.tag_bind(tag, "<ButtonRelease-1>", lambda e: on_tag_click(e))
 
+        def on_uselink_click(event: Any) -> None:
+            self.deselect_all()
+            self.uselink_click(event)
+
+        self.tag_bind("uselink", "<ButtonRelease-1>", lambda e: on_uselink_click(e))
+
         def on_list_click(event: Any) -> None:
             self.deselect_all()
             self.show_list_menu(event)
@@ -839,6 +845,8 @@ class Output(tk.Text):
             elif any(tag in ["list"] for tag in tags):
                 if args.list_menu:
                     self.configure(cursor="hand2")
+            elif any(tag in ["uselink"] for tag in tags):
+                self.configure(cursor="hand2")
         else:
             self.configure(cursor="xterm")
 
@@ -1077,6 +1085,7 @@ class Output(tk.Text):
         self.add_effects("list")
         self.add_effects("url")
         self.add_effects("path")
+        self.add_effects("uselink")
         self.add_effects("header_1", app.theme.get_header_size(1))
         self.add_effects("header_2", app.theme.get_header_size(2))
         self.add_effects("header_3", app.theme.get_header_size(3))
@@ -1170,3 +1179,15 @@ class Output(tk.Text):
             return
 
         url_menu.show(event)
+
+    def uselink_click(self, event: Any) -> None:
+        from .model import model
+
+        current_index = self.index(tk.CURRENT)
+        tags = self.tag_names(current_index)
+        text = self.get_tagwords(tags[0], event).strip()
+
+        if not text:
+            return
+
+        model.stream({"text": text}, self.tab_id)

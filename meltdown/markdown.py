@@ -49,6 +49,7 @@ class Markdown:
         tick = utils.escape_regex("`")
         quote = utils.escape_regex('"')
         hash_ = utils.escape_regex("#")
+        uselink = utils.escape_regex("%@")
 
         # Code snippets / fences
         self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
@@ -81,6 +82,11 @@ class Markdown:
         # Highlight with one backtick
         self.pattern_highlight_3 = (
             rf"{left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}"
+        )
+
+        # Uselink with the special chars
+        self.pattern_uselink = (
+            rf"{left}(?P<all>{uselink}(?P<content>.*?){uselink}){right}"
         )
 
         # Highlight with one double-quote
@@ -209,6 +215,8 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_1, "highlight")
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_2, "highlight")
             self.do_format(start_ln, end_ln, who, self.pattern_highlight_3, "highlight")
+
+        self.do_format(start_ln, end_ln, who, self.pattern_uselink, "uselink")
 
         if self.enabled(who, "quote"):
             self.do_format(start_ln, end_ln, who, self.pattern_quote, "quote", True)

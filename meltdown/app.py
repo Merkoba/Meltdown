@@ -39,11 +39,23 @@ class App:
 
         title = self.manifest["title"]
 
+        prompts = [
+            "How are you?",
+            "I want to learn something",
+            "List 5 interesting things",
+        ]
+
+        prompts = [f"%@{prompt}%@" for prompt in prompts]
+
         self.intro = [
             f"Welcome to {title}.",
             "Write a `prompt` and press Enter.",
             "Type /about to learn more.",
         ]
+
+        if prompts:
+            prompts.insert(0, f"")
+            self.intro.extend(prompts)
 
         self.root: tk.Tk
         self.main_frame: tk.Frame
