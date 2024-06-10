@@ -94,7 +94,7 @@ class App:
         from .args import args
 
         title = self.manifest["title"]
-        uselinks = args.intro_uselinks
+        uselinks = args.uselinks
 
         if not uselinks:
             uselinks = [

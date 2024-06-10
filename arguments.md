@@ -1284,6 +1284,16 @@ Type: str
 
 ---
 
+### uselink
+
+Add a custom uselink to the intro
+
+Action: append
+
+Type: str
+
+---
+
 ### alias
 
 Define an alias to run commands. Format is "[word] = [commands]"

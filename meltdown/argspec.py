@@ -915,10 +915,10 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "intro_uselink",
+            "uselink",
             type=str,
             action="append",
-            info="Add a custom uselink for the intro",
+            info="Add a custom uselink to the intro",
         )
 
         self.add_argument(

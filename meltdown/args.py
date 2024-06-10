@@ -247,7 +247,7 @@ class Args:
         self.theme = ""
         self.auto_unload = 0
         self.tab_tooltip_length = 235
-        self.intro_uselinks: list[str] = []
+        self.uselinks: list[str] = []
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -262,7 +262,7 @@ class Args:
             ("alias", "aliases"),
             ("task", "tasks"),
             ("custom_prompt", "custom_prompts"),
-            ("intro_uselink", "intro_uselinks"),
+            ("uselink", "uselinks"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
