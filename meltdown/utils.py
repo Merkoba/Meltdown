@@ -416,9 +416,8 @@ class Utils:
         from .config import config
 
         trimmed = ""
-        len_text = len(text)
 
-        if len_text <= length:
+        if len(text) <= length:
             trimmed = text
         else:
             t_text = text[:length]
