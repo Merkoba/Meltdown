@@ -246,6 +246,7 @@ class Args:
         self.theme = ""
         self.auto_unload = 0
         self.tab_tooltip_length = 235
+        self.intro_nouns = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -326,6 +327,7 @@ class Args:
             ("no_names_on_logs", "names_on_logs"),
             ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
+            ("no_intro_nouns", "intro_nouns"),
         ]
 
         for r_item in other_name:

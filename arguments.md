@@ -12,6 +12,14 @@ Action: version
 
 ---
 
+### no-intro-nouns
+
+Don't suggest nouns at the end of the intro
+
+Action: store_false
+
+---
+
 ### no-color-italic
 
 Don't apply color to italic text

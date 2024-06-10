@@ -182,13 +182,16 @@ class Utils:
         return con() + vow() + con() + vow() + con() + vow()
 
     def random_noun(self) -> str:
+        return self.random_nouns(1)[0]
+
+    def random_nouns(self, num: int) -> list[str]:
         from .paths import paths
         from .files import files
 
         if not self.nouns:
             self.nouns = files.read(paths.nouns).splitlines()
 
-        return random.choice(self.nouns)
+        return random.sample(self.nouns, num)
 
     def replace_keywords(self, content: str, words: str | None = None) -> str:
         from .args import args

@@ -189,6 +189,12 @@ class Display:
             return
 
         text = "\n".join(app.intro)
+
+        if args.intro_nouns:
+            nouns = utils.random_nouns(2)
+            nouns = [f"`{noun}`" for noun in nouns]
+            text += f"\n{' | '.join(nouns)}"
+
         display.print(text, tab_id=tab_id, modified=False)
         self.format_text(tab_id, mode="all", force=True)
 
@@ -204,7 +210,8 @@ class Display:
         self.show_header(tab_id)
 
         if tabconvo.convo.id != "ignore":
-            self.show_intro(tab_id)
+            if not tabconvo.convo.items:
+                self.show_intro(tab_id)
 
         if not args.auto_bottom:
             self.enable_auto_bottom(tab_id)
