@@ -742,10 +742,7 @@ class Display:
         if tab.mode == "ignore":
             return
 
-        text = text.replace("\n", " ").strip()
-        text = utils.remove_multiple_spaces(text)
-        text = utils.trim_words(text, args.auto_name_length)
-        text = utils.remove_trails(text)
+        text = utils.compact_text(text, args.auto_name_length)
         self.do_rename_tab(tab_id, text)
 
     def has_messages(self, tab_id: str | None = None) -> bool:

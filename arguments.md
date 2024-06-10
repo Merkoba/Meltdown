@@ -958,7 +958,7 @@ Action: store_true
 
 The extra title is the answer added after the tab name in the tooltips of the tabs
 
-Default: 230
+Default: 235
 
 Type: int
 

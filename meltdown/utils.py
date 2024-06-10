@@ -407,7 +407,7 @@ class Utils:
 
     def replace_linebreaks(self, text: str) -> str:
         text = " ".join(text.split("\n"))
-        return self.remove_multiple_spaces(text).strip()
+        return self.remove_multiple_spaces(text)
 
     def get_words(self, text: str) -> list[str]:
         return re.findall(r"\w+", text)
@@ -432,7 +432,12 @@ class Utils:
         return trimmed.strip()
 
     def remove_trails(self, text: str) -> str:
-        return text.rstrip(" ,.;").strip()
+        return text.rstrip(" ,.;")
+
+    def compact_text(self, text: str, length: int) -> str:
+        text = utils.replace_linebreaks(text).strip()
+        text = utils.trim_words(text, length)
+        return utils.remove_trails(text)
 
 
 utils = Utils()

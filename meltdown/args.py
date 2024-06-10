@@ -245,7 +245,7 @@ class Args:
         self.use_both = False
         self.theme = ""
         self.auto_unload = 0
-        self.tab_title_length = 230
+        self.tab_title_length = 235
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
