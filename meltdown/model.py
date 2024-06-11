@@ -319,6 +319,7 @@ class Model:
         log_dict["user"] = prompt_user if prompt_user else prompt_text
         log_dict["file"] = original_file
         log_dict["model"] = utils.last_slash(self.loaded_model)
+        log_dict["seed"] = config.seed
 
         messages: list[dict[str, Any]] = []
 

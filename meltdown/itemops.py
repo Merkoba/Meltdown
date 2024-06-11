@@ -188,7 +188,13 @@ class ItemOps:
         text += f"\nChars AI: {l_ai}"
 
         if item.model:
-            text += f"\n\n{item.model}"
+            m = utils.split_long(item.model, 35)
+            text += f"\n\n{m}"
+
+        if item.seed >= 0:
+            text += f"\n\nSeed: {item.seed}"
+        else:
+            text += "\n\nNo Seed"
 
         Dialog.show_message(text)
 
