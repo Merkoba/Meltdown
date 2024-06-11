@@ -211,7 +211,7 @@ class Utils:
 
         def replace(what: str) -> str:
             if what == "noun":
-                return utils.random_noun()
+                return self.random_noun()
 
             if what == "user":
                 return config.name_user
@@ -443,9 +443,9 @@ class Utils:
         return text.rstrip(" ,.;")
 
     def compact_text(self, text: str, length: int) -> str:
-        text = utils.replace_linebreaks(text).strip()
-        text = utils.trim_words(text, length)
-        return utils.remove_trails(text)
+        text = self.replace_linebreaks(text).strip()
+        text = self.trim_words(text, length)
+        return self.remove_trails(text)
 
     def last_slash(self, text: str) -> str:
         return text.split("/")[-1]
