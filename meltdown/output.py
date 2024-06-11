@@ -1038,6 +1038,8 @@ class Output(tk.Text):
             separator = Output.marker_separator
 
         self.print(separator)
+        last_line = self.index("end-1c").split(".")[0]
+        self.tag_add("separator", f"{last_line}.0", "end-1c")
 
     def select_lines(self, start_ln: int, end_ln: int) -> None:
         self.tag_add("sel", f"{start_ln}.0", f"{end_ln}.end")
