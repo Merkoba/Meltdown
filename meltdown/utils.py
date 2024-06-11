@@ -485,10 +485,10 @@ class Utils:
             text = item
 
             if short:
-                text = utils.shorten_path(text)
+                text = self.shorten_path(text)
 
-            text = utils.bullet_points(text[: args.list_item_width])
-            text = utils.replace_linebreaks(text)
+            text = self.bullet_points(text[: args.list_item_width])
+            text = self.replace_linebreaks(text)
             menu.add(text=text, command=lambda e: proc(item))
 
         for item in items:
