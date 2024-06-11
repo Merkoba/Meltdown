@@ -13,12 +13,16 @@ from difflib import SequenceMatcher
 from typing import Any
 from pathlib import Path
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 # Libraries
 from rich.console import Console  # type: ignore
 
 # Modules
 from . import pyperclip
+
+if TYPE_CHECKING:
+    from .menus import Menu
 
 
 class Utils:
@@ -454,6 +458,22 @@ class Utils:
             return f"{first_half}\n{second_half}"
 
         return text
+
+    def fill_recent(
+        self, menu: Menu, items: list[str], text: str, proc: callable[..., Any]
+    ) -> None:
+        from .args import args
+
+        def add_item(item: str) -> None:
+            if item == text:
+                return
+
+            f_text = utils.bullet_points(item[: args.list_item_width])
+            f_text = utils.replace_linebreaks(f_text)
+            menu.add(text=f_text, command=lambda e: proc(item))
+
+        for item in items:
+            add_item(item)
 
 
 utils = Utils()

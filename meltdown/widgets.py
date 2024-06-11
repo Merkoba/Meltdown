@@ -431,6 +431,7 @@ class Widgets:
         only_items: bool = False,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
+
         if not isinstance(menu, Menu):
             return
 
@@ -440,6 +441,12 @@ class Widgets:
             items = files.get_list(key_list)
 
         items = items[: args.max_list_items]
+        widget = self.get_widget(key_config)
+        value = ""
+
+        if widget:
+            value = widget.get()
+
         menu.clear()
 
         if only_items:
@@ -451,29 +458,14 @@ class Widgets:
 
         if items:
             if not only_items:
-                menu.add(text="--- Recent ---", disabled=True)
+                menu.add(text=config.recent_label, disabled=True)
 
             short_paths = ("model", "file")
 
-            def add_item(item: str) -> None:
-                def proc() -> None:
-                    command(item)
+            if key_config in short_paths:
+                items = [utils.shorten_path(item) for item in items]
 
-                text = item
-
-                if key_config in short_paths:
-                    text = utils.shorten_path(text)
-
-                f_text = utils.bullet_points(text[: args.list_item_width])
-                f_text = utils.replace_linebreaks(f_text)
-
-                menu.add(
-                    text=f_text,
-                    command=lambda e: proc(),
-                )
-
-            for item in items:
-                add_item(item)
+            utils.fill_recent(menu, items, value, command)
 
         if event:
             menu.show(event)

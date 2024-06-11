@@ -26,6 +26,7 @@ class Config:
         self.similar_threshold = 0.7
         self.trim_threshold = 15
         self.split_long_length = 35
+        self.recent_label = "--- Recent ---"
 
         self.default_system = """
 Your name is ((name_ai)).
