@@ -82,6 +82,7 @@ class Keyboard:
 
         is_ctrl = event.keysym == "Control_L" or event.keysym == "Control_R"
         is_shift = event.keysym == "Shift_L" or event.keysym == "Shift_R"
+        is_esc = event.keysym == "Escape"
         is_entrybox = isinstance(event.widget, EntryBox)
         is_textbox = isinstance(event.widget, TextBox)
 
@@ -107,6 +108,9 @@ class Keyboard:
             self.shift = True
 
         if self.blocked():
+            if is_esc:
+                app.hide_all()
+
             return
 
         if event.keysym != "Tab":
