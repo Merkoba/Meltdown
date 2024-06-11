@@ -458,12 +458,11 @@ class Widgets:
             self.add_common_commands(menu, key_config)
 
         if items:
-            short_paths = ("model", "file")
+            short = key_config in ("model", "file")
 
-            if key_config in short_paths:
-                items = [utils.shorten_path(item) for item in items]
-
-            utils.fill_recent(menu, items, value, command, not only_items)
+            utils.fill_recent(
+                menu, items, value, command, label=not only_items, short=short
+            )
 
         if event:
             menu.show(event)

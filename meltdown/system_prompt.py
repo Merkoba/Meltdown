@@ -43,6 +43,7 @@ def write(text: str | None = None, maxed: bool = False) -> None:
         items = files.get_list("systems")[: args.max_list_items]
 
         if items:
+
             def proc(item: str) -> None:
                 config.set("system", item)
                 textbox.set_text(item)

@@ -466,7 +466,8 @@ class Utils:
         items: list[str],
         text: str,
         proc: Callable[..., Any],
-        add_label: bool = True,
+        label: bool = True,
+        short: bool = False,
     ) -> None:
         from .args import args
         from .config import config
@@ -474,13 +475,17 @@ class Utils:
         if not items:
             return
 
-        menu.add(text=config.recent_label, disabled=True)
+        if label:
+            menu.add(text=config.recent_label, disabled=True)
 
         def add_item(item: str) -> None:
             if item == text:
                 return
 
-            f_text = utils.bullet_points(item[: args.list_item_width])
+            if short:
+                f_text = utils.shorten_path(item)
+
+            f_text = utils.bullet_points(f_text[: args.list_item_width])
             f_text = utils.replace_linebreaks(f_text)
             menu.add(text=f_text, command=lambda e: proc(item))
 
