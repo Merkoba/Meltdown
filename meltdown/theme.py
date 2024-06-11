@@ -155,6 +155,8 @@ class Theme:
         self.textbox_background = "white"
         self.textbox_foreground = "black"
         self.textbox_insert = "black"
+        self.textbox_width = 40
+        self.textbox_height = 6
 
         self.effect_color = "#0adeff"
 

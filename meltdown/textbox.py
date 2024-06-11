@@ -30,7 +30,7 @@ class TextBox(tk.Text):
 
         super().__init__(dialog.top_frame, undo=False)
         self.configure(font=app.theme.font("textbox"))
-        self.configure(width=30, height=5)
+        self.configure(width=app.theme.textbox_width, height=app.theme.textbox_height)
         self.configure(highlightthickness=0)
         self.configure(background=app.theme.textbox_background)
         self.configure(foreground=app.theme.textbox_foreground)
