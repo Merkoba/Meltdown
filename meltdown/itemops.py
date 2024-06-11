@@ -188,7 +188,7 @@ class ItemOps:
         text += f"\nChars AI: {l_ai}"
 
         if item.model:
-            m = utils.split_long(item.model, 35)
+            m = utils.split_long(item.model, config.split_long)
             text += f"\n\n{m}"
 
         if item.seed >= 0:
