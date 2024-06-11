@@ -461,9 +461,20 @@ class Utils:
         return text
 
     def fill_recent(
-        self, menu: Menu, items: list[str], text: str, proc: Callable[..., Any]
+        self,
+        menu: Menu,
+        items: list[str],
+        text: str,
+        proc: Callable[..., Any],
+        add_label: bool = True,
     ) -> None:
         from .args import args
+        from .config import config
+
+        if not items:
+            return
+
+        menu.add(text=config.recent_label, disabled=True)
 
         def add_item(item: str) -> None:
             if item == text:
