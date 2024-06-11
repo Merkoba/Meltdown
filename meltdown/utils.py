@@ -464,7 +464,7 @@ class Utils:
         self,
         menu: Menu,
         items: list[str],
-        text: str,
+        value: str,
         proc: Callable[..., Any],
         label: bool = True,
         short: bool = False,
@@ -479,15 +479,17 @@ class Utils:
             menu.add(text=config.recent_label, disabled=True)
 
         def add_item(item: str) -> None:
-            if item == text:
+            if item == value:
                 return
 
-            if short:
-                f_text = utils.shorten_path(item)
+            text = item
 
-            f_text = utils.bullet_points(f_text[: args.list_item_width])
-            f_text = utils.replace_linebreaks(f_text)
-            menu.add(text=f_text, command=lambda e: proc(item))
+            if short:
+                text = utils.shorten_path(text)
+
+            text = utils.bullet_points(text[: args.list_item_width])
+            text = utils.replace_linebreaks(text)
+            menu.add(text=text, command=lambda e: proc(item))
 
         for item in items:
             add_item(item)
