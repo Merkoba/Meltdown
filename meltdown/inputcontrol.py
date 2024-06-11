@@ -332,7 +332,7 @@ class InputControl:
             items = inputs[: args.max_list_items]
 
             if items:
-                menu.add(text="--- Recent ---", disabled=True)
+                menu.add(text=config.recent_label, disabled=True)
 
             def add_item(item: str) -> None:
                 def proc() -> None:

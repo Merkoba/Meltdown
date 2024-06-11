@@ -14,6 +14,7 @@ from typing import Any
 from pathlib import Path
 from datetime import datetime
 from typing import TYPE_CHECKING
+from collections.abc import Callable
 
 # Libraries
 from rich.console import Console  # type: ignore
@@ -460,7 +461,7 @@ class Utils:
         return text
 
     def fill_recent(
-        self, menu: Menu, items: list[str], text: str, proc: callable[..., Any]
+        self, menu: Menu, items: list[str], text: str, proc: Callable[..., Any]
     ) -> None:
         from .args import args
 

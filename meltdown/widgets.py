@@ -445,7 +445,8 @@ class Widgets:
         value = ""
 
         if widget:
-            value = widget.get()
+            if isinstance(widget, Gettable):
+                value = widget.get()
 
         menu.clear()
 
