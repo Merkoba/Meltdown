@@ -69,7 +69,7 @@ class Dialog:
             dialog.entry = EntryBox(
                 dialog.top_frame,
                 font=app.theme.font(),
-                width=20,
+                width=app.theme.input_width,
                 justify="center",
                 style="Dialog.TEntry",
                 mode=entry_mode,

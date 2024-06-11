@@ -158,6 +158,8 @@ class Theme:
         self.textbox_width = 40
         self.textbox_height = 6
 
+        self.input_width = 25
+
         self.effect_color = "#0adeff"
 
     def get_font_family(self) -> str:
