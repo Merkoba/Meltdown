@@ -328,7 +328,6 @@ class Args:
             ("no_shorten_paths", "shorten_paths"),
             ("no_separate_logs", "separate_logs"),
             ("no_names_on_logs", "names_on_logs"),
-            ("no_ascii_logs", "ascii_logs"),
             ("no_quote_used_words", "quote_used_words"),
         ]
 
@@ -496,6 +495,7 @@ class Args:
             "header_3_effects",
             "auto_unload",
             "tab_tooltip_length",
+            "ascii_logs",
         ]
 
         for n_item in normals:

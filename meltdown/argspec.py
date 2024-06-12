@@ -117,12 +117,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_ascii_logs",
-            action="store_false",
-            info="Don't escape non-ascii chars in json logs",
-        )
-
-        self.add_argument(
             "no_quote_used_words",
             action="store_false",
             info="Don't add quotes to used words",
@@ -480,6 +474,12 @@ class ArgSpec:
             "no_color_list",
             action="store_false",
             info="Don't color the list characters",
+        )
+
+        self.add_argument(
+            "ascii_logs",
+            action="store_true",
+            info="Escape non-ascii chars in json logs",
         )
 
         self.add_argument(

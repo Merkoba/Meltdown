@@ -700,6 +700,7 @@ class Model:
         if not model_:
             return
 
+        model_ = utils.split_long(model_, config.split_long_length)
         Dialog.show_message(model_)
 
     def get_stop_list(self) -> list[str] | None:
