@@ -162,7 +162,7 @@ class Theme:
 
         self.effect_color = "#0adeff"
 
-        self.msgbox_width = 30
+        self.msgbox_width = 34
         self.msgbox_height = 10
 
     def get_font_family(self) -> str:

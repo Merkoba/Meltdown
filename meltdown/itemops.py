@@ -195,16 +195,16 @@ class ItemOps:
             text += f"\n\nSeed: {item.seed}"
 
         if item.max_tokens >= min_num:
-            text += f"\n\nMax Tokens: {item.max_tokens}"
+            text += f"\nMax Tokens: {item.max_tokens}"
 
         if item.temperature >= min_num:
-            text += f"\n\nTemperature: {item.temperature}"
+            text += f"\nTemperature: {item.temperature}"
 
         if item.top_k >= min_num:
-            text += f"\n\nTop K: {item.top_k}"
+            text += f"\nTop K: {item.top_k}"
 
         if item.top_p >= min_num:
-            text += f"\n\nTop P: {item.top_p}"
+            text += f"\nTop P: {item.top_p}"
 
         Dialog.show_msgbox("Information", text)
 
