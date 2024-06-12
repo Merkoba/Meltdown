@@ -671,6 +671,7 @@ class Args:
 
     def show_used_args(self) -> None:
         from .display import display
+        from .dialogs import Dialog
 
         text = []
 
@@ -690,7 +691,8 @@ class Args:
                 text.append(f"{attr_name} = {value}")
 
         if not text:
-            text.append("No arguments were used.")
+            Dialog.show_message("No arguments were used")
+            return
 
         display.make_tab(name="Arguments", mode="ignore")
         display.print("\n".join(text))
