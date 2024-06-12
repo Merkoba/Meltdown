@@ -26,6 +26,7 @@ class Args:
         self.system_temp = True
         self.system_threshold = 70
         self.system_delay = 3
+        self.system_suspend = 1
         self.keyboard = True
         self.taps = True
         self.taps_command = ""
@@ -245,7 +246,7 @@ class Args:
         self.use_program = ""
         self.use_both = False
         self.theme = ""
-        self.auto_unload = 0
+        self.auto_unload = 60
         self.tab_tooltip_length = 235
         self.uselinks: list[str] = []
 
@@ -366,6 +367,7 @@ class Args:
             "system_threshold",
             "drag_threshold",
             "system_delay",
+            "system_suspend",
             "quiet",
             "delay",
             "prefix",

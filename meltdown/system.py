@@ -18,6 +18,7 @@ from .utils import utils
 from .framedata import FrameData
 from .tooltips import ToolTip
 from .tips import tips
+from .model import model
 from . import widgetutils
 
 
@@ -29,6 +30,7 @@ class System:
         self.gpu_use: int | None = None
         self.gpu_ram: int | None = None
         self.gpu_temp: int | None = None
+        self.clean = True
 
     def set_widget(self, widget: tk.StringVar, text: str) -> None:
         if app.exists():
@@ -120,6 +122,8 @@ class System:
         if args.system_colors:
             self.set_colors()
 
+        self.clean = False
+
     def set_colors(self) -> None:
         if self.cpu is not None:
             self.check_color("cpu", self.cpu)
@@ -139,11 +143,13 @@ class System:
         if self.gpu_temp is not None:
             self.check_color("gpu_temp", self.gpu_temp)
 
-    def check_color(self, name: str, var: int) -> None:
+    def check_color(self, name: str, var: int, reset: bool = False) -> None:
         if getattr(args, f"system_{name}"):
             label = getattr(widgets, f"{name}_text")
 
-            if var >= args.system_threshold:
+            if reset:
+                label.configure(foreground=app.theme.foreground_color)
+            elif var >= args.system_threshold:
                 label.configure(foreground=app.theme.system_heavy)
             else:
                 label.configure(foreground=app.theme.system_normal)
@@ -153,10 +159,24 @@ class System:
 
         while True:
             if app.system_frame_enabled:
-                try:
-                    self.get_info()
-                except BaseException as e:
-                    utils.error(e)
+                check = True
+
+                if args.system_suspend >= 1:
+                    if not model.stream_date:
+                        check = False
+                    else:
+                        mins = (utils.now() - model.stream_date) / 60
+
+                        if mins >= args.system_suspend:
+                            check = False
+
+                if check:
+                    try:
+                        self.get_info()
+                    except BaseException as e:
+                        utils.error(e)
+                else:
+                    self.reset()
 
             utils.sleep(args.system_delay)
 
@@ -173,6 +193,9 @@ class System:
         thread.start()
 
     def reset(self) -> None:
+        if self.clean:
+            return
+
         self.cpu = None
         self.ram = None
         self.temp = None
@@ -189,12 +212,14 @@ class System:
         self.set_widget(widgets.gpu_ram, text)
         self.set_widget(widgets.gpu_temp, text)
 
-        self.check_color("cpu", 0)
-        self.check_color("ram", 0)
-        self.check_color("temp", 0)
-        self.check_color("gpu", 0)
-        self.check_color("gpu_ram", 0)
-        self.check_color("gpu_temp", 0)
+        self.check_color("cpu", 0, True)
+        self.check_color("ram", 0, True)
+        self.check_color("temp", 0, True)
+        self.check_color("gpu", 0, True)
+        self.check_color("gpu_ram", 0, True)
+        self.check_color("gpu_temp", 0, True)
+
+        self.clean = True
 
     def add_items(self) -> None:
         data = FrameData(widgets.scroller_system)

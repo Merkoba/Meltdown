@@ -1039,6 +1039,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "system_suspend",
+            type=int,
+            info="Stop updating the system these minutes after the last stream",
+        )
+
+        self.add_argument(
             "autorun",
             type=str,
             info="Run this command at startup",

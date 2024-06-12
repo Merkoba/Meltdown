@@ -474,6 +474,7 @@ class Model:
             ans = self.process_instant(output, tab_id)
 
         res = ans.strip()
+        now_2 = utils.now()
 
         if res:
             log_dict["ai"] = res
@@ -481,11 +482,12 @@ class Model:
             tabconvo.convo.add(log_dict)
 
             if args.show_duration:
-                diff = utils.now() - now
+                diff = now_2 - now
                 seconds = int(round(diff))
                 word = utils.singular_or_plural(seconds, "second", "seconds")
                 display.print(f"Duration: {seconds} {word}", tab_id=tab_id)
 
+        self.stream_date = now_2
         self.release_lock()
 
     def process_stream(
