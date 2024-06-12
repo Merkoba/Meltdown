@@ -162,6 +162,9 @@ class Theme:
 
         self.effect_color = "#0adeff"
 
+        self.msgbox_width = 30
+        self.msgbox_height = 10
+
     def get_font_family(self) -> str:
         if config.font_family == "monospace":
             font = self.monospace_family

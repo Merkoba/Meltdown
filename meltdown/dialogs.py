@@ -37,7 +37,7 @@ class Dialog:
 
     @staticmethod
     def show_dialog(
-        text: str,
+        text: str = "",
         commands: list[tuple[str, Callable[..., Any]]] | None = None,
         image: Path | None = None,
         use_entry: bool = False,
@@ -45,8 +45,12 @@ class Dialog:
         value: str = "",
         top_frame: bool = False,
         image_width: int = 270,
+        msgbox: str | None = None,
     ) -> None:
         from .menus import Menu
+
+        if use_entry or msgbox:
+            top_frame = True
 
         dialog = Dialog(text, top_frame=top_frame)
 
@@ -124,6 +128,18 @@ class Dialog:
 
         # ------
 
+        if msgbox:
+            message_box = tk.Text(dialog.top_frame)
+            message_box.insert("1.0", msgbox)
+            message_box.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
+            message_box.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
+            message_box.configure(background=app.theme.textbox_background)
+            message_box.configure(borderwidth=0, highlightthickness=0)
+
+        message_box.pack(padx=3, pady=3)
+
+        # ------
+
         def make_cmd(cmd: tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
                 ans = {"entry": Dialog.get_entry()}
@@ -165,7 +181,7 @@ class Dialog:
         def ok(ans: Answer) -> None:
             pass
 
-        Dialog.show_dialog(text, [("Ok", ok)])
+        Dialog.show_dialog(commands=[("Ok", ok)], msgbox=text)
 
     @staticmethod
     def show_input(
@@ -188,7 +204,6 @@ class Dialog:
             use_entry=True,
             entry_mode=mode,
             value=value,
-            top_frame=True,
         )
 
     @staticmethod
