@@ -180,13 +180,8 @@ class ItemOps:
 
         w_user = len(utils.get_words(item.user))
         w_ai = len(utils.get_words(item.ai))
-        text += f"\nWords User: {w_user}"
-        text += f"\nWords AI: {w_ai}"
-
-        l_user = len(item.user)
-        l_ai = len(item.ai)
-        text += f"\n\nChars User: {l_user}"
-        text += f"\nChars AI: {l_ai}"
+        text += f"\nUser: {w_user} words ({len(item.user)} chars)"
+        text += f"\nAI: {w_ai} words ({len(item.ai)} chars)"
 
         if item.model:
             text += f"\n\n{item.model}"
