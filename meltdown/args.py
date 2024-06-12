@@ -97,7 +97,7 @@ class Args:
         self.input_memory_max = 30
         self.input_memory_max_items = 1000
         self.listener = False
-        self.listener_delay = 0.5
+        self.listener_delay = 1
         self.sticky = False
         self.commandoc = ""
         self.argumentdoc = ""

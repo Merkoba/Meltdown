@@ -1094,8 +1094,8 @@ class ArgSpec:
 
         self.add_argument(
             "listener_delay",
-            type=float,
-            info="Delay for the listener checks",
+            type=int,
+            info="Delay in seconds for the listener checks",
         )
 
         self.add_argument(

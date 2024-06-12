@@ -1578,11 +1578,11 @@ Type: int
 
 ### listener-delay
 
-Delay for the listener checks
+Delay in seconds for the listener checks
 
 Default: 0.5
 
-Type: float
+Type: int
 
 ---
 

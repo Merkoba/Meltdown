@@ -15,7 +15,7 @@ def start() -> None:
     if not args.listener:
         return
 
-    if args.listener_delay < 0.1:
+    if args.listener_delay < 1:
         return
 
     thread = threading.Thread(target=lambda: do_start())
@@ -28,7 +28,8 @@ def do_start() -> None:
     file_name = f"mlt_{program}.input"
 
     if not args.quiet:
-        utils.msg(f"Listening to {file_name}")
+        m = utils.singular_or_plural(args.listener_delay, "sec", "secs")
+        utils.msg(f"Listener active ({args.listener_delay} {m})")
 
     path = Path(tempfile.gettempdir(), file_name)
 

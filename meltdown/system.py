@@ -185,7 +185,8 @@ class System:
             return
 
         if not args.quiet:
-            msg = f"Updating system monitors every {args.system_delay} seconds"
+            m = utils.singular_or_plural(args.system_delay, "sec", "secs")
+            msg = f"System monitors active ({args.system_delay} {m})"
             utils.msg(msg)
 
         thread = threading.Thread(target=lambda: self.start_loop())

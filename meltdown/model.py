@@ -715,8 +715,8 @@ class Model:
         if args.auto_unload < 1:
             return
 
-        m = utils.singular_or_plural(args.auto_unload, "minute", "minutes")
-        utils.msg(f"Auto-unload set to {args.auto_unload} {m}")
+        m = utils.singular_or_plural(args.auto_unload, "min", "mins")
+        utils.msg(f"Auto-unload active ({args.auto_unload} {m})")
         thread = threading.Thread(target=lambda: self.auto_unload_loop())
         thread.daemon = True
         thread.start()
