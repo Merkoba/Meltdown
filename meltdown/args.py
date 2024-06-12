@@ -25,7 +25,7 @@ class Args:
         self.system_ram = True
         self.system_temp = True
         self.system_threshold = 70
-        self.system_delay = 3
+        self.system_delay = 2
         self.system_suspend = 1
         self.keyboard = True
         self.taps = True

@@ -111,6 +111,7 @@ class Model:
                 self.stream(prompt, tab_id)
 
         self.unload()
+        self.stream_date = utils.now()
         self.load_thread = threading.Thread(target=lambda: wrapper())
         self.load_thread.daemon = True
         self.load_thread.start()

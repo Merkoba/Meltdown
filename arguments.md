@@ -1478,7 +1478,7 @@ Type: int
 
 Delay in seconds for system monitor updates
 
-Default: 3
+Default: 2
 
 Type: int
 
