@@ -191,7 +191,7 @@ class CommandSpec:
         self.add_cmd(
             "closeothers",
             "Close other tabs",
-            lambda a=None: close.close_other(force=a),
+            lambda a=None: close.close_others(force=a),
             extra=self.force,
             type="force",
         )

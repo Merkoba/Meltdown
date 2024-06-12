@@ -126,7 +126,7 @@ def close(
         cmds.append(("Old", lambda a: close_old()))
 
     if get_other_tabs(tab_id):
-        cmds.append(("Others", lambda a: close_other(tab_id=tab_id)))
+        cmds.append(("Others", lambda a: close_others(tab_id=tab_id)))
 
     if get_left_tabs(tab_id):
         cmds.append(("Left", lambda a: close_left(tab_id=tab_id)))
@@ -180,7 +180,7 @@ def close_old(force: bool = False) -> None:
     Dialog.show_confirm(f"Close old tabs ({n}) ?", lambda: action())
 
 
-def close_other(force: bool = False, tab_id: str | None = None) -> None:
+def close_others(force: bool = False, tab_id: str | None = None) -> None:
     if not tab_id:
         tab_id = display.current_tab
 

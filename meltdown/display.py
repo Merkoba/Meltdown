@@ -282,8 +282,14 @@ class Display:
 
     def on_tab_middle_click(self, tab_id: str) -> None:
         from . import close
+        from .keyboard import keyboard
 
-        close.close(tab_id=tab_id, force_empty=True, full=False)
+        if keyboard.shift:
+            close.close_others(tab_id=tab_id)
+        elif keyboard.ctrl:
+            close.close(tab_id=tab_id, force=True)
+        else:
+            close.close(tab_id=tab_id, force_empty=True, full=False)
 
     def on_tabs_click(self) -> None:
         app.hide_all()
