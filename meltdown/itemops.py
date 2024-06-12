@@ -189,6 +189,9 @@ class ItemOps:
         if item.seed >= min_num:
             text += f"\n\nSeed: {item.seed}"
 
+        if item.history >= min_num:
+            text += f"\nHistory: {item.history}"
+
         if item.max_tokens >= min_num:
             text += f"\nMax Tokens: {item.max_tokens}"
 

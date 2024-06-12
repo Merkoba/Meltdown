@@ -1580,7 +1580,7 @@ Type: int
 
 Delay in seconds for the listener checks
 
-Default: 0.5
+Default: 1
 
 Type: int
 

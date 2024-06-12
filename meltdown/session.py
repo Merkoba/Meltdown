@@ -31,6 +31,7 @@ class Item:
             str(data.get("file", "")),
             str(data.get("model", "")),
             int(data.get("seed", def_num)),
+            int(data.get("history", def_num)),
             int(data.get("max_tokens", def_num)),
             float(data.get("temperature", def_num)),
             int(data.get("top_k", def_num)),
@@ -45,6 +46,7 @@ class Item:
         file: str,
         model: str,
         seed: int,
+        history: int,
         max_tokens: int,
         temperature: float,
         top_k: int,
@@ -56,6 +58,7 @@ class Item:
         self.file = file
         self.model = model
         self.seed = seed
+        self.history = history
         self.max_tokens = max_tokens
         self.temperature = temperature
         self.top_k = top_k
@@ -69,6 +72,7 @@ class Item:
             "file": self.file,
             "model": self.model,
             "seed": self.seed,
+            "history": self.history,
             "max_tokens": self.max_tokens,
             "temperature": self.temperature,
             "top_k": self.top_k,
