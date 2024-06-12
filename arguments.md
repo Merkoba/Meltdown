@@ -76,14 +76,6 @@ Action: store_false
 
 ---
 
-### no-ascii-logs
-
-Don't escape non-ascii chars in json logs
-
-Action: store_false
-
----
-
 ### no-quote-used-words
 
 Don't add quotes to used words
@@ -561,6 +553,16 @@ Action: store_false
 Don't color the list characters
 
 Action: store_false
+
+---
+
+### ascii-logs
+
+Escape non-ascii chars in json logs
+
+Default: False
+
+Action: store_true
 
 ---
 
