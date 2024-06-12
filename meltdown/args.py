@@ -670,7 +670,6 @@ class Args:
         utils.msg(msg)
 
     def show_used_args(self) -> None:
-        from .display import display
         from .dialogs import Dialog
 
         text = []
@@ -694,8 +693,7 @@ class Args:
             Dialog.show_message("No arguments were used")
             return
 
-        display.make_tab(name="Arguments", mode="ignore")
-        display.print("\n".join(text))
+        Dialog.show_msgbox("Arguments", "\n".join(text))
 
 
 args = Args()

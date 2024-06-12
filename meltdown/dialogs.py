@@ -61,9 +61,6 @@ class Dialog:
         if use_entry or msgbox:
             top_frame = True
 
-        if not text and msgbox:
-            text = "Information"
-
         dialog = Dialog(text, top_frame=top_frame)
 
         # ------
@@ -208,14 +205,14 @@ class Dialog:
         Dialog.show_dialog(text, [("Ok", ok)])
 
     @staticmethod
-    def show_msgbox(text: str) -> None:
+    def show_msgbox(title: str, text: str) -> None:
         def ok(ans: Answer) -> None:
             pass
 
         def copy(ans: Answer) -> None:
             utils.copy(ans["msg_box"])
 
-        Dialog.show_dialog(commands=[("Copy", copy), ("Ok", ok)], msgbox=text)
+        Dialog.show_dialog(title, commands=[("Copy", copy), ("Ok", ok)], msgbox=text)
 
     @staticmethod
     def show_input(
