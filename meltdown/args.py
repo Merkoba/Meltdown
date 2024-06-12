@@ -690,7 +690,7 @@ class Args:
                 text.append(f"{attr_name} = {value}")
 
         if not text:
-            return
+            text.append("No arguments were used.")
 
         display.make_tab(name="Arguments", mode="ignore")
         display.print("\n".join(text))
