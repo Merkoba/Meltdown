@@ -37,6 +37,14 @@ class Dialog:
         return ""
 
     @staticmethod
+    def get_msg_box() -> str:
+        if Dialog.current_dialog:
+            if Dialog.current_dialog.msg_box:
+                return Dialog.current_dialog.msg_box.get("1.0", tk.END)
+
+        return ""
+
+    @staticmethod
     def show_dialog(
         text: str = "",
         commands: list[tuple[str, Callable[..., Any]]] | None = None,
@@ -137,23 +145,24 @@ class Dialog:
                 dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"
             )
 
-            mbox = tk.Text(dialog.top_frame)
-            mbox.insert("1.0", msgbox)
-            mbox.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
-            mbox.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
-            mbox.configure(background=app.theme.textbox_background)
-            mbox.configure(borderwidth=0, highlightthickness=0)
-            mbox.configure(yscrollcommand=mbox_scrollbar_y.set)
-            mbox_scrollbar_y.configure(command=mbox.yview)
+            dialog.msg_box = tk.Text(dialog.top_frame)
+            dialog.msg_box.insert("1.0", msgbox)
+            dialog.msg_box.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
+            dialog.msg_box.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
+            dialog.msg_box.configure(background=app.theme.textbox_background)
+            dialog.msg_box.configure(borderwidth=0, highlightthickness=0)
+            dialog.msg_box.configure(yscrollcommand=mbox_scrollbar_y.set)
+            mbox_scrollbar_y.configure(command=dialog.msg_box.yview)
             mbox_scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
 
-            mbox.pack(padx=3, pady=3)
+            dialog.msg_box.pack(padx=3, pady=3)
 
         # ------
 
         def make_cmd(cmd: tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
                 ans = {"entry": Dialog.get_entry()}
+                ans = {"msg_box": Dialog.get_msg_box()}
                 dialog.hide()
                 func(ans)
 
@@ -199,7 +208,10 @@ class Dialog:
         def ok(ans: Answer) -> None:
             pass
 
-        Dialog.show_dialog(commands=[("Ok", ok)], msgbox=text)
+        def copy(ans: Answer) -> None:
+            utils.copy(ans["msg_box"])
+
+        Dialog.show_dialog(commands=[("Copy", copy), ("Ok", ok)], msgbox=text)
 
     @staticmethod
     def show_input(
@@ -297,6 +309,7 @@ class Dialog:
         self.highlighted = False
         self.current_button: int | None = None
         self.entry: EntryBox | None = None
+        self.msg_box: tk.Text | None = None
 
         self.root.bind("<Left>", lambda e: self.left())
         self.root.bind("<Right>", lambda e: self.right())
