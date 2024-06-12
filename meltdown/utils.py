@@ -451,7 +451,12 @@ class Utils:
     def last_slash(self, text: str) -> str:
         return text.split("/")[-1]
 
-    def split_long(self, text: str, length: int) -> str:
+    def split_long(self, text: str, length: int = 0) -> str:
+        from .config import config
+
+        if not length:
+            length = config.split_long_length
+
         if len(text) >= length:
             half = len(text) // 2
             first_half = text[:half]
