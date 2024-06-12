@@ -99,7 +99,7 @@ class Keyboard:
             if args.taps:
                 time_now = utils.now()
 
-                if self.ctrl_date > 0:
+                if self.ctrl_date:
                     if (time_now - self.ctrl_date) < self.double_tap_delay:
                         self.on_double_ctrl()
 

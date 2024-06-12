@@ -328,7 +328,7 @@ class Model:
             system = utils.replace_keywords(config.system)
             messages.append({"role": "system", "content": system})
 
-        if tabconvo.convo.items and (config.history > 0) and (not no_history):
+        if tabconvo.convo.items and config.history and (not no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
                 for key in ["user", "ai"]:
                     content = getattr(item, key)
@@ -725,7 +725,7 @@ class Model:
         utils.sleep(10)
 
         while True:
-            if self.loaded_model and (self.stream_date > 0):
+            if self.loaded_model and self.stream_date:
                 seconds = utils.now() - self.stream_date
                 minutes = seconds / 60
 

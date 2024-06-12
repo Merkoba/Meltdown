@@ -995,18 +995,18 @@ class Display:
         if args.show_header:
             num_lines += 1
 
-        if num_lines > 0:
+        if num_lines:
             num_lines += 1
 
         if args.show_intro:
             num_lines += len(app.intro)
 
-        if num_lines > 0:
+        if num_lines:
             num_lines += 1
 
         text = tabconvo.tab.output.get_text()
 
-        if num_lines > 0:
+        if num_lines:
             text = text.split("\n", num_lines)[-1]
 
         return text.strip()

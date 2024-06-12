@@ -56,7 +56,7 @@ class Commands:
     def start_loop(self) -> None:
         def loop() -> None:
             for queue in self.queues:
-                if queue.wait > 0.0:
+                if queue.wait:
                     queue.wait -= self.loop_delay
 
                     if queue.wait <= 0.0:
