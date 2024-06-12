@@ -12,7 +12,7 @@ class Task:
     prefix = utils.escape_regex(args.prefix)
     pattern = rf"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
 
-    def __init__(self, seconds: float, cmds: str, now: bool) -> None:
+    def __init__(self, seconds: int, cmds: str, now: bool) -> None:
         self.seconds = seconds
         self.cmds = cmds
         self.now = now
@@ -56,7 +56,7 @@ def start_all() -> None:
             return
 
         try:
-            seconds = float(match.group(1))
+            seconds = int(match.group(1))
         except BaseException as e:
             utils.error(e)
             return
@@ -68,7 +68,7 @@ def start_all() -> None:
         else:
             now = False
 
-        if seconds < 0.1:
+        if seconds < 1:
             continue
 
         Task(seconds, cmds, now)

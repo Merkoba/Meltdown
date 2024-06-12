@@ -181,7 +181,7 @@ class System:
             utils.sleep(args.system_delay)
 
     def start(self) -> None:
-        if args.system_delay < 0.1:
+        if args.system_delay < 1:
             return
 
         if not args.quiet:
