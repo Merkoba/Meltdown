@@ -321,6 +321,10 @@ class Model:
         log_dict["file"] = original_file
         log_dict["model"] = utils.last_slash(self.loaded_model)
         log_dict["seed"] = config.seed
+        log_dict["max_tokens"] = config.max_tokens
+        log_dict["temperature"] = config.temperature
+        log_dict["top_k"] = config.top_k
+        log_dict["top_p"] = config.top_p
 
         messages: list[dict[str, Any]] = []
 

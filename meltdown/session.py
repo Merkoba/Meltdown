@@ -28,11 +28,25 @@ class Item:
             str(data.get("ai", "")),
             str(data.get("file", "")),
             str(data.get("model", "")),
-            int(data.get("seed", -1)),
+            int(data.get("seed", -2)),
+            int(data.get("max_tokens", -1)),
+            float(data.get("temperature", -1.0)),
+            int(data.get("top_k", -1)),
+            float(data.get("top_p", -1.0)),
         )
 
     def __init__(
-        self, date: float, user: str, ai: str, file: str, model: str, seed: int
+        self,
+        date: float,
+        user: str,
+        ai: str,
+        file: str,
+        model: str,
+        seed: int,
+        max_tokens: int,
+        temperature: float,
+        top_k: int,
+        top_p: float,
     ) -> None:
         self.date = date
         self.user = user
@@ -40,6 +54,10 @@ class Item:
         self.file = file
         self.model = model
         self.seed = seed
+        self.max_tokens = max_tokens
+        self.temperature = temperature
+        self.top_k = top_k
+        self.top_p = top_p
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -49,6 +67,10 @@ class Item:
             "file": self.file,
             "model": self.model,
             "seed": self.seed,
+            "max_tokens": self.max_tokens,
+            "temperature": self.temperature,
+            "top_k": self.top_k,
+            "top_p": self.top_p,
         }
 
 

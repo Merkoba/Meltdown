@@ -190,10 +190,20 @@ class ItemOps:
         if item.model:
             text += f"\n\n{item.model}"
 
-        if item.seed >= 0:
+        if item.seed >= -1:
             text += f"\n\nSeed: {item.seed}"
-        else:
-            text += "\n\nNo Seed"
+
+        if item.max_tokens >= 0:
+            text += f"\n\nMax Tokens: {item.max_tokens}"
+
+        if item.temperature >= 0:
+            text += f"\n\nTemperature: {item.temperature}"
+
+        if item.top_k >= 0:
+            text += f"\n\nTop K: {item.top_k}"
+
+        if item.top_p >= 0:
+            text += f"\n\nTop P: {item.top_p}"
 
         Dialog.show_msgbox("Information", text)
 
