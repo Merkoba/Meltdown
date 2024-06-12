@@ -147,8 +147,12 @@ class Dialog:
 
             dialog.msg_box = tk.Text(dialog.top_frame)
             dialog.msg_box.insert("1.0", msgbox)
-            dialog.msg_box.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
-            dialog.msg_box.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
+            dialog.msg_box.configure(
+                state="disabled", wrap=tk.WORD, font=app.theme.font()
+            )
+            dialog.msg_box.configure(
+                height=app.theme.msgbox_height, width=app.theme.msgbox_width
+            )
             dialog.msg_box.configure(background=app.theme.textbox_background)
             dialog.msg_box.configure(borderwidth=0, highlightthickness=0)
             dialog.msg_box.configure(yscrollcommand=mbox_scrollbar_y.set)
