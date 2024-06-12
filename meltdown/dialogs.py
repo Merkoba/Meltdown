@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
+from tkinter import ttk
 from typing import Any
 from collections.abc import Callable
 from PIL import Image, ImageTk
@@ -132,14 +133,21 @@ class Dialog:
         # ------
 
         if msgbox:
-            message_box = tk.Text(dialog.top_frame)
-            message_box.insert("1.0", msgbox)
-            message_box.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
-            message_box.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
-            message_box.configure(background=app.theme.textbox_background)
-            message_box.configure(borderwidth=0, highlightthickness=0)
+            mbox_scrollbar_y = ttk.Scrollbar(
+                dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"
+            )
 
-            message_box.pack(padx=3, pady=3)
+            mbox = tk.Text(dialog.top_frame)
+            mbox.insert("1.0", msgbox)
+            mbox.configure(state="disabled", wrap=tk.WORD, font=app.theme.font())
+            mbox.configure(height=app.theme.msgbox_height, width=app.theme.msgbox_width)
+            mbox.configure(background=app.theme.textbox_background)
+            mbox.configure(borderwidth=0, highlightthickness=0)
+            mbox.configure(yscrollcommand=mbox_scrollbar_y.set)
+            mbox_scrollbar_y.configure(command=mbox.yview)
+            mbox_scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)
+
+            mbox.pack(padx=3, pady=3)
 
         # ------
 
