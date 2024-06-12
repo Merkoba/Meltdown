@@ -968,7 +968,7 @@ Type: int
 
 Auto-unload the model after this number of minutes after last use. 0 to disable
 
-Default: 0
+Default: 60
 
 Type: int
 
@@ -1479,6 +1479,16 @@ Type: int
 Delay in seconds for system monitor updates
 
 Default: 3
+
+Type: int
+
+---
+
+### system-suspend
+
+Stop updating the system these minutes after the last stream
+
+Default: 1
 
 Type: int
 
