@@ -52,6 +52,9 @@ class Dialog:
         if use_entry or msgbox:
             top_frame = True
 
+        if not text and msgbox:
+            text = "Information"
+
         dialog = Dialog(text, top_frame=top_frame)
 
         # ------
@@ -136,7 +139,7 @@ class Dialog:
             message_box.configure(background=app.theme.textbox_background)
             message_box.configure(borderwidth=0, highlightthickness=0)
 
-        message_box.pack(padx=3, pady=3)
+            message_box.pack(padx=3, pady=3)
 
         # ------
 
@@ -178,6 +181,13 @@ class Dialog:
 
     @staticmethod
     def show_message(text: str) -> None:
+        def ok(ans: Answer) -> None:
+            pass
+
+        Dialog.show_dialog(text, [("Ok", ok)])
+
+    @staticmethod
+    def show_msgbox(text: str) -> None:
         def ok(ans: Answer) -> None:
             pass
 

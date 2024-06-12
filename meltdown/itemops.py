@@ -196,7 +196,7 @@ class ItemOps:
         else:
             text += "\n\nNo Seed"
 
-        Dialog.show_message(text)
+        Dialog.show_msgbox(text)
 
 
 itemops = ItemOps()
