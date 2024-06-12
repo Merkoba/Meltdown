@@ -167,6 +167,7 @@ class ItemOps:
         self.action("info", number, who=who)
 
     def do_show_info(self, item: Item) -> None:
+        min_num = -1
         text = ""
 
         if item.date:
@@ -190,19 +191,19 @@ class ItemOps:
         if item.model:
             text += f"\n\n{item.model}"
 
-        if item.seed >= -1:
+        if item.seed >= min_num:
             text += f"\n\nSeed: {item.seed}"
 
-        if item.max_tokens >= 0:
+        if item.max_tokens >= min_num:
             text += f"\n\nMax Tokens: {item.max_tokens}"
 
-        if item.temperature >= 0:
+        if item.temperature >= min_num:
             text += f"\n\nTemperature: {item.temperature}"
 
-        if item.top_k >= 0:
+        if item.top_k >= min_num:
             text += f"\n\nTop K: {item.top_k}"
 
-        if item.top_p >= 0:
+        if item.top_p >= min_num:
             text += f"\n\nTop P: {item.top_p}"
 
         Dialog.show_msgbox("Information", text)

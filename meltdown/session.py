@@ -22,17 +22,19 @@ from . import close
 class Item:
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Item:
+        def_num = -2.0
+
         return Item(
-            float(data.get("date", 0)),
+            float(data.get("date", 0.0)),
             str(data.get("user", "")),
             str(data.get("ai", "")),
             str(data.get("file", "")),
             str(data.get("model", "")),
-            int(data.get("seed", -2)),
-            int(data.get("max_tokens", -1)),
-            float(data.get("temperature", -1.0)),
-            int(data.get("top_k", -1)),
-            float(data.get("top_p", -1.0)),
+            int(data.get("seed", def_num)),
+            int(data.get("max_tokens", def_num)),
+            float(data.get("temperature", def_num)),
+            int(data.get("top_k", def_num)),
+            float(data.get("top_p", def_num)),
         )
 
     def __init__(
