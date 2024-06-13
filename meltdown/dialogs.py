@@ -111,6 +111,12 @@ class Dialog:
                 utils.paste(dialog.entry)
                 dialog.entry.focus_set()
 
+            def clear() -> None:
+                if not dialog.entry:
+                    return
+
+                dialog.entry.clear()
+
             def on_right_click(event: Any) -> None:
                 if not dialog.entry:
                     return
@@ -123,6 +129,10 @@ class Dialog:
                     menu.add(text="Copy", command=lambda e: copy(selected))
 
                 menu.add(text="Paste", command=lambda e: paste())
+
+                if text:
+                    menu.add(text="Clear", command=lambda e: clear())
+
                 menu.show(event)
 
             def entry_up() -> None:
