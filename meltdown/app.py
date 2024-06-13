@@ -61,6 +61,7 @@ class App:
         self.buttons_frame_enabled = True
         self.file_frame_enabled = True
         self.input_frame_enabled = True
+        self.running = False
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -130,6 +131,7 @@ class App:
         if not args.console:
             signal.signal(signal.SIGINT, self.sigint_handler)
 
+        self.running = True
         self.autorun()
         self.root.mainloop()
 
@@ -172,6 +174,7 @@ class App:
             self.destroy()
 
     def destroy(self) -> None:
+        self.running = False
         self.root.destroy()
 
     def cancel_exit(self, feedback: bool = False) -> None:
@@ -190,6 +193,9 @@ class App:
 
     def exists(self) -> bool:
         if not hasattr(self, "root"):
+            return False
+
+        if not self.running:
             return False
 
         try:
