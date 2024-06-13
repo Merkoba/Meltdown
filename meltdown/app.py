@@ -43,7 +43,7 @@ class App:
         self.sticky = False
         self.exit_delay = 100
         self.exit_after: str = ""
-        self.streaming = False
+        self.streaming = True
         self.loading = False
         self.loaded = False
         self.checks_delay = 200
@@ -132,6 +132,7 @@ class App:
             signal.signal(signal.SIGINT, self.sigint_handler)
 
         self.running = True
+        self.start_checks()
         self.autorun()
         self.root.mainloop()
 

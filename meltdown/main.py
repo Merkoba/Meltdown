@@ -56,7 +56,6 @@ def main() -> None:
     display.make()
     session.load()
     widgets.setup()
-    app.start_checks()
     keyboard.setup()
     commands.setup()
     inputcontrol.setup()
