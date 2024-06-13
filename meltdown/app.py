@@ -43,7 +43,7 @@ class App:
         self.sticky = False
         self.exit_delay = 100
         self.exit_after: str = ""
-        self.streaming = True
+        self.streaming = False
         self.loading = False
         self.loaded = False
         self.checks_delay = 200
@@ -61,7 +61,7 @@ class App:
         self.buttons_frame_enabled = True
         self.file_frame_enabled = True
         self.input_frame_enabled = True
-        self.running = False
+        self.running = True
 
     def clear_geometry_after(self) -> None:
         if self.check_geometry_after:
@@ -131,9 +131,8 @@ class App:
         if not args.console:
             signal.signal(signal.SIGINT, self.sigint_handler)
 
-        self.running = True
-        self.start_checks()
         self.autorun()
+        self.start_checks()
         self.root.mainloop()
 
     def exit(self, seconds: int | None = None, force: bool = False) -> None:
