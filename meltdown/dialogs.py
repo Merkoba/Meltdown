@@ -206,7 +206,10 @@ class Dialog:
         def ok(ans: Answer) -> None:
             pass
 
-        Dialog.show_dialog(text, [("Ok", ok)])
+        def copy(ans: Answer) -> None:
+            utils.copy(text)
+
+        Dialog.show_dialog(text, [("Copy", copy), ("Ok", ok)])
 
     @staticmethod
     def show_msgbox(title: str, text: str) -> None:
