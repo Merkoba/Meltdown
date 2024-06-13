@@ -279,7 +279,7 @@ class Model:
 
     def prepare_stream(
         self, prompt: dict[str, str], tab_id: str
-    ) -> tuple[list[dict[str, str]], dict[str, str]] | None:
+    ) -> tuple[list[dict[str, str]], dict[str, Any]] | None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
@@ -483,15 +483,15 @@ class Model:
         now_2 = utils.now()
 
         if res:
+            duration = now_2 - now
             log_dict["ai"] = res
+            log_dict["duration"] = duration
             self.last_response = res
             tabconvo.convo.add(log_dict)
 
             if args.durations:
-                diff = now_2 - now
-                seconds = int(round(diff))
-                word = utils.singular_or_plural(seconds, "second", "seconds")
-                display.print(f"Duration: {seconds} {word}", tab_id=tab_id)
+                word = utils.singular_or_plural(duration, "second", "seconds")
+                display.print(f"Duration: {duration:.2f} {word}", tab_id=tab_id)
 
         self.stream_date = now_2
         self.release_lock()

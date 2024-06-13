@@ -25,22 +25,24 @@ class Item:
         def_num = -2.0
 
         return Item(
-            float(data.get("date", 0.0)),
-            str(data.get("user", "")),
-            str(data.get("ai", "")),
-            str(data.get("file", "")),
-            str(data.get("model", "")),
-            int(data.get("seed", def_num)),
-            int(data.get("history", def_num)),
-            int(data.get("max_tokens", def_num)),
-            float(data.get("temperature", def_num)),
-            int(data.get("top_k", def_num)),
-            float(data.get("top_p", def_num)),
+            date=float(data.get("date", 0.0)),
+            duration=float(data.get("duration", 0.0)),
+            user=str(data.get("user", "")),
+            ai=str(data.get("ai", "")),
+            file=str(data.get("file", "")),
+            model=str(data.get("model", "")),
+            seed=int(data.get("seed", def_num)),
+            history=int(data.get("history", def_num)),
+            max_tokens=int(data.get("max_tokens", def_num)),
+            temperature=float(data.get("temperature", def_num)),
+            top_k=int(data.get("top_k", def_num)),
+            top_p=float(data.get("top_p", def_num)),
         )
 
     def __init__(
         self,
         date: float,
+        duration: float,
         user: str,
         ai: str,
         file: str,
@@ -53,6 +55,7 @@ class Item:
         top_p: float,
     ) -> None:
         self.date = date
+        self.duration = duration
         self.user = user
         self.ai = ai
         self.file = file
@@ -67,6 +70,7 @@ class Item:
     def to_dict(self) -> dict[str, Any]:
         return {
             "date": self.date,
+            "duration": self.duration,
             "user": self.user,
             "ai": self.ai,
             "file": self.file,
