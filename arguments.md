@@ -1488,7 +1488,7 @@ Type: int
 
 ### system-suspend
 
-Stop updating the system these minutes after the last stream
+Stop updating the system these minutes after the last stream. 0 disables it
 
 Default: 1
 

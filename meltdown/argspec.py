@@ -1041,7 +1041,7 @@ class ArgSpec:
         self.add_argument(
             "system_suspend",
             type=int,
-            info="Stop updating the system these minutes after the last stream",
+            info="Stop updating the system these minutes after the last stream. 0 disables it",
         )
 
         self.add_argument(
