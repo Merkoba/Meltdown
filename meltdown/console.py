@@ -51,7 +51,7 @@ class Console:
             words.append(word)
 
     def start(self) -> None:
-        if not args.show_console:
+        if not args.console:
             return
 
         thread = threading.Thread(target=lambda: self.do_start())

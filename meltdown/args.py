@@ -89,7 +89,7 @@ class Args:
         self.show_intro = True
         self.show_header = True
         self.autorun = ""
-        self.show_console = False
+        self.console = False
         self.console_height = 3
         self.console_vi = False
         self.input_memory = True
@@ -210,7 +210,7 @@ class Args:
         self.list_menu = True
         self.file = ""
         self.image_prompt = "Describe this image"
-        self.show_duration = False
+        self.durations = False
         self.separators = False
         self.help_prompt = "I need help!"
         self.explain_prompt = "What is ((words))?"
@@ -440,8 +440,8 @@ class Args:
             "item_numbers",
             "file",
             "image_prompt",
-            "show_duration",
             "avatars_in_logs",
+            "durations",
             "separators",
             "markdown_snippets",
             "markdown_ordered",
@@ -464,7 +464,7 @@ class Args:
             "temporary",
             "clean",
             "profile",
-            "show_console",
+            "console",
             "drag_and_drop",
             "border_color",
             "border_size",

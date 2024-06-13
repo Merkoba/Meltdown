@@ -487,7 +487,7 @@ class Model:
             self.last_response = res
             tabconvo.convo.add(log_dict)
 
-            if args.show_duration:
+            if args.durations:
                 diff = now_2 - now
                 seconds = int(round(diff))
                 word = utils.singular_or_plural(seconds, "second", "seconds")

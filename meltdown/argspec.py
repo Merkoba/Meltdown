@@ -507,7 +507,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "show_console",
+            "console",
             action="store_true",
             info="Enable the interactive console",
         )
@@ -531,7 +531,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "show_duration",
+            "durations",
             action="store_true",
             info="Show the amount of seconds that took to produce a response",
         )

@@ -127,7 +127,7 @@ class App:
     def run(self) -> None:
         from .args import args
 
-        if not args.show_console:
+        if not args.console:
             signal.signal(signal.SIGINT, self.sigint_handler)
 
         self.autorun()

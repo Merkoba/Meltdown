@@ -606,7 +606,7 @@ Action: store_true
 
 ---
 
-### show-console
+### console
 
 Enable the interactive console
 
@@ -646,7 +646,7 @@ Action: store_true
 
 ---
 
-### show-duration
+### durations
 
 Show the amount of seconds that took to produce a response
 
