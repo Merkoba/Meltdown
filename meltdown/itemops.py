@@ -176,7 +176,7 @@ class ItemOps:
             text += utils.time_ago(item.date, utils.now())
 
         if item.duration:
-            text += f"\n{item.duration:.2f} seconds"
+            text += f"\n\nDuration: {item.duration:.2f} seconds"
 
         if text:
             text += "\n"
