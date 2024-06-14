@@ -170,9 +170,11 @@ class ItemOps:
         min_num = -1
         text = ""
 
+        if item.model:
+            text += item.model
+
         if item.date:
-            text += utils.to_date(item.date)
-            text += "\n"
+            text += f"\n\n{utils.to_date(item.date)}\n"
             text += utils.time_ago(item.date, utils.now())
 
         if item.duration:
@@ -185,9 +187,6 @@ class ItemOps:
         w_ai = len(utils.get_words(item.ai))
         text += f"\nUser: {w_user} words ({len(item.user)} chars)"
         text += f"\nAI: {w_ai} words ({len(item.ai)} chars)"
-
-        if item.model:
-            text += f"\n\n{item.model}"
 
         if item.seed >= min_num:
             text += f"\n\nSeed: {item.seed}"
