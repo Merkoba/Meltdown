@@ -19,7 +19,7 @@ from .gestures import Gestures
 class Snippet(tk.Frame):
     def __init__(self, parent: Output, content: str, language: str) -> None:
         super().__init__(parent, borderwidth=0, highlightthickness=0)
-        self.content = content.strip()
+        self.content = utils.untab_text(content)
         self.language = language
 
         self.header = tk.Frame(self)

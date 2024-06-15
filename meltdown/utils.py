@@ -503,5 +503,11 @@ class Utils:
     def no_break(self, text: str) -> str:
         return text.replace(" ", "\u00a0")
 
+    def untab_text(self, text: str) -> str:
+        lines = text.splitlines()
+        spaces = [len(line) - len(line.lstrip()) for line in lines if line.strip()]
+        min_space = min(spaces) if spaces else 0
+        return "\n".join(line[min_space:] for line in lines)
+
 
 utils = Utils()
