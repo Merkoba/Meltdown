@@ -167,43 +167,45 @@ class ItemOps:
         self.action("info", number, who=who)
 
     def do_show_info(self, item: Item) -> None:
-        min_num = -1
         text = ""
 
         if item.model:
-            text += item.model
+            text += utils.no_break(f"Model: {item.model}")
 
-        if item.date:
+        if item.date is not None:
             text += f"\n\n{utils.to_date(item.date)}\n"
             text += utils.time_ago(item.date, utils.now())
 
-        if item.duration:
+        if item.duration is not None:
             text += f"\n\nDuration: {item.duration:.2f} seconds"
 
-        if text:
-            text += "\n"
+        if item.user:
+            w_user = len(utils.get_words(item.user))
+            text += f"\nUser: {w_user} words ({len(item.user)} chars)"
 
-        w_user = len(utils.get_words(item.user))
-        w_ai = len(utils.get_words(item.ai))
-        text += f"\nUser: {w_user} words ({len(item.user)} chars)"
-        text += f"\nAI: {w_ai} words ({len(item.ai)} chars)"
+        if item.ai:
+            w_ai = len(utils.get_words(item.ai))
+            text += f"\nAI: {w_ai} words ({len(item.ai)} chars)"
 
-        if item.seed >= min_num:
+        if item.file:
+            text += utils.no_break(f"\n\nFile: {item.file}")
+
+        if item.seed is not None:
             text += f"\n\nSeed: {item.seed}"
 
-        if item.history >= min_num:
+        if item.history is not None:
             text += f"\nHistory: {item.history}"
 
-        if item.max_tokens >= min_num:
+        if item.max_tokens is not None:
             text += f"\nMax Tokens: {item.max_tokens}"
 
-        if item.temperature >= min_num:
+        if item.temperature is not None:
             text += f"\nTemperature: {item.temperature}"
 
-        if item.top_k >= min_num:
+        if item.top_k is not None:
             text += f"\nTop K: {item.top_k}"
 
-        if item.top_p >= min_num:
+        if item.top_p is not None:
             text += f"\nTop P: {item.top_p}"
 
         Dialog.show_msgbox("Information", text)

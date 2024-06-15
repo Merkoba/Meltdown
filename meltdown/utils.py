@@ -500,5 +500,8 @@ class Utils:
         for item in items:
             add_item(item)
 
+    def no_break(self, text: str) -> str:
+        return text.replace(" ", "\u00a0")
+
 
 utils = Utils()

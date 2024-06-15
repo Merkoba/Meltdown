@@ -22,37 +22,35 @@ from . import close
 class Item:
     @staticmethod
     def from_dict(data: dict[str, Any]) -> Item:
-        def_num = -2.0
-
         return Item(
-            date=float(data.get("date", 0.0)),
-            duration=float(data.get("duration", 0.0)),
-            user=str(data.get("user", "")),
-            ai=str(data.get("ai", "")),
-            file=str(data.get("file", "")),
-            model=str(data.get("model", "")),
-            seed=int(data.get("seed", def_num)),
-            history=int(data.get("history", def_num)),
-            max_tokens=int(data.get("max_tokens", def_num)),
-            temperature=float(data.get("temperature", def_num)),
-            top_k=int(data.get("top_k", def_num)),
-            top_p=float(data.get("top_p", def_num)),
+            model=data.get("model", ""),
+            user=data.get("user", ""),
+            ai=data.get("ai", ""),
+            file=data.get("file", ""),
+            date=data.get("date", None),
+            duration=data.get("duration", None),
+            seed=data.get("seed", None),
+            history=data.get("history", None),
+            max_tokens=data.get("max_tokens", None),
+            temperature=data.get("temperature", None),
+            top_k=data.get("top_k", None),
+            top_p=data.get("top_p", None),
         )
 
     def __init__(
         self,
-        date: float,
-        duration: float,
+        model: str,
         user: str,
         ai: str,
         file: str,
-        model: str,
-        seed: int,
-        history: int,
-        max_tokens: int,
-        temperature: float,
-        top_k: int,
-        top_p: float,
+        date: float | None,
+        duration: float | None,
+        seed: int | None,
+        history: int | None,
+        max_tokens: int | None,
+        temperature: float | None,
+        top_k: int | None,
+        top_p: float | None,
     ) -> None:
         self.date = date
         self.duration = duration
