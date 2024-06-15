@@ -25,24 +25,23 @@ class IndexItem:
 
 
 class Markdown:
-    def __init__(self, widget: Output) -> None:
-        self.widget = widget
-
+    @staticmethod
+    def build_patterns() -> None:
         chars_left = ["(", "[", "/"]
-        left_string = self.escape_chars(chars_left, "|")
+        left_string = Markdown.escape_chars(chars_left, "|")
         left = rf"(?:(?<=\s)|^|{left_string})"
 
         chars_right = [".", ",", ";", "!", "?", ":", "/", ")", "]"]
-        right_string = self.escape_chars(chars_right, "|")
+        right_string = Markdown.escape_chars(chars_right, "|")
         right = rf"(?=\s|$|{right_string})"
 
         protocols_list = ["http://", "https://", "www.", "ftp://", "sftp://", "ssh://"]
-        protocols_string = self.escape_chars(protocols_list, "|")
+        protocols_string = Markdown.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
 
-        self.separator = "───────────────────"
-        self.marker_indent_ordered = "\u200b\u200c\u200b"
-        self.marker_indent_unordered = "\u200c\u200b\u200c"
+        Markdown.separator = "───────────────────"
+        Markdown.marker_indent_ordered = "\u200b\u200c\u200b"
+        Markdown.marker_indent_unordered = "\u200c\u200b\u200c"
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
@@ -52,77 +51,87 @@ class Markdown:
         uselink = utils.escape_regex("%@")
 
         # Code snippets / fences
-        self.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
+        Markdown.pattern_snippets = rf"{tick}{{3}}([-\w.#]*)\n(.*?)\n{tick}{{3}}$"
 
         # Bold with two asterisks
-        self.pattern_bold_1 = (
+        Markdown.pattern_bold_1 = (
             rf"{left}(?P<all>{aster}{{2}}(?P<content>[^{aster}].*?){aster}{{2}}){right}"
         )
 
         # Italic with one asterisk
-        self.pattern_italic_asterisk = (
+        Markdown.pattern_italic_asterisk = (
             rf"{left}(?P<all>{aster}{{1}}(?P<content>[^{aster}].*?){aster}{{1}}){right}"
         )
 
+        print(Markdown.pattern_italic_asterisk)
+
         # Italic with one underscore
-        self.pattern_italic_underscore = (
+        Markdown.pattern_italic_underscore = (
             rf"{left}(?P<all>{under}{{1}}(?P<content>[^{under}].*?){under}{{1}}){right}"
         )
 
         # Highlight with three backticks
-        self.pattern_highlight_1 = (
+        Markdown.pattern_highlight_1 = (
             rf"{left}(?P<all>{tick}{{3}}(?P<content>[^{tick}].*?){tick}{{3}}){right}"
         )
 
         # Highlight with two backticks
-        self.pattern_highlight_2 = (
+        Markdown.pattern_highlight_2 = (
             rf"{left}(?P<all>{tick}{{2}}(?P<content>[^{tick}].*?){tick}{{2}}){right}"
         )
 
         # Highlight with one backtick
-        self.pattern_highlight_3 = (
+        Markdown.pattern_highlight_3 = (
             rf"{left}(?P<all>{tick}{{1}}(?P<content>[^{tick}].*?){tick}{{1}}){right}"
         )
 
         # Uselink with the special chars
-        self.pattern_uselink = (
+        Markdown.pattern_uselink = (
             rf"{left}(?P<all>{uselink}(?P<content>.*?){uselink}){right}"
         )
 
         # Highlight with one double-quote
-        self.pattern_quote = (
+        Markdown.pattern_quote = (
             rf"{left}(?P<all>{quote}{{1}}(?P<content>.*?){quote}{{1}}){right}"
         )
 
         # URLs with http:// | https:// | ftp:// | www.
-        self.pattern_url = (
+        Markdown.pattern_url = (
             rf"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
         )
 
         # Unix paths like /home/user/file.txt
-        self.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/\w+\/\w+))(?=\s|$)"
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/\w+\/\w+))(?=\s|$)"
 
         # Header with one hash
-        self.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
+        Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
 
         # Header with two hashes
-        self.pattern_header_2 = rf"^(?P<all>{hash_}{{2}}\s+(?P<content>.*))$"
+        Markdown.pattern_header_2 = rf"^(?P<all>{hash_}{{2}}\s+(?P<content>.*))$"
 
         # Header with three hashes
-        self.pattern_header_3 = rf"^(?P<all>{hash_}{{3}}\s+(?P<content>.*))$"
+        Markdown.pattern_header_3 = rf"^(?P<all>{hash_}{{3}}\s+(?P<content>.*))$"
 
         # Separator line
-        self.pattern_separator = r"^-{3,}$"
+        Markdown.pattern_separator = r"^-{3,}$"
 
         # Bullet list (ordered)
-        self.pattern_list_ordered = (
+        Markdown.pattern_list_ordered = (
             r"(^|(?<=\n\n))\d+[.)] [^\n]+(?:\n{1,2}[ \t]*\d+[.)] [^\n]+)*"
         )
 
         # Bullet list (unordered)
-        self.pattern_list_unordered = (
+        Markdown.pattern_list_unordered = (
             r"(^|(?<=\n\n))[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
         )
+
+    @staticmethod
+    def escape_chars(chars: list[str], separator: str = "") -> str:
+        clean = [utils.escape_regex(c) for c in chars]
+        return separator.join(clean)
+
+    def __init__(self, widget: Output) -> None:
+        self.widget = widget
 
     def format_all(self) -> None:
         start_ln = 1
@@ -199,38 +208,38 @@ class Markdown:
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "bold"):
-            self.do_format(start_ln, end_ln, who, self.pattern_bold_1, "bold")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_1, "bold")
 
         if self.enabled(who, "italic_asterisk"):
             self.do_format(
-                start_ln, end_ln, who, self.pattern_italic_asterisk, "italic"
+                start_ln, end_ln, who, Markdown.pattern_italic_asterisk, "italic"
             )
 
         if self.enabled(who, "italic_underscore"):
             self.do_format(
-                start_ln, end_ln, who, self.pattern_italic_underscore, "italic"
+                start_ln, end_ln, who, Markdown.pattern_italic_underscore, "italic"
             )
 
         if self.enabled(who, "highlight"):
-            self.do_format(start_ln, end_ln, who, self.pattern_highlight_1, "highlight")
-            self.do_format(start_ln, end_ln, who, self.pattern_highlight_2, "highlight")
-            self.do_format(start_ln, end_ln, who, self.pattern_highlight_3, "highlight")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_2, "highlight")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight")
 
-        self.do_format(start_ln, end_ln, who, self.pattern_uselink, "uselink")
+        self.do_format(start_ln, end_ln, who, Markdown.pattern_uselink, "uselink")
 
         if self.enabled(who, "quote"):
-            self.do_format(start_ln, end_ln, who, self.pattern_quote, "quote", True)
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_quote, "quote", True)
 
         if self.enabled(who, "url"):
-            self.do_format(start_ln, end_ln, who, self.pattern_url, "url")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_url, "url")
 
         if self.enabled(who, "path"):
-            self.do_format(start_ln, end_ln, who, self.pattern_path, "path")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_path, "path")
 
         if self.enabled(who, "header"):
-            self.do_format(start_ln, end_ln, who, self.pattern_header_1, "header_1")
-            self.do_format(start_ln, end_ln, who, self.pattern_header_2, "header_2")
-            self.do_format(start_ln, end_ln, who, self.pattern_header_3, "header_3")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_header_1, "header_1")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_header_2, "header_2")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_header_3, "header_3")
 
         if self.enabled(who, "separator"):
             self.format_separators(start_ln, end_ln, who)
@@ -321,7 +330,7 @@ class Markdown:
         matches = []
 
         for match_ in re.finditer(
-            self.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
+            Markdown.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
         ):
             language = match_.group(1)
 
@@ -402,9 +411,9 @@ class Markdown:
         matches = []
 
         if mode == "ordered":
-            pattern = self.pattern_list_ordered
+            pattern = Markdown.pattern_list_ordered
         else:
-            pattern = self.pattern_list_unordered
+            pattern = Markdown.pattern_list_unordered
 
         for match_ in re.finditer(pattern, text, flags=re.MULTILINE | re.DOTALL):
             content_start = match_.start(0)
@@ -513,17 +522,17 @@ class Markdown:
         lines = self.get_lines(start_ln, end_ln, who)
 
         for i, line in enumerate(lines):
-            if re.match(self.pattern_separator, line):
+            if re.match(Markdown.pattern_separator, line):
                 matches.append(i)
 
         for i in reversed(matches):
             self.widget.delete(f"{start_ln + i}.0", f"{start_ln + i}.end")
-            self.widget.insert(f"{start_ln + i}.0", self.separator)
+            self.widget.insert(f"{start_ln + i}.0", Markdown.separator)
 
             self.widget.tag_add(
                 "separator",
                 f"{start_ln + i}.0",
-                f"{start_ln + i}.0 + {len(self.separator)}c",
+                f"{start_ln + i}.0 + {len(Markdown.separator)}c",
             )
 
     def get_lines(self, start_ln: int, end_ln: int, who: str) -> list[str]:
@@ -538,10 +547,6 @@ class Markdown:
 
     def get_line_number(self, text: str, index: int) -> int:
         return text.count("\n", 0, index)
-
-    def escape_chars(self, chars: list[str], separator: str = "") -> str:
-        clean = [utils.escape_regex(c) for c in chars]
-        return separator.join(clean)
 
     def next_marker(self, start_ln: int) -> int:
         markers = self.widget.get_markers(True)
@@ -575,8 +580,11 @@ class Markdown:
                 except BaseException:
                     pass
 
-        or_lines = get_lns(self.marker_indent_ordered)
+        or_lines = get_lns(Markdown.marker_indent_ordered)
         add_tags(or_lines, "indent_ordered")
 
-        un_lines = get_lns(self.marker_indent_unordered)
+        un_lines = get_lns(Markdown.marker_indent_unordered)
         add_tags(un_lines, "indent_unordered")
+
+
+Markdown.build_patterns()
