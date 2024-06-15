@@ -536,7 +536,7 @@ class Markdown:
                 self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
                 self.widget.insert(start_line, txt)
 
-        return len(matches) > 0
+        return len_matches > 0
 
     def format_separators(self, start_ln: int, end_ln: int, who: str) -> None:
         matches = []
