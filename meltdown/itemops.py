@@ -181,7 +181,7 @@ class ItemOps:
 
         if item.user:
             w_user = len(utils.get_words(item.user))
-            text += f"\nUser: {w_user} words ({len(item.user)} chars)"
+            text += f"\n\nUser: {w_user} words ({len(item.user)} chars)"
 
         if item.ai:
             w_ai = len(utils.get_words(item.ai))
