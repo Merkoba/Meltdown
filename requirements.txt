@@ -1,8 +1,8 @@
 llama_cpp_python == 0.2.76
 psutil == 5.9.8
 appdirs == 1.4.4
-openai == 1.13.3
-Pygments == 2.17.2
+openai == 1.34.0
+Pygments == 2.18.0
 pillow == 10.3.0
 prompt-toolkit == 3.0.46
 rich == 13.7.1
