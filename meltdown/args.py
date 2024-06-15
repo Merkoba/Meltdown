@@ -249,6 +249,7 @@ class Args:
         self.auto_unload = 60
         self.tab_tooltip_length = 235
         self.uselinks: list[str] = []
+        self.concat_logs = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -496,6 +497,7 @@ class Args:
             "auto_unload",
             "tab_tooltip_length",
             "ascii_logs",
+            "concat_logs",
         ]
 
         for n_item in normals:

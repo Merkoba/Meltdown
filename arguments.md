@@ -556,6 +556,16 @@ Action: store_false
 
 ---
 
+### concat-logs
+
+Concat logs when saving multiple conversations
+
+Default: False
+
+Action: store_true
+
+---
+
 ### ascii-logs
 
 Escape non-ascii chars in json logs

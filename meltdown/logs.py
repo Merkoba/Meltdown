@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import json
 from pathlib import Path
 
 # Modules
@@ -93,6 +94,28 @@ class Logs:
         last_log = ""
         ext = formats.get_ext(mode)
 
+        def save(content: str, name: str) -> None:
+            nonlocal num, last_log
+
+            if not content:
+                return
+
+            num += 1
+
+            if not name:
+                overwrite = False
+            else:
+                overwrite = True
+
+            if args.clean_names:
+                name = utils.clean_name(name)
+
+            name = name[: config.max_file_name_length].strip(" _")
+
+            last_log = self.save_file(
+                content, name, ext, save_all, overwrite=overwrite, mode=mode
+            )
+
         if save_all:
             conversations = [
                 session.get_conversation(key) for key in session.conversations
@@ -105,38 +128,41 @@ class Logs:
 
             conversations = [tabconvo.convo]
 
-        for conversation in conversations:
-            if not conversation:
-                continue
+        if (len(conversations) > 1) and args.concat_logs:
+            contents = []
+
+            for conversation in conversations:
+                if not conversation:
+                    continue
+
+                if not conversation.items:
+                    continue
+
+                contents.append(self.get_content(mode, conversation))
 
             if mode == "text":
-                text = self.get_text(conversation)
+                content = "\n\n---\n\n".join(contents)
             elif mode == "json":
-                text = self.get_json(conversation)
+                cont = "[\n" + ",\n".join(contents) + "\n]"
+                content = json.dumps(json.loads(cont), indent=4)
             elif mode == "markdown":
-                text = self.get_markdown(conversation)
+                content = "\n\n---\n\n".join(contents)
             else:
-                text = ""
+                content = ""
 
-            if not text:
-                continue
+            name = f"{len(contents)}_{utils.random_word()}"
+            save(content, name)
+        else:
+            for conversation in conversations:
+                if not conversation:
+                    continue
 
-            num += 1
+                if not conversation.items:
+                    continue
 
-            if not name:
+                content = self.get_content(mode, conversation)
                 name = conversation.name
-
-                if args.clean_names:
-                    name = utils.clean_name(name)
-
-                name = name[: config.max_file_name_length].strip(" _")
-                overwrite = False
-            else:
-                overwrite = True
-
-            last_log = self.save_file(
-                text, name, ext, save_all, overwrite=overwrite, mode=mode
-            )
+                save(content, name)
 
         if save_all:
             if args.quiet or (not args.log_feedback):
@@ -240,6 +266,18 @@ class Logs:
             return
 
         app.open_generic(config.last_log)
+
+    def get_content(self, mode: str, conversation: Conversation) -> str:
+        if mode == "text":
+            text = self.get_text(conversation)
+        elif mode == "json":
+            text = self.get_json(conversation)
+        elif mode == "markdown":
+            text = self.get_markdown(conversation)
+        else:
+            text = ""
+
+        return text.strip()
 
 
 logs = Logs()

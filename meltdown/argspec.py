@@ -477,6 +477,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "concat_logs",
+            action="store_true",
+            info="Concat logs when saving multiple conversations",
+        )
+
+        self.add_argument(
             "ascii_logs",
             action="store_true",
             info="Escape non-ascii chars in json logs",
