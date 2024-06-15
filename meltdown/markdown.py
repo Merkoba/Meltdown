@@ -71,17 +71,17 @@ class Markdown:
 
         # Highlight with three backticks
         self.pattern_highlight_1 = (
-            rf"{left}(?P<all>{tick}{{3}}(?P<content>.*?){tick}{{3}}){right}"
+            rf"{left}(?P<all>{tick}{{3}}(?P<content>[^{tick}].*?){tick}{{3}}){right}"
         )
 
         # Highlight with two backticks
         self.pattern_highlight_2 = (
-            rf"{left}(?P<all>{tick}{{2}}(?P<content>.*?){tick}{{2}}){right}"
+            rf"{left}(?P<all>{tick}{{2}}(?P<content>[^{tick}].*?){tick}{{2}}){right}"
         )
 
         # Highlight with one backtick
         self.pattern_highlight_3 = (
-            rf"{left}(?P<all>{tick}{{1}}(?P<content>.*?){tick}{{1}}){right}"
+            rf"{left}(?P<all>{tick}{{1}}(?P<content>[^{tick}].*?){tick}{{1}}){right}"
         )
 
         # Uselink with the special chars
@@ -417,6 +417,8 @@ class Markdown:
 
             matches.append((start_line, end_line, content_start, match_.group(0)))
 
+        len_matches = len(matches)
+
         for start_line, end_line, content_start, mtch in reversed(matches):
             line_1 = text[:content_start].count("\n")
             line_2 = len(mtch.split("\n"))
@@ -459,6 +461,10 @@ class Markdown:
                         left = f"{space_1}{char}{space_2}"
                         c_line = line[2:].strip()
                         items.append(f"{marker}{left}{c_line}")
+
+            if len(items) <= 1:
+                len_matches -= 1
+                continue
 
             if spaced:
                 txt = "\n\n".join(items)
