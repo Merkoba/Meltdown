@@ -25,6 +25,27 @@ class IndexItem:
 
 
 class Markdown:
+    separator = "───────────────────"
+    marker_indent_ordered = "\u200b\u200c\u200b"
+    marker_indent_unordered = "\u200c\u200b\u200c"
+    pattern_snippets: str
+    pattern_bold_1: str
+    pattern_italic_asterisk: str
+    pattern_italic_underscore: str
+    pattern_highlight_1: str
+    pattern_highlight_2: str
+    pattern_highlight_3: str
+    pattern_uselink: str
+    pattern_quote: str
+    pattern_url: str
+    pattern_path: str
+    pattern_header_1: str
+    pattern_header_2: str
+    pattern_header_3: str
+    pattern_separator: str
+    pattern_list_ordered: str
+    pattern_list_unordered: str
+
     @staticmethod
     def build_patterns() -> None:
         chars_left = ["(", "[", "/"]
@@ -38,10 +59,6 @@ class Markdown:
         protocols_list = ["http://", "https://", "www.", "ftp://", "sftp://", "ssh://"]
         protocols_string = Markdown.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
-
-        Markdown.separator = "───────────────────"
-        Markdown.marker_indent_ordered = "\u200b\u200c\u200b"
-        Markdown.marker_indent_unordered = "\u200c\u200b\u200c"
 
         aster = utils.escape_regex("*")
         under = utils.escape_regex("_")
@@ -62,8 +79,6 @@ class Markdown:
         Markdown.pattern_italic_asterisk = (
             rf"{left}(?P<all>{aster}{{1}}(?P<content>[^{aster}].*?){aster}{{1}}){right}"
         )
-
-        print(Markdown.pattern_italic_asterisk)
 
         # Italic with one underscore
         Markdown.pattern_italic_underscore = (
@@ -221,9 +236,15 @@ class Markdown:
             )
 
         if self.enabled(who, "highlight"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight")
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_2, "highlight")
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight")
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight"
+            )
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_highlight_2, "highlight"
+            )
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight"
+            )
 
         self.do_format(start_ln, end_ln, who, Markdown.pattern_uselink, "uselink")
 

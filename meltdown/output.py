@@ -1032,8 +1032,10 @@ class Output(tk.Text):
         return count
 
     def separate(self) -> None:
+        from .markdown import Markdown
+
         if args.separators:
-            separator = Output.marker_separator + self.markdown.separator
+            separator = Output.marker_separator + Markdown.separator
         else:
             separator = Output.marker_separator
 
