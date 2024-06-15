@@ -219,6 +219,10 @@ class Display:
             self.enable_auto_bottom(tab_id)
 
         if tabconvo.convo.items:
+            for item in tabconvo.convo.items:
+                print("user", item.user)
+                print("ai", item.ai)
+
             tabconvo.convo.print()
 
         tabconvo.tab.loaded = True
