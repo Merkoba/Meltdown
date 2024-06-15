@@ -56,17 +56,17 @@ class Markdown:
 
         # Bold with two asterisks
         self.pattern_bold_1 = (
-            rf"{left}(?P<all>{aster}{{2}}(?P<content>.*?){aster}{{2}}){right}"
+            rf"{left}(?P<all>{aster}{{2}}(?P<content>[^{aster}].*?){aster}{{2}}){right}"
         )
 
         # Italic with one asterisk
         self.pattern_italic_asterisk = (
-            rf"{left}(?P<all>{aster}{{1}}(?P<content>.*?){aster}{{1}}){right}"
+            rf"{left}(?P<all>{aster}{{1}}(?P<content>[^{aster}].*?){aster}{{1}}){right}"
         )
 
         # Italic with one underscore
         self.pattern_italic_underscore = (
-            rf"{left}(?P<all>{under}{{1}}(?P<content>.*?){under}{{1}}){right}"
+            rf"{left}(?P<all>{under}{{1}}(?P<content>[^{under}].*?){under}{{1}}){right}"
         )
 
         # Highlight with three backticks
