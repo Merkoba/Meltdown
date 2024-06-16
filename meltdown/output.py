@@ -607,6 +607,7 @@ class Output(tk.Text):
             if mode == "normal":
                 return
 
+        self.clean_text()
         self.enable()
 
         if mode == "all":
@@ -1195,3 +1196,21 @@ class Output(tk.Text):
             return
 
         model.stream({"text": text}, self.tab_id)
+
+    # Remove lines with only whitespace
+    # They mess with the markdown regex
+    def clean_text(self) -> None:
+        text = self.get("1.0", "end-1c")
+        lines = text.split("\n")
+        cleaned_lines = []
+
+        for line in lines:
+            if line.strip() == "":
+                cleaned_lines.append("")
+            else:
+                cleaned_lines.append(line)
+
+        cleaned_text = "\n".join(cleaned_lines)
+
+        if text != cleaned_text:
+            self.set_text(cleaned_text)
