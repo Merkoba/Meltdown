@@ -1,4 +1,4 @@
-llama_cpp_python == 0.2.76
+llama_cpp_python == 0.2.88
 psutil == 5.9.8
 appdirs == 1.4.4
 openai == 1.34.0

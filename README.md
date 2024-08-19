@@ -39,7 +39,7 @@ Which provides the `meltdown` command.
 To install it with `Vulkan` support (GPU), you can do this:
 
 ```sh
-CMAKE_ARGS="-DLLAMA_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
+CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
 ```
 
 ---
