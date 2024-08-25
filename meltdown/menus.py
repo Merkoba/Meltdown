@@ -360,10 +360,7 @@ class Menu:
             return True
 
         # Similarity on keys
-        if utils.check_match(text, filtr):
-            return True
-
-        return False
+        return utils.check_match(text, filtr)
 
     def do_filter(self) -> None:
         if not self.filter:

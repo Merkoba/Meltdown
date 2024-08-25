@@ -385,21 +385,21 @@ No need to greet me, just answer.
 
         vtype = self.get_default(key).__class__
 
-        if vtype == str:
+        if vtype is str:
             value = str(value)
-        elif vtype == int:
+        elif vtype is int:
             try:
                 value = int(value)
             except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
                 return False
-        elif vtype == float:
+        elif vtype is float:
             try:
                 value = float(value)
             except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
                 return False
-        elif vtype == bool:
+        elif vtype is bool:
             value = bool(value)
 
         if key in self.validations:

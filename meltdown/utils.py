@@ -43,10 +43,7 @@ class Utils:
         if a == b:
             return True
 
-        if self.similarity(a, b) >= config.similar_threshold:
-            return True
-
-        return False
+        return self.similarity(a, b) >= config.similar_threshold
 
     def most_similar(self, text: str, items: list[str]) -> str | None:
         from .config import config

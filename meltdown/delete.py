@@ -37,10 +37,7 @@ def delete_items(
         if index < 0:
             return False
 
-        if index >= len(tabconvo.convo.items):
-            return False
-
-        return True
+        return index < len(tabconvo.convo.items)
 
     if not number:
         number = "last"

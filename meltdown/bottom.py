@@ -124,10 +124,7 @@ class Bottom(tk.Frame):
         autoscroll.toggle("down")
 
     def check_enabled(self) -> bool:
-        if (not self.visible) or (not self.buttons_enabled) or (not app.exists()):
-            return False
-
-        return True
+        return self.visible and self.buttons_enabled and app.exists()
 
     def on_auto_scroll_enabled(self) -> None:
         if not self.check_enabled():

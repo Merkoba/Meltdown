@@ -171,7 +171,7 @@ class Commands:
                     new_argument = argument.lower() == "force"
                 else:
                     new_argument = False
-            elif argument and argtype == str:
+            elif argument and (argtype is str):
                 new_argument = utils.replace_keywords(argument)
             elif argument:
                 try:

@@ -66,11 +66,11 @@ class Dialog:
         # ------
 
         if image:
-            img = Image.open(image)
-            width, height = img.size
+            img_file = Image.open(image)
+            width, height = img_file.size
             new_width = image_width
             new_height = int(new_width * height / width)
-            img = img.resize((new_width, new_height))
+            img = img_file.resize((new_width, new_height))
             photo = ImageTk.PhotoImage(img)  # type: ignore
             label = tk.Label(dialog.image_frame, image=photo)  # type: ignore
             label.mlt_image = photo  # type: ignore

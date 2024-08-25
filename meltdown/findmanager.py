@@ -94,10 +94,7 @@ def find_all_text(query: str, reverse: bool = False) -> None:
         if is_regex and re.search(regex_query, value, re.IGNORECASE):
             return True
 
-        if query_lower in value.lower():
-            return True
-
-        return False
+        return query_lower in value.lower()
 
     def check_tab(tab: Tab) -> bool:
         conversation = session.get_conversation(tab.conversation_id)

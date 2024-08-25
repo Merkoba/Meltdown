@@ -70,10 +70,7 @@ class Keyboard:
         if Dialog.current_dialog:
             return True
 
-        if (utils.now() - self.block_date) < 0.15:
-            return True
-
-        return False
+        return (utils.now() - self.block_date) < 0.15
 
     def on_key_press(self, event: Any) -> None:
         from .entrybox import EntryBox
