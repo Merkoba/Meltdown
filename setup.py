@@ -40,9 +40,11 @@ Type=Application
 Categories=Utility;
 """
 
-    file_path = Path(f"~/.local/share/applications/{program}.desktop").expanduser().resolve()
+    file_path = (
+        Path(f"~/.local/share/applications/{program}.desktop").expanduser().resolve()
+    )
 
-    with open(file_path, 'w') as f:
+    with open(file_path, "w") as f:
         f.write(content)
 
 

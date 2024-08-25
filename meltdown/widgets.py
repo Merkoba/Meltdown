@@ -426,9 +426,10 @@ class Widgets:
         self,
         key_config: str,
         key_list: str,
-        command: Callable[..., Any],
+        cmd: Callable[..., Any],
         event: Any = None,
         only_items: bool = False,
+        alt_cmd: Callable[..., Any] | None = None,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
 
@@ -461,7 +462,13 @@ class Widgets:
             short = key_config in ("model", "file")
 
             utils.fill_recent(
-                menu, items, value, command, label=not only_items, short=short
+                menu,
+                items,
+                value,
+                cmd=cmd,
+                label=not only_items,
+                short=short,
+                alt_cmd=alt_cmd,
             )
 
         if event:
@@ -482,6 +489,7 @@ class Widgets:
             lambda m: self.set_model(m),
             event,
             only_items=only_items,
+            alt_cmd=lambda m: self.forget_model(m, event),
         )
 
     def show_file_context(self, event: Any = None, only_items: bool = False) -> None:
@@ -491,10 +499,11 @@ class Widgets:
             lambda m: self.set_file(m),
             event,
             only_items=only_items,
+            alt_cmd=lambda m: self.forget_file(m, event),
         )
 
     def show_file_menu(self, event: Any = None) -> None:
-        self.show_menu_items("file", "files", lambda s: self.set_file(s), event)
+        self.show_file_context(event)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)
@@ -581,8 +590,16 @@ class Widgets:
         self.file.set_text(text)
         self.file.move_to_end()
 
+    def forget_file(self, text: str, event: Any) -> None:
+        files.remove_file(text)
+        self.show_file_context(event)
+
     def set_model(self, m: str) -> None:
         config.set("model", m)
+
+    def forget_model(self, m: str, event: Any) -> None:
+        files.remove_model(m)
+        self.show_model_context(event)
 
     def stop_stream(self) -> None:
         from .display import display

@@ -471,9 +471,10 @@ class Utils:
         menu: Menu,
         items: list[str],
         value: str,
-        proc: Callable[..., Any],
+        cmd: Callable[..., Any],
         label: bool = True,
         short: bool = False,
+        alt_cmd: Callable[..., Any] | None = None,
     ) -> None:
         from .args import args
         from .config import config
@@ -483,6 +484,10 @@ class Utils:
 
         if label:
             menu.add(text=config.recent_label, disabled=True)
+
+        def forget(item: str) -> None:
+            if alt_cmd:
+                alt_cmd(item)
 
         def add_item(item: str) -> None:
             if item == value:
@@ -495,7 +500,12 @@ class Utils:
 
             text = self.bullet_points(text[: args.list_item_width])
             text = self.replace_linebreaks(text)
-            menu.add(text=text, command=lambda e: proc(item))
+
+            menu.add(
+                text=text,
+                command=lambda e: cmd(item),
+                alt_command=lambda e: forget(item),
+            )
 
         for item in items:
             add_item(item)

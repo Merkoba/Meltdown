@@ -44,12 +44,16 @@ def write(text: str | None = None, maxed: bool = False) -> None:
 
         if items:
 
-            def proc(item: str) -> None:
-                config.set("system", item)
-                textbox.set_text(item)
+            def cmd(s: str) -> None:
+                config.set("system", s)
+                textbox.set_text(s)
                 textbox.focus_end()
 
-            utils.fill_recent(menu, items, text, proc)
+            def forget(s: str) -> None:
+                files.remove_system(s)
+                menu.show(event)
+
+            utils.fill_recent(menu, items, text, cmd, alt_cmd=lambda s: forget(s))
 
         menu.show(event)
 

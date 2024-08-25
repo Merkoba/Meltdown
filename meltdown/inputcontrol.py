@@ -92,7 +92,17 @@ class InputControl:
             else:
                 self.set(text)
 
-        widgets.show_menu_items("input", "inputs", lambda s: action(s), event)
+        def forget(text: str) -> None:
+            files.remove_input(text)
+            self.show_menu(event)
+
+        widgets.show_menu_items(
+            "input",
+            "inputs",
+            lambda s: action(s),
+            event,
+            alt_cmd=lambda s: forget(s),
+        )
 
     def focus(self) -> None:
         if Dialog.open():
@@ -333,11 +343,11 @@ class InputControl:
 
             if items:
 
-                def proc(item: str) -> None:
+                def cmd(item: str) -> None:
                     textbox.set_text(item)
                     textbox.focus_end()
 
-                utils.fill_recent(menu, items, text, proc)
+                utils.fill_recent(menu, items, text, cmd)
 
             menu.show(event)
 

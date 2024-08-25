@@ -23,9 +23,11 @@ class MenuItem:
         disabled: bool = False,
         tooltip: str = "",
         underline: bool = False,
+        alt_command: Callable[..., Any] | None = None,
     ):
         self.text = text
         self.command = command
+        self.alt_command = alt_command
         self.separator = separator
         self.disabled = disabled
         self.underline = underline
@@ -61,10 +63,16 @@ class Menu:
         disabled: bool = False,
         tooltip: str = "",
         underline: bool = False,
+        alt_command: Callable[..., Any] | None = None,
     ) -> None:
         self.items.append(
             MenuItem(
-                text, command, disabled=disabled, tooltip=tooltip, underline=underline
+                text,
+                command,
+                disabled=disabled,
+                tooltip=tooltip,
+                underline=underline,
+                alt_command=alt_command,
             )
         )
 
@@ -153,6 +161,27 @@ class Menu:
             self.hide()
             app.main_frame.after(10, lambda: exec(event))
 
+        def alt_exec(event: Any) -> None:
+            if self.selected_index not in self.elements:
+                return
+
+            item = self.items[self.selected_index]
+
+            if item.alt_command:
+                item.alt_command(event)
+
+        def alt_cmd(event: Any) -> None:
+            if self.selected_index not in self.elements:
+                return
+
+            item = self.items[self.selected_index]
+
+            if item.disabled:
+                return
+
+            self.hide()
+            app.main_frame.after(10, lambda: alt_exec(event))
+
         def on_motion(event: Any) -> None:
             widget = event.widget.winfo_containing(event.x_root, event.y_root)
 
@@ -190,6 +219,7 @@ class Menu:
                 child.bind("<Button-4>", lambda e: self.on_mousewheel("up"))
                 child.bind("<Button-5>", lambda e: self.on_mousewheel("down"))
                 child.bind("<ButtonRelease-1>", lambda e: cmd(e))
+                child.bind("<ButtonRelease-2>", lambda e: alt_cmd(e))
                 bind_mouse(child)
 
         def make_item(item: MenuItem, i: int) -> None:

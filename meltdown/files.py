@@ -53,8 +53,14 @@ class Files:
     def add_model(self, text: str) -> None:
         self.add_to_list("models", text)
 
+    def remove_model(self, text: str) -> None:
+        self.remove_from_list("models", text)
+
     def add_input(self, text: str) -> None:
         self.add_to_list("inputs", text)
+
+    def remove_input(self, text: str) -> None:
+        self.remove_from_list("inputs", text)
 
     def add_system(self, text: str) -> None:
         if text == config.default_system:
@@ -62,8 +68,14 @@ class Files:
 
         self.add_to_list("systems", text)
 
+    def remove_system(self, text: str) -> None:
+        self.remove_from_list("systems", text)
+
     def add_file(self, text: str) -> None:
         self.add_to_list("files", text)
+
+    def remove_file(self, text: str) -> None:
+        self.remove_from_list("files", text)
 
     def add_to_list(self, key: str, text: str) -> None:
         if not text:
@@ -79,6 +91,20 @@ class Files:
         new_items = [item for item in items if item != text]
         new_items.insert(0, text)
         new_items = new_items[: config.max_file_list]
+        setattr(self, name, new_items)
+        path = getattr(paths, key)
+        self.save(path, new_items)
+
+    def remove_from_list(self, key: str, text: str) -> None:
+        if not text:
+            return
+
+        if not getattr(self, f"{key}_loaded"):
+            self.load_list(key)
+
+        name = f"{key}_list"
+        items = getattr(self, name)
+        new_items = [item for item in items if item != text]
         setattr(self, name, new_items)
         path = getattr(paths, key)
         self.save(path, new_items)

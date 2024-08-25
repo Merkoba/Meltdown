@@ -16,7 +16,6 @@ def setup() -> None:
     do_setup("system")
     do_setup("details_1")
     do_setup("details_2")
-
     check_all_buttons()
 
 
