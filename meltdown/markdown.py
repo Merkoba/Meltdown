@@ -116,7 +116,7 @@ class Markdown:
         )
 
         # Unix paths like /home/user/file.txt
-        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>\/\w+\/\w+))(?=\s|$)"
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>(\/|~\/)[^\s]+))(?=\s|$)"
 
         # Header with one hash
         Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
@@ -150,6 +150,12 @@ class Markdown:
 
     def format_all(self) -> None:
         start_ln = 1
+        end_ln = self.last_line()
+        self.format_section("nobody", start_ln, end_ln)
+        self.indent_lines()
+
+    def format_last(self) -> None:
+        start_ln = int(self.widget.index("end-1l").split(".")[0])
         end_ln = self.last_line()
         self.format_section("nobody", start_ln, end_ln)
         self.indent_lines()

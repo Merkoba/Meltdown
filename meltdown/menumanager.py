@@ -305,7 +305,6 @@ class WordMenu:
         self.menu = Menu()
 
         self.menu.add(text="Use", command=lambda e: Output.use_words())
-        self.menu.separator()
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
@@ -352,14 +351,13 @@ class UrlMenu:
 
         self.menu = Menu()
 
-        self.menu.add(text="Use", command=lambda e: Output.use_url())
+        self.menu.add(text="Open", command=lambda e: Output.open_url())
         self.menu.separator()
+        self.menu.add(text="Use", command=lambda e: Output.use_url())
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
-        self.menu.separator()
-        self.menu.add(text="Open", command=lambda e: Output.open_url())
 
     def show(self, event: Any = None) -> None:
         if event:

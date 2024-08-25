@@ -612,6 +612,8 @@ class Output(tk.Text):
 
         if mode == "all":
             self.markdown.format_all()
+        elif mode == "last":
+            self.markdown.format_last()
         else:
             self.markdown.format()
 
