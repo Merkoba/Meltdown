@@ -1506,5 +1506,11 @@ class ArgSpec:
             info=f"Effects to apply to headers (Level 3). {self.effects_info}",
         )
 
+        self.add_argument(
+            "mouse_scroll",
+            action="store_true",
+            info="Scroll lists by simply focusing items with the mouse",
+        )
+
 
 argspec = ArgSpec()

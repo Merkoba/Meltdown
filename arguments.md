@@ -2269,3 +2269,13 @@ Effects to apply to headers (Level 3). bold, italic, color, underline, monospace
 Default: "bold"
 
 Type: str
+
+---
+
+### mouse-scroll
+
+Scroll lists by simply focusing items with the mouse
+
+Default: False
+
+Action: store_true

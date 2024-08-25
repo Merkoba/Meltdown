@@ -551,10 +551,11 @@ class Menu:
         els["label"]["foreground"] = colors["hover_foreground"]
         self.selected_index = index
 
-        if index <= 1:
-            self.canvas.yview_moveto(0.0)
-        else:
-            self.scroll_to_item()
+        if args.mouse_scroll:
+            if index <= 1:
+                self.canvas.yview_moveto(0.0)
+            else:
+                self.scroll_to_item()
 
     def on_leave(self, index: int) -> None:
         ToolTip.hide_all()

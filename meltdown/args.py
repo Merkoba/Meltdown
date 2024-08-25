@@ -250,6 +250,7 @@ class Args:
         self.tab_tooltip_length = 235
         self.uselinks: list[str] = []
         self.concat_logs = False
+        self.mouse_scroll = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -498,6 +499,7 @@ class Args:
             "tab_tooltip_length",
             "ascii_logs",
             "concat_logs",
+            "mouse_scroll",
         ]
 
         for n_item in normals:
