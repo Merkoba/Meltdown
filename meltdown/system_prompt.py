@@ -51,7 +51,7 @@ def write(text: str | None = None, maxed: bool = False) -> None:
 
             def forget(s: str) -> None:
                 files.remove_system(s)
-                menu.show(event)
+                on_right_click(event, textbox)
 
             utils.fill_recent(menu, items, text, cmd, alt_cmd=lambda s: forget(s))
 
