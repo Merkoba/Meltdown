@@ -117,7 +117,7 @@ class Markdown:
 
         # Unix paths like /home/user/file.txt
         Markdown.pattern_path = (
-            r"(?:(?<=\s)|^)(?P<all>(?P<content>(\/|~\/)[^\s]+))(?=\s|$)"
+            r"(?:(?<=\s)|^)(?P<all>(?P<content>(\/|~\/)[^\s\/]+\/[^\s\/]+[^\s]*))(?=\s|$)"
         )
 
         # Header with one hash
