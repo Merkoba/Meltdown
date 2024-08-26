@@ -1216,3 +1216,37 @@ class Output(tk.Text):
 
         if text != cleaned_text:
             self.set_text(cleaned_text)
+
+    def replace_line(self, line: int, text: str) -> None:
+        start_index = f"{line}.0"
+        end_index = f"{line}.end"
+
+        self.enable()
+        self.delete(start_index, end_index)
+        self.insert(start_index, text)
+        self.disable()
+
+    def delete_line(self, line: int) -> None:
+        start_index = f"{line}.0"
+        end_index = f"{line}.end"
+
+        self.enable()
+        self.delete(start_index, end_index)
+        self.disable()
+
+    def set_last_ai(self, text: str) -> None:
+        lines = list(reversed(self.get_text().split("\n")))
+
+        for i, line in enumerate(lines):
+            if line.startswith(Output.marker_ai):
+                new_text = Output.get_prompt("ai") + text
+                self.replace_line(len(lines) - i, new_text)
+                break
+
+    def remove_last_ai(self) -> None:
+        lines = list(reversed(self.get_text().split("\n")))
+
+        for i, line in enumerate(lines):
+            if line.startswith(Output.marker_ai):
+                self.delete_line(len(lines) - i)
+                break

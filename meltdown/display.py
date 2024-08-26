@@ -1063,5 +1063,38 @@ class Display:
         item = tabconvo.convo.items[0]
         self.book.update_tooltip(tab_id, item.ai)
 
+    def clear_last_ai(self, tab_id: str) -> None:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        if not tabconvo.convo.items:
+            return
+
+        tabconvo.convo.items[0].ai = ""
+
+    def set_last_ai(self, tab_id: str | None, text: str) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        output.set_last_ai(text)
+
+    def remove_last_ai(self, tab_id: str | None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        output.remove_last_ai()
+
 
 display = Display()

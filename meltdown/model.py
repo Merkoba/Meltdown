@@ -327,6 +327,10 @@ class Model:
         log_dict["top_k"] = config.top_k
         log_dict["top_p"] = config.top_p
 
+        # Temporary
+        log_dict["ai"] = "Empty"
+        log_dict["duration"] = 0
+
         messages: list[dict[str, Any]] = []
 
         if config.system:
@@ -391,6 +395,8 @@ class Model:
             "user", text=prompt_user, tab_id=tab_id, original=o_text, file=original_file
         )
 
+        display.prompt("ai", text="Thinking...", tab_id=tab_id)
+        tabconvo.convo.add(log_dict)
         display.stream_started(tab_id)
         return messages, log_dict
 
@@ -487,7 +493,6 @@ class Model:
             log_dict["ai"] = res
             log_dict["duration"] = duration
             self.last_response = res
-            tabconvo.convo.add(log_dict)
 
             if args.durations:
                 word = utils.singular_or_plural(duration, "second", "seconds")
@@ -502,7 +507,7 @@ class Model:
         tab_id: str,
     ) -> str:
         broken = False
-        added_name = False
+        first_content = False
         token_printed = False
         last_token = " "
         buffer_date = 0.0
@@ -525,9 +530,10 @@ class Model:
                 delta = chunk.choices[0].delta
 
                 if hasattr(delta, "content"):
-                    if not added_name:
+                    if not first_content:
+                        display.remove_last_ai(tab_id)
                         display.prompt("ai", tab_id=tab_id)
-                        added_name = True
+                        first_content = True
 
                     token = delta.content
 
