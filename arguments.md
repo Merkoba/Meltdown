@@ -2279,3 +2279,13 @@ Scroll lists by simply focusing items with the mouse
 Default: False
 
 Action: store_true
+
+---
+
+### thinking-text
+
+Text to show temporarily while the AI is thinking
+
+Default: "Thinking..."
+
+Type: str

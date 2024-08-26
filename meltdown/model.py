@@ -395,7 +395,7 @@ class Model:
             "user", text=prompt_user, tab_id=tab_id, original=o_text, file=original_file
         )
 
-        display.prompt("ai", text="Thinking...", tab_id=tab_id)
+        display.prompt("ai", text=args.thinking_text, tab_id=tab_id)
         tabconvo.convo.add(log_dict)
         display.stream_started(tab_id)
         return messages, log_dict

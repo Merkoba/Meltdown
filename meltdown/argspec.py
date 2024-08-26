@@ -1512,5 +1512,11 @@ class ArgSpec:
             info="Scroll lists by simply focusing items with the mouse",
         )
 
+        self.add_argument(
+            "thinking_text",
+            type=str,
+            info="Text to show temporarily while the AI is thinking",
+        )
+
 
 argspec = ArgSpec()
