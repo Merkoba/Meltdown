@@ -101,7 +101,7 @@ class Logs:
         last_log = ""
         ext = formats.get_ext(mode)
 
-        def save(content: str, name: str) -> None:
+        def save(content: str, name_: str) -> None:
             nonlocal num, last_log
 
             if not content:
@@ -109,18 +109,18 @@ class Logs:
 
             num += 1
 
-            if not name:
+            if not name_:
                 overwrite = False
             else:
                 overwrite = True
 
             if args.clean_names:
-                name = utils.clean_name(name)
+                name_ = utils.clean_name(name_)
 
-            name = name[: config.max_file_name_length].strip(" _")
+            name_ = name_[: config.max_file_name_length].strip(" _")
 
             last_log = self.save_file(
-                content, name, ext, save_all, overwrite=overwrite, mode=mode
+                content, name_, ext, save_all, overwrite=overwrite, mode=mode
             )
 
         if save_all:
@@ -157,8 +157,8 @@ class Logs:
             else:
                 content = ""
 
-            name = f"{len(contents)}_{utils.random_word()}"
-            save(content, name)
+            name_ = f"{len(contents)}_{utils.random_word()}"
+            save(content, name_)
         else:
             for conversation in conversations:
                 if not conversation:
@@ -168,8 +168,8 @@ class Logs:
                     continue
 
                 content = self.get_content(mode, conversation)
-                name = conversation.name
-                save(content, name)
+                name_ = name or conversation.name
+                save(content, name_)
 
         if save_all:
             if args.quiet or (not args.log_feedback):
