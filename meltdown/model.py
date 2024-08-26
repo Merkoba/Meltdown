@@ -21,6 +21,7 @@ from .display import display
 from .tips import tips
 from .utils import utils
 from .files import files
+from .session import Item
 
 
 PromptArg = dict[str, Any]
@@ -279,7 +280,7 @@ class Model:
 
     def prepare_stream(
         self, prompt: dict[str, str], tab_id: str
-    ) -> tuple[list[dict[str, str]], dict[str, Any]] | None:
+    ) -> tuple[list[dict[str, str]], Item] | None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
@@ -396,9 +397,9 @@ class Model:
         )
 
         display.prompt("ai", text=args.thinking_text, tab_id=tab_id)
-        tabconvo.convo.add(log_dict)
+        convo_item = tabconvo.convo.add(log_dict)
         display.stream_started(tab_id)
-        return messages, log_dict
+        return messages, convo_item
 
     def do_stream(self, prompt: dict[str, str], tab_id: str) -> None:
         prepared = self.prepare_stream(prompt, tab_id)
@@ -413,7 +414,7 @@ class Model:
 
         now = utils.now()
         self.stream_date = now
-        messages, log_dict = prepared
+        messages, convo_item = prepared
         self.stream_loading = True
         self.lock.acquire()
 
@@ -490,8 +491,9 @@ class Model:
 
         if res:
             duration = now_2 - now
-            log_dict["ai"] = res
-            log_dict["duration"] = duration
+            convo_item.ai = res
+            convo_item.duration = duration
+            tabconvo.convo.update()
             self.last_response = res
 
             if args.durations:
@@ -571,6 +573,7 @@ class Model:
             response = output.choices[0].message.content.strip()
 
             if response:
+                display.remove_last_ai(tab_id)
                 display.prompt("ai", tab_id=tab_id)
                 display.insert(response, tab_id=tab_id)
                 return str(response)

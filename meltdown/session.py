@@ -96,11 +96,16 @@ class Conversation:
         else:
             self.created = created
 
-    def add(self, data: dict[str, Any]) -> None:
+    def add(self, data: dict[str, Any]) -> Item:
         item = Item.from_dict(data)
         self.last_modified = utils.now()
         self.items.append(item)
         self.limit()
+        session.do_save()
+        return item
+
+    def update(self) -> None:
+        self.last_modified = utils.now()
         session.do_save()
 
     def limit(self) -> None:

@@ -181,11 +181,13 @@ class ItemOps:
 
         if item.user:
             w_user = len(utils.get_words(item.user))
-            text += f"\n\nUser: {w_user} words ({len(item.user)} chars)"
+            words = utils.singular_or_plural(w_user, "word", "words")
+            text += f"\n\nUser: {w_user} {words} ({len(item.user)} chars)"
 
         if item.ai:
             w_ai = len(utils.get_words(item.ai))
-            text += f"\nAI: {w_ai} words ({len(item.ai)} chars)"
+            words = utils.singular_or_plural(w_ai, "word", "words")
+            text += f"\nAI: {w_ai} {words} ({len(item.ai)} chars)"
 
         if item.file:
             text += utils.no_break(f"\n\nFile: {item.file}")
