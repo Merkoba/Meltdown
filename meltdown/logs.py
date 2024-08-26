@@ -100,6 +100,7 @@ class Logs:
         num = 0
         last_log = ""
         ext = formats.get_ext(mode)
+        overwrite = bool(name)
 
         def save(content: str, name_: str) -> None:
             nonlocal num, last_log
@@ -108,11 +109,6 @@ class Logs:
                 return
 
             num += 1
-
-            if not name_:
-                overwrite = False
-            else:
-                overwrite = True
 
             if args.clean_names:
                 name_ = utils.clean_name(name_)
