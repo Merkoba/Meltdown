@@ -2289,3 +2289,13 @@ Text to show temporarily while the AI is thinking
 Default: "Thinking..."
 
 Type: str
+
+---
+
+### logs-dir
+
+Use a different directory for the logs
+
+Default: [Empty string]
+
+Type: str

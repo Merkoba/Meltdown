@@ -1518,5 +1518,11 @@ class ArgSpec:
             info="Text to show temporarily while the AI is thinking",
         )
 
+        self.add_argument(
+            "logs_dir",
+            type=str,
+            info="Use a different directory for the logs",
+        )
+
 
 argspec = ArgSpec()

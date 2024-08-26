@@ -47,7 +47,12 @@ class Paths:
         self.data_dir = Path(data_dir, location)
         self.configs = Path(self.data_dir, "configs")
         self.sessions = Path(self.data_dir, "sessions")
-        self.logs = Path(self.data_dir, "logs")
+
+        if args.logs_dir:
+            self.logs = Path(args.logs_dir)
+        else:
+            self.logs = Path(self.data_dir, "logs")
+
         self.apikey = Path(self.data_dir, "apikey.txt")
         self.errors = Path(self.data_dir, "errors")
 

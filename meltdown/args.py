@@ -252,6 +252,7 @@ class Args:
         self.concat_logs = False
         self.mouse_scroll = False
         self.thinking_text = "Thinking..."
+        self.logs_dir = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -502,6 +503,7 @@ class Args:
             "concat_logs",
             "mouse_scroll",
             "thinking_text",
+            "logs_dir",
         ]
 
         for n_item in normals:
