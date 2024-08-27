@@ -155,6 +155,9 @@ class Menu:
 
             item = self.items[self.selected_index]
 
+            if not item.command:
+                return
+
             if item.disabled:
                 return
 
