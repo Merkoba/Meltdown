@@ -1081,17 +1081,6 @@ class Display:
 
         tabconvo.convo.items[0].ai = ""
 
-    def set_last_ai(self, tab_id: str | None, text: str) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
-
-        output = self.get_output(tab_id)
-
-        if not output:
-            return
-
-        output.set_last_ai(text)
-
     def remove_last_ai(self, tab_id: str | None) -> None:
         if not tab_id:
             tab_id = self.current_tab
