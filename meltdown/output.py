@@ -342,8 +342,7 @@ class Output(tk.Text):
         text = text.replace(Output.marker_user, "")
         text = text.replace(Output.marker_ai, "")
         text = text.replace(Output.marker_separator, "")
-        text = text.replace(Output.marker_space, "")
-        return text
+        return text.replace(Output.marker_space, "")
 
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
