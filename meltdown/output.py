@@ -337,6 +337,14 @@ class Output(tk.Text):
 
         return prompt
 
+    @staticmethod
+    def remove_markers(text: str) -> str:
+        text = text.replace(Output.marker_user, "")
+        text = text.replace(Output.marker_ai, "")
+        text = text.replace(Output.marker_separator, "")
+        text = text.replace(Output.marker_space, "")
+        return text
+
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
 
@@ -667,16 +675,9 @@ class Output(tk.Text):
         if self.cget("state") != "disabled":
             self.configure(state="disabled")
 
-    def remove_markers(self, text: str) -> str:
-        text = text.replace(Output.marker_user, "")
-        text = text.replace(Output.marker_ai, "")
-        text = text.replace(Output.marker_separator, "")
-        text = text.replace(Output.marker_space, "")
-        return text
-
     def copy_all(self) -> None:
         text = self.get_text()
-        text = self.remove_markers(text)
+        text = Output.remove_markers(text)
         utils.copy(text, command=True)
 
     def copy_items_or_all(self) -> None:
