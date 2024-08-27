@@ -667,8 +667,26 @@ class Output(tk.Text):
         if self.cget("state") != "disabled":
             self.configure(state="disabled")
 
+    def remove_markers(self, text: str) -> str:
+        text = text.replace(Output.marker_user, "")
+        text = text.replace(Output.marker_ai, "")
+        text = text.replace(Output.marker_separator, "")
+        text = text.replace(Output.marker_space, "")
+        return text
+
     def copy_all(self) -> None:
-        utils.copy(self.get_text(), command=True)
+        text = self.get_text()
+        text = self.remove_markers(text)
+        utils.copy(text, command=True)
+
+    def copy_items_or_all(self) -> None:
+        from .display import display
+        from . import formats
+
+        if display.has_messages():
+            formats.copy_text()
+        else:
+            self.copy_all()
 
     def prompt(self, who: str) -> None:
         from .display import display

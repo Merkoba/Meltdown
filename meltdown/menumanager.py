@@ -161,6 +161,11 @@ class TabMenu:
         self.menu.separator()
 
         self.menu.add(
+            "Copy All",
+            lambda e: display.copy_items_or_all(),
+        )
+
+        self.menu.add(
             "Save Log",
             lambda e: logs.menu(full=False, tab_id=display.tab_menu_id),
             disabled=unmod,

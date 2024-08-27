@@ -419,6 +419,14 @@ class Display:
 
         output.copy_all()
 
+    def copy_items_or_all(self) -> None:
+        output = self.get_current_output()
+
+        if not output:
+            return
+
+        output.copy_items_or_all()
+
     def clear(self, tab_id: str | None = None, force: bool = False) -> None:
         from .session import session
 
