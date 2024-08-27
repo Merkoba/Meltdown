@@ -360,6 +360,7 @@ class Display:
         name = self.prepare_name(name)
 
         if not name:
+            self.redo_auto_name_tab(tab_id)
             return
 
         tab = self.get_tab(tab_id)
@@ -777,6 +778,16 @@ class Display:
 
         text = utils.compact_text(text, args.auto_name_length)
         self.do_rename_tab(tab_id, text)
+
+    def redo_auto_name_tab(self, tab_id: str) -> None:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        if len(tabconvo.convo.items) >= 1:
+            item = tabconvo.convo.items[0]
+            self.auto_name_tab(tab_id, item.user)
 
     def has_messages(self, tab_id: str | None = None) -> bool:
         tabconvo = self.get_tab_convo(tab_id)
