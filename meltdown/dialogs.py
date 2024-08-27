@@ -135,13 +135,8 @@ class Dialog:
 
                 menu.show(event)
 
-            def entry_up() -> None:
-                dialog.root.focus_set()
-
-            dialog.root.bind("<Up>", lambda e: entry_up())
             dialog.entry.bind("<Return>", lambda e: dialog.enter())
             dialog.entry.bind("<Escape>", lambda e: dialog.hide())
-            dialog.entry.bind("<Down>", lambda e: dialog.root.focus_set())
             dialog.entry.bind("<Button-3>", lambda e: on_right_click(e))
             dialog.entry.pack(padx=3, pady=3)
 
@@ -191,7 +186,10 @@ class Dialog:
                 make_cmd(cmd)
 
         if commands:
-            dialog.highlight_last_button()
+            if dialog.entry:
+                dialog.highlight_no_button()
+            else:
+                dialog.highlight_last_button()
 
         dialog.show()
 
@@ -300,7 +298,7 @@ class Dialog:
         dialog.make_button("Ok", textbox.ok)
 
         dialog.show()
-        dialog.highlight_last_button()
+        dialog.highlight_no_button()
         textbox.insert(tk.END, value)
         textbox.focus_set()
 
@@ -466,6 +464,13 @@ class Dialog:
 
     def highlight_last_button(self) -> None:
         self.highlight_button(len(self.buttons) - 1)
+
+    def highlight_no_button(self) -> None:
+        for button in self.buttons:
+            button.set_style("normal")
+
+        self.current_button = -1
+        self.highlighted = False
 
     def enter(self) -> None:
         if self.current_button is not None:
