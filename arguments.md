@@ -1020,7 +1020,7 @@ Type: int
 
 Width of the window
 
-Default: -1
+Default: 0
 
 Type: int
 
@@ -1030,7 +1030,7 @@ Type: int
 
 Height of the window
 
-Default: -1
+Default: 0
 
 Type: int
 

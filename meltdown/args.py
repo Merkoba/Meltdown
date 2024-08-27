@@ -42,8 +42,8 @@ class Args:
         self.test = False
         self.test2 = False
         self.alt_palette = False
-        self.width = -1
-        self.height = -1
+        self.width = 0
+        self.height = 0
         self.max_tabs = 0
         self.config = ""
         self.session = ""

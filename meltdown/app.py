@@ -255,8 +255,8 @@ class App:
     def set_geometry(self) -> None:
         from .args import args
 
-        width = args.width if args.width != -1 else self.theme.width
-        height = args.height if args.height != -1 else self.theme.height
+        width = args.width if args.width > 0 else self.theme.width
+        height = args.height if args.height > 0 else self.theme.height
         self.root.geometry(f"{width}x{height}")
 
         if args.maximize:
