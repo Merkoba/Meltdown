@@ -167,6 +167,17 @@ class Output(tk.Text):
         utils.copy(text, command=True)
 
     @staticmethod
+    def copy_selection() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        text = output.get_selected_text()
+        output.deselect_all()
+        utils.copy(text, command=True)
+
+    @staticmethod
     def custom_prompt(text: str) -> None:
         from .model import model
 
@@ -755,7 +766,7 @@ class Output(tk.Text):
     def show_word_menu(
         self, event: Any, widget: tk.Text | None = None, consider_tags: bool = True
     ) -> bool:
-        from .menumanager import word_menu
+        from .menumanager import word_menu, selection_menu
         from .keyboard import keyboard
 
         if not args.word_menu:
@@ -798,6 +809,9 @@ class Output(tk.Text):
             Output.words = tag_words
 
         if not Output.words:
+            if seltext:
+                selection_menu.show(event)
+                return True
             return False
 
         if keyboard.ctrl:

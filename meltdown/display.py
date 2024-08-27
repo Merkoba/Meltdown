@@ -299,6 +299,7 @@ class Display:
 
     def show_tab_list(self, event: Any = None) -> None:
         from .widgets import widgets
+        from . import close
 
         widget = widgets.stop_button
 
@@ -311,6 +312,9 @@ class Display:
             def command() -> None:
                 return self.select_tab(page.id_)
 
+            def alt_cmd() -> None:
+                close.close(tab_id=page.id_)
+
             tab = self.get_tab(page.id_)
 
             if not tab:
@@ -319,7 +323,10 @@ class Display:
             underline = tab.streaming
 
             self.tab_list_menu.add(
-                text=page.name, command=lambda e: command(), underline=underline
+                text=page.name,
+                command=lambda e: command(),
+                alt_command=lambda e: alt_cmd(),
+                underline=underline,
             )
 
         selected = 0

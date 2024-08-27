@@ -321,6 +321,21 @@ class WordMenu:
             return
 
 
+class SelectionMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy", command=lambda e: Output.copy_selection())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
 class CustomMenu:
     def __init__(self) -> None:
         from .args import args
@@ -374,5 +389,6 @@ tab_menu = TabMenu()
 font_menu = FontMenu()
 item_menu = ItemMenu()
 word_menu = WordMenu()
+selection_menu = SelectionMenu()
 url_menu = UrlMenu()
 custom_menu = CustomMenu()
