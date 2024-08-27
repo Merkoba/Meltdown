@@ -464,7 +464,7 @@ class App:
             return
 
         if arg.startswith("~/"):
-            arg = str(Path.home()) + arg[1:]
+            arg = Path(arg).expanduser()
 
         if opener:
             cmd = [opener, arg]
