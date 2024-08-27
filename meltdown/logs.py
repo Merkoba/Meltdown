@@ -61,15 +61,7 @@ class Logs:
 
         if not save_all:
             if not args.quiet and args.log_feedback:
-                home = str(Path.home())
-                pth = str(file_path)
-
-                if pth.startswith(home):
-                    pth = pth.replace(str(home), "~")
-
-                msg = f"Saved: {pth}"
-                display.print(utils.emoji_text(msg, "storage"))
-                display.format_text(mode="last")
+                utils.saved_path("Log", file_path)
 
             cmd = ""
 

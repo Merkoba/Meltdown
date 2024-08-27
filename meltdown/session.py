@@ -324,9 +324,7 @@ class Session:
         files.write(path, self.to_json())
 
         if not args.quiet:
-            name = path.name
-            msg = f'Session saved as "{name}"'
-            display.print(utils.emoji_text(msg, "storage"))
+            utils.saved_path("Session", path)
 
     def load_state(self, name: str | None = None) -> None:
         if name == "last":

@@ -199,7 +199,6 @@ No need to greet me, just answer.
             self.load_file()
 
     def save_state(self, name: str | None = None) -> None:
-        from .display import display
         from .paths import paths
         from .args import args
         from .files import files
@@ -229,9 +228,7 @@ No need to greet me, just answer.
         files.write(path, conf)
 
         if not args.quiet:
-            name = path.name
-            msg = f'Config saved as "{name}"'
-            display.print(utils.emoji_text(msg, "storage"))
+            utils.saved_path("Config", path)
 
     def load_state(self, name: str | None = None) -> None:
         from .args import args

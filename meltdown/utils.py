@@ -516,5 +516,22 @@ class Utils:
         min_space = min(spaces) if spaces else 0
         return "\n".join(line[min_space:] for line in lines)
 
+    def check_home(self, path: Path) -> str:
+        home = str(Path.home())
+        spath = str(path)
+
+        if spath.startswith(home):
+            spath = spath.replace(home, "~")
+
+        return spath
+
+    def saved_path(self, what: str, path: Path) -> None:
+        from .display import display
+
+        spath = self.check_home(path)
+        msg = f"{what} {spath}"
+        display.print(self.emoji_text(msg, "storage"))
+        display.format_text(mode="last")
+
 
 utils = Utils()
