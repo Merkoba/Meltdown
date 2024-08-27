@@ -176,8 +176,11 @@ class Dialog:
 
         def make_cmd(cmd: tuple[str, Callable[..., Any]]) -> None:
             def generic(func: Callable[..., Any]) -> None:
-                ans = {"entry": Dialog.get_entry()}
-                ans = {"msgbox": Dialog.get_msgbox()}
+                ans = {
+                    "entry": Dialog.get_entry(),
+                    "msgbox": Dialog.get_msgbox(),
+                }
+
                 dialog.hide()
                 func(ans)
 
