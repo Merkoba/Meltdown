@@ -313,7 +313,8 @@ class Display:
                 return self.select_tab(page.id_)
 
             def alt_cmd() -> None:
-                close.close(tab_id=page.id_)
+                close.close(tab_id=page.id_, force=True)
+                self.show_tab_list(event)
 
             tab = self.get_tab(page.id_)
 
