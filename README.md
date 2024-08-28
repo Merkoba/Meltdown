@@ -9,6 +9,7 @@
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Installation](#installation)
+1. [Donation](#donation)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
 1. [Keyboard](keyboard.md)
@@ -179,3 +180,11 @@ Random noun.
 This is a special syntax to create `uselinks`.
 
 These are used to prompt directly on click.
+
+---
+
+## Donation <a name="donation"></a>
+
+To fund this project there is this `Monero/XMR` address available:
+
+88cK3CGe3nB1ri7gY3cXeK6UiXt3EbW1oLBXAWHQ6X2MdUg8SdDNMZpPWyWHGkEiHURpzg5yFPjTeDTma4vYL3kbFw8dcc6
