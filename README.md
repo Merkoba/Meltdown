@@ -49,13 +49,7 @@ To install manually, use a virtual env and `requirements.txt`.
 
 You can use `scripts/venv.sh` to automate this.
 
-If you use AMD you might want to use this:
-
-```sh
-CMAKE_ARGS="-DLLAMA_VULKAN=on" scripts/venv.sh
-```
-
-There's a `scripts/venv_amd.sh` that does this.
+There's a `scripts/venv_amd.sh` to install with `Vulkan` support for `AMD`.
 
 To run the program, use `run.sh` in the root dir.
 
