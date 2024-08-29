@@ -49,7 +49,7 @@ To install manually, use a virtual env and `requirements.txt`.
 
 You can use `scripts/venv.sh` to automate this.
 
-There's a `scripts/venv_amd.sh` to install with `Vulkan` support for `AMD`.
+Alternatively, there's a `scripts/venv_amd.sh` to install with `Vulkan` support for `AMD`.
 
 To run the program, use `run.sh` in the root dir.
 
