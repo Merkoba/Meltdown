@@ -24,6 +24,7 @@ class Output(tk.Text):
     marker_space = "\u00a0"
     clicked_who = ""
     words = ""
+    selected_text = ""
 
     @staticmethod
     def current_output() -> Output | None:
@@ -173,7 +174,7 @@ class Output(tk.Text):
         if not output:
             return
 
-        text = output.get_selected_text()
+        text = Output.selected_text
         output.deselect_all()
         utils.copy(text, command=True)
 
@@ -828,8 +829,10 @@ class Output(tk.Text):
 
         if not Output.words:
             if seltext:
+                Output.selected_text = seltext
                 selection_menu.show(event)
                 return True
+
             return False
 
         if keyboard.ctrl:
