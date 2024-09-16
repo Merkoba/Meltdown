@@ -24,7 +24,6 @@ class Output(tk.Text):
     marker_space = "\u00a0"
     clicked_who = ""
     words = ""
-    selected_text = ""
 
     @staticmethod
     def current_output() -> Output | None:
@@ -174,7 +173,7 @@ class Output(tk.Text):
         if not output:
             return
 
-        text = Output.selected_text
+        text = Output.get_selected()
         output.deselect_all()
         utils.copy(text, command=True)
 
@@ -209,7 +208,15 @@ class Output(tk.Text):
         if not output:
             return ""
 
-        return output.get_selected_text().strip()
+        text = output.get_selected_text()
+
+        if not text:
+            for snippet in output.snippets:
+                text = snippet.get_selected_text()
+                if text:
+                    break
+
+        return text
 
     @staticmethod
     def explain_selected() -> None:
@@ -829,7 +836,6 @@ class Output(tk.Text):
 
         if not Output.words:
             if seltext:
-                Output.selected_text = seltext
                 selection_menu.show(event)
                 return True
 
