@@ -186,6 +186,9 @@ class Snippet(tk.Frame):
         self.text.tag_add("sel", "1.0", tk.END)
 
     def deselect_all(self) -> None:
+        if not self.text:
+            return
+
         self.text.tag_remove("sel", "1.0", tk.END)
 
     def on_motion(self, event: Any) -> None:
