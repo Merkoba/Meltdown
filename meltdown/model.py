@@ -49,6 +49,7 @@ class Model:
         self.gpts: list[tuple[str, str]] = [
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
             ("gpt-4o", "GPT 4o"),
+            ("gpt-4o-mini", "GPT 4o Mini"),
         ]
 
         self.geminis: list[tuple[str, str]] = [
