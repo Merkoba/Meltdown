@@ -12,6 +12,7 @@ from llama_cpp import Llama, ChatCompletionChunk  # type: ignore
 from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
 from openai import OpenAI  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
+import google.generativeai as genai  # type: ignore
 
 # Modules
 from .app import app
@@ -42,6 +43,7 @@ class Model:
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
         self.gpt_client = None
+        self.gemini_client = None
         self.last_response = ""
 
         self.gpts: list[tuple[str, str]] = [
@@ -49,7 +51,14 @@ class Model:
             ("gpt-4o", "GPT 4o"),
         ]
 
-        self.gpt_key = ""
+        self.geminis: list[tuple[str, str]] = [
+            ("gemini-1.5-pro", "Gemini 1.5 Pro"),
+            ("gemini-1.5-flash", "Gemini 1.5 Flash"),
+            ("gemini-1.5-flash-8b", "Gemini 1.5 Flash 8b"),
+        ]
+
+        self.openai_key = ""
+        self.google_key = ""
 
     def setup(self) -> None:
         self.update_icon()
@@ -68,7 +77,10 @@ class Model:
         self.clear_model()
 
     def model_is_gpt(self, name: str) -> bool:
-        return any(name == gpt[0] for gpt in self.gpts)
+        return name.startswith("gpt-")
+
+    def model_is_gemini(self, name: str) -> bool:
+        return name.startswith("gemini-")
 
     def load(self, prompt: PromptArg | None = None, tab_id: str | None = None) -> None:
         if not tab_id:
@@ -98,6 +110,11 @@ class Model:
             self.load_gpt(tab_id, prompt)
             return
 
+        if self.model_is_gemini(config.model):
+            self.unload()
+            self.load_gemini(tab_id, prompt)
+            return
+
         model_path = Path(config.model)
 
         if (not model_path.exists()) or (not model_path.is_file()):
@@ -125,20 +142,30 @@ class Model:
         self.stream_date = 0.0
         self.update_icon()
 
-    def read_gpt_key(self) -> None:
+    def read_openai_key(self) -> None:
         from .paths import paths
 
         try:
-            self.gpt_key = files.read(paths.apikey)
+            self.openai_key = files.read(paths.openai_apikey)
         except BaseException as e:
             utils.error(e)
-            self.gpt_key = ""
+            self.openai_key = ""
+
+    def read_google_key(self) -> None:
+        from .paths import paths
+
+        try:
+            self.google_key = files.read(paths.google_apikey)
+            genai.configure(api_key=self.google_key)
+        except BaseException as e:
+            utils.error(e)
+            self.google_key = ""
 
     def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
         try:
-            self.read_gpt_key()
+            self.read_openai_key()
 
-            if not self.gpt_key:
+            if not self.openai_key:
                 display.print(
                     "Error: OpenAI API key not found. Use the model menu to set it."
                 )
@@ -146,10 +173,37 @@ class Model:
                 self.clear_model()
                 return
 
-            self.gpt_client = OpenAI(api_key=self.gpt_key)
+            self.gpt_client = OpenAI(api_key=self.openai_key)
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
+            msg = f"{config.model} is ready to use"
+            display.print(utils.emoji_text(msg, "remote"))
+            self.update_icon()
+
+            if prompt:
+                self.stream(prompt, tab_id)
+        except BaseException as e:
+            utils.error(e)
+            display.print("Error: GPT model failed to load.")
+            self.clear_model()
+
+    def load_gemini(self, tab_id: str, prompt: PromptArg | None = None) -> None:
+        try:
+            self.read_google_key()
+
+            if not self.google_key:
+                display.print(
+                    "Error: Google API key not found. Use the model menu to set it."
+                )
+
+                self.clear_model()
+                return
+
+            self.gpt_client = OpenAI(api_key=self.google_key, base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
+            self.model_loading = False
+            self.loaded_model = config.model
+            self.loaded_format = "gemini_remote"
             msg = f"{config.model} is ready to use"
             display.print(utils.emoji_text(msg, "remote"))
             self.update_icon()
@@ -418,23 +472,32 @@ class Model:
         self.stream_loading = True
         self.lock.acquire()
 
+        gen_config = {
+            "messages": messages,
+            "stream": args.stream,
+            "model": config.model,
+            "max_tokens": config.max_tokens,
+            "temperature": config.temperature,
+            "top_p": config.top_p,
+            "seed": config.seed,
+            "stop": self.get_stop_list(),
+        }
+
         if self.model_is_gpt(config.model):
+            pass
+        elif self.model_is_gemini(config.model):
+            del gen_config["seed"]
+        else:
+            del gen_config["model"]
+
+        if self.model_is_gpt(config.model) or self.model_is_gemini(config.model):
             try:
                 if not self.gpt_client:
                     self.stream_loading = False
                     self.release_lock()
                     return
 
-                output = self.gpt_client.chat.completions.create(
-                    messages=messages,
-                    stream=args.stream,
-                    model=config.model,
-                    max_tokens=config.max_tokens,
-                    temperature=config.temperature,
-                    top_p=config.top_p,
-                    seed=config.seed,
-                    stop=self.get_stop_list(),
-                )
+                output = self.gpt_client.chat.completions.create(**gen_config)
             except BaseException as e:
                 utils.error(e)
 
@@ -455,16 +518,7 @@ class Model:
                 return
 
             try:
-                output = self.model.create_chat_completion_openai_v1(
-                    messages=messages,
-                    stream=args.stream,
-                    max_tokens=config.max_tokens,
-                    temperature=config.temperature,
-                    top_k=config.top_k,
-                    top_p=config.top_p,
-                    seed=config.seed,
-                    stop=self.get_stop_list(),
-                )
+                output = self.model.create_chat_completion_openai_v1(**gen_config)
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
@@ -608,7 +662,8 @@ class Model:
 
             icon.configure(text=text)
             tooltip.set_text(tips["model_unloaded"])
-        elif self.model_is_gpt(self.loaded_model):
+        elif self.model_is_gpt(self.loaded_model) or \
+        self.model_is_gemini(self.loaded_model):
             if args.emojis:
                 text = utils.get_emoji("remote")
             else:
@@ -630,11 +685,11 @@ class Model:
         from .paths import paths
 
         def action(key: str) -> None:
-            path = Path(paths.apikey)
+            path = Path(paths.openai_apikey)
 
             if (not path.exists()) or not (path.is_file()):
                 path.parent.mkdir(parents=True, exist_ok=True)
-                Path.touch(paths.apikey, exist_ok=True)
+                Path.touch(paths.openai_apikey, exist_ok=True)
 
             files.write(path, key)
 

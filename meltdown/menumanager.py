@@ -76,6 +76,7 @@ class ModelMenu:
         self.menu.add("Recent Models", lambda e: widgets.show_recent_models())
         self.menu.add("Browse Models", lambda e: widgets.browse_models())
         self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
+        self.menu.add("Use Gemini Model", lambda e: gemini_menu.show())
         self.menu.add("Set API Key", lambda e: model.set_api_key())
 
     def show(self, event: Any = None) -> None:
@@ -95,6 +96,24 @@ class GPTMenu:
 
         for gpt in model.gpts:
             self.menu.add(gpt[1], lambda e, gpt=gpt: widgets.use_gpt(gpt[0]))
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            widget = get_model_button()
+            self.menu.show(widget=widget)
+
+
+class GeminiMenu:
+    def __init__(self) -> None:
+        from .model import model
+        from .widgets import widgets
+
+        self.menu = Menu()
+
+        for gemini in model.geminis:
+            self.menu.add(gemini[1], lambda e, gemini=gemini: widgets.use_gemini(gemini[0]))
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -389,6 +408,7 @@ class UrlMenu:
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
+gemini_menu = GeminiMenu()
 more_menu = MoreMenu()
 tab_menu = TabMenu()
 font_menu = FontMenu()

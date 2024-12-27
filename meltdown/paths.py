@@ -23,7 +23,8 @@ class Paths:
         self.configs: Path
         self.sessions: Path
         self.logs: Path
-        self.apikey: Path
+        self.openai_apikey: Path
+        self.google_apikey: Path
         self.errors: Path
 
         self.nouns: Path
@@ -53,7 +54,8 @@ class Paths:
         else:
             self.logs = Path(self.data_dir, "logs")
 
-        self.apikey = Path(self.data_dir, "apikey.txt")
+        self.openai_apikey = Path(self.data_dir, "openai_apikey.txt")
+        self.google_apikey = Path(self.data_dir, "google_apikey.txt")
         self.errors = Path(self.data_dir, "errors")
 
         self.nouns = Path(app.here, "nouns.txt")

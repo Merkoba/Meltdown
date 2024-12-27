@@ -704,6 +704,9 @@ class Widgets:
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
 
+    def use_gemini(self, name: str) -> None:
+        config.set("model", name)
+
     def model_icon_click(self) -> None:
         app.hide_all()
         app.show_portrait()
