@@ -120,7 +120,9 @@ class GeminiMenu:
         self.menu = Menu()
 
         for gemini in model.geminis:
-            self.menu.add(gemini[1], lambda e, gemini=gemini: widgets.use_gemini(gemini[0]))
+            self.menu.add(
+                gemini[1], lambda e, gemini=gemini: widgets.use_gemini(gemini[0])
+            )
 
     def show(self, event: Any = None) -> None:
         if event:

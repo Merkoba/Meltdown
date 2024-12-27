@@ -2,7 +2,8 @@ from __future__ import annotations
 
 # Standard
 import threading
-from typing import Any, Generator
+from typing import Any
+from collections.abc import Generator
 
 # Libraries
 from prompt_toolkit import PromptSession

@@ -4,7 +4,8 @@ from __future__ import annotations
 import base64
 import threading
 from pathlib import Path
-from typing import Any, Generator
+from typing import Any
+from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
@@ -201,7 +202,11 @@ class Model:
                 self.clear_model()
                 return
 
-            self.gpt_client = OpenAI(api_key=self.google_key, base_url="https://generativelanguage.googleapis.com/v1beta/openai/")
+            self.gpt_client = OpenAI(
+                api_key=self.google_key,
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+            )
+
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gemini_remote"
@@ -663,8 +668,9 @@ class Model:
 
             icon.configure(text=text)
             tooltip.set_text(tips["model_unloaded"])
-        elif self.model_is_gpt(self.loaded_model) or \
-        self.model_is_gemini(self.loaded_model):
+        elif self.model_is_gpt(self.loaded_model) or self.model_is_gemini(
+            self.loaded_model
+        ):
             if args.emojis:
                 text = utils.get_emoji("remote")
             else:
