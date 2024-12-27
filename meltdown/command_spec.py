@@ -1003,8 +1003,8 @@ class CommandSpec:
 
         self.add_cmd(
             "upload",
-            "Upload markdown to rentry",
-            lambda a=None: utils.rentry_upload(),
+            "Upload text to a hosting service",
+            lambda a=None: utils.text_upload(),
         )
 
 

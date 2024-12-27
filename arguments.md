@@ -2302,9 +2302,9 @@ Type: str
 
 ---
 
-### rentry-edit-code
+### upload-edit-code
 
-The code to be able to edit a rentry upload
+The code to be able to edit an upload
 
 Default: "meltdown"
 

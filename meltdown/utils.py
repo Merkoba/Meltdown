@@ -534,18 +534,18 @@ class Utils:
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
-    def confirm_rentry_upload(self, tab_id: str | None = None) -> None:
+    def confirm_text_upload(self, tab_id: str | None = None) -> None:
         from .dialogs import Dialog
         from .app import app
 
         def action() -> None:
             Dialog.hide_all()
             app.update()
-            self.rentry_upload(tab_id)
+            self.text_upload(tab_id)
 
         Dialog.show_confirm("Upload conversation ?", lambda: action())
 
-    def rentry_upload(self, tab_id: str | None = None) -> str:
+    def text_upload(self, tab_id: str | None = None) -> str:
         from .args import args
         from .display import display
         from .dialogs import Dialog
@@ -560,7 +560,7 @@ class Utils:
 
         page = rentrylib.RentryPage(
             text=text,
-            edit_code=args.rentry_edit_code,
+            edit_code=args.upload_edit_code,
         )
 
         Dialog.show_message(f"https://rentry.org/{page.site}")

@@ -972,4 +972,4 @@ Show the info dialog
 
 ### upload
 
-Upload markdown to rentry
+Upload text to a hosting service

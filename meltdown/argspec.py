@@ -1525,9 +1525,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "rentry_edit_code",
+            "upload_edit_code",
             type=str,
-            info="The code to be able to edit a rentry upload",
+            info="The code to be able to edit an upload",
         )
 
 
