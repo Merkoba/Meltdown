@@ -1001,5 +1001,11 @@ class CommandSpec:
             lambda a=None: app.show_info(),
         )
 
+        self.add_cmd(
+            "rentry",
+            "Upload markdown to rentry",
+            lambda a=None: utils.rentry_upload(),
+        )
+
 
 command_spec = CommandSpec()

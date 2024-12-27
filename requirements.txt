@@ -8,3 +8,4 @@ prompt-toolkit == 3.0.46
 rich == 13.7.1
 tkinterdnd2-universal == 1.7.3
 requests == 2.31.0
+rentrylib == 1.0.0

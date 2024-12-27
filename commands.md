@@ -640,9 +640,15 @@ Go to the tab that is currently streaming
 
 ---
 
-### apikey
+### openaikey
 
 Set the OpenAI API key
+
+---
+
+### googlekey
+
+Set the Google API key
 
 ---
 
@@ -673,6 +679,12 @@ Show the font menu
 ### gpt
 
 Show the GPT menu
+
+---
+
+### gemini
+
+Show the Gemini menu
 
 ---
 
@@ -955,3 +967,9 @@ Show size and length information
 ### information
 
 Show the info dialog
+
+---
+
+### rentry
+
+Upload markdown to rentry

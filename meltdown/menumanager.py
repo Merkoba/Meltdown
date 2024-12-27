@@ -6,6 +6,7 @@ from typing import Any
 from .app import app
 from .config import config
 from .menus import Menu
+from .utils import utils
 from . import system_prompt
 
 
@@ -156,6 +157,10 @@ class MoreMenu:
         self.menu.add("Use Text", lambda e: formats.do_use("text"), disabled=unmod)
         self.menu.add("Use JSON", lambda e: formats.do_use("json"), disabled=unmod)
         self.menu.add("Use MrkD", lambda e: formats.do_use("markdown"), disabled=unmod)
+
+        self.menu.separator()
+
+        self.menu.add("Upload", lambda e: utils.rentry_upload(), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets

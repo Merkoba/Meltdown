@@ -2299,3 +2299,13 @@ Use a different directory for the logs
 Default: [Empty string]
 
 Type: str
+
+---
+
+### rentry-edit-code
+
+The code to be able to edit a rentry upload
+
+Default: "meltdown"
+
+Type: str

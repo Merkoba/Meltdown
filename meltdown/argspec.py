@@ -1524,5 +1524,11 @@ class ArgSpec:
             info="Use a different directory for the logs",
         )
 
+        self.add_argument(
+            "rentry_edit_code",
+            type=str,
+            info="The code to be able to edit a rentry upload",
+        )
+
 
 argspec = ArgSpec()
