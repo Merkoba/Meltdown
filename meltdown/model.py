@@ -701,7 +701,13 @@ class Model:
             files.write(path, key)
             self.read_openai_key()
 
-        Dialog.show_input("OpenAI API Key", lambda text: action(text), mode="password")
+        self.read_openai_key()
+
+        Dialog.show_input(
+            "OpenAI API Key",
+            lambda text: action(text),
+            value=self.openai_key,
+        )
 
     def set_google_api_key(self) -> None:
         from .dialogs import Dialog
@@ -717,7 +723,13 @@ class Model:
             files.write(path, key)
             self.read_google_key()
 
-        Dialog.show_input("Google API Key", lambda text: action(text), mode="password")
+        self.read_google_key()
+
+        Dialog.show_input(
+            "Google API Key",
+            lambda text: action(text),
+            value=self.google_key,
+        )
 
     def check_dot(self, text: str) -> str:
         if not text:

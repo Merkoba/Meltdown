@@ -19,7 +19,6 @@ from collections.abc import Callable
 # Libraries
 import rentrylib  # type: ignore
 from rich.console import Console  # type: ignore
-from aiorentry.client import Client as RentryClient  # type: ignore
 
 # Modules
 from . import pyperclip
