@@ -160,7 +160,7 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Upload", lambda e: utils.rentry_upload(), disabled=unmod)
+        self.menu.add("Upload", lambda e: utils.confirm_rentry_upload(), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
         from .widgets import widgets

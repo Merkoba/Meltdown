@@ -534,6 +534,17 @@ class Utils:
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
+    def confirm_rentry_upload(self, tab_id: str | None = None) -> None:
+        from .dialogs import Dialog
+        from .app import app
+
+        def action() -> None:
+            Dialog.hide_all()
+            app.update()
+            self.rentry_upload(tab_id)
+
+        Dialog.show_confirm("Upload conversation ?", lambda: action())
+
     def rentry_upload(self, tab_id: str | None = None) -> str:
         from .args import args
         from .display import display
