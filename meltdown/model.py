@@ -681,7 +681,7 @@ class Model:
             icon.configure(text=text)
             tooltip.set_text(tips["model_local"])
 
-    def set_api_key(self) -> None:
+    def set_openai_api_key(self) -> None:
         from .dialogs import Dialog
         from .paths import paths
 
@@ -693,8 +693,25 @@ class Model:
                 Path.touch(paths.openai_apikey, exist_ok=True)
 
             files.write(path, key)
+            self.read_openai_key()
 
         Dialog.show_input("OpenAI API Key", lambda text: action(text), mode="password")
+
+    def set_google_api_key(self) -> None:
+        from .dialogs import Dialog
+        from .paths import paths
+
+        def action(key: str) -> None:
+            path = Path(paths.google_apikey)
+
+            if (not path.exists()) or not (path.is_file()):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                Path.touch(paths.google_apikey, exist_ok=True)
+
+            files.write(path, key)
+            self.read_google_key()
+
+        Dialog.show_input("Google API Key", lambda text: action(text), mode="password")
 
     def check_dot(self, text: str) -> str:
         if not text:

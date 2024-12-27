@@ -77,7 +77,8 @@ class ModelMenu:
         self.menu.add("Browse Models", lambda e: widgets.browse_models())
         self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
         self.menu.add("Use Gemini Model", lambda e: gemini_menu.show())
-        self.menu.add("Set API Key", lambda e: model.set_api_key())
+        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_api_key())
+        self.menu.add("Set Google Key", lambda e: model.set_google_api_key())
 
     def show(self, event: Any = None) -> None:
         if event:

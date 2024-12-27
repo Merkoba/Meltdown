@@ -1,4 +1,4 @@
-## An interface for llama.cpp and ChatGPT
+## An interface for llama.cpp, ChatGPT, and Gemini
 
 <img src="meltdown/image.jpg" width="380">
 
@@ -8,6 +8,7 @@
 1. [Screenshots](#screenshots)
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
+1. [Gemini](#gemini)
 1. [Installation](#installation)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
@@ -76,9 +77,25 @@ ChatGPT is also supported.
 
 You must first set the API key for it to work.
 
-This can be done using the model menu: `Set API Key`.
+This can be done using the model menu: `Set OpenAI Key`.
+
+Or using the `openaikey` command.
 
 Then pick the model you want: `Use GPT Model`.
+
+---
+
+## Gemini <a name="gemini"></a>
+
+Gemini is also supported.
+
+You must first set the API key for it to work.
+
+This can be done using the model menu: `Set Gemini Key`.
+
+Or using the `googlekey` command.
+
+Then pick the model you want: `Use Gemini Model`.
 
 ---
 
