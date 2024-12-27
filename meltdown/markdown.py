@@ -68,7 +68,11 @@ class Markdown:
         uselink = utils.escape_regex("%@")
 
         # Code snippets / fences
-        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(.*?)\n\s*{tick}{{3}}$"
+        # Capture stuff that could repeat BUT that has the slim
+        # possibility of catastrophically backtracking in case
+        # the stuff AFTER it fails to match (such as the closing
+        # 3x backticks).
+        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2{tick}{{3}}$"
 
         # Bold with two asterisks
         Markdown.pattern_bold_1 = (
@@ -367,7 +371,7 @@ class Markdown:
 
             content_end = match_.end(2)
             line_2 = self.get_line_number(text, content_end)
-            end_line = f"{start_ln + line_2}.0"
+            end_line = f"{start_ln + line_2 - 1}.0"
 
             matches.append((start_line, end_line, language))
 
