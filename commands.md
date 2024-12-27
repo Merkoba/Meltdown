@@ -970,6 +970,6 @@ Show the info dialog
 
 ---
 
-### rentry
+### upload
 
 Upload markdown to rentry
