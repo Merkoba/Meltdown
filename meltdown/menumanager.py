@@ -75,8 +75,14 @@ class ModelMenu:
 
         self.menu.add("Recent Models", lambda e: widgets.show_recent_models())
         self.menu.add("Browse Models", lambda e: widgets.browse_models())
+
+        self.menu.separator()
+
         self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
         self.menu.add("Use Gemini Model", lambda e: gemini_menu.show())
+
+        self.menu.separator()
+
         self.menu.add("Set OpenAI Key", lambda e: model.set_openai_api_key())
         self.menu.add("Set Google Key", lambda e: model.set_google_api_key())
 
