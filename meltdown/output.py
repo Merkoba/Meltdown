@@ -211,14 +211,14 @@ class Output(tk.Text):
         text = output.get_selected_text()
 
         if not text:
-            for snippet in output.snippets:
-                try:
+            try:
+                for snippet in output.snippets:
                     text = snippet.get_selected_text()
-                except tk.TclError:
-                    continue
 
-                if text:
-                    break
+                    if text:
+                        break
+            except tk.TclError:
+                pass
 
         return text
 
@@ -581,11 +581,11 @@ class Output(tk.Text):
     def deselect_all(self) -> None:
         self.tag_remove("sel", "1.0", tk.END)
 
-        for snippet in self.snippets:
-            try:
+        try:
+            for snippet in self.snippets:
                 snippet.deselect_all()
-            except tk.TclError:
-                pass
+        except tk.TclError:
+            pass
 
     def get_text(self) -> str:
         return self.get("1.0", "end-1c").strip()
@@ -669,11 +669,11 @@ class Output(tk.Text):
         self.update_size_after = app.root.after(100, lambda: self.do_update_size())
 
     def do_update_size(self) -> None:
-        for snippet in self.snippets:
-            try:
+        try:
+            for snippet in self.snippets:
                 snippet.update_size()
-            except tk.TclError:
-                pass
+        except tk.TclError:
+            pass
 
         self.update_scroll()
 
@@ -964,11 +964,11 @@ class Output(tk.Text):
     def reset_drag(self) -> None:
         self.gestures.reset_drag()
 
-        for snippet in self.snippets:
-            try:
+        try:
+            for snippet in self.snippets:
                 snippet.gestures.reset_drag()
-            except tk.TclError:
-                pass
+        except tk.TclError:
+            pass
 
     def on_right_click(self, event: Any, widget: tk.Text | None = None) -> None:
         from .menumanager import tab_menu
@@ -1189,11 +1189,11 @@ class Output(tk.Text):
         self.configure(font=app.theme.get_output_font())
 
     def update_snippet_fonts(self) -> None:
-        for snippet in self.snippets:
-            try:
+        try:
+            for snippet in self.snippets:
                 snippet.update_font()
-            except tk.TclError:
-                pass
+        except tk.TclError:
+            pass
 
     def scroll_action(self, *args: Any) -> None:
         self.last_scroll_args = args
