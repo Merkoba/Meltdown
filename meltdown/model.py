@@ -706,6 +706,7 @@ class Model:
         Dialog.show_input(
             "OpenAI API Key",
             lambda text: action(text),
+            mode="password",
             value=self.openai_key,
         )
 
@@ -728,6 +729,7 @@ class Model:
         Dialog.show_input(
             "Google API Key",
             lambda text: action(text),
+            mode="password",
             value=self.google_key,
         )
 

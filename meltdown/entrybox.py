@@ -280,3 +280,6 @@ class EntryBox(ttk.Entry):
             return
 
         self.insert_text(" ")
+
+    def reveal(self) -> None:
+        self.configure(show="")

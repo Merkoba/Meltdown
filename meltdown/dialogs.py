@@ -47,7 +47,8 @@ class Dialog:
     @staticmethod
     def show_dialog(
         text: str = "",
-        commands: list[tuple[str, Callable[..., Any]]] | None = None,
+        commands: list[tuple[str, Callable[..., Any], hide : bool | None]]
+        | None = None,
         image: Path | None = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
@@ -169,14 +170,21 @@ class Dialog:
 
         # ------
 
-        def make_cmd(cmd: tuple[str, Callable[..., Any]]) -> None:
+        def make_cmd(cmd: tuple[str, Callable[..., Any], bool | None]) -> None:
             def generic(func: Callable[..., Any]) -> None:
                 ans = {
                     "entry": Dialog.get_entry(),
                     "msgbox": Dialog.get_msgbox(),
                 }
 
-                dialog.hide()
+                no_hide = False
+
+                if len(cmd) > 2:
+                    no_hide = cmd[2] or False
+
+                if not no_hide:
+                    dialog.hide()
+
                 func(ans)
 
             dialog.make_button(cmd[0], lambda: generic(cmd[1]))
@@ -247,9 +255,18 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
+        def reveal(ans: Answer) -> None:
+            Dialog.current_dialog.entry.reveal()
+            Dialog.current_dialog.entry.focus_start()
+
+        if mode == "password":
+            buttons = [("Cancel", cancel), ("Reveal", reveal, True), ("Ok", ok)]
+        else:
+            buttons = [("Cancel", cancel), ("Ok", ok)]
+
         Dialog.show_dialog(
             text,
-            [("Cancel", cancel), ("Ok", ok)],
+            buttons,
             use_entry=True,
             entry_mode=mode,
             value=value,
@@ -290,7 +307,6 @@ class Dialog:
         )
 
         def do_max() -> None:
-            dialog.focus_hide_enabled = False
             textbox.max()
 
         dialog.make_button("Max", lambda: do_max())
@@ -372,21 +388,14 @@ class Dialog:
         self.buttons_frame = tk.Frame(self.container, background=background)
         self.buttons_frame.grid(row=3, column=0)
 
-        self.focus_hide_enabled = True
-
         def bind(widget: tk.Widget) -> None:
             widget.bind("<Escape>", lambda e: self.hide())
             widget.bind("<ButtonPress-1>", lambda e: Menu.hide_all())
-            widget.bind("<FocusOut>", lambda e: self.focus_hide())
 
             for child in widget.winfo_children():
                 bind(child)
 
         bind(self.root)
-
-    def focus_hide(self) -> None:
-        if self.focus_hide_enabled:
-            self.hide()
 
     def show(self) -> None:
         self.root.update_idletasks()
