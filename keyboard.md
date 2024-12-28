@@ -134,7 +134,7 @@ Ctrl: Load session
 
 Y
 
-Ctrl: Copy conversation
+Ctrl+Shift: Copy conversation
 
 ---
 

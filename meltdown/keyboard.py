@@ -431,7 +431,9 @@ class Keyboard:
         )
 
         self.register(
-            "y", on_ctrl=lambda: run_command("copyall"), ctrl_help="Copy conversation"
+            "y",
+            on_ctrl_shift=lambda: run_command("copyall"),
+            ctrl_shift_help="Copy conversation",
         )
 
         self.register(

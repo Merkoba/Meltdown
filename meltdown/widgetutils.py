@@ -85,7 +85,6 @@ def make_entry(
     if value:
         widget.set_text(value)
 
-    widget.bind("<Control-y>", lambda e: "break")
     return widget
 
 
