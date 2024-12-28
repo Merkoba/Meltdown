@@ -160,7 +160,7 @@ L
 
 Ctrl: Show the log menu
 
-Ctrl+Shift: Open the logs directory
+Ctrl+Shift: Open the last log
 
 ---
 
