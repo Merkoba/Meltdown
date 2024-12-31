@@ -1038,7 +1038,7 @@ Type: int
 
 ### max-tabs
 
-Max number of tabs to keep open
+Max number of tabs to keep open. 0 to disable
 
 Default: 100
 
