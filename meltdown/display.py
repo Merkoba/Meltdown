@@ -89,10 +89,15 @@ class Display:
         no_intro: bool = False,
     ) -> str:
         from .session import session
+        from . import close
 
-        if self.num_tabs() >= config.max_tabs:
-            Dialog.show_message("Maximum tabs reached")
-            return ""
+        if args.max_tabs > 0:
+            if self.num_tabs() >= args.max_tabs:
+                max_cmds = []
+                max_cmds.append(("Close", lambda a: close.close(force=False)))
+                max_cmds.append(("Ok", lambda a: None))
+                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", max_cmds)
+                return ""
 
         if not name:
             if args.name_mode == "random":
@@ -1111,6 +1116,10 @@ class Display:
             return
 
         output.remove_last_ai()
+
+    def count_tabs(self) -> None:
+        num = len(self.book.pages)
+        Dialog.show_message(f"Number of tabs: {num}")
 
 
 display = Display()

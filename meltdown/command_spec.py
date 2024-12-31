@@ -1007,5 +1007,11 @@ class CommandSpec:
             lambda a=None: utils.text_upload(),
         )
 
+        self.add_cmd(
+            "count",
+            "Count the number of open tabs",
+            lambda a=None: display.count_tabs(),
+        )
+
 
 command_spec = CommandSpec()

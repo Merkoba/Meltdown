@@ -973,3 +973,9 @@ Show the info dialog
 ### upload
 
 Upload text to a hosting service
+
+---
+
+### count
+
+Count the number of open tabs

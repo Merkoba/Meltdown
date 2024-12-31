@@ -278,7 +278,11 @@ class Session:
         if not items:
             return
 
-        for item in items:
+        for i, item in enumerate(items):
+            if args.max_tabs > 0:
+                if i >= args.max_tabs:
+                    break
+
             convo = Conversation(
                 item["id"],
                 name=item["name"],
