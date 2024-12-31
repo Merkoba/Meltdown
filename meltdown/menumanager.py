@@ -194,8 +194,8 @@ class TabMenu:
 
         self.menu.separator()
 
-        self.menu.add("First Tab", lambda e: display.select_first_tab())
-        self.menu.add("Last Tab", lambda e: display.select_last_tab())
+        self.menu.add("First Tab", lambda e: display.select_first_tab(), disabled=single)
+        self.menu.add("Last Tab", lambda e: display.select_last_tab(), disabled=single)
 
         self.menu.separator()
 
