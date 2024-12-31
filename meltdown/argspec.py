@@ -767,7 +767,7 @@ class ArgSpec:
         self.add_argument(
             "max_tabs",
             type=int,
-            info="Max number fo tabs to keep open",
+            info="Max number of tabs to keep open",
         )
 
         self.add_argument(
