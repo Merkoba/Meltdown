@@ -190,7 +190,10 @@ class TabMenu:
         unmod = (not messages) or ignored
         single = num_tabs == 1
 
+        self.menu.add("First Tab", lambda e: display.select_first_tab())
+        self.menu.add("Last Tab", lambda e: display.select_last_tab())
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
+
         self.menu.separator()
 
         self.menu.add(
