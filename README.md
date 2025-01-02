@@ -91,7 +91,7 @@ Gemini is also supported.
 
 You must first set the API key for it to work.
 
-This can be done using the model menu: `Set Gemini Key`.
+This can be done using the model menu: `Set Google Key`.
 
 Or using the `googlekey` command.
 
