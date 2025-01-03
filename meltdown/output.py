@@ -107,6 +107,43 @@ class Output(tk.Text):
         itemops.action("copy", tab_id=tab_id, number=arg)
 
     @staticmethod
+    def copy_last_item() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        tab_id = output.tab_id
+        arg = output.last_number()
+
+        if arg == 0:
+            return
+
+        itemops.action("copy", tab_id=tab_id, number=arg)
+
+    @staticmethod
+    def copy_user() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        tab_id = output.tab_id
+        arg = str(Output.clicked_number)
+        itemops.action("copy", tab_id=tab_id, number=arg, who="user")
+
+    @staticmethod
+    def copy_ai() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        tab_id = output.tab_id
+        arg = str(Output.clicked_number)
+        itemops.action("copy", tab_id=tab_id, number=arg, who="ai")
+
+    @staticmethod
     def open_url() -> None:
         words = Output.get_words()
 
@@ -1081,6 +1118,18 @@ class Output(tk.Text):
         count = 0
 
         for i in range(1, line_number + 1):
+            line = self.get(f"{i}.0", f"{i}.end")
+
+            if line.startswith(Output.marker_user):
+                count += 1
+
+        return count
+
+    def last_number(self) -> int:
+        num_lines = self.get_num_lines() + 1
+        count = 0
+
+        for i in range(1, num_lines):
             line = self.get(f"{i}.0", f"{i}.end")
 
             if line.startswith(Output.marker_user):

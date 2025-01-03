@@ -841,8 +841,8 @@ class CommandSpec:
 
         self.add_cmd(
             "copy",
-            "Copy the selected text",
-            lambda a=None: Output.copy_selected(),
+            "Show the copy menu on the last item",
+            lambda a=None: Output.copy_last_item(),
         )
 
         self.add_cmd(

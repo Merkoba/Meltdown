@@ -22,7 +22,7 @@ class ItemOps:
         number: str,
         tab_id: str | None = None,
         no_history: bool = False,
-        who: str | None = None,
+        who: str = "both",
     ) -> None:
         from .model import model
         from .display import display
@@ -60,25 +60,31 @@ class ItemOps:
                 prompt = {"text": user_text, "file": file, "no_history": no_history}
                 model.stream(prompt, tabconvo.tab.tab_id)
         elif mode == "copy":
-            texts = []
+            if who:
+                if who == "user":
+                    text = user_text
+                elif who == "ai":
+                    text = ai_text
+                elif who == "both":
+                    texts = []
 
-            if user_text:
-                text = ""
-                text += Output.get_prompt("user", put_colons=False)
-                text += f": {user_text}"
+                    if user_text:
+                        text = ""
+                        text += Output.get_prompt("user", put_colons=False)
+                        text += f": {user_text}"
 
-                if file:
-                    text += f"\n\nFile: {file}"
+                        if file:
+                            text += f"\n\nFile: {file}"
 
-                texts.append(text)
+                        texts.append(text)
 
-            if ai_text:
-                text = ""
-                text += Output.get_prompt("ai", put_colons=False)
-                text += f": {ai_text}"
-                texts.append(text)
+                    if ai_text:
+                        text = ""
+                        text += Output.get_prompt("ai", put_colons=False)
+                        text += f": {ai_text}"
+                        texts.append(text)
 
-            text = "\n\n".join(texts)
+                    text = "\n\n".join(texts)
 
             if not text:
                 return

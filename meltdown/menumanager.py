@@ -304,7 +304,7 @@ class ItemMenu:
         self.menu.clear()
         num_items = display.get_num_items()
         self.menu.add(text="Use", command=lambda e: Output.use_item())
-        self.menu.add(text="Copy", command=lambda e: Output.copy_item())
+        self.menu.add(text="Copy", command=lambda e: copy_menu.show(e))
         self.menu.add(text="Select", command=lambda e: Output.select_item())
         self.menu.add(text="Information", command=lambda e: Output.show_info())
         self.menu.separator()
@@ -425,6 +425,23 @@ class UrlMenu:
             return
 
 
+class CopyMenu:
+    def __init__(self) -> None:
+        from .output import Output
+
+        self.menu = Menu()
+
+        self.menu.add(text="Copy All", command=lambda e: Output.copy_item())
+        self.menu.add(text="Copy User", command=lambda e: Output.copy_user())
+        self.menu.add(text="Copy AI", command=lambda e: Output.copy_ai())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
 main_menu = MainMenu()
 model_menu = ModelMenu()
 gpt_menu = GPTMenu()
@@ -437,3 +454,4 @@ word_menu = WordMenu()
 selection_menu = SelectionMenu()
 url_menu = UrlMenu()
 custom_menu = CustomMenu()
+copy_menu = CopyMenu()
