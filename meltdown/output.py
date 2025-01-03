@@ -96,28 +96,18 @@ class Output(tk.Text):
         itemops.action("info", tab_id=tab_id, number=arg)
 
     @staticmethod
-    def copy_item(who: str = "both") -> None:
+    def copy_item(who: str = "both", last: bool = False) -> None:
         output = Output.current_output()
 
         if not output:
             return
 
         tab_id = output.tab_id
-        arg = str(Output.clicked_number)
-        itemops.action("copy", tab_id=tab_id, number=arg, who=who)
 
-    @staticmethod
-    def copy_last_item(who: str = "both") -> None:
-        output = Output.current_output()
-
-        if not output:
-            return
-
-        tab_id = output.tab_id
-        arg = output.last_number()
-
-        if arg == 0:
-            return
+        if last:
+            arg = "last"
+        else:
+            arg = str(Output.clicked_number)
 
         itemops.action("copy", tab_id=tab_id, number=arg, who=who)
 

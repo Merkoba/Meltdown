@@ -848,19 +848,19 @@ class CommandSpec:
         self.add_cmd(
             "copy",
             "Copy the last user and AI text",
-            lambda a=None: Output.copy_last_item(),
+            lambda a=None: Output.copy_item(last=True),
         )
 
         self.add_cmd(
             "copyuser",
             "Copy the last user text",
-            lambda a=None: Output.copy_last_item("user"),
+            lambda a=None: Output.copy_item("user", last=True),
         )
 
         self.add_cmd(
             "copyai",
             "Copy the last AI text",
-            lambda a=None: Output.copy_last_item("ai"),
+            lambda a=None: Output.copy_item("ai", last=True),
         )
 
         self.add_cmd(

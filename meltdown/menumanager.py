@@ -450,15 +450,10 @@ class CopyMenu:
             self.menu.show(widget=widget)
 
     def last_item(self) -> None:
-        from .display import display
         from .output import Output
 
-        output = display.get_current_output()
-        number = output.last_number()
-
-        if number:
-            Output.clicked_number = number
-            self.show()
+        Output.clicked_number = 0
+        self.show()
 
 
 main_menu = MainMenu()
