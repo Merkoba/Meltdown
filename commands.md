@@ -996,4 +996,4 @@ Upload text to a hosting service
 
 ### count
 
-Count the number of open tabs
+Count the number of open tabs and items
