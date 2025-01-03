@@ -18,9 +18,9 @@
 
 ## Screenshots <a name="screenshots"></a>
 
-![](https://i.imgur.com/QTcBqKq.png)
+![](https://i.imgur.com/lEf0wdZ.jpeg)
 
-![](https://i.imgur.com/WAu8ne0.png)
+![](https://i.imgur.com/R0Ubynf.jpeg)
 
 ---
 
