@@ -1118,8 +1118,14 @@ class Display:
         output.remove_last_ai()
 
     def count_tabs(self) -> None:
-        num = len(self.book.pages)
-        Dialog.show_message(f"Number of tabs: {num}")
+        from .session import session
+
+        texts = []
+        num_tabs = len(self.book.pages)
+        num_convs = session.count()
+        texts.append(f"Tabs: {num_tabs}")
+        texts.append(f"Items: {num_convs}")
+        Dialog.show_message("\n".join(texts))
 
 
 display = Display()

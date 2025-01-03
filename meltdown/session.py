@@ -157,6 +157,9 @@ class Conversation:
             "items": item_list,
         }
 
+    def count(self) -> int:
+        return len(self.items)
+
 
 class Session:
     def __init__(self) -> None:
@@ -422,6 +425,9 @@ class Session:
             return
 
         self.load_state(config.last_session)
+
+    def count(self) -> int:
+        return sum([c.count() for c in self.conversations.values()])
 
 
 session = Session()
