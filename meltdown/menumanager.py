@@ -440,11 +440,10 @@ class CopyMenu:
         from .output import Output
         from .display import display
 
+        self.menu.clear()
         messages = display.has_messages()
         ignored = display.is_ignored()
         unmod = (not messages) or ignored
-
-        self.menu.clear()
 
         self.menu.add(
             text="Copy All", command=lambda e: Output.copy_item(), disabled=unmod
