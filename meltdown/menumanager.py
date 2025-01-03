@@ -169,8 +169,6 @@ class MoreMenu:
         self.menu.add("Upload", lambda e: utils.text_upload(), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
-        from .widgets import widgets
-
         self.make()
 
         if event:
