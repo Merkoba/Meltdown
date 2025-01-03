@@ -434,15 +434,33 @@ class UrlMenu:
 
 class CopyMenu:
     def __init__(self) -> None:
-        from .output import Output
-
         self.menu = Menu()
 
-        self.menu.add(text="Copy All", command=lambda e: Output.copy_item())
-        self.menu.add(text="Copy User", command=lambda e: Output.copy_item("user"))
-        self.menu.add(text="Copy AI", command=lambda e: Output.copy_item("ai"))
+    def make(self) -> None:
+        from .output import Output
+        from .display import display
+
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+        unmod = (not messages) or ignored
+
+        self.menu.clear()
+
+        self.menu.add(
+            text="Copy All", command=lambda e: Output.copy_item(), disabled=unmod
+        )
+
+        self.menu.add(
+            text="Copy User", command=lambda e: Output.copy_item("user"), disabled=unmod
+        )
+
+        self.menu.add(
+            text="Copy AI", command=lambda e: Output.copy_item("ai"), disabled=unmod
+        )
 
     def show(self, event: Any = None) -> None:
+        self.make()
+
         if event:
             self.menu.show(event)
         else:
