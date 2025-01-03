@@ -194,7 +194,10 @@ class TabMenu:
 
         self.menu.separator()
 
-        self.menu.add("First Tab", lambda e: display.select_first_tab(), disabled=single)
+        self.menu.add(
+            "First Tab", lambda e: display.select_first_tab(), disabled=single
+        )
+
         self.menu.add("Last Tab", lambda e: display.select_last_tab(), disabled=single)
 
         self.menu.separator()
@@ -432,8 +435,8 @@ class CopyMenu:
         self.menu = Menu()
 
         self.menu.add(text="Copy All", command=lambda e: Output.copy_item())
-        self.menu.add(text="Copy User", command=lambda e: Output.copy_user())
-        self.menu.add(text="Copy AI", command=lambda e: Output.copy_ai())
+        self.menu.add(text="Copy User", command=lambda e: Output.copy_item("user"))
+        self.menu.add(text="Copy AI", command=lambda e: Output.copy_item("ai"))
 
     def show(self, event: Any = None) -> None:
         if event:

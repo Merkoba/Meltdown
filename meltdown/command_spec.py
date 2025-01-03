@@ -841,8 +841,20 @@ class CommandSpec:
 
         self.add_cmd(
             "copy",
-            "Show the copy menu on the last item",
+            "Copy the last item",
             lambda a=None: Output.copy_last_item(),
+        )
+
+        self.add_cmd(
+            "copyuser",
+            "Copy the last user text",
+            lambda a=None: Output.copy_last_item("user"),
+        )
+
+        self.add_cmd(
+            "copyai",
+            "Copy the last AI text",
+            lambda a=None: Output.copy_last_item("ai"),
         )
 
         self.add_cmd(

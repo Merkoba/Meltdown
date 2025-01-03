@@ -96,7 +96,7 @@ class Output(tk.Text):
         itemops.action("info", tab_id=tab_id, number=arg)
 
     @staticmethod
-    def copy_item() -> None:
+    def copy_item(who: str = "both") -> None:
         output = Output.current_output()
 
         if not output:
@@ -104,10 +104,10 @@ class Output(tk.Text):
 
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
-        itemops.action("copy", tab_id=tab_id, number=arg)
+        itemops.action("copy", tab_id=tab_id, number=arg, who=who)
 
     @staticmethod
-    def copy_last_item() -> None:
+    def copy_last_item(who: str = "both") -> None:
         output = Output.current_output()
 
         if not output:
@@ -119,29 +119,7 @@ class Output(tk.Text):
         if arg == 0:
             return
 
-        itemops.action("copy", tab_id=tab_id, number=arg)
-
-    @staticmethod
-    def copy_user() -> None:
-        output = Output.current_output()
-
-        if not output:
-            return
-
-        tab_id = output.tab_id
-        arg = str(Output.clicked_number)
-        itemops.action("copy", tab_id=tab_id, number=arg, who="user")
-
-    @staticmethod
-    def copy_ai() -> None:
-        output = Output.current_output()
-
-        if not output:
-            return
-
-        tab_id = output.tab_id
-        arg = str(Output.clicked_number)
-        itemops.action("copy", tab_id=tab_id, number=arg, who="ai")
+        itemops.action("copy", tab_id=tab_id, number=arg, who=who)
 
     @staticmethod
     def open_url() -> None:

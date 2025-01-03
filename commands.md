@@ -824,7 +824,19 @@ Search using the selected text
 
 ### copy
 
-Copy the selected text
+Copy the last item
+
+---
+
+### copyuser
+
+Copy the last user text
+
+---
+
+### copyai
+
+Copy the last AI text
 
 ---
 
