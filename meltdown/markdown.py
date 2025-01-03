@@ -172,6 +172,9 @@ class Markdown:
         ranges: list[tuple[str, int, int]] = []
 
         def add(who: str, start_ln: int, end_ln: int) -> None:
+            if (not ranges) and (start_ln > 1):
+                ranges.append(("nobody", 1, start_ln - 1))
+
             ranges.append((who, start_ln, end_ln))
 
         for i, item in enumerate(markers):
