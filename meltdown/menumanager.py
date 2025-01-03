@@ -22,6 +22,12 @@ def get_model_button() -> tk.Widget:
     return widgets.model_menu_button
 
 
+def get_more_button() -> tk.Widget:
+    from .widgets import widgets
+
+    return widgets.more_menu_button
+
+
 class MainMenu:
     def __init__(self) -> None:
         from .session import session
@@ -170,7 +176,7 @@ class MoreMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = widgets.more_menu_button
+            widget = get_more_button()
             self.menu.show(widget=widget)
 
 
@@ -442,7 +448,19 @@ class CopyMenu:
         if event:
             self.menu.show(event)
         else:
-            return
+            widget = get_more_button()
+            self.menu.show(widget=widget)
+
+    def last_item(self) -> None:
+        from .display import display
+        from .output import Output
+
+        output = display.get_current_output()
+        number = output.last_number()
+
+        if number:
+            Output.clicked_number = number
+            self.show()
 
 
 main_menu = MainMenu()

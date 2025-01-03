@@ -822,9 +822,15 @@ Search using the selected text
 
 ---
 
-### copy
+### copymenu
 
 Copy the last item
+
+---
+
+### copy
+
+Copy the last user and AI text
 
 ---
 
