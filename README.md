@@ -51,7 +51,11 @@ If you want to enable `llama.cpp` support for local models do this:
 pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
 
-Which provides the `meltdown` command.
+---
+
+This provides the `meltdown` command.
+
+And if on `linux` you should have a `.desktop` entry to launch it.
 
 ---
 
