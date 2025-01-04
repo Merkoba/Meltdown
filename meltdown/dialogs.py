@@ -423,7 +423,9 @@ class Dialog:
         self.root.destroy()
         Dialog.current_dialog = None
 
-    def make_button(self, text: str, command: Callable[..., Any], num_commands: int = 0) -> None:
+    def make_button(
+        self, text: str, command: Callable[..., Any], num_commands: int = 0
+    ) -> None:
         button = widgetutils.get_button(self.buttons_frame, text, command)
         num = len(self.buttons)
 
