@@ -229,7 +229,7 @@ class Model:
         from .app import app
 
         if not llama_cpp:
-            display.print("llama.cpp support is not enabled.")
+            display.print("Error: llama.cpp support is not enabled.")
             return False
 
         self.model_loading = True
