@@ -29,6 +29,12 @@
 
 ## Installation <a name="installation"></a>
 
+Note: By default `llama.cpp` (local model) support is not installed.
+
+Read below to learn how to enable it.
+
+---
+
 You can install it with [pipx](https://pypi.org/project/pipx/):
 
 ```sh
