@@ -430,15 +430,9 @@ class Dialog:
         num = len(self.buttons)
         div = 3
 
-        if num_commands >= 6:
+        if num_commands > 6:
             row = num // div
             column = num % div
-            total_rows = (num_commands - 1) // div
-
-            if row > 0:
-                if row == total_rows:
-                    remaining = num_commands % div
-                    column = (div - remaining) // 2
         else:
             row = 0
             column = num
