@@ -26,7 +26,7 @@ tips = {
     "input": (
         " This is a message that the AI will respond to."
         " Use up/down arrows to cycle input history."
-        " You can also use commands here. See /help"
+        " You can also use commands here. See /commands"
     ),
     # System
     "system_cpu": "Current CPU usage",

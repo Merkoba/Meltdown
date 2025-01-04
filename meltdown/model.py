@@ -9,7 +9,7 @@ from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
-from openai import OpenAI  # type: ignore
+from openai import OpenAI, RateLimitError  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
 
 # Modules
@@ -512,6 +512,12 @@ class Model:
                     return
 
                 output = self.gpt_client.chat.completions.create(**gen_config)
+            except RateLimitError as e:
+                utils.error(e)
+                display.print("Error: Rate limit exceeded.")
+                self.stream_loading = False
+                self.release_lock()
+                return
             except BaseException as e:
                 utils.error(e)
 
