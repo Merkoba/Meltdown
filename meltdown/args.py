@@ -64,6 +64,18 @@ class Args:
         self.f10 = ""
         self.f11 = ""
         self.f12 = ""
+        self.shift_f1 = ""
+        self.shift_f2 = ""
+        self.shift_f3 = ""
+        self.shift_f4 = ""
+        self.shift_f5 = ""
+        self.shift_f6 = ""
+        self.shift_f7 = ""
+        self.shift_f8 = ""
+        self.shift_f9 = ""
+        self.shift_f10 = ""
+        self.shift_f11 = ""
+        self.shift_f12 = ""
         self.input = ""
         self.aliases: list[str] = []
         self.tasks: list[str] = []
@@ -363,6 +375,18 @@ class Args:
             "f10",
             "f11",
             "f12",
+            "shift_f1",
+            "shift_f2",
+            "shift_f3",
+            "shift_f4",
+            "shift_f5",
+            "shift_f6",
+            "shift_f7",
+            "shift_f8",
+            "shift_f9",
+            "shift_f10",
+            "shift_f11",
+            "shift_f12",
             "alt_palette",
             "max_tab_width",
             "old_tabs_minutes",
@@ -543,8 +567,11 @@ class Args:
         self.parser = ap.parser
 
     def fill_functions(self) -> None:
-        def add(num: int, func: str) -> None:
-            if not getattr(self, f"f{num}"):
+        def add(num: int, func: str, shift: bool = False) -> None:
+            if shift:
+                if not getattr(self, f"shift_f{num}"):
+                    setattr(self, f"shift_f{num}", self.prefix + func)
+            elif not getattr(self, f"f{num}"):
                 setattr(self, f"f{num}", self.prefix + func)
 
         add(1, "help")
@@ -559,6 +586,9 @@ class Args:
         add(10, "logtext")
         add(11, "fullscreen")
         add(12, "list")
+
+        # With Shift
+        add(3, "findprev", True)
 
     def fill_gestures(self) -> None:
         if not self.gestures_left:

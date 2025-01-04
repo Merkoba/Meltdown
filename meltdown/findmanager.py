@@ -27,7 +27,7 @@ def find(
     tab.find.show(widget=widget, query=query)
 
 
-def find_next(case_insensitive: bool = True) -> None:
+def find_next(case_insensitive: bool = True, reverse: bool = False) -> None:
     from .display import display
 
     tab = display.get_current_tab()
@@ -39,7 +39,7 @@ def find_next(case_insensitive: bool = True) -> None:
         tab.find.show()
         return
 
-    tab.find.find_next(case_insensitive)
+    tab.find.find_next(case_insensitive, reverse=reverse)
 
 
 def find_prev(case_insensitive: bool = True) -> None:

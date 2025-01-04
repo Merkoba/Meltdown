@@ -915,6 +915,78 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "shift_f1",
+            type=str,
+            info="Command to assign to the Shift + F1 key",
+        )
+
+        self.add_argument(
+            "shift_f2",
+            type=str,
+            info="Command to assign to the Shift + F2 key",
+        )
+
+        self.add_argument(
+            "shift_f3",
+            type=str,
+            info="Command to assign to the Shift + F3 key",
+        )
+
+        self.add_argument(
+            "shift_f4",
+            type=str,
+            info="Command to assign to the Shift + F4 key",
+        )
+
+        self.add_argument(
+            "shift_f5",
+            type=str,
+            info="Command to assign to the Shift + F5 key",
+        )
+
+        self.add_argument(
+            "shift_f6",
+            type=str,
+            info="Command to assign to the Shift + F6 key",
+        )
+
+        self.add_argument(
+            "shift_f7",
+            type=str,
+            info="Command to assign to the Shift + F7 key",
+        )
+
+        self.add_argument(
+            "shift_f8",
+            type=str,
+            info="Command to assign to the Shift + F8 key",
+        )
+
+        self.add_argument(
+            "shift_f9",
+            type=str,
+            info="Command to assign to the Shift + F9 key",
+        )
+
+        self.add_argument(
+            "shift_f10",
+            type=str,
+            info="Command to assign to the Shift + F10 key",
+        )
+
+        self.add_argument(
+            "shift_f11",
+            type=str,
+            info="Command to assign to the Shift + F11 key",
+        )
+
+        self.add_argument(
+            "shift_f12",
+            type=str,
+            info="Command to assign to the Shift + F12 key",
+        )
+
+        self.add_argument(
             "input",
             type=str,
             info="Prompt the AI automatically with this input when starting the program",

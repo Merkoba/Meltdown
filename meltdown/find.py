@@ -43,16 +43,20 @@ class Find:
         padx_button = 4
 
         self.next_i_button = ButtonBox(self.inner, "Next (i)", lambda: self.find_next())
+
         self.next_i_button.set_bind(
             "<Button-2>", lambda _: self.find_next(reverse=True)
         )
+
         ToolTip(self.next_i_button, tips["find_next_i"])
         self.next_i_button.grid(row=0, column=1, sticky="ew", padx=padx_button)
 
         self.next_button = ButtonBox(self.inner, "Next", lambda: self.find_next(False))
+
         self.next_button.set_bind(
             "<Button-2>", lambda _: self.find_next(False, reverse=True)
         )
+
         ToolTip(self.next_button, tips["find_next"])
         self.next_button.grid(row=0, column=2, sticky="ew", padx=padx_button)
 
@@ -63,6 +67,7 @@ class Find:
         self.bound_i_button.set_bind(
             "<Button-2>", lambda _: self.find_next(bound=True, reverse=True)
         )
+
         ToolTip(self.bound_i_button, tips["find_bound_i"])
         self.bound_i_button.grid(row=0, column=3, sticky="ew", padx=padx_button)
 
@@ -73,6 +78,7 @@ class Find:
         self.bound_button.set_bind(
             "<Button-2>", lambda _: self.find_next(False, bound=True, reverse=True)
         )
+
         ToolTip(self.bound_button, tips["find_bound"])
         self.bound_button.grid(row=0, column=4, sticky="ew", padx=padx_button)
 

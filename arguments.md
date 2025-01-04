@@ -1286,6 +1286,126 @@ Type: str
 
 ---
 
+### shift-f1
+
+Command to assign to the Shift + F1 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f2
+
+Command to assign to the Shift + F2 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f3
+
+Command to assign to the Shift + F3 key
+
+Default: "/findprev"
+
+Type: str
+
+---
+
+### shift-f4
+
+Command to assign to the Shift + F4 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f5
+
+Command to assign to the Shift + F5 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f6
+
+Command to assign to the Shift + F6 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f7
+
+Command to assign to the Shift + F7 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f8
+
+Command to assign to the Shift + F8 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f9
+
+Command to assign to the Shift + F9 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f10
+
+Command to assign to the Shift + F10 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f11
+
+Command to assign to the Shift + F11 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### shift-f12
+
+Command to assign to the Shift + F12 key
+
+Default: [Empty string]
+
+Type: str
+
+---
+
 ### input
 
 Prompt the AI automatically with this input when starting the program

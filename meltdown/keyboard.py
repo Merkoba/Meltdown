@@ -298,7 +298,7 @@ class Keyboard:
 
         def on_shift_enter() -> None:
             if widgets.find_focused():
-                findmanager.find_next(False)
+                findmanager.find_next(reverse=True)
             else:
                 inputcontrol.write(add_line=True)
 
@@ -314,14 +314,21 @@ class Keyboard:
         def run_command(cmd: str) -> None:
             commands.exec(commands.cmd(cmd))
 
-        def function_key(num: int) -> None:
-            cmd = getattr(args, f"f{num}")
+        def function_key(num: int, shift: bool = False) -> None:
+            if shift:
+                cmd = getattr(args, f"shift_f{num}")
+            else:
+                cmd = getattr(args, f"f{num}")
 
             if cmd:
                 commands.exec(cmd)
 
         def add_function_key(num: int) -> None:
-            self.register(f"<F{num}>", lambda: function_key(num))
+            self.register(
+                f"<F{num}>",
+                lambda: function_key(num),
+                on_shift=lambda: function_key(num, True),
+            )
 
         def register_num(num: int) -> None:
             self.register(str(num), on_ctrl=lambda: run_command(f"tab {num}"))
