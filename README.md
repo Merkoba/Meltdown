@@ -33,6 +33,8 @@ Note: By default `llama.cpp` (local model) support is not installed.
 
 Read below to learn how to enable it.
 
+Also this has only been tested on `Linux`.
+
 ---
 
 ### Using pipx
