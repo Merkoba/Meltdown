@@ -567,7 +567,9 @@ class Utils:
             edit_code=args.upload_edit_code,
         )
 
-        Dialog.show_message(f"{self.upload_service}/{page.site}")
+        url = f"{self.upload_service}/{page.site}"
+        display.print(f"Uploaded to: {url}", do_format=True)
+        Dialog.show_message(url)
 
     def try_import(self, name: str) -> Any:
         spec = importlib.util.find_spec(name)

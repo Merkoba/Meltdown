@@ -487,7 +487,11 @@ class Display:
             output.deselect_all()
 
     def print(
-        self, text: str, tab_id: str | None = None, modified: bool = True
+        self,
+        text: str,
+        tab_id: str | None = None,
+        modified: bool = True,
+        do_format: bool = False,
     ) -> None:
         if not app.exists():
             return
@@ -501,6 +505,9 @@ class Display:
             return
 
         tab.output.print(text)
+
+        if do_format:
+            self.format_text(tab_id, mode="last")
 
         if modified:
             tab.modified = True
