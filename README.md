@@ -61,7 +61,17 @@ To install manually, use a virtual env and `requirements.txt`.
 
 You can use `scripts/venv.sh` to automate this.
 
-Alternatively, there's a `scripts/venv_amd.sh` to install with `Vulkan` support for `AMD`.
+---
+
+To add local model support run `scripts/venv_llama.sh`.
+
+There's a `scripts/venv_llama_amd.sh` to install with `Vulkan` support for `AMD`.
+
+Pick one of those for local model support.
+
+The `llama.cpp` library is defined in `llama_reqs.txt`.
+
+---
 
 To run the program, use `run.sh` in the root dir.
 
