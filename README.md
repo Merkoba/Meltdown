@@ -91,7 +91,7 @@ https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/blob/main/Meta
 
 You can find more on that site.
 
-The bigger the model, the more it will take to load.
+The bigger the model, the longer it will take to load.
 
 ---
 
