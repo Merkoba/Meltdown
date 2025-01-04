@@ -588,7 +588,12 @@ class Args:
         add(12, "list")
 
         # With Shift
+        add(1, "commands", True)
         add(3, "findprev", True)
+        add(5, "upload", True)
+        add(9, "autoscroll up", True)
+        add(10, "logjson", True)
+        add(12, "last", True)
 
     def fill_gestures(self) -> None:
         if not self.gestures_left:

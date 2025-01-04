@@ -1290,7 +1290,7 @@ Type: str
 
 Command to assign to the Shift + F1 key
 
-Default: [Empty string]
+Default: "/commands"
 
 Type: str
 
@@ -1330,7 +1330,7 @@ Type: str
 
 Command to assign to the Shift + F5 key
 
-Default: [Empty string]
+Default: "/upload"
 
 Type: str
 
@@ -1370,7 +1370,7 @@ Type: str
 
 Command to assign to the Shift + F9 key
 
-Default: [Empty string]
+Default: "/autoscroll up"
 
 Type: str
 
@@ -1380,7 +1380,7 @@ Type: str
 
 Command to assign to the Shift + F10 key
 
-Default: [Empty string]
+Default: "/logjson"
 
 Type: str
 
@@ -1400,7 +1400,7 @@ Type: str
 
 Command to assign to the Shift + F12 key
 
-Default: [Empty string]
+Default: "/last"
 
 Type: str
 
