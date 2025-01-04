@@ -34,6 +34,7 @@ class Utils:
         self.console = Console()
         self.nouns: list[str] = []
         self.protocols = ("http://", "https://")
+        self.upload_service = "https://rentry.org"
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -544,7 +545,9 @@ class Utils:
             app.update()
             self.do_text_upload(tab_id)
 
-        Dialog.show_confirm("Upload conversation ?", lambda: action())
+        Dialog.show_confirm(
+            f"Upload conversation to\n{self.upload_service}", lambda: action()
+        )
 
     def do_text_upload(self, tab_id: str | None = None) -> str:
         from .args import args
@@ -564,7 +567,7 @@ class Utils:
             edit_code=args.upload_edit_code,
         )
 
-        Dialog.show_message(f"https://rentry.org/{page.site}")
+        Dialog.show_message(f"{self.upload_service}/{page.site}")
 
     def try_import(self, name: str) -> Any:
         spec = importlib.util.find_spec(name)
