@@ -35,6 +35,8 @@ Read below to learn how to enable it.
 
 ---
 
+### Using pipx
+
 You can install it with [pipx](https://pypi.org/project/pipx/):
 
 ```sh
@@ -72,6 +74,8 @@ And if on `Linux`, you should now have a `.desktop` entry to launch it.
 You can uninstall it with `pipx uninstall meltdown`.
 
 ---
+
+### Manual Installation
 
 To install manually, use a virtual env and `requirements.txt`.
 
