@@ -83,13 +83,15 @@ More information [here](https://github.com/abetlen/llama-cpp-python).
 
 ## Models <a name="models"></a>
 
-You will need some models to play with.
+Local `gguf` models can be used.
 
 Here's a good one you can use:
 
 https://huggingface.co/QuantFactory/Meta-Llama-3-8B-Instruct-GGUF/blob/main/Meta-Llama-3-8B-Instruct.Q5_K_M.gguf
 
 You can find more on that site.
+
+The bigger the model, the more it will take to load.
 
 ---
 
