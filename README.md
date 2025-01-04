@@ -53,7 +53,7 @@ If you want to enable `llama.cpp` support for local models do this:
 pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
 
-(The difference is `#egg=meltdown[llama]` added at the end)
+The difference is `#egg=meltdown[llama]` added at the end.
 
 ---
 
