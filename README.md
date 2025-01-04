@@ -53,17 +53,19 @@ pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 
 ---
 
-This provides the `meltdown` command.
-
-And if on `linux` you should have a `.desktop` entry to launch it.
-
----
-
 To install it with `Vulkan` support (GPU), you can do this:
 
 ```sh
 CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
+
+---
+
+Intalling with `pipx` provides the `meltdown` command.
+
+And if on `Linux`, you should now have a `.desktop` entry to launch it.
+
+You can uninstall it with `pipx uninstall meltdown`.
 
 ---
 
