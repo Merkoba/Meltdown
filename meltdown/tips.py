@@ -8,7 +8,7 @@ tips = {
     "load_button": "Load or unload the model",
     "scroller_button": "Scroll this row. Middle click for instant",
     "stop_button": "Stop generating the current response",
-    "new_button": "Make a new tab",
+    "new_button": "Make a new tab. Middle click to insert at the start",
     "clear_button": "Clear the conversation",
     "close_button": "Close tabs. Middle click to close all tabs",
     "top_button": f"Scroll to the top. {scroll}",

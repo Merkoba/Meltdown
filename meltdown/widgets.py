@@ -387,6 +387,11 @@ class Widgets:
         self.top_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.top_button.set_bind("<Button-5>", lambda e: self.scroll_down())
         self.close_button.set_bind("<Button-2>", lambda e: close.close_all())
+
+        self.new_button.set_bind(
+            "<Button-2>", lambda e: display.make_tab(position="start")
+        )
+
         inputcontrol.bind()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:

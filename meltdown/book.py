@@ -268,10 +268,15 @@ class Book(tk.Frame):
             "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
         )
 
-    def add(self, name: str, mode: str, tooltip: str) -> Page:
+    def add(self, name: str, mode: str, tooltip: str, position: str = "end") -> Page:
         tooltip = self.clean_tooltip(tooltip)
         page = Page(self, name, mode=mode, tooltip=tooltip)
-        self.pages.append(page)
+
+        if position == "start":
+            self.pages.insert(0, page)
+        else:
+            self.pages.append(page)
+
         self.current_page = page
         self.add_tab(page)
         self.add_content(page.content)

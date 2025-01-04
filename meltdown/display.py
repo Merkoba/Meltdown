@@ -87,6 +87,7 @@ class Display:
         mode: str = "normal",
         save: bool = True,
         no_intro: bool = False,
+        position: str = "end",
     ) -> str:
         from .session import session
         from . import close
@@ -113,7 +114,7 @@ class Display:
 
         if not conversation_id:
             conv_id = "ignore" if mode == "ignore" else ""
-            conversation = session.add(name, conv_id=conv_id)
+            conversation = session.add(name, conv_id=conv_id, position=position)
             conversation_id = conversation.id
 
         if not conversation_id:
@@ -125,7 +126,7 @@ class Display:
         if convo and convo.items:
             tooltip = convo.items[0].ai
 
-        page = self.book.add(name, mode=mode, tooltip=tooltip)
+        page = self.book.add(name, mode=mode, tooltip=tooltip, position=position)
         tab_id = page.id_
         find = Find(page.content, tab_id)
         output_frame = tk.Frame(page.content)

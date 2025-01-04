@@ -5,6 +5,7 @@ import json
 from typing import Any
 from tkinter import filedialog
 from pathlib import Path
+from collections import OrderedDict
 
 # Modules
 from .app import app
@@ -163,16 +164,25 @@ class Conversation:
 
 class Session:
     def __init__(self) -> None:
-        self.conversations: dict[str, Conversation] = {}
+        self.conversations: OrderedDict[str, Conversation] = {}
         self.save_after = ""
 
-    def add(self, name: str, conv_id: str | None = None) -> Conversation:
+    def add(
+        self, name: str, conv_id: str | None = None, position: str = "end"
+    ) -> Conversation:
         if not conv_id:
             conv_id = str(utils.now())
 
         conversation = Conversation(conv_id, name)
         conversation.last_modified = utils.now()
-        self.conversations[conv_id] = conversation
+
+        if position == "start":
+            self.conversations = OrderedDict(
+                [(conv_id, conversation), *self.conversations.items()]
+            )
+        else:
+            self.conversations[conv_id] = conversation
+
         return conversation
 
     def remove(self, conversation_id: str) -> None:
