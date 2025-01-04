@@ -93,7 +93,11 @@ To run the program, use `run.sh` in the root dir.
 
 ---
 
-More information [here](https://github.com/abetlen/llama-cpp-python).
+Read more about [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python).
+
+This is the library used to interface with `llama.cpp`.
+
+It is responsible for compiling `llama.cpp`.
 
 ---
 
