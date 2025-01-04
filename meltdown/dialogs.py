@@ -429,15 +429,20 @@ class Dialog:
         button = widgetutils.get_button(self.buttons_frame, text, command)
         num = len(self.buttons)
 
-        if num_commands >= 6:
-            div = 3
-            row = num // div
-            column = num % div
-        else:
-            row = 0
-            column = num
+        # Define the number of columns per row
+        cols = 4
 
-        button.grid(row=row, column=column, padx=6, pady=8)
+        # Calculate row and column
+        row = num // cols
+        column = num % cols
+
+        # Calculate the total number of buttons in the current row
+        in_row = min(cols, num_commands - row * cols)
+
+        # Calculate the starting column to center the buttons
+        start = (cols - in_row) // 2
+
+        button.grid(row=row, column=start + column, padx=6, pady=8)
         self.buttons.append(button)
         self.root.bind(str(num + 1), lambda e: command())
 
