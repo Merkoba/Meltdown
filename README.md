@@ -45,11 +45,15 @@ That will only enable remote features like `ChatGPT` and `Gemini`.
 
 But that means the installation is easier and faster.
 
+---
+
 If you want to enable `llama.cpp` support for local models do this:
 
 ```sh
 pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
+
+(The difference is `#egg=meltdown[llama]` added at the end)
 
 ---
 
