@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-# This is used to install the python virtual env
 
 root="$(dirname "$(readlink -f "$0")")"
 parent="$(dirname "$root")"

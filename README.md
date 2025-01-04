@@ -87,6 +87,8 @@ Pick one of those for local model support.
 
 The `llama.cpp` library is defined in `llama_reqs.txt`.
 
+These should be called after running `venv.sh` as they only add extra libraries.
+
 ---
 
 To run the program, use `run.sh` in the root dir.
