@@ -32,7 +32,17 @@
 You can install it with [pipx](https://pypi.org/project/pipx/):
 
 ```sh
-pipx install git+https://github.com/Merkoba/Meltdown --force
+pipx install git+https://github.com/Merkoba/Meltdown
+```
+
+That will only enable remote features like `ChatGPT` and `Gemini`.
+
+But that means the installation is easier and faster.
+
+If you want to enable `llama.cpp` support for local models do this:
+
+```sh
+pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
 
 Which provides the `meltdown` command.
@@ -42,7 +52,7 @@ Which provides the `meltdown` command.
 To install it with `Vulkan` support (GPU), you can do this:
 
 ```sh
-CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown --force
+CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
 
 ---
