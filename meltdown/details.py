@@ -3,14 +3,18 @@ from __future__ import annotations
 # Standard
 from typing import TYPE_CHECKING
 
-# Libraries
-from llama_cpp.llama_chat_format import LlamaChatCompletionHandlerRegistry as Formats  # type: ignore
-
 # Modules
 from .app import app
 from .tooltips import ToolTip
 from .tips import tips
+from .utils import utils
 from . import widgetutils
+
+# Try Import
+llama_cpp = utils.try_import("llama_cpp")
+
+if llama_cpp:
+    Formats = llama_cpp.llama_chat_format.LlamaChatCompletionHandlerRegistry
 
 
 if TYPE_CHECKING:
@@ -96,8 +100,11 @@ def add_gpu_layers(widgets: Widgets, data: FrameData) -> None:
 def add_format(widgets: Widgets, data: FrameData) -> None:
     make_label(widgets, data, "format", "Format", padx=(0, 0))
     values = ["auto"]
-    fmts = sorted(Formats._chat_handlers)
-    values.extend(fmts)
+
+    if llama_cpp:
+        fmts = sorted(Formats._chat_handlers)
+        values.extend(fmts)
+
     make_combobox(widgets, data, "format", values, width=13)
 
 

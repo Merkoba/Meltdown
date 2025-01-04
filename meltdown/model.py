@@ -9,11 +9,8 @@ from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
-from llama_cpp import Llama, ChatCompletionChunk  # type: ignore
-from llama_cpp.llama_chat_format import Llava15ChatHandler  # type: ignore
 from openai import OpenAI  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
-import google.generativeai as genai  # type: ignore
 
 # Modules
 from .app import app
@@ -24,6 +21,14 @@ from .tips import tips
 from .utils import utils
 from .files import files
 from .session import Item
+
+# Try Import
+llama_cpp = utils.try_import("llama_cpp")
+
+if llama_cpp:
+    Llama = llama_cpp.Llama
+    ChatCompletionChunk = llama_cpp.ChatCompletionChunk
+    Llava15ChatHandler = llama_cpp.llama_chat_format.Llava15ChatHandler
 
 
 PromptArg = dict[str, Any]
@@ -158,7 +163,6 @@ class Model:
 
         try:
             self.google_key = files.read(paths.google_apikey)
-            genai.configure(api_key=self.google_key)
         except BaseException as e:
             utils.error(e)
             self.google_key = ""
@@ -223,6 +227,10 @@ class Model:
 
     def load_local(self, model: str, tab_id: str) -> bool:
         from .app import app
+
+        if not llama_cpp:
+            display.print("Llama CPP support is not enabled.")
+            return False
 
         self.model_loading = True
         now = utils.now()

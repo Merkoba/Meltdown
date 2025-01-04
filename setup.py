@@ -51,6 +51,9 @@ Categories=Utility;
 with open("requirements.txt") as f:
     requirements = f.read().splitlines()
 
+with open("llama_reqs.txt") as f:
+    llama_reqs = f.read().strip()
+
 package_data = {}
 package_data[program] = ["*.png", "*.jpg", "*.json"]
 
@@ -65,6 +68,9 @@ setup(
         "console_scripts": [
             f"{program}={program}.main:main",
         ],
+    },
+    extras_require={
+        "llama": [llama_reqs],
     },
 )
 

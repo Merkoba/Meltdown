@@ -8,6 +8,7 @@ import string
 import logging
 import inspect
 import tkinter as tk
+import importlib.util
 from logging.handlers import RotatingFileHandler
 from difflib import SequenceMatcher
 from typing import Any
@@ -564,6 +565,16 @@ class Utils:
         )
 
         Dialog.show_message(f"https://rentry.org/{page.site}")
+
+    def try_import(self, name: str) -> Any:
+        spec = importlib.util.find_spec(name)
+
+        if spec is not None:
+            module = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(module)
+            return module
+
+        return None
 
 
 utils = Utils()
