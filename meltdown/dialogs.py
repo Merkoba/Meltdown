@@ -187,7 +187,7 @@ class Dialog:
 
                 func(ans)
 
-            dialog.make_button(cmd[0], lambda: generic(cmd[1]))
+            dialog.make_button(cmd[0], lambda: generic(cmd[1]), len(commands))
 
         if commands:
             for cmd in commands:
@@ -423,12 +423,21 @@ class Dialog:
         self.root.destroy()
         Dialog.current_dialog = None
 
-    def make_button(self, text: str, command: Callable[..., Any]) -> None:
+    def make_button(self, text: str, command: Callable[..., Any], num_commands: int = 0) -> None:
         button = widgetutils.get_button(self.buttons_frame, text, command)
-        button.pack(side=tk.LEFT, padx=6, pady=8)
-        self.buttons.append(button)
         num = len(self.buttons)
-        self.root.bind(str(num), lambda e: command())
+
+        if num_commands >= 6:
+            div = 3
+            row = num // div
+            column = num % div
+        else:
+            row = 0
+            column = num
+
+        button.grid(row=row, column=column, padx=6, pady=8)
+        self.buttons.append(button)
+        self.root.bind(str(num + 1), lambda e: command())
 
     def left(self) -> None:
         if not len(self.buttons):
