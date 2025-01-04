@@ -591,7 +591,7 @@ class Args:
         add(1, "commands", True)
         add(3, "findprev", True)
         add(5, "upload", True)
-        add(9, "autoscroll up", True)
+        add(9, "autoscrollup", True)
         add(10, "logjson", True)
         add(12, "last", True)
 

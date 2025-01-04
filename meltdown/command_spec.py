@@ -927,6 +927,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "autoscrollup",
+            "Toggle automatic scrolling (Up)",
+            lambda a=None: autoscroll.toggle("up"),
+            extra=self.autoscroll,
+            type=str,
+        )
+
+        self.add_cmd(
             "startautoscroll",
             "Start automatic scrolling",
             lambda a=None: autoscroll.start(a),

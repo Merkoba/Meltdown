@@ -1370,7 +1370,7 @@ Type: str
 
 Command to assign to the Shift + F9 key
 
-Default: "/autoscroll up"
+Default: "/autoscrollup"
 
 Type: str
 
