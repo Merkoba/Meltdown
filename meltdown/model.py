@@ -229,10 +229,7 @@ class Model:
         from .app import app
 
         if not llama_cpp:
-            display.print(
-                "Error: llama.cpp support is not enabled. A library must be installed to use local models. Check the documentation."
-            )
-
+            self.no_llama_error()
             return False
 
         self.model_loading = True
@@ -851,6 +848,10 @@ class Model:
                     self.unload()
 
             utils.sleep(10)
+
+    def no_llama_error(self) -> None:
+        msg = "Error: llama.cpp support is not enabled. A library must be installed to use local models. Check the documentation."
+        display.print(msg)
 
 
 model = Model()
