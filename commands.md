@@ -906,8 +906,6 @@ Optional up or down argument
 
 Toggle automatic scrolling (Up)
 
-Optional up or down argument
-
 ---
 
 ### startautoscroll

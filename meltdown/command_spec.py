@@ -930,7 +930,6 @@ class CommandSpec:
             "autoscrollup",
             "Toggle automatic scrolling (Up)",
             lambda a=None: autoscroll.toggle("up"),
-            extra=self.autoscroll,
             type=str,
         )
 
