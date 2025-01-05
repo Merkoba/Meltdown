@@ -10,7 +10,7 @@ from .config import config
 class Theme:
     def __init__(self) -> None:
         self.width = 780
-        self.height = 820
+        self.height = 860
 
         self.serif_family = "serif"
         self.font_family = "sans-serif"
