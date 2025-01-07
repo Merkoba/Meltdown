@@ -6,11 +6,11 @@ from typing import Any
 from collections.abc import Generator
 
 # Libraries
-from prompt_toolkit import PromptSession
-from prompt_toolkit.history import InMemoryHistory
-from prompt_toolkit.completion import Completer, Completion
-from prompt_toolkit.document import Document
-from prompt_toolkit.key_binding import KeyBindings
+from prompt_toolkit import PromptSession  # type: ignore
+from prompt_toolkit.history import InMemoryHistory  # type: ignore
+from prompt_toolkit.completion import Completer, Completion  # type: ignore
+from prompt_toolkit.document import Document  # type: ignore
+from prompt_toolkit.key_binding import KeyBindings  # type: ignore
 
 # Modules
 from .args import args
@@ -24,7 +24,7 @@ completer: Completer
 words: list[str] = []
 
 
-class SlashCompleter(Completer):
+class SlashCompleter(Completer):  # type: ignore
     def get_completions(
         self, document: Document, complete_event: Any
     ) -> Generator[Completion, None, None]:
@@ -62,7 +62,7 @@ class Console:
     def do_start(self) -> None:
         kb = KeyBindings()
 
-        @kb.add("c-v")
+        @kb.add("c-v")  # type: ignore
         def _(event: Any) -> None:
             clipboard_data = utils.get_paste()
 

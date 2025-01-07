@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from collections.abc import Callable
-from PIL import Image, ImageTk
+from PIL import Image, ImageTk  # type: ignore
 from pathlib import Path
 
 # Modules
@@ -18,6 +18,7 @@ from . import widgetutils
 
 
 Answer = dict[str, Any]
+Command = tuple[str, Callable[[Any], Any], bool]
 
 
 class Dialog:
@@ -45,10 +46,13 @@ class Dialog:
         return ""
 
     @staticmethod
+    def cmd(text: str, cmd: Callable[..., Any], no_hide: bool = False) -> Command:
+        return ("Reset", cmd, no_hide)
+
+    @staticmethod
     def show_dialog(
         text: str = "",
-        commands: list[tuple[str, Callable[..., Any], hide : bool | None]]
-        | None = None,
+        commands: list[Command] | None = None,
         image: Path | None = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
@@ -72,8 +76,8 @@ class Dialog:
             new_width = image_width
             new_height = int(new_width * height / width)
             img = img_file.resize((new_width, new_height))
-            photo = ImageTk.PhotoImage(img)  # type: ignore
-            label = tk.Label(dialog.image_frame, image=photo)  # type: ignore
+            photo = ImageTk.PhotoImage(img)
+            label = tk.Label(dialog.image_frame, image=photo)
             label.mlt_image = photo  # type: ignore
             label.pack(side=tk.LEFT, padx=0, pady=8)
 
@@ -170,24 +174,24 @@ class Dialog:
 
         # ------
 
-        def make_cmd(cmd: tuple[str, Callable[..., Any], bool | None]) -> None:
+        def make_cmd(cmd: Command) -> None:
             def generic(func: Callable[..., Any]) -> None:
                 ans = {
                     "entry": Dialog.get_entry(),
                     "msgbox": Dialog.get_msgbox(),
                 }
 
-                no_hide = False
-
-                if len(cmd) > 2:
-                    no_hide = cmd[2] or False
-
-                if not no_hide:
+                if not cmd[2]:
                     dialog.hide()
 
                 func(ans)
 
-            dialog.make_button(cmd[0], lambda: generic(cmd[1]), len(commands))
+            if commands:
+                num_commands = len(commands)
+            else:
+                num_commands = 0
+
+            dialog.make_button(cmd[0], lambda: generic(cmd[1]), num_commands)
 
         if commands:
             for cmd in commands:
@@ -218,7 +222,10 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
-        Dialog.show_dialog(text, [("Cancel", cancel), ("Ok", ok)])
+        cmds = []
+        cmds.append(Dialog.cmd("Cancel", cancel))
+        cmds.append(Dialog.cmd("Ok", ok))
+        Dialog.show_dialog(text, cmds)
 
     @staticmethod
     def show_message(text: str) -> None:
@@ -228,7 +235,10 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(text)
 
-        Dialog.show_dialog(text, [("Copy", copy), ("Ok", ok)])
+        cmds = []
+        cmds.append(Dialog.cmd("Copy", copy))
+        cmds.append(Dialog.cmd("Ok", ok))
+        Dialog.show_dialog(text, cmds)
 
     @staticmethod
     def show_msgbox(title: str, text: str) -> None:
@@ -238,13 +248,16 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(ans["msgbox"])
 
-        Dialog.show_dialog(title, commands=[("Copy", copy), ("Ok", ok)], msgbox=text)
+        cmds = []
+        cmds.append(Dialog.cmd("Copy", copy))
+        cmds.append(Dialog.cmd("Ok", ok))
+        Dialog.show_dialog(title, commands=cmds, msgbox=text)
 
     @staticmethod
     def show_input(
         text: str,
-        cmd_ok: Callable[..., Any],
-        cmd_cancel: Callable[..., Any] | None = None,
+        cmd_ok: Callable[[Any], None],
+        cmd_cancel: Callable[[Any], None] | None = None,
         value: str = "",
         mode: str = "normal",
     ) -> None:
@@ -253,20 +266,30 @@ class Dialog:
 
         def cancel(ans: Answer) -> None:
             if cmd_cancel:
-                cmd_cancel()
+                cmd_cancel(None)
 
         def reveal(ans: Answer) -> None:
+            if not Dialog.current_dialog:
+                return
+
+            if not Dialog.current_dialog.entry:
+                return
+
             Dialog.current_dialog.entry.reveal()
             Dialog.current_dialog.entry.focus_start()
 
+        cmds = []
+
         if mode == "password":
-            buttons = [("Cancel", cancel), ("Reveal", reveal, True), ("Ok", ok)]
+            cmds.append(Dialog.cmd("Cancel", cancel))
+            cmds.append(Dialog.cmd("Reveal", reveal, True))
+            cmds.append(Dialog.cmd("Ok", ok))
         else:
-            buttons = [("Cancel", cancel), ("Ok", ok)]
+            cmds.append(Dialog.cmd("Cancel", cancel))
 
         Dialog.show_dialog(
             text,
-            buttons,
+            cmds,
             use_entry=True,
             entry_mode=mode,
             value=value,

@@ -164,7 +164,7 @@ class Conversation:
 
 class Session:
     def __init__(self) -> None:
-        self.conversations: OrderedDict[str, Conversation] = {}
+        self.conversations: OrderedDict[str, Conversation] = OrderedDict()
         self.save_after = ""
 
     def add(
@@ -269,7 +269,7 @@ class Session:
             self.reset()
 
     def reset(self) -> None:
-        self.conversations = {}
+        self.conversations = OrderedDict()
         close.close_all(force=True)
 
     def load_items(self, path: Path) -> None:
@@ -380,7 +380,7 @@ class Session:
 
     def update(self) -> None:
         tabs = display.tab_ids()
-        new_items = {}
+        new_items = OrderedDict()
 
         for tab_id in tabs:
             tab = display.get_tab(tab_id)
@@ -419,8 +419,8 @@ class Session:
 
     def menu(self) -> None:
         cmds = []
-        cmds.append(("Load", lambda a: self.load_state()))
-        cmds.append(("Save", lambda a: self.save_state()))
+        cmds.append(Dialog.cmd("Load", lambda a: self.load_state()))
+        cmds.append(Dialog.cmd("Save", lambda a: self.save_state()))
 
         Dialog.show_dialog("Session Menu", commands=cmds)
 

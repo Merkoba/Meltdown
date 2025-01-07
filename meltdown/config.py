@@ -471,9 +471,9 @@ No need to greet me, just answer.
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Reset", lambda a: self.reset()))
-        cmds.append(("Load", lambda a: self.load_state()))
-        cmds.append(("Save", lambda a: self.save_state()))
+        cmds.append(Dialog.cmd("Reset", lambda a: self.reset()))
+        cmds.append(Dialog.cmd("Load", lambda a: self.load_state()))
+        cmds.append(Dialog.cmd("Save", lambda a: self.save_state()))
 
         Dialog.show_dialog("Config Menu", commands=cmds)
 

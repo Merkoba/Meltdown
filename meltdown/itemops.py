@@ -141,9 +141,9 @@ class ItemOps:
             formats.do_open(mode, text=text)
 
         cmds = []
-        cmds.append(("Program", lambda a: self.run_program(text)))
-        cmds.append(("Markdown", lambda a: action("markdown")))
-        cmds.append(("Text", lambda a: action("text")))
+        cmds.append(Dialog.cmd("Program", lambda a: self.run_program(text)))
+        cmds.append(Dialog.cmd("Markdown", lambda a: action("markdown")))
+        cmds.append(Dialog.cmd("Text", lambda a: action("text")))
 
         Dialog.show_dialog("Use Item", cmds)
 

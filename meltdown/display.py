@@ -95,8 +95,8 @@ class Display:
         if args.max_tabs > 0:
             if self.num_tabs() >= args.max_tabs:
                 max_cmds = []
-                max_cmds.append(("Close", lambda a: close.close(force=False)))
-                max_cmds.append(("Ok", lambda a: None))
+                max_cmds.append(Dialog.cmd("Close", lambda a: close.close(force=False)))
+                max_cmds.append(Dialog.cmd("Ok", lambda a: None))
                 Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", max_cmds)
                 return ""
 
@@ -655,9 +655,9 @@ class Display:
             return
 
         cmds = []
-        cmds.append(("Mono", lambda a: action("monospace")))
-        cmds.append(("Serif", lambda a: action("serif")))
-        cmds.append(("Sans", lambda a: action("sans-serif")))
+        cmds.append(Dialog.cmd("Mono", lambda a: action("monospace")))
+        cmds.append(Dialog.cmd("Serif", lambda a: action("serif")))
+        cmds.append(Dialog.cmd("Sans", lambda a: action("sans-serif")))
 
         Dialog.show_dialog("Font Family", cmds)
 
@@ -845,8 +845,8 @@ class Display:
             tab_id = self.current_tab
 
         cmds = []
-        cmds.append(("To Start", lambda a: self.move_tab_to_start(tab_id)))
-        cmds.append(("To End", lambda a: self.move_tab_to_end(tab_id)))
+        cmds.append(Dialog.cmd("To Start", lambda a: self.move_tab_to_start(tab_id)))
+        cmds.append(Dialog.cmd("To End", lambda a: self.move_tab_to_end(tab_id)))
 
         picked = self.get_picked()
 

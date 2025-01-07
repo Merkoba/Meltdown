@@ -596,7 +596,7 @@ class Output(tk.Text):
         return self.get("1.0", "end-1c").strip()
 
     def get_fraction(self, num_lines: int = 1) -> float:
-        lines = self.count("1.0", "end-1c lineend", "displaylines")  # type: ignore
+        lines = self.count("1.0", "end-1c lineend", "displaylines")
 
         if not lines:
             return 0.0

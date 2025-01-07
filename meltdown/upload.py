@@ -28,14 +28,14 @@ class Upload:
             self.do_upload(tab_id, mode)
 
         cmds = []
-        cmds.append(("Last Item", lambda a: action("last")))
-        cmds.append(("All Of It", lambda a: action("all")))
+        cmds.append(Dialog.cmd("Last Item", lambda a: action("last")))
+        cmds.append(Dialog.cmd("All Of It", lambda a: action("all")))
 
         Dialog.show_dialog(
             f"Upload conversation to\n{config.rentry_site}", commands=cmds
         )
 
-    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> str:
+    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> None:
         from .args import args
         from .display import display
         from .formats import get_markdown

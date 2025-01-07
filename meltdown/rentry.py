@@ -34,9 +34,9 @@ class Rentry:
         thread.start()
 
     def get_cookie(self, cookie_name: str) -> str:
-        return self.session.cookies.get(cookie_name, default="")
+        return str(self.session.cookies.get(cookie_name, default=""))
 
-    def get_token(self):
+    def get_token(self) -> str:
         return self.get_cookie("csrftoken")
 
     def post(self) -> requests.Response:

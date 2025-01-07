@@ -540,7 +540,7 @@ class Utils:
 
         if spec is not None:
             module = importlib.util.module_from_spec(spec)
-            spec.loader.exec_module(module)
+            spec.loader.exec_module(module)  # type: ignore
             return module
 
         return None

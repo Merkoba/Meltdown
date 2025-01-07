@@ -220,10 +220,10 @@ class App:
         ]
 
         cmds = []
-        cmds.append(("Commands", lambda a: self.show_help("commands")))
-        cmds.append(("Arguments", lambda a: self.show_help("arguments")))
-        cmds.append(("Keyboard", lambda a: self.show_help("keyboard")))
-        cmds.append(("Ok", lambda a: None))
+        cmds.append(Dialog.cmd("Commands", lambda a: self.show_help("commands")))
+        cmds.append(Dialog.cmd("Arguments", lambda a: self.show_help("arguments")))
+        cmds.append(Dialog.cmd("Keyboard", lambda a: self.show_help("keyboard")))
+        cmds.append(Dialog.cmd("Ok", lambda a: None))
 
         Dialog.show_dialog("\n".join(lines), cmds, image=self.image_path)
 
@@ -857,8 +857,8 @@ class App:
         def show_data() -> None:
             self.open_generic(str(paths.data_dir))
 
-        cmds.append(("Config", lambda a: show_config()))
-        cmds.append(("Data", lambda a: show_data()))
+        cmds.append(Dialog.cmd("Config", lambda a: show_config()))
+        cmds.append(Dialog.cmd("Data", lambda a: show_data()))
 
         Dialog.show_dialog(f"Profile: {args.profile}", cmds)
 
@@ -866,11 +866,11 @@ class App:
         from .dialogs import Dialog
 
         cmds = []
-        cmds.append(("Portrait", lambda a: self.show_portrait()))
-        cmds.append(("Size", lambda a: self.show_size()))
-        cmds.append(("Date", lambda a: self.show_date()))
-        cmds.append(("Started", lambda a: self.show_started()))
-        cmds.append(("Memory", lambda a: self.show_memory()))
+        cmds.append(Dialog.cmd("Portrait", lambda a: self.show_portrait()))
+        cmds.append(Dialog.cmd("Size", lambda a: self.show_size()))
+        cmds.append(Dialog.cmd("Date", lambda a: self.show_date()))
+        cmds.append(Dialog.cmd("Started", lambda a: self.show_started()))
+        cmds.append(Dialog.cmd("Memory", lambda a: self.show_memory()))
 
         Dialog.show_dialog("Information", cmds)
 
@@ -901,8 +901,8 @@ class App:
             model.stream(prompt, tab_id=tab_id)
 
         cmds = []
-        cmds.append(("Describe", lambda a: describe()))
-        cmds.append(("Ok", lambda a: None))
+        cmds.append(Dialog.cmd("Describe", lambda a: describe()))
+        cmds.append(Dialog.cmd("Ok", lambda a: None))
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
@@ -968,9 +968,9 @@ class App:
             Dialog.show_message("Reset to apply changes.")
 
         cmds = []
-        cmds.append(("Contrast", lambda a: action("contrast")))
-        cmds.append(("Light", lambda a: action("light")))
-        cmds.append(("Dark", lambda a: action("dark")))
+        cmds.append(Dialog.cmd("Contrast", lambda a: action("contrast")))
+        cmds.append(Dialog.cmd("Light", lambda a: action("light")))
+        cmds.append(Dialog.cmd("Dark", lambda a: action("dark")))
 
         Dialog.show_dialog("Color Theme", cmds)
 

@@ -42,7 +42,7 @@ class Model:
         self.stream_thread = threading.Thread()
         self.streaming = False
         self.stream_loading = False
-        self.model: Llama | None = None
+        self.model: Llama | None = None  # type: ignore
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
@@ -579,7 +579,7 @@ class Model:
 
     def process_stream(
         self,
-        output: Generator[ChatCompletionChunk, None, None],
+        output: Generator[ChatCompletionChunk, None, None],  # type: ignore
         tab_id: str,
     ) -> str:
         broken = False
@@ -603,7 +603,7 @@ class Model:
                     broken = True
                     break
 
-                delta = chunk.choices[0].delta
+                delta = chunk.choices[0].delta  # type: ignore
 
                 if hasattr(delta, "content"):
                     if not first_content:
