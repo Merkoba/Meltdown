@@ -8,9 +8,6 @@ from typing import Any
 from collections.abc import Callable
 from pathlib import Path
 
-# Libraries
-from tkinterdnd2 import DND_FILES  # type: ignore
-
 # Modules
 from .args import args
 from .app import app
@@ -107,10 +104,6 @@ class Widgets:
         self.model.bind_mousewheel()
         ToolTip(self.model_label, tips["model"])
         ToolTip(self.model, tips["model"])
-
-        if args.drag_and_drop:
-            self.model.drop_target_register(DND_FILES)  # type: ignore
-            self.model.dnd_bind("<<Drop>>", lambda e: self.on_model_dropped(e))  # type: ignore
 
         self.model_icon = widgetutils.make_label(frame_data_model, "", colons=False)
         self.model_icon_tooltip = ToolTip(self.model_icon, "")
@@ -216,10 +209,6 @@ class Widgets:
         self.file.bind_mousewheel()
         ToolTip(self.file_label, tips["file"])
         ToolTip(self.file, tips["file"])
-
-        if args.drag_and_drop:
-            self.file.drop_target_register(DND_FILES)  # type: ignore
-            self.file.dnd_bind("<<Drop>>", lambda e: self.on_file_dropped(e))  # type: ignore
 
         self.recent_files_button = widgetutils.make_button(
             frame_data_file, "Recent", lambda: self.show_recent_files()

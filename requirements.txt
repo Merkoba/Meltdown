@@ -5,5 +5,4 @@ Pygments == 2.18.0
 pillow == 10.3.0
 prompt-toolkit == 3.0.46
 rich == 13.7.1
-tkinterdnd2-universal == 1.7.3
 requests == 2.31.0

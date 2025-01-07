@@ -10,7 +10,6 @@
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Installation](#installation)
-1. [Drag and Drop](#dragdrop)
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Upload](#upload)
@@ -173,22 +172,6 @@ Set `Mode` to `images`.
 Now you can use the `File` field to include a URL or path to an image.
 
 And you can use the input to include text as normal.
-
----
-
-## Drag and Drop <a name="dragdrop"></a>
-
-Some widgets like File and Input accept drag and drop operations.
-
-For instance you can drop a file to use its path.
-
-Or text to use as input.
-
-However, you need to have `tkdnd` installed in your system.
-
-This is an extension for `Tcl`.
-
-If you want to enable, it use the `--drag-and-drop` flag.
 
 ---
 

@@ -6,9 +6,6 @@ from tkinter import ttk
 from typing import Any
 from collections.abc import Callable
 
-# Libraries
-from tkinterdnd2 import DND_TEXT  # type: ignore
-
 # Modules
 from .app import app
 from .args import args
@@ -71,13 +68,6 @@ class TextBox(tk.Text):
                 scrollbar_x.grid(row=1, column=0, sticky="ew")
 
         self.changes = Changes(self)
-
-        if args.drag_and_drop:
-            self.drop_target_register(DND_TEXT)  # type: ignore
-            self.dnd_bind("<<Drop>>", lambda e: self.on_text_dropped(e))  # type: ignore
-
-    def on_text_dropped(self, event: Any) -> None:
-        self.set_text(event.data)
 
     def set_binds(self) -> None:
         self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))

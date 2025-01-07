@@ -16,7 +16,6 @@ from typing import Any
 
 # Libraries
 import psutil  # type: ignore
-from tkinterdnd2 import TkinterDnD  # type: ignore
 from rich.console import Console  # type: ignore
 
 # Modules
@@ -565,11 +564,7 @@ class App:
         from .args import args
 
         self.build_intro()
-
-        if args.drag_and_drop:
-            self.root = TkinterDnD.Tk(className=self.manifest["program"])
-        else:
-            self.root = tk.Tk(className=self.manifest["program"])
+        self.root = tk.Tk(className=self.manifest["program"])
 
         title = args.title
 

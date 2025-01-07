@@ -3,9 +3,6 @@ from __future__ import annotations
 # Standard
 from typing import Any
 
-# Libraries
-from tkinterdnd2 import DND_TEXT  # type: ignore
-
 # Modules
 from .tooltips import ToolTip
 from .commands import commands
@@ -41,12 +38,7 @@ class InputControl:
         ToolTip(self.input_label, tips["input"])
         ToolTip(self.input, tips["input"])
 
-        if args.drag_and_drop:
-            self.input.drop_target_register(DND_TEXT)  # type: ignore
-            self.input.dnd_bind("<<Drop>>", lambda e: self.on_text_dropped(e))  # type: ignore
-
         clear_button = widgetutils.make_button(frame_data, "x", lambda: self.clear())
-
         ToolTip(clear_button, tips["clear_input_button"])
 
         prev_button = widgetutils.make_button(
@@ -379,9 +371,6 @@ class InputControl:
 
     def paste(self) -> None:
         utils.paste(self.input)
-
-    def on_text_dropped(self, event: Any) -> None:
-        self.set(event.data)
 
     def on_delete(self) -> bool:
         from . import close

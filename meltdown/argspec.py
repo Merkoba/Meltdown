@@ -507,12 +507,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "drag_and_drop",
-            action="store_true",
-            info="Enable drag and drop",
-        )
-
-        self.add_argument(
             "console",
             action="store_true",
             info="Enable the interactive console",

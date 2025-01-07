@@ -192,7 +192,6 @@ class Args:
         self.auto_bottom = True
         self.user_color = "auto"
         self.ai_color = "auto"
-        self.drag_and_drop = False
         self.use_keywords = True
         self.snippets_font = "monospace"
         self.short_labels = False
@@ -496,7 +495,6 @@ class Args:
             "clean",
             "profile",
             "console",
-            "drag_and_drop",
             "border_color",
             "border_size",
             "title",
