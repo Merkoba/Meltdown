@@ -46,7 +46,7 @@ class Upload:
         if not tabconvo:
             return
 
-        if not len(tabconvo.convo.items):
+        if not bool(tabconvo.convo.items):
             return
 
         text = get_markdown(tabconvo.convo, mode=mode)
