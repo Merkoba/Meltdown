@@ -10,6 +10,10 @@
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Installation](#installation)
+1. [Drag and Drop](#dragdrop)
+1. [Console](#console)
+1. [Keywords](#keywords)
+1. [Listener](#listener)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
 1. [Keyboard](keyboard.md)
@@ -171,7 +175,7 @@ And you can use the input to include text as normal.
 
 ---
 
-## Drag and Drop
+## Drag and Drop <a name="dragdrop"></a>
 
 Some widgets like File and Input accept drag and drop operations.
 
@@ -187,7 +191,7 @@ If you want to enable, it use the `--drag-and-drop` flag.
 
 ---
 
-## Console
+## Console <a name="console"></a>
 
 To enable the console use `--show-console`.
 
@@ -201,7 +205,7 @@ You could have the main program displayed on a monitor and control it with the t
 
 ---
 
-## Listener
+## Listener <a name="listener"></a>
 
 There's a listener mode that can be enabled with `--listener`.
 
@@ -225,7 +229,7 @@ This is another way to control the program remotely.
 
 ---
 
-## Keywords
+## Keywords <a name="keywords"></a>
 
 There are some keywords you can use in commands:
 
