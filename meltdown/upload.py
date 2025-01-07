@@ -4,7 +4,7 @@ from __future__ import annotations
 from .utils import utils
 from .config import config
 from .display import display
-from .rentry import RentryPage
+from .rentry import Rentry
 
 
 class Upload:
@@ -38,7 +38,6 @@ class Upload:
     def do_upload(self, tab_id: str | None = None, mode: str = "all") -> str:
         from .args import args
         from .display import display
-        from .dialogs import Dialog
         from .formats import get_markdown
 
         tabconvo = display.get_tab_convo(tab_id)
@@ -57,13 +56,9 @@ class Upload:
             password = utils.random_word()
 
         try:
-            page = RentryPage(text=text, edit_code=password)
+            Rentry(text, password)
         except Exception as e:
             utils.error(e)
-
-        url = f"{config.rentry_site}/{page.site}"
-        display.print(f"Uploaded: {url} ({page.code})", do_format=True)
-        Dialog.show_message(url)
 
 
 upload = Upload()
