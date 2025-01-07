@@ -26,6 +26,21 @@ class Command:
         self.cmd = cmd
         self.no_hide = no_hide
 
+    def build(self, dialog: Dialog) -> None:
+        def generic(func: Callable[..., Any]) -> None:
+            ans = {
+                "entry": Dialog.get_entry(),
+                "msgbox": Dialog.get_msgbox(),
+            }
+
+            if not self.no_hide:
+                dialog.hide()
+
+            func(ans)
+
+        num_cmds = len(dialog.commands)
+        dialog.make_button(self.text, lambda: generic(self.cmd), num_cmds)
+
 
 class Dialog:
     current_dialog: Dialog | None = None
@@ -180,28 +195,11 @@ class Dialog:
 
         # ------
 
-        def make_cmd(cmd: Command) -> None:
-            def generic(func: Callable[..., Any]) -> None:
-                ans = {
-                    "entry": Dialog.get_entry(),
-                    "msgbox": Dialog.get_msgbox(),
-                }
-
-                if not cmd.no_hide:
-                    dialog.hide()
-
-                func(ans)
-
-            if commands:
-                num_commands = len(commands)
-            else:
-                num_commands = 0
-
-            dialog.make_button(cmd.text, lambda: generic(cmd.cmd), num_commands)
+        dialog.commands = commands or []
 
         if commands:
             for cmd in commands:
-                make_cmd(cmd)
+                cmd.build(dialog)
 
         if commands:
             if dialog.entry:
@@ -367,6 +365,7 @@ class Dialog:
 
         self.id_ = id_
         self.buttons: list[ButtonBox] = []
+        self.commands: list[Command] = []
 
         self.make(text, with_top_frame=top_frame)
 
@@ -453,13 +452,13 @@ class Dialog:
         Dialog.current_dialog = None
 
     def make_button(
-        self, text: str, command: Callable[..., Any], num_commands: int = 0
+        self, text: str, command: Callable[..., Any], num_cmds: int = 0
     ) -> None:
         button = widgetutils.get_button(self.buttons_frame, text, command)
         num = len(self.buttons)
         div = 3
 
-        if num_commands > 6:
+        if num_cmds > 6:
             row = num // div
             column = num % div
         else:
