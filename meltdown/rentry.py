@@ -53,19 +53,16 @@ class Rentry:
             config.rentry_site,
             *args,
             headers=self.headers,
+            timeout=10,
             **kwargs,
         )
 
 
 class RentryPage:
-    rentry = None
-
     def __init__(self, text: str = "", custom_url: str = "", edit_code: str = ""):
         self.code = edit_code
         self.site = custom_url
-
-        if self.rentry is None:
-            self.rentry = Rentry()
+        self.rentry = Rentry()
 
         r_create = self.rentry.post(
             data={
@@ -80,13 +77,13 @@ class RentryPage:
         if r_create.status_code != HTTPStatus.FOUND:
             raise NoPageError()
 
-        ck_messages = ast.literal_eval(self.rentry.get_cookie("messages"))
-        ck_messages = ck_messages.split(",")
+        messages = ast.literal_eval(self.rentry.get_cookie("messages"))
+        messages = messages.split(",")
 
-        if (len(ck_messages) <= 1) or ("Your edit code: " not in ck_messages):
+        if (len(messages) <= 1) or ("Your edit code: " not in messages):
             raise NoCodeError()
 
-        self.code = ck_messages[ck_messages.index("Your edit code: ") + 1]
+        self.code = messages[messages.index("Your edit code: ") + 1]
         self.code = re.sub("[\\W_]+", "", self.code)
         self.site = urllib.parse.urlparse(r_create.headers["Location"])
         self.site = Path(self.site.path).name
