@@ -15,14 +15,18 @@ class Upload:
         from .dialogs import Dialog
         from .app import app
 
-        def action() -> None:
+        def action(mode: str) -> None:
             Dialog.hide_all()
             app.update()
-            self.do_upload(tab_id)
+            self.do_upload(tab_id, mode)
 
-        Dialog.show_confirm(f"Upload conversation to\n{self.service}", lambda: action())
+        cmds = []
+        cmds.append(("Last Item", lambda a: action("last")))
+        cmds.append(("All Of It", lambda a: action("all")))
 
-    def do_upload(self, tab_id: str | None = None) -> str:
+        Dialog.show_dialog(f"Upload conversation to\n{self.service}", commands=cmds)
+
+    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> str:
         from .args import args
         from .display import display
         from .dialogs import Dialog
@@ -33,7 +37,7 @@ class Upload:
         if not tabconvo:
             return
 
-        text = get_markdown(tabconvo.convo)
+        text = get_markdown(tabconvo.convo, mode=mode)
 
         if args.upload_password:
             password = args.upload_password

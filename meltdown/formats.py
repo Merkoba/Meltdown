@@ -97,14 +97,19 @@ def to_text(
 # ---
 
 
-def get_markdown(conversation: Conversation) -> str:
+def get_markdown(conversation: Conversation, mode: str = "all") -> str:
     avatars = args.avatars_in_logs
     separate = args.separate_logs
     files = args.files_in_logs
     names = args.names_in_logs
 
     return to_markdown(
-        conversation, avatars=avatars, names=names, separate=separate, files=files
+        conversation,
+        avatars=avatars,
+        names=names,
+        separate=separate,
+        files=files,
+        mode=mode,
     )
 
 
@@ -114,11 +119,17 @@ def to_markdown(
     names: bool = True,
     separate: bool = False,
     files: bool = True,
+    mode: str = "all",
 ) -> str:
     log = ""
     generic = not names
 
-    for i, item in enumerate(conversation.items):
+    if mode == "last":
+        items = conversation.items[-1:]
+    else:
+        items = conversation.items
+
+    for i, item in enumerate(items):
         for key in ["user", "ai"]:
             prompt = Output.get_prompt(
                 key, show_avatar=avatars, put_colons=False, generic=generic
@@ -133,7 +144,7 @@ def to_markdown(
                 if file:
                     log += f"**File:** {file}\n\n"
 
-        if (i < len(conversation.items) - 1) and separate:
+        if (i < len(items) - 1) and separate:
             log += "---\n\n"
 
     return log.strip()
