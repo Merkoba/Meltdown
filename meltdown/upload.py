@@ -3,6 +3,7 @@ from __future__ import annotations
 # Modules
 from .utils import utils
 from .config import config
+from .display import display
 from .rentry import RentryPage
 
 
@@ -10,6 +11,12 @@ class Upload:
     def upload(self, tab_id: str | None = None, mode: str = "") -> None:
         from .dialogs import Dialog
         from .app import app
+
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+
+        if (not messages) or ignored:
+            return
 
         if mode in ["last", "all"]:
             self.do_upload(tab_id, mode)
