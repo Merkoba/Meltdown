@@ -193,6 +193,8 @@ To enable the console use `--show-console`.
 
 This allows you to send actions from the terminal that launched the program.
 
+It uses `prompt-toolkit` and it shows autocomplete suggestions with recently used words, or commands.
+
 You could have the main program displayed on a monitor and control it with the terminal in another monitor for instance.
 
 ---
