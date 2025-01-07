@@ -39,7 +39,7 @@ class Rentry:
     def get_token(self) -> str:
         return self.get_cookie("csrftoken")
 
-    def post(self) -> requests.Response:
+    def post(self) -> None:
         self.session = requests.session()
         self.session.get(config.rentry_site)
 

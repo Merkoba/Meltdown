@@ -60,6 +60,8 @@ class ItemOps:
                 prompt = {"text": user_text, "file": file, "no_history": no_history}
                 model.stream(prompt, tabconvo.tab.tab_id)
         elif mode == "copy":
+            text = ""
+
             if who:
                 if who == "user":
                     text = user_text
