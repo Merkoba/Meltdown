@@ -1029,8 +1029,9 @@ class CommandSpec:
 
         self.add_cmd(
             "upload",
-            "Upload text to a hosting service",
-            lambda a=None: upload.upload(),
+            "Upload text to a hosting service. Optional 'all' or 'last' argument",
+            lambda a=None: upload.upload(mode=a),
+            type=str,
         )
 
         self.add_cmd(

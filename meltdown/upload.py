@@ -11,9 +11,13 @@ class Upload:
     def __init__(self) -> None:
         self.service = "https://rentry.org"
 
-    def upload(self, tab_id: str | None = None) -> None:
+    def upload(self, tab_id: str | None = None, mode: str = "") -> None:
         from .dialogs import Dialog
         from .app import app
+
+        if mode in ["last", "all"]:
+            self.do_upload(tab_id, mode)
+            return
 
         def action(mode: str) -> None:
             Dialog.hide_all()
