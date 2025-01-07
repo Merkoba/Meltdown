@@ -207,6 +207,10 @@ If it finds text, it will use it as the prompt, or as a command if it starts wit
 
 It will then empty the file after using it.
 
+You can do for instance `echo "hello" > /tmp/mlt_meltdown.input`.
+
+Or: `echo "/new" > /tmp/mlt_meltdown.input`.
+
 By default it checks `/tmp/mlt_meltdown.input` if on Linux.
 
 Temp Dir + `mlt_meltdown.input`.
