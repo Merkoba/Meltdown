@@ -18,7 +18,13 @@ from . import widgetutils
 
 
 Answer = dict[str, Any]
-Command = tuple[str, Callable[[Any], Any], bool]
+
+
+class Command:
+    def __init__(self, text: str, cmd: Callable[..., Any], no_hide: bool = False):
+        self.text = text
+        self.cmd = cmd
+        self.no_hide = no_hide
 
 
 class Dialog:
@@ -47,7 +53,7 @@ class Dialog:
 
     @staticmethod
     def cmd(text: str, cmd: Callable[..., Any], no_hide: bool = False) -> Command:
-        return (text, cmd, no_hide)
+        return Command(text, cmd, no_hide)
 
     @staticmethod
     def show_dialog(
@@ -181,7 +187,7 @@ class Dialog:
                     "msgbox": Dialog.get_msgbox(),
                 }
 
-                if not cmd[2]:
+                if not cmd.no_hide:
                     dialog.hide()
 
                 func(ans)
@@ -191,7 +197,7 @@ class Dialog:
             else:
                 num_commands = 0
 
-            dialog.make_button(cmd[0], lambda: generic(cmd[1]), num_commands)
+            dialog.make_button(cmd.text, lambda: generic(cmd.cmd), num_commands)
 
         if commands:
             for cmd in commands:
