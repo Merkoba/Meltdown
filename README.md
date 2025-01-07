@@ -218,7 +218,19 @@ This is another way to control the program remotely.
 
 ## Upload
 
-<!-- todo -->
+Conversations can be uploaded to a text hosting service.
+
+For now it works with `rentry.org`.
+
+The password (edit code) can be configured through `--upload-password`.
+
+If no password is used a random short word is used.
+
+After the text is uploaded a message appears that allows you to copy the URL.
+
+The URL and password are also printed in the conversation window.
+
+All the conversation can be uploaded or just the last item.
 
 ---
 
