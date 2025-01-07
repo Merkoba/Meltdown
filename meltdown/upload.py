@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Libraries
 import rentrylib  # type: ignore
 
@@ -18,9 +20,7 @@ class Upload:
             app.update()
             self.do_upload(tab_id)
 
-        Dialog.show_confirm(
-            f"Upload conversation to\n{self.service}", lambda: action()
-        )
+        Dialog.show_confirm(f"Upload conversation to\n{self.service}", lambda: action())
 
     def do_upload(self, tab_id: str | None = None) -> str:
         from .args import args

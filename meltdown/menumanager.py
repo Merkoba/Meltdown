@@ -6,7 +6,6 @@ from typing import Any
 from .app import app
 from .config import config
 from .menus import Menu
-from .utils import utils
 from .upload import upload
 from . import system_prompt
 
