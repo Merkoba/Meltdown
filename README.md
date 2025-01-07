@@ -203,6 +203,9 @@ It uses `prompt-toolkit` and it shows autocomplete suggestions with recently use
 
 You could have the main program displayed on a monitor and control it with the terminal in another monitor for instance.
 
+The console is not enabled by default because it can be problematic on certain environments depending on how the program was launched (i.e High CPU usage).
+But it should work well on normal terminal launches.
+
 ---
 
 ## Listener <a name="listener"></a>
