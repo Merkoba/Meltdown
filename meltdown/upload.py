@@ -40,6 +40,9 @@ class Upload:
         from .display import display
         from .formats import get_markdown
 
+        if not tab_id:
+            tab_id = display.current_tab
+
         tabconvo = display.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -56,7 +59,7 @@ class Upload:
             password = utils.random_word()
 
         try:
-            Rentry(text, password)
+            Rentry(text=text, password=password, tab_id=tab_id)
         except Exception as e:
             utils.error(e)
 

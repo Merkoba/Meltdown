@@ -15,9 +15,10 @@ from .dialogs import Dialog
 
 
 class Rentry:
-    def __init__(self, text: str = "", password: str = "") -> None:
+    def __init__(self, text: str = "", password: str = "", tab_id: str = "") -> None:
         self.text = text
         self.password = password
+        self.tab_id = tab_id
 
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
@@ -62,5 +63,11 @@ class Rentry:
         url = urllib.parse.urlparse(req.headers["Location"])
         url = Path(url.path).name
         full_url = f"{config.rentry_site}/{url}"
-        display.print(f"Uploaded: {full_url} ({self.password})", do_format=True)
+
+        display.print(
+            f"Uploaded: {full_url} ({self.password})",
+            do_format=True,
+            tab_id=self.tab_id,
+        )
+
         Dialog.show_message(full_url)
