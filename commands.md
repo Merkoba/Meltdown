@@ -996,7 +996,7 @@ Show the info dialog
 
 ### upload
 
-Upload text to a hosting service
+Upload text to a hosting service. Optional 'all' or 'last' argument
 
 ---
 

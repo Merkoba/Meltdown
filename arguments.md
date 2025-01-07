@@ -606,16 +606,6 @@ Action: store_true
 
 ---
 
-### drag-and-drop
-
-Enable drag and drop
-
-Default: False
-
-Action: store_true
-
----
-
 ### console
 
 Enable the interactive console
