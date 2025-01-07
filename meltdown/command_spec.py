@@ -19,6 +19,7 @@ from .keyboard import keyboard
 from .utils import utils
 from .autoscroll import autoscroll
 from .itemops import itemops
+from .upload import upload
 from . import summarize
 from . import menumanager
 from . import system_prompt
@@ -1029,7 +1030,7 @@ class CommandSpec:
         self.add_cmd(
             "upload",
             "Upload text to a hosting service",
-            lambda a=None: utils.text_upload(),
+            lambda a=None: upload.upload(),
         )
 
         self.add_cmd(

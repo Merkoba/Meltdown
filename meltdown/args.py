@@ -266,7 +266,7 @@ class Args:
         self.mouse_scroll = False
         self.thinking_text = "Thinking..."
         self.logs_dir = ""
-        self.upload_edit_code = "meltdown"
+        self.upload_password = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -531,7 +531,7 @@ class Args:
             "mouse_scroll",
             "thinking_text",
             "logs_dir",
-            "upload_edit_code",
+            "upload_password",
         ]
 
         for n_item in normals:

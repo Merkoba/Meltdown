@@ -7,6 +7,7 @@ from .app import app
 from .config import config
 from .menus import Menu
 from .utils import utils
+from .upload import upload
 from . import system_prompt
 
 
@@ -166,7 +167,7 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Upload", lambda e: utils.text_upload(), disabled=unmod)
+        self.menu.add("Upload", lambda e: upload.upload(), disabled=unmod)
 
     def show(self, event: Any = None) -> None:
         self.make()

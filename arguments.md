@@ -2432,10 +2432,10 @@ Type: str
 
 ---
 
-### upload-edit-code
+### upload-password
 
-The code to be able to edit an upload
+The password to be able to edit an upload. Else it will use a random word
 
-Default: "meltdown"
+Default: [Empty string]
 
 Type: str

@@ -1603,9 +1603,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "upload_edit_code",
+            "upload_password",
             type=str,
-            info="The code to be able to edit an upload",
+            info="The password to be able to edit an upload. Else it will use a random word",
         )
 
 

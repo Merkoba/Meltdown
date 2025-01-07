@@ -18,7 +18,6 @@ from typing import TYPE_CHECKING
 from collections.abc import Callable
 
 # Libraries
-import rentrylib  # type: ignore
 from rich.console import Console  # type: ignore
 
 # Modules
@@ -535,41 +534,6 @@ class Utils:
         msg = f"{what} {spath}"
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
-
-    def text_upload(self, tab_id: str | None = None) -> None:
-        from .dialogs import Dialog
-        from .app import app
-
-        def action() -> None:
-            Dialog.hide_all()
-            app.update()
-            self.do_text_upload(tab_id)
-
-        Dialog.show_confirm(
-            f"Upload conversation to\n{self.upload_service}", lambda: action()
-        )
-
-    def do_text_upload(self, tab_id: str | None = None) -> str:
-        from .args import args
-        from .display import display
-        from .dialogs import Dialog
-        from .formats import get_markdown
-
-        tabconvo = display.get_tab_convo(tab_id)
-
-        if not tabconvo:
-            return
-
-        text = get_markdown(tabconvo.convo)
-
-        page = rentrylib.RentryPage(
-            text=text,
-            edit_code=args.upload_edit_code,
-        )
-
-        url = f"{self.upload_service}/{page.site}"
-        display.print(f"Uploaded to: {url}", do_format=True)
-        Dialog.show_message(url)
 
     def try_import(self, name: str) -> Any:
         spec = importlib.util.find_spec(name)
