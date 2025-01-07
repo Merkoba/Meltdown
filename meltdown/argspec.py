@@ -1177,6 +1177,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "listener_path",
+            type=str,
+            info="Path to the file for the listener. By default it uses /tmp/mlt_[program].input",
+        )
+
+        self.add_argument(
             "commandoc",
             type=str,
             info="Make the commandoc and save it on this path",

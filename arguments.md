@@ -1716,6 +1716,16 @@ Type: int
 
 ---
 
+### listener-path
+
+Path to the file for the listener. By default it uses /tmp/mlt_[program].input
+
+Default: [Empty string]
+
+Type: str
+
+---
+
 ### commandoc
 
 Make the commandoc and save it on this path

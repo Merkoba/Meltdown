@@ -25,20 +25,27 @@ def start() -> None:
 
 def do_start() -> None:
     program = app.manifest["program"]
-    file_name = f"mlt_{program}.input"
+
+    if args.listener_path:
+        path = Path(args.listener_path)
+    else:
+        file_name = f"mlt_{program}.input"
+        path = Path(tempfile.gettempdir(), file_name)
 
     if not args.quiet:
         m = utils.singular_or_plural(args.listener_delay, "sec", "secs")
         utils.msg(f"Listener active ({args.listener_delay} {m})")
-
-    path = Path(tempfile.gettempdir(), file_name)
+        utils.msg(f"Write to: {path!s}")
 
     while True:
         if path.exists() and path.is_file():
-            text = files.read(path)
+            try:
+                text = files.read(path)
 
-            if text:
-                files.write(path, "")
-                inputcontrol.submit(text=text)
+                if text:
+                    files.write(path, "")
+                    inputcontrol.submit(text=text)
+            except Exception as e:
+                utils.msg(f"Listener error: {e!s}")
 
         utils.sleep(args.listener_delay)

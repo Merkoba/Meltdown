@@ -193,6 +193,28 @@ To enable the console use `--show-console`.
 
 This allows you to send actions from the terminal that launched the program.
 
+You could have the main program displayed on a monitor and control it with the terminal in another monitor for instance.
+
+---
+
+## Listener
+
+There's a listener mode that can be enabled with `--listener`.
+
+When the listener is active, it will periodically read a file and check for changes.
+
+If it finds text, it will use it as the prompt, or as a command if it starts with the command prefix.
+
+It will then empty the file after using it.
+
+By default it checks `/tmp/mlt_meltdown.input` if on Linux.
+
+Temp Dir + `mlt_meltdown.input`.
+
+But the file path can also be set with `--listener-path`.
+
+This is another way to control the program remotely.
+
 ---
 
 ## Keywords
