@@ -791,14 +791,6 @@ class Widgets:
 
         config.set("mode", what)
 
-    def on_file_dropped(self, event: Any) -> None:
-        if event.data:
-            self.set_file(event.data)
-
-    def on_model_dropped(self, event: Any) -> None:
-        if event.data:
-            self.set_model(event.data)
-
     def open_file(self) -> None:
         file = self.file.get()
 
