@@ -26,6 +26,7 @@ class Config:
         self.trim_threshold = 15
         self.split_long_length = 35
         self.recent_label = "--- Recent ---"
+        self.rentry_site = "https://rentry.org"
 
         self.default_system = """
 Your name is ((name_ai)).

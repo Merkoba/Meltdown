@@ -1,16 +1,12 @@
 from __future__ import annotations
 
-# Libraries
-import rentrylib  # type: ignore
-
 # Modules
 from .utils import utils
+from .config import config
+from .rentry import RentryPage
 
 
 class Upload:
-    def __init__(self) -> None:
-        self.service = "https://rentry.org"
-
     def upload(self, tab_id: str | None = None, mode: str = "") -> None:
         from .dialogs import Dialog
         from .app import app
@@ -28,7 +24,9 @@ class Upload:
         cmds.append(("Last Item", lambda a: action("last")))
         cmds.append(("All Of It", lambda a: action("all")))
 
-        Dialog.show_dialog(f"Upload conversation to\n{self.service}", commands=cmds)
+        Dialog.show_dialog(
+            f"Upload conversation to\n{config.rentry_site}", commands=cmds
+        )
 
     def do_upload(self, tab_id: str | None = None, mode: str = "all") -> str:
         from .args import args
@@ -48,12 +46,12 @@ class Upload:
         else:
             password = utils.random_word()
 
-        page = rentrylib.RentryPage(
-            text=text,
-            edit_code=password,
-        )
+        try:
+            page = RentryPage(text=text, edit_code=password)
+        except Exception as e:
+            utils.error(e)
 
-        url = f"{self.service}/{page.site}"
+        url = f"{config.rentry_site}/{page.site}"
         display.print(f"Uploaded: {url} ({page.code})", do_format=True)
         Dialog.show_message(url)
 
