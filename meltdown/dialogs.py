@@ -47,7 +47,7 @@ class Dialog:
 
     @staticmethod
     def cmd(text: str, cmd: Callable[..., Any], no_hide: bool = False) -> Command:
-        return ("Reset", cmd, no_hide)
+        return (text, cmd, no_hide)
 
     @staticmethod
     def show_dialog(
