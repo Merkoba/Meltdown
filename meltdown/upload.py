@@ -46,7 +46,7 @@ class Upload:
         )
 
         url = f"{self.service}/{page.site}"
-        display.print(f"Uploaded to: {url} ({page.code})", do_format=True)
+        display.print(f"Uploaded: {url} ({page.code})", do_format=True)
         Dialog.show_message(url)
 
 
