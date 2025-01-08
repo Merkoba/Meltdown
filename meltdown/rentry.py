@@ -54,7 +54,7 @@ class Rentry:
         self.session = requests.session()
         self.session.get(config.rentry_site)
 
-        req = self.session.post(
+        res = self.session.post(
             config.rentry_site,
             headers=self.headers,
             timeout=10,
@@ -66,12 +66,12 @@ class Rentry:
             allow_redirects=False,
         )
 
-        if req.status_code != HTTPStatus.FOUND:
+        if res.status_code != HTTPStatus.FOUND:
             return
 
         messages = ast.literal_eval(self.get_cookie("messages"))
         messages = messages.split(",")
-        url = urllib.parse.urlparse(req.headers["Location"])
+        url = urllib.parse.urlparse(res.headers["Location"])
         url = Path(url.path).name
         full_url = f"{config.rentry_site}/{url}"
         self.after_upload(full_url, self.password, self.tab_id)

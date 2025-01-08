@@ -1650,5 +1650,11 @@ class ArgSpec:
             info="Show generic names in uploads, like User and AI",
         )
 
+        self.add_argument(
+            "signals_file",
+            type=str,
+            info="Path to a file that defines the available signals",
+        )
+
 
 argspec = ArgSpec()

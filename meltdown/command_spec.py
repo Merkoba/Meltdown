@@ -20,6 +20,7 @@ from .utils import utils
 from .autoscroll import autoscroll
 from .itemops import itemops
 from .upload import upload
+from .signals import signals
 from . import summarize
 from . import menumanager
 from . import system_prompt
@@ -1038,6 +1039,13 @@ class CommandSpec:
             "count",
             "Count the number of open tabs and items",
             lambda a=None: display.count_tabs(),
+        )
+
+        self.add_cmd(
+            "signal",
+            "Run a signal by its name",
+            lambda a=None: signals.run(a),
+            type=str,
         )
 
 
