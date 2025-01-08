@@ -223,6 +223,58 @@ All the conversation can be uploaded, or just the last item.
 
 ---
 
+## Signals
+
+There is a signals system that allows to make requests to remote servers.
+
+To use this a json file must be created and pointed to with the `---signals-file` argument.
+
+---
+
+Multiple signals can be defined. This is a demo with all the available keys:
+
+```json
+{
+    "test": {
+        "url": "https://test.com/submit",
+        "method": "POST",
+        "format": "text",
+        "items": "all",
+        "content_key": "status",
+        "content_length": 500,
+        "single_line": true,
+        "data": {
+            "username": "melt",
+            "key": "someAuthKey"
+        }
+    }
+}
+```
+
+---
+
+`url` and `content_key` are always required, the rest are optional.
+
+---
+
+`url` is the url to use for the request. (required)
+
+`method` can be `post`, `get`, or `put`.
+
+`format` can be `text`, `json`, or `markdown`.
+
+`items` can be `all`, to include the full conversation. Or `last`, to include only the last item.
+
+`content_key` is used for the conversation text. (required)
+
+`content_length` limits the content to that amount of characters.
+
+`single_line` sends the content as a single line.
+
+`data` all the data keys needed to be sent.
+
+---
+
 ## Images <a name="images"></a>
 
 Multi-modal models like llava 1.5 can be used.

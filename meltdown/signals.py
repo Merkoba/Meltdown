@@ -64,6 +64,12 @@ class Signals:
         content_key = signal.get("content_key")
         content_length = signal.get("content_length", 0)
         method = signal.get("method", "post")
+        method_lower = method.lower()
+
+        if method_lower not in ["post", "get", "put"]:
+            display.print("Invalid method.")
+            return
+
         items = signal.get("items", "all")
         format_ = signal.get("format", "json")
         single_line = signal.get("single_line", False)
@@ -81,19 +87,22 @@ class Signals:
             content = content[:content_length].strip()
 
         data[content_key] = content
-        method_lower = method.lower()
+        res: Any = None
 
         try:
             if method_lower == "get":
                 res = requests.get(url, params=data, timeout=self.timeout)
             elif method_lower == "post":
                 res = requests.post(url, data=data, timeout=self.timeout)
-            else:
-                return
+            elif method_lower == "put":
+                res = requests.put(url, data=data, timeout=self.timeout)
         except requests.exceptions.RequestException as e:
             utils.error(e)
             display.print("Signal error.")
             return
+
+        if not res:
+            display.print("Signal error.")
 
         if res.status_code != HTTPStatus.OK:
             display.print("Signal error.")
@@ -101,7 +110,7 @@ class Signals:
 
         display.print("Signal sent.")
 
-    def get_content(self, format_: str = "json", items: str = "all") -> str | None:
+    def get_content(self, format_: str = "json", mode: str = "all") -> str | None:
         tabconvo = display.get_tab_convo()
 
         if not tabconvo:
@@ -113,11 +122,11 @@ class Signals:
         text = ""
 
         if format_ == "text":
-            text = formats.get_text(tabconvo.convo)
+            text = formats.get_text(tabconvo.convo, mode=mode)
         elif format_ == "json":
-            text = formats.get_json(tabconvo.convo)
+            text = formats.get_json(tabconvo.convo, mode=mode)
         elif format_ == "markdown":
-            text = formats.get_markdown(tabconvo.convo)
+            text = formats.get_markdown(tabconvo.convo, mode=mode)
 
         return text.strip()
 
