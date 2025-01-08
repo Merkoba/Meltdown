@@ -190,6 +190,8 @@ You could have the main program displayed on a monitor and control it with the t
 The console is not enabled by default because it can be problematic on certain environments depending on how the program was launched (i.e High CPU usage).
 But it should work well on normal terminal launches.
 
+![](img/console.jpg)
+
 ---
 
 ## Listener <a name="listener"></a>
@@ -214,6 +216,8 @@ But the file path can also be set with `--listener-path`.
 
 This is another way to control the program remotely.
 
+![](img/listener.jpg)
+
 ---
 
 ## Upload
@@ -231,6 +235,8 @@ After the text is uploaded, a message appears that allows you to copy the URL.
 The URL and password are also printed in the conversation window.
 
 All the conversation can be uploaded, or just the last item.
+
+![](img/upload.jpg)
 
 ---
 
