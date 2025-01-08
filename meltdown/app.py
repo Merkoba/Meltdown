@@ -558,7 +558,6 @@ class App:
 
         if what == ".":
             keyboard.reset()
-            display.unpick()
 
     def prepare(self) -> None:
         from .args import args
