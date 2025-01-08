@@ -13,6 +13,7 @@
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Upload](#upload)
+1. [Signals](#signals)
 1. [Images](#images)
 1. [Keywords](#keywords)
 1. [Commands](commands.md)
@@ -203,7 +204,7 @@ This is another way to control the program remotely.
 
 ---
 
-## Upload
+## Upload  <a name="upload"></a>
 
 Conversations can be uploaded to a text hosting service.
 
@@ -223,7 +224,7 @@ All the conversation can be uploaded, or just the last item.
 
 ---
 
-## Signals
+## Signals <a name="signals"></a>
 
 There is a signals system that allows to make requests to remote servers.
 
