@@ -7,7 +7,7 @@ from pathlib import Path
 # Modules
 from .app import app
 from .config import config
-from .dialogs import Dialog
+from .dialogs import Dialog, Commands
 from .display import display
 from .args import args
 from .session import session
@@ -20,22 +20,22 @@ from . import formats
 
 class Logs:
     def menu(self, full: bool = True, tab_id: str | None = None) -> None:
-        cmds = []
+        cmds: Commands = []
 
         if full:
-            cmds.append(Dialog.cmd("Save All", lambda a: self.save_all()))
+            Dialog.cmd(cmds, "Save All", lambda a: self.save_all())
 
-        cmds.append(Dialog.cmd("Markdown", lambda a: self.to_markdown(tab_id=tab_id)))
-        cmds.append(Dialog.cmd("JSON", lambda a: self.to_json(tab_id=tab_id)))
-        cmds.append(Dialog.cmd("Text", lambda a: self.to_text(tab_id=tab_id)))
+        Dialog.cmd(cmds, "Markdown", lambda a: self.to_markdown(tab_id=tab_id))
+        Dialog.cmd(cmds, "JSON", lambda a: self.to_json(tab_id=tab_id))
+        Dialog.cmd(cmds, "Text", lambda a: self.to_text(tab_id=tab_id))
 
         Dialog.show_dialog("Save conversation to a file?", cmds)
 
     def save_all(self) -> None:
-        cmds = []
-        cmds.append(Dialog.cmd("Markdown", lambda a: self.to_markdown(True)))
-        cmds.append(Dialog.cmd("JSON", lambda a: self.to_json(True)))
-        cmds.append(Dialog.cmd("Text", lambda a: self.to_text(True)))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Markdown", lambda a: self.to_markdown(True))
+        Dialog.cmd(cmds, "JSON", lambda a: self.to_json(True))
+        Dialog.cmd(cmds, "Text", lambda a: self.to_text(True))
 
         Dialog.show_dialog("Save all conversations?", cmds)
 

@@ -8,7 +8,7 @@ from typing import Any, TYPE_CHECKING
 from .app import app
 from .config import config
 from .menus import Menu
-from .dialogs import Dialog
+from .dialogs import Dialog, Commands
 from .output import Output
 from .bottom import Bottom
 from .book import Book, Page
@@ -94,10 +94,10 @@ class Display:
 
         if args.max_tabs > 0:
             if self.num_tabs() >= args.max_tabs:
-                max_cmds = []
-                max_cmds.append(Dialog.cmd("Close", lambda a: close.close(force=False)))
-                max_cmds.append(Dialog.cmd("Ok", lambda a: None))
-                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", max_cmds)
+                cmds: Commands = []
+                Dialog.cmd(cmds, "Close", lambda a: close.close(force=False))
+                Dialog.cmd(cmds, "Ok", lambda a: None)
+                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
                 return ""
 
         if not name:
@@ -654,10 +654,10 @@ class Display:
             action(name)
             return
 
-        cmds = []
-        cmds.append(Dialog.cmd("Mono", lambda a: action("monospace")))
-        cmds.append(Dialog.cmd("Serif", lambda a: action("serif")))
-        cmds.append(Dialog.cmd("Sans", lambda a: action("sans-serif")))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Mono", lambda a: action("monospace"))
+        Dialog.cmd(cmds, "Serif", lambda a: action("serif"))
+        Dialog.cmd(cmds, "Sans", lambda a: action("sans-serif"))
 
         Dialog.show_dialog("Font Family", cmds)
 
@@ -844,9 +844,9 @@ class Display:
         if not tab_id:
             tab_id = self.current_tab
 
-        cmds = []
-        cmds.append(Dialog.cmd("To Start", lambda a: self.move_tab_to_start(tab_id)))
-        cmds.append(Dialog.cmd("To End", lambda a: self.move_tab_to_end(tab_id)))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "To Start", lambda a: self.move_tab_to_start(tab_id))
+        Dialog.cmd(cmds, "To End", lambda a: self.move_tab_to_end(tab_id))
 
         picked = self.get_picked()
 

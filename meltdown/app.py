@@ -205,7 +205,7 @@ class App:
             return False
 
     def show_about(self) -> None:
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
 
         title = self.manifest["title"]
         version = self.manifest["version"]
@@ -219,11 +219,11 @@ class App:
             repo,
         ]
 
-        cmds = []
-        cmds.append(Dialog.cmd("Commands", lambda a: self.show_help("commands")))
-        cmds.append(Dialog.cmd("Arguments", lambda a: self.show_help("arguments")))
-        cmds.append(Dialog.cmd("Keyboard", lambda a: self.show_help("keyboard")))
-        cmds.append(Dialog.cmd("Ok", lambda a: None))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Commands", lambda a: self.show_help("commands"))
+        Dialog.cmd(cmds, "Arguments", lambda a: self.show_help("arguments"))
+        Dialog.cmd(cmds, "Keyboard", lambda a: self.show_help("keyboard"))
+        Dialog.cmd(cmds, "Ok", lambda a: None)
 
         Dialog.show_dialog("\n".join(lines), cmds, image=self.image_path)
 
@@ -847,9 +847,9 @@ class App:
     def open_profile(self) -> None:
         from .args import args
         from .paths import paths
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
 
-        cmds = []
+        cmds: Commands = []
 
         def show_config() -> None:
             self.open_generic(str(paths.config_dir))
@@ -857,27 +857,27 @@ class App:
         def show_data() -> None:
             self.open_generic(str(paths.data_dir))
 
-        cmds.append(Dialog.cmd("Config", lambda a: show_config()))
-        cmds.append(Dialog.cmd("Data", lambda a: show_data()))
+        Dialog.cmd(cmds, "Config", lambda a: show_config())
+        Dialog.cmd(cmds, "Data", lambda a: show_data())
 
         Dialog.show_dialog(f"Profile: {args.profile}", cmds)
 
     def show_info(self) -> None:
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
 
-        cmds = []
-        cmds.append(Dialog.cmd("Portrait", lambda a: self.show_portrait()))
-        cmds.append(Dialog.cmd("Size", lambda a: self.show_size()))
-        cmds.append(Dialog.cmd("Date", lambda a: self.show_date()))
-        cmds.append(Dialog.cmd("Started", lambda a: self.show_started()))
-        cmds.append(Dialog.cmd("Memory", lambda a: self.show_memory()))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Portrait", lambda a: self.show_portrait())
+        Dialog.cmd(cmds, "Size", lambda a: self.show_size())
+        Dialog.cmd(cmds, "Date", lambda a: self.show_date())
+        Dialog.cmd(cmds, "Started", lambda a: self.show_started())
+        Dialog.cmd(cmds, "Memory", lambda a: self.show_memory())
 
         Dialog.show_dialog("Information", cmds)
 
     def show_portrait(self) -> None:
         from .args import args
         from .config import config
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
         from .model import model
         from .display import display
 
@@ -900,9 +900,9 @@ class App:
             prompt = {"text": f"Hello {name}. Please describe yourself."}
             model.stream(prompt, tab_id=tab_id)
 
-        cmds = []
-        cmds.append(Dialog.cmd("Describe", lambda a: describe()))
-        cmds.append(Dialog.cmd("Ok", lambda a: None))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Describe", lambda a: describe())
+        Dialog.cmd(cmds, "Ok", lambda a: None)
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
@@ -961,16 +961,16 @@ class App:
 
     def pick_theme(self) -> None:
         from .config import config
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
 
         def action(name: str) -> None:
             config.set("theme", name)
             Dialog.show_message("Reset to apply changes.")
 
-        cmds = []
-        cmds.append(Dialog.cmd("Contrast", lambda a: action("contrast")))
-        cmds.append(Dialog.cmd("Light", lambda a: action("light")))
-        cmds.append(Dialog.cmd("Dark", lambda a: action("dark")))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Contrast", lambda a: action("contrast"))
+        Dialog.cmd(cmds, "Light", lambda a: action("light"))
+        Dialog.cmd(cmds, "Dark", lambda a: action("dark"))
 
         Dialog.show_dialog("Color Theme", cmds)
 

@@ -8,7 +8,7 @@ from .app import app
 from .config import config
 from .args import args
 from .utils import utils
-from .dialogs import Dialog
+from .dialogs import Dialog, Commands
 
 
 if TYPE_CHECKING:
@@ -142,10 +142,10 @@ class ItemOps:
         def action(mode: str) -> None:
             formats.do_open(mode, text=text)
 
-        cmds = []
-        cmds.append(Dialog.cmd("Program", lambda a: self.run_program(text)))
-        cmds.append(Dialog.cmd("Markdown", lambda a: action("markdown")))
-        cmds.append(Dialog.cmd("Text", lambda a: action("text")))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Program", lambda a: self.run_program(text))
+        Dialog.cmd(cmds, "Markdown", lambda a: action("markdown"))
+        Dialog.cmd(cmds, "Text", lambda a: action("text"))
 
         Dialog.show_dialog("Use Item", cmds)
 

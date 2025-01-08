@@ -468,12 +468,12 @@ No need to greet me, just answer.
         display.update_font(key)
 
     def menu(self) -> None:
-        from .dialogs import Dialog
+        from .dialogs import Dialog, Commands
 
-        cmds = []
-        cmds.append(Dialog.cmd("Reset", lambda a: self.reset()))
-        cmds.append(Dialog.cmd("Load", lambda a: self.load_state()))
-        cmds.append(Dialog.cmd("Save", lambda a: self.save_state()))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Reset", lambda a: self.reset())
+        Dialog.cmd(cmds, "Load", lambda a: self.load_state())
+        Dialog.cmd(cmds, "Save", lambda a: self.save_state())
 
         Dialog.show_dialog("Config Menu", commands=cmds)
 

@@ -43,6 +43,9 @@ class Command:
         dialog.make_button(self.text, lambda: generic(self.cmd), num_cmds)
 
 
+Commands = list[Command]
+
+
 class Dialog:
     current_dialog: Dialog | None = None
     current_textbox: tk.Widget | None = None
@@ -68,13 +71,13 @@ class Dialog:
         return ""
 
     @staticmethod
-    def cmd(text: str, cmd: Action, no_hide: bool = False) -> Command:
-        return Command(text, cmd, no_hide)
+    def cmd(cmds: Commands, text: str, cmd: Action, no_hide: bool = False) -> None:
+        cmds.append(Command(text, cmd, no_hide))
 
     @staticmethod
     def show_dialog(
         text: str = "",
-        commands: list[Command] | None = None,
+        commands: Commands | None = None,
         image: Path | None = None,
         use_entry: bool = False,
         entry_mode: str = "normal",
@@ -227,9 +230,9 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
-        cmds = []
-        cmds.append(Dialog.cmd("Cancel", cancel))
-        cmds.append(Dialog.cmd("Ok", ok))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Cancel", cancel)
+        Dialog.cmd(cmds, "Ok", ok)
         Dialog.show_dialog(text, cmds)
 
     @staticmethod
@@ -240,9 +243,9 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(text)
 
-        cmds = []
-        cmds.append(Dialog.cmd("Copy", copy))
-        cmds.append(Dialog.cmd("Ok", ok))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Copy", copy)
+        Dialog.cmd(cmds, "Ok", ok)
         Dialog.show_dialog(text, cmds)
 
     @staticmethod
@@ -253,9 +256,9 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(ans["msgbox"])
 
-        cmds = []
-        cmds.append(Dialog.cmd("Copy", copy))
-        cmds.append(Dialog.cmd("Ok", ok))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Copy", copy)
+        Dialog.cmd(cmds, "Ok", ok)
         Dialog.show_dialog(title, commands=cmds, msgbox=text)
 
     @staticmethod
@@ -283,14 +286,14 @@ class Dialog:
             Dialog.current_dialog.entry.reveal()
             Dialog.current_dialog.entry.focus_start()
 
-        cmds = []
+        cmds: Commands = []
 
         if mode == "password":
-            cmds.append(Dialog.cmd("Cancel", cancel))
-            cmds.append(Dialog.cmd("Reveal", reveal, True))
-            cmds.append(Dialog.cmd("Ok", ok))
+            Dialog.cmd(cmds, "Cancel", cancel)
+            Dialog.cmd(cmds, "Reveal", reveal, True)
+            Dialog.cmd(cmds, "Ok", ok)
         else:
-            cmds.append(Dialog.cmd("Cancel", cancel))
+            Dialog.cmd(cmds, "Cancel", cancel)
 
         Dialog.show_dialog(
             text,
@@ -366,7 +369,7 @@ class Dialog:
 
         self.id_ = id_
         self.buttons: list[ButtonBox] = []
-        self.commands: list[Command] = []
+        self.commands: Commands = []
 
         self.make(text, with_top_frame=top_frame)
 

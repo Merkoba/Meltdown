@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 # Modules
 from .args import args
 from .display import display
-from .dialogs import Dialog
+from .dialogs import Dialog, Commands
 from .utils import utils
 
 
@@ -117,30 +117,30 @@ def close(
         action()
         return
 
-    cmds = []
+    cmds: Commands = []
 
     if full and get_empty_tabs():
-        cmds.append(Dialog.cmd("Empty", lambda a: close_empty()))
+        Dialog.cmd(cmds, "Empty", lambda a: close_empty())
 
     if full and get_old_tabs():
-        cmds.append(Dialog.cmd("Old", lambda a: close_old()))
+        Dialog.cmd(cmds, "Old", lambda a: close_old())
 
     if get_other_tabs(tab_id):
-        cmds.append(Dialog.cmd("Others", lambda a: close_others(tab_id=tab_id)))
+        Dialog.cmd(cmds, "Others", lambda a: close_others(tab_id=tab_id))
 
     if get_left_tabs(tab_id):
-        cmds.append(Dialog.cmd("Left", lambda a: close_left(tab_id=tab_id)))
+        Dialog.cmd(cmds, "Left", lambda a: close_left(tab_id=tab_id))
 
     if get_right_tabs(tab_id):
-        cmds.append(Dialog.cmd("Right", lambda a: close_right(tab_id=tab_id)))
+        Dialog.cmd(cmds, "Right", lambda a: close_right(tab_id=tab_id))
 
     if full:
-        cmds.append(Dialog.cmd("All", lambda a: close_all()))
+        Dialog.cmd(cmds, "All", lambda a: close_all())
 
     if not cmds:
         return
 
-    cmds.append(Dialog.cmd("Ok", lambda a: action()))
+    Dialog.cmd(cmds, "Ok", lambda a: action())
     Dialog.show_dialog("Close tab?", cmds)
 
 

@@ -6,7 +6,7 @@ from .utils import utils
 from .config import config
 from .display import display
 from .rentry import Rentry
-from .dialogs import Dialog
+from .dialogs import Dialog, Commands
 from .args import args
 from .formats import get_markdown
 
@@ -28,9 +28,9 @@ class Upload:
             app.update()
             self.do_upload(tab_id, mode)
 
-        cmds = []
-        cmds.append(Dialog.cmd("Last Item", lambda a: action("last")))
-        cmds.append(Dialog.cmd("All Of It", lambda a: action("all")))
+        cmds: Commands = []
+        Dialog.cmd(cmds, "Last Item", lambda a: action("last"))
+        Dialog.cmd(cmds, "All Of It", lambda a: action("all"))
 
         Dialog.show_dialog(
             f"Upload conversation to\n{config.rentry_site}", commands=cmds

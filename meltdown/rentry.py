@@ -6,7 +6,7 @@ import threading
 import urllib.parse
 from pathlib import Path
 from http import HTTPStatus
-from typing import Any, Callable
+from typing import Callable
 
 # Libraries
 import requests  # type: ignore
