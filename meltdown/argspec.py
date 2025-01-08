@@ -87,6 +87,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_separate_uploads",
+            action="store_false",
+            info="Don't use separator in uploads",
+        )
+
+        self.add_argument(
             "no_command_history",
             action="store_false",
             info="Don't include commands when cycling input history",
@@ -111,9 +117,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_names_in_logs",
+            "no_files_in_uploads",
             action="store_false",
-            info="Don't show names in logs",
+            info="Don't show files in uploads",
         )
 
         self.add_argument(
@@ -465,9 +471,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_names_on_logs",
+            "no_names_in_logs",
             action="store_false",
-            info="Don't use the user names on logs",
+            info="Don't use the user names in logs",
         )
 
         self.add_argument(
@@ -528,6 +534,12 @@ class ArgSpec:
             "avatars_in_logs",
             action="store_true",
             info="Show avatars in logs",
+        )
+
+        self.add_argument(
+            "avatars_in_uploads",
+            action="store_true",
+            info="Show avatars in uploads",
         )
 
         self.add_argument(
@@ -1605,13 +1617,13 @@ class ArgSpec:
         self.add_argument(
             "log_name_user",
             type=str,
-            info="Name to use for the user name on logs",
+            info="Name to use for the user name in logs",
         )
 
         self.add_argument(
             "log_name_ai",
             type=str,
-            info="Name to use for the AI name on logs",
+            info="Name to use for the AI name in logs",
         )
 
         self.add_argument(
@@ -1624,6 +1636,18 @@ class ArgSpec:
             "upload_name_ai",
             type=str,
             info="Name to use for the AI name on uploads",
+        )
+
+        self.add_argument(
+            "generic_names_logs",
+            action="store_true",
+            info="Show generic names in logs, like User and AI",
+        )
+
+        self.add_argument(
+            "generic_names_uploads",
+            action="store_true",
+            info="Show generic names in uploads, like User and AI",
         )
 
 

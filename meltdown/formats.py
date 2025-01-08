@@ -48,6 +48,46 @@ def get_names(mode: str) -> tuple[str, str]:
     return name_user, name_ai
 
 
+def get_avatars(mode: str) -> bool:
+    if mode == "log":
+        return args.avatars_in_logs
+
+    if mode == "upload":
+        return args.avatars_in_uploads
+
+    return False
+
+
+def get_separate(mode: str) -> bool:
+    if mode == "log":
+        return args.separate_logs
+
+    if mode == "upload":
+        return args.separate_uploads
+
+    return True
+
+
+def get_files(mode: str) -> bool:
+    if mode == "log":
+        return args.files_in_logs
+
+    if mode == "upload":
+        return args.files_in_uploads
+
+    return True
+
+
+def get_generic(mode: str) -> bool:
+    if mode == "log":
+        return args.generic_names_logs
+
+    if mode == "upload":
+        return args.generic_names_uploads
+
+    return False
+
+
 def get_json(conversation: Conversation, name_mode: str = "normal") -> str:
     ensure_ascii = args.ascii_logs
     return to_json(conversation, ensure_ascii=ensure_ascii, name_mode=name_mode)
@@ -86,17 +126,17 @@ def get_text(
         avatars = False
         separate = False
         files = False
-        names = True
+        generic = True
     else:
-        avatars = args.avatars_in_logs
-        separate = args.separate_logs
-        files = args.files_in_logs
-        names = args.names_in_logs
+        avatars = get_avatars(name_mode)
+        separate = get_separate(name_mode)
+        files = get_files(name_mode)
+        generic = get_generic(name_mode)
 
     return to_text(
         conversation,
         avatars=avatars,
-        names=names,
+        generic=generic,
         separate=separate,
         files=files,
         name_mode=name_mode,
@@ -106,13 +146,12 @@ def get_text(
 def to_text(
     conversation: Conversation,
     avatars: bool = False,
-    names: bool = True,
+    generic: bool = True,
     separate: bool = False,
     files: bool = True,
     name_mode: str = "normal",
 ) -> str:
     log = ""
-    generic = not names
     name_user, name_ai = get_names(name_mode)
 
     for i, item in enumerate(conversation.items):
@@ -147,15 +186,15 @@ def to_text(
 def get_markdown(
     conversation: Conversation, mode: str = "all", name_mode: str = "normal"
 ) -> str:
-    avatars = args.avatars_in_logs
-    separate = args.separate_logs
-    files = args.files_in_logs
-    names = args.names_in_logs
+    avatars = get_avatars(name_mode)
+    separate = get_separate(name_mode)
+    files = get_files(name_mode)
+    generic = get_generic(name_mode)
 
     return to_markdown(
         conversation,
         avatars=avatars,
-        names=names,
+        generic=generic,
         separate=separate,
         files=files,
         mode=mode,
@@ -166,14 +205,13 @@ def get_markdown(
 def to_markdown(
     conversation: Conversation,
     avatars: bool = False,
-    names: bool = True,
+    generic: bool = True,
     separate: bool = False,
     files: bool = True,
     mode: str = "all",
     name_mode: str = "normal",
 ) -> str:
     log = ""
-    generic = not names
 
     if mode == "last":
         items = conversation.items[-1:]
