@@ -192,6 +192,8 @@ But it should work well on normal terminal launches.
 
 ![](img/console.jpg)
 
+![](img/console_2.jpg)
+
 ---
 
 ## Listener <a name="listener"></a>
