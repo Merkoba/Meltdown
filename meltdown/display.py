@@ -844,11 +844,17 @@ class Display:
         if not tab_id:
             tab_id = self.current_tab
 
-        cmds = Commands()
-        cmds.add("To Start", lambda a: self.move_tab_to_start(tab_id))
-        cmds.add("To End", lambda a: self.move_tab_to_end(tab_id))
-
+        ids = []
         picked = self.get_picked()
+
+        if picked:
+            ids = [tab.tab_id for tab in picked]
+        else:
+            ids = [tab_id]
+
+        cmds = Commands()
+        cmds.add("To Start", lambda a: self.move_tab_to_start(ids))
+        cmds.add("To End", lambda a: self.move_tab_to_end(ids))
 
         if picked:
             n = len(picked)
@@ -856,18 +862,22 @@ class Display:
         else:
             Dialog.show_dialog("Move tab?", cmds)
 
-    def move_tab_to_start(self, tab_id: str | None = None) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
+    def move_tab_to_start(self, tab_ids: list[str] | None = None) -> None:
+        if not tab_ids:
+            tab_ids = [self.current_tab]
 
-        self.book.move_to_start(tab_id)
+        for tab_id in reversed(tab_ids):
+            self.book.move_to_start(tab_id)
+
         self.update_session()
 
-    def move_tab_to_end(self, tab_id: str | None = None) -> None:
-        if not tab_id:
-            tab_id = self.current_tab
+    def move_tab_to_end(self, tab_ids: list[str] | None = None) -> None:
+        if not tab_ids:
+            tab_ids = [self.current_tab]
 
-        self.book.move_to_end(tab_id)
+        for tab_id in tab_ids:
+            self.book.move_to_end(tab_id)
+
         self.update_session()
 
     def stream_started(self, tab_id: str) -> None:

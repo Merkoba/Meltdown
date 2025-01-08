@@ -439,13 +439,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "movefirst",
+            "movestart",
             "Move the tab to the start",
             lambda a=None: display.move_tab_to_start(),
         )
 
         self.add_cmd(
-            "movelast",
+            "moveend",
             "Move the tab to the end",
             lambda a=None: display.move_tab_to_end(),
         )
