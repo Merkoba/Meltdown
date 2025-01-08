@@ -2429,3 +2429,43 @@ The password to be able to edit an upload. Else it will use a random word
 Default: [Empty string]
 
 Type: str
+
+---
+
+### log-name-user
+
+Name to use for the user name on logs
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### log-name-ai
+
+Name to use for the AI name on logs
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### upload-name-user
+
+Name to use for the user name on uploads
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### upload-name-ai
+
+Name to use for the AI name on uploads
+
+Default: [Empty string]
+
+Type: str
