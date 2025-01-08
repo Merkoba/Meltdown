@@ -36,6 +36,14 @@ Action: store_false
 
 ---
 
+### no-separate-uploads
+
+Don't use separator in uploads
+
+Action: store_false
+
+---
+
 ### no-command-history
 
 Don't include commands when cycling input history
@@ -68,9 +76,9 @@ Action: store_false
 
 ---
 
-### no-names-in-logs
+### no-files-in-uploads
 
-Don't show names in logs
+Don't show files in uploads
 
 Action: store_false
 
@@ -540,9 +548,9 @@ Action: store_false
 
 ---
 
-### no-names-on-logs
+### no-names-in-logs
 
-Don't use the user names on logs
+Don't use the user names in logs
 
 Action: store_false
 
@@ -639,6 +647,16 @@ Action: store_true
 ### avatars-in-logs
 
 Show avatars in logs
+
+Default: False
+
+Action: store_true
+
+---
+
+### avatars-in-uploads
+
+Show avatars in uploads
 
 Default: False
 
@@ -2434,7 +2452,7 @@ Type: str
 
 ### log-name-user
 
-Name to use for the user name on logs
+Name to use for the user name in logs
 
 Default: [Empty string]
 
@@ -2444,7 +2462,7 @@ Type: str
 
 ### log-name-ai
 
-Name to use for the AI name on logs
+Name to use for the AI name in logs
 
 Default: [Empty string]
 
@@ -2469,3 +2487,23 @@ Name to use for the AI name on uploads
 Default: [Empty string]
 
 Type: str
+
+---
+
+### generic-names-logs
+
+Show generic names in logs, like User and AI
+
+Default: False
+
+Action: store_true
+
+---
+
+### generic-names-uploads
+
+Show generic names in uploads, like User and AI
+
+Default: False
+
+Action: store_true
