@@ -2507,3 +2507,13 @@ Show generic names in uploads, like User and AI
 Default: False
 
 Action: store_true
+
+---
+
+### signals-file
+
+Path to a file that defines the available signals
+
+Default: [Empty string]
+
+Type: str

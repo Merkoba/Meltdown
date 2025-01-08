@@ -1003,3 +1003,9 @@ Upload text to a hosting service. Optional 'all' or 'last' argument
 ### count
 
 Count the number of open tabs and items
+
+---
+
+### signal
+
+Run a signal by its name
