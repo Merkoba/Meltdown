@@ -28,9 +28,9 @@ class Upload:
             app.update()
             self.do_upload(tab_id, mode)
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Last Item", lambda a: action("last"))
-        Dialog.cmd(cmds, "All Of It", lambda a: action("all"))
+        cmds = Commands()
+        cmds.add("Last Item", lambda a: action("last"))
+        cmds.add("All Of It", lambda a: action("all"))
 
         Dialog.show_dialog(
             f"Upload conversation to\n{config.rentry_site}", commands=cmds

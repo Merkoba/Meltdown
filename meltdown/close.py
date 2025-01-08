@@ -117,30 +117,30 @@ def close(
         action()
         return
 
-    cmds: Commands = []
+    cmds = Commands()
 
     if full and get_empty_tabs():
-        Dialog.cmd(cmds, "Empty", lambda a: close_empty())
+        cmds.add("Empty", lambda a: close_empty())
 
     if full and get_old_tabs():
-        Dialog.cmd(cmds, "Old", lambda a: close_old())
+        cmds.add("Old", lambda a: close_old())
 
     if get_other_tabs(tab_id):
-        Dialog.cmd(cmds, "Others", lambda a: close_others(tab_id=tab_id))
+        cmds.add("Others", lambda a: close_others(tab_id=tab_id))
 
     if get_left_tabs(tab_id):
-        Dialog.cmd(cmds, "Left", lambda a: close_left(tab_id=tab_id))
+        cmds.add("Left", lambda a: close_left(tab_id=tab_id))
 
     if get_right_tabs(tab_id):
-        Dialog.cmd(cmds, "Right", lambda a: close_right(tab_id=tab_id))
+        cmds.add("Right", lambda a: close_right(tab_id=tab_id))
 
     if full:
-        Dialog.cmd(cmds, "All", lambda a: close_all())
+        cmds.add("All", lambda a: close_all())
 
     if not cmds:
         return
 
-    Dialog.cmd(cmds, "Ok", lambda a: action())
+    cmds.add("Ok", lambda a: action())
     Dialog.show_dialog("Close tab?", cmds)
 
 

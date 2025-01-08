@@ -219,11 +219,11 @@ class App:
             repo,
         ]
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Commands", lambda a: self.show_help("commands"))
-        Dialog.cmd(cmds, "Arguments", lambda a: self.show_help("arguments"))
-        Dialog.cmd(cmds, "Keyboard", lambda a: self.show_help("keyboard"))
-        Dialog.cmd(cmds, "Ok", lambda a: None)
+        cmds = Commands()
+        cmds.add("Commands", lambda a: self.show_help("commands"))
+        cmds.add("Arguments", lambda a: self.show_help("arguments"))
+        cmds.add("Keyboard", lambda a: self.show_help("keyboard"))
+        cmds.add("Ok", lambda a: None)
 
         Dialog.show_dialog("\n".join(lines), cmds, image=self.image_path)
 
@@ -849,7 +849,7 @@ class App:
         from .paths import paths
         from .dialogs import Dialog, Commands
 
-        cmds: Commands = []
+        cmds = Commands()
 
         def show_config() -> None:
             self.open_generic(str(paths.config_dir))
@@ -857,20 +857,20 @@ class App:
         def show_data() -> None:
             self.open_generic(str(paths.data_dir))
 
-        Dialog.cmd(cmds, "Config", lambda a: show_config())
-        Dialog.cmd(cmds, "Data", lambda a: show_data())
+        cmds.add("Config", lambda a: show_config())
+        cmds.add("Data", lambda a: show_data())
 
         Dialog.show_dialog(f"Profile: {args.profile}", cmds)
 
     def show_info(self) -> None:
         from .dialogs import Dialog, Commands
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Portrait", lambda a: self.show_portrait())
-        Dialog.cmd(cmds, "Size", lambda a: self.show_size())
-        Dialog.cmd(cmds, "Date", lambda a: self.show_date())
-        Dialog.cmd(cmds, "Started", lambda a: self.show_started())
-        Dialog.cmd(cmds, "Memory", lambda a: self.show_memory())
+        cmds = Commands()
+        cmds.add("Portrait", lambda a: self.show_portrait())
+        cmds.add("Size", lambda a: self.show_size())
+        cmds.add("Date", lambda a: self.show_date())
+        cmds.add("Started", lambda a: self.show_started())
+        cmds.add("Memory", lambda a: self.show_memory())
 
         Dialog.show_dialog("Information", cmds)
 
@@ -900,9 +900,9 @@ class App:
             prompt = {"text": f"Hello {name}. Please describe yourself."}
             model.stream(prompt, tab_id=tab_id)
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Describe", lambda a: describe())
-        Dialog.cmd(cmds, "Ok", lambda a: None)
+        cmds = Commands()
+        cmds.add("Describe", lambda a: describe())
+        cmds.add("Ok", lambda a: None)
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
 
@@ -967,10 +967,10 @@ class App:
             config.set("theme", name)
             Dialog.show_message("Reset to apply changes.")
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Contrast", lambda a: action("contrast"))
-        Dialog.cmd(cmds, "Light", lambda a: action("light"))
-        Dialog.cmd(cmds, "Dark", lambda a: action("dark"))
+        cmds = Commands()
+        cmds.add("Contrast", lambda a: action("contrast"))
+        cmds.add("Light", lambda a: action("light"))
+        cmds.add("Dark", lambda a: action("dark"))
 
         Dialog.show_dialog("Color Theme", cmds)
 

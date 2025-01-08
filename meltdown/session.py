@@ -418,9 +418,9 @@ class Session:
         return json.dumps(sessions_list, indent=4)
 
     def menu(self) -> None:
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Load", lambda a: self.load_state())
-        Dialog.cmd(cmds, "Save", lambda a: self.save_state())
+        cmds = Commands()
+        cmds.add("Load", lambda a: self.load_state())
+        cmds.add("Save", lambda a: self.save_state())
 
         Dialog.show_dialog("Session Menu", commands=cmds)
 

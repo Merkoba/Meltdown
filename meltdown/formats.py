@@ -316,10 +316,10 @@ def copy_markdown(tab_id: str | None = None) -> None:
 
 
 def do_use(mode: str) -> None:
-    cmds: Commands = []
-    Dialog.cmd(cmds, "Open", lambda a: do_open(mode))
-    Dialog.cmd(cmds, "View", lambda a: do_view(mode))
-    Dialog.cmd(cmds, "Copy", lambda a: do_copy(mode))
+    cmds = Commands()
+    cmds.add("Open", lambda a: do_open(mode))
+    cmds.add("View", lambda a: do_view(mode))
+    cmds.add("Copy", lambda a: do_copy(mode))
     name = get_name(mode, True)
 
     Dialog.show_dialog(f"Use {name}", cmds)

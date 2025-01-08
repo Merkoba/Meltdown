@@ -20,22 +20,22 @@ from . import formats
 
 class Logs:
     def menu(self, full: bool = True, tab_id: str | None = None) -> None:
-        cmds: Commands = []
+        cmds = Commands()
 
         if full:
-            Dialog.cmd(cmds, "Save All", lambda a: self.save_all())
+            cmds.add("Save All", lambda a: self.save_all())
 
-        Dialog.cmd(cmds, "Markdown", lambda a: self.to_markdown(tab_id=tab_id))
-        Dialog.cmd(cmds, "JSON", lambda a: self.to_json(tab_id=tab_id))
-        Dialog.cmd(cmds, "Text", lambda a: self.to_text(tab_id=tab_id))
+        cmds.add("Markdown", lambda a: self.to_markdown(tab_id=tab_id))
+        cmds.add("JSON", lambda a: self.to_json(tab_id=tab_id))
+        cmds.add("Text", lambda a: self.to_text(tab_id=tab_id))
 
         Dialog.show_dialog("Save conversation to a file?", cmds)
 
     def save_all(self) -> None:
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Markdown", lambda a: self.to_markdown(True))
-        Dialog.cmd(cmds, "JSON", lambda a: self.to_json(True))
-        Dialog.cmd(cmds, "Text", lambda a: self.to_text(True))
+        cmds = Commands()
+        cmds.add("Markdown", lambda a: self.to_markdown(True))
+        cmds.add("JSON", lambda a: self.to_json(True))
+        cmds.add("Text", lambda a: self.to_text(True))
 
         Dialog.show_dialog("Save all conversations?", cmds)
 

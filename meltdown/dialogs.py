@@ -22,7 +22,7 @@ Action = Callable[..., Any]
 
 
 class Command:
-    def __init__(self, text: str, cmd: Action, no_hide: bool = False):
+    def __init__(self, text: str, cmd: Action, no_hide: bool = False) -> None:
         self.text = text
         self.cmd = cmd
         self.no_hide = no_hide
@@ -39,11 +39,20 @@ class Command:
 
             func(ans)
 
-        num_cmds = len(dialog.commands)
+        if dialog.commands:
+            num_cmds = len(dialog.commands.items)
+        else:
+            num_cmds = 0
+
         dialog.make_button(self.text, lambda: generic(self.cmd), num_cmds)
 
 
-Commands = list[Command]
+class Commands:
+    def __init__(self) -> None:
+        self.items: list[Command] = []
+
+    def add(self, text: str, cmd: Action, no_hide: bool = False) -> None:
+        self.items.append(Command(text, cmd, no_hide))
 
 
 class Dialog:
@@ -69,10 +78,6 @@ class Dialog:
                 return Dialog.current_dialog.msgbox.get("1.0", tk.END)
 
         return ""
-
-    @staticmethod
-    def cmd(cmds: Commands, text: str, cmd: Action, no_hide: bool = False) -> None:
-        cmds.append(Command(text, cmd, no_hide))
 
     @staticmethod
     def show_dialog(
@@ -199,10 +204,10 @@ class Dialog:
 
         # ------
 
-        dialog.commands = commands or []
+        dialog.commands = commands or None
 
         if commands:
-            for cmd in commands:
+            for cmd in commands.items:
                 cmd.build(dialog)
 
         if commands:
@@ -230,9 +235,9 @@ class Dialog:
             if cmd_cancel:
                 cmd_cancel()
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Cancel", cancel)
-        Dialog.cmd(cmds, "Ok", ok)
+        cmds = Commands()
+        cmds.add("Cancel", cancel)
+        cmds.add("Ok", ok)
         Dialog.show_dialog(text, cmds)
 
     @staticmethod
@@ -243,9 +248,9 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(text)
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Copy", copy)
-        Dialog.cmd(cmds, "Ok", ok)
+        cmds = Commands()
+        cmds.add("Copy", copy)
+        cmds.add("Ok", ok)
         Dialog.show_dialog(text, cmds)
 
     @staticmethod
@@ -256,9 +261,9 @@ class Dialog:
         def copy(ans: Answer) -> None:
             utils.copy(ans["msgbox"])
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Copy", copy)
-        Dialog.cmd(cmds, "Ok", ok)
+        cmds = Commands()
+        cmds.add("Copy", copy)
+        cmds.add("Ok", ok)
         Dialog.show_dialog(title, commands=cmds, msgbox=text)
 
     @staticmethod
@@ -286,14 +291,14 @@ class Dialog:
             Dialog.current_dialog.entry.reveal()
             Dialog.current_dialog.entry.focus_start()
 
-        cmds: Commands = []
+        cmds = Commands()
 
         if mode == "password":
-            Dialog.cmd(cmds, "Cancel", cancel)
-            Dialog.cmd(cmds, "Reveal", reveal, True)
-            Dialog.cmd(cmds, "Ok", ok)
+            cmds.add("Cancel", cancel)
+            cmds.add("Reveal", reveal, True)
+            cmds.add("Ok", ok)
         else:
-            Dialog.cmd(cmds, "Cancel", cancel)
+            cmds.add("Cancel", cancel)
 
         Dialog.show_dialog(
             text,
@@ -369,7 +374,7 @@ class Dialog:
 
         self.id_ = id_
         self.buttons: list[ButtonBox] = []
-        self.commands: Commands = []
+        self.commands: Commands | None = None
 
         self.make(text, with_top_frame=top_frame)
 

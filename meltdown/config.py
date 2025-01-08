@@ -470,10 +470,10 @@ No need to greet me, just answer.
     def menu(self) -> None:
         from .dialogs import Dialog, Commands
 
-        cmds: Commands = []
-        Dialog.cmd(cmds, "Reset", lambda a: self.reset())
-        Dialog.cmd(cmds, "Load", lambda a: self.load_state())
-        Dialog.cmd(cmds, "Save", lambda a: self.save_state())
+        cmds = Commands()
+        cmds.add("Reset", lambda a: self.reset())
+        cmds.add("Load", lambda a: self.load_state())
+        cmds.add("Save", lambda a: self.save_state())
 
         Dialog.show_dialog("Config Menu", commands=cmds)
 
