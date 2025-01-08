@@ -276,6 +276,12 @@ Multiple signals can be defined. This is a demo with all the available keys:
 
 ---
 
+To run a signal you use the command with the name: `/signal test`.
+
+Feedback is shown in the window if the signal failed or if it ran successfully.
+
+---
+
 ## Images <a name="images"></a>
 
 Multi-modal models like llava 1.5 can be used.
