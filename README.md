@@ -260,19 +260,19 @@ Multiple signals can be defined. This is a demo with all the available keys:
 
 `url` is the url to use for the request. (required)
 
-`method` can be `post`, `get`, or `put`.
+`method` can be `post`, `get`, or `put`. (default `post`)
 
-`format` can be `text`, `json`, or `markdown`.
+`format` can be `text`, `json`, or `markdown`. (default `json`)
 
-`items` can be `all`, to include the full conversation. Or `last`, to include only the last item.
+`items` can be `all`, to include the full conversation. Or `last`, to include only the last item. (default `all`)
 
 `content_key` is used for the conversation text. (required)
 
-`content_length` limits the content to that amount of characters.
+`content_length` limits the content to that amount of characters. (default: 0)
 
-`single_line` sends the content as a single line.
+`single_line` sends the content as a single line. (default: false)
 
-`data` all the data keys needed to be sent.
+`data` all the data keys needed to be sent. (default: empty)
 
 ---
 
