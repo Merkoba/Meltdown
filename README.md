@@ -224,7 +224,7 @@ For now it works with `rentry.org`.
 
 The password (edit code) can be configured through `--upload-password`.
 
-If no password is used a random short word is used.
+If no password is set, a random short word is used.
 
 After the text is uploaded a message appears that allows you to copy the URL.
 
