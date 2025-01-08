@@ -177,7 +177,7 @@ And you can use the input to include text as normal.
 
 ## Console <a name="console"></a>
 
-To enable the console use `--show-console`.
+To enable the console use `--console`.
 
 This allows you to send actions from the terminal that launched the program.
 
