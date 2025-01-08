@@ -155,26 +155,6 @@ Then pick the model you want: `Use Gemini Model`.
 
 ---
 
-## Images <a name="images"></a>
-
-Multi-modal models like llava 1.5 can be used.
-
-Download the model gguf and the mmproj gguf (clip model):
-
-https://huggingface.co/mys/ggml_llava-v1.5-7b/tree/main
-
-Put those 2 files in the same directory.
-
-Rename the clip model file to `mmproj.gguf`.
-
-Set `Mode` to `images`.
-
-Now you can use the `File` field to include a URL or path to an image.
-
-And you can use the input to include text as normal.
-
----
-
 ## Console <a name="console"></a>
 
 To enable the console use `--console`.
@@ -239,6 +219,28 @@ The URL and password are also printed in the conversation window.
 All the conversation can be uploaded, or just the last item.
 
 ![](img/upload.jpg)
+
+---
+
+## Images <a name="images"></a>
+
+Multi-modal models like llava 1.5 can be used.
+
+Download the model gguf and the mmproj gguf (clip model):
+
+https://huggingface.co/mys/ggml_llava-v1.5-7b/tree/main
+
+Put those 2 files in the same directory.
+
+Rename the clip model file to `mmproj.gguf`.
+
+Set `Mode` to `images`.
+
+Now you can use the `File` field to include a URL or path to an image.
+
+And you can use the input to include text as normal.
+
+While this has been tested to work, it's still considered experimental.
 
 ---
 
