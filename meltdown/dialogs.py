@@ -18,16 +18,17 @@ from . import widgetutils
 
 
 Answer = dict[str, Any]
+Action = Callable[..., Any]
 
 
 class Command:
-    def __init__(self, text: str, cmd: Callable[..., Any], no_hide: bool = False):
+    def __init__(self, text: str, cmd: Action, no_hide: bool = False):
         self.text = text
         self.cmd = cmd
         self.no_hide = no_hide
 
     def build(self, dialog: Dialog) -> None:
-        def generic(func: Callable[..., Any]) -> None:
+        def generic(func: Action) -> None:
             ans = {
                 "entry": Dialog.get_entry(),
                 "msgbox": Dialog.get_msgbox(),
@@ -67,7 +68,7 @@ class Dialog:
         return ""
 
     @staticmethod
-    def cmd(text: str, cmd: Callable[..., Any], no_hide: bool = False) -> Command:
+    def cmd(text: str, cmd: Action, no_hide: bool = False) -> Command:
         return Command(text, cmd, no_hide)
 
     @staticmethod
@@ -215,8 +216,8 @@ class Dialog:
     @staticmethod
     def show_confirm(
         text: str,
-        cmd_ok: Callable[..., Any] | None = None,
-        cmd_cancel: Callable[..., Any] | None = None,
+        cmd_ok: Action | None = None,
+        cmd_cancel: Action | None = None,
     ) -> None:
         def ok(ans: Answer) -> None:
             if cmd_ok:
@@ -260,8 +261,8 @@ class Dialog:
     @staticmethod
     def show_input(
         text: str,
-        cmd_ok: Callable[[Any], None],
-        cmd_cancel: Callable[[Any], None] | None = None,
+        cmd_ok: Action,
+        cmd_cancel: Action | None = None,
         value: str = "",
         mode: str = "normal",
     ) -> None:
@@ -303,11 +304,11 @@ class Dialog:
     def show_textbox(
         id_: str,
         text: str,
-        cmd_ok: Callable[..., Any],
-        cmd_cancel: Callable[..., Any] | None = None,
+        cmd_ok: Action,
+        cmd_cancel: Action | None = None,
         value: str = "",
         start_maximized: bool = False,
-        on_right_click: Callable[..., Any] | None = None,
+        on_right_click: Action | None = None,
     ) -> None:
         from .textbox import TextBox
 
@@ -451,9 +452,7 @@ class Dialog:
         self.root.destroy()
         Dialog.current_dialog = None
 
-    def make_button(
-        self, text: str, command: Callable[..., Any], num_cmds: int = 0
-    ) -> None:
+    def make_button(self, text: str, command: Action, num_cmds: int = 0) -> None:
         button = widgetutils.get_button(self.buttons_frame, text, command)
         num = len(self.buttons)
         div = 3
