@@ -15,7 +15,7 @@ import requests  # type: ignore
 from .config import config
 
 
-Action = Callable[..., Any]
+Action = Callable[[str, str, str], None]
 
 
 class Rentry:
