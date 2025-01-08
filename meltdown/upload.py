@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 # Modules
+from .app import app
 from .utils import utils
 from .config import config
 from .display import display
 from .rentry import Rentry
+from .dialogs import Dialog
+from .args import args
+from .formats import get_markdown
 
 
 class Upload:
     def upload(self, tab_id: str | None = None, mode: str = "") -> None:
-        from .dialogs import Dialog
-        from .app import app
-
         messages = display.has_messages()
         ignored = display.is_ignored()
 
@@ -35,11 +36,16 @@ class Upload:
             f"Upload conversation to\n{config.rentry_site}", commands=cmds
         )
 
-    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> None:
-        from .args import args
-        from .display import display
-        from .formats import get_markdown
+    def after_upload(self, url: str, password: str, tab_id: str) -> None:
+        display.print(
+            f"Uploaded: {url} ({password})",
+            do_format=True,
+            tab_id=tab_id,
+        )
 
+        Dialog.show_message(url)
+
+    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> None:
         if not tab_id:
             tab_id = display.current_tab
 
@@ -59,7 +65,12 @@ class Upload:
             password = utils.random_word()
 
         try:
-            Rentry(text=text, password=password, tab_id=tab_id)
+            Rentry(
+                text=text,
+                password=password,
+                tab_id=tab_id,
+                after_upload=self.after_upload,
+            )
         except Exception as e:
             utils.error(e)
 

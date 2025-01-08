@@ -1,24 +1,35 @@
+from __future__ import annotations
+
 # Standard
 import ast
 import threading
 import urllib.parse
 from pathlib import Path
 from http import HTTPStatus
+from typing import Any, Callable
 
 # Libraries
 import requests  # type: ignore
 
 # Modules
 from .config import config
-from .display import display
-from .dialogs import Dialog
+
+
+Action = Callable[..., Any]
 
 
 class Rentry:
-    def __init__(self, text: str = "", password: str = "", tab_id: str = "") -> None:
+    def __init__(
+        self,
+        text: str,
+        password: str,
+        tab_id: str,
+        after_upload: Action,
+    ) -> None:
         self.text = text
         self.password = password
         self.tab_id = tab_id
+        self.after_upload = after_upload
 
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
@@ -63,11 +74,4 @@ class Rentry:
         url = urllib.parse.urlparse(req.headers["Location"])
         url = Path(url.path).name
         full_url = f"{config.rentry_site}/{url}"
-
-        display.print(
-            f"Uploaded: {full_url} ({self.password})",
-            do_format=True,
-            tab_id=self.tab_id,
-        )
-
-        Dialog.show_message(full_url)
+        self.after_upload(full_url, self.password, self.tab_id)
