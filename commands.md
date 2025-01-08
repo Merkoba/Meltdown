@@ -416,13 +416,13 @@ Move the tab to the right
 
 ---
 
-### movefirst
+### movestart
 
 Move the tab to the start
 
 ---
 
-### movelast
+### moveend
 
 Move the tab to the end
 
