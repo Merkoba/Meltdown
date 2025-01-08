@@ -1602,5 +1602,29 @@ class ArgSpec:
             info="The password to be able to edit an upload. Else it will use a random word",
         )
 
+        self.add_argument(
+            "log_name_user",
+            type=str,
+            info="Name to use for the user name on logs",
+        )
+
+        self.add_argument(
+            "log_name_ai",
+            type=str,
+            info="Name to use for the AI name on logs",
+        )
+
+        self.add_argument(
+            "upload_name_user",
+            type=str,
+            info="Name to use for the user name on uploads",
+        )
+
+        self.add_argument(
+            "upload_name_ai",
+            type=str,
+            info="Name to use for the AI name on uploads",
+        )
+
 
 argspec = ArgSpec()

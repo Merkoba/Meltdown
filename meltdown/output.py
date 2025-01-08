@@ -316,6 +316,8 @@ class Output(tk.Text):
         put_colons: bool = True,
         markers: bool = True,
         generic: bool = False,
+        name_user: str = "",
+        name_ai: str = "",
     ) -> str:
         name = ""
 
@@ -325,7 +327,15 @@ class Output(tk.Text):
             elif who == "ai":
                 name = "AI"
         else:
-            name = getattr(config, f"name_{who}")
+            if who == "user":
+                if name_user:
+                    name = name_user
+            elif who == "ai":
+                if name_ai:
+                    name = name_ai
+
+            if not name:
+                name = getattr(config, f"name_{who}")
 
         avatar = getattr(config, f"avatar_{who}")
 

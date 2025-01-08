@@ -266,6 +266,10 @@ class Args:
         self.thinking_text = "Thinking..."
         self.logs_dir = ""
         self.upload_password = ""
+        self.log_name_user = ""
+        self.log_name_ai = ""
+        self.upload_name_user = ""
+        self.upload_name_ai = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -530,6 +534,10 @@ class Args:
             "thinking_text",
             "logs_dir",
             "upload_password",
+            "log_name_user",
+            "log_name_ai",
+            "upload_name_user",
+            "upload_name_ai",
         ]
 
         for n_item in normals:

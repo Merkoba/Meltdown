@@ -20,19 +20,46 @@ from .dialogs import Dialog, Commands
 # ---
 
 
-def get_json(conversation: Conversation) -> str:
+def get_names(mode: str) -> tuple[str, str]:
+    name_user = ""
+    name_ai = ""
+
+    if mode == "log":
+        if args.log_name_user:
+            name_user = args.log_name_user
+
+        if args.log_name_ai:
+            name_ai = args.log_name_ai
+
+    if not name_user:
+        if config.name_user:
+            name_user = config.name_user
+
+    if not name_ai:
+        if config.name_ai:
+            name_ai = config.name_ai
+
+    return name_user, name_ai
+
+
+def get_json(conversation: Conversation, name_mode: str = "normal") -> str:
     ensure_ascii = args.ascii_logs
-    return to_json(conversation, ensure_ascii=ensure_ascii)
+    return to_json(conversation, ensure_ascii=ensure_ascii, name_mode=name_mode)
 
 
-def to_json(conversation: Conversation, ensure_ascii: bool = True) -> str:
+def to_json(
+    conversation: Conversation,
+    ensure_ascii: bool = True,
+    name_mode: str = "normal",
+) -> str:
     obj = conversation.to_dict()
+    name_user, name_ai = get_names(name_mode)
 
     if config.name_user:
-        obj["name_user"] = config.name_user
+        obj["name_user"] = name_user
 
     if config.name_ai:
-        obj["name_ai"] = config.name_ai
+        obj["name_ai"] = name_ai
 
     if config.avatar_user:
         obj["avatar_user"] = config.avatar_user
@@ -46,7 +73,9 @@ def to_json(conversation: Conversation, ensure_ascii: bool = True) -> str:
 # ---
 
 
-def get_text(conversation: Conversation, mode: str = "normal") -> str:
+def get_text(
+    conversation: Conversation, mode: str = "normal", name_mode: str = "normal"
+) -> str:
     if mode == "minimal":
         avatars = False
         separate = False
@@ -59,7 +88,12 @@ def get_text(conversation: Conversation, mode: str = "normal") -> str:
         names = args.names_in_logs
 
     return to_text(
-        conversation, avatars=avatars, names=names, separate=separate, files=files
+        conversation,
+        avatars=avatars,
+        names=names,
+        separate=separate,
+        files=files,
+        name_mode=name_mode,
     )
 
 
@@ -69,14 +103,21 @@ def to_text(
     names: bool = True,
     separate: bool = False,
     files: bool = True,
+    name_mode: str = "normal",
 ) -> str:
     log = ""
     generic = not names
+    name_user, name_ai = get_names(name_mode)
 
     for i, item in enumerate(conversation.items):
         for key in ["user", "ai"]:
             prompt = Output.get_prompt(
-                key, show_avatar=avatars, put_colons=False, generic=generic
+                key,
+                show_avatar=avatars,
+                put_colons=False,
+                generic=generic,
+                name_user=name_user,
+                name_ai=name_ai,
             )
 
             log += f"{prompt}: "
@@ -97,7 +138,9 @@ def to_text(
 # ---
 
 
-def get_markdown(conversation: Conversation, mode: str = "all") -> str:
+def get_markdown(
+    conversation: Conversation, mode: str = "all", name_mode: str = "normal"
+) -> str:
     avatars = args.avatars_in_logs
     separate = args.separate_logs
     files = args.files_in_logs
@@ -110,6 +153,7 @@ def get_markdown(conversation: Conversation, mode: str = "all") -> str:
         separate=separate,
         files=files,
         mode=mode,
+        name_mode=name_mode,
     )
 
 
@@ -120,6 +164,7 @@ def to_markdown(
     separate: bool = False,
     files: bool = True,
     mode: str = "all",
+    name_mode: str = "normal",
 ) -> str:
     log = ""
     generic = not names
@@ -129,10 +174,17 @@ def to_markdown(
     else:
         items = conversation.items
 
+    name_user, name_ai = get_names(name_mode)
+
     for i, item in enumerate(items):
         for key in ["user", "ai"]:
             prompt = Output.get_prompt(
-                key, show_avatar=avatars, put_colons=False, generic=generic
+                key,
+                show_avatar=avatars,
+                put_colons=False,
+                generic=generic,
+                name_user=name_user,
+                name_ai=name_ai,
             )
 
             log += f"**{prompt}**:"
