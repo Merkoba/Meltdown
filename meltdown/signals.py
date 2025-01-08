@@ -21,9 +21,6 @@ class Signals:
         self.timeout = 10
 
     def read_signals(self) -> Any | None:
-        if not args.signals_file:
-            return None
-
         path = Path(args.signals_file)
 
         if not path.exists():
@@ -32,6 +29,10 @@ class Signals:
         return files.load(path)
 
     def run(self, name: str) -> None:
+        if not args.signals_file:
+            display.print("Signals file path not set.")
+            return None
+
         messages = display.has_messages()
         ignored = display.is_ignored()
 
