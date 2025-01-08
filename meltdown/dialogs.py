@@ -52,7 +52,8 @@ class Commands:
         self.items: list[Command] = []
 
     def add(self, text: str, cmd: Action, no_hide: bool = False) -> None:
-        self.items.append(Command(text, cmd, no_hide))
+        command = Command(text, cmd, no_hide)
+        self.items.append(command)
 
 
 class Dialog:
@@ -299,6 +300,7 @@ class Dialog:
             cmds.add("Ok", ok)
         else:
             cmds.add("Cancel", cancel)
+            cmds.add("Ok", ok)
 
         Dialog.show_dialog(
             text,
