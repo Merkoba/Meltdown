@@ -238,6 +238,7 @@ class Snippet(tk.Frame):
     def on_click(self) -> None:
         app.hide_all()
         self.parent.deselect_all()
+        self.parent.display.unpick()
 
     def scroll_up(self) -> str:
         self.parent.scroll_up(True)

@@ -552,7 +552,6 @@ class App:
 
     def on_focus_out(self, event: Any) -> None:
         from .keyboard import keyboard
-        from .display import display
 
         what = str(event.widget)
 
