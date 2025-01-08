@@ -57,7 +57,7 @@ class Upload:
         if not tabconvo.convo.items:
             return
 
-        text = get_markdown(tabconvo.convo, mode=mode)
+        text = get_markdown(tabconvo.convo, mode=mode, name_mode="upload")
 
         if args.upload_password:
             password = args.upload_password

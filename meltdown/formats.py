@@ -30,6 +30,12 @@ def get_names(mode: str) -> tuple[str, str]:
 
         if args.log_name_ai:
             name_ai = args.log_name_ai
+    elif mode == "upload":
+        if args.upload_name_user:
+            name_user = args.upload_name_user
+
+        if args.upload_name_ai:
+            name_ai = args.upload_name_ai
 
     if not name_user:
         if config.name_user:
