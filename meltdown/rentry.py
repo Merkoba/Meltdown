@@ -30,6 +30,7 @@ class Rentry:
         self.password = password
         self.tab_id = tab_id
         self.after_upload = after_upload
+        self.timeout = 10
 
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
@@ -57,7 +58,7 @@ class Rentry:
         res = self.session.post(
             config.rentry_site,
             headers=self.headers,
-            timeout=10,
+            timeout=self.timeout,
             data={
                 "csrfmiddlewaretoken": self.get_token(),
                 "text": (self.text if len(self.text) > 0 else "."),

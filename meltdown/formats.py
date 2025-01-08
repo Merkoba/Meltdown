@@ -4,6 +4,7 @@ from __future__ import annotations
 import json
 import tempfile
 from pathlib import Path
+from typing import Any
 
 # Modules
 from .app import app
@@ -18,6 +19,13 @@ from .dialogs import Dialog, Commands
 
 
 # ---
+
+
+def get_items(conversation: Conversation, mode: str) -> list[Any]:
+    if mode == "last":
+        return conversation.items[-1:]
+
+    return conversation.items
 
 
 def get_names(mode: str) -> tuple[str, str]:
@@ -88,17 +96,24 @@ def get_generic(mode: str) -> bool:
     return False
 
 
-def get_json(conversation: Conversation, name_mode: str = "normal") -> str:
+def get_json(
+    conversation: Conversation, mode: str = "all", name_mode: str = "normal"
+) -> str:
     ensure_ascii = args.ascii_logs
-    return to_json(conversation, ensure_ascii=ensure_ascii, name_mode=name_mode)
+    return to_json(
+        conversation, ensure_ascii=ensure_ascii, mode=mode, name_mode=name_mode
+    )
 
 
 def to_json(
     conversation: Conversation,
     ensure_ascii: bool = True,
+    mode: str = "all",
     name_mode: str = "normal",
 ) -> str:
     obj = conversation.to_dict()
+    items = get_items(conversation, mode)
+    obj["items"] = [item.to_dict() for item in items]
     name_user, name_ai = get_names(name_mode)
 
     if config.name_user:
@@ -120,7 +135,7 @@ def to_json(
 
 
 def get_text(
-    conversation: Conversation, mode: str = "normal", name_mode: str = "normal"
+    conversation: Conversation, mode: str = "all", name_mode: str = "normal"
 ) -> str:
     if mode == "minimal":
         avatars = False
@@ -139,6 +154,7 @@ def get_text(
         generic=generic,
         separate=separate,
         files=files,
+        mode=mode,
         name_mode=name_mode,
     )
 
@@ -149,12 +165,14 @@ def to_text(
     generic: bool = True,
     separate: bool = False,
     files: bool = True,
+    mode: str = "all",
     name_mode: str = "normal",
 ) -> str:
     log = ""
     name_user, name_ai = get_names(name_mode)
+    items = get_items(conversation, mode)
 
-    for i, item in enumerate(conversation.items):
+    for i, item in enumerate(items):
         for key in ["user", "ai"]:
             prompt = Output.get_prompt(
                 key,
@@ -174,7 +192,7 @@ def to_text(
                 if file:
                     log += f"File: {file}\n\n"
 
-        if (i < len(conversation.items) - 1) and separate:
+        if (i < len(items) - 1) and separate:
             log += "---\n\n"
 
     return log.strip()
@@ -212,12 +230,7 @@ def to_markdown(
     name_mode: str = "normal",
 ) -> str:
     log = ""
-
-    if mode == "last":
-        items = conversation.items[-1:]
-    else:
-        items = conversation.items
-
+    items = get_items(conversation, mode)
     name_user, name_ai = get_names(name_mode)
 
     for i, item in enumerate(items):
