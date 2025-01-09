@@ -243,6 +243,8 @@ For example: `/find fun`
 
 Commands can be autocompleted with `tab`.
 
+Multiple `tab` uses cycles between more matches.
+
 Commands do a similarity check, so slightly malformed commands will match if similar enough.
 
 ---
