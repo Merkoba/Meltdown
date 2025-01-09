@@ -545,5 +545,13 @@ class Utils:
 
         return None
 
+    def is_float(self, text: str) -> bool:
+        try:
+            float(text)
+        except ValueError:
+            return False
+        else:
+            return True
+
 
 utils = Utils()

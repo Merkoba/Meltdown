@@ -31,7 +31,7 @@ class Signals:
     def run(self, name: str) -> None:
         if not args.signals_file:
             display.print("Signals file path not set.")
-            return None
+            return
 
         messages = display.has_messages()
         ignored = display.is_ignored()

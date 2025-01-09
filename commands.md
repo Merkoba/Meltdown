@@ -1009,3 +1009,9 @@ Count the number of open tabs and items
 ### signal
 
 Run a signal by its name
+
+---
+
+### set
+
+Set an argument while the program is running

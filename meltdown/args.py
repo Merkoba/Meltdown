@@ -756,5 +756,58 @@ class Args:
 
         Dialog.show_msgbox("Arguments", "\n".join(text))
 
+    def set_arg(self, cmd: str) -> None:
+        from .utils import utils
+        from .display import display
+
+        if " " in cmd:
+            name, value = cmd.split(" ", 1)
+        else:
+            name = cmd
+            value = ""
+
+        arg = getattr(self, name)
+
+        if arg is None:
+            display.print("Invalid argument.")
+            return
+
+        vlower = value.lower()
+        changed = False
+
+        if vlower == "true":
+            if isinstance(arg, bool):
+                setattr(self, name, True)
+                changed = True
+        elif vlower == "false":
+            if isinstance(arg, bool):
+                setattr(self, name, False)
+                changed = True
+        elif value.isdigit():
+            if isinstance(arg, int):
+                setattr(self, name, int(value))
+                changed = True
+        elif utils.is_float(value):
+            if isinstance(arg, float):
+                setattr(self, name, float(value))
+                changed = True
+        elif value.startswith("[") and value.endswith("]"):
+            if isinstance(arg, list):
+                value = value[1:-1]
+                values = value.split(",")
+                values = [v.strip() for v in values]
+                setattr(self, name, values)
+                changed = True
+        elif isinstance(arg, str):
+            setattr(self, name, value)
+            changed = True
+
+        if not changed:
+            display.print("Invalid value.")
+            return
+
+        svalue = value if value else "empty"
+        display.print(f"Done: Set {name} to {svalue}")
+
 
 args = Args()
