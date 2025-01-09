@@ -491,22 +491,22 @@ No need to greet me, just answer.
 
         Dialog.show_dialog("Config Menu", commands=cmds)
 
-    def set_command(self, command: str) -> None:
+    def set_command(self, cmd: str) -> None:
         from .display import display
         from .args import args
 
         def fmt() -> None:
             display.print("Format: [name] [value]")
 
-        if not command:
+        if not cmd:
             fmt()
             return
 
-        if " " not in command:
+        if " " not in cmd:
             fmt()
             return
 
-        name, value = command.split(" ", 1)
+        name, value = cmd.split(" ", 1)
 
         if not hasattr(self, name):
             display.print("Invalid config.")
@@ -526,17 +526,15 @@ No need to greet me, just answer.
         if not args.quiet:
             display.print(f"Config: `{name}` set to `{value}`", do_format=True)
 
-    def command(self, text: str | None = None) -> None:
-        from .display import display
-
-        if not text:
+    def command(self, cmd: str | None = None) -> None:
+        if not cmd:
             self.menu()
             return
 
-        if " " in text:
-            self.set_command(text)
-        elif hasattr(self, text):
-            self.feedback(text)
+        if " " in cmd:
+            self.set_command(cmd)
+        elif hasattr(self, cmd):
+            self.feedback(cmd)
 
     def save_last(self) -> None:
         if not self.last_config:

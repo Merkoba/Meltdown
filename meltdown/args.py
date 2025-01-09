@@ -761,15 +761,14 @@ class Args:
         from .utils import utils
         from .display import display
 
-        def fmt() -> None:
-            display.print("Format: [name] [value]")
-
         if not cmd:
-            fmt()
+            display.print("Format: [name] [value]")
             return
 
         if " " not in cmd:
-            fmt()
+            if hasattr(self, cmd):
+                self.feedback(cmd)
+
             return
 
         name, value = cmd.split(" ", 1)
@@ -821,6 +820,13 @@ class Args:
 
         svalue = value if value else "empty"
         display.print(f"Arg: `{name}` set to `{svalue}`", do_format=True)
+
+    def feedback(self, name: str) -> None:
+        from .display import display
+
+        current = getattr(self, name)
+        svalue = current if current else "empty"
+        display.print(f"{name}: {svalue}")
 
 
 args = Args()
