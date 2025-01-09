@@ -282,6 +282,8 @@ There is a find widget that allows searching for text inside conversations.
 
 It can be activated with `ctrl + f` or `/find`, or `f3`.
 
+It can also be accesed through the `More` menu.
+
 It supports finding partial words, or whole words (bound).
 
 It supports finding in text sensitive mode, or text insensitive mode.
