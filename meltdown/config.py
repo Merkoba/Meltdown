@@ -423,7 +423,7 @@ No need to greet me, just answer.
 
         if current == value:
             if prints:
-                display.print("Config is already set to that.")
+                display.print("Already set to that.")
 
             return False
 

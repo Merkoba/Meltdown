@@ -805,7 +805,7 @@ class Args:
             return
 
         if arg == new_value:
-            display.print("Arg is already set to that.")
+            display.print("Already set to that.")
             return
 
         setattr(self, name, new_value)
