@@ -1049,7 +1049,7 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "set",
+            "arg",
             "Set an argument while the program is running",
             lambda a=None: args.set_arg(a),
             type=str,

@@ -14,6 +14,11 @@
 1. [Listener](#listener)
 1. [Upload](#upload)
 1. [Signals](#signals)
+1. [System](#system)
+1. [Aliases](#aliases)
+1. [Tasks](#tasks)
+1. [Config](#config)
+1. [Arg](#arg)
 1. [Images](#images)
 1. [Keywords](#keywords)
 1. [Commands](commands.md)
@@ -279,6 +284,92 @@ Multiple signals can be defined. This is a demo with all the available keys:
 To run a signal you use the command with the name: `/signal test`.
 
 Feedback is shown in the window if the signal failed or if it ran successfully.
+
+---
+
+## System <a name="system"></a>
+
+At the top there are system monitors, like `CPU`, `RAM`, `Temperature`, and `GPU` related ones.
+
+`GPU` might not work for all users. It has only been tested for `AMD` in certain systems.
+
+By default they turn off after a short time after the last response.
+
+They turn red when they reached a threshold, which can be configured.
+
+![](img/system.png)
+
+---
+
+## Aliases <a name="aliases"></a>
+
+Command aliases can be set. And they can be chained.
+
+For example: `--alias test="/top & /sleep 0.5 & /about"`.
+
+Then when using the `/test` command, it will perform those 3 commands.
+
+In that example there's a delay of 500ms between `/top` and `/about`.
+
+This can be useful to quickly change between model configurations.
+
+For example: `--alias mini="/config model gpt-4o-mini & /config temperature 0.1"`.
+
+---
+
+## Tasks <a name="tasks"></a>
+
+Tasks that run periodically can be registered.
+
+Format is `[seconds] [commands] [/now (optional)]`
+
+For example `--task "60 /signal update`
+
+This will run the `update` signal every 60 seconds.
+
+If you add `/now` it will run the first one when the program starts.
+
+For example `--task "60 /signal update /now"`
+
+---
+
+## Config <a name="set"></a>
+
+The `config` command allows to change the configuration of the program.
+
+This means any widget can be set.
+
+For example `/config model gemini-1.5`.
+
+Or `/config name_user Bob`.
+
+To know the name of the widget, hover over it.
+
+## Arg <a name="arg"></a>
+
+Arguments are usually set when launching the program, but they can also be changed while it's running.
+
+This can be done with the `arg` command.
+
+For example: `/arg taps false`. (boolean)
+
+Or `/arg delay 0.2`. (ints or floats)
+
+Or `/arg f1 /close`. (strings)
+
+Or `/arg custom_prompts [one = prompt one, two = prompt two]` (lists of strings)
+
+While this is possible, some argument changes won't work, and some might cause problems.
+
+---
+
+## Custom Prompts <a name="custom"></a>
+
+When highlighted words are clicked, a menu with several options appear.
+
+Custom Prompts can be registered to explain these words in a special way.
+
+For example: `--custom-prompt Twelve="explain this like I'm 12"`
 
 ---
 

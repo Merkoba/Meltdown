@@ -1012,6 +1012,6 @@ Run a signal by its name
 
 ---
 
-### set
+### arg
 
 Set an argument while the program is running
