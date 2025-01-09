@@ -291,6 +291,10 @@ There is a markdown parser implemented from scratch, no library is used.
 
 It can format the most common cases like bold, italic, quotes, backticks, headers, separators, snippets.
 
+The text output is only parsed when needed, at the end of streams.
+It is also able to only format the last line added to the textarea.
+It aims to be as efficient as it can.
+
 Snippets get syntax highlighted depending on the detected mode, for example python code.
 To achieve this, the `Pygments` library is used.
 
