@@ -177,7 +177,7 @@ Different profiles can be created and used.
 
 By default it uses the `main` profile.
 
-Different profiles independent configs and data.
+Profiles have independent configs and data.
 
 To launch with a different profile use the `--profile` arugment.
 
