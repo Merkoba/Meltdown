@@ -432,6 +432,37 @@ While this has been tested to work, it's still considered experimental.
 
 ---
 
+## Themes <a name="themes"></a>
+
+There are 3 available color themes. `dark`, `light`, and `high contrast`.
+
+
+### Dark
+
+![](img/theme_dark.png)
+
+---
+
+### Light
+
+![](img/theme_light.png)
+
+---
+
+## High Contrast
+
+![](img/theme_contrast.png)
+
+---
+
+You can access `Theme` in the `main menu`.
+
+Or by using the `/theme` command.
+
+The application needs to restart for the theme to take effect.
+
+---
+
 ## Keywords <a name="keywords"></a>
 
 There are some keywords you can use in commands:
@@ -492,34 +523,3 @@ There are 3 scrollable panels at the top, which can be scrolled by clicking the 
 or by using the mousewheel.
 
 Middle clicking the panel arrows scrolls instantly to that side.
-
----
-
-## Themes <a name="themes"></a>
-
-There are 3 available color themes. `dark`, `light`, and `high contrast`.
-
-
-### Dark
-
-![](img/theme_dark.png)
-
----
-
-### Light
-
-![](img/theme_light.png)
-
----
-
-## High Contrast
-
-![](img/theme_contrast.png)
-
----
-
-You can access `Theme` in the `main menu`.
-
-Or by using the `/theme` command.
-
-The application needs to restart for the theme to take effect.
