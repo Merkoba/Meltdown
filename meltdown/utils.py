@@ -563,5 +563,11 @@ class Utils:
         value = text.split(",")
         return [item.strip() for item in value]
 
+    def empty_string(self, text: str) -> str:
+        if text in ('""', "''"):
+            return ""
+
+        return text
+
 
 utils = Utils()

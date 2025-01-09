@@ -771,9 +771,7 @@ class Args:
             name = cmd
             value = ""
 
-        if value == '""':
-            value = ""
-
+        value = utils.empty_string(value)
         arg = getattr(self, name)
 
         if arg is None:
