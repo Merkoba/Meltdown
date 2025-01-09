@@ -516,7 +516,7 @@ No need to greet me, just answer.
             self.reset_one(name, focus=False)
 
             if not args.quiet:
-                display.print(f"{name}: {getattr(self, name)}")
+                self.feedback(name)
 
             return
 
@@ -535,11 +535,8 @@ No need to greet me, just answer.
 
         if " " in text:
             self.set_command(text)
-            return
-
-        if hasattr(self, text):
-            value = getattr(self, text)
-            display.print(f"{text}: {value}")
+        elif hasattr(self, text):
+            self.feedback(text)
 
     def save_last(self) -> None:
         if not self.last_config:
@@ -552,6 +549,13 @@ No need to greet me, just answer.
             return
 
         self.load_state(self.last_config)
+
+    def feedback(self, name: str) -> None:
+        from .display import display
+
+        current = getattr(self, name)
+        svalue = current if current else "empty"
+        display.print(f"{name}: {svalue}")
 
 
 config = Config()
