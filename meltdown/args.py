@@ -793,8 +793,8 @@ class Args:
                 changed = True
         elif value.startswith("[") and value.endswith("]"):
             if isinstance(arg, list):
-                value = value[1:-1]
-                values = value.split(",")
+                value2 = value[1:-1]
+                values = value2.split(",")
                 values = [v.strip() for v in values]
                 setattr(self, name, values)
                 changed = True
