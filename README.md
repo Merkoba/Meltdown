@@ -495,11 +495,24 @@ Middle clicking the panel arrows scrolls instantly to that side.
 
 There are 3 available color themes. `dark`, `light`, and `high contrast`.
 
+
+### Dark
+
 ![](img/theme_dark.png)
+
+---
+
+### Light
 
 ![](img/theme_light.png)
 
+---
+
+## High Contrast
+
 ![](img/theme_contrast.png)
+
+---
 
 You can access `Theme` in the `main menu`.
 
