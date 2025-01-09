@@ -280,6 +280,8 @@ Multiple tabs can be selected by shift clicking them. This allows you to move or
 Tabs can be closed by middle clicking them. Empty tabs won't require a confirmation.
 The need for confirmations can also be configured through arguments.
 
+When there is a single tab, the tab bar is not shown, as soon as second tab is created, the tab bar is shown. This can be configured, to always show the tab bar, or to never show it.
+
 ---
 
 ## Find <a name="find"></a>
