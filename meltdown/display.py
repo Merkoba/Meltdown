@@ -506,11 +506,11 @@ class Display:
 
         tab.output.print(text)
 
-        if do_format:
-            self.format_text(tab_id, mode="last")
-
         if modified:
             tab.modified = True
+
+        if do_format:
+            self.format_text(tab_id, mode="last")
 
     def insert(self, text: str, tab_id: str | None = None) -> None:
         if not app.exists():
