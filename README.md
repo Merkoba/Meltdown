@@ -274,7 +274,8 @@ When tabs are created they get a short random word for its name.
 After the first response from the AI, the name will be updated to a more relevant one.
 The name can be renamed by right clicking the tab/conversation, or with `/rename`.
 
-Multiple tabs can be selected by shift clicking them. This allows you to move more tabs at the same time.
+Tabs can be moved left/right by dragging them.
+Multiple tabs can be selected by shift clicking them. This allows you to move or close more tabs at the same time.
 
 ---
 
