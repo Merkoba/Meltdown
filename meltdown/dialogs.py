@@ -377,6 +377,7 @@ class Dialog:
         self.id_ = id_
         self.buttons: list[ButtonBox] = []
         self.commands: Commands | None = None
+        self.max_buttons = 8
 
         self.make(text, with_top_frame=top_frame)
 
@@ -467,7 +468,7 @@ class Dialog:
         num = len(self.buttons)
         div = 3
 
-        if num_cmds > 6:
+        if num_cmds > self.max_buttons:
             row = num // div
             column = num % div
         else:
