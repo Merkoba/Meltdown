@@ -277,6 +277,9 @@ The name can be renamed by right clicking the tab/conversation, or with `/rename
 Tabs can be moved left/right by dragging them.
 Multiple tabs can be selected by shift clicking them. This allows you to move or close more tabs at the same time.
 
+Tabs can be closed by middle clicking them. Empty tabs won't require a confirmation.
+The need for confirmations can also be configured through arguments.
+
 ---
 
 ## Find <a name="find"></a>
