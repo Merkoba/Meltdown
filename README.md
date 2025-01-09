@@ -266,6 +266,10 @@ The mousewheel can be used to cycle between tabs and there are some shortcuts an
 There is a tab list which shows all the open tabs, which you can type to filter.
 This is accessed by right clicking the conversation or with `/list`.
 
+When tabs are created they get a short random word for its name.
+After the first response from the AI, the name will be updated to a more relevant one.
+The name can be renamed by right clicking the tab/conversation, or with `/rename`.
+
 ---
 
 ## Find <a name="find"></a>
