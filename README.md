@@ -19,6 +19,7 @@
 1. [Tasks](#tasks)
 1. [Config](#config)
 1. [Arg](#arg)
+1. [Prompts](#custom)
 1. [Images](#images)
 1. [Keywords](#keywords)
 1. [Commands](commands.md)
