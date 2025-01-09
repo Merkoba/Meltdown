@@ -22,6 +22,7 @@
 1. [Prompts](#custom)
 1. [Images](#images)
 1. [Keywords](#keywords)
+1. [Tips](#tips)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
 1. [Keyboard](keyboard.md)
@@ -447,3 +448,14 @@ Random noun.
 This is a special syntax to create `uselinks`.
 
 These are used to prompt directly on click.
+
+---
+
+## Tips
+
+Right clicking inputs like `model` and `input` show recently used items.
+
+Middle clicking items in these lists delete them from the list.
+
+There are 3 scrollable panels at the top, which can be scrolled by clicking the arrows on the sides
+or by using the mousewheel.
