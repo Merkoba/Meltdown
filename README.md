@@ -97,6 +97,8 @@ CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdo
 
 This is important because the GPU accelerates `tokens per second` a lot on local models.
 
+`nvidia` GPUs haven't been tested yet.
+
 ---
 
 Intalling with `pipx` provides the `meltdown` command.
