@@ -756,16 +756,22 @@ class Args:
 
         Dialog.show_msgbox("Arguments", "\n".join(text))
 
-    def set_arg(self, cmd: str) -> None:
+    def set_command(self, cmd: str) -> None:
         from .utils import utils
         from .display import display
 
-        if " " in cmd:
-            name, value = cmd.split(" ", 1)
-        else:
-            name = cmd
-            value = ""
+        def fmt() -> None:
+            display.print("Format: [name] [value]")
 
+        if not cmd:
+            fmt()
+            return
+
+        if " " not in cmd:
+            fmt()
+            return
+
+        name, value = cmd.split(" ", 1)
         arg = getattr(self, name)
 
         if arg is None:
@@ -807,7 +813,7 @@ class Args:
             return
 
         svalue = value if value else "empty"
-        display.print(f"Done: Set {name} to {svalue}")
+        display.print(f"Arg: `{name}` set to `{svalue}`", do_format=True)
 
 
 args = Args()

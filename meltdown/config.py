@@ -481,33 +481,37 @@ No need to greet me, just answer.
         from .display import display
         from .args import args
 
+        def fmt() -> None:
+            display.print("Format: [name] [value]")
+
         if not command:
+            fmt()
             return
 
-        parts = command.split(" ")
-
-        if len(parts) < 2:
+        if " " not in command:
+            fmt()
             return
 
-        key = parts[0]
+        name, value = command.split(" ", 1)
 
-        if not hasattr(self, key):
+        if not hasattr(self, name):
+            display.print("Invalid config.")
             return
-
-        value = " ".join(parts[1:])
 
         if value == "reset":
-            self.reset_one(key, focus=False)
+            self.reset_one(name, focus=False)
 
             if not args.quiet:
-                display.print(f"{key}: {getattr(self, key)}")
+                display.print(f"{name}: {getattr(self, name)}")
 
             return
 
-        self.set(key, value)
+        if not self.set(name, value):
+            display.print("Invalid value.")
+            return
 
         if not args.quiet:
-            display.print(f"{key}: {value}")
+            display.print(f"Config: `{name}` set to `{value}`", do_format=True)
 
     def command(self, text: str | None = None) -> None:
         from .display import display
