@@ -549,7 +549,7 @@ No need to greet me, just answer.
 
         current = getattr(self, name)
         svalue = current if current else "empty"
-        display.print(f"{name}: {svalue}")
+        display.print(f"Config: `{name}` is `{svalue}`", do_format=True)
 
 
 config = Config()
