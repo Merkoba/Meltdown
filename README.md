@@ -488,3 +488,21 @@ There are 3 scrollable panels at the top, which can be scrolled by clicking the 
 or by using the mousewheel.
 
 Middle clicking the panel arrows scrolls instantly to that side.
+
+---
+
+## Themes
+
+There are 3 available color themes. `dark`, `light`, and `high contrast`.
+
+![](img/theme_dark.png)
+
+![](img/theme_light.png)
+
+![](img/theme_contrast.png)
+
+You can access `Theme` in the `main menu`.
+
+Or by using the `/theme` command.
+
+The application needs to restart for the theme to take effect.
