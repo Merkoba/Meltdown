@@ -95,6 +95,8 @@ To install it with `Vulkan` support (GPU), you can do this:
 CMAKE_ARGS="-DGGML_VULKAN=on" pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 ```
 
+This is important because the GPU accelerates `tokens per second` a lot on local models.
+
 ---
 
 Intalling with `pipx` provides the `meltdown` command.
