@@ -369,7 +369,11 @@ When highlighted words are clicked, a menu with several options appear.
 
 Custom Prompts can be registered to explain these words in a special way.
 
-For example: `--custom-prompt Twelve="explain this like I'm 12"`
+For this the keywords are needed, like `((words))`
+
+For example: `Spanish="shortly explain ((words)) in spanish"`
+
+![](img/spanish.png)
 
 ---
 
