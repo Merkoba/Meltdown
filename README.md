@@ -26,6 +26,9 @@
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 1. [Themes](#themes)
+
+### Docs
+
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
 1. [Keyboard](keyboard.md)
