@@ -765,13 +765,12 @@ class Args:
             display.print("Format: [name] [value]")
             return
 
-        if " " not in cmd:
-            if hasattr(self, cmd):
-                self.feedback(cmd)
+        if " " in cmd:
+            name, value = cmd.split(" ", 1)
+        else:
+            name = cmd
+            value = ""
 
-            return
-
-        name, value = cmd.split(" ", 1)
         arg = getattr(self, name)
 
         if arg is None:
@@ -820,13 +819,6 @@ class Args:
 
         svalue = value if value else "empty"
         display.print(f"Arg: `{name}` set to `{svalue}`", do_format=True)
-
-    def feedback(self, name: str) -> None:
-        from .display import display
-
-        current = getattr(self, name)
-        svalue = current if current else "empty"
-        display.print(f"{name}: {svalue}")
 
 
 args = Args()

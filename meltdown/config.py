@@ -514,17 +514,13 @@ No need to greet me, just answer.
 
         if value == "reset":
             self.reset_one(name, focus=False)
-
-            if not args.quiet:
-                self.feedback(name)
-
-            return
-
-        if not self.set(name, value, prints=True):
+            value = ""
+        elif not self.set(name, value, prints=True):
             return
 
         if not args.quiet:
-            display.print(f"Config: `{name}` set to `{value}`", do_format=True)
+            svalue = value if value else "empty"
+            display.print(f"Config: `{name}` set to `{svalue}`", do_format=True)
 
     def command(self, cmd: str | None = None) -> None:
         if not cmd:
