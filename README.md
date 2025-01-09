@@ -4,6 +4,14 @@
 
 ---
 
+This is a desktop application to interact with `large language models`.
+
+It has hundreds of arguments and commands and many power user features.
+
+It's written 100% in python and it uses `tkinter` for the GUI.
+
+---
+
 ## Index
 1. [Screenshots](#screenshots)
 1. [Installation](#installation)
