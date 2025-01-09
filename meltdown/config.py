@@ -510,6 +510,9 @@ No need to greet me, just answer.
             name = cmd
             value = ""
 
+        if value == '""':
+            value = ""
+
         if not hasattr(self, name):
             display.print("Invalid config.")
             return
