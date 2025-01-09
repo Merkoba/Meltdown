@@ -21,6 +21,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Profiles](#profiles)
 1. [Input](#input)
 1. [Commands](#commands)
+1. [Tabs](#tabs)
 1. [Find](#find)
 1. [Console](#console)
 1. [Listener](#listener)
@@ -34,6 +35,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Args](#args)
 1. [Prompts](#custom)
 1. [Palette](#palette)
+1. [Taps](#taps)
 1. [Gestures](#gestures)
 1. [Images](#images)
 1. [Themes](#themes)
@@ -241,6 +243,28 @@ For example: `/find fun`
 Commands can be autocompleted with `tab`.
 
 Commands do a similarity check, so slightly malformed commands will match if similar enough.
+
+---
+
+## Tabs <a name="tabs"></a>
+
+Each conversation is represented by a tab.
+
+To open a new tab click the `New` button, or with `/new`,
+or double clicking the empty tab bar, or with `ctrl + t`, or `ctrl + n`.
+
+There are various ways to close tabs:
+
+![](img/close.png)
+
+There is a maximum amount of tabs that can be opened at the same time (configurable).
+
+After that limit is hit (100 by default), you will need to close old tabs to open new ones.
+
+The mousewheel can be used to cycle between tabs and there are some shortcuts and commands for this.
+
+There is a tab list which shows all the open tabs, which you can type to filter.
+This is accessed by right clicking the conversation or with `/list`.
 
 ---
 
@@ -500,11 +524,19 @@ For example: `--custom-prompt Spanish="shortly explain ((words)) in spanish"`
 Apart from typing the commands in the input (which supports autocompletion with tab),
 there is another way to run commands through a palette.
 
-To spawn it, tap `ctrl` twice in a row (or through the `/palette` command).
+To spawn it, tap `ctrl` twice in a row, or in the `main menu`, or with `/palette`.
 
 You can filter it by typing some letters.
 
 ![](img/palette.png)
+
+---
+
+## Double Taps <a name="taps"></a>
+
+When `ctrl` is pressed twice in a row quickly, a command gets executed.
+
+By default it opens the `Command Palette` but it can be configured.
 
 ---
 
