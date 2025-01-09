@@ -376,9 +376,12 @@ No need to greet me, just answer.
         setattr(self, key, value)
         self.save()
 
-    def set(self, key: str, value: Any, on_change: bool = True) -> bool:
+    def set(
+        self, key: str, value: Any, on_change: bool = True, prints: bool = False
+    ) -> bool:
         from .model import model
         from .widgets import widgets
+        from .display import display
 
         vtype = self.get_default(key).__class__
 
@@ -389,12 +392,20 @@ No need to greet me, just answer.
                 value = int(value)
             except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
+
+                if prints:
+                    display.print("Invalid value.")
+
                 return False
         elif vtype is float:
             try:
                 value = float(value)
             except BaseException:
                 widgets.fill_widget(key, self.get_default(key))
+
+                if prints:
+                    display.print("Invalid value.")
+
                 return False
         elif vtype is bool:
             value = bool(value)
@@ -406,6 +417,9 @@ No need to greet me, just answer.
         widgets.fill_widget(key, value)
 
         if current == value:
+            if prints:
+                display.print("Config is already set to that.")
+
             return False
 
         setattr(self, key, value)
@@ -506,8 +520,7 @@ No need to greet me, just answer.
 
             return
 
-        if not self.set(name, value):
-            display.print("Invalid value.")
+        if not self.set(name, value, prints=True):
             return
 
         if not args.quiet:

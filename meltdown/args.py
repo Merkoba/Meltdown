@@ -3,6 +3,7 @@ from __future__ import annotations
 # Standard
 import sys
 from pathlib import Path
+from typing import Any
 
 # Modules
 from .app import app
@@ -779,37 +780,43 @@ class Args:
             return
 
         vlower = value.lower()
+        error_msg = "Invalid value."
         changed = False
+
+        def set_value(val: Any) -> None:
+            nonlocal changed
+            nonlocal error_msg
+
+            if arg == val:
+                error_msg = "Arg is already set to that."
+                return
+
+            setattr(self, name, val)
+            changed = True
 
         if vlower == "true":
             if isinstance(arg, bool):
-                setattr(self, name, True)
-                changed = True
+                set_value(True)
         elif vlower == "false":
             if isinstance(arg, bool):
-                setattr(self, name, False)
-                changed = True
+                set_value(False)
         elif value.isdigit():
             if isinstance(arg, int):
-                setattr(self, name, int(value))
-                changed = True
+                set_value(int(value))
         elif utils.is_float(value):
             if isinstance(arg, float):
-                setattr(self, name, float(value))
-                changed = True
+                set_value(float(value))
         elif value.startswith("[") and value.endswith("]"):
             if isinstance(arg, list):
                 value2 = value[1:-1]
                 values = value2.split(",")
                 values = [v.strip() for v in values]
-                setattr(self, name, values)
-                changed = True
+                set_value(values)
         elif isinstance(arg, str):
-            setattr(self, name, value)
-            changed = True
+            set_value(value)
 
         if not changed:
-            display.print("Invalid value.")
+            display.print(error_msg)
             return
 
         svalue = value if value else "empty"
