@@ -20,6 +20,8 @@
 1. [Config](#config)
 1. [Arg](#arg)
 1. [Prompts](#custom)
+1. [Palette](#palette)
+1. [Gestures](#gestures)
 1. [Images](#images)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
@@ -379,6 +381,31 @@ For example: `--custom-prompt Spanish="shortly explain ((words)) in spanish"`
 
 ---
 
+## Palette <a name="palette"></a>
+
+Apart from typing the commands in the input (which supports autocompletion with tab),
+there is another way to run commands through a palette.
+
+To spawn it, tap `ctrl` twice in a row (or through the `/palette` command).
+
+You can filter it by typing some letters.
+
+![](img/palette.png)
+
+---
+
+## Gestures <a name="gestures"></a>
+
+There are 4 mouse gestures that can be mapped to commands.
+
+These are `up`, `down`, `left`, and `right`.
+
+To trigger these, hold the right mouse button, move to a direction, and release the button.
+
+By default these scroll up/down and move to tabs left/right.
+
+---
+
 ## Images <a name="images"></a>
 
 Multi-modal models like llava 1.5 can be used.
@@ -459,3 +486,5 @@ Middle clicking items in these lists delete them from the list.
 
 There are 3 scrollable panels at the top, which can be scrolled by clicking the arrows on the sides
 or by using the mousewheel.
+
+Middle clicking the panel arrows scrolls instantly to that side.
