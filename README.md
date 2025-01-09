@@ -483,7 +483,7 @@ For example `--task "60 /signal update /now"`
 
 ---
 
-## Config <a name="set"></a>
+## Changing Config <a name="set"></a>
 
 The `config` command allows to change the configuration of the program.
 
@@ -495,7 +495,7 @@ Or `/config name_user Bob`.
 
 To know the name of the widget, hover over it.
 
-## Args <a name="args"></a>
+## Changing Arguments <a name="args"></a>
 
 Arguments are usually set when launching the program, but they can also be changed while it's running.
 
