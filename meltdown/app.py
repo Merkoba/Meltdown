@@ -572,6 +572,9 @@ class App:
             if args.profile:
                 title += f" ({args.profile})"
 
+        if not args.quiet:
+            utils.msg(f"Profile: {args.profile}")
+
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)
         self.root.grid_columnconfigure(0, weight=1)

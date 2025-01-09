@@ -837,7 +837,10 @@ class Model:
             return
 
         m = utils.singular_or_plural(args.auto_unload, "min", "mins")
-        utils.msg(f"Auto-unload active ({args.auto_unload} {m})")
+
+        if not args.quiet:
+            utils.msg(f"Auto-unload active ({args.auto_unload} {m})")
+
         thread = threading.Thread(target=lambda: self.auto_unload_loop())
         thread.daemon = True
         thread.start()

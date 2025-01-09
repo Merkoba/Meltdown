@@ -10,6 +10,7 @@
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
+1. [Profiles](#profiles)
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Upload](#upload)
@@ -167,6 +168,22 @@ This can be done using the model menu: `Set Google Key`.
 Or using the `googlekey` command.
 
 Then pick the model you want: `Use Gemini Model`.
+
+---
+
+## Profiles <a name="profiles"></a>
+
+Different profiles can be created and used.
+
+By default it uses the `main` profile.
+
+Different profiles independent configs and data.
+
+To launch with a different profile use the `--profile` arugment.
+
+For example: `---profile dev`.
+
+To access the directories where profiles save files, use the `/profile` command.
 
 ---
 
