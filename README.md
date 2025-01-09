@@ -18,7 +18,7 @@
 1. [Aliases](#aliases)
 1. [Tasks](#tasks)
 1. [Config](#config)
-1. [Arg](#arg)
+1. [Args](#args)
 1. [Prompts](#custom)
 1. [Palette](#palette)
 1. [Gestures](#gestures)
@@ -353,7 +353,7 @@ Or `/config name_user Bob`.
 
 To know the name of the widget, hover over it.
 
-## Arg <a name="arg"></a>
+## Args <a name="args"></a>
 
 Arguments are usually set when launching the program, but they can also be changed while it's running.
 
