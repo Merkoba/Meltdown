@@ -553,5 +553,12 @@ class Utils:
         else:
             return True
 
+    def is_bool(self, text: str) -> bool:
+        return text.lower() in ["true", "yes", "1"]
+
+    def get_list(self, text: str) -> list[str]:
+        value = text.split(",")
+        return [item.strip() for item in value]
+
 
 utils = Utils()

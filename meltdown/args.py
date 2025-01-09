@@ -777,47 +777,39 @@ class Args:
             display.print("Invalid argument.")
             return
 
-        vlower = value.lower()
-        error_msg = "Invalid value."
-        changed = False
+        vtype = arg.__class__
+        new_value: Any = None
 
-        def set_value(val: Any) -> None:
-            nonlocal changed
-            nonlocal error_msg
+        if vtype is str:
+            new_value = str(value)
+        elif vtype is int:
+            try:
+                new_value = int(value)
+            except BaseException:
+                return False
+        elif vtype is float:
+            try:
+                new_value = float(value)
+            except BaseException:
+                return False
+        elif vtype is bool:
+            new_value = utils.is_bool(value)
+        elif vtype is list:
+            new_value = utils.get_list(value)
 
-            if arg == val:
-                error_msg = "Arg is already set to that."
-                return
-
-            setattr(self, name, val)
-            changed = True
-
-        if vlower == "true":
-            if isinstance(arg, bool):
-                set_value(True)
-        elif vlower == "false":
-            if isinstance(arg, bool):
-                set_value(False)
-        elif value.isdigit():
-            if isinstance(arg, int):
-                set_value(int(value))
-        elif utils.is_float(value):
-            if isinstance(arg, float):
-                set_value(float(value))
-        elif value.startswith("[") and value.endswith("]"):
-            if isinstance(arg, list):
-                value2 = value[1:-1]
-                values = value2.split(",")
-                values = [v.strip() for v in values]
-                set_value(values)
-        elif isinstance(arg, str):
-            set_value(value)
-
-        if not changed:
-            display.print(error_msg)
+        if new_value is None:
             return
 
-        svalue = value if value else "empty"
+        if arg == new_value:
+            display.print("Arg is already set to that.")
+            return
+
+        setattr(self, name, new_value)
+        svalue = new_value
+
+        if svalue == "":
+            svalue = "[Empty]"
+
         display.print(f"Arg: `{name}` set to `{svalue}`", do_format=True)
 
 

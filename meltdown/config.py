@@ -408,7 +408,7 @@ No need to greet me, just answer.
 
                 return False
         elif vtype is bool:
-            value = bool(value)
+            new_value = utils.is_bool(value)
 
         if key in self.validations:
             value = self.validations[key](value)
@@ -495,18 +495,15 @@ No need to greet me, just answer.
         from .display import display
         from .args import args
 
-        def fmt() -> None:
-            display.print("Format: [name] [value]")
-
         if not cmd:
-            fmt()
+            display.print("Format: [name] [value]")
             return
 
-        if " " not in cmd:
-            fmt()
-            return
-
-        name, value = cmd.split(" ", 1)
+        if " " in cmd:
+            name, value = cmd.split(" ", 1)
+        else:
+            name = cmd
+            value = ""
 
         if not hasattr(self, name):
             display.print("Invalid config.")
@@ -519,7 +516,11 @@ No need to greet me, just answer.
             return
 
         if not args.quiet:
-            svalue = value if value else "empty"
+            svalue = getattr(self, name)
+
+            if svalue == "":
+                svalue = "[Empty]"
+
             display.print(f"Config: `{name}` set to `{svalue}`", do_format=True)
 
     def command(self, cmd: str | None = None) -> None:
@@ -527,10 +528,7 @@ No need to greet me, just answer.
             self.menu()
             return
 
-        if " " in cmd:
-            self.set_command(cmd)
-        elif hasattr(self, cmd):
-            self.feedback(cmd)
+        self.set_command(cmd)
 
     def save_last(self) -> None:
         if not self.last_config:
@@ -543,13 +541,6 @@ No need to greet me, just answer.
             return
 
         self.load_state(self.last_config)
-
-    def feedback(self, name: str) -> None:
-        from .display import display
-
-        current = getattr(self, name)
-        svalue = current if current else "empty"
-        display.print(f"Config: `{name}` is `{svalue}`", do_format=True)
 
 
 config = Config()
