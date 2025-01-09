@@ -23,9 +23,9 @@
 1. [Palette](#palette)
 1. [Gestures](#gestures)
 1. [Images](#images)
+1. [Themes](#themes)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
-1. [Themes](#themes)
 
 ### Docs
 
