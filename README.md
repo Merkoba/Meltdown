@@ -260,6 +260,8 @@ There are various ways to close tabs:
 There is a maximum amount of tabs that can be opened at the same time (configurable).
 
 After that limit is hit (100 by default), you will need to close old tabs to open new ones.
+Its advised to not configure this limit to a very big number since problems can arise with many tabs.
+The suggested workflow is to close all tabs after a while or closing `Old` tabs.
 
 The mousewheel can be used to cycle between tabs and there are some shortcuts and commands for this.
 
