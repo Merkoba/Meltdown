@@ -37,6 +37,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Gestures](#gestures)
 1. [Images](#images)
 1. [Themes](#themes)
+1. [Compact](#compact)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -569,6 +570,18 @@ You can access `Theme` in the `main menu`.
 Or by using the `/theme` command.
 
 The application needs to restart for the theme to take effect.
+
+---
+
+## Compact <a name="compact"></a>
+
+There is a compact mode which hides some widgets from the window.
+
+This can be useful if you want a less distracted interface.
+
+To toggle compact mode you can use the `main menu`, or `f8`, or `/compact`, or `--compact`.
+
+There are arguments you can use to define which panels get removed in compact mode.
 
 ---
 
