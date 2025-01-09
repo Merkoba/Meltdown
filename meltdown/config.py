@@ -408,7 +408,12 @@ No need to greet me, just answer.
 
                 return False
         elif vtype is bool:
-            new_value = utils.is_bool(value)
+            if utils.is_bool_true(value):
+                value = True
+            elif utils.is_bool_false(value):
+                value = False
+            else:
+                return False
 
         if key in self.validations:
             value = self.validations[key](value)

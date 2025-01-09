@@ -786,18 +786,22 @@ class Args:
             try:
                 new_value = int(value)
             except BaseException:
-                return False
+                pass
         elif vtype is float:
             try:
                 new_value = float(value)
             except BaseException:
-                return False
+                pass
         elif vtype is bool:
-            new_value = utils.is_bool(value)
+            if utils.is_bool_true(value):
+                new_value = True
+            elif utils.is_bool_false(value):
+                new_value = False
         elif vtype is list:
             new_value = utils.get_list(value)
 
         if new_value is None:
+            display.print("Invalid value.")
             return
 
         if arg == new_value:

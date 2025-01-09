@@ -553,8 +553,11 @@ class Utils:
         else:
             return True
 
-    def is_bool(self, text: str) -> bool:
+    def is_bool_true(self, text: str) -> bool:
         return text.lower() in ["true", "yes", "1"]
+
+    def is_bool_false(self, text: str) -> bool:
+        return text.lower() in ["false", "no", "0"]
 
     def get_list(self, text: str) -> list[str]:
         value = text.split(",")
