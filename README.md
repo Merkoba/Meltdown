@@ -6,10 +6,10 @@
 
 ## Index
 1. [Screenshots](#screenshots)
+1. [Installation](#installation)
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
-1. [Installation](#installation)
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Upload](#upload)
