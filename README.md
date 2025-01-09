@@ -248,7 +248,7 @@ Commands do a similarity check, so slightly malformed commands will match if sim
 
 ## Tabs <a name="tabs"></a>
 
-Each conversation is represented by a tab.
+Each conversation is represented by a tab in a horizontal tab bar.
 
 To open a new tab click the `New` button, or with `/new`,
 or double clicking the empty tab bar, or with `ctrl + t`, or `ctrl + n`.
