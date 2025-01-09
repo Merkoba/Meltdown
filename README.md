@@ -21,6 +21,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Profiles](#profiles)
 1. [Console](#console)
 1. [Listener](#listener)
+1. [Logs](#logs)
 1. [Upload](#upload)
 1. [Signals](#signals)
 1. [System](#system)
@@ -243,6 +244,24 @@ But the file path can also be set with `--listener-path`.
 This is another way to control the program remotely.
 
 ![](img/listener.jpg)
+
+---
+
+## Logs  <a name="logs"></a>
+
+There is a logging system to save conversations to the file system.
+
+It supports output in `text`, `json`, or `markdown`.
+
+To log a conversation you can right click it and select `Save Log`.
+
+Or use the commands: `/log`, `/logtext`, `/logjson`, `/logmarkdown`.
+
+It's possible to also log all the open conversations (tabs).
+
+By default the logs are saved in the `data` directory but it can be configured.
+
+After saving a log, feedback is shown to easily open the file.
 
 ---
 
