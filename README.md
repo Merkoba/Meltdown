@@ -25,6 +25,7 @@
 1. [Images](#images)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
+1. [Themes](#themes)
 1. [Commands](commands.md)
 1. [Arguments](arguments.md)
 1. [Keyboard](keyboard.md)
@@ -478,7 +479,7 @@ These are used to prompt directly on click.
 
 ---
 
-## Tips
+## Tips <a name="tips"></a>
 
 Right clicking inputs like `model` and `input` show recently used items.
 
@@ -491,7 +492,7 @@ Middle clicking the panel arrows scrolls instantly to that side.
 
 ---
 
-## Themes
+## Themes <a name="themes"></a>
 
 There are 3 available color themes. `dark`, `light`, and `high contrast`.
 
