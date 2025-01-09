@@ -22,6 +22,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Input](#input)
 1. [Commands](#commands)
 1. [Tabs](#tabs)
+1. [Markdown](#markdown)
 1. [Find](#find)
 1. [Console](#console)
 1. [Listener](#listener)
@@ -281,6 +282,17 @@ Tabs can be closed by middle clicking them. Empty tabs won't require a confirmat
 The need for confirmations can also be configured through arguments.
 
 When there is a single tab, the tab bar is not shown, as soon as second tab is created, the tab bar is shown. This can be configured, to always show the tab bar, or to never show it.
+
+---
+
+## Markdown <a name="markdown"></a>
+
+There is a markdown parser implemented from scratch, no library is used.
+
+It can format the most common cases like bold, italic, quotes, backticks, headers, separators, snippets.
+
+Snippets get syntax highlighted depending on the detected mode, for example python code.
+To achieve this, the `Pygments` library is used.
 
 ---
 
