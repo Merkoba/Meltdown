@@ -298,6 +298,9 @@ It aims to be as efficient as it can.
 Snippets get syntax highlighted depending on the detected mode, for example python code.
 To achieve this, the `Pygments` library is used.
 
+Each kind of markdown can be enabled or disabled for user or ai. For example bold can be enabled
+for only the user, or the ai, or both, or none. This is done through arguments.
+
 ---
 
 ## Find <a name="find"></a>
