@@ -19,6 +19,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Profiles](#profiles)
+1. [Input](#input)
 1. [Commands](#commands)
 1. [Find](#find)
 1. [Console](#console)
@@ -202,11 +203,33 @@ To access the directories where profiles save files, use the `/profile` command.
 
 ---
 
+## Input <a name="input"></a>
+
+To enter messages for the AI, there is an input at the bottom.
+
+Simply write something and press Enter.
+
+Up/Down arrows can be used to go back to previous inputs used.
+
+Right clicking the input shows recent inputs.
+
+There is a `Write` button that opens a popup larger input to write more elaborate prompts.
+
+The `Write` popup requires `ctrl + Enter` to submit, or use the button.
+
+The input can also be used to run commands.
+
+There is a `System Prompt` which you can modify using the `main menu`, or with `/system`.
+
+The system prompt defines rules that will influence the responses you get.
+
+---
+
 ## Commands <a name="commands"></a>
 
 There are many commands to perform actions.
 
-To use a command you can use type them in the input.
+To use a command you can type them in the input.
 
 For example: `/logtext`.
 
