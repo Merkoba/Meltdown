@@ -324,7 +324,7 @@ Tasks that run periodically can be registered.
 
 Format is `[seconds] [commands] [/now (optional)]`
 
-For example `--task "60 /signal update`
+For example `--task "60 /signal update"`
 
 This will run the `update` signal every 60 seconds.
 
