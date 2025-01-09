@@ -19,6 +19,8 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Profiles](#profiles)
+1. [Commands](#commands)
+1. [Find](#find)
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Logs](#logs)
@@ -197,6 +199,42 @@ To launch with a different profile use the `--profile` arugment.
 For example: `---profile dev`.
 
 To access the directories where profiles save files, use the `/profile` command.
+
+---
+
+## Commands <a name="commands"></a>
+
+There are many commands to perform actions.
+
+To use a command you can use type them in the input.
+
+For example: `/logtext`.
+
+Some commands accept arguments.
+
+For example: `/find fun`
+
+Commands can be autocompleted with `tab`.
+
+Commands do a similarity check, so slightly malformed commands will match if similar enough.
+
+---
+
+## Find <a name="find"></a>
+
+There is a find widget that allows searching for text inside conversations.
+
+It can be activated with `ctrl + f` or `/find`, or `f3`.
+
+It supports finding partial words, or whole words (bound).
+
+It supports finding in text sensitive mode, or text insensitive mode.
+
+It supports finding in reverse with `shift + enter`, or `shift + f3`, or middle clicking the buttons.
+
+There is a command to find in all conversations: `/findall`.
+
+![](img/find.png)
 
 ---
 
