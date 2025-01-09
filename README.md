@@ -372,7 +372,7 @@ Custom Prompts can be registered to explain these words in a special way.
 
 For this the keywords are needed, like `((words))`
 
-For example: `Spanish="shortly explain ((words)) in spanish"`
+For example: `--custom-prompt Spanish="shortly explain ((words)) in spanish"`
 
 ![](img/spanish.png)
 
