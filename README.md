@@ -163,6 +163,12 @@ You can find more on that site.
 
 The bigger the model, the longer it will take to load.
 
+`llama.cpp` is the `inference engine` used, through `llama-cpp-python`.
+
+Responses can be instant (when ready) or streamed as new bits arrive.
+
+Streaming can be stopped. Models can be unloaded.
+
 There is an argument to auto unload a model after x mintues.
 
 For example: `--auto-unload 60` (1 hour).
