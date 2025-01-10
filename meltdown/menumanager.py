@@ -109,8 +109,8 @@ class ModelMenu:
 
         self.menu.separator()
 
-        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_api_key())
-        self.menu.add("Set Google Key", lambda e: model.set_google_api_key())
+        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_key())
+        self.menu.add("Set Google Key", lambda e: model.set_google_key())
 
     def show(self, event: Any = None) -> None:
         if event:

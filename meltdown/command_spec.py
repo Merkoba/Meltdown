@@ -660,13 +660,13 @@ class CommandSpec:
         self.add_cmd(
             "openaikey",
             "Set the OpenAI API key",
-            lambda a=None: model.set_openai_api_key(),
+            lambda a=None: model.set_openai_key(),
         )
 
         self.add_cmd(
             "googlekey",
             "Set the Google API key",
-            lambda a=None: model.set_google_api_key(),
+            lambda a=None: model.set_google_key(),
         )
 
         self.add_cmd(

@@ -156,18 +156,16 @@ class Model:
         from .paths import paths
 
         try:
-            self.openai_key = files.read(paths.openai_apikey)
+            self.openai_key = files.read(paths.openai_key)
         except BaseException as e:
-            utils.error(e)
             self.openai_key = ""
 
     def read_google_key(self) -> None:
         from .paths import paths
 
         try:
-            self.google_key = files.read(paths.google_apikey)
+            self.google_key = files.read(paths.google_key)
         except BaseException as e:
-            utils.error(e)
             self.google_key = ""
 
     def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
@@ -722,16 +720,16 @@ class Model:
             icon.configure(text=text)
             tooltip.set_text(tips["model_local"])
 
-    def set_openai_api_key(self) -> None:
+    def set_openai_key(self) -> None:
         from .dialogs import Dialog
         from .paths import paths
 
         def action(key: str) -> None:
-            path = Path(paths.openai_apikey)
+            path = Path(paths.openai_key)
 
             if (not path.exists()) or not (path.is_file()):
                 path.parent.mkdir(parents=True, exist_ok=True)
-                Path.touch(paths.openai_apikey, exist_ok=True)
+                Path.touch(paths.openai_key, exist_ok=True)
 
             files.write(path, key)
             self.read_openai_key()
@@ -745,16 +743,16 @@ class Model:
             value=self.openai_key,
         )
 
-    def set_google_api_key(self) -> None:
+    def set_google_key(self) -> None:
         from .dialogs import Dialog
         from .paths import paths
 
         def action(key: str) -> None:
-            path = Path(paths.google_apikey)
+            path = Path(paths.google_key)
 
             if (not path.exists()) or not (path.is_file()):
                 path.parent.mkdir(parents=True, exist_ok=True)
-                Path.touch(paths.google_apikey, exist_ok=True)
+                Path.touch(paths.google_key, exist_ok=True)
 
             files.write(path, key)
             self.read_google_key()
