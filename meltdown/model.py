@@ -157,7 +157,7 @@ class Model:
 
         try:
             self.openai_key = files.read(paths.openai_key)
-        except BaseException as e:
+        except BaseException:
             self.openai_key = ""
 
     def read_google_key(self) -> None:
@@ -165,7 +165,7 @@ class Model:
 
         try:
             self.google_key = files.read(paths.google_key)
-        except BaseException as e:
+        except BaseException:
             self.google_key = ""
 
     def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
