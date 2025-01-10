@@ -717,6 +717,12 @@ The application needs to restart for the theme to take effect.
 
 ---
 
+It's also possible to change the border color and size.
+
+Using: `--border-size` and `--border-color`.
+
+---
+
 ## Compact <a name="compact"></a>
 
 There is a compact mode which hides some widgets from the window.
