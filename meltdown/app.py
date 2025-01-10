@@ -400,11 +400,13 @@ class App:
     def after_compact(self, enabled: bool) -> None:
         from .display import display
         from .inputcontrol import inputcontrol
+        from .system import system
 
         self.update()
         inputcontrol.focus()
         self.compact_enabled = enabled
         display.update_scroll()
+        system.check_auto_hide()
 
     def check_compact(self) -> None:
         from .args import args
