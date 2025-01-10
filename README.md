@@ -19,7 +19,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Profiles](#profiles)
-1. [Files](#files)
+1. [Paths](#paths)
 1. [Input](#input)
 1. [Commands](#commands)
 1. [Tabs](#tabs)
@@ -220,7 +220,7 @@ To access the directories where profiles save files, use the `/profile` command.
 
 ---
 
-## Files <a name="files"></a>
+## Paths <a name="files"></a>
 
 Most files are saved in the system's data directory.
 
@@ -240,6 +240,8 @@ Config: `~/.config/meltdown/dev`
 In general things inside `config` should be "safe" to backup, with minimal personal information.
 
 Data holds all conversations and widget history like input.
+It also holds API keys.
+So data should be treated as private.
 
 It's possible to override these paths through arguments.
 
