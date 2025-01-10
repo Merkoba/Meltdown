@@ -167,7 +167,7 @@ The bigger the model, the longer it will take to load.
 
 ## ChatGPT <a name="chatgpt"></a>
 
-ChatGPT is also supported.
+ChatGPT from OpenAI is supported.
 
 You must first set the API key for it to work.
 
@@ -181,7 +181,7 @@ Then pick the model you want: `Use GPT Model`.
 
 ## Gemini <a name="gemini"></a>
 
-Gemini is also supported.
+Gemini from Google is supported.
 
 You must first set the API key for it to work.
 
