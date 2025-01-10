@@ -627,6 +627,8 @@ Or: `/savesession`, or `/savesession books`.
 
 Loading: `/loadconfig books`, `/loadsession books`.
 
+If arguments are not used, a file picker appears.
+
 Config meaning the current configuration of all the widgets.
 
 Session meaning the set of conversations (tabs and their content).
