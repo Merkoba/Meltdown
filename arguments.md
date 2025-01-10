@@ -2575,3 +2575,13 @@ Path to a file that overrides the arguments
 Default: [Empty string]
 
 Type: str
+
+---
+
+### max-items
+
+Max number of items a conversation can have
+
+Default: 100
+
+Type: int

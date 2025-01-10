@@ -336,12 +336,18 @@ class Model:
         if not tab_id:
             tab_id = display.current_tab
 
-        tab = display.get_tab(tab_id)
+        tabconvo = display.get_tab_convo(tab_id)
 
-        if not tab:
+        if not tabconvo:
             return
 
-        if tab.mode == "ignore":
+        if tabconvo.tab.mode == "ignore":
+            return
+
+        num_items = len(tabconvo.convo.items)
+
+        if num_items >= args.max_items:
+            display.print("Limit: Max items reached.", tab_id=tab_id)
             return
 
         if not self.loaded_model:

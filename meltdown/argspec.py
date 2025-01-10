@@ -1692,5 +1692,11 @@ class ArgSpec:
             info="Path to a file that overrides the arguments",
         )
 
+        self.add_argument(
+            "max_items",
+            type=int,
+            info="Max number of items a conversation can have",
+        )
+
 
 argspec = ArgSpec()
