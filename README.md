@@ -687,7 +687,7 @@ The mode also gets disabled when manually scrolled.
 
 ## Keywords <a name="keywords"></a>
 
-There are some keywords you can use in commands:
+There are some keywords that you can use in commands, the input, or system prompt.
 
 ---
 
