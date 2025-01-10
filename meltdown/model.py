@@ -347,7 +347,11 @@ class Model:
         num_items = len(tabconvo.convo.items)
 
         if num_items >= args.max_items:
-            display.print("Limit: Max items reached.", tab_id=tab_id)
+            display.print(
+                "Limit: Max items reached. Make a new tab or clear the conversation.",
+                tab_id=tab_id,
+            )
+
             return
 
         if not self.loaded_model:
