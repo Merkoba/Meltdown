@@ -704,6 +704,12 @@ Variables can be filled at startup using arguments.
 
 For example: `--variable "name = George" --variable "num = 1200"`.
 
+The prefix like `$` can be changed.
+
+For example: `--variable-prefix @`
+
+So you can do: `who is @name?`.
+
 ---
 
 ## Files <a name="files"></a>
