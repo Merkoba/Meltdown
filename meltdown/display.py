@@ -874,6 +874,7 @@ class Display:
         if not args.tab_highlight:
             return
 
+        app.border_effect_on()
         self.book.highlight(tab_id)
         self.set_tab_streaming(tab_id)
         self.tab_streaming = tab_id
@@ -882,6 +883,7 @@ class Display:
         if not args.tab_highlight:
             return
 
+        app.border_effect_off()
         self.book.remove_highlights()
         self.clear_tab_streaming()
         self.format_text(self.tab_streaming)
