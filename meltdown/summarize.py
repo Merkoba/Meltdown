@@ -5,7 +5,7 @@ from .args import args
 from .display import display
 from .model import model
 from .utils import utils
-from . import formats
+from .formats import formats
 
 
 class Summarize:

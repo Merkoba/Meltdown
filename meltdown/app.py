@@ -246,7 +246,7 @@ class App:
             self.update_bottom()
 
     def on_geometry_change(self) -> None:
-        from . import scrollers
+        from .scrollers import scrollers
 
         self.clear_geometry_after()
         scrollers.check_all_buttons()

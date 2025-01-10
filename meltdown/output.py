@@ -713,7 +713,7 @@ class Output(tk.Text):
 
     def copy_items_or_all(self) -> None:
         from .display import display
-        from . import formats
+        from .formats import formats
 
         if display.has_messages():
             formats.copy_text()

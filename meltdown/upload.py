@@ -8,7 +8,7 @@ from .display import display
 from .rentry import Rentry
 from .dialogs import Dialog, Commands
 from .args import args
-from . import formats
+from .formats import formats
 
 
 class Upload:

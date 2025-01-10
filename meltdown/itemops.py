@@ -137,7 +137,7 @@ class ItemOps:
         self.action("use", number, who=who)
 
     def do_use_item(self, text: str) -> None:
-        from . import formats
+        from .formats import formats
 
         def action(mode: str) -> None:
             formats.do_open(mode, text=text)

@@ -10,7 +10,7 @@ from .args import args
 from .utils import utils
 from .files import files
 from .display import display
-from . import formats
+from .formats import formats
 
 # Libraries
 import requests  # type: ignore

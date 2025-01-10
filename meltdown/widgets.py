@@ -27,7 +27,7 @@ from .utils import utils
 from .model import model
 from .autoscroll import autoscroll
 from .close import close
-from . import scrollers
+from .scrollers import scrollers
 from . import widgetutils
 
 

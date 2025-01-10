@@ -15,7 +15,7 @@ from .session import Conversation
 from .paths import paths
 from .utils import utils
 from .files import files
-from . import formats
+from .formats import formats
 
 
 class Logs:

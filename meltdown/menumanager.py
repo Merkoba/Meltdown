@@ -146,7 +146,7 @@ class MoreMenu:
     def make(self) -> None:
         from .display import display
         from .findmanager import findmanager
-        from . import formats
+        from .formats import formats
 
         self.menu.clear()
         num_tabs = display.num_tabs()
