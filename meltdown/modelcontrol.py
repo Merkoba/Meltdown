@@ -4,6 +4,7 @@ from __future__ import annotations
 from typing import Any
 
 # Modules
+from .config import config
 from .model import model
 from .entrybox import EntryBox
 from .files import files
@@ -37,9 +38,8 @@ class ModelControl:
             alt_cmd=lambda m: self.forget(m, event),
         )
 
-    def set(self, text: str) -> None:
-        self.model.set_text(text)
-        self.model.move_to_end()
+    def set(self, m: str) -> None:
+        config.set("model", m)
 
     def apply_history(self, inputs: list[str]) -> None:
         text = inputs[self.history_index]
