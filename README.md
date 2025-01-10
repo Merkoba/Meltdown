@@ -163,6 +163,10 @@ You can find more on that site.
 
 The bigger the model, the longer it will take to load.
 
+There is an argument to auto unload a model after x mintues.
+
+For example: `--auto-unload 60` (1 hour).
+
 ---
 
 ## ChatGPT <a name="chatgpt"></a>
