@@ -67,7 +67,6 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 
 ---
 
-
 ## Installation <a name="installation"></a>
 
 Note: By default `llama.cpp` (local model) support is not installed.
