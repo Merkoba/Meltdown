@@ -19,6 +19,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
 1. [Profiles](#profiles)
+1. [Files](#files)
 1. [Input](#input)
 1. [Commands](#commands)
 1. [Tabs](#tabs)
@@ -216,6 +217,33 @@ To launch with a different profile use the `--profile` argument.
 For example: `--profile dev`.
 
 To access the directories where profiles save files, use the `/profile` command.
+
+---
+
+## Files <a name="files"></a>
+
+Most files are saved in the system's data directory.
+
+In linux this is `~/.local/share`.
+
+The config files are saved in the system's config directory.
+
+In linux this is `~/.config`.
+
+The full paths take into account the name of the program and profile.
+
+For example for a profile called `dev`:
+
+Data: `~/.local/share/meltdown/dev`
+Config: `~/.config/meltdown/dev`
+
+In general things inside `config` should be "safe" to backup, with minimal personal information.
+
+Data holds all conversations and widget history like input.
+
+It's possible to override these paths through arguments.
+
+Using `--data-dir` and `--config-dir`.
 
 ---
 
