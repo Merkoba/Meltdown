@@ -693,6 +693,18 @@ class App:
 
         self.root.after(self.autorun_delay, lambda: action())
 
+    def count(self) -> None:
+        from .display import display
+        from .session import session
+        from .dialogs import Dialog
+
+        texts = []
+        num_tabs = len(display.book.pages)
+        num_convs = session.count()
+        texts.append(f"Tabs: {num_tabs}")
+        texts.append(f"Items: {num_convs}")
+        Dialog.show_message("\n".join(texts))
+
     def stats(self) -> None:
         from .args import args
         from .commands import commands
@@ -868,6 +880,8 @@ class App:
 
         cmds = Commands()
         cmds.add("Portrait", lambda a: self.show_portrait())
+        cmds.add("Count", lambda a: app.count())
+        cmds.add("Stats", lambda a: app.stats())
         cmds.add("Size", lambda a: self.show_size())
         cmds.add("Date", lambda a: self.show_date())
         cmds.add("Started", lambda a: self.show_started())

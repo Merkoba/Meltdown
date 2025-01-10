@@ -1040,7 +1040,7 @@ class CommandSpec:
         self.add_cmd(
             "count",
             "Count the number of open tabs and items",
-            lambda a=None: display.count_tabs(),
+            lambda a=None: app.count(),
         )
 
         self.add_cmd(
