@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 from typing import Any
+from tkinter import filedialog
 
 # Modules
 from .config import config
@@ -96,6 +97,32 @@ class ModelControl:
 
     def show_recent(self) -> None:
         self.show_context(only_items=True)
+
+    def browse(self) -> None:
+        from .widgets import widgets
+
+        if model.model_loading:
+            return
+
+        file = filedialog.askopenfilename(initialdir=widgets.get_dir("model", "models"))
+
+        if file:
+            self.set(file)
+
+    def change(self, name: str) -> None:
+        if not name:
+            return
+
+        name = name.lower()
+        list = files.get_list("models")
+
+        if not list:
+            return
+
+        for item in list:
+            if name in item.lower():
+                self.set(item)
+                return
 
 
 modelcontrol = ModelControl()

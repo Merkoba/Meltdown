@@ -514,7 +514,7 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "browse", "Browse the models", lambda a=None: widgets.browse_models()
+            "browse", "Browse the models", lambda a=None: modelcontrol.browse()
         )
 
         self.add_cmd("file", "Browse for a file", lambda a=None: filecontrol.browse())
@@ -754,7 +754,7 @@ class CommandSpec:
         self.add_cmd(
             "change",
             "Set a model by its name",
-            lambda a=None: widgets.change_model(a),
+            lambda a=None: modelcontrol.change(a),
             type=str,
         )
 

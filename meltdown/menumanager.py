@@ -77,12 +77,11 @@ class MainMenu:
 class ModelMenu:
     def __init__(self) -> None:
         from .model import model
-        from .widgets import widgets
 
         self.menu = Menu()
 
         self.menu.add("Recent Models", lambda e: modelcontrol.show_recent())
-        self.menu.add("Browse Models", lambda e: widgets.browse_models())
+        self.menu.add("Browse Models", lambda e: modelcontrol.browse())
 
         self.menu.separator()
 

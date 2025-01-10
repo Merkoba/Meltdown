@@ -2,7 +2,6 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-from tkinter import filedialog
 from tkinter import ttk
 from typing import Any
 from collections.abc import Callable
@@ -535,9 +534,6 @@ class Widgets:
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
 
-    def set_model(self, m: str) -> None:
-        config.set("model", m)
-
     def stop_stream(self) -> None:
         from .display import display
 
@@ -691,30 +687,6 @@ class Widgets:
                 return str(path.parent)
 
         return None
-
-    def browse_models(self) -> None:
-        if model.model_loading:
-            return
-
-        file = filedialog.askopenfilename(initialdir=self.get_dir("model", "models"))
-
-        if file:
-            self.set_model(file)
-
-    def change_model(self, name: str) -> None:
-        if not name:
-            return
-
-        name = name.lower()
-        list = files.get_list("models")
-
-        if not list:
-            return
-
-        for item in list:
-            if name in item.lower():
-                self.set_model(item)
-                return
 
     def change_mode(self, what: str) -> None:
         if what not in config.modes:
