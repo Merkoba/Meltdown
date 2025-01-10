@@ -355,7 +355,9 @@ class Model:
         no_history = prompt.get("no_history", False)
 
         if prompt_file:
-            if not utils.is_url(prompt_file) and (not Path(prompt_file).exists()):
+            prompt_file = files.clean_path(prompt_file)
+
+            if (not utils.is_url(prompt_file)) and (not Path(prompt_file).exists()):
                 display.print("Error: File not found.")
                 return None
 

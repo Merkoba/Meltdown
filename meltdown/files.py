@@ -133,5 +133,8 @@ class Files:
         with path.open("w", encoding="utf-8") as file:
             file.write(text)
 
+    def clean_path(self, path: str) -> str:
+        return path.replace("file://", "")
+
 
 files = Files()
