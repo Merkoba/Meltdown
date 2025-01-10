@@ -2525,3 +2525,23 @@ Path to a file that defines the available signals
 Default: [Empty string]
 
 Type: str
+
+---
+
+### config-dir
+
+Path for the config files
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### data-dir
+
+Path for the data files
+
+Default: [Empty string]
+
+Type: str
