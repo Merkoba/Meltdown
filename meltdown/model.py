@@ -300,7 +300,6 @@ class Model:
         return True
 
     def after_load(self, start_date: float) -> None:
-        from .widgets import widgets
         from .system import system
 
         self.update_icon()
