@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from .args import args
 from .tooltips import ToolTip
 from .tips import tips
-from . import widgetutils
+from .widgetutils import widgetutils
 
 
 if TYPE_CHECKING:

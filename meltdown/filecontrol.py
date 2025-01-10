@@ -8,9 +8,9 @@ from tkinter import filedialog
 from .app import app
 from .tooltips import ToolTip
 from .entrybox import EntryBox
+from .widgetutils import widgetutils
 from .tips import tips
 from .files import files
-from . import widgetutils
 
 
 class FileControl:

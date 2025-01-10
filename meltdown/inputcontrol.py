@@ -15,7 +15,7 @@ from .tips import tips
 from .utils import utils
 from .files import files
 from .menus import Menu
-from . import widgetutils
+from .widgetutils import widgetutils
 
 
 class InputControl:

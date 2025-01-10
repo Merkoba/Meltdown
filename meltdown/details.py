@@ -8,7 +8,7 @@ from .app import app
 from .tooltips import ToolTip
 from .tips import tips
 from .utils import utils
-from . import widgetutils
+from .widgetutils import widgetutils
 
 # Try Import
 llama_cpp = utils.try_import("llama_cpp")

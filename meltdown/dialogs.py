@@ -14,7 +14,7 @@ from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .args import args
 from .utils import utils
-from . import widgetutils
+from .widgetutils import widgetutils
 
 
 Answer = dict[str, Any]

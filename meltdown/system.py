@@ -19,7 +19,7 @@ from .framedata import FrameData
 from .tooltips import ToolTip
 from .tips import tips
 from .model import model
-from . import widgetutils
+from .widgetutils import widgetutils
 
 
 class System:
