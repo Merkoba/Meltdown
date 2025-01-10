@@ -28,6 +28,7 @@ class Args:
         self.system_threshold = 70
         self.system_delay = 2
         self.system_suspend = 1
+        self.system_auto_hide = True
         self.keyboard = True
         self.taps = True
         self.taps_command = ""
@@ -355,6 +356,7 @@ class Args:
             ("no_separate_logs", "separate_logs"),
             ("no_separate_uploads", "separate_uploads"),
             ("no_quote_used_words", "quote_used_words"),
+            ("no_system_auto_hide", "system_auto_hide"),
         ]
 
         for r_item in other_name:

@@ -93,6 +93,7 @@ class Widgets:
         self.scroller_system: tk.Frame
         self.scroller_details_1: tk.Frame
         self.scroller_details_2: tk.Frame
+        self.system_frame: tk.Frame
 
     def make(self) -> None:
         # Model

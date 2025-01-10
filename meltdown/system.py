@@ -156,26 +156,39 @@ class System:
 
     def start_loop(self) -> None:
         utils.sleep(1)
+        o_check = True
 
         while True:
             if app.system_frame_enabled:
                 check = True
 
                 if args.system_suspend >= 1:
-                    if not model.stream_date:
+                    date = model.stream_date_local
+
+                    if not date:
                         check = False
                     else:
-                        mins = (utils.now() - model.stream_date) / 60
+                        mins = (utils.now() - date) / 60
 
                         if mins >= args.system_suspend:
                             check = False
+
+                changed = check != o_check
+                o_check = check
+
+                if changed:
+                    if args.system_auto_hide:
+                        if check:
+                            widgets.system_frame.grid()
+                        else:
+                            widgets.system_frame.grid_remove()
 
                 if check:
                     try:
                         self.get_info()
                     except BaseException as e:
                         utils.error(e)
-                else:
+                elif changed:
                     self.reset()
 
             utils.sleep(args.system_delay)

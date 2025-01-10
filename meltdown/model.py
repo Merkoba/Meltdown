@@ -46,8 +46,10 @@ class Model:
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
+        self.loaded_type = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
+        self.stream_date_local = 0.0
         self.gpt_client = None
         self.gemini_client = None
         self.last_response = ""
@@ -144,6 +146,7 @@ class Model:
     def clear_model(self) -> None:
         self.model = None
         self.loaded_model = ""
+        self.loaded_type = ""
         self.model_loading = False
         self.loaded_format = ""
         self.stream_date = 0.0
@@ -183,6 +186,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
+            self.loaded_type = "remote"
             msg = f"{config.model} is ready to use"
             display.print(utils.emoji_text(msg, "remote"))
             self.update_icon()
@@ -214,6 +218,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = config.model
             self.loaded_format = "gemini_remote"
+            self.loaded_type = "remote"
             msg = f"{config.model} is ready to use"
             display.print(utils.emoji_text(msg, "remote"))
             self.update_icon()
@@ -291,6 +296,7 @@ class Model:
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
+        self.loaded_type = "local"
         self.update_icon()
 
         if args.model_feedback and (not args.quiet):
@@ -484,6 +490,10 @@ class Model:
 
         now = utils.now()
         self.stream_date = now
+
+        if self.loaded_type == "local":
+            self.stream_date_local = now
+
         messages, convo_item = prepared
         self.stream_loading = True
         self.lock.acquire()

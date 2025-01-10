@@ -494,9 +494,20 @@ At the top there are system monitors, like `CPU`, `RAM`, `Temperature`, and `GPU
 
 `GPU` might not work for all users. It has only been tested for `AMD` in certain systems.
 
-By default they turn off after a short time after the last response.
+They only turn on when local models are used.
+And they turn off after a short time after the last response.
+These can be configured.
+
+For example `--system-suspend 5` turns off the monitors after 5 minutes since last use.
+
+And `--system-suspend 0` will keep the system monitors running all the time.
 
 They turn red when they reached a threshold, which can be configured.
+
+By default the system frame will be hidden when not in use.
+It appears when it's used and disappears when suspended.
+
+To disable this behavior you can use `--no-system-auto-hide`.
 
 ![](img/system.png)
 

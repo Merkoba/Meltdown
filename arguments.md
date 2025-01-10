@@ -1634,6 +1634,14 @@ Type: int
 
 ---
 
+### no-system-auto-hide
+
+Auto-hide the system panel automatically when it gets suspended
+
+Action: store_false
+
+---
+
 ### autorun
 
 Run this command at startup

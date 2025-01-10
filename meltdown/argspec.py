@@ -1129,6 +1129,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_system_auto_hide",
+            action="store_false",
+            info="Auto-hide the system panel automatically when it gets suspended",
+        )
+
+        self.add_argument(
             "autorun",
             type=str,
             info="Run this command at startup",
