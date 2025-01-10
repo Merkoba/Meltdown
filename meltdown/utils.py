@@ -564,7 +564,7 @@ class Utils:
         return [item.strip() for item in value]
 
     def empty_string(self, text: str) -> str:
-        if text in ('""', "''"):
+        if re.fullmatch(r"[\"']\s*[\"']", text):
             return ""
 
         return text
