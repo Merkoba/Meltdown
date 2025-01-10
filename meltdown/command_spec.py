@@ -11,6 +11,7 @@ from .model import model
 from .session import session
 from .logs import logs
 from .widgets import widgets
+from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .commands import commands
 from .files import files
@@ -515,7 +516,7 @@ class CommandSpec:
             "browse", "Browse the models", lambda a=None: widgets.browse_models()
         )
 
-        self.add_cmd("file", "Browse for a file", lambda a=None: widgets.browse_file())
+        self.add_cmd("file", "Browse for a file", lambda a=None: filecontrol.browse())
 
         self.add_cmd(
             "palette",

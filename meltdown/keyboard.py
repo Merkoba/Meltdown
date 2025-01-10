@@ -584,8 +584,15 @@ class Keyboard:
         commands.exec(args.taps_command)
 
     def up_arrow(self) -> None:
+        from .widgets import widgets
+
+        focused = app.focused()
+
         if args.arrow_mode == "history":
-            inputcontrol.history_up()
+            if focused == widgets.file:
+                print(333)
+            else:
+                inputcontrol.history_up()
         elif args.arrow_mode == "scroll":
             commands.run("scrollup")
 

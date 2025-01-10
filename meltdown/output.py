@@ -12,6 +12,7 @@ from .args import args
 from .utils import utils
 from .gestures import Gestures
 from .autoscroll import autoscroll
+from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .itemops import itemops
 
@@ -139,7 +140,7 @@ class Output(tk.Text):
 
         words = Output.get_words()
         words = words.rstrip(".,:;")
-        widgets.set_file(words)
+        filecontrol.set_file(words)
 
     @staticmethod
     def use_words() -> None:

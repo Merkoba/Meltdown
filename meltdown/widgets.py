@@ -16,6 +16,7 @@ from .tooltips import ToolTip
 from .menus import Menu
 from .dialogs import Dialog
 from .entrybox import EntryBox
+from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .display import display
 from .commands import commands
@@ -201,32 +202,8 @@ class Widgets:
         self.display_frame.grid_columnconfigure(0, weight=1)
 
         # File
-        frame_data_file = widgetutils.make_frame()
-        self.file_frame = frame_data_file.frame
-        self.file_label = widgetutils.make_label(frame_data_file, "File")
-        self.file = widgetutils.make_entry(frame_data_file)
-        frame_data_file.expand()
-        self.file.bind_mousewheel()
-        ToolTip(self.file_label, tips["file"])
-        ToolTip(self.file, tips["file"])
-
-        self.recent_files_button = widgetutils.make_button(
-            frame_data_file, "Recent", lambda: self.show_recent_files()
-        )
-
-        ToolTip(self.recent_files_button, tips["recent_files_button"])
-
-        self.browse_file_button = widgetutils.make_button(
-            frame_data_file, "Browse", lambda: self.browse_file()
-        )
-
-        ToolTip(self.browse_file_button, tips["browse_file_button"])
-
-        self.open_file_button = widgetutils.make_button(
-            frame_data_file, "Open", lambda: self.open_file()
-        )
-
-        ToolTip(self.open_file_button, tips["open_file_button"])
+        self.frame_data_file = widgetutils.make_frame()
+        self.file_frame = self.frame_data_file.frame
 
         # Input
         self.frame_data_input = widgetutils.make_frame()
@@ -276,6 +253,7 @@ class Widgets:
         from .system import system
         from . import details
 
+        filecontrol.fill()
         inputcontrol.fill()
         system.add_items()
         details.add_items()
@@ -367,7 +345,6 @@ class Widgets:
 
     def setup_binds(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
-        self.file.bind("<Button-3>", lambda e: self.show_file_menu(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
@@ -381,6 +358,7 @@ class Widgets:
             "<Button-2>", lambda e: display.make_tab(position="start")
         )
 
+        filecontrol.bind()
         inputcontrol.bind()
 
     def add_common_commands(self, menu: Menu, key: str) -> None:
@@ -486,19 +464,6 @@ class Widgets:
             alt_cmd=lambda m: self.forget_model(m, event),
         )
 
-    def show_file_context(self, event: Any = None, only_items: bool = False) -> None:
-        self.show_menu_items(
-            "file",
-            "files",
-            lambda m: self.set_file(m),
-            event,
-            only_items=only_items,
-            alt_cmd=lambda m: self.forget_file(m, event),
-        )
-
-    def show_file_menu(self, event: Any = None) -> None:
-        self.show_file_context(event)
-
     def show_model(self) -> None:
         self.model.set_text(config.model)
         self.model.move_to_end()
@@ -579,14 +544,6 @@ class Widgets:
 
     def disable_widget(self, widget: ttk.Widget) -> None:
         widget.state(["disabled"])
-
-    def set_file(self, text: str) -> None:
-        self.file.set_text(text)
-        self.file.move_to_end()
-
-    def forget_file(self, text: str, event: Any) -> None:
-        files.remove_file(text)
-        self.show_file_context(event)
 
     def set_model(self, m: str) -> None:
         config.set("model", m)
@@ -691,7 +648,7 @@ class Widgets:
         if widget == self.input:
             inputcontrol.show_menu()
         elif widget == self.file:
-            self.show_file_menu()
+            filecontrol.show_menu()
         elif widget == self.model:
             self.show_model_context()
 
@@ -707,9 +664,6 @@ class Widgets:
 
     def show_recent_models(self) -> None:
         self.show_model_context(only_items=True)
-
-    def show_recent_files(self) -> None:
-        self.show_file_context(only_items=True)
 
     def check_move_to_end(self, key: str) -> None:
         if key in ["model", "file"]:
@@ -764,12 +718,6 @@ class Widgets:
         if file:
             self.set_model(file)
 
-    def browse_file(self) -> None:
-        file = filedialog.askopenfilename(initialdir=self.get_dir(None, "files"))
-
-        if file:
-            self.set_file(file)
-
     def change_model(self, name: str) -> None:
         if not name:
             return
@@ -790,15 +738,6 @@ class Widgets:
             return
 
         config.set("mode", what)
-
-    def open_file(self) -> None:
-        file = self.file.get()
-
-        if not file:
-            files.open_last_file()
-            return
-
-        app.open_generic(file)
 
     def scroll_up(self) -> None:
         ToolTip.hide_all()
