@@ -753,7 +753,7 @@ class Args:
     def show_used_args(self) -> None:
         from .dialogs import Dialog
 
-        text = []
+        items = []
 
         for attr_name, attr_value in vars(self).items():
             if attr_name not in argspec.defaults:
@@ -768,13 +768,13 @@ class Args:
                     else:
                         value = f'"{attr_value}"'
 
-                text.append(f"{attr_name} = {value}")
+                items.append(f"{attr_name} = {value}")
 
-        if not text:
+        if not items:
             Dialog.show_message("No arguments were used")
             return
 
-        Dialog.show_msgbox("Arguments", "\n".join(text))
+        Dialog.show_msgbox("Arguments", "\n".join(items))
 
     def set_command(self, cmd: str) -> None:
         from .utils import utils
