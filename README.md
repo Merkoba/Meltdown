@@ -41,6 +41,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Palette](#palette)
 1. [Taps](#taps)
 1. [Gestures](#gestures)
+1. [Variables](#variables)
 1. [Files](#files)
 1. [Images](#images)
 1. [Themes](#themes)
@@ -678,6 +679,26 @@ These are `up`, `down`, `left`, and `right`.
 To trigger these, hold the right mouse button, move to a direction, and release the button.
 
 By default these scroll up/down and move to tabs left/right.
+
+---
+
+## Variables <a name="variables"></a>
+
+Variables can be set, unset, and read.
+
+These are used in the inputs.
+
+For example you can do: `/set name = George`.
+
+Then you can write: `who is $name?`.
+
+You can unset with `/unset name`.
+
+Read with `/var name`.
+
+Variables can be filled at startup using arguments.
+
+For example: `--variable "name = George" --variable "num = 1200"`.
 
 ---
 
