@@ -249,7 +249,7 @@ class Snippet(tk.Frame):
         return "break"
 
     def find(self) -> None:
-        from . import findmanager
+        from .findmanager import findmanager
 
         app.hide_all()
         findmanager.find(tab_id=self.parent.tab_id, widget=self.text)

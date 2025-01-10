@@ -27,8 +27,8 @@ from .close import close
 from .delete import delete
 from .summarize import summarize
 from .system_prompt import system_prompt
+from .findmanager import findmanager
 from . import menumanager
-from . import findmanager
 from . import formats
 
 

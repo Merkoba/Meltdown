@@ -287,7 +287,7 @@ class Keyboard:
 
     def setup_globals(self) -> None:
         from .widgets import widgets
-        from . import findmanager
+        from .findmanager import findmanager
 
         def on_enter() -> None:
             if widgets.find_focused():
