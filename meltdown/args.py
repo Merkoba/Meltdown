@@ -846,6 +846,7 @@ class Args:
 
         for key, value in obj.items():
             nkey = key.replace("-", "_")
+            nkey = nkey.replace(" ", "_")
 
             if hasattr(self, nkey):
                 arg = getattr(self, nkey)
