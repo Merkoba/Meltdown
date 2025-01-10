@@ -235,6 +235,7 @@ The full paths take into account the name of the program and profile.
 For example for a profile called `dev`:
 
 Data: `~/.local/share/meltdown/dev`
+
 Config: `~/.config/meltdown/dev`
 
 In general things inside `config` should be "safe" to backup, with minimal personal information.
