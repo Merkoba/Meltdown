@@ -11,6 +11,7 @@ from .model import model
 from .session import session
 from .logs import logs
 from .widgets import widgets
+from .modelcontrol import modelcontrol
 from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .commands import commands
@@ -509,7 +510,7 @@ class CommandSpec:
         self.add_cmd(
             "recent",
             "Show the recent models",
-            lambda a=None: widgets.show_recent_models(),
+            lambda a=None: modelcontrol.show_recent(),
         )
 
         self.add_cmd(

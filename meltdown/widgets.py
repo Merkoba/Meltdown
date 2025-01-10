@@ -16,6 +16,7 @@ from .tooltips import ToolTip
 from .menus import Menu
 from .dialogs import Dialog
 from .entrybox import EntryBox
+from .modelcontrol import modelcontrol
 from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .display import display
@@ -254,6 +255,7 @@ class Widgets:
         from .system import system
         from . import details
 
+        modelcontrol.fill()
         filecontrol.fill()
         inputcontrol.fill()
         system.add_items()
@@ -345,7 +347,6 @@ class Widgets:
         setup_combobox("logits")
 
     def setup_binds(self) -> None:
-        self.model.bind("<Button-3>", lambda e: self.show_model_context(e))
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
@@ -359,6 +360,7 @@ class Widgets:
             "<Button-2>", lambda e: display.make_tab(position="start")
         )
 
+        modelcontrol.bind()
         filecontrol.bind()
         inputcontrol.bind()
 
@@ -452,19 +454,6 @@ class Widgets:
             if widget:
                 menu.show(widget=widget)
 
-    def show_model_context(self, event: Any = None, only_items: bool = False) -> None:
-        if model.model_loading:
-            return
-
-        self.show_menu_items(
-            "model",
-            "models",
-            lambda m: self.set_model(m),
-            event,
-            only_items=only_items,
-            alt_cmd=lambda m: self.forget_model(m, event),
-        )
-
     def show_model(self) -> None:
         self.model.set_text(config.model)
         self.model.move_to_end()
@@ -548,10 +537,6 @@ class Widgets:
 
     def set_model(self, m: str) -> None:
         config.set("model", m)
-
-    def forget_model(self, m: str, event: Any) -> None:
-        files.remove_model(m)
-        self.show_model_context(event)
 
     def stop_stream(self) -> None:
         from .display import display
@@ -651,7 +636,7 @@ class Widgets:
         elif widget == self.file:
             filecontrol.show_menu()
         elif widget == self.model:
-            self.show_model_context()
+            modelcontrol.show_context()
 
     def use_gpt(self, name: str) -> None:
         config.set("model", name)
@@ -662,9 +647,6 @@ class Widgets:
     def model_icon_click(self) -> None:
         app.hide_all()
         app.show_portrait()
-
-    def show_recent_models(self) -> None:
-        self.show_model_context(only_items=True)
 
     def check_move_to_end(self, key: str) -> None:
         if key in ["model", "file"]:

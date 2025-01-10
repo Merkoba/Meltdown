@@ -7,6 +7,7 @@ from .app import app
 from .config import config
 from .menus import Menu
 from .upload import upload
+from .modelcontrol import modelcontrol
 from . import system_prompt
 
 
@@ -80,7 +81,7 @@ class ModelMenu:
 
         self.menu = Menu()
 
-        self.menu.add("Recent Models", lambda e: widgets.show_recent_models())
+        self.menu.add("Recent Models", lambda e: modelcontrol.show_recent())
         self.menu.add("Browse Models", lambda e: widgets.browse_models())
 
         self.menu.separator()

@@ -17,8 +17,6 @@ class FileControl:
     def __init__(self) -> None:
         self.history_index = -1
         self.file: EntryBox
-        self.autocomplete: list[str] = []
-        self.last_delete_press = 0.0
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -74,10 +72,10 @@ class FileControl:
             lambda m: self.set(m),
             event,
             only_items=only_items,
-            alt_cmd=lambda m: self.forget_file(m, event),
+            alt_cmd=lambda m: self.forget(m, event),
         )
 
-    def forget_file(self, text: str, event: Any) -> None:
+    def forget(self, text: str, event: Any) -> None:
         files.remove_file(text)
         self.show_context(event)
 

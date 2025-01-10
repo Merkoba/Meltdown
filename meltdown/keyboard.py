@@ -8,6 +8,7 @@ from pathlib import Path
 
 # Modules
 from .app import app
+from .modelcontrol import modelcontrol
 from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .display import display
@@ -585,12 +586,12 @@ class Keyboard:
         commands.exec(args.taps_command)
 
     def up_arrow(self) -> None:
-        from .widgets import widgets
-
         focused = app.focused()
 
         if args.arrow_mode == "history":
-            if focused == widgets.file:
+            if focused == modelcontrol.model:
+                modelcontrol.history_up()
+            elif focused == filecontrol.file:
                 filecontrol.history_up()
             else:
                 inputcontrol.history_up()
@@ -598,12 +599,12 @@ class Keyboard:
             commands.run("scrollup")
 
     def down_arrow(self) -> None:
-        from .widgets import widgets
-
         focused = app.focused()
 
         if args.arrow_mode == "history":
-            if focused == widgets.file:
+            if focused == modelcontrol.model:
+                modelcontrol.history_down()
+            elif focused == filecontrol.file:
                 filecontrol.history_down()
             else:
                 inputcontrol.history_down()
