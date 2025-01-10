@@ -988,7 +988,7 @@ Type: int
 
 Auto-unload the model after this number of minutes after last use. 0 to disable
 
-Default: 60
+Default: 0
 
 Type: int
 
@@ -2510,7 +2510,7 @@ Action: store_true
 
 ---
 
-### signals-file
+### signals
 
 Path to a file that defines the available signals
 
