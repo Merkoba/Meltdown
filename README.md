@@ -72,7 +72,7 @@ Note: By default `llama.cpp` (local model) support is not installed.
 
 Read below to learn how to enable it.
 
-Also, this has only been tested on `Linux`.
+Also, this has only been tested on `linux`.
 
 ---
 
@@ -114,7 +114,7 @@ This is important because the GPU accelerates `tokens per second` a lot on local
 
 Intalling with `pipx` provides the `meltdown` command.
 
-And if on `Linux`, you should now have a `.desktop` entry to launch it.
+And if on `linux`, you should now have a `.desktop` entry to launch it.
 
 You can uninstall it with `pipx uninstall meltdown`.
 
@@ -400,7 +400,7 @@ You can do for instance `echo "hello" > /tmp/mlt_meltdown.input`.
 
 Or: `echo "/new" > /tmp/mlt_meltdown.input`.
 
-By default it checks `/tmp/mlt_meltdown.input` if on Linux.
+By default it checks `/tmp/mlt_meltdown.input` if on linux.
 
 Temp Dir + `mlt_meltdown.input`.
 
