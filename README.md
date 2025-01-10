@@ -416,7 +416,7 @@ All the conversation can be uploaded, or just the last item.
 
 There is a signals system that allows to make requests to remote servers.
 
-To use this, a json file must be created and pointed to with the `--signals-file` argument.
+To use this, a json file must be created and pointed to with the `--signals` argument.
 
 ---
 

@@ -274,7 +274,7 @@ class Args:
         self.log_name_ai = ""
         self.upload_name_user = ""
         self.upload_name_ai = ""
-        self.signals_file = ""
+        self.signals = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -546,7 +546,7 @@ class Args:
             "upload_name_ai",
             "generic_names_logs",
             "generic_names_uploads",
-            "signals_file",
+            "signals",
         ]
 
         for n_item in normals:

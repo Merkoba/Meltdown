@@ -1651,7 +1651,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "signals_file",
+            "signals",
             type=str,
             info="Path to a file that defines the available signals",
         )
