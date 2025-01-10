@@ -74,6 +74,9 @@ class InputControl:
         ToolTip(submit_button, tips["submit_button"])
         self.input.bind_mousewheel()
 
+        for variable in args.variables:
+            self.set_variable(variable)
+
     def bind(self) -> None:
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 

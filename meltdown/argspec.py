@@ -1698,5 +1698,12 @@ class ArgSpec:
             info="Max number of items a conversation can have",
         )
 
+        self.add_argument(
+            "variable",
+            type=str,
+            action="append",
+            info='Add an input variable. Like "x = the world"',
+        )
+
 
 argspec = ArgSpec()

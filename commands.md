@@ -1015,3 +1015,9 @@ Run a signal by its name
 ### arg
 
 Set an argument while the program is running
+
+---
+
+### set
+
+Set a variable. For example: /set x = the world. Then use it with $x

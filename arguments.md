@@ -2585,3 +2585,13 @@ Max number of items a conversation can have
 Default: 500
 
 Type: int
+
+---
+
+### variable
+
+Add an input variable. Like "x = the world"
+
+Action: append
+
+Type: str

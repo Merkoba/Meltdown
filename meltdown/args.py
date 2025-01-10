@@ -282,6 +282,7 @@ class Args:
         self.border_effect_color = ""
         self.argfile = ""
         self.max_items = 500
+        self.variables: list[str] = []
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -297,6 +298,7 @@ class Args:
             ("task", "tasks"),
             ("custom_prompt", "custom_prompts"),
             ("uselink", "uselinks"),
+            ("variable", "variables"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
