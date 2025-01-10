@@ -675,7 +675,7 @@ There is also `f9` and `shift + f9` shortcuts.
 
 The scroll delay can be configured through arguments.
 
-When the auto-scroll mode is active, the button will change its color.
+When the auto-scroll mode is active, the button has a different color.
 
 When the scroll ends the auto-scroll mode gets disabled.
 
