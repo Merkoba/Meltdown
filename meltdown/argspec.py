@@ -1674,5 +1674,17 @@ class ArgSpec:
             info="Path for the data files",
         )
 
+        self.add_argument(
+            "border_effect",
+            action="store_true",
+            info="Change the border color when streaming responses",
+        )
+
+        self.add_argument(
+            "border_effect_color",
+            type=str,
+            info="The color of the border effect",
+        )
+
 
 argspec = ArgSpec()

@@ -351,7 +351,9 @@ class Model:
         def wrapper(prompt: dict[str, str], tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
+            app.border_effect_on()
             self.do_stream(prompt, tab_id)
+            app.border_effect_off()
             self.streaming = False
 
         self.stop_stream()

@@ -996,5 +996,24 @@ class App:
 
         Dialog.show_dialog("Color Theme", cmds)
 
+    def border_effect_on(self) -> None:
+        from .args import args
+
+        if args.border_effect:
+            if args.border_effect_color:
+                color = args.border_effect_color
+            else:
+                color = self.theme.button_active_background
+
+            self.root.configure(background=color)
+
+    def border_effect_off(self) -> None:
+        from .args import args
+
+        if args.border_effect:
+            abc = args.border_color
+            bc = abc if abc else self.theme.background_color
+            self.root.configure(background=bc)
+
 
 app = App()

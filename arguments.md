@@ -2545,3 +2545,23 @@ Path for the data files
 Default: [Empty string]
 
 Type: str
+
+---
+
+### border-effect
+
+Change the border color when streaming responses
+
+Default: False
+
+Action: store_true
+
+---
+
+### border-effect-color
+
+The color of the border effect
+
+Default: [Empty string]
+
+Type: str

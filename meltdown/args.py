@@ -278,6 +278,8 @@ class Args:
         self.signals = ""
         self.config_dir = ""
         self.data_dir = ""
+        self.border_effect = False
+        self.border_effect_color = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -553,6 +555,8 @@ class Args:
             "signals",
             "config_dir",
             "data_dir",
+            "border_effect",
+            "border_effect_color",
         ]
 
         for n_item in normals:
