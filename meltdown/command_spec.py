@@ -1063,5 +1063,19 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "unset",
+            "Unset a variable",
+            lambda a=None: inputcontrol.unset_variable(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "var",
+            "Read the content of a variable",
+            lambda a=None: inputcontrol.read_variable(a),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

@@ -1021,3 +1021,15 @@ Set an argument while the program is running
 ### set
 
 Set a variable. For example: /set x = the world. Then use it with $x
+
+---
+
+### unset
+
+Unset a variable
+
+---
+
+### var
+
+Read the content of a variable

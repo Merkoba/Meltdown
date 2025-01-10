@@ -422,6 +422,23 @@ class InputControl:
         self.variables[name] = value
         display.print(f"Set: {name} = {value}")
 
+    def unset_variable(self, name: str) -> None:
+        from .display import display
+
+        if name in self.variables:
+            del self.variables[name]
+            display.print(f"Unset: {name}")
+        else:
+            display.print(f"Variable not found: {name}")
+
+    def read_variable(self, name: str) -> None:
+        from .display import display
+
+        if name in self.variables:
+            display.print(f"{name} = {self.variables[name]}")
+        else:
+            display.print(f"Variable not found: {name}")
+
     def replace_variables(self, text: str) -> str:
         def replace(match: Any) -> str:
             name = str(match.group(2))
