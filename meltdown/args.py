@@ -283,6 +283,7 @@ class Args:
         self.argfile = ""
         self.max_items = 500
         self.variables: list[str] = []
+        self.variable_prefix = "$"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -563,6 +564,7 @@ class Args:
             "border_effect_color",
             "argfile",
             "max_items",
+            "variable_prefix",
         ]
 
         for n_item in normals:

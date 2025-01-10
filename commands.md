@@ -1033,3 +1033,9 @@ Unset a variable
 ### var
 
 Read the content of a variable
+
+---
+
+### vars
+
+Read all the variables

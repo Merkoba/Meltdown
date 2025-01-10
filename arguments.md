@@ -2595,3 +2595,13 @@ Add an input variable. Like "x = the world"
 Action: append
 
 Type: str
+
+---
+
+### variable-prefix
+
+The prefix used for variables. For example $ in $name
+
+Default: "$"
+
+Type: str

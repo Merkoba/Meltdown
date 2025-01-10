@@ -462,7 +462,8 @@ class InputControl:
 
             return self.variables[key]
 
-        pattern = re.compile(r"(^|\s)(\$\w+)")
+        prefix = re.escape(args.variable_prefix)
+        pattern = re.compile(rf"(^|\s)({prefix}\w+)")
         return pattern.sub(lambda m: m.group(1) + replace(m), text)
 
 

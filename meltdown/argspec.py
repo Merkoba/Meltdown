@@ -1705,5 +1705,11 @@ class ArgSpec:
             info='Add an input variable. Like "x = the world"',
         )
 
+        self.add_argument(
+            "variable_prefix",
+            type=str,
+            info="The prefix used for variables. For example $ in $name",
+        )
+
 
 argspec = ArgSpec()
