@@ -201,7 +201,7 @@ By default it uses the `main` profile.
 
 Profiles have independent configs and data.
 
-To launch with a different profile use the `--profile` arugment.
+To launch with a different profile use the `--profile` argument.
 
 For example: `---profile dev`.
 
