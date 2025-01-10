@@ -560,6 +560,7 @@ class App:
 
     def prepare(self) -> None:
         from .args import args
+        from .paths import paths
 
         self.build_intro()
         self.root = tk.Tk(className=self.manifest["program"])
@@ -573,7 +574,11 @@ class App:
                 title += f" ({args.profile})"
 
         if not args.quiet:
-            utils.msg(f"Profile: {args.profile}")
+            m_title = self.manifest["title"]
+            m_version = self.manifest["version"]
+            utils.msg(f"{m_title}: {m_version} ({args.profile})")
+            utils.msg(f"Config: {paths.config_dir}")
+            utils.msg(f"Data: {paths.data_dir}")
 
         self.root.title(title)
         self.main_frame = tk.Frame(self.root)
