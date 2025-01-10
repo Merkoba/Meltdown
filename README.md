@@ -418,6 +418,8 @@ There is a signals system that allows to make requests to remote servers.
 
 To use this, a json file must be created and pointed to with the `--signals` argument.
 
+For example: `--signals ~/signals.json`.
+
 ---
 
 Multiple signals can be defined. This is a demo with all the available keys:
