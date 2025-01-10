@@ -692,6 +692,10 @@ For example you can do: `/set name = George`.
 
 Then you can write: `who is $name?`.
 
+The input is converted to its full form before being used.
+
+So that would be converted to `who is George?`.
+
 You can unset with `/unset name`.
 
 Read with `/var name`.
