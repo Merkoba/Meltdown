@@ -16,8 +16,8 @@ from .args import args
 from .dialogs import Dialog, Commands
 from .utils import utils
 from .files import files
+from .close import close
 from . import tests
-from . import close
 
 
 class Item:

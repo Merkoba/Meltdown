@@ -375,7 +375,7 @@ class InputControl:
         utils.paste(self.input)
 
     def on_delete(self) -> bool:
-        from . import close
+        from .close import close
 
         if Dialog.open():
             return False

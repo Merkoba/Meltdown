@@ -26,9 +26,9 @@ from .files import files
 from .utils import utils
 from .model import model
 from .autoscroll import autoscroll
+from .close import close
 from . import scrollers
 from . import widgetutils
-from . import close
 
 
 Gettable = (EntryBox, ttk.Combobox)

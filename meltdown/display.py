@@ -90,7 +90,7 @@ class Display:
         position: str = "end",
     ) -> str:
         from .session import session
-        from . import close
+        from .close import close
 
         if args.max_tabs > 0:
             if self.num_tabs() >= args.max_tabs:
@@ -287,7 +287,7 @@ class Display:
         tab_menu.show(event, "tab_right_click")
 
     def on_tab_middle_click(self, tab_id: str) -> None:
-        from . import close
+        from .close import close
         from .keyboard import keyboard
 
         if keyboard.shift:
@@ -305,7 +305,7 @@ class Display:
 
     def show_tab_list(self, event: Any = None) -> None:
         from .widgets import widgets
-        from . import close
+        from .close import close
 
         widget = widgets.stop_button
 
@@ -383,7 +383,7 @@ class Display:
         session.change_name(tab.conversation_id, name)
 
     def tab_menu_close(self) -> None:
-        from . import close
+        from .close import close
 
         close.close(tab_id=self.tab_menu_id, full=False)
 
