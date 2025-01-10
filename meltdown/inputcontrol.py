@@ -208,6 +208,7 @@ class InputControl:
         if not file:
             file = widgets.file.get().strip()
 
+        text = self.replace_variables(text)
         text = utils.replace_keywords(text)
 
         if text or file:
@@ -239,7 +240,6 @@ class InputControl:
             if model.model_loading:
                 return
 
-            text = self.replace_variables(text)
             prompt = {"text": text, "file": file, "no_history": no_history}
 
             files.add_system(config.system)
