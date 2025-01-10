@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import re
 from typing import Any
 
 # Modules
@@ -24,6 +25,7 @@ class InputControl:
         self.input: EntryBox
         self.autocomplete: list[str] = []
         self.last_delete_press = 0.0
+        self.variables: dict[str, str] = {}
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -234,6 +236,7 @@ class InputControl:
             if model.model_loading:
                 return
 
+            text = self.replace_variables(text)
             prompt = {"text": text, "file": file, "no_history": no_history}
 
             files.add_system(config.system)
@@ -394,6 +397,40 @@ class InputControl:
             return True
 
         return False
+
+    def set_variable(self, cmd: str) -> None:
+        from .display import display
+
+        def fmt() -> None:
+            display.print("Format: [name] = [value]")
+
+        if "=" not in cmd:
+            fmt()
+            return
+
+        name, value = cmd.split("=", 1)
+        name = name.strip()
+        value = value.strip()
+
+        if (not name) or (not value):
+            fmt()
+            return
+
+        self.variables[name] = value
+        display.print(f"Set: {name} = {value}")
+
+    def replace_variables(self, text: str) -> str:
+        def replace(match: Any) -> str:
+            name = str(match.group(2))
+            key = name[1:]
+
+            if key not in self.variables:
+                return name
+
+            return self.variables[key]
+
+        pattern = re.compile(r"(^|\s)(\$\w+)")
+        return pattern.sub(lambda m: m.group(1) + replace(m), text)
 
 
 inputcontrol = InputControl()

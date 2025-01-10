@@ -105,11 +105,11 @@ class ModelMenu:
         self.menu.separator()
 
         self.menu.add("Use GPT Model", lambda e: self.parent.gpt_menu.show())
-        self.menu.add("Use Gemini Model", lambda e: self.parent.gemini_menu.show())
+        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_key())
 
         self.menu.separator()
 
-        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_key())
+        self.menu.add("Use Gemini Model", lambda e: self.parent.gemini_menu.show())
         self.menu.add("Set Google Key", lambda e: model.set_google_key())
 
     def show(self, event: Any = None) -> None:

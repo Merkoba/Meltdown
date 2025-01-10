@@ -934,7 +934,6 @@ class CommandSpec:
             "autoscrollup",
             "Toggle automatic scrolling (Up)",
             lambda a=None: autoscroll.toggle("up"),
-            type=str,
         )
 
         self.add_cmd(
@@ -1054,6 +1053,13 @@ class CommandSpec:
             "arg",
             "Set an argument while the program is running",
             lambda a=None: args.set_command(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "set",
+            "Set a variable. For example: /set x = the world. Then use it with $x",
+            lambda a=None: inputcontrol.set_variable(a),
             type=str,
         )
 
