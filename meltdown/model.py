@@ -172,6 +172,7 @@ class Model:
 
     def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
         try:
+            now = utils.now()
             self.read_openai_key()
 
             if not self.openai_key:
@@ -187,9 +188,7 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "gpt_remote"
             self.loaded_type = "remote"
-            msg = f"{config.model} is ready to use"
-            display.print(utils.emoji_text(msg, "remote"))
-            self.update_icon()
+            self.after_load(now)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -200,6 +199,7 @@ class Model:
 
     def load_gemini(self, tab_id: str, prompt: PromptArg | None = None) -> None:
         try:
+            now = utils.now()
             self.read_google_key()
 
             if not self.google_key:
@@ -219,9 +219,7 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "gemini_remote"
             self.loaded_type = "remote"
-            msg = f"{config.model} is ready to use"
-            display.print(utils.emoji_text(msg, "remote"))
-            self.update_icon()
+            self.after_load(now)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -297,15 +295,27 @@ class Model:
         self.loaded_model = model
         self.loaded_format = chat_format
         self.loaded_type = "local"
+        self.after_load(now)
+        self.release_lock()
+        return True
+
+    def after_load(self, start_date: float) -> None:
+        from .widgets import widgets
+        from .system import system
+
         self.update_icon()
 
         if args.model_feedback and (not args.quiet):
-            text = utils.emoji_text("Model loaded", "local")
-            msg, now = utils.check_time(text, now)
-            display.print(msg)
+            if self.loaded_type == "local":
+                text = utils.emoji_text("Model loaded", "local")
+                msg, now = utils.check_time(text, start_date)
+                display.print(msg)
+            elif self.loaded_type == "remote":
+                msg = f"{config.model} is ready to use"
+                display.print(utils.emoji_text(msg, "remote"))
 
-        self.release_lock()
-        return True
+        if args.system_auto_hide:
+            system.check_auto_hide()
 
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading

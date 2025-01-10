@@ -116,17 +116,10 @@ class App:
             self.intro.extend(uselinks)
 
     def setup(self, time_started: float) -> None:
-        from .args import args
-        from .widgets import widgets
-
         self.time_started = time_started
         self.check_commandoc()
         self.check_compact()
         self.check_sticky()
-
-        if args.system_auto_hide:
-            if args.system_suspend > 0:
-                widgets.system_frame.grid_remove()
 
     def sigint_handler(self, sig: Any, frame: Any) -> None:
         self.exit()

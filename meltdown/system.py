@@ -163,7 +163,7 @@ class System:
                 check = True
 
                 if args.system_suspend >= 1:
-                    date = model.stream_date_local
+                    date = model.stream_date
 
                     if not date:
                         check = False
@@ -175,13 +175,6 @@ class System:
 
                 changed = check != o_check
                 o_check = check
-
-                if changed:
-                    if args.system_auto_hide:
-                        if check:
-                            widgets.system_frame.grid()
-                        else:
-                            widgets.system_frame.grid_remove()
 
                 if check:
                     try:
@@ -202,6 +195,7 @@ class System:
             msg = f"System monitors active ({args.system_delay} {m})"
             utils.msg(msg)
 
+        self.check_auto_hide()
         thread = threading.Thread(target=lambda: self.start_loop())
         thread.daemon = True
         thread.start()
@@ -283,6 +277,13 @@ class System:
 
         if args.system_gpu_temp:
             make_monitor("gpu_temp", "GPU TMP", "gpu")
+
+    def check_auto_hide(self) -> None:
+        if args.system_auto_hide:
+            if model.loaded_type == "local":
+                app.show_frame("system")
+            else:
+                app.hide_frame("system")
 
 
 system = System()
