@@ -203,6 +203,8 @@ class InputControl:
         if not file:
             file = widgets.file.get().strip()
 
+        text = utils.replace_keywords(text)
+
         if text or file:
             self.clear()
             widgets.file.clear(False)
