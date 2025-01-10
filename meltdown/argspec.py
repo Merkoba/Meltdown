@@ -1686,5 +1686,11 @@ class ArgSpec:
             info="The color of the border effect",
         )
 
+        self.add_argument(
+            "argfile",
+            type=str,
+            info="Path to a file that overrides the arguments",
+        )
+
 
 argspec = ArgSpec()

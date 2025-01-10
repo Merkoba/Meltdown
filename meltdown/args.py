@@ -280,6 +280,7 @@ class Args:
         self.data_dir = ""
         self.border_effect = False
         self.border_effect_color = ""
+        self.argfile = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -557,6 +558,7 @@ class Args:
             "data_dir",
             "border_effect",
             "border_effect_color",
+            "argfile",
         ]
 
         for n_item in normals:
@@ -569,6 +571,10 @@ class Args:
 
         for ns_item in no_strip:
             ap.get_value(ns_item, no_strip=True)
+
+        # Read self.args_file and override arguments, based on the arguments defined in that json
+        if self.argfile:
+            self.load_argfile()
 
         if not sys.stdin.isatty():
             self.input = sys.stdin.read()
@@ -826,6 +832,24 @@ class Args:
             svalue = "[Empty]"
 
         display.print(f"Arg: `{name}` set to `{svalue}`", do_format=True)
+
+    def load_argfile(self) -> None:
+        from .files import files
+
+        path = Path(self.argfile)
+
+        if not path.exists():
+            return
+
+        obj = files.load(path)
+
+        for key, value in obj.items():
+            if hasattr(self, key):
+                arg = getattr(self, key)
+                vtype = arg.__class__
+
+                if isinstance(value, vtype):
+                    setattr(self, key, value)
 
 
 args = Args()

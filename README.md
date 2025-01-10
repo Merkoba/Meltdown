@@ -35,6 +35,8 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Tasks](#tasks)
 1. [Config](#config)
 1. [Args](#args)
+1. [Argfile](#argfile)
+1. [Loading](#loading)
 1. [Prompts](#custom)
 1. [Palette](#palette)
 1. [Taps](#taps)
@@ -600,6 +602,34 @@ Or `/arg f1 /close`. (strings)
 Or `/arg custom_prompts [one = prompt one, two = prompt two]` (lists of strings)
 
 While this is possible, some argument changes won't work, and some might cause problems.
+
+---
+
+## Argfile <a name="argfile"></a>
+
+It's possible to point to a json file that overrides arguments.
+
+For example: `--argfile ~/args.json`.
+
+This is a way to launch with different configurations easily.
+
+---
+
+## Loading <a name="loading"></a>
+
+It's possible to save the current config and session.
+
+This can be done through the `main menu` or through commands.
+
+For example: `/saveconfig`, or `/saveconfig books`.
+
+Or: `/savesession`, or `/savesession books`.
+
+Loading: `/loadconfig books`, `/loadsession books`.
+
+Config meaning the current configuration of all the widgets.
+
+Session meaning the set of conversations (tabs and their content).
 
 ---
 
