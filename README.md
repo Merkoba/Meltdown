@@ -41,6 +41,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Images](#images)
 1. [Themes](#themes)
 1. [Compact](#compact)
+1. [AutoScroll](#autoscroll)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -653,6 +654,30 @@ This can be useful if you want a less distracted interface.
 To toggle compact mode you can use the `main menu`, or `f8`, or `/compact`, or `--compact`.
 
 There are arguments you can use to define which panels get removed in compact mode.
+
+---
+
+## Auto Scroll <a name="autoscroll"></a>
+
+The output window can be auto scrolled.
+
+That means it will scroll slowly downards or upwards.
+
+So you can read text without manual intervention.
+
+To activate this you can click `Auto-Scroll` in the `Go To Bottom` panel.
+
+Or use the `/autoscroll` command. This command accepts optional `up`, and `down` arguments.
+
+To scroll upwards you can also middle click the `Top` button.
+
+There is also `f9` and `shift + f9` shortcuts.
+
+The scroll delay can be configured through arguments.
+
+When the scroll ends the auto-scroll mode gets disabled.
+
+The mode also gets disabled when manually scrolled.
 
 ---
 
