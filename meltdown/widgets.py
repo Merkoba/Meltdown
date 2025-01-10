@@ -252,7 +252,7 @@ class Widgets:
     def setup(self) -> None:
         from .display import display
         from .system import system
-        from . import details
+        from .details import details
 
         modelcontrol.fill()
         filecontrol.fill()

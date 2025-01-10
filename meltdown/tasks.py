@@ -45,30 +45,34 @@ class Task:
             self.run()
 
 
-def start_all() -> None:
-    for task in args.tasks:
-        if not task:
-            continue
+class Tasks:
+    def start_all(self) -> None:
+        for task in args.tasks:
+            if not task:
+                continue
 
-        match = re.match(Task.pattern, task)
+            match = re.match(Task.pattern, task)
 
-        if not match:
-            return
+            if not match:
+                return
 
-        try:
-            seconds = int(match.group(1))
-        except BaseException as e:
-            utils.error(e)
-            return
+            try:
+                seconds = int(match.group(1))
+            except BaseException as e:
+                utils.error(e)
+                return
 
-        cmds = match.group(2)
+            cmds = match.group(2)
 
-        if match.group(3):
-            now = True
-        else:
-            now = False
+            if match.group(3):
+                now = True
+            else:
+                now = False
 
-        if seconds < 1:
-            continue
+            if seconds < 1:
+                continue
 
-        Task(seconds, cmds, now)
+            Task(seconds, cmds, now)
+
+
+tasks = Tasks()

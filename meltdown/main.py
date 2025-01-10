@@ -20,8 +20,8 @@ from .utils import utils
 from .paths import paths
 from .system import system
 from .console import console
-from . import tasks
-from . import listener
+from .listener import listener
+from .tasks import tasks
 
 
 def main() -> None:
