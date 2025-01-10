@@ -2588,7 +2588,7 @@ Type: int
 
 ---
 
-### variable
+### var
 
 Add an input variable. Like "x = the world"
 

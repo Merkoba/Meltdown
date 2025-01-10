@@ -1699,7 +1699,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "variable",
+            "var",
             type=str,
             action="append",
             info='Add an input variable. Like "x = the world"',

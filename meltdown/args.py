@@ -299,7 +299,7 @@ class Args:
             ("task", "tasks"),
             ("custom_prompt", "custom_prompts"),
             ("uselink", "uselinks"),
-            ("variable", "variables"),
+            ("var", "variables"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),
