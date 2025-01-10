@@ -262,7 +262,7 @@ class Args:
         self.use_program = ""
         self.use_both = False
         self.theme = ""
-        self.auto_unload = 60
+        self.auto_unload = 0
         self.tab_tooltip_length = 235
         self.uselinks: list[str] = []
         self.concat_logs = False
