@@ -844,12 +844,14 @@ class Args:
         obj = files.load(path)
 
         for key, value in obj.items():
-            if hasattr(self, key):
-                arg = getattr(self, key)
+            nkey = key.replace("-", "_")
+
+            if hasattr(self, nkey):
+                arg = getattr(self, nkey)
                 vtype = arg.__class__
 
                 if isinstance(value, vtype):
-                    setattr(self, key, value)
+                    setattr(self, nkey, value)
 
 
 args = Args()
