@@ -125,7 +125,8 @@ class App:
         self.check_sticky()
 
         if args.system_auto_hide:
-            widgets.system_frame.grid_remove()
+            if args.system_suspend > 0:
+                widgets.system_frame.grid_remove()
 
     def sigint_handler(self, sig: Any, frame: Any) -> None:
         self.exit()
