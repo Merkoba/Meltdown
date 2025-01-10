@@ -242,12 +242,13 @@ class Dialog:
         Dialog.show_dialog(text, cmds)
 
     @staticmethod
-    def show_message(text: str) -> None:
+    def show_message(text: str, copy_text: str | None = None) -> None:
         def ok(ans: Answer) -> None:
             pass
 
         def copy(ans: Answer) -> None:
-            utils.copy(text)
+            ctext = copy_text or text
+            utils.copy(ctext)
 
         cmds = Commands()
         cmds.add("Copy", copy)

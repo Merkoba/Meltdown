@@ -43,7 +43,17 @@ class Upload:
             tab_id=tab_id,
         )
 
-        Dialog.show_message(url)
+        def copy_url() -> None:
+            utils.copy(url)
+
+        def copy_all() -> None:
+            utils.copy(f"{url} ({password})")
+
+        cmds = Commands()
+        cmds.add("Copy All", lambda a: copy_all())
+        cmds.add("Copy URL", lambda a: copy_url())
+
+        Dialog.show_dialog(f"{url} ({password})", commands=cmds)
 
     def do_upload(self, tab_id: str | None = None, mode: str = "all") -> None:
         if not tab_id:
