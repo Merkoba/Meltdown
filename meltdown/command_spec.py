@@ -26,8 +26,8 @@ from .signals import signals
 from .close import close
 from .delete import delete
 from .summarize import summarize
+from .system_prompt import system_prompt
 from . import menumanager
-from . import system_prompt
 from . import findmanager
 from . import formats
 

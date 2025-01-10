@@ -8,7 +8,7 @@ from .config import config
 from .menus import Menu
 from .upload import upload
 from .modelcontrol import modelcontrol
-from . import system_prompt
+from .system_prompt import system_prompt
 
 
 def get_main_button() -> tk.Widget:
