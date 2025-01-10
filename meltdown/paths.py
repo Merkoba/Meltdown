@@ -29,25 +29,44 @@ class Paths:
 
         self.nouns: Path
 
-    def setup(self) -> None:
+    def setup(self) -> bool:
         program = app.manifest["program"]
         location = Path(program, args.profile)
 
-        config_dir = appdirs.user_config_dir()
+        # Config
+
+        if args.config_dir:
+            config_dir = Path(args.config_dir)
+        else:
+            config_dir = Path(appdirs.user_config_dir())
+
+        if not config_dir.exists():
+            return False
+
         self.config_dir = Path(config_dir, location)
         self.config = Path(self.config_dir, "config.json")
-        self.models = Path(self.config_dir, "models.json")
-        self.inputs = Path(self.config_dir, "inputs.json")
-        self.systems = Path(self.config_dir, "systems.json")
-        self.files = Path(self.config_dir, "files.json")
-        self.session = Path(self.config_dir, "session.json")
-        self.commands = Path(self.config_dir, "commands.json")
-        self.autocomplete = Path(self.config_dir, "autocomplete.json")
+        self.configs = Path(self.config_dir, "configs")
 
-        data_dir = appdirs.user_data_dir()
+        # Data
+
+        if args.data_dir:
+            data_dir = Path(args.data_dir)
+        else:
+            data_dir = Path(appdirs.user_data_dir())
+
+        if not data_dir.exists():
+            return False
+
         self.data_dir = Path(data_dir, location)
-        self.configs = Path(self.data_dir, "configs")
         self.sessions = Path(self.data_dir, "sessions")
+        self.inputs = Path(self.data_dir, "inputs.json")
+        self.files = Path(self.data_dir, "files.json")
+        self.session = Path(self.data_dir, "session.json")
+        self.autocomplete = Path(self.data_dir, "autocomplete.json")
+        self.commands = Path(self.data_dir, "commands.json")
+        self.models = Path(self.data_dir, "models.json")
+        self.systems = Path(self.data_dir, "systems.json")
+        self.memory = Path(self.data_dir, "memory.json")
 
         if args.logs_dir:
             self.logs = Path(args.logs_dir)
@@ -59,6 +78,7 @@ class Paths:
         self.errors = Path(self.data_dir, "errors")
 
         self.nouns = Path(app.here, "nouns.txt")
+        return True
 
 
 paths = Paths()

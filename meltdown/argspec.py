@@ -1662,5 +1662,17 @@ class ArgSpec:
             info="Path to a file that defines the available signals",
         )
 
+        self.add_argument(
+            "config_dir",
+            type=str,
+            info="Path for the config files",
+        )
+
+        self.add_argument(
+            "data_dir",
+            type=str,
+            info="Path for the data files",
+        )
+
 
 argspec = ArgSpec()

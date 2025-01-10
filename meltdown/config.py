@@ -9,6 +9,7 @@ from pathlib import Path
 
 # Modules
 from .utils import utils
+from .memory import memory
 
 
 class Config:
@@ -59,11 +60,7 @@ No need to greet me, just answer.
         self.default_stop = "<|im_start|> ;; <|im_end|>"
         self.default_mode = "text"
         self.default_theme = "dark"
-        self.default_last_log = ""
         self.default_logits = "normal"
-        self.default_last_program = ""
-        self.default_last_config = ""
-        self.default_last_session = ""
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -90,20 +87,12 @@ No need to greet me, just answer.
         self.stop = self.default_stop
         self.mode = self.default_mode
         self.theme = self.default_theme
-        self.last_log = self.default_last_log
         self.logits = self.default_logits
-        self.last_program = self.default_last_program
-        self.last_config = self.default_last_config
-        self.last_session = self.default_last_session
 
         self.locals = [
             "theme",
             "font_size",
             "font_family",
-            "last_log",
-            "last_program",
-            "last_config",
-            "last_session",
         ]
 
         self.clearables = [
@@ -207,12 +196,12 @@ No need to greet me, just answer.
             self.save_last()
             return
 
+        if not paths.configs.exists():
+            paths.configs.mkdir(parents=True, exist_ok=True)
+
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
         else:
-            if not paths.configs.exists():
-                paths.configs.mkdir(parents=True, exist_ok=True)
-
             file_path = filedialog.asksaveasfilename(
                 initialdir=paths.configs,
                 defaultextension=".json",
@@ -223,9 +212,9 @@ No need to greet me, just answer.
             return
 
         path = Path(file_path)
-        self.last_config = path.stem
         conf = self.get_string()
         files.write(path, conf)
+        memory.set_value("last_config", path.stem)
 
         if not args.quiet:
             utils.saved_path("Config", path)
@@ -260,9 +249,9 @@ No need to greet me, just answer.
 
             return
 
-        self.last_config = path.stem
         self.apply(path)
         self.after_load()
+        memory.set_value("last_config", path.stem)
 
         if not args.quiet:
             f_name = path.name
@@ -538,16 +527,16 @@ No need to greet me, just answer.
         self.set_command(cmd)
 
     def save_last(self) -> None:
-        if not self.last_config:
+        if not memory.last_config:
             return
 
-        self.save_state(self.last_config)
+        self.save_state(memory.last_config)
 
     def load_last(self) -> None:
-        if not self.last_config:
+        if not memory.last_config:
             return
 
-        self.load_state(self.last_config)
+        self.load_state(memory.last_config)
 
 
 config = Config()

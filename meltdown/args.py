@@ -276,6 +276,8 @@ class Args:
         self.upload_name_user = ""
         self.upload_name_ai = ""
         self.signals = ""
+        self.config_dir = ""
+        self.data_dir = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -549,6 +551,8 @@ class Args:
             "generic_names_logs",
             "generic_names_uploads",
             "signals",
+            "config_dir",
+            "data_dir",
         ]
 
         for n_item in normals:

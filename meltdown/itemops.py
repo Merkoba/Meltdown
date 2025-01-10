@@ -5,10 +5,10 @@ from typing import TYPE_CHECKING
 
 # Modules
 from .app import app
-from .config import config
 from .args import args
 from .utils import utils
 from .dialogs import Dialog, Commands
+from .memory import memory
 
 
 if TYPE_CHECKING:
@@ -154,14 +154,14 @@ class ItemOps:
             if not ans:
                 return
 
-            config.set_value("last_program", ans)
+            memory.set_value("last_program", ans)
             app.run_program(ans, text)
 
         if args.use_program:
             action(args.use_program)
             return
 
-        Dialog.show_input("Run Program", lambda a: action(a), value=config.last_program)
+        Dialog.show_input("Run Program", lambda a: action(a), value=memory.last_program)
 
     def show_info(self, number: str) -> None:
         if not number:

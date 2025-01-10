@@ -18,6 +18,7 @@ from .utils import utils
 from .files import files
 from .close import close
 from .tests import tests
+from .memory import memory
 
 
 class Item:
@@ -337,8 +338,8 @@ class Session:
                 return
 
         path = Path(file_path)
-        config.set_value("last_session", path.stem)
         files.write(path, self.to_json())
+        memory.set_value("last_session", path.stem)
 
         if not args.quiet:
             utils.saved_path("Session", path)
@@ -371,7 +372,7 @@ class Session:
 
         try:
             self.load_items(path)
-            config.set_value("last_session", path.stem)
+            memory.set_value("last_session", path.stem)
             display.select_last_tab()
             self.save()
         except BaseException as e:
@@ -425,16 +426,16 @@ class Session:
         Dialog.show_dialog("Session Menu", commands=cmds)
 
     def save_last(self) -> None:
-        if not config.last_session:
+        if not memory.last_session:
             return
 
-        self.save_state(config.last_session)
+        self.save_state(memory.last_session)
 
     def load_last(self) -> None:
-        if not config.last_session:
+        if not memory.last_session:
             return
 
-        self.load_state(config.last_session)
+        self.load_state(memory.last_session)
 
     def count(self) -> int:
         return sum([c.count() for c in self.conversations.values()])

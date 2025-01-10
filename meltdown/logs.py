@@ -16,6 +16,7 @@ from .paths import paths
 from .utils import utils
 from .files import files
 from .formats import formats
+from .memory import memory
 
 
 class Logs:
@@ -169,7 +170,7 @@ class Logs:
             display.print(utils.emoji_text(msg, "storage"))
 
         if last_log:
-            config.set_value("last_log", last_log)
+            memory.set_value("last_log", last_log)
 
     def to_json(
         self,
@@ -257,10 +258,10 @@ class Logs:
         return full_text
 
     def open_last_log(self) -> None:
-        if not config.last_log:
+        if not memory.last_log:
             return
 
-        app.open_generic(config.last_log)
+        app.open_generic(memory.last_log)
 
     def get_content(self, mode: str, conversation: Conversation) -> str:
         if mode == "text":

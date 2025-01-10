@@ -1,6 +1,5 @@
 # Standard
 import os
-import sys
 import fcntl
 import tempfile
 from pathlib import Path
@@ -22,6 +21,7 @@ from .system import system
 from .console import console
 from .listener import listener
 from .tasks import tasks
+from .memory import memory
 
 
 def main() -> None:
@@ -29,7 +29,10 @@ def main() -> None:
     title = app.manifest["title"]
     program = app.manifest["program"]
     args.parse()
-    paths.setup()
+
+    if not paths.setup():
+        utils.msg("Config or data directories not found.")
+        return
 
     if args.profile:
         pid = f"mlt_{program}_{args.profile}.pid"
@@ -47,8 +50,9 @@ def main() -> None:
                 f"{title} is already running.\nUse --force to launch multiple instances."
             )
 
-            sys.exit(0)
+            return
 
+    memory.load()
     config.load()
     app.prepare()
     widgets.make()
