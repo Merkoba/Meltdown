@@ -5,24 +5,18 @@ from typing import Any
 from tkinter import filedialog
 
 # Modules
+from .app import app
 from .tooltips import ToolTip
-from .commands import commands
-from .config import config
 from .entrybox import EntryBox
-from .args import args
-from .paths import paths
-from .dialogs import Dialog
 from .tips import tips
-from .utils import utils
 from .files import files
-from .menus import Menu
 from . import widgetutils
 
 
 class FileControl:
     def __init__(self) -> None:
         self.history_index = -1
-        self.input: EntryBox
+        self.file: EntryBox
         self.autocomplete: list[str] = []
         self.last_delete_press = 0.0
 
@@ -65,9 +59,9 @@ class FileControl:
         file = filedialog.askopenfilename(initialdir=widgets.get_dir(None, "files"))
 
         if file:
-            self.set_file(file)
+            self.set(file)
 
-    def set_file(self, text: str) -> None:
+    def set(self, text: str) -> None:
         self.file.set_text(text)
         self.file.move_to_end()
 
@@ -77,7 +71,7 @@ class FileControl:
         widgets.show_menu_items(
             "file",
             "files",
-            lambda m: self.set_file(m),
+            lambda m: self.set(m),
             event,
             only_items=only_items,
             alt_cmd=lambda m: self.forget_file(m, event),
@@ -101,6 +95,55 @@ class FileControl:
             return
 
         app.open_generic(file)
+
+    def apply_history(self, inputs: list[str]) -> None:
+        text = inputs[self.history_index]
+        self.set(text)
+        self.file.focus_end()
+
+    def get_history_list(self) -> list[str]:
+        return files.get_list("files")
+
+    def history_up(self) -> None:
+        files = self.get_history_list()
+
+        if not files:
+            return
+
+        if self.history_index == -1:
+            self.history_index = 0
+        else:
+            if self.history_index == len(files) - 1:
+                self.clear()
+                return
+
+            self.history_index = (self.history_index + 1) % len(files)
+
+        self.apply_history(files)
+
+    def history_down(self) -> None:
+        files = self.get_history_list()
+
+        if not files:
+            return
+
+        if self.history_index == -1:
+            self.history_index = len(files) - 1
+        else:
+            if self.history_index == 0:
+                self.clear()
+                return
+
+            self.history_index = (self.history_index - 1) % len(files)
+
+        self.apply_history(files)
+
+    def clear(self) -> None:
+        self.file.clear()
+        self.reset_history_index()
+
+    def reset_history_index(self) -> None:
+        self.history_index = -1
 
 
 filecontrol = FileControl()

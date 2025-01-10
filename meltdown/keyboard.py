@@ -8,6 +8,7 @@ from pathlib import Path
 
 # Modules
 from .app import app
+from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .display import display
 from .model import model
@@ -590,15 +591,23 @@ class Keyboard:
 
         if args.arrow_mode == "history":
             if focused == widgets.file:
-                print(333)
+                filecontrol.history_up()
             else:
                 inputcontrol.history_up()
         elif args.arrow_mode == "scroll":
             commands.run("scrollup")
 
     def down_arrow(self) -> None:
+        from .widgets import widgets
+
+        focused = app.focused()
+
         if args.arrow_mode == "history":
-            inputcontrol.history_down()
+            if focused == widgets.file:
+                filecontrol.history_down()
+            else:
+                inputcontrol.history_down()
+
         elif args.arrow_mode == "scroll":
             commands.run("scrolldown")
 

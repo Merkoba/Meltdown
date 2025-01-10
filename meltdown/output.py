@@ -136,11 +136,9 @@ class Output(tk.Text):
 
     @staticmethod
     def use_url() -> None:
-        from .widgets import widgets
-
         words = Output.get_words()
         words = words.rstrip(".,:;")
-        filecontrol.set_file(words)
+        filecontrol.set(words)
 
     @staticmethod
     def use_words() -> None:

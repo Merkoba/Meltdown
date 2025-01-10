@@ -37,6 +37,7 @@ TextWidget = (EntryBox, tk.Text)
 
 class Widgets:
     def __init__(self) -> None:
+        self.file: EntryBox
         self.input: EntryBox
         self.canvas_scroll = 1
 
