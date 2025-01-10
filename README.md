@@ -679,6 +679,8 @@ When the scroll ends the auto-scroll mode gets disabled.
 
 The mode also gets disabled when manually scrolled.
 
+![](img/autoscroll.png)
+
 ---
 
 ## Keywords <a name="keywords"></a>
