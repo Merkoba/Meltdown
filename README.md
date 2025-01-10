@@ -38,6 +38,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Palette](#palette)
 1. [Taps](#taps)
 1. [Gestures](#gestures)
+1. [Files](#files)
 1. [Images](#images)
 1. [Themes](#themes)
 1. [Compact](#compact)
@@ -589,6 +590,20 @@ These are `up`, `down`, `left`, and `right`.
 To trigger these, hold the right mouse button, move to a direction, and release the button.
 
 By default these scroll up/down and move to tabs left/right.
+
+---
+
+## Files <a name="files"></a>
+
+There is a files panel where you can enter file paths.
+
+For now it can do simple text file analysis.
+
+And it can also be used for image files when using special models.
+
+When the file is used it is removed from the input, and not used for the next prompts.
+
+The used file paths are remembered in the session file, but not their content.
 
 ---
 
