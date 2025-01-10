@@ -74,7 +74,6 @@ class Signals:
         items = signal.get("items", "all")
         format_ = signal.get("format", "json")
         single = signal.get("single", False)
-        data = signal.get("data", {})
         content = self.get_content(format_, items)
 
         if not content:
@@ -86,6 +85,11 @@ class Signals:
 
         if content_length > 0:
             content = content[:content_length].strip()
+
+        data = signal.get("data", {})
+
+        for key, value in data.items():
+            data[key] = utils.replace_keywords(value)
 
         data[content_key] = content
         res: Any = None

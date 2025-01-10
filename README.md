@@ -462,6 +462,12 @@ Multiple signals can be defined. This is a demo with all the available keys:
 
 `data` all the data keys needed to be sent. (default: empty)
 
+For data, keywords are supported.
+
+For example you can have `"date": "((now))"` (Unix timestamp)
+
+Or: `"date": "((date))"` (Full date)
+
 ---
 
 To run a signal you use the command with the name: `/signal test`.
