@@ -574,7 +574,6 @@ class Args:
         for ns_item in no_strip:
             ap.get_value(ns_item, no_strip=True)
 
-        # Read self.args_file and override arguments, based on the arguments defined in that json
         if self.argfile:
             self.load_argfile()
 
