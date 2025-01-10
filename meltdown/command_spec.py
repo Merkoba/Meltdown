@@ -1077,5 +1077,11 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "vars",
+            "Read all the variables",
+            lambda a=None: inputcontrol.read_variables(),
+        )
+
 
 command_spec = CommandSpec()

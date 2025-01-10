@@ -439,6 +439,19 @@ class InputControl:
         else:
             display.print(f"Variable not found: {name}")
 
+    def read_variables(self) -> None:
+        from .display import display
+
+        items = []
+
+        if self.variables:
+            for name, value in self.variables.items():
+                items.append(f"{name} = {value}")
+        else:
+            display.print("No variables set.")
+
+        Dialog.show_msgbox("Variables", "\n".join(items))
+
     def replace_variables(self, text: str) -> str:
         def replace(match: Any) -> str:
             name = str(match.group(2))
