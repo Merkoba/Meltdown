@@ -18,8 +18,8 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
-1. [Profiles](#profiles)
 1. [Paths](#paths)
+1. [Profiles](#profiles)
 1. [Input](#input)
 1. [Commands](#commands)
 1. [Tabs](#tabs)
@@ -204,22 +204,6 @@ Then pick the model you want: `Use Gemini Model`.
 
 ---
 
-## Profiles <a name="profiles"></a>
-
-Different profiles can be created and used.
-
-By default it uses the `main` profile.
-
-Profiles have independent configs and data.
-
-To launch with a different profile use the `--profile` argument.
-
-For example: `--profile dev`.
-
-To access the directories where profiles save files, use the `/profile` command.
-
----
-
 ## Paths <a name="files"></a>
 
 Most files are saved in the system's data directory.
@@ -247,6 +231,22 @@ So data should be treated as private.
 It's possible to override these paths through arguments.
 
 Using `--data-dir` and `--config-dir`.
+
+---
+
+## Profiles <a name="profiles"></a>
+
+Different profiles can be created and used.
+
+By default it uses the `main` profile.
+
+Profiles have independent configs and data.
+
+To launch with a different profile use the `--profile` argument.
+
+For example: `--profile dev`.
+
+To access the directories where profiles save files, use the `/profile` command.
 
 ---
 
