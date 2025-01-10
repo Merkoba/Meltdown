@@ -2582,6 +2582,6 @@ Type: str
 
 Max number of items a conversation can have
 
-Default: 100
+Default: 500
 
 Type: int
