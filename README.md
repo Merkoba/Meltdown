@@ -721,6 +721,14 @@ It's also possible to change the border color and size.
 
 Using: `--border-size` and `--border-color`.
 
+There is a border effect that can be enabled with `--border-effect`.
+
+The color can be changed with `--border-effect-color`.
+
+This changes the color of the border when a response starts to stream.
+
+Then restores the normal color when the stream is done.
+
 ---
 
 ## Compact <a name="compact"></a>
