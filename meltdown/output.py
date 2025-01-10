@@ -34,9 +34,9 @@ class Output(tk.Text):
 
     @staticmethod
     def custom_menu(event: Any) -> None:
-        from .menumanager import custom_menu
+        from .menumanager import menumanager
 
-        custom_menu.show(event)
+        menumanager.custom_menu.show(event)
 
     @staticmethod
     def delete_items(mode: str = "normal") -> None:
@@ -816,7 +816,7 @@ class Output(tk.Text):
     def show_word_menu(
         self, event: Any, widget: tk.Text | None = None, consider_tags: bool = True
     ) -> bool:
-        from .menumanager import word_menu, selection_menu
+        from .menumanager import menumanager
         from .keyboard import keyboard
 
         if not args.word_menu:
@@ -860,7 +860,7 @@ class Output(tk.Text):
 
         if not Output.words:
             if seltext:
-                selection_menu.show(event)
+                menumanager.selection_menu.show(event)
                 return True
 
             return False
@@ -869,11 +869,11 @@ class Output(tk.Text):
             Output.explain_words()
             return True
 
-        word_menu.show(event)
+        menumanager.word_menu.show(event)
         return True
 
     def show_list_menu(self, event: Any) -> None:
-        from .menumanager import word_menu
+        from .menumanager import menumanager
 
         if not args.list_menu:
             return
@@ -882,7 +882,7 @@ class Output(tk.Text):
         line = int(current_index.split(".")[0])
         text = self.get(f"{line}.0", f"{line}.end")
         Output.words = text.split(" ", 1)[1].strip()
-        word_menu.show(event)
+        menumanager.word_menu.show(event)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.index(tk.CURRENT)
@@ -985,10 +985,10 @@ class Output(tk.Text):
             pass
 
     def on_right_click(self, event: Any, widget: tk.Text | None = None) -> None:
-        from .menumanager import tab_menu
+        from .menumanager import menumanager
 
         if not self.show_word_menu(event, widget, consider_tags=False):
-            tab_menu.show(event)
+            menumanager.tab_menu.show(event)
 
     def on_click(self) -> None:
         app.hide_all()
@@ -1057,7 +1057,7 @@ class Output(tk.Text):
         return "break"
 
     def on_name_click(self, event: Any, who: str) -> None:
-        from .menumanager import item_menu
+        from .menumanager import menumanager
         from .keyboard import keyboard
 
         self.deselect_all()
@@ -1077,7 +1077,7 @@ class Output(tk.Text):
             Output.select_item()
             return
 
-        item_menu.show(event)
+        menumanager.item_menu.show(event)
 
     def on_name_middle_click(self, event: Any, who: str) -> None:
         self.deselect_all()
@@ -1242,7 +1242,7 @@ class Output(tk.Text):
 
     def on_url_click(self, event: Any) -> None:
         from .keyboard import keyboard
-        from .menumanager import url_menu
+        from .menumanager import menumanager
 
         if not args.url_menu:
             return
@@ -1253,11 +1253,11 @@ class Output(tk.Text):
             Output.open_url()
             return
 
-        url_menu.show(event)
+        menumanager.url_menu.show(event)
 
     def on_path_click(self, event: Any) -> None:
         from .keyboard import keyboard
-        from .menumanager import url_menu
+        from .menumanager import menumanager
 
         if not args.path_menu:
             return
@@ -1268,7 +1268,7 @@ class Output(tk.Text):
             Output.open_url()
             return
 
-        url_menu.show(event)
+        menumanager.url_menu.show(event)
 
     def uselink_click(self, event: Any) -> None:
         from .model import model

@@ -657,19 +657,19 @@ class Widgets:
             widget.move_to_end()
 
     def show_main_menu(self, event: Any = None) -> None:
-        from .menumanager import main_menu
+        from .menumanager import menumanager
 
-        main_menu.show(event)
+        menumanager.main_menu.show(event)
 
     def show_model_menu(self, event: Any = None) -> None:
-        from .menumanager import model_menu
+        from .menumanager import menumanager
 
-        model_menu.show(event)
+        menumanager.model_menu.show(event)
 
     def show_more_menu(self, event: Any = None) -> None:
-        from .menumanager import more_menu
+        from .menumanager import menumanager
 
-        more_menu.show(event)
+        menumanager.more_menu.show(event)
 
     def get_dir(self, what: str | None = None, list: str | None = None) -> str | None:
         items = []

@@ -11,30 +11,48 @@ from .modelcontrol import modelcontrol
 from .system_prompt import system_prompt
 
 
-def get_main_button() -> tk.Widget:
-    from .widgets import widgets
+class MenuManager:
+    def __init__(self) -> None:
+        self.main_menu: Any = None
+        self.model_menu: Any = None
+        self.gpt_menu: Any = None
+        self.gemini_menu: Any = None
+        self.more_menu: Any = None
+        self.tab_menu: Any = None
+        self.font_menu: Any = None
+        self.item_menu: Any = None
+        self.word_menu: Any = None
+        self.selection_menu: Any = None
+        self.url_menu: Any = None
+        self.custom_menu: Any = None
+        self.copy_menu: Any = None
 
-    return widgets.main_menu_button
+    @staticmethod
+    def get_main_button() -> tk.Widget:
+        from .widgets import widgets
 
+        return widgets.main_menu_button
 
-def get_model_button() -> tk.Widget:
-    from .widgets import widgets
+    @staticmethod
+    def get_model_button() -> tk.Widget:
+        from .widgets import widgets
 
-    return widgets.model_menu_button
+        return widgets.model_menu_button
 
+    @staticmethod
+    def get_more_button() -> tk.Widget:
+        from .widgets import widgets
 
-def get_more_button() -> tk.Widget:
-    from .widgets import widgets
-
-    return widgets.more_menu_button
+        return widgets.more_menu_button
 
 
 class MainMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .session import session
         from .logs import logs
         from .commands import commands
 
+        self.parent = parent
         self.menu = Menu()
 
         self.menu.add("System", lambda e: system_prompt.write())
@@ -54,7 +72,7 @@ class MainMenu:
         self.menu.separator()
 
         self.menu.add("Theme", lambda e: app.pick_theme())
-        self.menu.add("Font", lambda e: font_menu.show(e))
+        self.menu.add("Font", lambda e: self.parent.font_menu.show(e))
 
         self.menu.separator()
 
@@ -70,14 +88,15 @@ class MainMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_main_button()
+            widget = MenuManager.get_main_button()
             self.menu.show(widget=widget)
 
 
 class ModelMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .model import model
 
+        self.parent = parent
         self.menu = Menu()
 
         self.menu.add("Recent Models", lambda e: modelcontrol.show_recent())
@@ -85,8 +104,8 @@ class ModelMenu:
 
         self.menu.separator()
 
-        self.menu.add("Use GPT Model", lambda e: gpt_menu.show())
-        self.menu.add("Use Gemini Model", lambda e: gemini_menu.show())
+        self.menu.add("Use GPT Model", lambda e: self.parent.gpt_menu.show())
+        self.menu.add("Use Gemini Model", lambda e: self.parent.gemini_menu.show())
 
         self.menu.separator()
 
@@ -97,15 +116,16 @@ class ModelMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_model_button()
+            widget = MenuManager.get_model_button()
             self.menu.show(widget=widget)
 
 
 class GPTMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .model import model
         from .widgets import widgets
 
+        self.parent = parent
         self.menu = Menu()
 
         for gpt in model.gpts:
@@ -115,15 +135,16 @@ class GPTMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_model_button()
+            widget = MenuManager.get_model_button()
             self.menu.show(widget=widget)
 
 
 class GeminiMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .model import model
         from .widgets import widgets
 
+        self.parent = parent
         self.menu = Menu()
 
         for gemini in model.geminis:
@@ -135,12 +156,13 @@ class GeminiMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_model_button()
+            widget = MenuManager.get_model_button()
             self.menu.show(widget=widget)
 
 
 class MoreMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
+        self.parent = parent
         self.menu = Menu()
 
     def make(self) -> None:
@@ -174,12 +196,13 @@ class MoreMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_more_button()
+            widget = MenuManager.get_more_button()
             self.menu.show(widget=widget)
 
 
 class TabMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
+        self.parent = parent
         self.menu = Menu()
 
     def make(self) -> None:
@@ -271,9 +294,11 @@ class TabMenu:
 
 
 class FontMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .display import display
         from .dialogs import Dialog
+
+        self.parent = parent
 
         def action(text: str) -> None:
             display.set_font_size(text)
@@ -296,12 +321,13 @@ class FontMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_main_button()
+            widget = MenuManager.get_main_button()
             self.menu.show(widget=widget)
 
 
 class ItemMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
+        self.parent = parent
         self.menu = Menu()
 
     def make(self) -> None:
@@ -311,7 +337,7 @@ class ItemMenu:
         self.menu.clear()
         num_items = display.get_num_items()
         self.menu.add(text="Use", command=lambda e: Output.use_item())
-        self.menu.add(text="Copy", command=lambda e: copy_menu.show(e))
+        self.menu.add(text="Copy", command=lambda e: self.parent.copy_menu.show(e))
         self.menu.add(text="Select", command=lambda e: Output.select_item())
         self.menu.add(text="Information", command=lambda e: Output.show_info())
         self.menu.separator()
@@ -349,10 +375,11 @@ class ItemMenu:
 
 
 class WordMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .args import args
         from .output import Output
 
+        self.parent = parent
         self.menu = Menu()
 
         self.menu.add(text="Use", command=lambda e: Output.use_words())
@@ -373,9 +400,10 @@ class WordMenu:
 
 
 class SelectionMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .output import Output
 
+        self.parent = parent
         self.menu = Menu()
 
         self.menu.add(text="Copy", command=lambda e: Output.copy_selection())
@@ -388,10 +416,11 @@ class SelectionMenu:
 
 
 class CustomMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .args import args
         from .output import Output
 
+        self.parent = parent
         self.menu = Menu()
 
         def add(item: str) -> None:
@@ -412,9 +441,10 @@ class CustomMenu:
 
 
 class UrlMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
         from .output import Output
 
+        self.parent = parent
         self.menu = Menu()
 
         self.menu.add(text="Open", command=lambda e: Output.open_url())
@@ -433,7 +463,8 @@ class UrlMenu:
 
 
 class CopyMenu:
-    def __init__(self) -> None:
+    def __init__(self, parent: MenuManager) -> None:
+        self.parent = parent
         self.menu = Menu()
 
     def make(self) -> None:
@@ -463,7 +494,7 @@ class CopyMenu:
         if event:
             self.menu.show(event)
         else:
-            widget = get_more_button()
+            widget = MenuManager.get_more_button()
             self.menu.show(widget=widget)
 
     def last_item(self) -> None:
@@ -473,16 +504,17 @@ class CopyMenu:
         self.show()
 
 
-main_menu = MainMenu()
-model_menu = ModelMenu()
-gpt_menu = GPTMenu()
-gemini_menu = GeminiMenu()
-more_menu = MoreMenu()
-tab_menu = TabMenu()
-font_menu = FontMenu()
-item_menu = ItemMenu()
-word_menu = WordMenu()
-selection_menu = SelectionMenu()
-url_menu = UrlMenu()
-custom_menu = CustomMenu()
-copy_menu = CopyMenu()
+menumanager = MenuManager()
+menumanager.main_menu = MainMenu(menumanager)
+menumanager.model_menu = ModelMenu(menumanager)
+menumanager.gpt_menu = GPTMenu(menumanager)
+menumanager.gemini_menu = GeminiMenu(menumanager)
+menumanager.more_menu = MoreMenu(menumanager)
+menumanager.tab_menu = TabMenu(menumanager)
+menumanager.font_menu = FontMenu(menumanager)
+menumanager.item_menu = ItemMenu(menumanager)
+menumanager.word_menu = WordMenu(menumanager)
+menumanager.selection_menu = SelectionMenu(menumanager)
+menumanager.url_menu = UrlMenu(menumanager)
+menumanager.custom_menu = CustomMenu(menumanager)
+menumanager.copy_menu = CopyMenu(menumanager)

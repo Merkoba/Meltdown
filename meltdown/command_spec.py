@@ -29,7 +29,7 @@ from .summarize import summarize
 from .system_prompt import system_prompt
 from .findmanager import findmanager
 from .formats import formats
-from . import menumanager
+from .menumanager import menumanager
 
 
 class DuplicateCommandError(Exception):

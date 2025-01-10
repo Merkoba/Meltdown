@@ -280,11 +280,11 @@ class Display:
         return None
 
     def on_tab_right_click(self, event: Any, tab_id: str) -> None:
-        from .menumanager import tab_menu
+        from .menumanager import menumanager
 
         self.tab_menu_id = tab_id
         self.tab_menu_event = event
-        tab_menu.show(event, "tab_right_click")
+        menumanager.tab_menu.show(event, "tab_right_click")
 
     def on_tab_middle_click(self, tab_id: str) -> None:
         from .close import close
@@ -607,10 +607,10 @@ class Display:
         config.set("font_size", size)
 
     def set_font_size(self, text: str | None = None) -> None:
-        from .menumanager import font_menu
+        from .menumanager import menumanager
 
         if not text:
-            font_menu.show()
+            menumanager.font_menu.show()
             return
 
         if text in ["default", "reset"]:
