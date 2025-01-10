@@ -63,7 +63,7 @@ class Signals:
 
         url = signal.get("url")
         content_key = signal.get("content")
-        content_length = signal.get("length", 0)
+        length = signal.get("length", 0)
         method = signal.get("method", "post")
         method_lower = method.lower()
 
@@ -83,8 +83,8 @@ class Signals:
         if single:
             content = content.replace("\n", " ").strip()
 
-        if content_length > 0:
-            content = content[:content_length].strip()
+        if length > 0:
+            content = content[:length].strip()
 
         data = signal.get("data", {})
 
