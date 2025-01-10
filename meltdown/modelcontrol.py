@@ -59,10 +59,6 @@ class ModelControl:
         if self.history_index == -1:
             self.history_index = 0
         else:
-            if self.history_index == len(models) - 1:
-                self.clear()
-                return
-
             self.history_index = (self.history_index + 1) % len(models)
 
         self.apply_history(models)
@@ -76,17 +72,9 @@ class ModelControl:
         if self.history_index == -1:
             self.history_index = len(models) - 1
         else:
-            if self.history_index == 0:
-                self.clear()
-                return
-
             self.history_index = (self.history_index - 1) % len(models)
 
         self.apply_history(models)
-
-    def clear(self) -> None:
-        self.model.clear()
-        self.reset_history_index()
 
     def reset_history_index(self) -> None:
         self.history_index = -1
