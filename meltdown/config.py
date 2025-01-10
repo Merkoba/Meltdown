@@ -232,7 +232,8 @@ No need to greet me, just answer.
             paths.configs.mkdir(parents=True, exist_ok=True)
 
         if name:
-            path = Path(paths.configs, f"{name}.json")
+            fname = utils.json_name(name)
+            path = Path(paths.configs, fname)
         else:
             file_path = filedialog.askopenfilename(
                 initialdir=paths.configs,

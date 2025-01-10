@@ -334,8 +334,8 @@ class Session:
                 filetypes=[("Session Files", "*.json")],
             )
 
-            if not file_path:
-                return
+        if not file_path:
+            return
 
         path = Path(file_path)
         files.write(path, self.to_json())
@@ -353,7 +353,8 @@ class Session:
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
         if name:
-            path = Path(paths.sessions, f"{name}.json")
+            fname = utils.json_name(name)
+            path = Path(paths.sessions, fname)
         else:
             file_path = filedialog.askopenfilename(
                 initialdir=paths.sessions,
