@@ -8,32 +8,36 @@ from .utils import utils
 from . import formats
 
 
-def summarize(tab_id: str | None = None) -> None:
-    tabconvo = display.get_tab_convo(tab_id)
+class Summarize:
+    def summarize(self, tab_id: str | None = None) -> None:
+        tabconvo = display.get_tab_convo(tab_id)
 
-    if not tabconvo:
-        return
-
-    text = formats.get_text(tabconvo.convo, "minimal")
-
-    if not text:
-        text = display.get_text(tab_id)
-
-        if not text:
+        if not tabconvo:
             return
 
-    prompt = {}
+        text = formats.get_text(tabconvo.convo, "minimal")
 
-    sumprompt = args.summarize_prompt
-    sumprompt = utils.replace_keywords(sumprompt)
+        if not text:
+            text = display.get_text(tab_id)
 
-    prompt["user"] = "Please summarize this."
-    prompt["text"] = f"{sumprompt}: "
-    prompt["text"] += text
+            if not text:
+                return
 
-    tab_id = display.make_tab()
+        prompt = {}
 
-    if not tab_id:
-        return
+        sumprompt = args.summarize_prompt
+        sumprompt = utils.replace_keywords(sumprompt)
 
-    model.stream(prompt, tab_id=tab_id)
+        prompt["user"] = "Please summarize this."
+        prompt["text"] = f"{sumprompt}: "
+        prompt["text"] += text
+
+        tab_id = display.make_tab()
+
+        if not tab_id:
+            return
+
+        model.stream(prompt, tab_id=tab_id)
+
+
+summarize = Summarize()

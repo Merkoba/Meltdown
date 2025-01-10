@@ -24,11 +24,11 @@ from .itemops import itemops
 from .upload import upload
 from .signals import signals
 from .close import close
-from . import summarize
+from .delete import delete
+from .summarize import summarize
 from . import menumanager
 from . import system_prompt
 from . import findmanager
-from . import delete
 from . import formats
 
 

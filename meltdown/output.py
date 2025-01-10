@@ -40,7 +40,7 @@ class Output(tk.Text):
 
     @staticmethod
     def delete_items(mode: str = "normal") -> None:
-        from . import delete
+        from .delete import delete
 
         output = Output.current_output()
 

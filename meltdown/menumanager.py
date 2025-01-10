@@ -185,7 +185,7 @@ class TabMenu:
     def make(self) -> None:
         from .display import display
         from .logs import logs
-        from . import summarize
+        from .summarize import summarize
 
         self.menu.clear()
         num_tabs = display.num_tabs()
