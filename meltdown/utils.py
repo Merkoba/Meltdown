@@ -569,11 +569,5 @@ class Utils:
 
         return text
 
-    def json_name(self, name: str) -> str:
-        if name.endswith(".json"):
-            return name
-
-        return f"{name}.json"
-
 
 utils = Utils()

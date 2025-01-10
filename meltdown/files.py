@@ -136,5 +136,11 @@ class Files:
     def clean_path(self, path: str) -> str:
         return path.replace("file://", "")
 
+    def full_name(self, name: str, ext: str = "json") -> str:
+        if name.endswith(f".{ext}"):
+            return name
+
+        return f"{name}.{ext}"
+
 
 files = Files()

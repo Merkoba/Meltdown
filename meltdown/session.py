@@ -353,7 +353,7 @@ class Session:
             paths.sessions.mkdir(parents=True, exist_ok=True)
 
         if name:
-            fname = utils.json_name(name)
+            fname = files.full_name(name)
             path = Path(paths.sessions, fname)
         else:
             file_path = filedialog.askopenfilename(

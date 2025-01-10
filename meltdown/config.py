@@ -223,6 +223,7 @@ No need to greet me, just answer.
         from .args import args
         from .paths import paths
         from .display import display
+        from .files import files
 
         if name == "last":
             self.load_last()
@@ -232,7 +233,7 @@ No need to greet me, just answer.
             paths.configs.mkdir(parents=True, exist_ok=True)
 
         if name:
-            fname = utils.json_name(name)
+            fname = files.full_name(name)
             path = Path(paths.configs, fname)
         else:
             file_path = filedialog.askopenfilename(
