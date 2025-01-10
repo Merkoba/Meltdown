@@ -55,15 +55,15 @@ class Signals:
             return
 
         signal = signals[name]
-        required = ["url", "content_key"]
+        required = ["url", "content"]
 
         if not all(key in signal for key in required):
             display.print("The signal is not configured properly.")
             return
 
         url = signal.get("url")
-        content_key = signal.get("content_key")
-        content_length = signal.get("content_length", 0)
+        content_key = signal.get("content")
+        content_length = signal.get("length", 0)
         method = signal.get("method", "post")
         method_lower = method.lower()
 
@@ -73,7 +73,7 @@ class Signals:
 
         items = signal.get("items", "all")
         format_ = signal.get("format", "json")
-        single_line = signal.get("single_line", False)
+        single = signal.get("single", False)
         data = signal.get("data", {})
         content = self.get_content(format_, items)
 
@@ -81,7 +81,7 @@ class Signals:
             display.print("No content to send.")
             return
 
-        if single_line:
+        if single:
             content = content.replace("\n", " ").strip()
 
         if content_length > 0:

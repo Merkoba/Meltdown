@@ -429,9 +429,9 @@ Multiple signals can be defined. This is a demo with all the available keys:
         "method": "POST",
         "format": "text",
         "items": "all",
-        "content_key": "status",
-        "content_length": 500,
-        "single_line": true,
+        "content": "status",
+        "length": 500,
+        "single": true,
         "data": {
             "username": "melt",
             "key": "someAuthKey"
@@ -442,7 +442,7 @@ Multiple signals can be defined. This is a demo with all the available keys:
 
 ---
 
-`url` and `content_key` are always required, the rest are optional.
+`url` and `content` are always required, the rest are optional.
 
 ---
 
@@ -454,11 +454,11 @@ Multiple signals can be defined. This is a demo with all the available keys:
 
 `items` can be `all`, to include the full conversation. Or `last`, to include only the last item. (default `all`)
 
-`content_key` is used for the conversation text. (required)
+`content` is the key used for the conversation text. (required)
 
-`content_length` limits the content to that amount of characters. (default: 0)
+`length` limits the content to that amount of characters. (default: 0)
 
-`single_line` sends the content as a single line. (default: false)
+`single` sends the content as a single line. (default: false)
 
 `data` all the data keys needed to be sent. (default: empty)
 
