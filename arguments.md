@@ -2565,3 +2565,13 @@ The color of the border effect
 Default: [Empty string]
 
 Type: str
+
+---
+
+### argfile
+
+Path to a file that overrides the arguments
+
+Default: [Empty string]
+
+Type: str
