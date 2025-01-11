@@ -190,13 +190,13 @@ Refresh the conversation
 
 ### new
 
-Make a new tab
+Make a new tab. Optional argument for the name
 
 ---
 
 ### newstart
 
-Make a new tab at the start
+Make a new tab at the start. Optional argument for the name
 
 ---
 
