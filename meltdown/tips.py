@@ -126,4 +126,7 @@ tips = {
     "find_bound_i": f"Find next word-bound match (case insensitive). {middleprev}",
     "find_bound": f"Find next word-bound match (case sensitive). {middleprev}",
     "find_hide": "Hide the find bar (Esc)",
+    "auto_scroll_slower": "Decrease the auto-scroll speed",
+    "auto_scroll": "Toggle auto-scroll",
+    "auto_scroll_faster": "Increase the auto-scroll speed",
 }

@@ -928,6 +928,18 @@ Stop automatic scrolling
 
 ---
 
+### faster
+
+Make auto-scroll faster
+
+---
+
+### slower
+
+Make auto-scroll slower
+
+---
+
 ### repeat
 
 Repeat the specified prompt

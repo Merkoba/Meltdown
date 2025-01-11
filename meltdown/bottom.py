@@ -42,8 +42,9 @@ class Bottom(tk.Frame):
             self, text="+", command=autoscroll.faster, style="alt"
         )
 
-        tip = f"Delay: {args.auto_scroll_delay} ms"
-        ToolTip(self.auto_scroll_button, tip)
+        ToolTip(self.auto_scroll_slower_button, tips["auto_scroll_slower"])
+        ToolTip(self.auto_scroll_button, tips["auto_scroll"])
+        ToolTip(self.auto_scroll_faster_button, tips["auto_scroll_faster"])
 
         if args.show_auto_scroll:
             self.auto_scroll_slower_button.grid(row=0, column=1, sticky="nsew")
