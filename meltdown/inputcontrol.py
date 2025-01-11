@@ -420,7 +420,8 @@ class InputControl:
             return
 
         self.variables[name] = value
-        display.print(f"Set: `{name}` set to `{value}`", do_format=True)
+        prefix = args.variable_prefix
+        display.print(f"Set: `{prefix}{name}` now means `{value}`", do_format=True)
 
     def unset_variable(self, name: str) -> None:
         from .display import display
