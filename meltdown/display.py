@@ -85,21 +85,29 @@ class Display:
         if not position:
             position = "end"
 
+        def check_empty(page: Page | None) -> bool:
+            if page:
+                tab = self.get_tab(page.id_)
+
+                if not tab:
+                    return False
+
+                if tab.named:
+                    return False
+
+                if self.tab_is_empty(page.id_):
+                    self.select_tab(page.id_)
+                    return True
+
+            return False
+
         if args.keep_empty_tab and (not name):
             if position == "end":
-                last_tab = self.book.get_last()
-
-                if last_tab:
-                    if self.tab_is_empty(last_tab.id_):
-                        self.select_tab(last_tab.id_)
-                        return
+                if check_empty(self.book.get_last()):
+                    return
             elif position == "start":
-                first_tab = self.book.get_first()
-
-                if first_tab:
-                    if self.tab_is_empty(first_tab.id_):
-                        self.select_tab(first_tab.id_)
-                        return
+                if check_empty(self.book.get_first()):
+                    return
 
         self.make_tab(name=name, position=position)
 
