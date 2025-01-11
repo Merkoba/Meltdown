@@ -1,9 +1,11 @@
 # Standard
 import tkinter as tk
+from typing import Any
 
 # Modules
 from .app import app
 from .args import args
+
 
 # Modules
 from .buttonbox import ButtonBox
@@ -49,6 +51,14 @@ class Bottom(tk.Frame):
             self.auto_scroll_faster_button.grid(row=0, column=3, sticky="nsew")
 
         self.auto_scroll_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
+
+        def auto_scroll_wheel(button: Any) -> None:
+            button.set_bind("<Button-4>", lambda e: autoscroll.faster())
+            button.set_bind("<Button-5>", lambda e: autoscroll.slower())
+
+        auto_scroll_wheel(self.auto_scroll_slower_button)
+        auto_scroll_wheel(self.auto_scroll_button)
+        auto_scroll_wheel(self.auto_scroll_faster_button)
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
