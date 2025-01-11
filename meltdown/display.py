@@ -31,7 +31,6 @@ class Tab:
         bottom: Bottom,
         mode: str,
         no_intro: bool,
-        named: bool,
     ) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
@@ -44,7 +43,6 @@ class Tab:
         self.streaming = False
         self.num_user_prompts = 0
         self.no_intro = no_intro
-        self.named = named
 
 
 class TabConvo:
@@ -97,14 +95,6 @@ class Display:
 
         def check_empty(page: Page | None) -> bool:
             if page:
-                tab = self.get_tab(page.id_)
-
-                if not tab:
-                    return False
-
-                if tab.named:
-                    return False
-
                 if self.tab_is_empty(page.id_):
                     self.select_tab(page.id_)
                     return True
@@ -142,9 +132,6 @@ class Display:
                 name = "tab"
 
             name = name.capitalize()
-            named = False
-        else:
-            named = True
 
         name = self.prepare_name(name)
 
@@ -178,7 +165,6 @@ class Display:
             bottom,
             mode=mode,
             no_intro=no_intro,
-            named=named,
         )
 
         self.tabs[tab_id] = tab
@@ -817,8 +803,7 @@ class Display:
 
         if args.auto_name and (who == "user") and original:
             if not self.has_messages(tab_id):
-                if not tab.named:
-                    self.auto_name_tab(tab_id, original)
+                self.auto_name_tab(tab_id, original)
 
         if who == "ai":
             tab.num_user_prompts += 1
