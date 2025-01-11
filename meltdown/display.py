@@ -31,6 +31,7 @@ class Tab:
         bottom: Bottom,
         mode: str,
         no_intro: bool,
+        named: bool,
     ) -> None:
         self.conversation_id = conversation_id
         self.tab_id = tab_id
@@ -43,6 +44,7 @@ class Tab:
         self.streaming = False
         self.num_user_prompts = 0
         self.no_intro = no_intro
+        self.named = named
 
 
 class TabConvo:
@@ -131,6 +133,9 @@ class Display:
                 name = "tab"
 
             name = name.capitalize()
+            named = False
+        else:
+            named = True
 
         name = self.prepare_name(name)
 
@@ -157,7 +162,14 @@ class Display:
         bottom = Bottom(page.content, tab_id)
 
         tab = Tab(
-            conversation_id, tab_id, output, find, bottom, mode=mode, no_intro=no_intro
+            conversation_id,
+            tab_id,
+            output,
+            find,
+            bottom,
+            mode=mode,
+            no_intro=no_intro,
+            named=named,
         )
 
         self.tabs[tab_id] = tab
@@ -168,6 +180,7 @@ class Display:
         page.content.grid_rowconfigure(0, weight=0)
         page.content.grid_rowconfigure(1, weight=1)
         page.content.grid_rowconfigure(2, weight=0)
+
         self.tab_number += 1
 
         if save:
@@ -795,7 +808,8 @@ class Display:
 
         if args.auto_name and (who == "user") and original:
             if not self.has_messages(tab_id):
-                self.auto_name_tab(tab_id, original)
+                if not tab.named:
+                    self.auto_name_tab(tab_id, original)
 
         if who == "ai":
             tab.num_user_prompts += 1
