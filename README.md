@@ -330,6 +330,10 @@ The need for confirmations can also be configured through arguments.
 
 When there is a single tab, the tab bar is not shown, as soon as second tab is created, the tab bar is shown. This can be configured, to always show the tab bar, or to never show it.
 
+There is a check that avoid creating new tabs when the last tabs is empty.
+Instead it focuses the last empty tab. At the end or at the start.
+To disable this you can use `--no-keep-empty-tab`.
+
 ---
 
 ## Markdown <a name="markdown"></a>
