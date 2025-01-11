@@ -398,25 +398,25 @@ class CommandSpec:
         self.add_cmd(
             "scrollup",
             "Scroll up",
-            lambda a=None: display.scroll_up(disable_auto_scroll=True),
+            lambda a=None: display.scroll_up(disable_autoscroll=True),
         )
 
         self.add_cmd(
             "scrollupmore",
             "Scroll up more",
-            lambda a=None: display.scroll_up(more=True, disable_auto_scroll=True),
+            lambda a=None: display.scroll_up(more=True, disable_autoscroll=True),
         )
 
         self.add_cmd(
             "scrolldown",
             "Scroll down",
-            lambda a=None: display.scroll_down(disable_auto_scroll=True),
+            lambda a=None: display.scroll_down(disable_autoscroll=True),
         )
 
         self.add_cmd(
             "scrolldownmore",
             "Scroll down more",
-            lambda a=None: display.scroll_down(more=True, disable_auto_scroll=True),
+            lambda a=None: display.scroll_down(more=True, disable_autoscroll=True),
         )
 
         self.add_cmd("load", "Load the model", lambda a=None: model.load())

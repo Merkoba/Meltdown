@@ -46,7 +46,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Images](#images)
 1. [Themes](#themes)
 1. [Compact](#compact)
-1. [AutoScroll](#autoscroll)
+1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
@@ -808,7 +808,7 @@ There are arguments you can use to define which panels get removed in compact mo
 
 ---
 
-## Auto Scroll <a name="autoscroll"></a>
+## Autoscroll <a name="autoscroll"></a>
 
 The output window can be auto scrolled.
 
@@ -816,7 +816,7 @@ That means it will scroll slowly downards or upwards.
 
 So you can read text without manual intervention.
 
-To activate this you can click `Auto-Scroll` in the `Go To Bottom` panel.
+To activate this you can click `Autoscroll` in the `Go To Bottom` panel.
 
 Or use the `/autoscroll` command. This command accepts optional `up`, and `down` arguments.
 
@@ -826,9 +826,9 @@ There is also `f9` and `shift + f9` shortcuts.
 
 The scroll delay can be configured through arguments.
 
-When the auto-scroll mode is active, the button has a different color.
+When the autoscroll mode is active, the button has a different color.
 
-When the scroll ends the auto-scroll mode gets disabled.
+When the scroll ends the autoscroll mode gets disabled.
 
 The mode also gets disabled when manually scrolled.
 

@@ -245,8 +245,9 @@ class Args:
         self.border_size = 5
         self.title = ""
         self.icon = ""
-        self.auto_scroll_delay = 700
-        self.show_auto_scroll = True
+        self.autoscroll_delay = 700
+        self.autoscroll_interrupt = True
+        self.show_autoscroll = True
         self.scroller_buttons = True
         self.portrait = ""
         self.command_history = True
@@ -362,7 +363,7 @@ class Args:
             ("no_display_wheel", "display_wheel"),
             ("no_limit_tokens", "limit_tokens"),
             ("no_clean_names", "clean_names"),
-            ("no_auto_scroll", "show_auto_scroll"),
+            ("no_autoscroll", "show_autoscroll"),
             ("no_scroller_buttons", "scroller_buttons"),
             ("no_command_history", "command_history"),
             ("no_shorten_paths", "shorten_paths"),
@@ -371,6 +372,7 @@ class Args:
             ("no_quote_used_words", "quote_used_words"),
             ("no_system_auto_hide", "system_auto_hide"),
             ("no_keep_empty_tab", "keep_empty_tab"),
+            ("no_autoscroll_interrupt", "autoscroll_interrupt"),
         ]
 
         for r_item in other_name:
@@ -524,7 +526,7 @@ class Args:
             "border_size",
             "title",
             "icon",
-            "auto_scroll_delay",
+            "autoscroll_delay",
             "portrait",
             "open_on_log",
             "ordered_spacing",

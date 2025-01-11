@@ -15,7 +15,7 @@ class AutoScroll:
         self.max_delay = 3000
 
     def setup(self) -> None:
-        self.delay = args.auto_scroll_delay
+        self.delay = args.autoscroll_delay
 
     def start(self, direction: str | None = None) -> None:
         from .display import display
@@ -42,14 +42,18 @@ class AutoScroll:
 
         self.direction = direction
         self.enabled = True
-        tab.bottom.on_auto_scroll_enabled()
-        self.schedule_auto_scroll()
+        tab.bottom.on_autoscroll_enabled()
+        self.schedule_autoscroll()
 
-    def stop(self) -> None:
+    def stop(self, check: bool = False) -> None:
         from .display import display
 
         if not self.enabled:
             return
+
+        if check:
+            if not args.autoscroll_interrupt:
+                return
 
         self.enabled = False
 
@@ -58,7 +62,7 @@ class AutoScroll:
         if not tab:
             return
 
-        tab.bottom.on_auto_scroll_disabled()
+        tab.bottom.on_autoscroll_disabled()
 
     def toggle(self, direction: str | None = None) -> None:
         if not direction:
@@ -87,9 +91,9 @@ class AutoScroll:
         else:
             display.scroll_down()
 
-        self.schedule_auto_scroll()
+        self.schedule_autoscroll()
 
-    def schedule_auto_scroll(self) -> None:
+    def schedule_autoscroll(self) -> None:
         app.root.after(self.delay, lambda: self.check())
 
     def faster(self) -> None:
@@ -109,14 +113,14 @@ class AutoScroll:
         if not tab:
             return
 
-        tab.bottom.auto_scroll_button.set_text(self.get_text())
+        tab.bottom.autoscroll_button.set_text(self.get_text())
 
     def get_text(self) -> str:
         perc = 100 - int(
             ((self.delay - self.min_delay) / (self.max_delay - self.min_delay)) * 100
         )
 
-        return f"Auto-Scroll ({perc})"
+        return f"Autoscroll ({perc})"
 
 
 autoscroll = AutoScroll()

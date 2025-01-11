@@ -465,7 +465,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_auto_scroll",
+            "no_autoscroll",
             action="store_false",
             info="Don't show the auto-scroll button",
         )
@@ -747,7 +747,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "auto_scroll_delay",
+            "autoscroll_delay",
             type=int,
             info="The delay in ms for each auto scroll tick",
         )
@@ -1733,6 +1733,12 @@ class ArgSpec:
             "delimiter",
             type=str,
             info="The separator between the names and the message",
+        )
+
+        self.add_argument(
+            "no_autoscroll_interrupt",
+            action="store_false",
+            info="Don't stop auto scroll on manual scrolling",
         )
 
 

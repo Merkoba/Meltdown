@@ -27,39 +27,39 @@ class Bottom(tk.Frame):
         self.bottom_button.grid(row=0, column=0, sticky="nsew")
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
-        self.bottom_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
-        self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.auto_scroll())
+        self.bottom_button.set_bind("<Button-2>", lambda e: self.autoscroll())
+        self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.autoscroll())
 
-        self.auto_scroll_slower_button = ButtonBox(
+        self.autoscroll_slower_button = ButtonBox(
             self, text="-", command=autoscroll.slower, style="alt"
         )
 
-        self.auto_scroll_button = ButtonBox(
-            self, text=autoscroll.get_text(), command=self.auto_scroll, style="alt"
+        self.autoscroll_button = ButtonBox(
+            self, text=autoscroll.get_text(), command=self.autoscroll, style="alt"
         )
 
-        self.auto_scroll_faster_button = ButtonBox(
+        self.autoscroll_faster_button = ButtonBox(
             self, text="+", command=autoscroll.faster, style="alt"
         )
 
-        ToolTip(self.auto_scroll_slower_button, tips["auto_scroll_slower"])
-        ToolTip(self.auto_scroll_button, tips["auto_scroll"])
-        ToolTip(self.auto_scroll_faster_button, tips["auto_scroll_faster"])
+        ToolTip(self.autoscroll_slower_button, tips["autoscroll_slower"])
+        ToolTip(self.autoscroll_button, tips["autoscroll"])
+        ToolTip(self.autoscroll_faster_button, tips["autoscroll_faster"])
 
-        if args.show_auto_scroll:
-            self.auto_scroll_slower_button.grid(row=0, column=1, sticky="nsew")
-            self.auto_scroll_button.grid(row=0, column=2, sticky="nsew")
-            self.auto_scroll_faster_button.grid(row=0, column=3, sticky="nsew")
+        if args.show_autoscroll:
+            self.autoscroll_slower_button.grid(row=0, column=1, sticky="nsew")
+            self.autoscroll_button.grid(row=0, column=2, sticky="nsew")
+            self.autoscroll_faster_button.grid(row=0, column=3, sticky="nsew")
 
-        self.auto_scroll_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
+        self.autoscroll_button.set_bind("<Button-2>", lambda e: self.autoscroll())
 
-        def auto_scroll_wheel(button: Any) -> None:
+        def autoscroll_wheel(button: Any) -> None:
             button.set_bind("<Button-4>", lambda e: autoscroll.faster())
             button.set_bind("<Button-5>", lambda e: autoscroll.slower())
 
-        auto_scroll_wheel(self.auto_scroll_slower_button)
-        auto_scroll_wheel(self.auto_scroll_button)
-        auto_scroll_wheel(self.auto_scroll_faster_button)
+        autoscroll_wheel(self.autoscroll_slower_button)
+        autoscroll_wheel(self.autoscroll_button)
+        autoscroll_wheel(self.autoscroll_faster_button)
 
         self.grid_rowconfigure(0, weight=1)
         self.grid_columnconfigure(0, weight=1)
@@ -92,15 +92,15 @@ class Bottom(tk.Frame):
         if not args.bottom_autohide:
             self.bottom_button.set_style("normal")
             self.bottom_button.set_text(self.bottom_text)
-            self.auto_scroll_button.set_text(autoscroll.get_text())
-            self.check_auto_scroll()
+            self.autoscroll_button.set_text(autoscroll.get_text())
+            self.check_autoscroll()
             self.buttons_enabled = True
             return
 
         if (not args.bottom) or self.visible or (not app.exists()):
             return
 
-        self.check_auto_scroll()
+        self.check_autoscroll()
         self.visible = True
         self.show_debouncer = app.root.after(self.delay, self.do_show)
 
@@ -108,8 +108,8 @@ class Bottom(tk.Frame):
         if not args.bottom_autohide:
             self.bottom_button.set_style("disabled")
             self.bottom_button.set_text("")
-            self.auto_scroll_button.set_style("disabled")
-            self.auto_scroll_button.set_text("")
+            self.autoscroll_button.set_style("disabled")
+            self.autoscroll_button.set_text("")
             self.buttons_enabled = False
             return
 
@@ -129,37 +129,37 @@ class Bottom(tk.Frame):
         from .display import display
 
         ToolTip.hide_all()
-        display.scroll_up(self.tab_id, disable_auto_scroll=True)
+        display.scroll_up(self.tab_id, disable_autoscroll=True)
 
     def scroll_down(self) -> None:
         from .display import display
 
         ToolTip.hide_all()
-        display.scroll_down(self.tab_id, disable_auto_scroll=True)
+        display.scroll_down(self.tab_id, disable_autoscroll=True)
 
     def set_text(self, text: str) -> None:
         self.bottom_button.set_text(text)
 
-    def auto_scroll(self) -> None:
+    def autoscroll(self) -> None:
         autoscroll.toggle("down")
 
     def check_enabled(self) -> bool:
         return self.visible and self.buttons_enabled and app.exists()
 
-    def on_auto_scroll_enabled(self) -> None:
+    def on_autoscroll_enabled(self) -> None:
         if not self.check_enabled():
             return
 
-        self.auto_scroll_button.set_style("active")
+        self.autoscroll_button.set_style("active")
 
-    def on_auto_scroll_disabled(self) -> None:
+    def on_autoscroll_disabled(self) -> None:
         if not self.check_enabled():
             return
 
-        self.auto_scroll_button.set_style("alt")
+        self.autoscroll_button.set_style("alt")
 
-    def check_auto_scroll(self) -> None:
+    def check_autoscroll(self) -> None:
         if autoscroll.enabled:
-            self.auto_scroll_button.set_style("active")
+            self.autoscroll_button.set_style("active")
         else:
-            self.auto_scroll_button.set_style("alt")
+            self.autoscroll_button.set_style("alt")

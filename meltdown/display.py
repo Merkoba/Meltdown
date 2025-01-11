@@ -718,7 +718,7 @@ class Display:
         self,
         tab_id: str | None = None,
         more: bool = False,
-        disable_auto_scroll: bool = False,
+        disable_autoscroll: bool = False,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -728,8 +728,8 @@ class Display:
         if not output:
             return
 
-        if disable_auto_scroll:
-            autoscroll.stop()
+        if disable_autoscroll:
+            autoscroll.stop(check=True)
 
         output.scroll_up(more=more)
 
@@ -737,7 +737,7 @@ class Display:
         self,
         tab_id: str | None = None,
         more: bool = False,
-        disable_auto_scroll: bool = False,
+        disable_autoscroll: bool = False,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -747,8 +747,8 @@ class Display:
         if not output:
             return
 
-        if disable_auto_scroll:
-            autoscroll.stop()
+        if disable_autoscroll:
+            autoscroll.stop(check=True)
 
         output.scroll_down(more=more)
 

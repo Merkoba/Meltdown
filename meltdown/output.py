@@ -469,22 +469,22 @@ class Output(tk.Text):
 
         def mousewheel_up() -> str:
             self.scroll_up(True)
-            autoscroll.stop()
+            autoscroll.stop(check=True)
             return "break"
 
         def mousewheel_down() -> str:
             self.scroll_down(True)
-            autoscroll.stop()
+            autoscroll.stop(check=True)
             return "break"
 
         def scroll_up(more: bool = False) -> str:
             self.scroll_up(True, more=more)
-            autoscroll.stop()
+            autoscroll.stop(check=True)
             return "break"
 
         def scroll_down(more: bool = False) -> str:
             self.scroll_down(True, more=more)
-            autoscroll.stop()
+            autoscroll.stop(check=True)
             return "break"
 
         def home() -> str:
@@ -1236,7 +1236,7 @@ class Output(tk.Text):
 
     def on_scrollbar_click(self) -> None:
         self.on_click()
-        autoscroll.stop()
+        autoscroll.stop(check=True)
 
     def get_num_lines(self) -> int:
         return int(self.index("end-1c").split(".")[0])

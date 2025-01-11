@@ -540,7 +540,7 @@ Action: store_false
 
 ---
 
-### no-auto-scroll
+### no-autoscroll
 
 Don't show the auto-scroll button
 
@@ -1004,7 +1004,7 @@ Type: int
 
 ---
 
-### auto-scroll-delay
+### autoscroll-delay
 
 The delay in ms for each auto scroll tick
 
@@ -2643,3 +2643,11 @@ The separator between the names and the message
 Default: ":"
 
 Type: str
+
+---
+
+### no-autoscroll-interrupt
+
+Don't stop auto scroll on manual scrolling
+
+Action: store_false
