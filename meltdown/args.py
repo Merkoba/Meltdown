@@ -285,6 +285,9 @@ class Args:
         self.variables: list[str] = []
         self.variable_prefix = "$"
         self.keep_empty_tab = True
+        self.join_lines_user = False
+        self.join_lines_ai = False
+        self.join_lines_symbol = "👾"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -567,6 +570,9 @@ class Args:
             "argfile",
             "max_items",
             "variable_prefix",
+            "join_lines_user",
+            "join_lines_ai",
+            "join_lines_symbol",
         ]
 
         for n_item in normals:

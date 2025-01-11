@@ -1717,5 +1717,23 @@ class ArgSpec:
             info="Allow new tabs to be opened when the last one is empty",
         )
 
+        self.add_argument(
+            "join_lines_user",
+            action="store_true",
+            info="Join multiple lines into a single line separated by a symbol (User)",
+        )
+
+        self.add_argument(
+            "join_lines_ai",
+            action="store_true",
+            info="Join multiple lines into a single line separated by a symbol (AI)",
+        )
+
+        self.add_argument(
+            "join_lines_symbol",
+            type=str,
+            info="The symbol used to join the lines",
+        )
+
 
 argspec = ArgSpec()

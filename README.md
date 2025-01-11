@@ -47,6 +47,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Themes](#themes)
 1. [Compact](#compact)
 1. [AutoScroll](#autoscroll)
+1. [JoinLines](#join)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -834,6 +835,28 @@ When the scroll ends the auto-scroll mode gets disabled.
 The mode also gets disabled when manually scrolled.
 
 ![](img/autoscroll.png)
+
+---
+
+## Join Lines <a name="join"></a>
+
+Multiple lines can be joined with a symbol, in case you want a more concise presentation.
+
+For example:
+
+```
+Sentence One
+Sentence Two
+Sentence Three
+```
+
+That would be converted to `Sentence One 👾 Sentence Two 👾 Sentence Three`.
+
+To enable this you can use `--join-lines-user` and `--join-lines-ai`.
+
+To change the symbol, you can use `--join-lines-symbol 😀`
+
+It ignores triple backtick snippets, it tries to keep those lines intact.
 
 ---
 

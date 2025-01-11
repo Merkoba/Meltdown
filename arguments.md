@@ -2613,3 +2613,33 @@ Type: str
 Allow new tabs to be opened when the last one is empty
 
 Action: store_false
+
+---
+
+### join-lines-user
+
+Join multiple lines into a single line separated by a symbol (User)
+
+Default: False
+
+Action: store_true
+
+---
+
+### join-lines-ai
+
+Join multiple lines into a single line separated by a symbol (AI)
+
+Default: False
+
+Action: store_true
+
+---
+
+### join-lines-symbol
+
+The symbol used to join the lines
+
+Default: "👾"
+
+Type: str

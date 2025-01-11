@@ -223,6 +223,8 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
+        self.join_lines(start_ln, end_ln, who)
+
         if self.enabled(who, "snippets"):
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
@@ -304,10 +306,10 @@ class Markdown:
             indices: list[IndexItem] = []
 
             for item in reversed(items):
-                all = item.group("all")
+                all_ = item.group("all")
 
                 if no_replace:
-                    content = all
+                    content = all_
                 else:
                     content = item.group("content")
 
@@ -318,7 +320,7 @@ class Markdown:
 
                 for _ in range(999):
                     start = self.widget.search(
-                        all,
+                        all_,
                         f"{mtch.line}.{search_col}",
                         stopindex=f"{mtch.line}.end",
                     )
@@ -330,13 +332,13 @@ class Markdown:
 
                     for index in indices:
                         if (index.start == start) and (index.content == content):
-                            search_col = int(start.split(".")[1]) + len(all)
+                            search_col = int(start.split(".")[1]) + len(all_)
                             repeated = True
 
                     if repeated:
                         continue
 
-                    end = self.widget.index(f"{start} + {len(all)}c")
+                    end = self.widget.index(f"{start} + {len(all_)}c")
 
                     if not end:
                         break
@@ -619,6 +621,60 @@ class Markdown:
 
         un_lines = get_lns(Markdown.marker_indent_unordered)
         add_tags(un_lines, "indent_unordered")
+
+    def join_lines(self, start_ln: int, end_ln: int, who: str) -> None:
+        if who == "nobody":
+            return
+
+        if not getattr(args, f"join_lines_{who}"):
+            return
+
+        lines = self.get_lines(start_ln, end_ln, who)
+        lines = [line.strip() for line in lines if line.strip()]
+        joined_lines = []
+        current: list[str] = []
+        inside_snippets = False
+        symbol = args.join_lines_symbol
+        ticks = "```"
+
+        def join_lines() -> None:
+            nonlocal current
+
+            if current:
+                joined = f" {symbol} ".join(current)
+                joined_lines.append(joined)
+                current = []
+
+        def add_lines() -> None:
+            nonlocal current
+
+            if current:
+                joined_lines.extend(current)
+                current = []
+
+        for line in lines:
+            if line.startswith(ticks):
+                inside_snippets = not inside_snippets
+
+                if inside_snippets:
+                    join_lines()
+                else:
+                    add_lines()
+
+            current.append(line)
+
+        join_lines()
+        marker = Output.marker_space
+        end_of_prompt = f"{marker}:{marker}"
+
+        start_of_line = self.widget.search(
+            end_of_prompt, f"{start_ln}.0", stopindex=f"{start_ln}.end"
+        )
+
+        new_text = "\n".join(joined_lines)
+        cols = int(start_of_line.split(".")[1]) + len(end_of_prompt)
+        self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
+        self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
 
 
 Markdown.build_patterns()
