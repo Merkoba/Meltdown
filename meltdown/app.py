@@ -884,12 +884,13 @@ class App:
 
     def show_info(self) -> None:
         from .dialogs import Dialog, Commands
+        from .display import display
 
         cmds = Commands()
         cmds.add("Portrait", lambda a: self.show_portrait())
         cmds.add("Count", lambda a: app.count())
         cmds.add("Stats", lambda a: app.stats())
-        cmds.add("Size", lambda a: self.show_size())
+        cmds.add("Size", lambda a: display.show_size())
         cmds.add("Date", lambda a: self.show_date())
         cmds.add("Started", lambda a: self.show_started())
         cmds.add("Memory", lambda a: self.show_memory())
@@ -927,24 +928,6 @@ class App:
         cmds.add("Ok", lambda a: None)
 
         Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
-
-    def show_size(self, tab_id: str | None = None) -> None:
-        from .dialogs import Dialog
-        from .display import display
-
-        if not tab_id:
-            tab_id = display.current_tab
-
-        tab = display.get_tab(tab_id)
-
-        if not tab:
-            return
-
-        lines = tab.output.get_num_lines()
-        chars = tab.output.get_num_chars()
-        kbytes = utils.chars_to_kb(chars)
-
-        Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
     def check_response_file(self) -> None:
         from .args import args

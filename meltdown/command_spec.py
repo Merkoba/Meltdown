@@ -1042,7 +1042,7 @@ class CommandSpec:
         self.add_cmd(
             "size",
             "Show size and length information",
-            lambda a=None: app.show_size(),
+            lambda a=None: display.show_size(),
         )
 
         self.add_cmd(

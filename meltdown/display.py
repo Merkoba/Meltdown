@@ -24,25 +24,57 @@ if TYPE_CHECKING:
 class Tab:
     def __init__(
         self,
+        page: Page,
         conversation_id: str,
         tab_id: str,
-        output: Output,
-        find: Find,
-        bottom: Bottom,
         mode: str,
         no_intro: bool,
+        output: Output | None = None,
+        find: Find | None = None,
+        bottom: Bottom | None = None,
+        created: bool = False,
     ) -> None:
+        self.page = page
         self.conversation_id = conversation_id
         self.tab_id = tab_id
-        self.output = output
-        self.find = find
-        self.bottom = bottom
         self.modified = False
         self.mode = mode
         self.loaded = False
         self.streaming = False
         self.num_user_prompts = 0
         self.no_intro = no_intro
+        self.output = output
+        self.find = find
+        self.bottom = bottom
+        self.created = created
+
+    def create(self) -> None:
+        if self.created:
+            return
+
+        pcontent = self.page.content
+        find = Find(pcontent, self.tab_id)
+        output_frame = tk.Frame(pcontent)
+        output_frame.grid(row=1, column=0, sticky="nsew")
+        output = Output(output_frame, self.tab_id)
+        bottom = Bottom(pcontent, self.tab_id)
+
+        self.output = output
+        self.find = find
+        self.bottom = bottom
+        self.created = True
+
+    def get_output(self) -> Output:
+        self.create()
+        return self.output  # type: ignore
+
+    def get_find(self) -> Find:
+        self.create()
+        return self.find  # type: ignore
+
+    def get_bottom(self) -> Bottom:
+        self.create()
+        return self.bottom  # type: ignore
 
 
 class TabConvo:
@@ -151,18 +183,11 @@ class Display:
 
         page = self.book.add(name, mode=mode, tooltip=tooltip, position=position)
         tab_id = page.id_
-        find = Find(page.content, tab_id)
-        output_frame = tk.Frame(page.content)
-        output_frame.grid(row=1, column=0, sticky="nsew")
-        output = Output(output_frame, tab_id)
-        bottom = Bottom(page.content, tab_id)
 
         tab = Tab(
-            conversation_id,
-            tab_id,
-            output,
-            find,
-            bottom,
+            page=page,
+            conversation_id=conversation_id,
+            tab_id=tab_id,
             mode=mode,
             no_intro=no_intro,
         )
@@ -223,7 +248,7 @@ class Display:
             self.load_tab(tab.tab_id)
 
         autoscroll.stop()
-        tab.output.reset_drag()
+        tab.get_output().reset_drag()
         inputcontrol.focus()
         self.check_scroll_buttons()
 
@@ -280,6 +305,9 @@ class Display:
     def get_current_output(self) -> Output | None:
         return self.get_output(self.current_tab)
 
+    def get_current_find(self) -> Find | None:
+        return self.get_find(self.current_tab)
+
     def get_current_bottom(self) -> Bottom | None:
         return self.get_bottom(self.current_tab)
 
@@ -297,7 +325,15 @@ class Display:
         tab = self.get_tab(tab_id)
 
         if tab:
-            return tab.output
+            return tab.get_output()
+
+        return None
+
+    def get_find(self, tab_id: str) -> Find | None:
+        tab = self.get_tab(tab_id)
+
+        if tab:
+            return tab.get_find()
 
         return None
 
@@ -305,7 +341,7 @@ class Display:
         tab = self.get_tab(tab_id)
 
         if tab:
-            return tab.bottom
+            return tab.get_bottom()
 
         return None
 
@@ -433,7 +469,7 @@ class Display:
             return
 
         autoscroll.stop()
-        tab.output.to_top()
+        tab.get_output().to_top()
 
     def to_bottom(self, tab_id: str | None = None) -> None:
         if tab_id:
@@ -445,8 +481,8 @@ class Display:
             return
 
         autoscroll.stop()
-        tab.output.to_bottom()
-        tab.bottom.hide()
+        tab.get_output().to_bottom()
+        tab.get_bottom().hide()
 
     def copy_output(self) -> None:
         output = self.get_current_output()
@@ -498,7 +534,7 @@ class Display:
         Dialog.show_confirm("Clear conversation ?", lambda: action())
 
     def reset_tab(self, tab: Tab) -> None:
-        tab.output.reset()
+        tab.get_output().reset()
         tab.modified = False
         tab.num_user_prompts = 0
         self.show_header(tab.tab_id)
@@ -534,7 +570,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.print(text)
+        tab.get_output().print(text)
 
         if modified:
             tab.modified = True
@@ -554,7 +590,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.insert_text(text)
+        tab.get_output().insert_text(text)
         tab.modified = True
 
     def get_tab_name(self, tab_id: str | None = None) -> str:
@@ -591,35 +627,30 @@ class Display:
         if not tab:
             return
 
-        output = tab.output
-
-        if not output:
-            return
-
-        yview = output.yview()
+        yview = tab.get_output().yview()
 
         if yview[1] >= 0.9999:
             if autoscroll.direction == "down":
                 autoscroll.stop()
 
-            tab.bottom.hide()
+            tab.get_bottom().hide()
         else:
             if yview[0] <= 0.0001:
                 if autoscroll.direction == "up":
                     autoscroll.stop()
 
-            tab.bottom.show()
+            tab.get_bottom().show()
 
             if args.scroll_percentage:
                 visible_range = yview[1] - yview[0]
                 total_range = 1.0 - visible_range
                 perc = int((yview[0] / total_range) * 100)
-                tab.bottom.set_text(f"{perc}%")
+                tab.get_bottom().set_text(f"{perc}%")
             elif args.scroll_percentage_reverse:
                 visible_range = yview[1] - yview[0]
                 total_range = 1.0 - visible_range
                 perc = int((1.0 - yview[1]) / total_range * 100)
-                tab.bottom.set_text(f"{perc}%")
+                tab.get_bottom().set_text(f"{perc}%")
 
         if args.disable_buttons:
             if yview[0] <= 0.0001:
@@ -708,7 +739,10 @@ class Display:
 
     def update_font(self, key: str) -> None:
         for tab in self.tabs.values():
-            tab.output.update_font()
+            if not tab.created:
+                continue
+
+            tab.get_output().update_font()
 
             if key == "font_family":
                 if tab.modified:
@@ -790,16 +824,16 @@ class Display:
 
         if args.separators and (who == "user"):
             if tab.modified:
-                tab.output.separate()
+                tab.get_output().separate()
 
-        tab.output.prompt(who)
+        tab.get_output().prompt(who)
 
         if text:
-            tab.output.insert_text(text)
+            tab.get_output().insert_text(text)
 
         if file:
             file_text = f"File:\u00a0{file}"
-            tab.output.print(file_text)
+            tab.get_output().print(file_text)
 
         if args.auto_name and (who == "user") and original:
             if not self.has_messages(tab_id):
@@ -859,7 +893,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.format_text(mode=mode, force=force)
+        tab.get_output().format_text(mode=mode, force=force)
 
     def select_first_tab(self) -> None:
         self.book.select_first()
@@ -936,12 +970,12 @@ class Display:
         if not tab:
             return
 
-        yview = tab.output.yview()
+        yview = tab.get_output().yview()
 
         if yview[1] >= 0.9999:
-            tab.output.to_top()
+            tab.get_output().to_top()
         else:
-            tab.output.to_bottom()
+            tab.get_output().to_bottom()
 
     def select_active_tab(self) -> bool:
         for key, value in self.tabs.items():
@@ -958,7 +992,7 @@ class Display:
         if not tab:
             return False
 
-        return bool(tab.output.get_selected_text())
+        return bool(tab.get_output().get_selected_text())
 
     def move_tab_left(self) -> None:
         self.book.move_left()
@@ -997,7 +1031,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.auto_bottom = True
+        tab.get_output().auto_bottom = True
 
     def disable_auto_bottom(self, tab_id: str | None = None) -> None:
         if not tab_id:
@@ -1008,7 +1042,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.auto_bottom = False
+        tab.get_output().auto_bottom = False
 
     def num_user_prompts(self, tab_id: str | None = None) -> int:
         if not tab_id:
@@ -1076,7 +1110,8 @@ class Display:
         if num_lines:
             num_lines += 1
 
-        text = tabconvo.tab.output.get_text()
+        output = tabconvo.tab.get_output()
+        text = output.get_text()
 
         if num_lines:
             text = text.split("\n", num_lines)[-1]
@@ -1106,7 +1141,7 @@ class Display:
         if not tab:
             return
 
-        tab.output.update_scroll()
+        tab.get_output().update_scroll()
 
     def get_picked(self) -> list[Tab]:
         picked = self.book.get_picked()
@@ -1156,6 +1191,23 @@ class Display:
             return
 
         output.remove_last_ai()
+
+    def show_size(self, tab_id: str | None = None) -> None:
+        from .dialogs import Dialog
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return
+
+        lines = tab.get_output().get_num_lines()
+        chars = tab.get_output().get_num_chars()
+        kbytes = utils.chars_to_kb(chars)
+
+        Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
 
 display = Display()

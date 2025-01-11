@@ -26,7 +26,7 @@ class FindManager:
         if not tab:
             return
 
-        tab.find.show(widget=widget, query=query)
+        tab.get_find().show(widget=widget, query=query)
 
     def find_next(self, case_insensitive: bool = True, reverse: bool = False) -> None:
         from .display import display
@@ -36,11 +36,11 @@ class FindManager:
         if not tab:
             return
 
-        if not tab.find.visible:
-            tab.find.show()
+        if not tab.get_find().visible:
+            tab.get_find().show()
             return
 
-        tab.find.find_next(case_insensitive, reverse=reverse)
+        tab.get_find().find_next(case_insensitive, reverse=reverse)
 
     def find_prev(self, case_insensitive: bool = True) -> None:
         from .display import display
@@ -50,11 +50,11 @@ class FindManager:
         if not tab:
             return
 
-        if not tab.find.visible:
-            tab.find.show()
+        if not tab.get_find().visible:
+            tab.get_find().show()
             return
 
-        tab.find.find_next(case_insensitive, reverse=True)
+        tab.get_find().find_next(case_insensitive, reverse=True)
 
     def hide_find(self) -> None:
         from .display import display
@@ -64,7 +64,7 @@ class FindManager:
         if not tab:
             return
 
-        tab.find.hide()
+        tab.get_find().hide()
 
     def find_all(self, query: str | None = None, reverse: bool = False) -> None:
         if query:
@@ -112,7 +112,7 @@ class FindManager:
                             app.update()
 
                         display.select_tab(tab.tab_id)
-                        tab.find.show(query=query)
+                        tab.get_find().show(query=query)
                         return True
 
             return False

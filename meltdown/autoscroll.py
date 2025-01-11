@@ -32,17 +32,17 @@ class AutoScroll:
             direction = "down"
 
         if direction == "up":
-            if tab.output.yview()[0] <= 0.0001:
+            if tab.get_output().yview()[0] <= 0.0001:
                 return
         elif direction == "down":
-            if tab.output.yview()[1] >= 0.9999:
+            if tab.get_output().yview()[1] >= 0.9999:
                 return
         else:
             return
 
         self.direction = direction
         self.enabled = True
-        tab.bottom.on_autoscroll_enabled()
+        tab.get_bottom().on_autoscroll_enabled()
         self.schedule_autoscroll()
 
     def stop(self, check: bool = False) -> None:
@@ -62,7 +62,7 @@ class AutoScroll:
         if not tab:
             return
 
-        tab.bottom.on_autoscroll_disabled()
+        tab.get_bottom().on_autoscroll_disabled()
 
     def toggle(self, direction: str | None = None) -> None:
         if not direction:
@@ -113,7 +113,7 @@ class AutoScroll:
         if not tab:
             return
 
-        tab.bottom.autoscroll_button.set_text(self.get_text())
+        tab.get_bottom().autoscroll_button.set_text(self.get_text())
 
     def get_text(self) -> str:
         perc = 100 - int(
