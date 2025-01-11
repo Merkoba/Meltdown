@@ -154,7 +154,7 @@ class Args:
         self.markdown_italic_asterisk = "ai"
         self.markdown_italic_underscore = "ai"
         self.markdown_bold = "ai"
-        self.markdown_highlight = "ai"
+        self.markdown_highlight = "both"
         self.markdown_quote = "both"
         self.markdown_url = "both"
         self.markdown_path = "both"
