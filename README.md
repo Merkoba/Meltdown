@@ -418,8 +418,6 @@ But the file path can also be set with `--listen-file`.
 
 This is another way to control the program remotely.
 
-![](img/listener.jpg)
-
 ---
 
 ## Logs  <a name="logs"></a>
