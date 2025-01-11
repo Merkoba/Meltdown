@@ -160,7 +160,7 @@ class Widgets:
         ToolTip(self.stop_button, tips["stop_button"])
 
         self.new_button = widgetutils.make_button(
-            frame_data_buttons, "New", lambda: display.make_tab()
+            frame_data_buttons, "New", lambda: display.new_tab()
         )
 
         frame_data_buttons.expand()
@@ -357,7 +357,7 @@ class Widgets:
         self.close_button.set_bind("<Button-2>", lambda e: close.close_all())
 
         self.new_button.set_bind(
-            "<Button-2>", lambda e: display.make_tab(position="start")
+            "<Button-2>", lambda e: display.new_tab(position="start")
         )
 
         modelcontrol.bind()

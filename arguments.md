@@ -2605,3 +2605,11 @@ The prefix used for variables. For example $ in $name
 Default: "$"
 
 Type: str
+
+---
+
+### no-keep-empty-tab
+
+Allow new tabs to be opened when the last one is empty
+
+Action: store_false

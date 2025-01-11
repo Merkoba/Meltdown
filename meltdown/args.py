@@ -284,6 +284,7 @@ class Args:
         self.max_items = 500
         self.variables: list[str] = []
         self.variable_prefix = "$"
+        self.keep_empty_tab = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -366,6 +367,7 @@ class Args:
             ("no_separate_uploads", "separate_uploads"),
             ("no_quote_used_words", "quote_used_words"),
             ("no_system_auto_hide", "system_auto_hide"),
+            ("no_keep_empty_tab", "keep_empty_tab"),
         ]
 
         for r_item in other_name:

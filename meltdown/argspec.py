@@ -1711,5 +1711,11 @@ class ArgSpec:
             info="The prefix used for variables. For example $ in $name",
         )
 
+        self.add_argument(
+            "no_keep_empty_tab",
+            action="store_false",
+            info="Allow new tabs to be opened when the last one is empty",
+        )
+
 
 argspec = ArgSpec()

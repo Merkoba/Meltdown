@@ -79,6 +79,25 @@ class Display:
         self.book.on_reorder = lambda: self.update_session()
         self.book.on_num_tabs_change = lambda n: self.on_num_tabs_change(n)
 
+    def new_tab(self, position: str = "end") -> None:
+        if args.keep_empty_tab:
+            if position == "end":
+                last_tab = self.book.get_last()
+
+                if last_tab:
+                    if self.tab_is_empty(last_tab.id_):
+                        self.select_tab(last_tab.id_)
+                        return
+            elif position == "start":
+                first_tab = self.book.get_first()
+
+                if first_tab:
+                    if self.tab_is_empty(first_tab.id_):
+                        self.select_tab(first_tab.id_)
+                        return
+
+        self.make_tab(position=position)
+
     def make_tab(
         self,
         name: str | None = None,

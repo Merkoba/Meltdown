@@ -337,6 +337,18 @@ class Book(tk.Frame):
 
         self.select(self.pages[-1].id_)
 
+    def get_first(self) -> Page | None:
+        if not self.pages:
+            return None
+
+        return self.pages[0]
+
+    def get_last(self) -> Page | None:
+        if not self.pages:
+            return None
+
+        return self.pages[-1]
+
     def select_by_index(self, index: int) -> None:
         if not self.pages:
             return
