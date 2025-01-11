@@ -9,6 +9,11 @@ class AutoScroll:
     def __init__(self) -> None:
         self.enabled = False
         self.direction = "down"
+        self.delay_diff = 100
+        self.delay = 1000
+
+    def setup(self) -> None:
+        self.delay = args.auto_scroll_delay
 
     def start(self, direction: str | None = None) -> None:
         from .display import display
@@ -69,7 +74,7 @@ class AutoScroll:
     def check(self) -> None:
         from .display import display
 
-        if args.auto_scroll_delay < 100:
+        if self.delay < 100:
             return
 
         if not self.enabled:
@@ -83,7 +88,29 @@ class AutoScroll:
         self.schedule_auto_scroll()
 
     def schedule_auto_scroll(self) -> None:
-        app.root.after(args.auto_scroll_delay, lambda: self.check())
+        app.root.after(self.delay, lambda: self.check())
+
+    def faster(self) -> None:
+        delay = max(self.delay - self.delay_diff, 100)
+        self.update_delay(delay)
+
+    def slower(self) -> None:
+        delay = min(self.delay + self.delay_diff, 3000)
+        self.update_delay(delay)
+
+    def update_delay(self, delay: int) -> None:
+        from .display import display
+
+        self.delay = delay
+        tab = display.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.bottom.auto_scroll_button.set_text(self.get_text())
+
+    def get_text(self) -> str:
+        return f"Auto-Scroll ({self.delay})"
 
 
 autoscroll = AutoScroll()

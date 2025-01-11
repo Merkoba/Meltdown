@@ -16,7 +16,6 @@ class Bottom(tk.Frame):
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         super().__init__(parent)
         self.bottom_text = "Go To Bottom"
-        self.auto_scroll_text = "Auto-Scroll"
 
         self.bottom_button = ButtonBox(
             self, text=self.bottom_text, command=self.to_bottom
@@ -29,15 +28,25 @@ class Bottom(tk.Frame):
         self.bottom_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
         self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.auto_scroll())
 
+        self.auto_scroll_slower_button = ButtonBox(
+            self, text="-", command=autoscroll.slower, style="alt"
+        )
+
         self.auto_scroll_button = ButtonBox(
-            self, text=self.auto_scroll_text, command=self.auto_scroll, style="alt"
+            self, text=autoscroll.get_text(), command=self.auto_scroll, style="alt"
+        )
+
+        self.auto_scroll_faster_button = ButtonBox(
+            self, text="+", command=autoscroll.faster, style="alt"
         )
 
         tip = f"Delay: {args.auto_scroll_delay} ms"
         ToolTip(self.auto_scroll_button, tip)
 
         if args.show_auto_scroll:
-            self.auto_scroll_button.grid(row=0, column=1, sticky="nsew")
+            self.auto_scroll_slower_button.grid(row=0, column=1, sticky="nsew")
+            self.auto_scroll_button.grid(row=0, column=2, sticky="nsew")
+            self.auto_scroll_faster_button.grid(row=0, column=3, sticky="nsew")
 
         self.auto_scroll_button.set_bind("<Button-2>", lambda e: self.auto_scroll())
 
@@ -72,7 +81,7 @@ class Bottom(tk.Frame):
         if not args.bottom_autohide:
             self.bottom_button.set_style("normal")
             self.bottom_button.set_text(self.bottom_text)
-            self.auto_scroll_button.set_text(self.auto_scroll_text)
+            self.auto_scroll_button.set_text(autoscroll.get_text())
             self.check_auto_scroll()
             self.buttons_enabled = True
             return

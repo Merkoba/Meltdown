@@ -961,6 +961,18 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "faster",
+            "Make auto-scroll faster",
+            lambda a=None: autoscroll.faster(),
+        )
+
+        self.add_cmd(
+            "slower",
+            "Make auto-scroll slower",
+            lambda a=None: autoscroll.slower(),
+        )
+
+        self.add_cmd(
             "repeat",
             "Repeat the specified prompt",
             lambda a=None: itemops.repeat(number=a),

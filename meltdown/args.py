@@ -245,7 +245,7 @@ class Args:
         self.border_size = 5
         self.title = ""
         self.icon = ""
-        self.auto_scroll_delay = 720
+        self.auto_scroll_delay = 700
         self.show_auto_scroll = True
         self.scroller_buttons = True
         self.portrait = ""

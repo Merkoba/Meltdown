@@ -832,7 +832,7 @@ When the scroll ends the auto-scroll mode gets disabled.
 
 The mode also gets disabled when manually scrolled.
 
-![](img/autoscroll.png)
+There are buttons on each side to make scrolling slower or faster.
 
 ---
 

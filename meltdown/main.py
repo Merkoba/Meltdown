@@ -22,6 +22,7 @@ from .console import console
 from .listener import listener
 from .tasks import tasks
 from .memory import memory
+from .autoscroll import autoscroll
 
 
 def main() -> None:
@@ -56,6 +57,7 @@ def main() -> None:
     config.load()
     app.prepare()
     widgets.make()
+    autoscroll.setup()
     model.setup()
     display.make()
     session.load()
