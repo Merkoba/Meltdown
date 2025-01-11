@@ -832,6 +832,8 @@ When the scroll ends the autoscroll mode gets disabled.
 
 The mode also gets disabled when manually scrolled.
 
+You can use `--no-autoscroll-interrupt` to avoid stopping it when scrolling up/down.
+
 There are buttons on each side to make scrolling slower or faster.
 
 ---
