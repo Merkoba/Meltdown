@@ -194,6 +194,12 @@ Make a new tab
 
 ---
 
+### newstart
+
+Make a new tab at the start
+
+---
+
 ### about
 
 Show the about window

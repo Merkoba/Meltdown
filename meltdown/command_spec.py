@@ -255,7 +255,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "new", "Make a new tab", lambda a=None: display.make_tab(a), type=str
+            "new", "Make a new tab", lambda a=None: display.new_tab(a), type=str
+        )
+
+        self.add_cmd(
+            "newstart",
+            "Make a new tab at the start",
+            lambda a=None: display.new_tab("start"),
+            type=str,
         )
 
         self.add_cmd("about", "Show the about window", lambda a=None: app.show_about())
