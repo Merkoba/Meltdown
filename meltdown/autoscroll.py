@@ -112,11 +112,10 @@ class AutoScroll:
         tab.bottom.auto_scroll_button.set_text(self.get_text())
 
     def get_text(self) -> str:
-        p = int(
+        perc = 100 - int(
             ((self.delay - self.min_delay) / (self.max_delay - self.min_delay)) * 100
         )
 
-        perc = 100 - p
         return f"Auto-Scroll ({perc})"
 
 
