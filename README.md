@@ -400,7 +400,7 @@ But it should work well on normal terminal launches.
 
 There's a listener mode that can be enabled with `--listener`.
 
-When the listener is active, it will periodically read a file and check for changes.
+When the listener is active, it will listen for file changes using `watchdog`.
 
 If it finds text, it will use it as the prompt, or as a command if it starts with the command prefix.
 

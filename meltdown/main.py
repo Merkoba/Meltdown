@@ -74,7 +74,7 @@ def main() -> None:
     fp.flush()
 
     if args.time and (not args.quiet):
-        msg, now = utils.check_time("Program loaded", now)
+        msg, now = utils.check_time("Ready", now)
         utils.msg(msg)
 
     try:

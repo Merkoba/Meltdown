@@ -190,11 +190,6 @@ class System:
         if args.system_delay < 1:
             return
 
-        if not args.quiet:
-            m = utils.singular_or_plural(args.system_delay, "sec", "secs")
-            msg = f"System monitors active ({args.system_delay} {m})"
-            utils.msg(msg)
-
         self.check_auto_hide()
         thread = threading.Thread(target=lambda: self.start_loop())
         thread.daemon = True

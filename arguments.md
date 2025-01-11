@@ -1722,16 +1722,6 @@ Type: int
 
 ---
 
-### listener-delay
-
-Delay in seconds for the listener checks
-
-Default: 1
-
-Type: int
-
----
-
 ### listener-path
 
 Path to the file for the listener. By default it uses /tmp/mlt_[program].input

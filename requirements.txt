@@ -6,3 +6,4 @@ pillow == 10.3.0
 prompt-toolkit == 3.0.46
 rich == 13.7.1
 requests == 2.31.0
+watchdog == 6.0.0

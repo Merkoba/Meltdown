@@ -108,7 +108,7 @@ class Utils:
     def seconds_string(self, name: str, start: float, end: float) -> str:
         num = round(start - end, 1)
         m = self.singular_or_plural(num, "sec", "secs")
-        return f"{name} ({num} {m})"
+        return f"{name}: {num} {m}"
 
     def check_time(self, name: str, last_time: float) -> tuple[str, float]:
         time_now = self.now()

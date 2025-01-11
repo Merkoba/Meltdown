@@ -1183,12 +1183,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "listener_delay",
-            type=int,
-            info="Delay in seconds for the listener checks",
-        )
-
-        self.add_argument(
             "listener_path",
             type=str,
             info="Path to the file for the listener. By default it uses /tmp/mlt_[program].input",

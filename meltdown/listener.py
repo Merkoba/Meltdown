@@ -1,7 +1,13 @@
 # Standard
+import time
 import threading
-from pathlib import Path
 import tempfile
+from typing import Any
+from pathlib import Path
+
+# Libraries
+from watchdog.observers import Observer  # type: ignore
+from watchdog.events import FileSystemEventHandler  # type: ignore
 
 # Modules
 from .args import args
@@ -11,12 +17,25 @@ from .files import files
 from .inputcontrol import inputcontrol
 
 
+class FileChangeHandler(FileSystemEventHandler):  # type: ignore
+    def __init__(self, path: Path) -> None:
+        self.path = path
+
+    def on_modified(self, event: Any) -> None:
+        if event.src_path == str(self.path):
+            try:
+                text = files.read(self.path).strip()
+
+                if text:
+                    files.write(self.path, "")
+                    inputcontrol.submit(text=text)
+            except Exception as e:
+                utils.msg(f"Listener error: {e!s}")
+
+
 class Listener:
     def start(self) -> None:
         if not args.listener:
-            return
-
-        if args.listener_delay < 1:
             return
 
         thread = threading.Thread(target=lambda: self.do_start())
@@ -33,22 +52,22 @@ class Listener:
             path = Path(tempfile.gettempdir(), file_name)
 
         if not args.quiet:
-            m = utils.singular_or_plural(args.listener_delay, "sec", "secs")
-            utils.msg(f"Listener active ({args.listener_delay} {m})")
-            utils.msg(f"Write to: {path!s}")
+            utils.msg(f"Listening: {path!s}")
 
-        while True:
-            if path.exists() and path.is_file():
-                try:
-                    text = files.read(path)
+        handler = FileChangeHandler(path)
+        observer = Observer()
+        observer.schedule(handler, path.parent, recursive=False)
 
-                    if text:
-                        files.write(path, "")
-                        inputcontrol.submit(text=text)
-                except Exception as e:
-                    utils.msg(f"Listener error: {e!s}")
+        thread = threading.Thread(target=observer.start)
+        thread.daemon = True
+        thread.start()
 
-            utils.sleep(args.listener_delay)
+        try:
+            while True:
+                time.sleep(1)
+        finally:
+            observer.stop()
+            observer.join()
 
 
 listener = Listener()

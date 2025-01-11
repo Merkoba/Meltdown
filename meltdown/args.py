@@ -111,7 +111,6 @@ class Args:
         self.input_memory_max = 30
         self.input_memory_max_items = 1000
         self.listener = False
-        self.listener_delay = 1
         self.listener_path = ""
         self.sticky = False
         self.commandoc = ""
@@ -439,7 +438,6 @@ class Args:
             "verbose",
             "markdown",
             "listener",
-            "listener_delay",
             "listener_path",
             "sticky",
             "commandoc",
