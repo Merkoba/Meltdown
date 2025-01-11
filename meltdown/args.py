@@ -794,6 +794,9 @@ class Args:
             name = cmd
             value = ""
 
+        name = name.strip()
+        value = value.strip()
+
         value = utils.empty_string(value)
         arg = getattr(self, name)
 

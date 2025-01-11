@@ -405,13 +405,13 @@ class InputControl:
         from .display import display
 
         def fmt() -> None:
-            display.print("Format: [name] = [value]")
+            display.print("Format: [name] [value]")
 
-        if "=" not in cmd:
+        if " " not in cmd:
             fmt()
             return
 
-        name, value = cmd.split("=", 1)
+        name, value = cmd.split(" ", 1)
         name = name.strip()
         value = value.strip()
 
@@ -420,7 +420,7 @@ class InputControl:
             return
 
         self.variables[name] = value
-        display.print(f"Set: {name} = {value}")
+        display.print(f"Set: `{name}` set to `{value}`", do_format=True)
 
     def unset_variable(self, name: str) -> None:
         from .display import display

@@ -692,7 +692,7 @@ Variables can be set, unset, and read.
 
 These are used in the inputs.
 
-For example you can do: `/set name = George`.
+For example you can do: `/set name George`.
 
 Then you can write: `who is $name?`.
 
