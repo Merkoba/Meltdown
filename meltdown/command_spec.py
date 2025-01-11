@@ -255,13 +255,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "new", "Make a new tab", lambda a=None: display.new_tab(a), type=str
+            "new", "Make a new tab", lambda a=None: display.new_tab(name=a), type=str
         )
 
         self.add_cmd(
             "newstart",
             "Make a new tab at the start",
-            lambda a=None: display.new_tab("start"),
+            lambda a=None: display.new_tab(name=a, position="start"),
             type=str,
         )
 

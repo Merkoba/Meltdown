@@ -79,11 +79,11 @@ class Display:
         self.book.on_reorder = lambda: self.update_session()
         self.book.on_num_tabs_change = lambda n: self.on_num_tabs_change(n)
 
-    def new_tab(self, position: str | None = None) -> None:
+    def new_tab(self, name: str | None = None, position: str | None = None) -> None:
         if not position:
             position = "end"
 
-        if args.keep_empty_tab:
+        if args.keep_empty_tab and (not name):
             if position == "end":
                 last_tab = self.book.get_last()
 
@@ -99,7 +99,7 @@ class Display:
                         self.select_tab(first_tab.id_)
                         return
 
-        self.make_tab(position=position)
+        self.make_tab(name=name, position=position)
 
     def make_tab(
         self,
