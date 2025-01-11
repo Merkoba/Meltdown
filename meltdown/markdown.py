@@ -630,7 +630,7 @@ class Markdown:
             return
 
         lines = self.get_lines(start_ln, end_ln, who)
-        lines = [line.strip() for line in lines if line.strip()]
+        lines = [line.strip() for line in lines]
         joined_lines = []
         current: list[str] = []
         inside_snippets = False
@@ -641,7 +641,8 @@ class Markdown:
             nonlocal current
 
             if current:
-                joined = f" {symbol} ".join(current)
+                cleaned = [line for line in current if line.strip()]
+                joined = f" {symbol} ".join(cleaned) + "\n"
                 joined_lines.append(joined)
                 current = []
 
@@ -649,6 +650,7 @@ class Markdown:
             nonlocal current
 
             if current:
+                current.append("")
                 joined_lines.extend(current)
                 current = []
 
@@ -659,7 +661,9 @@ class Markdown:
                 if inside_snippets:
                     join_lines()
                 else:
+                    current.append(line)
                     add_lines()
+                    continue
 
             current.append(line)
 
@@ -675,7 +679,7 @@ class Markdown:
             end_of_prompt, f"{start_ln}.0", stopindex=f"{start_ln}.end"
         )
 
-        new_text = "\n".join(joined_lines)
+        new_text = "\n".join(joined_lines).strip()
         cols = int(start_of_line.split(".")[1]) + len(end_of_prompt)
         self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
         self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
