@@ -82,8 +82,18 @@ class Display:
         self.book.on_num_tabs_change = lambda n: self.on_num_tabs_change(n)
 
     def new_tab(self, name: str | None = None, position: str | None = None) -> None:
+        from .close import close
+
         if not position:
             position = "end"
+
+        if args.max_tabs > 0:
+            if self.num_tabs() >= args.max_tabs:
+                cmds = Commands()
+                cmds.add("Close", lambda a: close.close(force=False))
+                cmds.add("Ok", lambda a: None)
+                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
+                return
 
         def check_empty(page: Page | None) -> bool:
             if page:
@@ -122,15 +132,6 @@ class Display:
         position: str = "end",
     ) -> str:
         from .session import session
-        from .close import close
-
-        if args.max_tabs > 0:
-            if self.num_tabs() >= args.max_tabs:
-                cmds = Commands()
-                cmds.add("Close", lambda a: close.close(force=False))
-                cmds.add("Ok", lambda a: None)
-                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
-                return ""
 
         if not name:
             if args.name_mode == "random":
