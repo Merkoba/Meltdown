@@ -398,7 +398,7 @@ But it should work well on normal terminal launches.
 
 ## Listener <a name="listener"></a>
 
-There's a listener mode that can be enabled with `--listener`.
+There's a listener mode that can be enabled with `--listen`.
 
 When the listener is active, it will listen for file changes using `watchdog`.
 
@@ -414,7 +414,7 @@ By default it checks `/tmp/mlt_meltdown.input` if on linux.
 
 Temp Dir + `mlt_meltdown.input`.
 
-But the file path can also be set with `--listener-path`.
+But the file path can also be set with `--listen-file`.
 
 This is another way to control the program remotely.
 

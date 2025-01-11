@@ -35,7 +35,7 @@ class FileChangeHandler(FileSystemEventHandler):  # type: ignore
 
 class Listener:
     def start(self) -> None:
-        if not args.listener:
+        if not args.listen:
             return
 
         thread = threading.Thread(target=lambda: self.do_start())
@@ -45,8 +45,8 @@ class Listener:
     def do_start(self) -> None:
         program = app.manifest["program"]
 
-        if args.listener_path:
-            path = Path(args.listener_path)
+        if args.listen_file:
+            path = Path(args.listen_file)
         else:
             file_name = f"mlt_{program}.input"
             path = Path(tempfile.gettempdir(), file_name)

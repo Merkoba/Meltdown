@@ -693,7 +693,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "listener",
+            "listen",
             action="store_true",
             info="Listen for changes to the stdin file",
         )
@@ -1183,7 +1183,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "listener_path",
+            "listen_file",
             type=str,
             info="Path to the file for the listener. By default it uses /tmp/mlt_[program].input",
         )

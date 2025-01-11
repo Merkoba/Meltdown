@@ -914,7 +914,7 @@ Action: store_true
 
 ---
 
-### listener
+### listen
 
 Listen for changes to the stdin file
 
@@ -1722,7 +1722,7 @@ Type: int
 
 ---
 
-### listener-path
+### listen-file
 
 Path to the file for the listener. By default it uses /tmp/mlt_[program].input
 

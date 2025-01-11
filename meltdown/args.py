@@ -110,8 +110,8 @@ class Args:
         self.input_memory_min = 5
         self.input_memory_max = 30
         self.input_memory_max_items = 1000
-        self.listener = False
-        self.listener_path = ""
+        self.listen = False
+        self.listen_file = ""
         self.sticky = False
         self.commandoc = ""
         self.argumentdoc = ""
@@ -437,8 +437,8 @@ class Args:
             "console_vi",
             "verbose",
             "markdown",
-            "listener",
-            "listener_path",
+            "listen",
+            "listen_file",
             "sticky",
             "commandoc",
             "argumentdoc",
