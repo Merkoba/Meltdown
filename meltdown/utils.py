@@ -569,5 +569,10 @@ class Utils:
 
         return text
 
+    def delimiter(self) -> str:
+        from .args import args
+
+        return args.delimiter or ":"
+
 
 utils = Utils()

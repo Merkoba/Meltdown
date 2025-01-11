@@ -1735,5 +1735,11 @@ class ArgSpec:
             info="The symbol used to join the lines",
         )
 
+        self.add_argument(
+            "delimiter",
+            type=str,
+            info="The separator between the names and the message",
+        )
+
 
 argspec = ArgSpec()

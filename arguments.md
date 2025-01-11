@@ -2084,7 +2084,7 @@ Type: str
 
 Markdown mode for highlights
 
-Default: "ai"
+Default: "both"
 
 Choices: "user", "ai", "both", "none"
 
@@ -2641,5 +2641,15 @@ Action: store_true
 The symbol used to join the lines
 
 Default: "👾"
+
+Type: str
+
+---
+
+### delimiter
+
+The separator between the names and the message
+
+Default: ":"
 
 Type: str

@@ -344,10 +344,12 @@ class Output(tk.Text):
             else:
                 marker = " "
 
+            d = utils.delimiter()
+
             if colon_space:
-                colons = f"{marker}:{marker}"
+                colons = f"{marker}{d}{marker}"
             else:
-                colons = f":{marker}"
+                colons = f"{d}{marker}"
         else:
             colons = ""
 
@@ -741,7 +743,9 @@ class Output(tk.Text):
 
         self.print(text)
         start_index = self.index(f"end - {len(prompt) + 1}c")
-        end_index = self.index("end - 3c")
+        d = utils.delimiter()
+        n = len(d) + 2
+        end_index = self.index(f"end - {n}c")
         self.tag_add(f"name_{who}", start_index, end_index)
 
     def print(self, text: str) -> None:

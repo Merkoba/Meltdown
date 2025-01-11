@@ -574,9 +574,10 @@ class Markdown:
     def get_lines(self, start_ln: int, end_ln: int, who: str) -> list[str]:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
+        d = utils.delimiter()
 
         if who in ("user", "ai"):
-            index = lines[0].index(f":{Output.marker_space}") + 2
+            index = lines[0].index(f"{d}{Output.marker_space}") + len(d) + 1
             lines[0] = lines[0][index:]
 
         return lines
@@ -673,7 +674,8 @@ class Markdown:
             do_join()
 
         marker = Output.marker_space
-        end_of_prompt = f"{marker}:{marker}"
+        d = utils.delimiter()
+        end_of_prompt = f"{marker}{d}{marker}"
 
         start_of_line = self.widget.search(
             end_of_prompt, f"{start_ln}.0", stopindex=f"{start_ln}.end"

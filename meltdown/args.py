@@ -288,6 +288,7 @@ class Args:
         self.join_lines_user = False
         self.join_lines_ai = False
         self.join_lines_symbol = "👾"
+        self.delimiter = ":"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -573,6 +574,7 @@ class Args:
             "join_lines_user",
             "join_lines_ai",
             "join_lines_symbol",
+            "delimiter",
         ]
 
         for n_item in normals:
