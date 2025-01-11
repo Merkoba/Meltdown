@@ -449,6 +449,7 @@ class InputControl:
                 items.append(f"{name} = {value}")
         else:
             display.print("No variables set.")
+            return
 
         Dialog.show_msgbox("Variables", "\n".join(items))
 
