@@ -637,7 +637,7 @@ class Markdown:
         symbol = args.join_lines_symbol
         ticks = "```"
 
-        def join_lines() -> None:
+        def do_join() -> None:
             nonlocal current
 
             if current:
@@ -646,7 +646,7 @@ class Markdown:
                 joined_lines.append(joined)
                 current = []
 
-        def add_lines() -> None:
+        def do_add() -> None:
             nonlocal current
 
             if current:
@@ -659,18 +659,18 @@ class Markdown:
                 inside_snippets = not inside_snippets
 
                 if inside_snippets:
-                    join_lines()
+                    do_join()
                 else:
                     current.append(line)
-                    add_lines()
+                    do_add()
                     continue
 
             current.append(line)
 
         if inside_snippets:
-            add_lines()
+            do_add()
         else:
-            join_lines()
+            do_join()
 
         marker = Output.marker_space
         end_of_prompt = f"{marker}:{marker}"
