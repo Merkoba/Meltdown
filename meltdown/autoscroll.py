@@ -11,6 +11,8 @@ class AutoScroll:
         self.direction = "down"
         self.delay_diff = 100
         self.delay = 1000
+        self.min_delay = 100
+        self.max_delay = 3000
 
     def setup(self) -> None:
         self.delay = args.auto_scroll_delay
@@ -91,11 +93,11 @@ class AutoScroll:
         app.root.after(self.delay, lambda: self.check())
 
     def faster(self) -> None:
-        delay = max(self.delay - self.delay_diff, 100)
+        delay = max(self.delay - self.delay_diff, self.min_delay)
         self.update_delay(delay)
 
     def slower(self) -> None:
-        delay = min(self.delay + self.delay_diff, 3000)
+        delay = min(self.delay + self.delay_diff, self.max_delay)
         self.update_delay(delay)
 
     def update_delay(self, delay: int) -> None:
@@ -110,7 +112,12 @@ class AutoScroll:
         tab.bottom.auto_scroll_button.set_text(self.get_text())
 
     def get_text(self) -> str:
-        return f"Auto-Scroll ({self.delay})"
+        p = int(
+            ((self.delay - self.min_delay) / (self.max_delay - self.min_delay)) * 100
+        )
+
+        perc = 100 - p
+        return f"Auto-Scroll ({perc})"
 
 
 autoscroll = AutoScroll()
