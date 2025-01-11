@@ -663,7 +663,11 @@ class Markdown:
 
             current.append(line)
 
-        join_lines()
+        if inside_snippets:
+            add_lines()
+        else:
+            join_lines()
+
         marker = Output.marker_space
         end_of_prompt = f"{marker}:{marker}"
 
