@@ -65,7 +65,7 @@ class Page:
         )
 
         label.configure(cursor="hand2")
-        tooltip = ToolTip(frame, text=self.tooltip)
+        tooltip = ToolTip(label, text=self.tooltip)
         return TabWidget(frame, inner, label, tooltip)
 
     def make_content_widget(self) -> tk.Frame:
