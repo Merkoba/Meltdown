@@ -113,6 +113,7 @@ class Display:
 
     def new_tab(self, name: str | None = None, position: str | None = None) -> None:
         from .close import close
+        from .keyboard import keyboard
 
         if not position:
             position = "end"
@@ -133,7 +134,12 @@ class Display:
 
             return False
 
-        if args.keep_empty_tab and (not name):
+        if (
+            args.keep_empty_tab
+            and (not name)
+            and (not keyboard.ctrl)
+            and (not keyboard.shift)
+        ):
             if position == "end":
                 if check_empty(self.book.get_last()):
                     return
