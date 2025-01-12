@@ -98,17 +98,13 @@ class Scrollers:
 
         if scroll_pos_left == 0:
             left.set_style("disabled")
-            left.set_text("-")
         else:
             left.set_style("alt")
-            left.set_text("<")
 
         if scroll_pos_right == 1.0:
             right.set_style("disabled")
-            right.set_text("-")
         else:
             right.set_style("alt")
-            right.set_text(">")
 
     def check_all_buttons(self) -> None:
         self.check_buttons("system")

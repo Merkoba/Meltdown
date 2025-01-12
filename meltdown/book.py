@@ -342,21 +342,22 @@ class Book(tk.Frame):
 
         page = self.get_page_by_id(id_)
 
-        if page:
-            self.hide_all_except(page.id_)
-            self.current_page = page
-            self.scroll_to_page(page)
+        if not page:
+            return False
 
-            if unpick:
-                self.unpick()
+        self.hide_all_except(page.id_)
+        self.current_page = page
+        self.scroll_to_page(page)
 
-            if self.on_change:
-                self.on_change()
+        if unpick:
+            self.unpick()
 
-            self.update_tab_colors()
-            return True
+        if self.on_change:
+            self.on_change()
 
-        return False
+        self.update_tab_colors()
+        self.check_buttons()
+        return True
 
     def select_first(self) -> None:
         if not self.pages:
@@ -915,3 +916,41 @@ class Book(tk.Frame):
                 pages.append(page)
 
         return pages
+
+    def disable_button(self, side: str) -> None:
+        button = getattr(self, f"button_{side}")
+        button.set_style("disabled")
+
+    def enable_button(self, side: str) -> None:
+        button = getattr(self, f"button_{side}")
+        button.set_style("alt")
+
+    def check_buttons(self) -> None:
+        if not self.pages:
+            self.disable_button("left")
+            self.disable_button("right")
+            return
+
+        if len(self.pages) == 1:
+            self.disable_button("left")
+            self.disable_button("right")
+            return
+
+        if not args.wrap_tabs:
+            if not self.current_page:
+                return
+
+            index = self.index(self.current_page.id_)
+
+            if index == 0:
+                self.disable_button("left")
+            else:
+                self.enable_button("left")
+
+            if index == len(self.pages) - 1:
+                self.disable_button("right")
+            else:
+                self.enable_button("right")
+        else:
+            self.enable_button("left")
+            self.enable_button("right")
