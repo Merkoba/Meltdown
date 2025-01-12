@@ -255,9 +255,15 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_wrap",
+            "wrap_tabs",
+            action="store_true",
+            info="Enable tab wrapping",
+        )
+
+        self.add_argument(
+            "no_wrap_menus",
             action="store_false",
-            info="Disable wrapping when selecting items",
+            info="Disable menu wrapping",
         )
 
         self.add_argument(

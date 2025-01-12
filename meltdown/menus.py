@@ -495,7 +495,7 @@ class Menu:
         n -= 1
 
         if n < 0:
-            if args.wrap:
+            if args.wrap_menus:
                 n = len(self.items) - 1
             else:
                 return
@@ -516,7 +516,7 @@ class Menu:
         n += 1
 
         if n >= len(self.items):
-            if args.wrap:
+            if args.wrap_menus:
                 n = 0
             else:
                 return

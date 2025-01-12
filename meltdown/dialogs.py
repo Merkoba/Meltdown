@@ -488,7 +488,7 @@ class Dialog:
             new_index = len(self.buttons) - 1
         elif self.current_button > 0:
             new_index = self.current_button - 1
-        elif args.wrap:
+        elif args.wrap_menus:
             new_index = len(self.buttons) - 1
         else:
             return
@@ -503,7 +503,7 @@ class Dialog:
             new_index = 0
         elif self.current_button < len(self.buttons) - 1:
             new_index = self.current_button + 1
-        elif args.wrap:
+        elif args.wrap_menus:
             new_index = 0
         else:
             return

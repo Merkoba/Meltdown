@@ -125,11 +125,11 @@ class Book(tk.Frame):
         self.panel = tk.Frame(self)
 
         self.button_left = widgetutils.get_button(
-            self.panel, "<", lambda e: self.select_left(wrap=False), style="alt"
+            self.panel, "<", self.select_left, style="alt"
         )
 
         self.button_right = widgetutils.get_button(
-            self.panel, ">", lambda e: self.select_right(wrap=False), style="alt"
+            self.panel, ">", self.select_right, style="alt"
         )
 
         ToolTip(self.button_left, text=tips["tabs_left"])
@@ -467,7 +467,7 @@ class Book(tk.Frame):
 
         return -1
 
-    def select_left(self, wrap: bool = True) -> None:
+    def select_left(self) -> None:
         if not self.pages:
             return
 
@@ -478,7 +478,7 @@ class Book(tk.Frame):
         length = len(self.pages)
 
         if index == 0:
-            if wrap and args.wrap and (length >= 2):
+            if args.wrap_tabs and (length >= 2):
                 index = length - 1
             else:
                 return
@@ -489,7 +489,7 @@ class Book(tk.Frame):
         page = self.pages[index]
         self.select(page.id_)
 
-    def select_right(self, wrap: bool = True) -> None:
+    def select_right(self) -> None:
         if not self.pages:
             return
 
@@ -500,7 +500,7 @@ class Book(tk.Frame):
         length = len(self.pages)
 
         if index == length - 1:
-            if wrap and args.wrap and (length >= 2):
+            if args.wrap_tabs and (length >= 2):
                 index = 0
             else:
                 return

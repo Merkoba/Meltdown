@@ -32,7 +32,8 @@ class Args:
         self.keyboard = True
         self.taps = True
         self.taps_command = ""
-        self.wrap = True
+        self.wrap_tabs = False
+        self.wrap_menus = True
         self.stream = True
         self.maximize = False
         self.show_tabs = True
@@ -316,7 +317,6 @@ class Args:
             ("no_ram", "system_ram"),
             ("no_temp", "system_temp"),
             ("no_keyboard", "keyboard"),
-            ("no_wrap", "wrap"),
             ("no_tabs", "show_tabs"),
             ("no_stream", "stream"),
             ("no_taps", "taps"),
@@ -375,6 +375,7 @@ class Args:
             ("no_system_auto_hide", "system_auto_hide"),
             ("no_keep_empty_tab", "keep_empty_tab"),
             ("no_autoscroll_interrupt", "autoscroll_interrupt"),
+            ("no_wrap_menus", "wrap_menus"),
         ]
 
         for r_item in other_name:
@@ -579,6 +580,7 @@ class Args:
             "clean_lines_user",
             "clean_lines_ai",
             "delimiter",
+            "wrap_tabs",
         ]
 
         for n_item in normals:

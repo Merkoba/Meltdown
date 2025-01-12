@@ -260,9 +260,19 @@ Action: store_false
 
 ---
 
-### no-wrap
+### wrap-tabs
 
-Disable wrapping when selecting items
+Enable tab wrapping
+
+Default: False
+
+Action: store_true
+
+---
+
+### no-wrap-menus
+
+Disable menu wrapping
 
 Action: store_false
 
