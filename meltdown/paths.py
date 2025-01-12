@@ -21,14 +21,12 @@ class Paths:
         self.commands: Path
         self.autocomplete: Path
         self.memory: Path
-
         self.configs: Path
         self.sessions: Path
         self.logs: Path
         self.openai_key: Path
         self.google_key: Path
         self.errors: Path
-
         self.nouns: Path
 
     def error(self, what: str) -> None:
