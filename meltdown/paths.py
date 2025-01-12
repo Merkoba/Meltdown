@@ -77,6 +77,9 @@ class Paths:
         self.openai_key = Path(self.data_dir, "openai_key.txt")
         self.google_key = Path(self.data_dir, "google_key.txt")
         self.errors = Path(self.data_dir, "errors")
+
+        # Assets
+
         self.nouns = Path(app.here, "nouns.txt")
         return True
 
