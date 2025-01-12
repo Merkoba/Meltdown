@@ -133,9 +133,12 @@ class Book(tk.Frame):
         )
 
         ToolTip(self.button_left, text=tips["tabs_left"])
-        ToolTip(self.button_right, text=tips["tabs_right"])
         self.button_left.set_bind("<Button-2>", lambda e: self.select_first())
+        self.button_left.set_bind("<Button-3>", lambda e: self.button_right_click(e))
+
+        ToolTip(self.button_right, text=tips["tabs_right"])
         self.button_right.set_bind("<Button-2>", lambda e: self.select_last())
+        self.button_right.set_bind("<Button-3>", lambda e: self.button_right_click(e))
 
         self.tabs_frame = tk.Frame(self.panel)
 
@@ -211,6 +214,7 @@ class Book(tk.Frame):
         self.on_change: Callable[..., Any] | None = None
         self.on_reorder: Callable[..., Any] | None = None
         self.on_num_tabs_change: Callable[..., Any] | None = None
+        self.on_button_right_click: Callable[..., Any] | None = None
 
         self.discover_debouncer = ""
         self.discover_delay = 250
@@ -954,3 +958,7 @@ class Book(tk.Frame):
         else:
             self.enable_button("left")
             self.enable_button("right")
+
+    def button_right_click(self, event: Any) -> None:
+        if self.on_button_right_click:
+            self.on_button_right_click(event)

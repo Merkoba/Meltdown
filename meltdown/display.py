@@ -104,6 +104,7 @@ class Display:
         self.tabs: dict[str, Tab] = {}
         self.tab_list_menu = Menu()
 
+        self.book.on_button_right_click = lambda e: self.on_tab_button_right_click(e)
         self.book.on_tab_right_click = lambda e, id: self.on_tab_right_click(e, id)
         self.book.on_tabs_click = lambda: self.on_tabs_click()
         self.book.on_tabs_double_click = lambda: self.on_tabs_double_click()
@@ -350,6 +351,11 @@ class Display:
             return tab.get_bottom()
 
         return None
+
+    def on_tab_button_right_click(self, event: Any) -> None:
+        from .menumanager import menumanager
+
+        menumanager.tab_menu.show(event)
 
     def on_tab_right_click(self, event: Any, tab_id: str) -> None:
         from .menumanager import menumanager
