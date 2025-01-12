@@ -314,7 +314,8 @@ The suggested workflow is to close all tabs after a while or closing `Old` tabs.
 
 The mousewheel can be used to cycle between tabs and there are some shortcuts and commands for this.
 There is also `shift + wheel` which you can use in the text output area to cycle tabs.
-If `shift + wheel` or `ctrl + wheel` is used in the tab bar, it will move/re-order the tabs left/right.
+If `ctrl + wheel` is used in the tab bar, it will move/re-order the tabs left/right.
+And `shift + wheel` can be used to scroll the tab bar without changing the tab.
 
 There is a tab list which shows all the open tabs, which you can type to filter.
 This is accessed by right clicking the conversation or with `/list`.

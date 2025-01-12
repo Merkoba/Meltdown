@@ -135,10 +135,12 @@ class Book(tk.Frame):
         ToolTip(self.button_left, text=tips["tabs_left"])
         self.button_left.set_bind("<Button-2>", lambda e: self.select_first())
         self.button_left.set_bind("<Button-3>", lambda e: self.btn_right_click(e))
+        self.bind_tab_mousewheel(self.button_left)
 
         ToolTip(self.button_right, text=tips["tabs_right"])
         self.button_right.set_bind("<Button-2>", lambda e: self.select_last())
         self.button_right.set_bind("<Button-3>", lambda e: self.btn_right_click(e))
+        self.bind_tab_mousewheel(self.button_right)
 
         self.tabs_frame = tk.Frame(self.panel)
 
