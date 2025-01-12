@@ -682,13 +682,13 @@ Show the font menu
 
 ---
 
-### gpt
+### oepnai
 
 Show the GPT menu
 
 ---
 
-### gemini
+### google
 
 Show the Gemini menu
 

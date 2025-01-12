@@ -668,18 +668,6 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "openaikey",
-            "Set the OpenAI API key",
-            lambda a=None: model.set_openai_key(),
-        )
-
-        self.add_cmd(
-            "googlekey",
-            "Set the Google API key",
-            lambda a=None: model.set_google_key(),
-        )
-
-        self.add_cmd(
             "system",
             "Write the system prompt",
             lambda a=None: system_prompt.write(a),
@@ -705,13 +693,25 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "gpt", "Show the GPT menu", lambda a=None: menumanager.gpt_menu.show()
+            "openai", "Show the GPT menu", lambda a=None: menumanager.openai_menu.show()
         )
 
         self.add_cmd(
-            "gemini",
+            "google",
             "Show the Gemini menu",
-            lambda a=None: menumanager.gemini_menu.show(),
+            lambda a=None: menumanager.google_menu.show(),
+        )
+
+        self.add_cmd(
+            "openaikey",
+            "Set the OpenAI API key",
+            lambda a=None: model.set_openai_key(),
+        )
+
+        self.add_cmd(
+            "googlekey",
+            "Set the Google API key",
+            lambda a=None: model.set_google_key(),
         )
 
         self.add_cmd(

@@ -15,8 +15,8 @@ class MenuManager:
     def __init__(self) -> None:
         self.main_menu: Any = None
         self.model_menu: Any = None
-        self.gpt_menu: Any = None
-        self.gemini_menu: Any = None
+        self.openai_menu: Any = None
+        self.google_menu: Any = None
         self.more_menu: Any = None
         self.tab_menu: Any = None
         self.font_menu: Any = None
@@ -94,8 +94,6 @@ class MainMenu:
 
 class ModelMenu:
     def __init__(self, parent: MenuManager) -> None:
-        from .model import model
-
         self.parent = parent
         self.menu = Menu()
 
@@ -108,13 +106,8 @@ class ModelMenu:
 
         self.menu.separator()
 
-        self.menu.add("ChatGPT", lambda e: self.parent.gpt_menu.show())
-        self.menu.add("API Key", lambda e: model.set_openai_key())
-
-        self.menu.separator()
-
-        self.menu.add("Gemini", lambda e: self.parent.gemini_menu.show())
-        self.menu.add("API Key", lambda e: model.set_google_key())
+        self.menu.add("OpenAI", lambda e: self.parent.openai_menu.show())
+        self.menu.add("Google", lambda e: self.parent.google_menu.show())
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -124,13 +117,16 @@ class ModelMenu:
             self.menu.show(widget=widget)
 
 
-class GPTMenu:
+class OpenAIMenu:
     def __init__(self, parent: MenuManager) -> None:
         from .model import model
         from .widgets import widgets
 
         self.parent = parent
         self.menu = Menu()
+
+        self.menu.add("API Key", lambda e: model.set_openai_key())
+        self.menu.separator()
 
         for gpt in model.gpts:
             self.menu.add(gpt[1], lambda e, gpt=gpt: widgets.use_gpt(gpt[0]))
@@ -143,13 +139,16 @@ class GPTMenu:
             self.menu.show(widget=widget)
 
 
-class GeminiMenu:
+class GoogleMenu:
     def __init__(self, parent: MenuManager) -> None:
         from .model import model
         from .widgets import widgets
 
         self.parent = parent
         self.menu = Menu()
+
+        self.menu.add("API Key", lambda e: model.set_google_key())
+        self.menu.separator()
 
         for gemini in model.geminis:
             self.menu.add(
@@ -511,8 +510,8 @@ class CopyMenu:
 menumanager = MenuManager()
 menumanager.main_menu = MainMenu(menumanager)
 menumanager.model_menu = ModelMenu(menumanager)
-menumanager.gpt_menu = GPTMenu(menumanager)
-menumanager.gemini_menu = GeminiMenu(menumanager)
+menumanager.openai_menu = OpenAIMenu(menumanager)
+menumanager.google_menu = GoogleMenu(menumanager)
 menumanager.more_menu = MoreMenu(menumanager)
 menumanager.tab_menu = TabMenu(menumanager)
 menumanager.font_menu = FontMenu(menumanager)
