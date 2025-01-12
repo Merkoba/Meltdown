@@ -70,6 +70,8 @@ class Close:
         force_empty: bool = False,
         full: bool = True,
     ) -> None:
+        from .keyboard import keyboard
+
         if display.num_tabs() == 0:
             return
 
@@ -109,6 +111,14 @@ class Close:
 
         if force:
             action()
+            return
+
+        if keyboard.shift:
+            self.close_empty()
+            return
+
+        if keyboard.ctrl:
+            self.close_old()
             return
 
         cmds = Commands()

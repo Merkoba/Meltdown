@@ -10,7 +10,7 @@ tips = {
     "stop_button": "Stop generating the current response",
     "new_button": "Make a new tab. Middle click to insert at the start",
     "clear_button": "Clear the conversation",
-    "close_button": "Close tabs. Middle click to close all tabs",
+    "close_button": "Close tabs. Middle click to close all. Shift click to close empty. Ctrl click to close old",
     "top_button": f"Scroll to the top. {scroll}",
     "bottom_button": f"Scroll to the bottom. {scroll}",
     "clear_input_button": "Clear the input",
