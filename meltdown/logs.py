@@ -20,7 +20,15 @@ from .memory import memory
 
 
 class Logs:
-    def menu(self, full: bool = True, tab_id: str | None = None) -> None:
+    def menu(self) -> None:
+        cmds = Commands()
+        cmds.add("Open", lambda a: self.open_directory())
+        cmds.add("Last", lambda a: self.open_last_log())
+        cmds.add("Save", lambda a: self.save_menu())
+
+        Dialog.show_dialog("Logs Menu", commands=cmds)
+
+    def save_menu(self, full: bool = True, tab_id: str | None = None) -> None:
         cmds = Commands()
 
         if full:
@@ -274,6 +282,10 @@ class Logs:
             text = ""
 
         return text.strip()
+
+    def open_directory(self) -> None:
+        paths.logs.mkdir(parents=True, exist_ok=True)
+        app.open_generic(str(paths.logs))
 
 
 logs = Logs()

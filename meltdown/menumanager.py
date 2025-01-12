@@ -239,7 +239,7 @@ class TabMenu:
 
         self.menu.add(
             "Save Log",
-            lambda e: logs.menu(full=False, tab_id=display.tab_menu_id),
+            lambda e: logs.save_menu(full=False, tab_id=display.tab_menu_id),
             disabled=unmod,
         )
 
