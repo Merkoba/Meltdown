@@ -12,7 +12,7 @@ class AutoScroll:
         self.delay_diff = 100
         self.delay = 1000
         self.min_delay = 100
-        self.max_delay = 3000
+        self.max_delay = 2000
 
     def setup(self) -> None:
         self.delay = args.autoscroll_delay
