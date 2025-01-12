@@ -169,7 +169,6 @@ class Book(tk.Frame):
         self.grid_rowconfigure(0, weight=0)
         self.grid_rowconfigure(1, weight=1)
         self.bind_tab_mousewheel(self.tabs_container)
-
         self.tabs_canvas.bind("<ButtonRelease-1>", lambda e: self.tabs_click())
 
         if args.tab_double_click:
