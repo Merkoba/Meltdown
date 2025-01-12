@@ -185,11 +185,11 @@ ChatGPT from OpenAI is supported.
 
 You must first set the API key for it to work.
 
-This can be done using the model menu: `Set OpenAI Key`.
+This can be done using the model menu.
 
 Or using the `openaikey` command.
 
-Then pick the model you want: `Use GPT Model`.
+Then pick a model using the model menu or writing the name directly.
 
 ---
 
@@ -199,11 +199,11 @@ Gemini from Google is supported.
 
 You must first set the API key for it to work.
 
-This can be done using the model menu: `Set Google Key`.
+This can be done using the model menu.
 
 Or using the `googlekey` command.
 
-Then pick the model you want: `Use Gemini Model`.
+Then pick a model using the model menu or writing the name directly.
 
 ---
 
