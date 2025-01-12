@@ -975,11 +975,16 @@ class Book(tk.Frame):
         if self.on_button_right_click:
             self.on_button_right_click(event)
 
+    def has_overflow(self) -> bool:
+        return self.tabs_canvas.bbox("all")[2] > self.tabs_canvas.winfo_width()
+
     def scroll_left(self) -> None:
-        self.tabs_canvas.xview_scroll(-1, "units")
+        if self.has_overflow():
+            self.tabs_canvas.xview_scroll(-1, "units")
 
     def scroll_right(self) -> None:
-        self.tabs_canvas.xview_scroll(1, "units")
+        if self.has_overflow():
+            self.tabs_canvas.xview_scroll(1, "units")
 
     def button_left_click(self) -> None:
         from .keyboard import keyboard
