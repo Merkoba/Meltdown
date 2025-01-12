@@ -14,12 +14,18 @@ from .tooltips import ToolTip
 
 class TabWidget:
     def __init__(
-        self, frame: tk.Frame, inner: tk.Frame, label: tk.Label, tooltip: ToolTip
+        self,
+        frame: tk.Frame,
+        inner: tk.Frame,
+        label: tk.Label,
+        tooltip_1: ToolTip,
+        tooltip_2: ToolTip,
     ):
         self.frame = frame
         self.inner = inner
         self.label = label
-        self.tooltip = tooltip
+        self.tooltip_1 = tooltip_1
+        self.tooltip_2 = tooltip_2
 
 
 class Page:
@@ -65,8 +71,9 @@ class Page:
         )
 
         label.configure(cursor="hand2")
-        tooltip = ToolTip(label, text=self.tooltip)
-        return TabWidget(frame, inner, label, tooltip)
+        tooltip_1 = ToolTip(inner, text=self.tooltip)
+        tooltip_2 = ToolTip(label, text=self.tooltip)
+        return TabWidget(frame, inner, label, tooltip_1, tooltip_2)
 
     def make_content_widget(self) -> tk.Frame:
         frame = tk.Frame(self.parent.content_container)
@@ -76,7 +83,8 @@ class Page:
 
     def update_tooltip(self) -> None:
         text = self.tooltip if self.tooltip else "Empty Tab"
-        self.tab.tooltip.set_text(text)
+        self.tab.tooltip_1.set_text(text)
+        self.tab.tooltip_2.set_text(text)
 
     def get_index(self) -> int:
         for i, page in enumerate(self.parent.pages):
