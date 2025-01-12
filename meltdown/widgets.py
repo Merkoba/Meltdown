@@ -333,7 +333,7 @@ class Widgets:
         setup_entrybox("seed", "Int")
         setup_entrybox("top_k", "Int")
         setup_entrybox("top_p", "Float")
-        setup_entrybox("model", "Path to a remote or local model")
+        setup_entrybox("model", "Local path or model name")
         setup_entrybox("before", "Text")
         setup_entrybox("after", "Text")
         setup_entrybox("stop", "Text")
