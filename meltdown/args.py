@@ -288,6 +288,8 @@ class Args:
         self.join_lines_user = False
         self.join_lines_ai = False
         self.join_lines_symbol = "👾"
+        self.clean_lines_user = False
+        self.clean_lines_ai = False
         self.delimiter = ":"
 
     def parse(self) -> None:
@@ -574,6 +576,8 @@ class Args:
             "join_lines_user",
             "join_lines_ai",
             "join_lines_symbol",
+            "clean_lines_user",
+            "clean_lines_ai",
             "delimiter",
         ]
 

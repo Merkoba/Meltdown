@@ -860,6 +860,10 @@ It ignores triple backtick snippets, it tries to keep those lines intact.
 
 ---
 
+There's also `--clean-lines-ai`, to collapse multiple empty lines into a single line.
+
+---
+
 ## Keywords <a name="keywords"></a>
 
 There are some keywords that you can use in commands, the input, or system prompt.

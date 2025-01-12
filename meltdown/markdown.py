@@ -223,7 +223,11 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        self.join_lines(start_ln, end_ln, who)
+        if self.clean_lines(start_ln, end_ln, who):
+            end_ln = self.next_marker(start_ln)
+
+        if self.join_lines(start_ln, end_ln, who):
+            end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "snippets"):
             if self.format_snippets(start_ln, end_ln):
@@ -623,12 +627,12 @@ class Markdown:
         un_lines = get_lns(Markdown.marker_indent_unordered)
         add_tags(un_lines, "indent_unordered")
 
-    def join_lines(self, start_ln: int, end_ln: int, who: str) -> None:
+    def join_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
         if who == "nobody":
-            return
+            return False
 
         if not getattr(args, f"join_lines_{who}"):
-            return
+            return False
 
         lines = self.get_lines(start_ln, end_ln, who)
         lines = [line.strip() for line in lines]
@@ -673,18 +677,47 @@ class Markdown:
         else:
             do_join()
 
-        marker = Output.marker_space
-        d = utils.delimiter()
-        end_of_prompt = f"{marker}{d}{marker}"
-
-        start_of_line = self.widget.search(
-            end_of_prompt, f"{start_ln}.0", stopindex=f"{start_ln}.end"
-        )
-
         new_text = "\n".join(joined_lines).strip()
-        cols = int(start_of_line.split(".")[1]) + len(end_of_prompt)
+        cols = self.prompt_cols(start_ln)
         self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
         self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
+        return True
+
+    def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
+        if who == "nobody":
+            return False
+
+        if not getattr(args, f"clean_lines_{who}"):
+            return False
+
+        lines = self.get_lines(start_ln, end_ln, who)
+        lines = [line.strip() for line in lines]
+        cleaned = []
+        empty = False
+
+        for line in lines:
+            stripped = line.strip()
+
+            if stripped == "":
+                if not empty:
+                    cleaned.append("")
+                    empty = True
+            else:
+                cleaned.append(stripped)
+                empty = False
+
+        new_text = "\n".join(cleaned).strip()
+        cols = self.prompt_cols(start_ln)
+        self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
+        self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
+        return True
+
+    def prompt_cols(self, start_ln: int) -> int:
+        d = utils.delimiter()
+        marker = Output.marker_space
+        end = f"{marker}{d}{marker}"
+        start = self.widget.search(end, f"{start_ln}.0", stopindex=f"{start_ln}.end")
+        return int(start.split(".")[1]) + len(end)
 
 
 Markdown.build_patterns()

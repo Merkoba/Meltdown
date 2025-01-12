@@ -1741,5 +1741,17 @@ class ArgSpec:
             info="Don't stop auto scroll on manual scrolling",
         )
 
+        self.add_argument(
+            "clean_lines_user",
+            action="store_true",
+            info="Collapse multiple empty lines into one (User)",
+        )
+
+        self.add_argument(
+            "clean_lines_ai",
+            action="store_true",
+            info="Collapse multiple empty lines into one (AI)",
+        )
+
 
 argspec = ArgSpec()
