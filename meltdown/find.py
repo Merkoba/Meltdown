@@ -285,3 +285,9 @@ class Find:
         self.snippet = -1
         self.snippet_focused = False
         self.snippet_index = "1.0"
+
+    def toggle(self) -> None:
+        if self.visible:
+            self.hide()
+        else:
+            self.show()

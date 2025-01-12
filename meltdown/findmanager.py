@@ -10,6 +10,16 @@ from .dialogs import Dialog
 
 
 class FindManager:
+    def toggle(self) -> None:
+        from .display import display
+
+        tab = display.get_current_tab()
+
+        if not tab:
+            return
+
+        tab.get_find().toggle()
+
     def find(
         self,
         tab_id: str | None = None,

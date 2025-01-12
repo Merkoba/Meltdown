@@ -180,7 +180,7 @@ class MoreMenu:
         unmod = (not messages) or ignored
         single = num_tabs == 1
 
-        self.menu.add("Find", lambda e: findmanager.find())
+        self.menu.add("Find", lambda e: findmanager.toggle())
         self.menu.add("Find All", lambda e: findmanager.find_all(), disabled=single)
 
         self.menu.separator()
