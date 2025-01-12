@@ -7,6 +7,7 @@ import appdirs  # type: ignore
 # Modules
 from .app import app
 from .args import args
+from .utils import utils
 
 
 class Paths:
@@ -36,26 +37,31 @@ class Paths:
 
         # Config
 
-        if args.config_dir:
-            config_dir = Path(args.config_dir)
-        else:
-            config_dir = Path(appdirs.user_config_dir())
+        try:
+            if args.config_dir:
+                config_dir = Path(args.config_dir)
+            else:
+                config_dir = Path(appdirs.user_config_dir())
 
-        if not config_dir.exists():
+            config_dir.mkdir(parents=True, exist_ok=True)
+            self.config_dir = Path(config_dir, location)
+            self.config = Path(self.config_dir, "config.json")
+            self.configs = Path(self.config_dir, "configs")
+        except Exception:
+            utils.msg("Error: Can't find or create the 'config' directory.")
             return False
-
-        self.config_dir = Path(config_dir, location)
-        self.config = Path(self.config_dir, "config.json")
-        self.configs = Path(self.config_dir, "configs")
 
         # Data
 
-        if args.data_dir:
-            data_dir = Path(args.data_dir)
-        else:
-            data_dir = Path(appdirs.user_data_dir())
+        try:
+            if args.data_dir:
+                data_dir = Path(args.data_dir)
+            else:
+                data_dir = Path(appdirs.user_data_dir())
 
-        if not data_dir.exists():
+            data_dir.mkdir(parents=True, exist_ok=True)
+        except Exception:
+            utils.msg("Error: Can't find or create the 'data' directory.")
             return False
 
         self.data_dir = Path(data_dir, location)

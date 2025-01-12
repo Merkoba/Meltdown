@@ -32,7 +32,6 @@ def main() -> None:
     args.parse()
 
     if not paths.setup():
-        utils.msg("Config or data directories not found.")
         return
 
     if args.profile:
