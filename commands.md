@@ -646,18 +646,6 @@ Go to the tab that is currently streaming
 
 ---
 
-### openaikey
-
-Set the OpenAI API key
-
----
-
-### googlekey
-
-Set the Google API key
-
----
-
 ### system
 
 Write the system prompt
@@ -682,7 +670,7 @@ Show the font menu
 
 ---
 
-### oepnai
+### openai
 
 Show the GPT menu
 
@@ -691,6 +679,18 @@ Show the GPT menu
 ### google
 
 Show the Gemini menu
+
+---
+
+### openaikey
+
+Set the OpenAI API key
+
+---
+
+### googlekey
+
+Set the Google API key
 
 ---
 

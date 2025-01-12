@@ -2651,3 +2651,23 @@ Type: str
 Don't stop auto scroll on manual scrolling
 
 Action: store_false
+
+---
+
+### clean-lines-user
+
+Collapse multiple empty lines into one (User)
+
+Default: False
+
+Action: store_true
+
+---
+
+### clean-lines-ai
+
+Collapse multiple empty lines into one (AI)
+
+Default: False
+
+Action: store_true
