@@ -11,6 +11,7 @@ from .args import args
 from .utils import utils
 from .tooltips import ToolTip
 from .widgetutils import widgetutils
+from .tips import tips
 
 
 class TabWidget:
@@ -131,6 +132,11 @@ class Book(tk.Frame):
             self.panel, ">", self.select_right, style="alt"
         )
 
+        ToolTip(self.button_left, text=tips["tabs_left"])
+        ToolTip(self.button_right, text=tips["tabs_right"])
+        self.button_left.set_bind("<Button-2>", lambda e: self.select_first())
+        self.button_right.set_bind("<Button-2>", lambda e: self.select_last())
+
         self.tabs_frame = tk.Frame(self.panel)
 
         self.tabs_canvas = tk.Canvas(
@@ -159,14 +165,15 @@ class Book(tk.Frame):
             self.tabs_canvas.grid(row=0, column=0, sticky="ew")
 
         self.panel.grid(row=0, column=0, sticky="ew")
-        self.button_left.grid(row=0, column=0, sticky="ew", padx=(0, 10))
-        self.tabs_frame.grid(row=0, column=1, sticky="ew")
-        self.tabs_frame.grid_propagate(True)
-        self.button_right.grid(row=0, column=2, sticky="ew", padx=(10, 0))
-
         self.panel.grid_columnconfigure(0, weight=0)
         self.panel.grid_columnconfigure(1, weight=1)
         self.panel.grid_columnconfigure(2, weight=0)
+
+        self.button_left.grid(row=0, column=0, sticky="ew", padx=(0, 10))
+        self.button_right.grid(row=0, column=2, sticky="ew", padx=(10, 0))
+
+        self.tabs_frame.grid(row=0, column=1, sticky="ew")
+        self.tabs_frame.grid_propagate(True)
 
         self.tabs_frame.configure(background=app.theme.tabs_container_color)
         self.tabs_frame.grid_rowconfigure(0, weight=0)

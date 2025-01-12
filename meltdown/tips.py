@@ -130,4 +130,7 @@ tips = {
     "autoscroll_slower": "Decrease the autoscroll speed",
     "autoscroll": "Toggle autoscroll",
     "autoscroll_faster": "Increase the autoscroll speed",
+    # Tabs
+    "tabs_left": "Go to the tab on the left. Middle click to go to the first tab",
+    "tabs_right": "Go to the tab on the right. Middle click to go to the last tab",
 }
