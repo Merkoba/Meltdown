@@ -285,9 +285,10 @@ class Session:
             items = []
 
         if args.test:
-            items.append(tests.format_test)
-        elif args.test2:
-            items.append(tests.format_test_2)
+            test = tests.get(args.test)
+
+            if test:
+                items.append(test)
 
         if not items:
             return

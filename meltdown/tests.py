@@ -1,8 +1,15 @@
+# Standard
+from typing import Any
+
+
+Test = dict[str, Any]
+
+
 class Tests:
     def __init__(self) -> None:
-        self.format_test = {
+        self.format_test: Test = {
             "id": "ignore",
-            "name": "Test",
+            "name": "Format Test",
             "items": [
                 {
                     "user": "Highlight Test",
@@ -115,11 +122,35 @@ class Tests:
             ],
         }
 
-        self.format_test_2 = {
+        self.snippets_test: Test = {
             "id": "ignore",
-            "name": "Test 2",
-            "items": [],
+            "name": "Snippets Test",
+            "items": [
+                {
+                    "user": "Normal Snippet",
+                    "ai": "```python\na = 123\nprint('Hello, World!')```",
+                },
+                {
+                    "user": "Normal Snippet (With an empty line at the end)",
+                    "ai": "```python\na = 123\nprint('Hello, World!')\n```",
+                },
+                {
+                    "user": "Malformed Snippet",
+                    "ai": "```python\na = 123\nprint('Hello, World!')",
+                },
+                {
+                    "user": "Malformed Snippets (With an empty line at the end)",
+                    "ai": "```python\na = 123\nprint('Hello, World!')\n",
+                },
+                {
+                    "user": "Normal message 1",
+                    "ai": "Normal message 2",
+                },
+            ],
         }
+
+    def get(self, name: str) -> Any:
+        return getattr(self, f"{name}_test")
 
 
 tests = Tests()

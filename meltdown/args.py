@@ -42,8 +42,7 @@ class Args:
         self.bottom_autohide = True
         self.reorder = True
         self.tab_numbers = False
-        self.test = False
-        self.test2 = False
+        self.test = ""
         self.alt_palette = False
         self.width = 0
         self.height = 0
@@ -386,7 +385,6 @@ class Args:
             "width",
             "height",
             "test",
-            "test2",
             "config",
             "session",
             "tab_numbers",

@@ -72,7 +72,7 @@ class Markdown:
         # possibility of catastrophically backtracking in case
         # the stuff AFTER it fails to match (such as the closing
         # 3x backticks).
-        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2{tick}{{3}}\s*$"
+        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Bold with two asterisks
         Markdown.pattern_bold_1 = (

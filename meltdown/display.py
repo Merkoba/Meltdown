@@ -128,10 +128,15 @@ class Display:
                 return
 
         def check_empty(page: Page | None) -> bool:
-            if page:
-                if self.tab_is_empty(page.id_):
-                    self.select_tab(page.id_)
-                    return True
+            if not page:
+                return False
+
+            if self.tab_is_empty(page.id_):
+                if self.is_ignored(page.id_):
+                    return False
+
+                self.select_tab(page.id_)
+                return True
 
             return False
 

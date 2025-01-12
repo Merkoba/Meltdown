@@ -684,26 +684,6 @@ Action: store_true
 
 ---
 
-### test
-
-Make a test tab for debugging
-
-Default: False
-
-Action: store_true
-
----
-
-### test2
-
-Make a test tab for debugging (2)
-
-Default: False
-
-Action: store_true
-
----
-
 ### item-numbers
 
 Add numbers to each message
@@ -2681,3 +2661,13 @@ Collapse multiple empty lines into one (AI)
 Default: False
 
 Action: store_true
+
+---
+
+### test
+
+Run a specific test
+
+Default: [Empty string]
+
+Type: str
