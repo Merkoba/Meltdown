@@ -3,6 +3,7 @@ from __future__ import annotations
 # Modules
 from .app import app
 from .args import args
+from .utils import utils
 
 
 class AutoScroll:
@@ -15,9 +16,7 @@ class AutoScroll:
         self.max_delay = 2000
 
     def setup(self) -> None:
-        self.delay = args.autoscroll_delay
-        self.delay = min(self.delay, self.max_delay)
-        self.delay = max(self.delay, self.min_delay)
+        self.delay = utils.clamp(args.autoscroll_delay, self.min_delay, self.max_delay)
 
     def start(self, direction: str | None = None) -> None:
         from .display import display
