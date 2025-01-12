@@ -105,6 +105,12 @@ class AutoScroll:
         delay = min(self.delay + self.delay_diff, self.max_delay)
         self.update_delay(delay)
 
+    def slowest(self) -> None:
+        self.update_delay(self.max_delay)
+
+    def fastest(self) -> None:
+        self.update_delay(self.min_delay)
+
     def update_delay(self, delay: int) -> None:
         from .display import display
 
@@ -117,10 +123,9 @@ class AutoScroll:
         tab.get_bottom().autoscroll_button.set_text(self.get_text())
 
     def get_text(self) -> str:
-        perc = 100 - int(
-            ((self.delay - self.min_delay) / (self.max_delay - self.min_delay)) * 100
-        )
-
+        a = self.delay - self.min_delay
+        b = self.max_delay - self.min_delay
+        perc = 100 - int((a / b) * 100)
         return f"Autoscroll ({perc})"
 
 

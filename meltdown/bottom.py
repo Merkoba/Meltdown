@@ -42,6 +42,14 @@ class Bottom(tk.Frame):
             self, text="+", command=autoscroll.faster, style="alt"
         )
 
+        self.autoscroll_slower_button.set_bind(
+            "<Button-2>", lambda e: autoscroll.slowest()
+        )
+
+        self.autoscroll_faster_button.set_bind(
+            "<Button-2>", lambda e: autoscroll.fastest()
+        )
+
         ToolTip(self.autoscroll_slower_button, tips["autoscroll_slower"])
         ToolTip(self.autoscroll_button, tips["autoscroll"])
         ToolTip(self.autoscroll_faster_button, tips["autoscroll_faster"])
