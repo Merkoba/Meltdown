@@ -405,6 +405,7 @@ class Widgets:
         event: Any = None,
         only_items: bool = False,
         alt_cmd: Callable[..., Any] | None = None,
+        target: tk.Widget | None = None,
     ) -> None:
         menu = getattr(self, f"{key_list}_menu")
 
@@ -449,10 +450,10 @@ class Widgets:
         if event:
             menu.show(event)
         else:
-            widget = self.get_widget(key_config)
+            wid = target or widget
 
-            if widget:
-                menu.show(widget=widget)
+            if wid:
+                menu.show(widget=wid)
 
     def show_model(self) -> None:
         self.model.set_text(config.model)

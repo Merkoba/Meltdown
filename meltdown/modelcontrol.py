@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import tkinter as tk
 from typing import Any
 from tkinter import filedialog
 
@@ -24,7 +25,12 @@ class ModelControl:
     def bind(self) -> None:
         self.model.bind("<Button-3>", lambda e: self.show_context(e))
 
-    def show_context(self, event: Any = None, only_items: bool = False) -> None:
+    def show_context(
+        self,
+        event: Any = None,
+        only_items: bool = False,
+        target: tk.Widget | None = None,
+    ) -> None:
         from .widgets import widgets
 
         if model.model_loading:
@@ -37,6 +43,7 @@ class ModelControl:
             event,
             only_items=only_items,
             alt_cmd=lambda m: self.forget(m, event),
+            target=target,
         )
 
     def set(self, m: str) -> None:
@@ -83,8 +90,8 @@ class ModelControl:
         files.remove_model(m)
         self.show_context(event)
 
-    def show_recent(self) -> None:
-        self.show_context(only_items=True)
+    def show_recent(self, target: tk.Widget | None = None) -> None:
+        self.show_context(only_items=True, target=target)
 
     def browse(self) -> None:
         from .widgets import widgets

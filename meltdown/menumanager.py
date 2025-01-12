@@ -99,18 +99,22 @@ class ModelMenu:
         self.parent = parent
         self.menu = Menu()
 
-        self.menu.add("Recent Models", lambda e: modelcontrol.show_recent())
-        self.menu.add("Browse Models", lambda e: modelcontrol.browse())
+        self.menu.add(
+            "Recent",
+            lambda e: modelcontrol.show_recent(target=MenuManager.get_model_button()),
+        )
+
+        self.menu.add("Browse", lambda e: modelcontrol.browse())
 
         self.menu.separator()
 
-        self.menu.add("Use GPT Model", lambda e: self.parent.gpt_menu.show())
-        self.menu.add("Set OpenAI Key", lambda e: model.set_openai_key())
+        self.menu.add("ChatGPT", lambda e: self.parent.gpt_menu.show())
+        self.menu.add("API Key", lambda e: model.set_openai_key())
 
         self.menu.separator()
 
-        self.menu.add("Use Gemini Model", lambda e: self.parent.gemini_menu.show())
-        self.menu.add("Set Google Key", lambda e: model.set_google_key())
+        self.menu.add("Gemini", lambda e: self.parent.gemini_menu.show())
+        self.menu.add("API Key", lambda e: model.set_google_key())
 
     def show(self, event: Any = None) -> None:
         if event:
