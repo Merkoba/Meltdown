@@ -16,6 +16,8 @@ class AutoScroll:
 
     def setup(self) -> None:
         self.delay = args.autoscroll_delay
+        self.delay = min(self.delay, self.max_delay)
+        self.delay = max(self.delay, self.min_delay)
 
     def start(self, direction: str | None = None) -> None:
         from .display import display
