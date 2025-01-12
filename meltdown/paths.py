@@ -31,6 +31,9 @@ class Paths:
 
         self.nouns: Path
 
+    def error(self, what: str) -> None:
+        utils.msg(f"Error: Can't find or create the '{what}' directory.")
+
     def setup(self) -> bool:
         program = app.manifest["program"]
         location = Path(program, args.profile)
@@ -48,7 +51,7 @@ class Paths:
             self.config = Path(self.config_dir, "config.json")
             self.configs = Path(self.config_dir, "configs")
         except Exception:
-            utils.msg("Error: Can't find or create the 'config' directory.")
+            self.error("config")
             return False
 
         # Data
@@ -61,7 +64,7 @@ class Paths:
 
             data_dir.mkdir(parents=True, exist_ok=True)
         except Exception:
-            utils.msg("Error: Can't find or create the 'data' directory.")
+            self.error("data")
             return False
 
         self.data_dir = Path(data_dir, location)
