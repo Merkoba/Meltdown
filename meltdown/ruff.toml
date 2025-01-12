@@ -1,5 +1,7 @@
 [lint]
 
+preview = true
+
 select = [
     "T",
     "Q",
@@ -33,6 +35,10 @@ select = [
     "SIM210",
     "PLR5501",
     "PLR1711",
+]
+
+ignore = [
+    "PLW0108",
 ]
 
 exclude = [

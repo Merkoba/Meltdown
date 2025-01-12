@@ -305,7 +305,7 @@ class Model:
         if args.model_feedback and (not args.quiet):
             if self.loaded_type == "local":
                 text = utils.emoji_text("Model loaded", "local")
-                msg, now = utils.check_time(text, start_date)
+                msg, _ = utils.check_time(text, start_date)
                 display.print(msg)
             elif self.loaded_type == "remote":
                 msg = f"{config.model} is ready to use"

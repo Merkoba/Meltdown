@@ -55,6 +55,8 @@ class Commands:
 
     def start_loop(self) -> None:
         def loop() -> None:
+            to_remove = []
+
             for queue in self.queues:
                 if queue.wait:
                     queue.wait -= self.loop_delay
@@ -82,7 +84,10 @@ class Commands:
                             self.exec(self.aliases[similar], queue)
 
                     if not queue.items:
-                        self.queues.remove(queue)
+                        to_remove.append(queue)
+
+            for rm_item in to_remove:
+                self.queues.remove(rm_item)
 
             app.root.after(self.loop_delay, lambda: loop())
 

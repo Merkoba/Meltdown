@@ -440,7 +440,7 @@ class Session:
         self.load_state(memory.last_session)
 
     def count(self) -> int:
-        return sum([c.count() for c in self.conversations.values()])
+        return sum(c.count() for c in self.conversations.values())
 
     def open_directory(self) -> None:
         paths.sessions.mkdir(parents=True, exist_ok=True)

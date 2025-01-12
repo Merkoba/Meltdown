@@ -350,7 +350,7 @@ class Utils:
     def clean_name(self, name: str) -> str:
         name = re.sub(r"[\s]", "_", name)
         name = re.sub(r"[^\w]", "_", name)
-        name = re.sub("_+", "_", name)
+        name = re.sub(r"_+", "_", name)
         name = name.rstrip(" _").lower()
 
         if not name:
