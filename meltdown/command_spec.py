@@ -1105,5 +1105,19 @@ class CommandSpec:
             lambda a=None: inputcontrol.read_variables(),
         )
 
+        self.add_cmd(
+            "print",
+            "Print a message",
+            lambda a=None: display.print(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "echo",
+            "Print a message and format markdown",
+            lambda a=None: display.print(a, do_format=True),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

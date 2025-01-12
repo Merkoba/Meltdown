@@ -1057,3 +1057,15 @@ Read the content of a variable
 ### vars
 
 Read all the variables
+
+---
+
+### print
+
+Print a message
+
+---
+
+### echo
+
+Print a message and format markdown
