@@ -113,20 +113,27 @@ class Close:
             action()
             return
 
+        empty_tabs = self.get_empty_tabs()
+        old_tabs = self.get_old_tabs()
+
         if keyboard.shift:
-            self.close_empty()
+            if empty_tabs:
+                self.close_empty()
+
             return
 
         if keyboard.ctrl:
-            self.close_old()
+            if old_tabs:
+                self.close_old()
+
             return
 
         cmds = Commands()
 
-        if full and self.get_empty_tabs():
+        if full and empty_tabs:
             cmds.add("Empty", lambda a: self.close_empty())
 
-        if full and self.get_old_tabs():
+        if full and old_tabs:
             cmds.add("Old", lambda a: self.close_old())
 
         if self.get_other_tabs(tab_id):
