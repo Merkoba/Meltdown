@@ -120,7 +120,6 @@ class Book(tk.Frame):
         self.pages: list[Page] = []
         self.tabs_enabled = True
         self.tabs_manual = False
-
         self.tabs_frame = tk.Frame(self)
 
         self.tabs_canvas = tk.Canvas(
@@ -148,7 +147,6 @@ class Book(tk.Frame):
             self.tabs_canvas.grid(row=0, column=0, sticky="ew")
 
         self.tabs_frame.grid(row=0, column=0, sticky="ew")
-
         self.tabs_frame.configure(background=app.theme.tabs_container_color)
         self.tabs_frame.grid_rowconfigure(0, weight=0)
         self.tabs_frame.grid_columnconfigure(0, weight=1)
