@@ -27,15 +27,15 @@ class Bottom(tk.Frame):
         self.bottom_button.grid(row=0, column=0, sticky="nsew")
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
-        self.bottom_button.set_bind("<Button-2>", lambda e: self.autoscroll())
-        self.bottom_button.set_bind("<ButtonRelease-3>", lambda e: self.autoscroll())
+        self.bottom_button.set_bind("<Button-2>", lambda e: self.autoscroll_down())
+        self.bottom_button.set_bind("<Button-3>", lambda e: self.autoscroll_up())
 
         self.autoscroll_slower_button = ButtonBox(
             self, text="-", command=autoscroll.slower, style="alt"
         )
 
         self.autoscroll_button = ButtonBox(
-            self, text=autoscroll.get_text(), command=self.autoscroll, style="alt"
+            self, text=autoscroll.get_text(), command=self.autoscroll_down, style="alt"
         )
 
         self.autoscroll_faster_button = ButtonBox(
@@ -59,7 +59,8 @@ class Bottom(tk.Frame):
             self.autoscroll_button.grid(row=0, column=2, sticky="nsew")
             self.autoscroll_faster_button.grid(row=0, column=3, sticky="nsew")
 
-        self.autoscroll_button.set_bind("<Button-2>", lambda e: self.autoscroll())
+        self.autoscroll_button.set_bind("<Button-2>", lambda e: autoscroll.reset())
+        self.autoscroll_button.set_bind("<Button-3>", lambda e: self.autoscroll_up())
 
         def autoscroll_wheel(button: Any) -> None:
             button.set_bind("<Button-4>", lambda e: autoscroll.faster())
@@ -148,7 +149,10 @@ class Bottom(tk.Frame):
     def set_text(self, text: str) -> None:
         self.bottom_button.set_text(text)
 
-    def autoscroll(self) -> None:
+    def autoscroll_up(self) -> None:
+        autoscroll.toggle("up")
+
+    def autoscroll_down(self) -> None:
         autoscroll.toggle("down")
 
     def check_enabled(self) -> bool:

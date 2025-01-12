@@ -112,9 +112,12 @@ class AutoScroll:
         self.update_delay(self.min_delay)
 
     def update_delay(self, delay: int) -> None:
+        self.delay = delay
+        self.update_text()
+
+    def update_text(self) -> None:
         from .display import display
 
-        self.delay = delay
         tab = display.get_current_tab()
 
         if not tab:
@@ -127,6 +130,10 @@ class AutoScroll:
         b = self.max_delay - self.min_delay
         perc = 100 - int((a / b) * 100)
         return f"Autoscroll ({perc})"
+
+    def reset(self) -> None:
+        self.setup()
+        self.update_text()
 
 
 autoscroll = AutoScroll()

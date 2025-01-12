@@ -1,5 +1,5 @@
 middleprev = "Middle click to find previous"
-scroll = "Right click to scroll one step. Middle click to auto-scroll. Wheel to scroll"
+scroll = "Right click to scroll one step. Wheel to scroll. Middle click to autoscroll"
 tab_btns = "Shift click to scroll. Ctrl click to move"
 
 tips = {
@@ -13,7 +13,7 @@ tips = {
     "clear_button": "Clear the conversation",
     "close_button": "Close tabs. Middle click to close all. Shift click to close empty. Ctrl click to close old",
     "top_button": f"Scroll to the top. {scroll}",
-    "bottom_button": f"Scroll to the bottom. {scroll}",
+    "bottom_button": f"Scroll to the bottom. {scroll}. Right click to autoscroll up",
     "clear_input_button": "Clear the input",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
@@ -128,9 +128,9 @@ tips = {
     "find_bound": f"Find next word-bound match (case sensitive). {middleprev}",
     "find_hide": "Hide the find bar (Esc)",
     # Autoscroll
-    "autoscroll_slower": "Decrease the autoscroll speed",
-    "autoscroll": "Toggle autoscroll",
-    "autoscroll_faster": "Increase the autoscroll speed",
+    "autoscroll_slower": "Decrease autoscroll speed. Middle click for min speed",
+    "autoscroll": "Toggle autoscroll. Middle click to reset delay. Right click to autoscroll up",
+    "autoscroll_faster": "Increase autoscroll speed. Middle click for max speed",
     # Tabs
     "tabs_left": f"Go to the tab on the left. Middle click to go to the first tab. {tab_btns}",
     "tabs_right": f"Go to the tab on the right. Middle click to go to the last tab. {tab_btns}",
