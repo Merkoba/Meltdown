@@ -872,9 +872,10 @@ class Output(tk.Text):
         if keyboard.ctrl:
             Output.explain_words()
             return True
-        elif keyboard.shift:
+
+        if keyboard.shift:
             Output.use_words()
-            return False
+            return True
 
         menumanager.word_menu.show(event)
         return True
