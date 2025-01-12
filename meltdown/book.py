@@ -805,11 +805,11 @@ class Book(tk.Frame):
 
     def hide_tabs(self) -> None:
         self.tabs_enabled = False
-        self.tabs_frame.grid_remove()
+        self.panel.grid_remove()
 
     def show_tabs(self) -> None:
         self.tabs_enabled = True
-        self.tabs_frame.grid()
+        self.panel.grid()
 
     def toggle_tabs(self) -> None:
         self.tabs_manual = True
