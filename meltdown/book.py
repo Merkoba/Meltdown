@@ -149,6 +149,7 @@ class Book(tk.Frame):
         )
 
         self.tabs_canvas.configure(background=app.theme.tabs_container_color)
+        self.bind_tab_mousewheel(self.tabs_canvas)
 
         tabs_scrollbar = tk.Scrollbar(self.tabs_frame, orient="horizontal")
         self.tabs_canvas.configure(xscrollcommand=tabs_scrollbar.set)
@@ -983,15 +984,19 @@ class Book(tk.Frame):
     def button_left_click(self) -> None:
         from .keyboard import keyboard
 
-        if keyboard.shift or keyboard.ctrl:
+        if keyboard.shift:
             self.scroll_left()
+        elif keyboard.ctrl:
+            self.move_left()
         else:
             self.select_left()
 
     def button_right_click(self) -> None:
         from .keyboard import keyboard
 
-        if keyboard.shift or keyboard.ctrl:
+        if keyboard.shift:
             self.scroll_right()
+        elif keyboard.ctrl:
+            self.move_right()
         else:
             self.select_right()

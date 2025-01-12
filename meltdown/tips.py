@@ -1,5 +1,6 @@
 middleprev = "Middle click to find previous"
 scroll = "Right click to scroll one step. Middle click to auto-scroll. Wheel to scroll"
+tab_btns = "Shift click to scroll. Ctrl click to move"
 
 tips = {
     "main_menu": "Open the main menu",
@@ -131,6 +132,6 @@ tips = {
     "autoscroll": "Toggle autoscroll",
     "autoscroll_faster": "Increase the autoscroll speed",
     # Tabs
-    "tabs_left": "Go to the tab on the left. Middle click to go to the first tab",
-    "tabs_right": "Go to the tab on the right. Middle click to go to the last tab",
+    "tabs_left": f"Go to the tab on the left. Middle click to go to the first tab. {tab_btns}",
+    "tabs_right": f"Go to the tab on the right. Middle click to go to the last tab. {tab_btns}",
 }
