@@ -481,8 +481,9 @@ No need to greet me, just answer.
         from .dialogs import Dialog, Commands
 
         cmds = Commands()
-        cmds.add("Reset", lambda a: self.reset())
+        cmds.add("Open", lambda a: self.open_directory())
         cmds.add("Load", lambda a: self.load_state())
+        cmds.add("Reset", lambda a: self.reset())
         cmds.add("Save", lambda a: self.save_state())
 
         Dialog.show_dialog("Config Menu", commands=cmds)
@@ -542,6 +543,13 @@ No need to greet me, just answer.
             return
 
         self.load_state(memory.last_config)
+
+    def open_directory(self) -> None:
+        from .app import app
+        from .paths import paths
+
+        paths.configs.mkdir(parents=True, exist_ok=True)
+        app.open_generic(str(paths.configs))
 
 
 config = Config()

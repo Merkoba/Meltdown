@@ -421,6 +421,7 @@ class Session:
 
     def menu(self) -> None:
         cmds = Commands()
+        cmds.add("Open", lambda a: self.open_directory())
         cmds.add("Load", lambda a: self.load_state())
         cmds.add("Save", lambda a: self.save_state())
 
@@ -440,6 +441,10 @@ class Session:
 
     def count(self) -> int:
         return sum([c.count() for c in self.conversations.values()])
+
+    def open_directory(self) -> None:
+        paths.sessions.mkdir(parents=True, exist_ok=True)
+        app.open_generic(str(paths.sessions))
 
 
 session = Session()
