@@ -1426,7 +1426,7 @@ Type: str
 
 ### alias
 
-Define an alias to run commands. Format is "[word] = [commands]"
+Define an alias to run commands. Format is "[name] [commands]"
 
 Action: append
 

@@ -338,12 +338,12 @@ class Output(tk.Text):
 
         avatar = getattr(config, f"avatar_{who}")
 
-        if put_colons:
-            if markers:
-                marker = Output.marker_space
-            else:
-                marker = " "
+        if markers:
+            marker = Output.marker_space
+        else:
+            marker = " "
 
+        if put_colons:
             d = utils.delimiter()
 
             if colon_space:
