@@ -355,7 +355,7 @@ class Output(tk.Text):
 
         if args.avatars and show_avatar and avatar:
             if name:
-                prompt = f"{avatar} {name}{colons}"
+                prompt = f"{avatar}{marker}{name}{colons}"
             else:
                 prompt = f"{avatar}{colons}"
         elif name:
