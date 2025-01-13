@@ -531,14 +531,15 @@ class Utils:
         from .display import display
 
         spath = self.check_home(path)
-        msg = f"{what} {spath}"
+        msg = f"Saved {spath}"
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
     def loaded_path(self, what: str, path: Path) -> None:
         from .display import display
 
-        msg = f'Loaded {what} `{path.stem}`'
+        spath = self.check_home(path)
+        msg = f'Loaded {spath}'
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
