@@ -462,9 +462,9 @@ class Markdown:
             line_2 = len(mtch.split("\n"))
             line_end = line_1 + line_2
             sliced = lines[line_1:line_end]
+            sliced = [line.strip() for line in sliced]
             spacing_mode = getattr(args, f"{mode}_spacing")
             marker = getattr(self, f"marker_indent_{mode}")
-            sliced = [line.strip() for line in sliced]
 
             if spacing_mode == "never":
                 spaced = False
