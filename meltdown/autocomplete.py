@@ -121,6 +121,12 @@ class AutoComplete:
             for key in commands.cmdkeys:
                 if key.startswith(word):
                     self.matches.append(key)
+        elif inputcontrol.is_variable(word):
+            word = self.clean(word)
+
+            for key in inputcontrol.variables:
+                if key.startswith(word):
+                    self.matches.append(key)
         else:
             for w in inputcontrol.autocomplete:
                 if w.startswith(word):
@@ -128,6 +134,9 @@ class AutoComplete:
 
     def clean(self, text: str) -> str:
         if text.startswith(args.prefix):
+            return text[1:]
+
+        if text.startswith(args.variable_prefix):
             return text[1:]
 
         return text

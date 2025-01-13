@@ -466,5 +466,8 @@ class InputControl:
         pattern = re.compile(rf"(^|\s)({prefix}\w+)")
         return pattern.sub(lambda m: m.group(1) + replace(m), text)
 
+    def is_variable(self, word: str) -> bool:
+        return word.startswith(args.variable_prefix)
+
 
 inputcontrol = InputControl()
