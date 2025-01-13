@@ -67,6 +67,30 @@ class Markdown:
         hash_ = utils.escape_regex("#")
         uselink = utils.escape_regex("%@")
 
+        def build_token(token: str, num: int) -> str:
+            return rf"{left}(?P<all>{token}{{{num}}}(?P<content>(?:[^{token}]|{token}(?!\b\w+{token}))*?){token}{{{num}}}){right}"
+
+        # Italic with one asterisk
+        Markdown.pattern_italic_asterisk = build_token(aster, 1)
+
+        # Bold with two asterisks
+        Markdown.pattern_bold_1 = build_token(aster, 2)
+
+        # Italic with one underscore
+        Markdown.pattern_italic_underscore = build_token(under, 1)
+
+        # Highlight with three backticks
+        Markdown.pattern_highlight_1 = build_token(tick, 3)
+
+        # Highlight with two backticks
+        Markdown.pattern_highlight_2 = build_token(tick, 2)
+
+        # Highlight with one backtick
+        Markdown.pattern_highlight_3 = build_token(tick, 1)
+
+        # Highlight with one double-quote
+        Markdown.pattern_quote = build_token(quote, 1)
+
         # Code snippets / fences
         # Capture stuff that could repeat BUT that has the slim
         # possibility of catastrophically backtracking in case
@@ -74,44 +98,9 @@ class Markdown:
         # 3x backticks).
         Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
 
-        # Bold with two asterisks
-        Markdown.pattern_bold_1 = (
-            rf"{left}(?P<all>{aster}{{2}}(?P<content>[^{aster}].*?){aster}{{2}}){right}"
-        )
-
-        # Italic with one asterisk
-        Markdown.pattern_italic_asterisk = (
-            rf"{left}(?P<all>{aster}{{1}}(?P<content>[^{aster}].*?){aster}{{1}}){right}"
-        )
-
-        # Italic with one underscore
-        Markdown.pattern_italic_underscore = (
-            rf"{left}(?P<all>{under}{{1}}(?P<content>[^{under}].*?){under}{{1}}){right}"
-        )
-
-        # Highlight with three backticks
-        Markdown.pattern_highlight_1 = (
-            rf"{left}(?P<all>{tick}{{3}}(?P<content>[^{tick}].*?){tick}{{3}}){right}"
-        )
-
-        # Highlight with two backticks
-        Markdown.pattern_highlight_2 = (
-            rf"{left}(?P<all>{tick}{{2}}(?P<content>[^{tick}].*?){tick}{{2}}){right}"
-        )
-
-        # Highlight with one backtick
-        Markdown.pattern_highlight_3 = (
-            rf"{left}(?P<all>{tick}{{1}}(?P<content>[^{tick}].*?){tick}{{1}}){right}"
-        )
-
         # Uselink with the special chars
         Markdown.pattern_uselink = (
             rf"{left}(?P<all>{uselink}(?P<content>.*?){uselink}){right}"
-        )
-
-        # Highlight with one double-quote
-        Markdown.pattern_quote = (
-            rf"{left}(?P<all>{quote}{{1}}(?P<content>.*?){quote}{{1}}){right}"
         )
 
         # URLs with http:// | https:// | ftp:// | www.
