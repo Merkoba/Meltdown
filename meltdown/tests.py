@@ -9,7 +9,6 @@ class Tests:
     def __init__(self) -> None:
         self.format_test: Test = {
             "id": "ignore",
-            "name": "Format Test",
             "items": [
                 {
                     "user": "Highlight Test",
@@ -124,7 +123,6 @@ class Tests:
 
         self.snippets_test: Test = {
             "id": "ignore",
-            "name": "Snippets Test",
             "items": [
                 {
                     "user": "Normal Snippet",
@@ -151,7 +149,6 @@ class Tests:
 
         self.join_test: Test = {
             "id": "ignore",
-            "name": "Join Test",
             "items": [
                 {
                     "user": "Some sentences, one per line",
@@ -166,7 +163,6 @@ class Tests:
 
         self.asterisk_test: Test = {
             "id": "ignore",
-            "name": "Asterisk Test",
             "items": [
                 {
                     "user": "Normal line",
@@ -175,8 +171,21 @@ class Tests:
             ],
         }
 
+        self.bullet_test: Test = {
+            "id": "ignore",
+            "items": [
+                {
+                    "user": "Weird bullet problem",
+                    "ai": "The key change is within the `content` named capture group. I've replaced `[^\\*]` with `(?:[^\\*]|\\*(?!\\b\\w+\\*))`.  Let's break that down:\n* `(?: ... )` is a non-capturing group.\n* `[^\\*]`  matches any character that is *not* an asterisk. This is the original behavior.\n* `|` acts as an \"or\".\n* `\\*(?!\\b\\w+\\*)` This is the crucial addition. It matches an asterisk (`\\*`) only if it's *not* followed by:\n    * `\\b`: A word boundary.  This ensures we're checking for a whole word.\n    * `\\w+`: One or more word characters (letters, numbers, underscore). This is the \"word\" part.\n    * `\\*`:  A closing asterisk.\nThis effectively allows single asterisks within words while still capturing content between single asterisks that are intended for emphasis.",
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
-        return getattr(self, f"{name}_test")
+        test_name = f"{name}_test"
+        obj = getattr(self, test_name)
+        obj["name"] = test_name.replace("_", " ").title()
+        return obj
 
 
 tests = Tests()
