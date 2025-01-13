@@ -70,7 +70,7 @@ class Logs:
 
         if not save_all:
             if not args.quiet and args.log_feedback:
-                utils.saved_path("Log", file_path)
+                utils.saved_path(file_path)
 
             cmd = ""
 

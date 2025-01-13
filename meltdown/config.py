@@ -217,7 +217,7 @@ No need to greet me, just answer.
         memory.set_value("last_config", path.stem)
 
         if not args.quiet:
-            utils.saved_path("Config", path)
+            utils.saved_path(path)
 
     def load_state(self, name: str | None = None) -> None:
         from .args import args
@@ -256,7 +256,7 @@ No need to greet me, just answer.
         memory.set_value("last_config", path.stem)
 
         if not args.quiet:
-            utils.loaded_path("config", path)
+            utils.loaded_path(path)
 
     def after_load(self) -> None:
         from .widgets import widgets

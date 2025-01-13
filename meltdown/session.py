@@ -343,7 +343,7 @@ class Session:
         memory.set_value("last_session", path.stem)
 
         if not args.quiet:
-            utils.saved_path("Session", path)
+            utils.saved_path(path)
 
     def load_state(self, name: str | None = None) -> None:
         if name == "last":
