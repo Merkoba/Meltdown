@@ -706,7 +706,7 @@ Read with `/var name`.
 
 Variables can be filled at startup using arguments.
 
-For example: `--var "name = George" --var "num = 1200"`.
+For example: `--var "name George" --var "num 1200"`.
 
 The prefix like `$` can be changed.
 
