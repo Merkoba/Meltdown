@@ -1706,7 +1706,7 @@ Type: int
 
 Maximum length of the text of list items
 
-Default: 500
+Default: 1000
 
 Type: int
 

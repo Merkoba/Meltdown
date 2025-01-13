@@ -257,7 +257,7 @@ class Args:
         self.ascii_logs = False
         self.quote_used_words = True
         self.open_on_log = False
-        self.list_item_max_length = 800
+        self.list_item_max_length = 1000
         self.response_file = ""
         self.response_program = ""
         self.use_program = ""
