@@ -149,6 +149,21 @@ class Tests:
             ],
         }
 
+        self.join_test: Test = {
+            "id": "ignore",
+            "name": "Join Test",
+            "items": [
+                {
+                    "user": "Some sentences, one per line",
+                    "ai": "Hello dog\nHello cat\nHello bird",
+                },
+                {
+                    "user": "Normal line",
+                    "ai": "Normal line",
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         return getattr(self, f"{name}_test")
 

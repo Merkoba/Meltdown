@@ -578,11 +578,10 @@ class Markdown:
     def get_lines(self, start_ln: int, end_ln: int, who: str) -> list[str]:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
-        d = utils.delimiter()
 
         if who in ("user", "ai"):
-            index = lines[0].index(f"{d}{Output.marker_space}") + len(d) + 1
-            lines[0] = lines[0][index:]
+            _, end_col = self.prompt_cols(start_ln)
+            lines[0] = lines[0][(end_col - 1) :]
 
         return lines
 
@@ -677,10 +676,8 @@ class Markdown:
         else:
             do_join()
 
-        new_text = "\n".join(joined_lines).strip()
-        cols = self.prompt_cols(start_ln)
-        self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
-        self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
+        new_text = "\n".join(joined_lines).strip() + "\n"
+        self.insert_first(start_ln, end_ln, new_text)
         return True
 
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
@@ -706,18 +703,27 @@ class Markdown:
                 cleaned.append(stripped)
                 empty = False
 
-        new_text = "\n".join(cleaned).strip()
-        cols = self.prompt_cols(start_ln)
-        self.widget.delete(f"{start_ln}.{cols}", f"{end_ln}.end")
-        self.widget.insert(f"{start_ln}.{cols}", new_text + "\n")
+        new_text = "\n".join(cleaned).strip() + "\n"
+        self.insert_first(start_ln, end_ln, new_text)
         return True
 
-    def prompt_cols(self, start_ln: int) -> int:
+    def prompt_cols(self, start_ln: int) -> tuple[int, int]:
         d = utils.delimiter()
         marker = Output.marker_space
         end = f"{marker}{d}{marker}"
         start = self.widget.search(end, f"{start_ln}.0", stopindex=f"{start_ln}.end")
-        return int(start.split(".")[1]) + len(end)
+
+        if not start:
+            return 0, 0
+
+        start_col = int(start.split(".")[1])
+        end_col = start_col + len(end)
+        return start_col, end_col
+
+    def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
+        _, end_col = self.prompt_cols(start_ln)
+        self.widget.delete(f"{start_ln}.{end_col}", f"{end_ln}.end")
+        self.widget.insert(f"{start_ln}.{end_col + 1}", text)
 
 
 Markdown.build_patterns()
