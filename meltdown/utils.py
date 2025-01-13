@@ -538,7 +538,7 @@ class Utils:
     def loaded_path(self, what: str, path: Path) -> None:
         from .display import display
 
-        msg = f'Loaded {what} "{path.name}"'
+        msg = f'Loaded {what}: `{path.stem}`'
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
