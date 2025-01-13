@@ -496,11 +496,10 @@ No need to greet me, just answer.
             display.print("Format: [name] [value]")
             return
 
-        if " " in cmd:
-            name, value = cmd.split(" ", 1)
-        else:
-            name = cmd
-            value = ""
+        name, value = utils.cmd_value(cmd)
+
+        if not name:
+            return
 
         name = name.strip()
         value = value.strip()

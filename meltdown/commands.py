@@ -106,11 +106,9 @@ class Commands:
         self.aliases = {}
 
         for alias in args.aliases:
-            split = alias.split("=")
-            key = split[0].strip()
-            value = "=".join(split[1:]).strip()
+            key, value = utils.cmd_value(alias)
 
-            if not key or not value:
+            if (not key) or (not value):
                 continue
 
             self.aliases[key] = value

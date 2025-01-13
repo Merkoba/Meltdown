@@ -1003,7 +1003,7 @@ class ArgSpec:
             "alias",
             type=str,
             action="append",
-            info='Define an alias to run commands. Format is "[word] = [commands]"',
+            info='Define an alias to run commands. Format is "[name] [commands]"',
         )
 
         self.add_argument(

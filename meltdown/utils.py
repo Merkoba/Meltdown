@@ -577,5 +577,23 @@ class Utils:
     def clamp(self, value: int, min_value: int, max_value: int) -> int:
         return max(min(value, max_value), min_value)
 
+    def cmd_value(self, cmd: str, separator: str = " ") -> tuple[str, str]:
+        cmd = cmd.strip()
+
+        if separator not in cmd:
+            return cmd, ""
+
+        split = cmd.split(separator, 1)
+        split = list(map(str.strip, split))
+        split = list(filter(None, split))
+
+        if len(split) < 2:
+            return cmd, ""
+
+        key = split[0]
+        value = split[1]
+
+        return key, value
+
 
 utils = Utils()

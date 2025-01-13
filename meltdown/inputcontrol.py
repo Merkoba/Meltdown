@@ -411,9 +411,7 @@ class InputControl:
             fmt()
             return
 
-        name, value = cmd.split(" ", 1)
-        name = name.strip()
-        value = value.strip()
+        name, value = utils.cmd_value(cmd)
 
         if (not name) or (not value):
             fmt()

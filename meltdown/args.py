@@ -800,14 +800,10 @@ class Args:
             display.print("Format: [name] [value]")
             return
 
-        if " " in cmd:
-            name, value = cmd.split(" ", 1)
-        else:
-            name = cmd
-            value = ""
+        name, value = utils.cmd_value(cmd)
 
-        name = name.strip()
-        value = value.strip()
+        if not name:
+            return
 
         value = utils.empty_string(value)
         arg = getattr(self, name)

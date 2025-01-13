@@ -421,15 +421,17 @@ class SelectionMenu:
 class CustomMenu:
     def __init__(self, parent: MenuManager) -> None:
         from .args import args
+        from .utils import utils
         from .output import Output
 
         self.parent = parent
         self.menu = Menu()
 
         def add(item: str) -> None:
-            split = item.split("=")
-            word = split[0].strip()
-            prompt = "=".join(split[1:]).strip()
+            word, prompt = utils.cmd_value(item, "=")
+
+            if (not word) or (not prompt):
+                return
 
             self.menu.add(text=word, command=lambda e: Output.custom_prompt(prompt))
 
