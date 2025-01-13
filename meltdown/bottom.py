@@ -28,7 +28,7 @@ class Bottom(tk.Frame):
         self.bottom_button.set_bind("<Button-4>", lambda e: self.scroll_up())
         self.bottom_button.set_bind("<Button-5>", lambda e: self.scroll_down())
         self.bottom_button.set_bind("<Button-2>", lambda e: self.autoscroll_down())
-        self.bottom_button.set_bind("<Button-3>", lambda e: self.autoscroll_up())
+        self.bottom_button.set_bind("<Button-3>", lambda e: self.to_top())
 
         self.autoscroll_slower_button = ButtonBox(
             self, text="-", command=autoscroll.slower, style="alt"
@@ -128,6 +128,11 @@ class Bottom(tk.Frame):
         self.cancel_show()
         self.visible = False
         self.grid_remove()
+
+    def to_top(self) -> None:
+        from .display import display
+
+        display.to_top(self.tab_id)
 
     def to_bottom(self) -> None:
         from .display import display

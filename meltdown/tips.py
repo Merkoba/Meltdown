@@ -13,7 +13,7 @@ tips = {
     "clear_button": "Clear the conversation",
     "close_button": "Close tabs. Middle click to close all. Shift click to close empty. Ctrl click to close old",
     "top_button": f"Scroll to the top. {scroll}",
-    "bottom_button": f"Scroll to the bottom. {scroll}. Right click to autoscroll up",
+    "bottom_button": f"Scroll to the bottom. {scroll}. Right click to go to the top",
     "clear_input_button": "Clear the input",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
