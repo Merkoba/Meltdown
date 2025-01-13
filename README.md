@@ -605,6 +605,8 @@ Or `/arg f1 /close`. (strings)
 
 Or `/arg custom_prompts [one = prompt one, two = prompt two]` (lists of strings)
 
+The `=` format is required because the name of custom prompts can have multiple words.
+
 While this is possible, some argument changes won't work, and some might cause problems.
 
 ---
