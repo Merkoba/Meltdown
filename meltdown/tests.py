@@ -164,6 +164,17 @@ class Tests:
             ],
         }
 
+        self.asterisk_test: Test = {
+            "id": "ignore",
+            "name": "Asterisk Test",
+            "items": [
+                {
+                    "user": "Normal line",
+                    "ai": "Some *word like that for some reason and then *this* thing.",
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         return getattr(self, f"{name}_test")
 

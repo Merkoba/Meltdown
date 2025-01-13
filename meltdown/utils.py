@@ -535,6 +535,13 @@ class Utils:
         display.print(self.emoji_text(msg, "storage"))
         display.format_text(mode="last")
 
+    def loaded_path(self, what: str, path: Path) -> None:
+        from .display import display
+
+        msg = f'Loaded {what} "{path.name}"'
+        display.print(self.emoji_text(msg, "storage"))
+        display.format_text(mode="last")
+
     def try_import(self, name: str) -> Any:
         spec = importlib.util.find_spec(name)
 

@@ -256,9 +256,7 @@ No need to greet me, just answer.
         memory.set_value("last_config", path.stem)
 
         if not args.quiet:
-            f_name = path.name
-            msg = f'Loaded config "{f_name}"'
-            display.print(utils.emoji_text(msg, "storage"))
+            utils.loaded_path("config", path)
 
     def after_load(self) -> None:
         from .widgets import widgets
