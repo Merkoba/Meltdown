@@ -449,8 +449,7 @@ class Model:
                         content = user_value
                     elif key == "ai":
                         content = ai_value
-
-                    if self.long_url(content):
+                    else:
                         continue
 
                     if key == "user":
