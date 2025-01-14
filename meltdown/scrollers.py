@@ -13,6 +13,10 @@ if TYPE_CHECKING:
 
 
 class Scrollers:
+    def __init__(self) -> None:
+        self.left_icon = "<"
+        self.right_icon = ">"
+
     def setup(self) -> None:
         self.do_setup("system")
         self.do_setup("details_1")
@@ -118,7 +122,7 @@ class Scrollers:
         left_frame.frame.grid_rowconfigure(0, weight=1)
 
         left_button = widgetutils.make_button(
-            left_frame, "<", lambda: self.to_left(name), style="alt"
+            left_frame, self.left_icon, lambda: self.to_left(name), style="alt"
         )
 
         setattr(widgets, f"scroller_button_left_{name}", left_button)
@@ -133,7 +137,7 @@ class Scrollers:
 
         right_button = widgetutils.make_button(
             right_frame,
-            ">",
+            self.right_icon,
             lambda: self.to_right(name),
             style="alt",
         )

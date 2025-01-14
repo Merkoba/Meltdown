@@ -123,13 +123,15 @@ class Book(tk.Frame):
         self.tabs_enabled = True
         self.tabs_manual = False
         self.panel = tk.Frame(self)
+        self.left_icon = "<"
+        self.right_icon = ">"
 
         self.button_left = widgetutils.get_button(
-            self.panel, "<", self.button_left_click, style="alt"
+            self.panel, self.left_icon, self.button_left_click, style="alt"
         )
 
         self.button_right = widgetutils.get_button(
-            self.panel, ">", self.button_right_click, style="alt"
+            self.panel, self.right_icon, self.button_right_click, style="alt"
         )
 
         ToolTip(self.button_left, text=tips["tabs_left"])
