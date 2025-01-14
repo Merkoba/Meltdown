@@ -1069,3 +1069,21 @@ Print a message
 ### echo
 
 Print a message and format markdown
+
+---
+
+### important
+
+Make a conversation important
+
+---
+
+### unimportant
+
+Make a conversation not important
+
+---
+
+### toggleimportant
+
+Make a conversation important or not important

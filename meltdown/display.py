@@ -193,7 +193,14 @@ class Display:
         if convo and convo.items:
             tooltip = convo.items[0].ai
 
-        page = self.book.add(name, mode=mode, tooltip=tooltip, position=position)
+        page = self.book.add(
+            name,
+            mode=mode,
+            tooltip=tooltip,
+            position=position,
+            important=convo.important,
+        )
+
         tab_id = page.id_
 
         tab = Tab(
@@ -452,9 +459,9 @@ class Display:
             self.redo_auto_name_tab(tab_id)
             return
 
-        tab = self.get_tab(tab_id)
+        tabconvo = self.get_tab_convo(tab_id)
 
-        if not tab:
+        if not tabconvo:
             return
 
         o_name = self.get_tab_name(tab_id)
@@ -462,8 +469,8 @@ class Display:
         if name == o_name:
             return
 
-        self.book.change_name(tab_id, name)
-        session.change_name(tab.conversation_id, name)
+        self.book.set_name(tab_id, name)
+        tabconvo.convo.set_name(name)
 
     def tab_menu_close(self) -> None:
         from .close import close
@@ -1225,6 +1232,36 @@ class Display:
         kbytes = utils.chars_to_kb(chars)
 
         Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
+
+    def set_important(self, value: bool, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        tabconvo.convo.set_important(value)
+        self.book.set_important(tab_id, value)
+
+    def toggle_important(self, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        important = not tabconvo.convo.important
+        self.set_important(important, tab_id)
+
+    def make_important(self, tab_id: str | None = None) -> None:
+        self.set_important(True, tab_id)
+
+    def make_not_important(self, tab_id: str | None = None) -> None:
+        self.set_important(False, tab_id)
 
 
 display = Display()

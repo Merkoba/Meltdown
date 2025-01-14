@@ -1753,5 +1753,11 @@ class ArgSpec:
             info="Run a specific test",
         )
 
+        self.add_argument(
+            "important_icon",
+            type=str,
+            info="The icon to use on important tabs",
+        )
+
 
 argspec = ArgSpec()

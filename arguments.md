@@ -2671,3 +2671,13 @@ Run a specific test
 Default: [Empty string]
 
 Type: str
+
+---
+
+### important-icon
+
+The icon to use on important tabs
+
+Default: "⭐"
+
+Type: str

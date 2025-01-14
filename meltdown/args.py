@@ -291,6 +291,7 @@ class Args:
         self.clean_lines_user = False
         self.clean_lines_ai = False
         self.delimiter = ":"
+        self.important_icon = "⭐"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -579,6 +580,7 @@ class Args:
             "clean_lines_ai",
             "delimiter",
             "wrap_tabs",
+            "important_icon",
         ]
 
         for n_item in normals:

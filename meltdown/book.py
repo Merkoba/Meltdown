@@ -33,7 +33,9 @@ class TabWidget:
 class Page:
     notebox_id = 0
 
-    def __init__(self, parent: Book, name: str, mode: str, tooltip: str) -> None:
+    def __init__(
+        self, parent: Book, name: str, mode: str, tooltip: str, important: bool
+    ) -> None:
         self.parent = parent
         self.name = name
         self.mode = mode
@@ -41,6 +43,7 @@ class Page:
         self.picked = False
         self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
+        self.important = important
         self.id_ = f"page_{Page.notebox_id}"
         Page.notebox_id += 1
 
@@ -111,6 +114,10 @@ class Page:
         if len(text) < 4:
             space = "  "
             text = f"{space}{text}{space}"
+
+        if self.important:
+            icon = args.important_icon
+            text = f"{icon} {text}"
 
         self.tab.label.configure(text=text)
 
@@ -319,9 +326,16 @@ class Book(tk.Frame):
             "<B1-Motion>", lambda e: self.do_tab_drag(e, page), page.tab.frame
         )
 
-    def add(self, name: str, mode: str, tooltip: str, position: str = "end") -> Page:
+    def add(
+        self,
+        name: str,
+        mode: str,
+        tooltip: str,
+        position: str = "end",
+        important: bool = False,
+    ) -> Page:
         tooltip = self.clean_tooltip(tooltip)
-        page = Page(self, name, mode=mode, tooltip=tooltip)
+        page = Page(self, name, mode=mode, tooltip=tooltip, important=important)
 
         if position == "start":
             self.pages.insert(0, page)
@@ -538,13 +552,24 @@ class Book(tk.Frame):
 
         return page.name
 
-    def change_name(self, id_: str, name: str) -> None:
+    def set_name(self, id_: str, name: str) -> None:
         page = self.get_page_by_id(id_)
 
         if not page:
             return
 
         page.name = name
+        page.set_tab_text()
+        self.update_tabs()
+        self.discover()
+
+    def set_important(self, id_: str, important: bool) -> None:
+        page = self.get_page_by_id(id_)
+
+        if not page:
+            return
+
+        page.important = important
         page.set_tab_text()
         self.update_tabs()
         self.discover()

@@ -86,12 +86,18 @@ class Item:
 
 class Conversation:
     def __init__(
-        self, _id: str, name: str, created: float = 0.0, last_modified: float = 0.0
+        self,
+        _id: str,
+        name: str,
+        created: float = 0.0,
+        last_modified: float = 0.0,
+        important: bool = False,
     ) -> None:
         self.id = _id
         self.name = name
         self.items: list[Item] = []
         self.last_modified = last_modified
+        self.important = important
 
         if created == 0.0:
             self.created = utils.now()
@@ -120,6 +126,14 @@ class Conversation:
 
     def is_empty(self) -> bool:
         return len(self.items) == 0
+
+    def set_name(self, name: str) -> None:
+        self.name = name
+        session.save()
+
+    def set_important(self, value: bool) -> None:
+        self.important = value
+        session.save()
 
     def print(self) -> None:
         if not self.items:
@@ -156,6 +170,7 @@ class Conversation:
             "name": self.name,
             "created": self.created,
             "last_modified": self.last_modified,
+            "important": self.important,
             "items": item_list,
         }
 
@@ -193,11 +208,6 @@ class Session:
 
     def get_conversation(self, conversation_id: str) -> Conversation | None:
         return self.conversations.get(conversation_id)
-
-    def change_name(self, conversation_id: str, name: str) -> None:
-        if conversation_id in self.conversations:
-            self.conversations[conversation_id].name = name
-            self.save()
 
     def clear(self, conversation_id: str) -> None:
         if conversation_id in self.conversations:
@@ -303,6 +313,7 @@ class Session:
                 name=item["name"],
                 created=item.get("created", 0.0),
                 last_modified=item.get("last_modified", 0.0),
+                important=item.get("important", False),
             )
 
             for it in item["items"]:

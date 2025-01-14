@@ -251,6 +251,11 @@ class TabMenu:
         self.menu.separator()
 
         self.menu.add(
+            "Important",
+            lambda e: display.toggle_important(),
+        )
+
+        self.menu.add(
             "Rename", lambda e: display.rename_tab(tab_id=display.tab_menu_id)
         )
 

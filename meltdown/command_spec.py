@@ -1119,5 +1119,23 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "important",
+            "Make a conversation important",
+            lambda a=None: display.make_important(),
+        )
+
+        self.add_cmd(
+            "unimportant",
+            "Make a conversation not important",
+            lambda a=None: display.make_not_important(),
+        )
+
+        self.add_cmd(
+            "toggleimportant",
+            "Make a conversation important or not important",
+            lambda a=None: display.toggle_important(),
+        )
+
 
 command_spec = CommandSpec()
