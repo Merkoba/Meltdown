@@ -177,7 +177,8 @@ class MoreMenu:
         num_tabs = display.num_tabs()
         messages = display.has_messages()
         ignored = display.is_ignored()
-        unmod = (not messages) or ignored
+        nomsg = not messages
+        unmod = nomsg or ignored
         single = num_tabs == 1
 
         self.menu.add("Find", lambda e: findmanager.toggle())
@@ -185,13 +186,13 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Use Text", lambda e: formats.do_use("text"), disabled=unmod)
-        self.menu.add("Use JSON", lambda e: formats.do_use("json"), disabled=unmod)
-        self.menu.add("Use MrkD", lambda e: formats.do_use("markdown"), disabled=unmod)
+        self.menu.add("Use Text", lambda e: formats.do_use("text"), disabled=nomsg)
+        self.menu.add("Use JSON", lambda e: formats.do_use("json"), disabled=nomsg)
+        self.menu.add("Use MrkD", lambda e: formats.do_use("markdown"), disabled=nomsg)
 
         self.menu.separator()
 
-        self.menu.add("Upload", lambda e: upload.upload(), disabled=unmod)
+        self.menu.add("Upload", lambda e: upload.upload(), disabled=nomsg)
 
     def show(self, event: Any = None) -> None:
         self.make()

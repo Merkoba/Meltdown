@@ -8,7 +8,6 @@ Test = dict[str, Any]
 class Tests:
     def __init__(self) -> None:
         self.format_test: Test = {
-            "id": "ignore",
             "items": [
                 {
                     "user": "Highlight Test",
@@ -122,7 +121,6 @@ class Tests:
         }
 
         self.snippets_test: Test = {
-            "id": "ignore",
             "items": [
                 {
                     "user": "Normal Snippet",
@@ -148,7 +146,6 @@ class Tests:
         }
 
         self.join_test: Test = {
-            "id": "ignore",
             "items": [
                 {
                     "user": "Some sentences, one per line",
@@ -162,7 +159,6 @@ class Tests:
         }
 
         self.asterisk_test: Test = {
-            "id": "ignore",
             "items": [
                 {
                     "user": "Normal line",
@@ -172,7 +168,6 @@ class Tests:
         }
 
         self.bullet_test: Test = {
-            "id": "ignore",
             "items": [
                 {
                     "user": "Weird bullet problem",
@@ -184,6 +179,7 @@ class Tests:
     def get(self, name: str) -> Any:
         test_name = f"{name}_test"
         obj = getattr(self, test_name)
+        obj["id"] = "ignore"
         obj["name"] = test_name.replace("_", " ").title()
         return obj
 
