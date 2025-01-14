@@ -54,6 +54,10 @@ class Model:
         self.gemini_client = None
         self.last_response = ""
 
+        kerr = "Use the model menu to set it."
+        self.openai_key_error = f"Error: OpenAI API key not found. {kerr}"
+        self.google_key_error = f"Error: Google API key not found. {kerr}"
+
         self.gpts: list[tuple[str, str]] = [
             ("gpt-4o", "GPT 4o"),
             ("gpt-4o-mini", "GPT 4o Mini"),
@@ -174,10 +178,7 @@ class Model:
             self.read_openai_key()
 
             if not self.openai_key:
-                display.print(
-                    "Error: OpenAI API key not found. Use the model menu to set it."
-                )
-
+                display.print(self.openai_key_error)
                 self.clear_model()
                 return
 
@@ -201,10 +202,7 @@ class Model:
             self.read_google_key()
 
             if not self.google_key:
-                display.print(
-                    "Error: Google API key not found. Use the model menu to set it."
-                )
-
+                display.print(self.google_key_error)
                 self.clear_model()
                 return
 
@@ -384,7 +382,7 @@ class Model:
                 display.print("Error: File not found.")
                 return None
 
-        prompt_text = self.limit_tokens(prompt_text)
+        prompt_text = self.limit_tokens(prompt_text, config.max_tokens)
         original_text = prompt_text
         original_file = prompt_file
 
@@ -455,7 +453,7 @@ class Model:
 
         if prompt_file and (config.mode == "text"):
             file_text = self.read_file(prompt_file)
-            file_text = self.limit_tokens(file_text)
+            file_text = self.limit_tokens(file_text, config.max_tokens)
 
             if file_text:
                 messages.append({"role": "user", "content": file_text})
@@ -519,7 +517,7 @@ class Model:
             "messages": messages,
             "stream": args.stream,
             "model": config.model,
-            "max_tokens": config.max_tokens,
+            "max_completion_tokens": config.max_tokens,
             "temperature": config.temperature,
             "top_p": config.top_p,
             "seed": config.seed,
@@ -685,6 +683,75 @@ class Model:
 
         return ""
 
+    def generate_image(self, prompt: str, tab_id: str | None = None) -> None:
+        if not prompt.strip():
+            return
+
+        self.read_openai_key()
+
+        if not self.openai_key:
+            display.print(self.openai_key_error)
+            return
+
+        if not tab_id:
+            tab_id = display.current_tab
+
+        def wrapper(prompt: str, tab_id: str) -> None:
+            self.do_generate_image(prompt, tab_id)
+
+        self.stop_stream()
+        self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
+        self.stream_thread.daemon = True
+        self.stream_thread.start()
+
+    def do_generate_image(self, prompt: str, tab_id: str) -> None:
+        prompt_text = prompt[:args.image_prompt_max].strip()
+
+        try:
+            tabconvo = display.get_tab_convo(tab_id)
+
+            if not tabconvo:
+                return
+
+            time_start = utils.now()
+
+            url = "https://someimage.com/ass.jpg"
+
+            # ans = openai.Image.create(
+            #     n=1,
+            #     prompt=prompt,
+            #     size=args.image_size,
+            #     model=args.image_model,
+            # )
+
+            # url = ans["data"][0]["url"]
+
+            if not url:
+                return
+
+            display.prompt("user", text=prompt, tab_id=tab_id, original=prompt)
+            display.prompt("ai", text=url, tab_id=tab_id)
+
+            log_dict: dict[str, Any] = {}
+            log_dict["user"] = prompt
+            log_dict["ai"] = url
+            log_dict["date"] = utils.now()
+            log_dict["duration"] = log_dict["date"] - time_start
+            log_dict["model"] = args.image_model
+            log_dict["seed"] = config.seed
+            log_dict["history"] = config.history
+            log_dict["max_tokens"] = config.max_tokens
+            log_dict["temperature"] = config.temperature
+            log_dict["top_k"] = config.top_k
+            log_dict["top_p"] = config.top_p
+            log_dict["file"] = ""
+
+            convo_item = tabconvo.convo.add(log_dict)
+            tabconvo.convo.update()
+        except BaseException as e:
+            display.print(f"Error generating the image.")
+            utils.error(e)
+
     def load_or_unload(self) -> None:
         if self.model_loading:
             return
@@ -821,18 +888,21 @@ class Model:
 
         return text
 
-    def limit_tokens(self, text: str) -> str:
+    def limit_tokens(self, text: str, max_tokens: int) -> str:
         if not args.limit_tokens:
             return text
 
         if not self.model:
             return text
 
+        if max_tokens <= 0:
+            return text
+
         try:
-            max_tokens = int(config.max_tokens * config.token_limit)
+            mx_tokens = int(max_tokens * config.token_limit)
             encoded = text.encode("utf-8")
             tokens = self.model.tokenize(encoded)
-            bytes = self.model.detokenize(tokens[:max_tokens])
+            bytes = self.model.detokenize(tokens[:mx_tokens])
             return str(bytes.decode("utf-8")).strip()
         except BaseException as e:
             utils.error(e)

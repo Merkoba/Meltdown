@@ -1121,3 +1121,9 @@ Place the pins at the start of the list
 ### sortpinsend
 
 Place the pins at the end of the list
+
+---
+
+### image
+
+Generate an image through a prompt

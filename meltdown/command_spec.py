@@ -1171,5 +1171,12 @@ class CommandSpec:
             lambda a=None: display.sort_pins(mode="end"),
         )
 
+        self.add_cmd(
+            "image",
+            "Generate an image through a prompt",
+            lambda a=None: model.generate_image(prompt=a),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

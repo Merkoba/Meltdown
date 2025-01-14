@@ -2691,3 +2691,33 @@ Sort the pins to the start automatically
 Default: False
 
 Action: store_true
+
+---
+
+### image-size
+
+The size to use for images. 1024x1024 might be the minimum
+
+Default: "1024x1024"
+
+Type: str
+
+---
+
+### image-prompt-max
+
+Maximum text length for the image prompt
+
+Default: 4000
+
+Type: int
+
+---
+
+### image-model
+
+The model used for image generation
+
+Default: "dall-e-3"
+
+Type: str

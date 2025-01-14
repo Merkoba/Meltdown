@@ -293,6 +293,9 @@ class Args:
         self.delimiter = ":"
         self.pin_icon = "⭐"
         self.auto_sort_pins = False
+        self.image_size = "1024x1024"
+        self.image_prompt_max = 4000
+        self.image_model = "dall-e-3"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -583,6 +586,9 @@ class Args:
             "wrap_tabs",
             "pin_icon",
             "auto_sort_pins",
+            "image_size",
+            "image_prompt_max",
+            "image_model",
         ]
 
         for n_item in normals:

@@ -1765,5 +1765,23 @@ class ArgSpec:
             info="Sort the pins to the start automatically",
         )
 
+        self.add_argument(
+            "image_size",
+            type=str,
+            info="The size to use for images. 1024x1024 might be the minimum",
+        )
+
+        self.add_argument(
+            "image_prompt_max",
+            type=int,
+            info="Maximum text length for the image prompt",
+        )
+
+        self.add_argument(
+            "image_model",
+            type=str,
+            info="The model used for image generation",
+        )
+
 
 argspec = ArgSpec()
