@@ -535,7 +535,6 @@ class Model:
             "messages": messages,
             "stream": args.stream,
             "model": config.model,
-            "max_completion_tokens": config.max_tokens,
             "temperature": config.temperature,
             "top_p": config.top_p,
             "seed": config.seed,
@@ -543,10 +542,12 @@ class Model:
         }
 
         if self.model_is_gpt(config.model):
-            pass
+            gen_config["max_completion_tokens"] = config.max_tokens
         elif self.model_is_gemini(config.model):
+            gen_config["max_completion_tokens"] = config.max_tokens
             del gen_config["seed"]
         else:
+            gen_config["max_tokens"] = config.max_tokens
             del gen_config["model"]
 
         if self.model_is_gpt(config.model) or self.model_is_gemini(config.model):
