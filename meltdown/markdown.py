@@ -29,9 +29,9 @@ class Markdown:
     marker_indent_ordered = "\u200b\u200c\u200b"
     marker_indent_unordered = "\u200c\u200b\u200c"
     pattern_snippets: str
-    pattern_bold_1: str
-    pattern_italic_asterisk: str
-    pattern_italic_underscore: str
+    pattern_bold: str
+    pattern_italic_1: str
+    pattern_italic_2: str
     pattern_highlight_1: str
     pattern_highlight_2: str
     pattern_highlight_3: str
@@ -70,23 +70,23 @@ class Markdown:
         def build_token(token: str, num: int) -> str:
             return rf"{left}(?P<all>{token}{{{num}}}(?P<content>(?:[^{token}]|{token}(?!\b\w+{token}))*?){token}{{{num}}}){right}"
 
-        # Italic with one asterisk
-        Markdown.pattern_italic_asterisk = build_token(aster, 1)
-
         # Bold with two asterisks
-        Markdown.pattern_bold_1 = build_token(aster, 2)
+        Markdown.pattern_bold = build_token(aster, 2)
+
+        # Italic with one asterisk
+        Markdown.pattern_italic_1 = build_token(aster, 1)
 
         # Italic with one underscore
-        Markdown.pattern_italic_underscore = build_token(under, 1)
+        Markdown.pattern_italic_2 = build_token(under, 1)
 
-        # Highlight with three backticks
-        Markdown.pattern_highlight_1 = build_token(tick, 3)
+        # Highlight with one backtick
+        Markdown.pattern_highlight_1 = build_token(tick, 1)
 
         # Highlight with two backticks
         Markdown.pattern_highlight_2 = build_token(tick, 2)
 
-        # Highlight with one backtick
-        Markdown.pattern_highlight_3 = build_token(tick, 1)
+        # Highlight with three backticks
+        Markdown.pattern_highlight_3 = build_token(tick, 3)
 
         # Highlight with one double-quote
         Markdown.pattern_quote = build_token(quote, 1)
@@ -231,27 +231,25 @@ class Markdown:
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "bold"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_1, "bold")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold, "bold")
 
         if self.enabled(who, "italic_asterisk"):
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_italic_asterisk, "italic"
-            )
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_1, "italic")
 
         if self.enabled(who, "italic_underscore"):
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_italic_underscore, "italic"
-            )
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_2, "italic")
 
         if self.enabled(who, "highlight"):
             self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight"
+                start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight"
             )
+
             self.do_format(
                 start_ln, end_ln, who, Markdown.pattern_highlight_2, "highlight"
             )
+
             self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight"
+                start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight"
             )
 
         self.do_format(start_ln, end_ln, who, Markdown.pattern_uselink, "uselink")
