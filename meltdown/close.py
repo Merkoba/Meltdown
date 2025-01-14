@@ -62,6 +62,12 @@ class Close:
         ids = display.tab_ids()
         return [tid for tid in ids if tid != tab_id]
 
+    def get_important_tabs(self) -> list[str]:
+        return [tab.tab_id for tab in display.get_tabs() if tab.is_important()]
+
+    def get_unimportant_tabs(self) -> list[str]:
+        return [tab.tab_id for tab in display.get_tabs() if not tab.is_important()]
+
     def close(
         self,
         tab_id: str | None = None,
@@ -136,6 +142,9 @@ class Close:
         if full and old_tabs:
             cmds.add("Old", lambda a: self.close_old())
 
+        if full and self.get_important_tabs():
+            cmds.add("Keep", lambda a: self.keep_important())
+
         if self.get_other_tabs(tab_id):
             cmds.add("Others", lambda a: self.close_others(tab_id=tab_id))
 
@@ -204,6 +213,26 @@ class Close:
 
         n = len(tab_ids)
         Dialog.show_confirm(f"Close other tabs ({n}) ?", lambda: action())
+
+    def keep_important(self, force: bool = False, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = display.current_tab
+
+        tab_ids = self.get_unimportant_tabs()
+
+        if not tab_ids:
+            return
+
+        def action() -> None:
+            for tab_id in tab_ids:
+                self.close(tab_id=tab_id, force=True)
+
+        if force or (not args.confirm_close):
+            action()
+            return
+
+        n = len(tab_ids)
+        Dialog.show_confirm(f"Close unimportant tabs ({n}) ?", lambda: action())
 
     def close_left(self, force: bool = False, tab_id: str | None = None) -> None:
         if not tab_id:

@@ -76,6 +76,9 @@ class Tab:
         self.create()
         return self.bottom  # type: ignore
 
+    def is_important(self) -> bool:
+        return self.page.important
+
 
 class TabConvo:
     def __init__(self, tab: Tab, convo: Conversation) -> None:
@@ -193,12 +196,17 @@ class Display:
         if convo and convo.items:
             tooltip = convo.items[0].ai
 
+        if convo:
+            important = convo.important
+        else:
+            important = False
+
         page = self.book.add(
             name,
             mode=mode,
             tooltip=tooltip,
             position=position,
-            important=convo.important,
+            important=important,
         )
 
         tab_id = page.id_
@@ -451,8 +459,6 @@ class Display:
         )
 
     def do_rename_tab(self, tab_id: str, name: str) -> None:
-        from .session import session
-
         name = self.prepare_name(name)
 
         if not name:
@@ -1262,6 +1268,9 @@ class Display:
 
     def make_not_important(self, tab_id: str | None = None) -> None:
         self.set_important(False, tab_id)
+
+    def get_tabs(self) -> list[Tab]:
+        return list(self.tabs.values())
 
 
 display = Display()
