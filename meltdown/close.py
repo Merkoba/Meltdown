@@ -63,10 +63,10 @@ class Close:
         return [tid for tid in ids if tid != tab_id]
 
     def get_important_tabs(self) -> list[str]:
-        return [tab.tab_id for tab in display.get_tabs() if tab.is_important()]
+        return [tab.tab_id for tab in display.get_important()]
 
     def get_unimportant_tabs(self) -> list[str]:
-        return [tab.tab_id for tab in display.get_tabs() if not tab.is_important()]
+        return [tab.tab_id for tab in display.get_unimportant()]
 
     def close(
         self,

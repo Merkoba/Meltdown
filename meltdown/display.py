@@ -1266,7 +1266,7 @@ class Display:
     def make_important(self, tab_id: str | None = None) -> None:
         self.set_important(True, tab_id)
 
-    def make_not_important(self, tab_id: str | None = None) -> None:
+    def make_unimportant(self, tab_id: str | None = None) -> None:
         self.set_important(False, tab_id)
 
     def get_tabs(self) -> list[Tab]:
@@ -1282,6 +1282,14 @@ class Display:
             return False
 
         return tab.is_important()
+
+    def get_important(self) -> list[Tab]:
+        tabs = self.get_tabs()
+        return [tab for tab in tabs if tab.is_important()]
+
+    def get_unimportant(self) -> list[Tab]:
+        tabs = self.get_tabs()
+        return [tab for tab in tabs if not tab.is_important()]
 
 
 display = Display()

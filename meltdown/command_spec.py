@@ -1128,7 +1128,7 @@ class CommandSpec:
         self.add_cmd(
             "unimportant",
             "Make a conversation not important",
-            lambda a=None: display.make_not_important(),
+            lambda a=None: display.make_unimportant(),
         )
 
         self.add_cmd(
