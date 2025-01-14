@@ -176,9 +176,7 @@ class MoreMenu:
         self.menu.clear()
         num_tabs = display.num_tabs()
         messages = display.has_messages()
-        ignored = display.is_ignored()
         nomsg = not messages
-        unmod = nomsg or ignored
         single = num_tabs == 1
 
         self.menu.add("Find", lambda e: findmanager.toggle())
