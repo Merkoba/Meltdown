@@ -250,9 +250,12 @@ class TabMenu:
 
         self.menu.separator()
 
+        is_important = display.is_important(tab_id=display.tab_menu_id)
+        important_str = "Unimportant" if is_important else "Important"
+
         self.menu.add(
-            "Important",
-            lambda e: display.toggle_important(),
+            important_str,
+            lambda e: display.toggle_important(tab_id=display.tab_menu_id),
         )
 
         self.menu.add(

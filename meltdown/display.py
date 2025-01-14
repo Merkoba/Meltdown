@@ -1272,5 +1272,16 @@ class Display:
     def get_tabs(self) -> list[Tab]:
         return list(self.tabs.values())
 
+    def is_important(self, tab_id: str | None = None) -> bool:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tab = self.get_tab(tab_id)
+
+        if not tab:
+            return False
+
+        return tab.is_important()
+
 
 display = Display()

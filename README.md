@@ -48,6 +48,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Compact](#compact)
 1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
+1. [Importnat](#important)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -864,6 +865,16 @@ It ignores triple backtick snippets, it tries to keep those lines intact.
 ---
 
 There's also `--clean-lines-ai`, to collapse multiple empty lines into a single line.
+
+---
+
+## Keywords <a name="keywords"></a>
+
+Conversation can be flagged as `important`.
+
+This can be done using the tab's context menu.
+
+Or using `/important`, `/unimportant`, `/toggleimportant`.
 
 ---
 
