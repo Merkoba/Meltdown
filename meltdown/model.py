@@ -699,7 +699,10 @@ class Model:
             return
 
         def wrapper(prompt: str, tab_id: str) -> None:
+            self.stop_stream_thread.clear()
+            self.streaming = True
             self.do_generate_image(prompt, tab_id)
+            self.streaming = False
 
         self.stop_stream()
         self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
@@ -711,6 +714,7 @@ class Model:
 
         try:
             time_start = utils.now()
+            display.stream_started(tab_id)
 
             response = self.openai_client.images.generate(
                 n=1,
