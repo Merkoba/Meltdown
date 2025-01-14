@@ -50,8 +50,7 @@ class Model:
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
         self.stream_date_local = 0.0
-        self.gpt_client = None
-        self.gemini_client = None
+        self.openai_client = None
         self.last_response = ""
 
         kerr = "Use the model menu to set it."
@@ -120,12 +119,12 @@ class Model:
 
         if self.model_is_gpt(config.model):
             self.unload()
-            self.load_gpt(tab_id, prompt)
+            self.load_openai(tab_id, prompt)
             return
 
         if self.model_is_gemini(config.model):
             self.unload()
-            self.load_gemini(tab_id, prompt)
+            self.load_google(tab_id, prompt)
             return
 
         model_path = Path(config.model)
@@ -172,7 +171,7 @@ class Model:
         except BaseException:
             self.google_key = ""
 
-    def load_gpt(self, tab_id: str, prompt: PromptArg | None = None) -> None:
+    def load_openai(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
         try:
             now = utils.now()
             self.read_openai_key()
@@ -180,23 +179,26 @@ class Model:
             if not self.openai_key:
                 display.print(self.openai_key_error)
                 self.clear_model()
-                return
+                return False
 
-            self.gpt_client = OpenAI(api_key=self.openai_key)
+            self.openai_client = OpenAI(api_key=self.openai_key)
             self.model_loading = False
             self.loaded_model = config.model
-            self.loaded_format = "gpt_remote"
+            self.loaded_format = "openai"
             self.loaded_type = "remote"
             self.after_load(now)
 
             if prompt:
                 self.stream(prompt, tab_id)
+
+            return True
         except BaseException as e:
             utils.error(e)
-            display.print("Error: GPT model failed to load.")
+            display.print("Error: OpenAI failed to load.")
             self.clear_model()
+            return False
 
-    def load_gemini(self, tab_id: str, prompt: PromptArg | None = None) -> None:
+    def load_google(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
         try:
             now = utils.now()
             self.read_google_key()
@@ -204,25 +206,28 @@ class Model:
             if not self.google_key:
                 display.print(self.google_key_error)
                 self.clear_model()
-                return
+                return False
 
-            self.gpt_client = OpenAI(
+            self.openai_client = OpenAI(
                 api_key=self.google_key,
                 base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
             )
 
             self.model_loading = False
             self.loaded_model = config.model
-            self.loaded_format = "gemini_remote"
+            self.loaded_format = "google"
             self.loaded_type = "remote"
             self.after_load(now)
 
             if prompt:
                 self.stream(prompt, tab_id)
+
+            return True
         except BaseException as e:
             utils.error(e)
-            display.print("Error: GPT model failed to load.")
+            display.print("Error: Google failed to load.")
             self.clear_model()
+            return False
 
     def load_local(self, model: str, tab_id: str) -> bool:
         from .app import app
@@ -533,12 +538,12 @@ class Model:
 
         if self.model_is_gpt(config.model) or self.model_is_gemini(config.model):
             try:
-                if not self.gpt_client:
+                if not self.openai_client:
                     self.stream_loading = False
                     self.release_lock()
                     return
 
-                output = self.gpt_client.chat.completions.create(**gen_config)
+                output = self.openai_client.chat.completions.create(**gen_config)
             except RateLimitError as e:
                 utils.error(e)
                 display.print("Error: Rate limit exceeded.")
@@ -687,14 +692,11 @@ class Model:
         if not prompt.strip():
             return
 
-        self.read_openai_key()
-
-        if not self.openai_key:
-            display.print(self.openai_key_error)
-            return
-
         if not tab_id:
             tab_id = display.current_tab
+
+        if not self.load_openai(tab_id):
+            return
 
         def wrapper(prompt: str, tab_id: str) -> None:
             self.do_generate_image(prompt, tab_id)
@@ -708,35 +710,34 @@ class Model:
         prompt_text = prompt[:args.image_prompt_max].strip()
 
         try:
+            time_start = utils.now()
+
+            response = self.openai_client.images.generate(
+                n=1,
+                prompt=prompt,
+                size=args.image_size,
+                model=args.image_model,
+            )
+
+            url = response.data[0].url
+
+            if not url:
+                return
+
             tabconvo = display.get_tab_convo(tab_id)
 
             if not tabconvo:
                 return
 
-            time_start = utils.now()
-
-            url = "https://someimage.com/ass.jpg"
-
-            # ans = openai.Image.create(
-            #     n=1,
-            #     prompt=prompt,
-            #     size=args.image_size,
-            #     model=args.image_model,
-            # )
-
-            # url = ans["data"][0]["url"]
-
-            if not url:
-                return
-
+            time_end = utils.now()
             display.prompt("user", text=prompt, tab_id=tab_id, original=prompt)
             display.prompt("ai", text=url, tab_id=tab_id)
 
             log_dict: dict[str, Any] = {}
             log_dict["user"] = prompt
             log_dict["ai"] = url
-            log_dict["date"] = utils.now()
-            log_dict["duration"] = log_dict["date"] - time_start
+            log_dict["date"] = time_end
+            log_dict["duration"] = time_end - time_start
             log_dict["model"] = args.image_model
             log_dict["seed"] = config.seed
             log_dict["history"] = config.history
