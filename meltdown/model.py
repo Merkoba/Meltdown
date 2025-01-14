@@ -198,10 +198,10 @@ class Model:
         return True
 
     def load_google(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
-        self.read_openai_key()
+        self.read_google_key()
 
-        if not self.openai_key:
-            display.print(self.openai_key_error)
+        if not self.google_key:
+            display.print(self.google_key_error)
             self.clear_model()
             return False
 
@@ -435,8 +435,23 @@ class Model:
 
         if tabconvo.convo.items and config.history and (not no_history):
             for item in tabconvo.convo.items[-abs(config.history) :]:
+                user_value = getattr(item, "user", "")
+                ai_value = getattr(item, "ai", "")
+
+                if (not user_value) or (not ai_value):
+                    continue
+
+                if self.long_url(user_value) or self.long_url(ai_value):
+                    continue
+
                 for key in ["user", "ai"]:
-                    content = getattr(item, key)
+                    if key == "user":
+                        content = user_value
+                    elif key == "ai":
+                        content = ai_value
+
+                    if self.long_url(content):
+                        continue
 
                     if key == "user":
                         content = utils.replace_keywords(content)
@@ -966,6 +981,16 @@ class Model:
     def no_llama_error(self) -> None:
         msg = "Error: llama.cpp support is not enabled. A library must be installed to use local models. Check the documentation."
         display.print(msg)
+
+    def long_url(self, text: str) -> bool:
+        if " " in text:
+            return False
+
+        if utils.is_url(text):
+            if len(text) > 100:
+                return True
+
+        return False
 
 
 model = Model()

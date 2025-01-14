@@ -25,6 +25,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Tabs](#tabs)
 1. [Markdown](#markdown)
 1. [Find](#find)
+1. [Images](#images)
 1. [Console](#console)
 1. [Listener](#listener)
 1. [Logs](#logs)
@@ -374,6 +375,24 @@ It supports finding in reverse with `shift + enter`, or `shift + f3`, or middle 
 There is a command to find in all conversations: `/findall`.
 
 ![](img/find.png)
+
+---
+
+## Images <a name="images"></a>
+
+It's possible to generate images using `Dall-E`.
+
+An `OpenAI` key is required for this.
+
+To use it there is the `/image` command.
+
+For example: `/image powerhouse of the cell`.
+
+It will use the normal streaming mechanisms.
+
+The response, if any, is the full `URL`.
+
+Some parts of image generation can be customized through arguments.
 
 ---
 
