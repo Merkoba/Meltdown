@@ -269,6 +269,7 @@ class Args:
         self.concat_logs = False
         self.mouse_scroll = False
         self.thinking_text = "Thinking..."
+        self.generating_text = "Generating..."
         self.logs_dir = ""
         self.upload_password = ""
         self.log_name_user = ""
@@ -561,6 +562,7 @@ class Args:
             "concat_logs",
             "mouse_scroll",
             "thinking_text",
+            "generating_text",
             "logs_dir",
             "upload_password",
             "log_name_user",

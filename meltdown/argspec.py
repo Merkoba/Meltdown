@@ -1597,6 +1597,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "generating_text",
+            type=str,
+            info="Text to show temporarily while the AI is generating",
+        )
+
+        self.add_argument(
             "logs_dir",
             type=str,
             info="Use a different directory for the logs",

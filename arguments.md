@@ -2418,6 +2418,16 @@ Type: str
 
 ---
 
+### generating-text
+
+Text to show temporarily while the AI is generating
+
+Default: "Generating..."
+
+Type: str
+
+---
+
 ### logs-dir
 
 Use a different directory for the logs

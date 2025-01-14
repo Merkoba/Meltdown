@@ -172,15 +172,15 @@ class Model:
             self.google_key = ""
 
     def load_openai(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
+        self.read_openai_key()
+
+        if not self.openai_key:
+            display.print(self.openai_key_error)
+            self.clear_model()
+            return False
+
         try:
             now = utils.now()
-            self.read_openai_key()
-
-            if not self.openai_key:
-                display.print(self.openai_key_error)
-                self.clear_model()
-                return False
-
             self.openai_client = OpenAI(api_key=self.openai_key)
             self.model_loading = False
             self.loaded_model = config.model
@@ -190,23 +190,23 @@ class Model:
 
             if prompt:
                 self.stream(prompt, tab_id)
-
-            return True
         except BaseException as e:
             utils.error(e)
             display.print("Error: OpenAI failed to load.")
             self.clear_model()
-            return False
+
+        return True
 
     def load_google(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
+        self.read_openai_key()
+
+        if not self.openai_key:
+            display.print(self.openai_key_error)
+            self.clear_model()
+            return False
+
         try:
             now = utils.now()
-            self.read_google_key()
-
-            if not self.google_key:
-                display.print(self.google_key_error)
-                self.clear_model()
-                return False
 
             self.openai_client = OpenAI(
                 api_key=self.google_key,
@@ -221,13 +221,12 @@ class Model:
 
             if prompt:
                 self.stream(prompt, tab_id)
-
-            return True
         except BaseException as e:
             utils.error(e)
             display.print("Error: Google failed to load.")
             self.clear_model()
-            return False
+
+        return True
 
     def load_local(self, model: str, tab_id: str) -> bool:
         from .app import app
@@ -710,13 +709,15 @@ class Model:
         self.stream_thread.start()
 
     def do_generate_image(self, prompt: str, tab_id: str) -> None:
-        prompt_text = prompt[:args.image_prompt_max].strip()
+        prompt = prompt[: args.image_prompt_max].strip()
 
         try:
-            time_start = utils.now()
             display.stream_started(tab_id)
+            display.prompt("user", text=prompt, tab_id=tab_id, original=prompt)
+            display.prompt("ai", text=args.generating_text, tab_id=tab_id)
+            time_start = utils.now()
 
-            response = self.openai_client.images.generate(
+            response = self.openai_client.images.generate(  # type: ignore
                 n=1,
                 prompt=prompt,
                 size=args.image_size,
@@ -734,7 +735,7 @@ class Model:
                 return
 
             time_end = utils.now()
-            display.prompt("user", text=prompt, tab_id=tab_id, original=prompt)
+            display.remove_last_ai(tab_id)
             display.prompt("ai", text=url, tab_id=tab_id)
 
             log_dict: dict[str, Any] = {}
@@ -751,10 +752,10 @@ class Model:
             log_dict["top_p"] = config.top_p
             log_dict["file"] = ""
 
-            convo_item = tabconvo.convo.add(log_dict)
+            tabconvo.convo.add(log_dict)
             tabconvo.convo.update()
         except BaseException as e:
-            display.print(f"Error generating the image.")
+            display.print("Error generating the image.")
             utils.error(e)
 
     def load_or_unload(self) -> None:
