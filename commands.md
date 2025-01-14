@@ -1087,3 +1087,9 @@ Make a conversation not important
 ### toggleimportant
 
 Make a conversation important or not important
+
+---
+
+### listimportant
+
+Show the tab list but only with important tabs

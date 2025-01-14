@@ -1137,5 +1137,11 @@ class CommandSpec:
             lambda a=None: display.toggle_important(),
         )
 
+        self.add_cmd(
+            "listimportant",
+            "Show the tab list but only with important tabs",
+            lambda a=None: display.show_tab_list(mode="important"),
+        )
+
 
 command_spec = CommandSpec()

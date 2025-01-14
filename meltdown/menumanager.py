@@ -218,8 +218,14 @@ class TabMenu:
         ignored = display.is_ignored(display.tab_menu_id)
         unmod = (not messages) or ignored
         single = num_tabs == 1
+        num_important = display.num_important()
 
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
+
+        if (num_tabs > 1) and (num_important > 0):
+            self.menu.add(
+                "Important", lambda e: display.show_tab_list(mode="important")
+            )
 
         self.menu.separator()
 

@@ -401,7 +401,7 @@ class Display:
     def on_tabs_double_click(self) -> None:
         self.make_tab()
 
-    def show_tab_list(self, event: Any = None) -> None:
+    def show_tab_list(self, event: Any = None, mode: str = "normal") -> None:
         from .widgets import widgets
         from .close import close
 
@@ -437,6 +437,10 @@ class Display:
         selected = 0
 
         for i, page in enumerate(self.book.pages):
+            if mode == "important":
+                if not page.important:
+                    continue
+
             add_item(page, i + 1)
 
             if page.id_ == self.current_tab:
@@ -1290,6 +1294,9 @@ class Display:
     def get_unimportant(self) -> list[Tab]:
         tabs = self.get_tabs()
         return [tab for tab in tabs if not tab.is_important()]
+
+    def num_important(self) -> int:
+        return len(self.get_important())
 
 
 display = Display()
