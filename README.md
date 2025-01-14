@@ -48,7 +48,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Compact](#compact)
 1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
-1. [Importnat](#important)
+1. [Pins](#pins)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -868,13 +868,17 @@ There's also `--clean-lines-ai`, to collapse multiple empty lines into a single 
 
 ---
 
-## Keywords <a name="keywords"></a>
+## Pins <a name="pins"></a>
 
-Conversation can be flagged as `important`.
+Conversation/tabs can be pinned.
 
 This can be done using the tab's context menu.
 
-Or using `/important`, `/unimportant`, `/toggleimportant`.
+Or using `/pin`, `/unpin`, `/togglepin`.
+
+This allows finding them easily through the special pin list.
+
+And allows closing either just normal tabs or just pins.
 
 ---
 

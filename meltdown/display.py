@@ -76,8 +76,8 @@ class Tab:
         self.create()
         return self.bottom  # type: ignore
 
-    def is_important(self) -> bool:
-        return self.page.important
+    def is_pin(self) -> bool:
+        return self.page.pin
 
 
 class TabConvo:
@@ -197,16 +197,16 @@ class Display:
             tooltip = convo.items[0].ai
 
         if convo:
-            important = convo.important
+            pin = convo.pin
         else:
-            important = False
+            pin = False
 
         page = self.book.add(
             name,
             mode=mode,
             tooltip=tooltip,
             position=position,
-            important=important,
+            pin=pin,
         )
 
         tab_id = page.id_
@@ -437,8 +437,8 @@ class Display:
         selected = 0
 
         for i, page in enumerate(self.book.pages):
-            if mode == "important":
-                if not page.important:
+            if mode == "pin":
+                if not page.pin:
                     continue
 
             add_item(page, i + 1)
@@ -1243,7 +1243,7 @@ class Display:
 
         Dialog.show_message(f"Lines: {lines}\nChars: {chars}\nKBytes: {kbytes}")
 
-    def set_important(self, value: bool, tab_id: str | None = None) -> None:
+    def set_pin(self, value: bool, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -1252,10 +1252,10 @@ class Display:
         if not tabconvo:
             return
 
-        tabconvo.convo.set_important(value)
-        self.book.set_important(tab_id, value)
+        tabconvo.convo.set_pin(value)
+        self.book.set_pin(tab_id, value)
 
-    def toggle_important(self, tab_id: str | None = None) -> None:
+    def toggle_pin(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -1264,19 +1264,19 @@ class Display:
         if not tabconvo:
             return
 
-        important = not tabconvo.convo.important
-        self.set_important(important, tab_id)
+        pin = not tabconvo.convo.pin
+        self.set_pin(pin, tab_id)
 
-    def make_important(self, tab_id: str | None = None) -> None:
-        self.set_important(True, tab_id)
+    def pin(self, tab_id: str | None = None) -> None:
+        self.set_pin(True, tab_id)
 
-    def make_unimportant(self, tab_id: str | None = None) -> None:
-        self.set_important(False, tab_id)
+    def unpin(self, tab_id: str | None = None) -> None:
+        self.set_pin(False, tab_id)
 
     def get_tabs(self) -> list[Tab]:
         return list(self.tabs.values())
 
-    def is_important(self, tab_id: str | None = None) -> bool:
+    def is_pin(self, tab_id: str | None = None) -> bool:
         if not tab_id:
             tab_id = self.current_tab
 
@@ -1285,18 +1285,18 @@ class Display:
         if not tab:
             return False
 
-        return tab.is_important()
+        return tab.is_pin()
 
-    def get_important(self) -> list[Tab]:
+    def get_pins(self) -> list[Tab]:
         tabs = self.get_tabs()
-        return [tab for tab in tabs if tab.is_important()]
+        return [tab for tab in tabs if tab.is_pin()]
 
-    def get_unimportant(self) -> list[Tab]:
+    def get_normal(self) -> list[Tab]:
         tabs = self.get_tabs()
-        return [tab for tab in tabs if not tab.is_important()]
+        return [tab for tab in tabs if not tab.is_pin()]
 
-    def num_important(self) -> int:
-        return len(self.get_important())
+    def num_pins(self) -> int:
+        return len(self.get_pins())
 
 
 display = Display()

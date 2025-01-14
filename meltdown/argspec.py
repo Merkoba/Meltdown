@@ -1754,9 +1754,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "important_icon",
+            "pin_icon",
             type=str,
-            info="The icon to use on important tabs",
+            info="The icon to use on pinned tabs",
         )
 
 

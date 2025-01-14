@@ -91,13 +91,13 @@ class Conversation:
         name: str,
         created: float = 0.0,
         last_modified: float = 0.0,
-        important: bool = False,
+        pin: bool = False,
     ) -> None:
         self.id = _id
         self.name = name
         self.items: list[Item] = []
         self.last_modified = last_modified
-        self.important = important
+        self.pin = pin
 
         if created == 0.0:
             self.created = utils.now()
@@ -131,8 +131,8 @@ class Conversation:
         self.name = name
         session.save()
 
-    def set_important(self, value: bool) -> None:
-        self.important = value
+    def set_pin(self, value: bool) -> None:
+        self.pin = value
         session.save()
 
     def print(self) -> None:
@@ -170,7 +170,7 @@ class Conversation:
             "name": self.name,
             "created": self.created,
             "last_modified": self.last_modified,
-            "important": self.important,
+            "pin": self.pin,
             "items": item_list,
         }
 
@@ -313,7 +313,7 @@ class Session:
                 name=item["name"],
                 created=item.get("created", 0.0),
                 last_modified=item.get("last_modified", 0.0),
-                important=item.get("important", False),
+                pin=item.get("pin", False),
             )
 
             for it in item["items"]:

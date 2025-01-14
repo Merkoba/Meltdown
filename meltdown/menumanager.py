@@ -218,14 +218,12 @@ class TabMenu:
         ignored = display.is_ignored(display.tab_menu_id)
         unmod = (not messages) or ignored
         single = num_tabs == 1
-        num_important = display.num_important()
+        num_pins = display.num_pins()
 
         self.menu.add("Tab List", lambda e: display.show_tab_list(e), disabled=single)
 
-        if (num_tabs > 1) and (num_important > 0):
-            self.menu.add(
-                "Important", lambda e: display.show_tab_list(e, mode="important")
-            )
+        if (num_tabs > 1) and (num_pins > 0):
+            self.menu.add("Pin List", lambda e: display.show_tab_list(e, mode="pins"))
 
         self.menu.separator()
 
@@ -256,12 +254,12 @@ class TabMenu:
 
         self.menu.separator()
 
-        is_important = display.is_important(tab_id=display.tab_menu_id)
-        important_str = "Unimportant" if is_important else "Important"
+        is_pin = display.is_pin(tab_id=display.tab_menu_id)
+        pin_str = "Unpin" if is_pin else "Pin"
 
         self.menu.add(
-            important_str,
-            lambda e: display.toggle_important(tab_id=display.tab_menu_id),
+            pin_str,
+            lambda e: display.toggle_pin(tab_id=display.tab_menu_id),
         )
 
         self.menu.add(

@@ -34,7 +34,7 @@ class Page:
     notebox_id = 0
 
     def __init__(
-        self, parent: Book, name: str, mode: str, tooltip: str, important: bool
+        self, parent: Book, name: str, mode: str, tooltip: str, pin: bool
     ) -> None:
         self.parent = parent
         self.name = name
@@ -43,7 +43,7 @@ class Page:
         self.picked = False
         self.tab = self.make_tab_widget()
         self.content = self.make_content_widget()
-        self.important = important
+        self.pin = pin
         self.id_ = f"page_{Page.notebox_id}"
         Page.notebox_id += 1
 
@@ -115,8 +115,8 @@ class Page:
             space = "  "
             text = f"{space}{text}{space}"
 
-        if self.important:
-            icon = args.important_icon
+        if self.pin:
+            icon = args.pin_icon
             text = f"{icon} {text}"
 
         self.tab.label.configure(text=text)
@@ -332,10 +332,10 @@ class Book(tk.Frame):
         mode: str,
         tooltip: str,
         position: str = "end",
-        important: bool = False,
+        pin: bool = False,
     ) -> Page:
         tooltip = self.clean_tooltip(tooltip)
-        page = Page(self, name, mode=mode, tooltip=tooltip, important=important)
+        page = Page(self, name, mode=mode, tooltip=tooltip, pin=pin)
 
         if position == "start":
             self.pages.insert(0, page)
@@ -563,13 +563,13 @@ class Book(tk.Frame):
         self.update_tabs()
         self.discover()
 
-    def set_important(self, id_: str, important: bool) -> None:
+    def set_pin(self, id_: str, pin: bool) -> None:
         page = self.get_page_by_id(id_)
 
         if not page:
             return
 
-        page.important = important
+        page.pin = pin
         page.set_tab_text()
         self.update_tabs()
         self.discover()

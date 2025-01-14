@@ -2674,9 +2674,9 @@ Type: str
 
 ---
 
-### important-icon
+### pin-icon
 
-The icon to use on important tabs
+The icon to use on pinned tabs
 
 Default: "⭐"
 

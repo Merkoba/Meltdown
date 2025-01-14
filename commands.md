@@ -158,6 +158,22 @@ Use 'force' to force
 
 ---
 
+### closepins
+
+Close all pinned tabs
+
+Use 'force' to force
+
+---
+
+### closenormal
+
+Close all normal tabs
+
+Use 'force' to force
+
+---
+
 ### closeleft
 
 Close tabs to the left
@@ -1072,24 +1088,24 @@ Print a message and format markdown
 
 ---
 
-### important
+### pin
 
-Make a conversation important
-
----
-
-### unimportant
-
-Make a conversation not important
+Pin a tab
 
 ---
 
-### toggleimportant
+### unpin
 
-Make a conversation important or not important
+Unpin a tab
 
 ---
 
-### listimportant
+### togglepin
 
-Show the tab list but only with important tabs
+Pin or unpin a tab
+
+---
+
+### pins
+
+Show the tab list but only with pins

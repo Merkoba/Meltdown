@@ -225,6 +225,22 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "closepins",
+            "Close all pinned tabs",
+            lambda a=None: close.close_pins(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
+            "closenormal",
+            "Close all normal tabs",
+            lambda a=None: close.close_normal(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
             "closeleft",
             "Close tabs to the left",
             lambda a=None: close.close_left(force=a),
@@ -1120,27 +1136,27 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "important",
-            "Make a conversation important",
-            lambda a=None: display.make_important(),
+            "pin",
+            "Pin a tab",
+            lambda a=None: display.pin(),
         )
 
         self.add_cmd(
-            "unimportant",
-            "Make a conversation not important",
-            lambda a=None: display.make_unimportant(),
+            "unpin",
+            "Unpin a tab",
+            lambda a=None: display.unpin(),
         )
 
         self.add_cmd(
-            "toggleimportant",
-            "Make a conversation important or not important",
-            lambda a=None: display.toggle_important(),
+            "togglepin",
+            "Pin or unpin a tab",
+            lambda a=None: display.toggle_pin(),
         )
 
         self.add_cmd(
-            "listimportant",
-            "Show the tab list but only with important tabs",
-            lambda a=None: display.show_tab_list(mode="important"),
+            "pins",
+            "Show the tab list but only with pins",
+            lambda a=None: display.show_tab_list(mode="pins"),
         )
 
 
