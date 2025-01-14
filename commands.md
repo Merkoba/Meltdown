@@ -1109,3 +1109,15 @@ Pin or unpin a tab
 ### pins
 
 Show the tab list but only with pins
+
+---
+
+### sortpins
+
+Place the pins at the start of the list
+
+---
+
+### sortpinsend
+
+Place the pins at the end of the list

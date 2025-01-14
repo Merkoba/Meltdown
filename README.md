@@ -870,7 +870,7 @@ There's also `--clean-lines-ai`, to collapse multiple empty lines into a single 
 
 ## Pins <a name="pins"></a>
 
-Conversation/tabs can be pinned.
+Conversations/tabs can be pinned.
 
 This can be done using the tab's context menu.
 

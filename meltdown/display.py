@@ -437,7 +437,7 @@ class Display:
         selected = 0
 
         for i, page in enumerate(self.book.pages):
-            if mode == "pin":
+            if mode == "pins":
                 if not page.pin:
                     continue
 
@@ -1297,6 +1297,10 @@ class Display:
 
     def num_pins(self) -> int:
         return len(self.get_pins())
+
+    def sort_pins(self, mode: str = "start") -> None:
+        self.book.sort_pins(mode)
+        self.update_session()
 
 
 display = Display()

@@ -1032,3 +1032,25 @@ class Book(tk.Frame):
             self.move_right()
         else:
             self.select_right()
+
+    def sort_pins(self, mode: str = "start") -> None:
+        pins = []
+        normal = []
+
+        for page in self.pages:
+            if page.pin:
+                pins.append(page)
+            else:
+                normal.append(page)
+
+        if mode == "start":
+            self.pages = pins + normal
+        else:
+            self.pages = normal + pins
+
+        self.update_tab_columns()
+        self.reselect()
+
+    def reselect(self) -> None:
+        if self.current_page:
+            self.select(self.current_page.id_)

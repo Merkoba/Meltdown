@@ -1159,5 +1159,17 @@ class CommandSpec:
             lambda a=None: display.show_tab_list(mode="pins"),
         )
 
+        self.add_cmd(
+            "sortpins",
+            "Place the pins at the start of the list",
+            lambda a=None: display.sort_pins(mode="start"),
+        )
+
+        self.add_cmd(
+            "sortpinsend",
+            "Place the pins at the end of the list",
+            lambda a=None: display.sort_pins(mode="end"),
+        )
+
 
 command_spec = CommandSpec()
