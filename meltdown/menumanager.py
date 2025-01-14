@@ -224,7 +224,7 @@ class TabMenu:
 
         if (num_tabs > 1) and (num_important > 0):
             self.menu.add(
-                "Important", lambda e: display.show_tab_list(mode="important")
+                "Important", lambda e: display.show_tab_list(e, mode="important")
             )
 
         self.menu.separator()
