@@ -386,7 +386,7 @@ class Model:
                 display.print("Error: File not found.")
                 return None
 
-        prompt_text = self.limit_tokens(prompt_text, config.max_tokens)
+        prompt_text = self.limit_tokens(prompt_text)
         original_text = prompt_text
         original_file = prompt_file
 
@@ -471,7 +471,7 @@ class Model:
 
         if prompt_file and (config.mode == "text"):
             file_text = self.read_file(prompt_file)
-            file_text = self.limit_tokens(file_text, config.max_tokens)
+            file_text = self.limit_tokens(file_text)
 
             if file_text:
                 messages.append({"role": "user", "content": file_text})
@@ -908,21 +908,21 @@ class Model:
 
         return text
 
-    def limit_tokens(self, text: str, max_tokens: int) -> str:
+    def limit_tokens(self, text: str) -> str:
         if not args.limit_tokens:
             return text
 
         if not self.model:
             return text
 
-        if max_tokens <= 0:
+        if config.max_tokens <= 0:
             return text
 
         try:
-            mx_tokens = int(max_tokens * config.token_limit)
+            max_tokens = int(config.max_tokens * config.token_limit)
             encoded = text.encode("utf-8")
             tokens = self.model.tokenize(encoded)
-            bytes = self.model.detokenize(tokens[:mx_tokens])
+            bytes = self.model.detokenize(tokens[:max_tokens])
             return str(bytes.decode("utf-8")).strip()
         except BaseException as e:
             utils.error(e)
