@@ -2681,3 +2681,13 @@ The icon to use on pinned tabs
 Default: "⭐"
 
 Type: str
+
+---
+
+### auto-sort-pins
+
+Sort the pins to the start automatically
+
+Default: False
+
+Action: store_true

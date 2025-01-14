@@ -1759,5 +1759,11 @@ class ArgSpec:
             info="The icon to use on pinned tabs",
         )
 
+        self.add_argument(
+            "auto_sort_pins",
+            action="store_true",
+            info="Sort the pins to the start automatically",
+        )
+
 
 argspec = ArgSpec()

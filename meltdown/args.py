@@ -292,6 +292,7 @@ class Args:
         self.clean_lines_ai = False
         self.delimiter = ":"
         self.pin_icon = "⭐"
+        self.auto_sort_pins = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -581,6 +582,7 @@ class Args:
             "delimiter",
             "wrap_tabs",
             "pin_icon",
+            "auto_sort_pins",
         ]
 
         for n_item in normals:

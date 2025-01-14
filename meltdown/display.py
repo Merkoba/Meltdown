@@ -1255,6 +1255,9 @@ class Display:
         tabconvo.convo.set_pin(value)
         self.book.set_pin(tab_id, value)
 
+        if args.auto_sort_pins:
+            self.sort_pins(mode="start")
+
     def toggle_pin(self, tab_id: str | None = None) -> None:
         if not tab_id:
             tab_id = self.current_tab
