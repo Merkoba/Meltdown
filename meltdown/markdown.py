@@ -593,6 +593,24 @@ class Markdown:
     def last_line(self) -> int:
         return int(self.widget.index("end").split(".")[0])
 
+    def prompt_cols(self, start_ln: int) -> tuple[int, int]:
+        d = utils.delimiter()
+        marker = Output.marker_space
+        end = f"{marker}{d}{marker}"
+        start = self.widget.search(end, f"{start_ln}.0", stopindex=f"{start_ln}.end")
+
+        if not start:
+            return 0, 0
+
+        start_col = int(start.split(".")[1])
+        end_col = start_col + len(end)
+        return start_col, end_col
+
+    def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
+        _, end_col = self.prompt_cols(start_ln)
+        self.widget.delete(f"{start_ln}.{end_col}", f"{end_ln}.end")
+        self.widget.insert(f"{start_ln}.{end_col + 1}", text)
+
     def indent_lines(self) -> None:
         lines = self.widget.get("1.0", "end").split("\n")
 
@@ -618,11 +636,14 @@ class Markdown:
         un_lines = get_lns(Markdown.marker_indent_unordered)
         add_tags(un_lines, "indent_unordered")
 
-    def join_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
+    def check_who(self, what: str, who: str) -> bool:
         if who == "nobody":
             return False
 
-        if not getattr(args, f"join_lines_{who}"):
+        return bool(getattr(args, f"{what}_{who}"))
+
+    def join_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
+        if not self.check_who("join_lines", who):
             return False
 
         lines = self.get_lines(start_ln, end_ln, who)
@@ -668,15 +689,12 @@ class Markdown:
         else:
             do_join()
 
-        new_text = "\n".join(joined_lines).strip() + "\n"
-        self.insert_first(start_ln, end_ln, new_text)
+        text = "\n".join(joined_lines).strip() + "\n"
+        self.insert_first(start_ln, end_ln, text)
         return True
 
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
-        if who == "nobody":
-            return False
-
-        if not getattr(args, f"clean_lines_{who}"):
+        if not self.check_who("clean_lines", who):
             return False
 
         lines = self.get_lines(start_ln, end_ln, who)
@@ -695,27 +713,9 @@ class Markdown:
                 cleaned.append(stripped)
                 empty = False
 
-        new_text = "\n".join(cleaned).strip() + "\n"
-        self.insert_first(start_ln, end_ln, new_text)
+        text = "\n".join(cleaned).strip() + "\n"
+        self.insert_first(start_ln, end_ln, text)
         return True
-
-    def prompt_cols(self, start_ln: int) -> tuple[int, int]:
-        d = utils.delimiter()
-        marker = Output.marker_space
-        end = f"{marker}{d}{marker}"
-        start = self.widget.search(end, f"{start_ln}.0", stopindex=f"{start_ln}.end")
-
-        if not start:
-            return 0, 0
-
-        start_col = int(start.split(".")[1])
-        end_col = start_col + len(end)
-        return start_col, end_col
-
-    def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
-        _, end_col = self.prompt_cols(start_ln)
-        self.widget.delete(f"{start_ln}.{end_col}", f"{end_ln}.end")
-        self.widget.insert(f"{start_ln}.{end_col + 1}", text)
 
 
 Markdown.build_patterns()
