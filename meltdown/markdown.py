@@ -30,8 +30,8 @@ class Markdown:
     marker_indent_unordered = "\u200c\u200b\u200c"
     pattern_snippets: str
     pattern_bold: str
-    pattern_italic_1: str
-    pattern_italic_2: str
+    pattern_italic_aster: str
+    pattern_italic_under: str
     pattern_highlight_1: str
     pattern_highlight_2: str
     pattern_highlight_3: str
@@ -74,10 +74,10 @@ class Markdown:
         Markdown.pattern_bold = build_token(aster, 2)
 
         # Italic with one asterisk
-        Markdown.pattern_italic_1 = build_token(aster, 1)
+        Markdown.pattern_italic_aster = build_token(aster, 1)
 
         # Italic with one underscore
-        Markdown.pattern_italic_2 = build_token(under, 1)
+        Markdown.pattern_italic_under = build_token(under, 1)
 
         # Highlight with one backtick
         Markdown.pattern_highlight_1 = build_token(tick, 1)
@@ -234,10 +234,14 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold, "bold")
 
         if self.enabled(who, "italic_asterisk"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_1, "italic")
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_italic_aster, "italic"
+            )
 
         if self.enabled(who, "italic_underscore"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_2, "italic")
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_italic_under, "italic"
+            )
 
         if self.enabled(who, "highlight"):
             self.do_format(
