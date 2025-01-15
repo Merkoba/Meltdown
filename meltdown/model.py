@@ -171,7 +171,9 @@ class Model:
         except BaseException:
             self.google_key = ""
 
-    def load_openai(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
+    def load_openai(
+        self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
+    ) -> bool:
         self.read_openai_key()
 
         if not self.openai_key:
@@ -186,7 +188,7 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "openai"
             self.loaded_type = "remote"
-            self.after_load(now)
+            self.after_load(now, quiet=quiet)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -197,7 +199,9 @@ class Model:
 
         return True
 
-    def load_google(self, tab_id: str, prompt: PromptArg | None = None) -> bool:
+    def load_google(
+        self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
+    ) -> bool:
         self.read_google_key()
 
         if not self.google_key:
@@ -217,7 +221,7 @@ class Model:
             self.loaded_model = config.model
             self.loaded_format = "google"
             self.loaded_type = "remote"
-            self.after_load(now)
+            self.after_load(now, quiet=quiet)
 
             if prompt:
                 self.stream(prompt, tab_id)
@@ -228,7 +232,7 @@ class Model:
 
         return True
 
-    def load_local(self, model: str, tab_id: str) -> bool:
+    def load_local(self, model: str, tab_id: str, quiet: bool = False) -> bool:
         from .app import app
 
         if not llama_cpp:
@@ -295,16 +299,16 @@ class Model:
         self.loaded_model = model
         self.loaded_format = chat_format
         self.loaded_type = "local"
-        self.after_load(now)
+        self.after_load(now, quiet=quiet)
         self.release_lock()
         return True
 
-    def after_load(self, start_date: float) -> None:
+    def after_load(self, start_date: float, quiet: bool = False) -> None:
         from .system import system
 
         self.update_icon()
 
-        if args.model_feedback and (not args.quiet):
+        if args.model_feedback and (not args.quiet) and (not quiet):
             if self.loaded_type == "local":
                 text = utils.emoji_text("Model loaded", "local")
                 msg, _ = utils.check_time(text, start_date)
@@ -709,7 +713,7 @@ class Model:
         if not tab_id:
             tab_id = display.current_tab
 
-        if not self.load_openai(tab_id):
+        if not self.load_openai(tab_id, quiet=True):
             return
 
         def wrapper(prompt: str, tab_id: str) -> None:
@@ -763,7 +767,7 @@ class Model:
 
             log_dict: dict[str, Any] = {}
             log_dict["user"] = prompt
-            log_dict["ai"] = url
+            log_dict["ai"] = link
             log_dict["date"] = time_end
             log_dict["duration"] = time_diff
             log_dict["model"] = args.image_model
