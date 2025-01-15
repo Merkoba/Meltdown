@@ -171,6 +171,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_link_menu",
+            action="store_false",
+            info="Don't show a menu when clicking links",
+        )
+
+        self.add_argument(
             "no_path_menu",
             action="store_false",
             info="Don't show a menu when clicking paths",
@@ -1405,6 +1411,13 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "markdown_link",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for links like [Click here](https://example.com)",
+        )
+
+        self.add_argument(
             "markdown_path",
             type=str,
             choices=self.markdown_choices,
@@ -1423,6 +1436,18 @@ class ArgSpec:
             type=str,
             choices=self.markdown_choices,
             info="Markdown mode for separators",
+        )
+
+        self.add_argument(
+            "markdown_join",
+            action="store_true",
+            info="Join multiple lines into a single line separated by a symbol",
+        )
+
+        self.add_argument(
+            "markdown_clean",
+            action="store_true",
+            info="Collapse multiple empty lines into one",
         )
 
         self.add_argument(
@@ -1558,6 +1583,12 @@ class ArgSpec:
             "url_effects",
             type=str,
             info=f"Effects to apply to URL text. {self.effects_info}",
+        )
+
+        self.add_argument(
+            "link_effects",
+            type=str,
+            info=f"Effects to apply to links. {self.effects_info}",
         )
 
         self.add_argument(
@@ -1712,18 +1743,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "join_lines_user",
-            action="store_true",
-            info="Join multiple lines into a single line separated by a symbol (User)",
-        )
-
-        self.add_argument(
-            "join_lines_ai",
-            action="store_true",
-            info="Join multiple lines into a single line separated by a symbol (AI)",
-        )
-
-        self.add_argument(
             "join_lines_symbol",
             type=str,
             info="The symbol used to join the lines",
@@ -1739,18 +1758,6 @@ class ArgSpec:
             "no_autoscroll_interrupt",
             action="store_false",
             info="Don't stop auto scroll on manual scrolling",
-        )
-
-        self.add_argument(
-            "clean_lines_user",
-            action="store_true",
-            info="Collapse multiple empty lines into one (User)",
-        )
-
-        self.add_argument(
-            "clean_lines_ai",
-            action="store_true",
-            info="Collapse multiple empty lines into one (AI)",
         )
 
         self.add_argument(

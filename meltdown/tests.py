@@ -176,6 +176,15 @@ class Tests:
             ],
         }
 
+        self.url_test: Test = {
+            "items": [
+                {
+                    "user": "This is a markdown URL",
+                    "ai": "[Click this URL](https://merkoba.com)",
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         test_name = f"{name}_test"
         obj = getattr(self, test_name)

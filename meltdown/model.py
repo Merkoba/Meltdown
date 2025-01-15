@@ -731,6 +731,7 @@ class Model:
             display.prompt("user", text=prompt, tab_id=tab_id, original=prompt)
             display.prompt("ai", text=args.generating_text, tab_id=tab_id)
             time_start = utils.now()
+            self.lock.acquire()
 
             response = self.openai_client.images.generate(  # type: ignore
                 n=1,
@@ -772,6 +773,8 @@ class Model:
         except BaseException as e:
             display.print("Error generating the image.")
             utils.error(e)
+
+        self.release_lock()
 
     def load_or_unload(self) -> None:
         if self.model_loading:

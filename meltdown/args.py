@@ -156,9 +156,12 @@ class Args:
         self.markdown_highlight = "both"
         self.markdown_quote = "both"
         self.markdown_url = "both"
+        self.markdown_link = "ai"
         self.markdown_path = "both"
         self.markdown_header = "ai"
         self.markdown_separator = "ai"
+        self.markdown_join = "none"
+        self.markdown_clean = "none"
 
         self.bold_effects = "bold"
         self.italic_effects = "italic_color"
@@ -167,6 +170,7 @@ class Args:
         self.quote_effects = "color"
         self.list_effects = "color"
         self.url_effects = "underline"
+        self.link_effects = "underline"
         self.path_effects = "underline"
         self.header_1_effects = "bold"
         self.header_2_effects = "bold"
@@ -222,6 +226,7 @@ class Args:
         self.name_menu = True
         self.word_menu = True
         self.url_menu = True
+        self.link_menu = True
         self.path_menu = True
         self.list_menu = True
         self.file = ""
@@ -286,11 +291,7 @@ class Args:
         self.variables: list[str] = []
         self.variable_prefix = "$"
         self.keep_empty_tab = True
-        self.join_lines_user = False
-        self.join_lines_ai = False
         self.join_lines_symbol = "👾"
-        self.clean_lines_user = False
-        self.clean_lines_ai = False
         self.delimiter = ":"
         self.pin_icon = "⭐"
         self.auto_sort_pins = False
@@ -362,6 +363,7 @@ class Args:
             ("no_name_menu", "name_menu"),
             ("no_word_menu", "word_menu"),
             ("no_url_menu", "url_menu"),
+            ("no_link_menu", "link_menu"),
             ("no_path_menu", "path_menu"),
             ("no_list_menu", "list_menu"),
             ("no_files_in_logs", "files_in_logs"),
@@ -445,7 +447,6 @@ class Args:
             "console_height",
             "console_vi",
             "verbose",
-            "markdown",
             "listen",
             "listen_file",
             "sticky",
@@ -507,6 +508,8 @@ class Args:
             "avatars_in_uploads",
             "durations",
             "separators",
+
+            "markdown",
             "markdown_snippets",
             "markdown_ordered",
             "markdown_unordered",
@@ -516,9 +519,13 @@ class Args:
             "markdown_highlight",
             "markdown_quote",
             "markdown_url",
+            "markdown_link",
             "markdown_path",
             "markdown_header",
             "markdown_separator",
+            "markdown_join",
+            "markdown_clean",
+
             "help_prompt",
             "explain_prompt",
             "new_prompt",
@@ -552,6 +559,7 @@ class Args:
             "quote_effects",
             "list_effects",
             "url_effects",
+            "link_effects",
             "path_effects",
             "header_1_effects",
             "header_2_effects",
@@ -579,11 +587,7 @@ class Args:
             "argfile",
             "max_items",
             "variable_prefix",
-            "join_lines_user",
-            "join_lines_ai",
             "join_lines_symbol",
-            "clean_lines_user",
-            "clean_lines_ai",
             "delimiter",
             "wrap_tabs",
             "pin_icon",

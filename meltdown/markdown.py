@@ -28,6 +28,8 @@ class Markdown:
     separator = "───────────────────"
     marker_indent_ordered = "\u200b\u200c\u200b"
     marker_indent_unordered = "\u200c\u200b\u200c"
+    urls: dict[str, str] = {}
+
     pattern_snippets: str
     pattern_bold: str
     pattern_italic_aster: str
@@ -38,6 +40,7 @@ class Markdown:
     pattern_uselink: str
     pattern_quote: str
     pattern_url: str
+    pattern_link: str
     pattern_path: str
     pattern_header_1: str
     pattern_header_2: str
@@ -133,13 +136,32 @@ class Markdown:
             r"(^|(?<=\n\n))[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
         )
 
+        # Word URL like [Click here](https://example.com)
+        Markdown.pattern_link = (
+            r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>https?://[^\)]+)\)(?:$|\s))"
+        )
+
     @staticmethod
     def escape_chars(chars: list[str], separator: str = "") -> str:
         clean = [utils.escape_regex(c) for c in chars]
         return separator.join(clean)
 
+    @staticmethod
+    def get_url_id(url: str) -> str | None:
+        for id_, value in Markdown.urls.items():
+            if value == url:
+                return id_
+
+        return None
+
+    @staticmethod
+    def get_url(url_id: str) -> str | None:
+        url_id = url_id.replace("link_", "")
+        return Markdown.urls.get(url_id)
+
     def __init__(self, widget: Output) -> None:
         self.widget = widget
+        self.not_nobody = ["clean", "join", "snippets", "ordered", "unordered"]
 
     def format_all(self) -> None:
         start_ln = 1
@@ -193,6 +215,9 @@ class Markdown:
 
     def enabled(self, who: str, what: str) -> bool:
         if who == "nobody":
+            if what in self.not_nobody:
+                return False
+
             return True
 
         arg = getattr(args, f"markdown_{what}")
@@ -212,11 +237,13 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        if self.clean_lines(start_ln, end_ln, who):
-            end_ln = self.next_marker(start_ln)
+        if self.enabled(who, "clean"):
+            if self.clean_lines(start_ln, end_ln, who):
+                end_ln = self.next_marker(start_ln)
 
-        if self.join_lines(start_ln, end_ln, who):
-            end_ln = self.next_marker(start_ln)
+        if self.enabled(who, "join"):
+            if self.join_lines(start_ln, end_ln, who):
+                end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "snippets"):
             if self.format_snippets(start_ln, end_ln):
@@ -260,6 +287,9 @@ class Markdown:
 
         if self.enabled(who, "quote"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_quote, "quote", True)
+
+        if self.enabled(who, "link"):
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_link, "link")
 
         if self.enabled(who, "url"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_url, "url")
@@ -308,6 +338,9 @@ class Markdown:
                 else:
                     content = item.group("content")
 
+                if tag == "link":
+                    url = item.group("url")
+
                 search_col = 0
 
                 if tag == "header_3":
@@ -344,6 +377,17 @@ class Markdown:
                 indices, key=lambda x: int(x.start.split(".")[1]), reverse=True
             )
 
+            tag2 = ""
+
+            if tag == "link":
+                url_id = Markdown.get_url_id(url)
+
+                if not url_id:
+                    url_id = f"url_{len(Markdown.urls)}"
+                    Markdown.urls[url_id] = url
+
+                tag2 = f"{tag}_{url_id}"
+
             for index_item in sorted_indices:
                 self.widget.delete(index_item.start, index_item.end)
                 self.widget.insert(index_item.start, index_item.content)
@@ -353,6 +397,13 @@ class Markdown:
                     index_item.start,
                     f"{index_item.start} + {len(index_item.content)}c",
                 )
+
+                if tag2:
+                    self.widget.tag_add(
+                        tag2,
+                        index_item.start,
+                        f"{index_item.start} + {len(index_item.content)}c",
+                    )
 
     def format_snippets(self, start_ln: int, end_ln: int) -> bool:
         from .snippet import Snippet
@@ -636,16 +687,7 @@ class Markdown:
         un_lines = get_lns(Markdown.marker_indent_unordered)
         add_tags(un_lines, "indent_unordered")
 
-    def check_who(self, what: str, who: str) -> bool:
-        if who == "nobody":
-            return False
-
-        return bool(getattr(args, f"{what}_{who}"))
-
     def join_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
-        if not self.check_who("join_lines", who):
-            return False
-
         lines = self.get_lines(start_ln, end_ln, who)
         lines = [line.strip() for line in lines]
         joined_lines = []
@@ -694,9 +736,6 @@ class Markdown:
         return True
 
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
-        if not self.check_who("clean_lines", who):
-            return False
-
         lines = self.get_lines(start_ln, end_ln, who)
         lines = [line.strip() for line in lines]
         cleaned = []

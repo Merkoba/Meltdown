@@ -462,6 +462,9 @@ class Output(tk.Text):
         if args.url_menu:
             self.tag_bind("url", "<ButtonRelease-1>", lambda e: self.on_url_click(e))
 
+        if args.link_menu:
+            self.tag_bind("link", "<ButtonRelease-1>", lambda e: self.on_link_click(e))
+
         if args.path_menu:
             self.tag_bind("path", "<ButtonRelease-1>", lambda e: self.on_path_click(e))
 
@@ -806,6 +809,17 @@ class Output(tk.Text):
 
         return ""  # Return an empty string if no tagged word is found
 
+    def get_link_url(self, event: Any) -> str | None:
+        from .markdown import Markdown
+
+        tags = event.widget.tag_names(tk.CURRENT)
+        link_tag = next((tag for tag in tags if tag.startswith("link_")), None)
+
+        if link_tag:
+            return Markdown.get_url(link_tag)
+
+        return None
+
     def get_selected_text(self, widget: tk.Text | None = None) -> str:
         if not widget:
             widget = self
@@ -911,6 +925,9 @@ class Output(tk.Text):
                     self.configure(cursor="hand2")
             elif any(tag in ["url"] for tag in tags):
                 if args.url_menu:
+                    self.configure(cursor="hand2")
+            elif any(tag in ["link"] for tag in tags):
+                if args.link_menu:
                     self.configure(cursor="hand2")
             elif any(tag in ["path"] for tag in tags):
                 if args.path_menu:
@@ -1179,6 +1196,7 @@ class Output(tk.Text):
         self.add_effects("quote")
         self.add_effects("list")
         self.add_effects("url")
+        self.add_effects("link")
         self.add_effects("path")
         self.add_effects("uselink")
         self.add_effects("header_1", app.theme.get_header_size(1))
@@ -1256,6 +1274,26 @@ class Output(tk.Text):
             return
 
         Output.words = self.get_tagwords("url", event)
+
+        if keyboard.ctrl:
+            Output.open_url()
+            return
+
+        menumanager.url_menu.show(event)
+
+    def on_link_click(self, event: Any) -> None:
+        from .keyboard import keyboard
+        from .menumanager import menumanager
+
+        if not args.url_menu:
+            return
+
+        url = self.get_link_url(event)
+
+        if not url:
+            return
+
+        Output.words = url
 
         if keyboard.ctrl:
             Output.open_url()
