@@ -3,8 +3,9 @@ from __future__ import annotations
 # Standard
 import tkinter as tk
 from typing import Any
-from collections.abc import Callable
 from pathlib import Path
+from collections.abc import Callable
+from dataclasses import dataclass
 
 # Modules
 from .app import app
@@ -24,6 +25,7 @@ KbCmd = Callable[..., Any] | None
 KbHelp = str | None
 
 
+@dataclass
 class KbItem:
     def __init__(
         self,

@@ -4,6 +4,7 @@ from __future__ import annotations
 import tkinter as tk
 from typing import Any
 from collections.abc import Callable
+from dataclasses import dataclass
 
 # Modules
 from .app import app
@@ -14,6 +15,7 @@ from .widgetutils import widgetutils
 from .tips import tips
 
 
+@dataclass
 class TabWidget:
     def __init__(
         self,

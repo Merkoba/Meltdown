@@ -4,6 +4,7 @@ from __future__ import annotations
 import re
 from typing import Any
 from pathlib import Path
+from dataclasses import dataclass
 
 # Modules
 from .app import app
@@ -15,12 +16,14 @@ from .utils import utils
 from .files import files
 
 
+@dataclass
 class QueueItem:
     def __init__(self, cmd: str, argument: str) -> None:
         self.cmd = cmd
         self.argument = argument
 
 
+@dataclass
 class Queue:
     def __init__(self, items: list[QueueItem], wait: float = 0.0) -> None:
         self.items = items

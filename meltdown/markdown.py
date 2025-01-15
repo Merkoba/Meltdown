@@ -3,6 +3,7 @@ from __future__ import annotations
 # Standard
 import re
 from typing import Any, ClassVar
+from dataclasses import dataclass
 
 # Modules
 from .args import args
@@ -11,12 +12,14 @@ from .output import Output
 from .utils import utils
 
 
+@dataclass
 class MatchItem:
     def __init__(self, line: int, items: list[re.Match[Any]]) -> None:
         self.line = line
         self.items = items
 
 
+@dataclass
 class IndexItem:
     def __init__(self, start: str, end: str, content: str) -> None:
         self.start = start

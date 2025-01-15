@@ -3,6 +3,7 @@ from __future__ import annotations
 # Standard
 import tkinter as tk
 from typing import Any, TYPE_CHECKING
+from dataclasses import dataclass
 
 # Modules
 from .app import app
@@ -80,6 +81,7 @@ class Tab:
         return self.page.pin
 
 
+@dataclass
 class TabConvo:
     def __init__(self, tab: Tab, convo: Conversation) -> None:
         self.tab = tab
