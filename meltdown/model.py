@@ -753,7 +753,7 @@ class Model:
             time_end = utils.now()
             time_diff = time_end - time_start
 
-            time_num = int(time_start - time_end)
+            time_num = int(time_end - time_start)
             seconds = utils.singular_or_plural(time_num, "sec", "secs")
             time_str = f"Image generated in {time_num} {seconds}"
             link = f"[{time_str}]({url})"
