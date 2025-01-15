@@ -24,6 +24,7 @@ class MenuManager:
         self.word_menu: Any = None
         self.selection_menu: Any = None
         self.url_menu: Any = None
+        self.link_menu: Any = None
         self.custom_menu: Any = None
         self.copy_menu: Any = None
 

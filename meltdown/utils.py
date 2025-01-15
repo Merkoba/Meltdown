@@ -32,7 +32,7 @@ class Utils:
         self.error_logger: logging.Logger | None = None
         self.console = Console()
         self.nouns: list[str] = []
-        self.protocols = ("http://", "https://")
+        self.protocols = ("https://", "http://")
         self.upload_service = "https://rentry.org"
 
     def similarity(self, a: str, b: str) -> float:
@@ -607,6 +607,13 @@ class Utils:
         num = int(time_end - time_start)
         secs = utils.singular_or_plural(num, "sec", "secs")
         return f"Image generated in {num} {secs}"
+
+    def fix_url(self, url: str) -> str:
+        for protocol in self.protocols:
+            if url.startswith(protocol):
+                return url
+
+        return f"{self.protocols[1]}{url}"
 
 
 utils = Utils()

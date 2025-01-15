@@ -458,6 +458,7 @@ class App:
     def open_url(self, url: str) -> None:
         from .args import args
 
+        url = utils.fix_url(url)
         self.open_generic(url, args.browser)
 
     def open_generic(self, arg: str, opener: str | None = None) -> None:
