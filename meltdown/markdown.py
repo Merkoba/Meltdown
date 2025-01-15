@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import re
-from typing import Any
+from typing import Any, ClassVar
 
 # Modules
 from .args import args
@@ -28,7 +28,7 @@ class Markdown:
     separator = "───────────────────"
     marker_indent_ordered = "\u200b\u200c\u200b"
     marker_indent_unordered = "\u200c\u200b\u200c"
-    urls: dict[str, str] = {}
+    urls: ClassVar[dict[str, str]] = {}
 
     pattern_snippets: str
     pattern_bold: str
@@ -137,9 +137,7 @@ class Markdown:
         )
 
         # Word URL like [Click here](https://example.com)
-        Markdown.pattern_link = (
-            r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>https?://[^\)]+)\)(?:$|\s))"
-        )
+        Markdown.pattern_link = r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>https?://[^\)]+)\)(?:$|\s))"
 
     @staticmethod
     def escape_chars(chars: list[str], separator: str = "") -> str:
@@ -215,10 +213,7 @@ class Markdown:
 
     def enabled(self, who: str, what: str) -> bool:
         if who == "nobody":
-            if what in self.not_nobody:
-                return False
-
-            return True
+            return what not in self.not_nobody
 
         arg = getattr(args, f"markdown_{what}")
 
@@ -329,6 +324,7 @@ class Markdown:
         for mtch in reversed(matches):
             items = mtch.items
             indices: list[IndexItem] = []
+            url = ""
 
             for item in reversed(items):
                 all_ = item.group("all")

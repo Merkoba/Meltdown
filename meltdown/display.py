@@ -969,6 +969,8 @@ class Display:
         self.update_session()
 
     def stream_started(self, tab_id: str) -> None:
+        app.streaming = True
+
         if not args.tab_highlight:
             return
 
@@ -978,6 +980,8 @@ class Display:
         self.tab_streaming = tab_id
 
     def stream_stopped(self) -> None:
+        app.streaming = False
+
         if not args.tab_highlight:
             return
 

@@ -508,7 +508,6 @@ class Args:
             "avatars_in_uploads",
             "durations",
             "separators",
-
             "markdown",
             "markdown_snippets",
             "markdown_ordered",
@@ -525,7 +524,6 @@ class Args:
             "markdown_separator",
             "markdown_join",
             "markdown_clean",
-
             "help_prompt",
             "explain_prompt",
             "new_prompt",

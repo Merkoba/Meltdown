@@ -751,14 +751,21 @@ class Model:
                 return
 
             time_end = utils.now()
+            time_diff = time_end - time_start
+
+            time_num = int(time_start - time_end)
+            seconds = utils.singular_or_plural(time_num, "sec", "secs")
+            time_str = f"Image generated in {time_num} {seconds}"
+            link = f"[{time_str}]({url})"
+
             display.remove_last_ai(tab_id)
-            display.prompt("ai", text=url, tab_id=tab_id)
+            display.prompt("ai", text=link, tab_id=tab_id)
 
             log_dict: dict[str, Any] = {}
             log_dict["user"] = prompt
             log_dict["ai"] = url
             log_dict["date"] = time_end
-            log_dict["duration"] = time_end - time_start
+            log_dict["duration"] = time_diff
             log_dict["model"] = args.image_model
             log_dict["seed"] = config.seed
             log_dict["history"] = config.history
