@@ -25,6 +25,7 @@ class Output(tk.Text):
     marker_space = "\u00a0"
     clicked_who = ""
     words = ""
+    url = ""
 
     @staticmethod
     def current_output() -> Output | None:
@@ -114,10 +115,10 @@ class Output(tk.Text):
 
     @staticmethod
     def open_url() -> None:
-        words = Output.get_words()
+        url = Output.get_url()
 
-        if words:
-            app.open_url(words)
+        if url:
+            app.open_url(url)
 
     @staticmethod
     def repeat_prompt(no_history: bool = False) -> None:
@@ -135,10 +136,13 @@ class Output(tk.Text):
         return Output.words.strip()
 
     @staticmethod
+    def get_url() -> str:
+        return Output.url.strip()
+
+    @staticmethod
     def use_url() -> None:
-        words = Output.get_words()
-        words = words.rstrip(".,:;")
-        filecontrol.set(words)
+        url = Output.get_url()
+        filecontrol.set(url)
 
     @staticmethod
     def use_words() -> None:
@@ -169,6 +173,17 @@ class Output(tk.Text):
         text = Output.get_words()
         output.deselect_all()
         utils.copy(text, command=True)
+
+    @staticmethod
+    def copy_url() -> None:
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        url = Output.get_url()
+        output.deselect_all()
+        utils.copy(url, command=True)
 
     @staticmethod
     def copy_selection() -> None:
@@ -1273,7 +1288,7 @@ class Output(tk.Text):
         if not args.url_menu:
             return
 
-        Output.words = self.get_tagwords("url", event)
+        Output.url = self.get_tagwords("url", event)
 
         if keyboard.ctrl:
             Output.open_url()
@@ -1293,13 +1308,14 @@ class Output(tk.Text):
         if not url:
             return
 
-        Output.words = url
+        Output.words = self.get_tagwords("link", event)
+        Output.url = url
 
         if keyboard.ctrl:
             Output.open_url()
             return
 
-        menumanager.url_menu.show(event)
+        menumanager.link_menu.show(event)
 
     def on_path_click(self, event: Any) -> None:
         from .keyboard import keyboard

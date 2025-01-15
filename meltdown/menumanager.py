@@ -350,10 +350,10 @@ class ItemMenu:
 
         self.menu.clear()
         num_items = display.get_num_items()
-        self.menu.add(text="Use", command=lambda e: Output.use_item())
         self.menu.add(text="Copy", command=lambda e: self.parent.copy_menu.show(e))
         self.menu.add(text="Select", command=lambda e: Output.select_item())
         self.menu.add(text="Information", command=lambda e: Output.show_info())
+        self.menu.add(text="Use", command=lambda e: Output.use_item())
         self.menu.separator()
         self.menu.add(text="Delete", command=lambda e: Output.delete_items())
 
@@ -396,11 +396,11 @@ class WordMenu:
         self.parent = parent
         self.menu = Menu()
 
-        self.menu.add(text="Use", command=lambda e: Output.use_words())
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
+        self.menu.add(text="Use", command=lambda e: Output.use_words())
 
         if args.custom_prompts:
             self.menu.separator()
@@ -464,8 +464,32 @@ class UrlMenu:
         self.menu = Menu()
 
         self.menu.add(text="Open", command=lambda e: Output.open_url())
-        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Copy", command=lambda e: Output.copy_url())
         self.menu.add(text="Use", command=lambda e: Output.use_url())
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            return
+
+
+class LinkMenu:
+    def __init__(self, parent: MenuManager) -> None:
+        from .output import Output
+
+        self.parent = parent
+        self.menu = Menu()
+
+        self.menu.add(text="Open", command=lambda e: Output.open_url())
+        self.menu.add(text="Copy", command=lambda e: Output.copy_url())
+        self.menu.add(text="Use", command=lambda e: Output.use_url())
+        self.menu.separator()
+        self.menu.add(text="Copy", command=lambda e: Output.copy_words())
+        self.menu.add(text="Explain", command=lambda e: Output.explain_words())
+        self.menu.add(text="Search", command=lambda e: Output.search_words())
+        self.menu.add(text="New", command=lambda e: Output.new_tab())
+        self.menu.add(text="Use", command=lambda e: Output.use_words())
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -528,5 +552,6 @@ menumanager.item_menu = ItemMenu(menumanager)
 menumanager.word_menu = WordMenu(menumanager)
 menumanager.selection_menu = SelectionMenu(menumanager)
 menumanager.url_menu = UrlMenu(menumanager)
+menumanager.link_menu = LinkMenu(menumanager)
 menumanager.custom_menu = CustomMenu(menumanager)
 menumanager.copy_menu = CopyMenu(menumanager)

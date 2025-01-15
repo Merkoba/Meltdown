@@ -140,7 +140,7 @@ class Markdown:
         )
 
         # Word URL like [Click here](https://example.com)
-        Markdown.pattern_link = r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>https?://[^\)]+)\)(?:$|\s))"
+        Markdown.pattern_link = r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>[^\)]+)\)(?:$|\s))"
 
     @staticmethod
     def escape_chars(chars: list[str], separator: str = "") -> str:
