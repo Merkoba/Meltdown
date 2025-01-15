@@ -603,5 +603,10 @@ class Utils:
 
         return key, value
 
+    def time_in(self, text: str, time_start: int, time_end: int) -> str:
+        num = int(time_end - time_start)
+        secs = utils.singular_or_plural(num, "sec", "secs")
+        return f"Image generated in {num} {secs}"
+
 
 utils = Utils()
