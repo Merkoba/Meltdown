@@ -979,7 +979,7 @@ class Display:
         self.set_tab_streaming(tab_id)
         self.tab_streaming = tab_id
 
-    def stream_stopped(self) -> None:
+    def stream_ended(self) -> None:
         app.streaming = False
 
         if not args.tab_highlight:

@@ -817,7 +817,7 @@ class App:
         elif self.streaming:
             self.streaming = False
             widgets.disable_stop_button()
-            display.stream_stopped()
+            display.stream_ended()
             commands.after_stream()
             self.check_response_file()
             self.check_response_program()
