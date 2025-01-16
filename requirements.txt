@@ -1,9 +1,9 @@
-psutil == 5.9.8
+psutil == 6.1.1
 appdirs == 1.4.4
-openai == 1.57.4
-Pygments == 2.18.0
-pillow == 10.3.0
-prompt-toolkit == 3.0.46
-rich == 13.7.1
-requests == 2.31.0
+openai == 1.59.7
+Pygments == 2.19.1
+pillow == 11.1.0
+prompt-toolkit == 3.0.48
+rich == 13.9.4
+requests == 2.32.3
 watchdog == 6.0.0

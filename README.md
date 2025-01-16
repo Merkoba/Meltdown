@@ -133,9 +133,9 @@ You can use `scripts/venv.sh` to automate this.
 
 ---
 
-To add local model support run `scripts/venv_llama.sh`.
+To add local model support run `scripts/add_llama.sh`.
 
-There's a `scripts/venv_llama_amd.sh` to install with `Vulkan` support for `AMD`.
+There's a `scripts/add_llama_amd.sh` to install with `Vulkan` support for `AMD`.
 
 Pick one of those for local model support.
 
