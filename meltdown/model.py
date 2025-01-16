@@ -367,6 +367,7 @@ class Model:
         def wrapper(prompt: dict[str, str], tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
+            app.do_checks()
             self.do_stream(prompt, tab_id)
             self.streaming = False
 
@@ -719,6 +720,7 @@ class Model:
         def wrapper(prompt: str, tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
+            app.do_checks()
             self.do_generate_image(prompt, tab_id)
             self.streaming = False
 
