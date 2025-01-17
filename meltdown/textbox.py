@@ -197,6 +197,7 @@ class TextBox(tk.Text):
         line = int(insert_index.split(".")[0])
         s_index = f"{line}.{index}"
         self.insert(s_index, text)
+        self.changes.on_change()
 
     def on_left(self) -> str:
         from .keyboard import keyboard

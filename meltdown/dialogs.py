@@ -354,7 +354,7 @@ class Dialog:
 
         dialog.show()
         dialog.highlight_no_button()
-        textbox.insert(tk.END, value)
+        textbox.insert_text(value)
         textbox.focus_set()
 
         Dialog.current_textbox = textbox
