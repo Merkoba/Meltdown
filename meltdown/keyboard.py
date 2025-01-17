@@ -9,6 +9,8 @@ from dataclasses import dataclass
 
 # Modules
 from .app import app
+from .args import args
+from .config import config
 from .modelcontrol import modelcontrol
 from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
@@ -16,7 +18,6 @@ from .display import display
 from .model import model
 from .commands import commands
 from .tooltips import ToolTip
-from .args import args
 from .utils import utils
 from .files import files
 
@@ -294,7 +295,8 @@ class Keyboard:
         def on_enter() -> None:
             if widgets.find_focused():
                 findmanager.find_next()
-            elif widgets.model_focused():
+            elif modelcontrol.is_focused():
+                config.update("model")
                 model.load()
             else:
                 inputcontrol.focus()

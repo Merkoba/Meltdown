@@ -593,17 +593,6 @@ class Widgets:
 
         return False
 
-    def model_focused(self) -> bool:
-        focused = app.focused()
-
-        if not focused:
-            return False
-
-        if isinstance(focused, EntryBox):
-            return focused == self.model
-
-        return False
-
     def esckey(self) -> None:
         from .display import display
 

@@ -119,6 +119,11 @@ No need to greet me, just answer.
             "logits",
         ]
 
+        self.path_keys = [
+            "model",
+            "file",
+        ]
+
         self.modes = ["text", "image"]
 
         self.validations: dict[str, Callable[..., Any]] = {
@@ -354,7 +359,12 @@ No need to greet me, just answer.
         widget = getattr(widgets, key)
 
         if widget:
-            return self.set(key, widget.get())
+            value = widget.get()
+
+            if key in self.path_keys:
+                value = utils.clean_path(value)
+
+            return self.set(key, value)
 
         return False
 

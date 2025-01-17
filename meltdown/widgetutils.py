@@ -79,9 +79,7 @@ class WidgetUtils:
         width: int | None = None,
     ) -> EntryBox:
         w = width if width else app.theme.entry_width
-
         widget = EntryBox(frame_data.frame, width=w, style="Normal.TEntry")
-
         self.do_grid(widget, col=frame_data.col)
         frame_data.col += 1
 

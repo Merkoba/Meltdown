@@ -6,6 +6,7 @@ from typing import Any
 from tkinter import filedialog
 
 # Modules
+from .app import app
 from .config import config
 from .model import model
 from .entrybox import EntryBox
@@ -118,6 +119,17 @@ class ModelControl:
             if name in item.lower():
                 self.set(item)
                 return
+
+    def is_focused(self) -> bool:
+        focused = app.focused()
+
+        if not focused:
+            return False
+
+        if isinstance(focused, EntryBox):
+            return focused == self.model
+
+        return False
 
 
 modelcontrol = ModelControl()
