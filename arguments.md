@@ -148,6 +148,14 @@ Action: store_false
 
 ---
 
+### no-link-menu
+
+Don't show a menu when clicking links
+
+Action: store_false
+
+---
+
 ### no-path-menu
 
 Don't show a menu when clicking paths
@@ -2096,6 +2104,18 @@ Type: str
 
 ---
 
+### markdown-link
+
+Markdown mode for links like [Click here](https://example.com)
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
 ### markdown-path
 
 Markdown mode for paths
@@ -2129,6 +2149,26 @@ Default: "ai"
 Choices: "user", "ai", "both", "none"
 
 Type: str
+
+---
+
+### markdown-join
+
+Join multiple lines into a single line separated by a symbol
+
+Default: "none"
+
+Action: store_true
+
+---
+
+### markdown-clean
+
+Collapse multiple empty lines into one
+
+Default: "none"
+
+Action: store_true
 
 ---
 
@@ -2351,6 +2391,16 @@ Type: str
 ### url-effects
 
 Effects to apply to URL text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
+
+Default: "underline"
+
+Type: str
+
+---
+
+### link-effects
+
+Effects to apply to links. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "underline"
 
@@ -2606,26 +2656,6 @@ Action: store_false
 
 ---
 
-### join-lines-user
-
-Join multiple lines into a single line separated by a symbol (User)
-
-Default: False
-
-Action: store_true
-
----
-
-### join-lines-ai
-
-Join multiple lines into a single line separated by a symbol (AI)
-
-Default: False
-
-Action: store_true
-
----
-
 ### join-lines-symbol
 
 The symbol used to join the lines
@@ -2651,26 +2681,6 @@ Type: str
 Don't stop auto scroll on manual scrolling
 
 Action: store_false
-
----
-
-### clean-lines-user
-
-Collapse multiple empty lines into one (User)
-
-Default: False
-
-Action: store_true
-
----
-
-### clean-lines-ai
-
-Collapse multiple empty lines into one (AI)
-
-Default: False
-
-Action: store_true
 
 ---
 
