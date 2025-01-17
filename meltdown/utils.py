@@ -615,8 +615,5 @@ class Utils:
 
         return f"{self.protocols[1]}{url}"
 
-    def clean_path(self, path: str) -> str:
-        return path.replace("file://", "", 1)
-
 
 utils = Utils()

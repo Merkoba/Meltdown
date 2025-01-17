@@ -352,6 +352,7 @@ No need to greet me, just answer.
 
     def update(self, key: str) -> bool:
         from .widgets import widgets
+        from .files import files
 
         if not hasattr(self, key):
             return False
@@ -362,7 +363,7 @@ No need to greet me, just answer.
             value = widget.get()
 
             if key in self.path_keys:
-                value = utils.clean_path(value)
+                value = files.clean_path(value)
 
             return self.set(key, value)
 

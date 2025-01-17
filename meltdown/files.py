@@ -134,7 +134,7 @@ class Files:
             file.write(text)
 
     def clean_path(self, path: str) -> str:
-        return path.replace("file://", "")
+        return path.replace("file://", "", 1)
 
     def full_name(self, name: str, ext: str = "json") -> str:
         if name.endswith(f".{ext}"):
