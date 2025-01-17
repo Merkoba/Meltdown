@@ -1099,7 +1099,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "prefix",
+            "command_prefix",
             type=str,
             info="Character used to prefix commands like /",
         )

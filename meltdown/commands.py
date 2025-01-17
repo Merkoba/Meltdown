@@ -35,9 +35,10 @@ class Commands:
         self.commands: dict[str, dict[str, Any]] = {}
         self.loop_delay = 25
         self.queues: list[Queue] = []
+        self.aliases: dict[str, str] = {}
 
     def setup(self) -> None:
-        prefix = utils.escape_regex(args.prefix)
+        prefix = utils.escape_regex(args.command_prefix)
         andchar = utils.escape_regex(args.andchar)
         self.cmd_pattern = rf"{andchar}(?= {prefix}\w+)"
 
@@ -106,8 +107,6 @@ class Commands:
             self.commands[key]["date"] = 0.0
 
     def make_aliases(self) -> None:
-        self.aliases = {}
-
         for alias in args.aliases:
             key, value = utils.cmd_value(alias)
 
@@ -116,6 +115,43 @@ class Commands:
 
             self.aliases[key] = value
 
+    def set_alias(self, cmd: str) -> None:
+        from .display import display
+
+        def fmt() -> None:
+            display.print("Format: [name] [value]")
+
+        if " " not in cmd:
+            fmt()
+            return
+
+        name, value = utils.cmd_value(cmd)
+
+        if (not name) or (not value):
+            fmt()
+            return
+
+        self.aliases[name] = value
+        prefix = args.command_prefix
+        display.print(f"Set Alias: `{prefix}{name}` is now `{value}`", do_format=True)
+
+    def unset_alias(self, name: str) -> None:
+        from .display import display
+
+        if name in self.aliases:
+            del self.aliases[name]
+            display.print(f"Unset Alias: {name}")
+        else:
+            display.print(f"Alias not found: {name}")
+
+    def read_alias(self, name: str) -> None:
+        from .display import display
+
+        if name in self.aliases:
+            display.print(f"Alias: `{name}` is `{self.aliases[name]}`", do_format=True)
+        else:
+            display.print(f"Alias not found: {name}")
+
     def is_command(self, text: str) -> bool:
         if len(text) < 2:
             return False
@@ -123,7 +159,7 @@ class Commands:
         if "\n" in text:
             return False
 
-        with_prefix = text.startswith(args.prefix)
+        with_prefix = text.startswith(args.command_prefix)
         second_char = text[1:2]
         return with_prefix and second_char.isalpha()
 
@@ -272,7 +308,7 @@ class Commands:
         self.palette.show(widget=widgets.main_menu_button)
 
     def cmd(self, text: str) -> str:
-        return args.prefix + text
+        return args.command_prefix + text
 
     def load_file(self) -> None:
         if (not paths.commands.exists()) or (not paths.commands.is_file()):

@@ -133,7 +133,7 @@ class AutoComplete:
                     self.matches.append(w)
 
     def clean(self, text: str) -> str:
-        if text.startswith(args.prefix):
+        if text.startswith(args.command_prefix):
             return text[1:]
 
         if text.startswith(args.variable_prefix):

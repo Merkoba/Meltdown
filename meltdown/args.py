@@ -89,7 +89,7 @@ class Args:
         self.tab_highlight = True
         self.quiet = False
         self.delay = 0.1
-        self.prefix = "/"
+        self.command_prefix = "/"
         self.andchar = "&"
         self.commands = True
         self.compact = False
@@ -434,7 +434,7 @@ class Args:
             "system_suspend",
             "quiet",
             "delay",
-            "prefix",
+            "command_prefix",
             "andchar",
             "compact_system",
             "compact_details_1",
@@ -636,9 +636,9 @@ class Args:
         def add(num: int, func: str, shift: bool = False) -> None:
             if shift:
                 if not getattr(self, f"shift_f{num}"):
-                    setattr(self, f"shift_f{num}", self.prefix + func)
+                    setattr(self, f"shift_f{num}", self.command_prefix + func)
             elif not getattr(self, f"f{num}"):
-                setattr(self, f"f{num}", self.prefix + func)
+                setattr(self, f"f{num}", self.command_prefix + func)
 
         add(1, "help")
         add(2, "findprev")
@@ -663,19 +663,19 @@ class Args:
 
     def fill_gestures(self) -> None:
         if not self.gestures_left:
-            self.gestures_left = f"{self.prefix}left"
+            self.gestures_left = f"{self.command_prefix}left"
 
         if not self.gestures_right:
-            self.gestures_right = f"{self.prefix}right"
+            self.gestures_right = f"{self.command_prefix}right"
 
         if not self.gestures_up:
-            self.gestures_up = f"{self.prefix}top"
+            self.gestures_up = f"{self.command_prefix}top"
 
         if not self.gestures_down:
-            self.gestures_down = f"{self.prefix}bottom"
+            self.gestures_down = f"{self.command_prefix}bottom"
 
         if not self.taps_command:
-            self.taps_command = f"{self.prefix}palette"
+            self.taps_command = f"{self.command_prefix}palette"
 
     def show_help(
         self, tab_id: str | None = None, filter_text: str | None = None

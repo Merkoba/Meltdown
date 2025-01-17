@@ -1052,19 +1052,19 @@ Set an argument while the program is running
 
 ---
 
-### set
+### setvar
 
-Set a variable. For example: /set x = the world. Then use it with $x
+Set a variable. For example: /setvar x the world. Then use it with $x
 
 ---
 
-### unset
+### unsetvar
 
 Unset a variable
 
 ---
 
-### var
+### readvar
 
 Read the content of a variable
 
@@ -1127,3 +1127,21 @@ Place the pins at the end of the list
 ### image
 
 Generate an image through a prompt
+
+---
+
+### setalias
+
+Set an alias. For example: /setalias pro /loadconfig pro
+
+---
+
+### unsetalias
+
+Unset an alias
+
+---
+
+### readalias
+
+Read the content of an alias

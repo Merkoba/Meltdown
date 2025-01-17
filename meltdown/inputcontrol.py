@@ -419,14 +419,14 @@ class InputControl:
 
         self.variables[name] = value
         prefix = args.variable_prefix
-        display.print(f"Set: `{prefix}{name}` now means `{value}`", do_format=True)
+        display.print(f"Set Var: `{prefix}{name}` is now `{value}`", do_format=True)
 
     def unset_variable(self, name: str) -> None:
         from .display import display
 
         if name in self.variables:
             del self.variables[name]
-            display.print(f"Unset: {name}")
+            display.print(f"Unset Var: {name}")
         else:
             display.print(f"Variable not found: {name}")
 
@@ -434,7 +434,7 @@ class InputControl:
         from .display import display
 
         if name in self.variables:
-            display.print(f"{name} = {self.variables[name]}")
+            display.print(f"Var: `{name}` is `{self.variables[name]}`", do_format=True)
         else:
             display.print(f"Variable not found: {name}")
 

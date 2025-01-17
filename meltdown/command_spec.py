@@ -1095,21 +1095,21 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "set",
-            "Set a variable. For example: /set x = the world. Then use it with $x",
+            "setvar",
+            "Set a variable. For example: /setvar x the world. Then use it with $x",
             lambda a=None: inputcontrol.set_variable(a),
             type=str,
         )
 
         self.add_cmd(
-            "unset",
+            "unsetvar",
             "Unset a variable",
             lambda a=None: inputcontrol.unset_variable(a),
             type=str,
         )
 
         self.add_cmd(
-            "var",
+            "readvar",
             "Read the content of a variable",
             lambda a=None: inputcontrol.read_variable(a),
             type=str,
@@ -1175,6 +1175,27 @@ class CommandSpec:
             "image",
             "Generate an image through a prompt",
             lambda a=None: model.generate_image(prompt=a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "setalias",
+            "Set an alias. For example: /setalias pro /loadconfig pro",
+            lambda a=None: commands.set_alias(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "unsetalias",
+            "Unset an alias",
+            lambda a=None: commands.unset_alias(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "readalias",
+            "Read the content of an alias",
+            lambda a=None: commands.read_alias(a),
             type=str,
         )
 

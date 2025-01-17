@@ -33,7 +33,7 @@ class SlashCompleter(Completer):  # type: ignore
         if not text:
             return
 
-        if text.startswith(args.prefix):
+        if text.startswith(args.command_prefix):
             for word in words:
                 if word.startswith(text):
                     yield Completion(word, start_position=-len(text))

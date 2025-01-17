@@ -9,7 +9,7 @@ from .utils import utils
 
 
 class Task:
-    prefix = utils.escape_regex(args.prefix)
+    prefix = utils.escape_regex(args.command_prefix)
     pattern = rf"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
 
     def __init__(self, seconds: int, cmds: str, now: bool) -> None:
