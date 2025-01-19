@@ -94,7 +94,7 @@ class Markdown:
         Markdown.pattern_highlight = build_token_1(tick, 1)
 
         # Highlight with one double-quote
-        Markdown.pattern_quote = build_token_2(quote, 1)
+        Markdown.pattern_quote = build_token_1(quote, 1)
 
         # Code snippets / fences
         # Capture stuff that could repeat BUT that has the slim
