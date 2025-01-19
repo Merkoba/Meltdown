@@ -74,7 +74,7 @@ class Markdown:
         uselink = utils.escape_regex("%@")
 
         def build_token(token: str, num: int) -> str:
-            return rf"{left}(?P<all>{token}{{{num}}}(?P<content>(?:[^{token}]|{token}(?!\b\w+{token}))*?){token}{{{num}}}){right}"
+            return rf"(?:(?<=\s)|^|\(|\[|/)(?P<all>{token}{{{num}}}(?P<content>(?:[^{token}\\]|\\.)*?){token}{{{num}}})(?=\s|$|\.|,|;|!|\?|:|/|\)|\]|…)"
 
         # Bold with two asterisks
         Markdown.pattern_bold = build_token(aster, 2)

@@ -185,6 +185,19 @@ class Tests:
             ],
         }
 
+        self.escape_test: Test = {
+            "items": [
+                {
+                    "user": "Escape test",
+                    "ai": '"hello\\"world"',
+                },
+                {
+                    "user": "Normal",
+                    "ai": '"hello world"',
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         test_name = f"{name}_test"
         obj = getattr(self, test_name)
