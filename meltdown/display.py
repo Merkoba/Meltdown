@@ -1314,7 +1314,7 @@ class Display:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
-            return False
+            return
 
         user_text = "Say this"
         log_dict: dict[str, Any] = {}

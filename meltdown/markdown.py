@@ -34,7 +34,8 @@ class Markdown:
     urls: ClassVar[dict[str, str]] = {}
 
     pattern_snippets: str
-    pattern_bold: str
+    pattern_bold_aster: str
+    pattern_bold_under: str
     pattern_italic_aster: str
     pattern_italic_under: str
     pattern_highlight: str
@@ -259,9 +260,7 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_aster, "bold")
 
         if self.enabled(who, "bold_underscore"):
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_bold_under, "italic"
-            )
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_under, "italic")
 
         if self.enabled(who, "italic_asterisk"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_aster, "bold")
