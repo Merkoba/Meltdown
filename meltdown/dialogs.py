@@ -218,9 +218,10 @@ class Dialog:
                 dialog.highlight_last_button()
 
         dialog.show()
+        app.update()
 
         if dialog.entry:
-            dialog.entry.focus_end()
+            app.root.after(0, lambda: dialog.entry.focus_end())
 
     @staticmethod
     def show_confirm(
