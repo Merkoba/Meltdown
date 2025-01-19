@@ -65,7 +65,7 @@ class Markdown:
         uselink = utils.escape_regex("%@")
 
         def build_token_1(token: str, num: int) -> str:
-            return rf"(?P<all>{token}{{{num}}}(?P<content>.+?){token}{{{num}}})"
+            return rf"(?P<all>{token}{{{num}}}(?P<content>\S.*?\S){token}{{{num}}})"
 
         def build_token_2(token: str, num: int) -> str:
             return rf"(?<!\w)(?P<all>{token}{{{num}}}(?!\s)(?P<content>.+?)(?<!\s){token}{{{num}}})(?!\w)"
