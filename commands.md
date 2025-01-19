@@ -1145,3 +1145,9 @@ Unset an alias
 ### readalias
 
 Read the content of an alias
+
+---
+
+### say
+
+Say something exactly as it is

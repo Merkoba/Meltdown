@@ -1582,7 +1582,7 @@ Type: float
 
 ---
 
-### prefix
+### command-prefix
 
 Character used to prefix commands like /
 
@@ -2056,9 +2056,21 @@ Type: str
 
 ---
 
-### markdown-bold
+### markdown-bold-asterisk
 
-Markdown mode for bold
+Markdown mode for bold with asterisk
+
+Default: "ai"
+
+Choices: "user", "ai", "both", "none"
+
+Type: str
+
+---
+
+### markdown-bold-underscore
+
+Markdown mode for bold with underscores
 
 Default: "ai"
 
