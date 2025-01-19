@@ -53,15 +53,7 @@ class Markdown:
 
     @staticmethod
     def build_patterns() -> None:
-        chars_left = ["(", "[", "/"]
-        left_string = Markdown.escape_chars(chars_left, "|")
-        left = rf"(?:(?<=\s)|^|{left_string})"
-
-        chars_right = [".", ",", ";", "!", "?", ":", "/", ")", "]", "…"]
-        right_string = Markdown.escape_chars(chars_right, "|")
-        right = rf"(?=\s|$|{right_string})"
-
-        protocols_list = ["http://", "https://", "www.", "ftp://", "sftp://", "ssh://"]
+        protocols_list = ["https://", "http://", "www.", "ftp://", "sftp://", "ssh://"]
         protocols_string = Markdown.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
 
@@ -104,9 +96,7 @@ class Markdown:
         Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
-        Markdown.pattern_uselink = (
-            rf"{left}(?P<all>{uselink}(?P<content>.*?){uselink}){right}"
-        )
+        Markdown.pattern_uselink = build_token_1(uselink, 1)
 
         # URLs with http:// | https:// | ftp:// | www.
         Markdown.pattern_url = (
