@@ -1199,5 +1199,12 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "say",
+            "Say something exactly as it is",
+            lambda a=None: display.say(a),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

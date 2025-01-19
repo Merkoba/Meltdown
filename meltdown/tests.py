@@ -188,12 +188,20 @@ class Tests:
         self.escape_test: Test = {
             "items": [
                 {
+                    "user": "Normal",
+                    "ai": '"hello world"',
+                },
+                {
                     "user": "Escape test",
                     "ai": '"hello\\"world"',
                 },
                 {
-                    "user": "Normal",
-                    "ai": '"hello world"',
+                    "user": "Escape test",
+                    "ai": "*hello\\*world*",
+                },
+                {
+                    "user": "Escape test",
+                    "ai": "`hello\\`world`",
                 },
             ],
         }

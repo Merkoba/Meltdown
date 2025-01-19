@@ -1383,10 +1383,17 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "markdown_bold",
+            "markdown_bold_asterisk",
             type=str,
             choices=self.markdown_choices,
-            info="Markdown mode for bold",
+            info="Markdown mode for bold with asterisk",
+        )
+
+        self.add_argument(
+            "markdown_bold_underscore",
+            type=str,
+            choices=self.markdown_choices,
+            info="Markdown mode for bold with underscores",
         )
 
         self.add_argument(

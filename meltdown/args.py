@@ -152,7 +152,8 @@ class Args:
         self.markdown_unordered = "ai"
         self.markdown_italic_asterisk = "ai"
         self.markdown_italic_underscore = "ai"
-        self.markdown_bold = "ai"
+        self.markdown_bold_asterisk = "ai"
+        self.markdown_bold_underscore = "ai"
         self.markdown_highlight = "both"
         self.markdown_quote = "both"
         self.markdown_url = "both"
@@ -514,7 +515,8 @@ class Args:
             "markdown_unordered",
             "markdown_italic_asterisk",
             "markdown_italic_underscore",
-            "markdown_bold",
+            "markdown_bold_asterisk",
+            "markdown_bold_underscore",
             "markdown_highlight",
             "markdown_quote",
             "markdown_url",

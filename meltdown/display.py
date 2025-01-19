@@ -1307,5 +1307,26 @@ class Display:
         self.book.sort_pins(mode)
         self.update_session()
 
+    def say(self, text: str, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return False
+
+        user_text = "Say this"
+        log_dict: dict[str, Any] = {}
+        log_dict["user"] = user_text
+        log_dict["ai"] = text[: config.say_limit].strip()
+        log_dict["date"] = utils.now()
+        log_dict["model"] = "Say Command"
+
+        tabconvo.convo.add(log_dict)
+        self.prompt("user", user_text, tab_id=tab_id)
+        self.prompt("ai", text, tab_id=tab_id)
+        self.format_text(tab_id)
+
 
 display = Display()

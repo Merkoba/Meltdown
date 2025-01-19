@@ -37,9 +37,7 @@ class Markdown:
     pattern_bold: str
     pattern_italic_aster: str
     pattern_italic_under: str
-    pattern_highlight_1: str
-    pattern_highlight_2: str
-    pattern_highlight_3: str
+    pattern_highlight: str
     pattern_uselink: str
     pattern_quote: str
     pattern_url: str
@@ -73,29 +71,29 @@ class Markdown:
         hash_ = utils.escape_regex("#")
         uselink = utils.escape_regex("%@")
 
-        def build_token(token: str, num: int) -> str:
-            return rf"(?:(?<=\s)|^|\(|\[|/)(?P<all>{token}{{{num}}}(?P<content>(?:[^{token}\\]|\\.)*?){token}{{{num}}})(?=\s|$|\.|,|;|!|\?|:|/|\)|\]|…)"
+        def build_token_1(token: str, num: int) -> str:
+            return rf"(?P<all>{token}{{{num}}}(?P<content>.+?){token}{{{num}}})"
+
+        def build_token_2(token: str, num: int) -> str:
+            return rf"(?<!\w)(?P<all>{token}{{{num}}}(?!\s)(?P<content>.+?)(?<!\s){token}{{{num}}})(?!\w)"
 
         # Bold with two asterisks
-        Markdown.pattern_bold = build_token(aster, 2)
+        Markdown.pattern_bold_aster = build_token_1(aster, 2)
 
         # Italic with one asterisk
-        Markdown.pattern_italic_aster = build_token(aster, 1)
+        Markdown.pattern_italic_aster = build_token_1(aster, 1)
 
         # Italic with one underscore
-        Markdown.pattern_italic_under = build_token(under, 1)
+        Markdown.pattern_italic_under = build_token_2(under, 1)
+
+        # Bold with two underscores
+        Markdown.pattern_bold_under = build_token_2(under, 2)
 
         # Highlight with one backtick
-        Markdown.pattern_highlight_1 = build_token(tick, 1)
-
-        # Highlight with two backticks
-        Markdown.pattern_highlight_2 = build_token(tick, 2)
-
-        # Highlight with three backticks
-        Markdown.pattern_highlight_3 = build_token(tick, 3)
+        Markdown.pattern_highlight = build_token_1(tick, 1)
 
         # Highlight with one double-quote
-        Markdown.pattern_quote = build_token(quote, 1)
+        Markdown.pattern_quote = build_token_2(quote, 1)
 
         # Code snippets / fences
         # Capture stuff that could repeat BUT that has the slim
@@ -257,13 +255,16 @@ class Markdown:
             if self.format_lists(start_ln, end_ln, who, "unordered"):
                 end_ln = self.next_marker(start_ln)
 
-        if self.enabled(who, "bold"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold, "bold")
+        if self.enabled(who, "bold_asterisk"):
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_aster, "bold")
+
+        if self.enabled(who, "bold_underscore"):
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_bold_under, "italic"
+            )
 
         if self.enabled(who, "italic_asterisk"):
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_italic_aster, "italic"
-            )
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_aster, "bold")
 
         if self.enabled(who, "italic_underscore"):
             self.do_format(
@@ -272,15 +273,7 @@ class Markdown:
 
         if self.enabled(who, "highlight"):
             self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_highlight_3, "highlight"
-            )
-
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_highlight_2, "highlight"
-            )
-
-            self.do_format(
-                start_ln, end_ln, who, Markdown.pattern_highlight_1, "highlight"
+                start_ln, end_ln, who, Markdown.pattern_highlight, "highlight"
             )
 
         self.do_format(start_ln, end_ln, who, Markdown.pattern_uselink, "uselink")
