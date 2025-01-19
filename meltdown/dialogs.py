@@ -221,7 +221,7 @@ class Dialog:
         app.update()
 
         if dialog.entry:
-            app.root.after(0, lambda: dialog.entry.focus_end())
+            app.root.after(0, lambda: dialog.focus_entry())
 
     @staticmethod
     def show_confirm(
@@ -541,3 +541,7 @@ class Dialog:
 
     def focus(self) -> None:
         self.root.focus_set()
+
+    def focus_entry(self) -> None:
+        if self.entry:
+            self.entry.focus_end()
