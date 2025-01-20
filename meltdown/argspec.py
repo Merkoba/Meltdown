@@ -1809,5 +1809,41 @@ class ArgSpec:
             info="Run a program automatically after a response",
         )
 
+        self.add_argument(
+            "symbol_continue",
+            type=str,
+            info="The symbol to use for the continue prompt",
+        )
+
+        self.add_argument(
+            "symbol_explain",
+            type=str,
+            info="The symbol to use for the explain prompt",
+        )
+
+        self.add_argument(
+            "symbol_emphasize",
+            type=str,
+            info="The symbol to use for the emphasize prompt",
+        )
+
+        self.add_argument(
+            "symbol_continue_text",
+            type=str,
+            info="The text to use for the continue prompt",
+        )
+
+        self.add_argument(
+            "symbol_explain_text",
+            type=str,
+            info="The text to use for the explain prompt",
+        )
+
+        self.add_argument(
+            "symbol_emphasize_text",
+            type=str,
+            info="The text to use for the emphasize prompt",
+        )
+
 
 argspec = ArgSpec()

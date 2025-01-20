@@ -300,6 +300,12 @@ class Args:
         self.image_prompt_max = 4000
         self.image_model = "dall-e-3"
         self.auto_program = False
+        self.symbol_continue = ">"
+        self.symbol_continue_text = "Please continue."
+        self.symbol_explain = "?"
+        self.symbol_explain_text = "Please explain."
+        self.symbol_emphasize = "!"
+        self.symbol_emphasize_text = "Please emphasize the last point."
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)

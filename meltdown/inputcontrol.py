@@ -210,6 +210,7 @@ class InputControl:
 
         text = self.replace_variables(text)
         text = utils.replace_keywords(text)
+        text = self.replace_symbols(text)
 
         if text or file:
             self.clear()
@@ -468,6 +469,16 @@ class InputControl:
 
     def is_variable(self, word: str) -> bool:
         return word.startswith(args.variable_prefix)
+
+    def replace_symbols(self, text: str) -> str:
+        if text == args.symbol_continue:
+            return args.symbol_continue_text
+        elif text == args.symbol_explain:
+            return args.symbol_explain_text
+        elif text == args.symbol_emphasize:
+            return args.symbol_emphasize_text
+
+        return text
 
 
 inputcontrol = InputControl()
