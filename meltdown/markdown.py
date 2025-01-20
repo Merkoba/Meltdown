@@ -64,29 +64,29 @@ class Markdown:
         hash_ = utils.escape_regex("#")
         uselink = utils.escape_regex("%@")
 
-        def build_token_1(token: str, num: int = 1) -> str:
-            return rf"(?P<all>{token}{{{num}}}(?P<content>\S.*?\S){token}{{{num}}})"
+        def char_regex_1(c: str, n: int = 1) -> str:
+            return rf"(?P<all>{c}{{{n}}}(?P<content>\S.*?\S){c}{{{n}}})"
 
-        def build_token_2(token: str, num: int = 1) -> str:
-            return rf"(?<!\w)(?P<all>{token}{{{num}}}(?!\s)(?P<content>.+?)(?<!\s){token}{{{num}}})(?!\w)"
+        def char_regex_2(c: str, n: int = 1) -> str:
+            return rf"\b${c}{{{n}}}([^${c}]+)${c}{{{n}}}\b"
 
         # Italic with one asterisk
-        Markdown.pattern_italic_aster = build_token_1(aster)
+        Markdown.pattern_italic_aster = char_regex_1(aster)
 
         # Bold with two asterisks
-        Markdown.pattern_bold_aster = build_token_1(aster, 2)
+        Markdown.pattern_bold_aster = char_regex_1(aster, 2)
 
         # Italic with one underscore
-        Markdown.pattern_italic_under = build_token_2(under)
+        Markdown.pattern_italic_under = char_regex_2(under)
 
         # Bold with two underscores
-        Markdown.pattern_bold_under = build_token_2(under, 2)
+        Markdown.pattern_bold_under = char_regex_2(under, 2)
 
         # Highlight with one backtick
-        Markdown.pattern_highlight = build_token_1(tick)
+        Markdown.pattern_highlight = char_regex_1(tick)
 
         # Highlight with one double-quote
-        Markdown.pattern_quote = build_token_1(quote)
+        Markdown.pattern_quote = char_regex_1(quote)
 
         # Code snippets / fences
         # Capture stuff that could repeat BUT that has the slim
@@ -96,7 +96,7 @@ class Markdown:
         Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
-        Markdown.pattern_uselink = build_token_1(uselink)
+        Markdown.pattern_uselink = char_regex_1(uselink)
 
         # URLs with http:// | https:// | ftp:// | www.
         Markdown.pattern_url = (
