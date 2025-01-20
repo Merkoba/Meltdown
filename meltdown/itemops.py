@@ -149,13 +149,33 @@ class ItemOps:
 
         Dialog.show_dialog("Use Item", cmds)
 
-    def run_program(self, text: str) -> None:
+    def run_program(self, text: str | None = None, program: str | None = None) -> None:
+        if not text:
+            last_item = self.last_item()
+
+            if last_item:
+                text = last_item.ai
+
+        if not text:
+            return
+
+        def run():
+            if program:
+                memory.set_value("last_program", program)
+                app.run_program(program, text)
+
+        if program:
+            run()
+            return
+
         def action(ans: str) -> None:
+            nonlocal program
+
             if not ans:
                 return
 
-            memory.set_value("last_program", ans)
-            app.run_program(ans, text)
+            program = ans
+            run()
 
         if args.use_program:
             action(args.use_program)
@@ -219,6 +239,19 @@ class ItemOps:
             text += f"\nTop P: {item.top_p}"
 
         Dialog.show_msgbox("Information", text)
+
+    def last_item(self) -> None:
+        from .display import display
+
+        tabconvo = display.get_tab_convo()
+
+        if not tabconvo:
+            return
+
+        if not tabconvo.convo.items:
+            return
+
+        return tabconvo.convo.items[-1]
 
 
 itemops = ItemOps()

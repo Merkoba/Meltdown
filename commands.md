@@ -1151,3 +1151,9 @@ Read the content of an alias
 ### say
 
 Say something exactly as it is
+
+---
+
+### program
+
+Use a program with the last AI response

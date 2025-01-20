@@ -1206,5 +1206,12 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "program",
+            "Use a program with the last AI response",
+            lambda a=None: itemops.run_program(),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()
