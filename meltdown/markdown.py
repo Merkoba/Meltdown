@@ -61,18 +61,24 @@ class Markdown:
         hash_ = utils.escape_regex("#")
         uselink = utils.escape_regex("%@")
 
+        # *this thing* but not *this thing *
+        # No spaces between the chars
         def char_regex_1(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
             t = rf"[^\s{u}]"
             return rf"(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})"
 
+        # _this thing_ but not_this_thing
+        # Chars have to be at the edges
         def char_regex_2(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
             t = rf"[^\s{u}]"
             return rf"(?:^|\s)(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})(?:$|\s)"
 
+        # `this thing` or ` this thing `
+        # There can be spaces between the chars
         def char_regex_3(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
