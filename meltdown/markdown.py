@@ -65,10 +65,17 @@ class Markdown:
         uselink = utils.escape_regex("%@")
 
         def char_regex_1(c: str, n: int = 1) -> str:
-            return rf"(?P<all>{c}{{{n}}}(?P<content>\S.*?\S){c}{{{n}}})"
+            u = f"{c}{{{n}}}"
+            t = f"[^\\s{u}]"
+            return rf"(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})"
 
         def char_regex_2(c: str, n: int = 1) -> str:
             return rf"\b${c}{{{n}}}([^${c}]+)${c}{{{n}}}\b"
+
+        def char_regex_3(c: str, n: int = 1) -> str:
+            u = f"{c}{{{n}}}"
+            t = f"[^{u}]"
+            return rf"(?P<all>{u}(?P<content>{t}+){u})"
 
         # Italic with one asterisk
         Markdown.pattern_italic_aster = char_regex_1(aster)
@@ -83,7 +90,7 @@ class Markdown:
         Markdown.pattern_bold_under = char_regex_2(under, 2)
 
         # Highlight with one backtick
-        Markdown.pattern_highlight = char_regex_1(tick)
+        Markdown.pattern_highlight = char_regex_3(tick)
 
         # Highlight with one double-quote
         Markdown.pattern_quote = char_regex_1(quote)
