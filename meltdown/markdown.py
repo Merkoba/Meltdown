@@ -57,43 +57,44 @@ class Markdown:
         protocols_string = Markdown.escape_chars(protocols_list, "|")
         protocols = rf"({protocols_string})"
 
-        aster = utils.escape_regex("*")
-        under = utils.escape_regex("_")
         tick = utils.escape_regex("`")
-        quote = utils.escape_regex('"')
         hash_ = utils.escape_regex("#")
         uselink = utils.escape_regex("%@")
 
-        def char_regex_1(c: str, n: int = 1) -> str:
+        def char_regex_1(char: str, n: int = 1) -> str:
+            c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
             t = f"[^\\s{u}]"
             return rf"(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})"
 
-        def char_regex_2(c: str, n: int = 1) -> str:
-            return rf"\b${c}{{{n}}}([^${c}]+)${c}{{{n}}}\b"
+        def char_regex_2(char: str, n: int = 1) -> str:
+            c = utils.escape_regex(char)
+            u = f"{c}{{{n}}}"
+            return rf"(?<!\w)(?P<all>{u}(?P<content>[^{u}]+?){u})(?!\w)"
 
-        def char_regex_3(c: str, n: int = 1) -> str:
+        def char_regex_3(char: str, n: int = 1) -> str:
+            c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
             t = f"[^{u}]"
             return rf"(?P<all>{u}(?P<content>{t}+){u})"
 
         # Italic with one asterisk
-        Markdown.pattern_italic_aster = char_regex_1(aster)
+        Markdown.pattern_italic_aster = char_regex_1("*")
 
         # Bold with two asterisks
-        Markdown.pattern_bold_aster = char_regex_1(aster, 2)
+        Markdown.pattern_bold_aster = char_regex_1("*", 2)
 
         # Italic with one underscore
-        Markdown.pattern_italic_under = char_regex_2(under)
+        Markdown.pattern_italic_under = char_regex_2("_")
 
         # Bold with two underscores
-        Markdown.pattern_bold_under = char_regex_2(under, 2)
+        Markdown.pattern_bold_under = char_regex_2("_", 2)
 
         # Highlight with one backtick
-        Markdown.pattern_highlight = char_regex_3(tick)
+        Markdown.pattern_highlight = char_regex_3("`")
 
         # Highlight with one double-quote
-        Markdown.pattern_quote = char_regex_1(quote)
+        Markdown.pattern_quote = char_regex_1('"')
 
         # Code snippets / fences
         # Capture stuff that could repeat BUT that has the slim
