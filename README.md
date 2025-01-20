@@ -902,7 +902,7 @@ And allows closing either just normal tabs or just pins.
 
 ---
 
-## Pins <a name="pins"></a>
+## Symbols <a name="symbols"></a>
 
 There are 3 quick prompt shortcuts to make the AI expand on the topic.
 
