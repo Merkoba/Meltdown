@@ -64,13 +64,13 @@ class Markdown:
         def char_regex_1(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
-            t = f"[^\\s{u}]"
+            t = rf"[^\s{u}]"
             return rf"(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})"
 
         def char_regex_2(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
-            t = f"[^\\s{u}]"
+            t = rf"[^\s{u}]"
             return rf"(?:^|\s)(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})(?:$|\s)"
 
         def char_regex_3(char: str, n: int = 1) -> str:
