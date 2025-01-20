@@ -70,7 +70,8 @@ class Markdown:
         def char_regex_2(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = f"{c}{{{n}}}"
-            return rf"(?<!\w)(?P<all>{u}(?P<content>[^{u}]+?){u})(?!\w)"
+            t = f"[^\\s{u}]"
+            return rf"(?:^|\s)(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})(?:$|\s)"
 
         def char_regex_3(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
