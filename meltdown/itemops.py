@@ -159,7 +159,7 @@ class ItemOps:
         if not text:
             return
 
-        def run():
+        def run() -> None:
             if program:
                 memory.set_value("last_program", program)
                 app.run_program(program, text)
@@ -240,16 +240,16 @@ class ItemOps:
 
         Dialog.show_msgbox("Information", text)
 
-    def last_item(self) -> None:
+    def last_item(self) -> Item | None:
         from .display import display
 
         tabconvo = display.get_tab_convo()
 
         if not tabconvo:
-            return
+            return None
 
         if not tabconvo.convo.items:
-            return
+            return None
 
         return tabconvo.convo.items[-1]
 
