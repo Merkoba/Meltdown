@@ -2753,3 +2753,13 @@ The model used for image generation
 Default: "dall-e-3"
 
 Type: str
+
+---
+
+### auto-program
+
+Run a program automatically after a response
+
+Default: False
+
+Action: store_true

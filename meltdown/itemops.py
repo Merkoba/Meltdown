@@ -149,7 +149,9 @@ class ItemOps:
 
         Dialog.show_dialog("Use Item", cmds)
 
-    def run_program(self, text: str | None = None, program: str | None = None) -> None:
+    def run_program(
+        self, text: str | None = None, program: str | None = None, auto: bool = False
+    ) -> None:
         if not text:
             last_item = self.last_item()
 
@@ -165,6 +167,11 @@ class ItemOps:
                 app.run_program(program, text)
 
         if program:
+            run()
+            return
+
+        if auto and memory.last_program:
+            program = memory.last_program
             run()
             return
 

@@ -299,6 +299,7 @@ class Args:
         self.image_size = "1024x1024"
         self.image_prompt_max = 4000
         self.image_model = "dall-e-3"
+        self.auto_program = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -595,6 +596,7 @@ class Args:
             "image_size",
             "image_prompt_max",
             "image_model",
+            "auto_program",
         ]
 
         for n_item in normals:

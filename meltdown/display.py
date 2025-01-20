@@ -17,6 +17,7 @@ from .find import Find
 from .args import args
 from .utils import utils
 from .autoscroll import autoscroll
+from .itemops import itemops
 
 if TYPE_CHECKING:
     from .session import Conversation
@@ -988,6 +989,9 @@ class Display:
         self.clear_tab_streaming()
         self.format_text(self.tab_streaming)
         self.update_tooltip(self.tab_streaming)
+
+        if args.auto_program:
+            itemops.run_program(auto=True)
 
     def set_tab_streaming(self, tab_id: str) -> None:
         for key, values in self.tabs.items():

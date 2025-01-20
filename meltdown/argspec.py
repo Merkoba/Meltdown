@@ -1803,5 +1803,11 @@ class ArgSpec:
             info="The model used for image generation",
         )
 
+        self.add_argument(
+            "auto_program",
+            action="store_true",
+            info="Run a program automatically after a response",
+        )
+
 
 argspec = ArgSpec()
