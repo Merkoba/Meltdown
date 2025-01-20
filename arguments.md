@@ -2763,3 +2763,63 @@ Run a program automatically after a response
 Default: False
 
 Action: store_true
+
+---
+
+### symbol-continue
+
+The symbol to use for the continue prompt
+
+Default: ">"
+
+Type: str
+
+---
+
+### symbol-explain
+
+The symbol to use for the explain prompt
+
+Default: "?"
+
+Type: str
+
+---
+
+### symbol-emphasize
+
+The symbol to use for the emphasize prompt
+
+Default: "!"
+
+Type: str
+
+---
+
+### symbol-continue-text
+
+The text to use for the continue prompt
+
+Default: "Please continue."
+
+Type: str
+
+---
+
+### symbol-explain-text
+
+The text to use for the explain prompt
+
+Default: "Please explain."
+
+Type: str
+
+---
+
+### symbol-emphasize-text
+
+The text to use for the emphasize prompt
+
+Default: "Please emphasize the last point."
+
+Type: str

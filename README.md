@@ -50,6 +50,7 @@ It's written 100% in `python` and it uses `tkinter` for the GUI.
 1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
 1. [Pins](#pins)
+1. [Symbols](#symbols)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -898,6 +899,20 @@ Or using `/pin`, `/unpin`, `/togglepin`.
 This allows finding them easily through the special pin list.
 
 And allows closing either just normal tabs or just pins.
+
+---
+
+## Pins <a name="pins"></a>
+
+There are 3 quick prompt shortcuts to make the AI expand on the topic.
+
+By default these are `>` for `continue`, `?` for `explain`, and `!` to emphasize on the last point.
+
+Basically if you input `>` (only that character), the input will be transformed automatically to `Please continue.`, etc.
+
+These can be configured through args.
+
+This is a quick way to keep prompting the AI for clearer information.
 
 ---
 

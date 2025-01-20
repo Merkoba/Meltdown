@@ -473,9 +473,11 @@ class InputControl:
     def replace_symbols(self, text: str) -> str:
         if text == args.symbol_continue:
             return args.symbol_continue_text
-        elif text == args.symbol_explain:
+
+        if text == args.symbol_explain:
             return args.symbol_explain_text
-        elif text == args.symbol_emphasize:
+
+        if text == args.symbol_emphasize:
             return args.symbol_emphasize_text
 
         return text
