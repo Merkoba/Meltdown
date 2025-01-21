@@ -47,7 +47,7 @@ No need to greet me, just answer.
         self.default_top_k = 40
         self.default_top_p = 0.95
         self.default_model = ""
-        self.default_history = 2
+        self.default_history = 3
         self.default_seed = -1
         self.default_format = "auto"
         self.default_before = ""
