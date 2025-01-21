@@ -30,12 +30,12 @@ class Config:
         self.recent_label = "--- Recent ---"
         self.rentry_site = "https://rentry.org"
 
-        self.default_system = """
-Your name is ((name_ai)).
-You are talking to ((name_user)).
-No need to introduce yourself.
-No need to greet me, just answer.
-""".strip()
+        self.default_system = (
+            "Your name is ((name_ai)).\n"
+            "You are talking to ((name_user)).\n"
+            "No need to introduce yourself.\n"
+            "No need to greet me, just answer."
+        )
 
         self.default_avatar_user = "🥶"
         self.default_avatar_ai = "🫠"
