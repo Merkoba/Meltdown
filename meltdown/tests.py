@@ -226,7 +226,7 @@ class Tests:
     *   **Pros:** Great for fluid visuals, efficient.
     *   **Cons:** Limited to fluid-style visual effects.
     *   **How to use:** You'd use it's fluid sim engine and render to canvas.
-"""
+""",
                 },
             ],
         }
