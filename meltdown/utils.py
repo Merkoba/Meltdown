@@ -20,9 +20,6 @@ from collections.abc import Callable
 # Libraries
 from rich.console import Console  # type: ignore
 
-# Modules
-from . import pyperclip
-
 if TYPE_CHECKING:
     from .menus import Menu
 
@@ -33,7 +30,7 @@ class Utils:
         self.console = Console()
         self.nouns: list[str] = []
         self.protocols = ("https://", "http://")
-        self.upload_service = "https://rentry.org"
+        self.clipboard_timeout = 3
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -152,7 +149,15 @@ class Utils:
         if command and args.on_copy:
             app.file_command(args.on_copy, text)
 
-        pyperclip.copy(text)  # type: ignore
+        system = app.get_system()
+        timeout = self.clipboard_timeout
+
+        if system == "darwin":
+            app.exec("pbcopy", text, timeout=timeout)
+        elif system == "windows":
+            app.exec("clip", text, timeout=timeout)
+        else:
+            app.exec("xclip -sel clip -f", text, timeout=timeout)
 
     def paste(self, widget: tk.Widget) -> None:
         from .entrybox import EntryBox
@@ -169,7 +174,18 @@ class Utils:
         widget.set_text(text)
 
     def get_paste(self) -> str:
-        return pyperclip.paste().strip()  # type: ignore
+        from .app import app
+
+        system = app.get_system()
+        timeout = self.clipboard_timeout
+
+        if system == "darwin":
+            return app.exec("pbpaste", timeout=timeout)[0]
+
+        if system == "windows":
+            return app.exec("powershell.exe Get-Clipboard", timeout=timeout)[0]
+
+        return app.exec("xclip -o -sel clip", timeout=timeout)[0]
 
     def padnum(self, num: int) -> str:
         return str(num).zfill(3)

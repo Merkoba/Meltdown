@@ -4,13 +4,13 @@ from __future__ import annotations
 import os
 import sys
 import json
-import subprocess
 import shutil
 import signal
 import tempfile
 import platform
 import urllib.parse
 import tkinter as tk
+import subprocess
 from pathlib import Path
 from typing import Any
 
@@ -416,8 +416,11 @@ class App:
         else:
             self.disable_compact()
 
+    def get_system(self) -> str:
+        return platform.system().lower()
+
     def get_opener(self) -> str:
-        system = platform.system().lower()
+        system = self.get_system()
         opener = ""
 
         if system == "darwin":
@@ -439,6 +442,23 @@ class App:
             )
         except BaseException as e:
             utils.error(e)
+
+    def exec(self, cmd: str, text: str = "", timeout: int = 0) -> tuple[str, int]:
+        args = cmd.split(" ")
+
+        proc = subprocess.Popen(
+            args, stdout=subprocess.PIPE, stdin=subprocess.PIPE, shell=False, text=True
+        )
+
+        try:
+            if timeout > 0:
+                stdout, _ = proc.communicate(text, timeout=timeout)
+            else:
+                stdout, _ = proc.communicate(text)
+        except Exception as e:
+            return str(e), 1
+
+        return stdout, proc.returncode
 
     def file_command(self, cmd: str, text: str) -> None:
         from .files import files
