@@ -275,15 +275,15 @@ class Markdown:
                 start_ln, end_ln, who, Markdown.pattern_italic_under, "italic"
             )
 
+        if self.enabled(who, "quote"):
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_quote, "quote", True)
+
         if self.enabled(who, "highlight"):
             self.do_format(
                 start_ln, end_ln, who, Markdown.pattern_highlight, "highlight"
             )
 
         self.do_format(start_ln, end_ln, who, Markdown.pattern_uselink, "uselink")
-
-        if self.enabled(who, "quote"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_quote, "quote", True)
 
         if self.enabled(who, "link"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_link, "link")

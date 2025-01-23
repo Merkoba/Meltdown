@@ -342,7 +342,25 @@ class Utils:
         return f"{years:.1f} {word} ago"
 
     def smart_quotes(self, text: str) -> str:
-        if text.startswith('"') and text.endswith('"'):
+        if '"' in text:
+            if text.startswith('"') and text.endswith('"'):
+                return text
+
+            if "`" not in text:
+                return f"`{text}`"
+
+            if "'" not in text:
+                return f"'{text}'"
+
+            if ("(" not in text) and (")" not in text):
+                return f"({text})"
+
+            if ("[" not in text) and ("]" not in text):
+                return f"[{text}]"
+
+            if ("{" not in text) and ("}" not in text):
+                return f"{{{text}}}"
+
             return text
 
         return f'"{text}"'

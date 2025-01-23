@@ -206,6 +206,15 @@ class Tests:
             ],
         }
 
+        self.ref_test: Test = {
+            "items": [
+                {
+                    "user": "Ref Test",
+                    "ai": 'this thing: `rel="noreferrer"`',
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         test_name = f"{name}_test"
         obj = getattr(self, test_name)
