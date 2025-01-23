@@ -455,8 +455,8 @@ class App:
                 stdout, _ = proc.communicate(text, timeout=timeout)
             else:
                 stdout, _ = proc.communicate(text)
-        except Exception as e:
-            return str(e), 1
+        except Exception:
+            return "", 1
 
         return stdout, proc.returncode
 
