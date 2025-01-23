@@ -135,12 +135,12 @@ class Markdown:
 
         # Bullet list (ordered)
         Markdown.pattern_list_ordered = (
-            r"(^|(?<=\n\n))\d+[.)] [^\n]+(?:\n{1,2}[ \t]*\d+[.)] [^\n]+)*"
+            r"(^|(?<=\n\n)) *\d+[.)] [^\n]+(?:\n{1,2}[ \t]*\d+[.)] [^\n]+)*"
         )
 
         # Bullet list (unordered)
         Markdown.pattern_list_unordered = (
-            r"(^|(?<=\n\n))[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
+            r"(^|(?<=\n\n)) *[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
         )
 
         # Word URL like [Click here](https://example.com)

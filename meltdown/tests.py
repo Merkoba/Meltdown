@@ -215,6 +215,22 @@ class Tests:
             ],
         }
 
+        self.p5list_test: Test = {
+            "items": [
+                {
+                    "user": "p5list Test",
+                    "ai": """3.  **webgl-fluid:**
+    *   **Description:** Focuses specifically on fluid simulation in WebGL, and you can create beautiful, flowing, Milkdrop-like visuals with it.
+    *   **Lightweight?:** Relatively light, very focused.
+    *   **GitHub:** [https://github.com/PavelDoGreat/webgl-fluid](https://github.com/PavelDoGreat/webgl-fluid)
+    *   **Pros:** Great for fluid visuals, efficient.
+    *   **Cons:** Limited to fluid-style visual effects.
+    *   **How to use:** You'd use it's fluid sim engine and render to canvas.
+"""
+                },
+            ],
+        }
+
     def get(self, name: str) -> Any:
         test_name = f"{name}_test"
         obj = getattr(self, test_name)
