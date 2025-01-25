@@ -14,6 +14,7 @@ from .args import args
 from .app import app
 from .utils import utils
 from .gestures import Gestures
+from .snippet_button import SnippetButton
 
 
 class Snippet(tk.Frame):
@@ -40,23 +41,9 @@ class Snippet(tk.Frame):
         self.header_text.configure(cursor="arrow")
         self.header_text.pack(side=tk.LEFT, padx=5)
 
-        self.header_copy = tk.Label(self.header, text="Copy", font=font_header)
-        self.header_copy.configure(cursor="hand2")
-        self.header_copy.pack(side=tk.RIGHT, padx=5)
-        self.header_copy.configure(foreground=header_fg)
-        self.header_copy.configure(background=header_bg)
-
-        self.header_select = tk.Label(self.header, text="Select", font=font_header)
-        self.header_select.configure(cursor="hand2")
-        self.header_select.pack(side=tk.RIGHT, padx=5)
-        self.header_select.configure(foreground=header_fg)
-        self.header_select.configure(background=header_bg)
-
-        self.header_find = tk.Label(self.header, text="Find", font=font_header)
-        self.header_find.configure(cursor="hand2")
-        self.header_find.pack(side=tk.RIGHT, padx=5)
-        self.header_find.configure(foreground=header_fg)
-        self.header_find.configure(background=header_bg)
+        self.header_copy = SnippetButton(self.header, "Copy")
+        self.header_select = SnippetButton(self.header, "Select")
+        self.header_find = SnippetButton(self.header, "Find")
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
@@ -146,9 +133,7 @@ class Snippet(tk.Frame):
     def update_font(self) -> None:
         font_header = app.theme.get_output_font(True)
         snippet_font = app.theme.get_snippet_font()
-
         self.text.configure(font=snippet_font)
-
         self.header_text.configure(font=font_header)
         self.header_copy.configure(font=font_header)
         self.header_select.configure(font=font_header)
