@@ -177,7 +177,7 @@ class Theme:
 
     def get_output_font(
         self, smaller: bool = False, underline: bool = False
-    ) -> tuple[str, int]:
+    ) -> tuple[str, int, str]:
         ff = self.get_font_family()
         size = config.font_size
 
@@ -187,7 +187,7 @@ class Theme:
         if underline:
             return (ff, size, "underline")
 
-        return (ff, size)
+        return (ff, size, "normal")
 
     def get_snippet_font(self) -> tuple[str, int]:
         from .args import args

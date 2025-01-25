@@ -1,5 +1,6 @@
 # Standard
 import tkinter as tk
+from typing import Any
 
 # Modules
 from .app import app
@@ -35,10 +36,10 @@ class SnippetButton(tk.Label):
         self.configure(foreground=fg_color)
         self.configure(background=bg_color)
 
-        def on_enter(e) -> None:
+        def on_enter(event: Any) -> None:
             self.configure(font=underline)
 
-        def on_leave(e) -> None:
+        def on_leave(event: Any) -> None:
             self.configure(font=font)
 
         self.bind("<Enter>", on_enter)
