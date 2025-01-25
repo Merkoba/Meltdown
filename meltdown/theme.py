@@ -175,12 +175,17 @@ class Theme:
 
         return font
 
-    def get_output_font(self, smaller: bool = False) -> tuple[str, int]:
+    def get_output_font(
+        self, smaller: bool = False, underline: bool = False
+    ) -> tuple[str, int]:
         ff = self.get_font_family()
         size = config.font_size
 
         if smaller:
             size -= self.smaller_font
+
+        if underline:
+            return (ff, size, "underline")
 
         return (ff, size)
 
