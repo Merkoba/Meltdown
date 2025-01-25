@@ -171,7 +171,6 @@ class Output(tk.Text):
             return
 
         text = Output.get_words()
-        print(text)
         output.deselect_all()
         utils.copy(text, command=True)
 
