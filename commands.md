@@ -1028,6 +1028,12 @@ Show the info dialog
 
 ---
 
+### upload
+
+Show the upload format picker menu. Optional 'all' or 'last' argument
+
+---
+
 ### uploadmarkdown
 
 Upload markdown to a hosting service. Optional 'all' or 'last' argument

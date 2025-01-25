@@ -12,6 +12,22 @@ from .formats import formats
 
 
 class Upload:
+    def upload_picker(self, tab_id: str | None = None, mode: str = "") -> None:
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+
+        if (not messages) or ignored:
+            return
+
+        def action(fmt: str) -> None:
+            self.upload(tab_id=tab_id, mode=mode, format_=fmt)
+
+        cmds = Commands()
+        cmds.add("Text", lambda a: action("text"))
+        cmds.add("JSON", lambda a: action("json"))
+        cmds.add("Markdown", lambda a: action("markdown"))
+        Dialog.show_dialog("Pick upload format", commands=cmds)
+
     def upload(
         self, tab_id: str | None = None, mode: str = "", format_: str = "markdown"
     ) -> None:
@@ -27,15 +43,15 @@ class Upload:
 
         def action(mode: str) -> None:
             Dialog.hide_all()
-            app.update()
             self.do_upload(tab_id, mode, format_=format_)
 
         cmds = Commands()
         cmds.add("Last Item", lambda a: action("last"))
         cmds.add("All Of It", lambda a: action("all"))
+        fmt = formats.get_name(format_, True)
 
         Dialog.show_dialog(
-            f"Upload conversation to\n{config.rentry_site}\nFormat: {format_}",
+            f"Upload conversation to\n{config.rentry_site}\nFormat: {fmt}",
             commands=cmds,
         )
 

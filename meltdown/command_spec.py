@@ -64,6 +64,7 @@ class CommandSpec:
         self.autoscroll = "Optional up or down argument"
         self.helpcmd = "You can filter by text"
         self.state_info = "You can provide a file name. You can use 'last'"
+        self.upload_info = "Optional 'all' or 'last' argument"
         self.infos: list[str] = []
         self.commands: dict[str, Any] = {}
 
@@ -1068,22 +1069,29 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "upload",
+            f"Show the upload format picker menu. {self.upload_info}",
+            lambda a=None: upload.upload_picker(mode=a),
+            type=str,
+        )
+
+        self.add_cmd(
             "uploadmarkdown",
-            "Upload markdown to a hosting service. Optional 'all' or 'last' argument",
+            f"Upload markdown to a hosting service. {self.upload_info}",
             lambda a=None: upload.upload(mode=a, format_="markdown"),
             type=str,
         )
 
         self.add_cmd(
             "uploadjson",
-            "Upload json to a hosting service. Optional 'all' or 'last' argument",
+            f"Upload json to a hosting service. {self.upload_info}",
             lambda a=None: upload.upload(mode=a, format_="json"),
             type=str,
         )
 
         self.add_cmd(
             "uploadtext",
-            "Upload text to a hosting service. Optional 'all' or 'last' argument",
+            f"Upload text to a hosting service. {self.upload_info}",
             lambda a=None: upload.upload(mode=a, format_="text"),
             type=str,
         )
