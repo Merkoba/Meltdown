@@ -171,6 +171,7 @@ class Output(tk.Text):
             return
 
         text = Output.get_words()
+        print(text)
         output.deselect_all()
         utils.copy(text, command=True)
 
@@ -1312,7 +1313,7 @@ class Output(tk.Text):
         if not args.path_menu:
             return
 
-        Output.words = self.get_tagwords("path", event)
+        Output.url = self.get_tagwords("path", event)
 
         if keyboard.ctrl:
             Output.open_url()
