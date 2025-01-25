@@ -12,7 +12,9 @@ from .formats import formats
 
 
 class Upload:
-    def upload(self, tab_id: str | None = None, mode: str = "", format_: str = "markdown") -> None:
+    def upload(
+        self, tab_id: str | None = None, mode: str = "", format_: str = "markdown"
+    ) -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
 
@@ -59,7 +61,9 @@ class Upload:
 
         Dialog.show_dialog(f"{url} ({password})", commands=cmds)
 
-    def do_upload(self, tab_id: str | None = None, mode: str = "all", format_: str = "markdown") -> None:
+    def do_upload(
+        self, tab_id: str | None = None, mode: str = "all", format_: str = "markdown"
+    ) -> None:
         if not tab_id:
             tab_id = display.current_tab
 
