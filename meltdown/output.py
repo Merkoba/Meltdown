@@ -632,28 +632,16 @@ class Output(tk.Text):
 
         return float(num_lines / lines[0])
 
-    def get_scroll_lines(self) -> float:
-        fraction = self.get_fraction()
-        return fraction * args.scroll_lines
-
     def scroll_up(self, check: bool = False, more: bool = False) -> None:
-        lines = self.get_scroll_lines()
-
-        if more:
-            lines *= 2
-
-        self.yview_moveto(self.yview()[0] - lines)
+        amount = 0 - args.scroll_pixels
+        self.yview_scroll(amount, "pixels")
 
         if check:
             self.check_auto_bottom("up")
 
     def scroll_down(self, check: bool = False, more: bool = False) -> None:
-        lines = self.get_scroll_lines()
-
-        if more:
-            lines *= 2
-
-        self.yview_moveto(self.yview()[0] + lines)
+        amount = args.scroll_pixels
+        self.yview_scroll(amount, "pixels")
 
         if check:
             self.check_auto_bottom("down")

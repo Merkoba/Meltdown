@@ -1512,11 +1512,11 @@ Type: str
 
 ---
 
-### scroll-lines
+### scroll-pixels
 
-How many lines to scroll the display
+How many pixels to scroll the display up or down
 
-Default: 1
+Default: 50
 
 Type: int
 

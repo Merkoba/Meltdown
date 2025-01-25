@@ -197,7 +197,7 @@ class Args:
         self.confirm_delete = True
         self.confirm_exit = False
         self.fill_prompt = True
-        self.scroll_lines = 1
+        self.scroll_pixels = 50
         self.auto_bottom = True
         self.user_color = "auto"
         self.ai_color = "auto"
@@ -487,7 +487,7 @@ class Args:
             "gestures_right",
             "gestures_up",
             "gestures_down",
-            "scroll_lines",
+            "scroll_pixels",
             "user_color",
             "ai_color",
             "confirm_exit",

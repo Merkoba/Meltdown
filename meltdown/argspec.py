@@ -1057,9 +1057,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "scroll_lines",
+            "scroll_pixels",
             type=int,
-            info="How many lines to scroll the display",
+            info="How many pixels to scroll the display up or down",
         )
 
         self.add_argument(
