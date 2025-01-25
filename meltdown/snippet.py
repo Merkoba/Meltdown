@@ -14,7 +14,7 @@ from .args import args
 from .app import app
 from .utils import utils
 from .gestures import Gestures
-from .snippet_button import SnippetButton
+from .snippet_widgets import SnippetLabel, SnippetButton
 
 
 class Snippet(tk.Frame):
@@ -31,16 +31,7 @@ class Snippet(tk.Frame):
         else:
             header_text = "Plain Text"
 
-        font_header = app.theme.get_output_font(True)
-        header_fg = app.theme.snippet_header_foreground
-        header_bg = app.theme.snippet_header_background
-
-        self.header_text = tk.Label(self.header, text=header_text, font=font_header)
-        self.header_text.configure(foreground=header_fg)
-        self.header_text.configure(background=header_bg)
-        self.header_text.configure(cursor="arrow")
-        self.header_text.pack(side=tk.LEFT, padx=5)
-
+        self.header_text = SnippetLabel(self.header, header_text)
         self.header_copy = SnippetButton(self.header, "Copy")
         self.header_select = SnippetButton(self.header, "Select")
         self.header_find = SnippetButton(self.header, "Find")
