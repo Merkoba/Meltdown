@@ -12,7 +12,7 @@ from .formats import formats
 
 
 class Upload:
-    def upload(self, tab_id: str | None = None, mode: str = "") -> None:
+    def upload(self, tab_id: str | None = None, mode: str = "", format_: str = "markdown") -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
 
@@ -20,13 +20,13 @@ class Upload:
             return
 
         if mode in ["last", "all"]:
-            self.do_upload(tab_id, mode)
+            self.do_upload(tab_id, mode, format_=format_)
             return
 
         def action(mode: str) -> None:
             Dialog.hide_all()
             app.update()
-            self.do_upload(tab_id, mode)
+            self.do_upload(tab_id, mode, format_=format_)
 
         cmds = Commands()
         cmds.add("Last Item", lambda a: action("last"))
@@ -43,6 +43,9 @@ class Upload:
             tab_id=tab_id,
         )
 
+        def open_url() -> None:
+            app.open_url(url)
+
         def copy_url() -> None:
             utils.copy(url)
 
@@ -50,12 +53,13 @@ class Upload:
             utils.copy(f"{url} ({password})")
 
         cmds = Commands()
+        cmds.add("Open", lambda a: open_url())
         cmds.add("Copy All", lambda a: copy_all())
         cmds.add("Copy URL", lambda a: copy_url())
 
         Dialog.show_dialog(f"{url} ({password})", commands=cmds)
 
-    def do_upload(self, tab_id: str | None = None, mode: str = "all") -> None:
+    def do_upload(self, tab_id: str | None = None, mode: str = "all", format_: str = "markdown") -> None:
         if not tab_id:
             tab_id = display.current_tab
 
@@ -67,7 +71,12 @@ class Upload:
         if not tabconvo.convo.items:
             return
 
-        text = formats.get_markdown(tabconvo.convo, mode=mode, name_mode="upload")
+        if format_ == "markdown":
+            text = formats.get_markdown(tabconvo.convo, mode=mode, name_mode="upload")
+        elif format_ == "json":
+            text = formats.get_json(tabconvo.convo, mode=mode, name_mode="upload")
+        else:
+            text = formats.get_text(tabconvo.convo, mode=mode, name_mode="upload")
 
         if args.upload_password:
             password = args.upload_password

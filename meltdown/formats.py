@@ -229,7 +229,7 @@ class Formats:
                     name_ai=name_ai,
                 )
 
-                log += f"**{prompt}**:"
+                log += f"**{prompt}**:\n\n"
                 log += f" {getattr(item, key).strip()}\n\n"
 
                 if files and (key == "user"):
@@ -390,10 +390,13 @@ class Formats:
         utils.copy(text)
 
     def do_use(self, mode: str) -> None:
+        from .upload import upload
+
         cmds = Commands()
         cmds.add("Open", lambda a: self.do_open(mode))
         cmds.add("View", lambda a: self.do_view(mode))
         cmds.add("Copy", lambda a: self.do_copy(mode))
+        cmds.add("Upload", lambda a: upload.upload(format_=mode))
         name = self.get_name(mode, True)
 
         Dialog.show_dialog(f"Use {name}", cmds)
