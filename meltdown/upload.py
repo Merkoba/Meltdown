@@ -35,7 +35,8 @@ class Upload:
         cmds.add("All Of It", lambda a: action("all"))
 
         Dialog.show_dialog(
-            f"Upload conversation to\n{config.rentry_site}", commands=cmds
+            f"Upload conversation to\n{config.rentry_site}\nFormat: {format_}",
+            commands=cmds,
         )
 
     def after_upload(self, url: str, password: str, tab_id: str) -> None:

@@ -1028,7 +1028,19 @@ Show the info dialog
 
 ---
 
-### upload
+### uploadmarkdown
+
+Upload markdown to a hosting service. Optional 'all' or 'last' argument
+
+---
+
+### uploadjson
+
+Upload json to a hosting service. Optional 'all' or 'last' argument
+
+---
+
+### uploadtext
 
 Upload text to a hosting service. Optional 'all' or 'last' argument
 

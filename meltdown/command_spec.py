@@ -1068,9 +1068,23 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "upload",
+            "uploadmarkdown",
+            "Upload markdown to a hosting service. Optional 'all' or 'last' argument",
+            lambda a=None: upload.upload(mode=a, format_="markdown"),
+            type=str,
+        )
+
+        self.add_cmd(
+            "uploadjson",
+            "Upload json to a hosting service. Optional 'all' or 'last' argument",
+            lambda a=None: upload.upload(mode=a, format_="json"),
+            type=str,
+        )
+
+        self.add_cmd(
+            "uploadtext",
             "Upload text to a hosting service. Optional 'all' or 'last' argument",
-            lambda a=None: upload.upload(mode=a),
+            lambda a=None: upload.upload(mode=a, format_="text"),
             type=str,
         )
 
