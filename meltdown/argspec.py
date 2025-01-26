@@ -1852,7 +1852,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "explain_snippet_limit",
+            "explain_sample",
             type=int,
             info="When using the 'Explain' button on snippets, how much of the snippet should be used in the prompt",
         )

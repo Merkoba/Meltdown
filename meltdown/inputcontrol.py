@@ -402,6 +402,10 @@ class InputControl:
 
         return False
 
+    def varname(self, name: str) -> str:
+        prefix = args.variable_prefix
+        return f"{prefix}{name}"
+
     def set_variable(self, cmd: str) -> None:
         from .display import display
 
@@ -418,9 +422,16 @@ class InputControl:
             fmt()
             return
 
+        self.do_set_variable(name, value)
+
+    def do_set_variable(self, name: str, value: str, feedback: bool = True) -> None:
+        from .display import display
+
         self.variables[name] = value
-        prefix = args.variable_prefix
-        display.print(f"Set Var: `{prefix}{name}` is now `{value}`", do_format=True)
+
+        if feedback:
+            v = self.varname(name)
+            display.print(f"Set Var: `{v}` is now `{value}`", do_format=True)
 
     def unset_variable(self, name: str) -> None:
         from .display import display

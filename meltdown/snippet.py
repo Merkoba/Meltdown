@@ -15,6 +15,7 @@ from .app import app
 from .utils import utils
 from .gestures import Gestures
 from .model import model
+from .inputcontrol import inputcontrol
 
 
 class SnippetLabel(tk.Label):
@@ -76,6 +77,7 @@ class Snippet(tk.Frame):
         self.header_select = SnippetButton(self.header, "Select")
         self.header_find = SnippetButton(self.header, "Find")
         self.header_explain = SnippetButton(self.header, "Explain")
+        self.header_sample = SnippetButton(self.header, "Use")
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
@@ -145,6 +147,7 @@ class Snippet(tk.Frame):
 
         self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_explain.bind("<Button-1>", lambda e: self.explain())
+        self.header_sample.bind("<Button-1>", lambda e: self.sample_variable())
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
@@ -209,11 +212,20 @@ class Snippet(tk.Frame):
 
         self.text.tag_remove("sel", "1.0", tk.END)
 
+    def get_sample(self) -> str:
+        sample = self.content[0 : args.explain_sample]
+        return sample.replace("\n", " ").strip()
+
     def explain(self) -> None:
-        example = self.content[0 : args.explain_snippet_limit]
-        example = example.replace("\n", " ").strip()
-        text = f"Explain this snippet: {example}"
+        sample = self.get_sample()
+        text = f"Explain this snippet: {sample}"
         model.stream({"text": text}, self.parent.tab_id)
+
+    def sample_variable(self) -> None:
+        sample = self.get_sample()
+        inputcontrol.do_set_variable("snippet", sample, feedback=False)
+        v = inputcontrol.varname("snippet")
+        inputcontrol.set(v)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)

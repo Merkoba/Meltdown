@@ -2836,7 +2836,7 @@ Type: int
 
 ---
 
-### explain-snippet-limit
+### explain-sample
 
 When using the 'Explain' button on snippets, how much of the snippet should be used in the prompt
 
