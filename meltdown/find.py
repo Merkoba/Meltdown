@@ -259,6 +259,7 @@ class Find:
         self.root.grid()
         self.entry.set_text("")
         self.entry.focus_set()
+        self.reset()
 
         if widget:
             self.widget = widget
@@ -291,3 +292,10 @@ class Find:
             self.hide()
         else:
             self.show()
+
+    def reset(self) -> None:
+        self.current_match = None
+        self.current_match_reverse = None
+        self.snippet = -1
+        self.snippet_focused = False
+        self.snippet_index = "1.0"
