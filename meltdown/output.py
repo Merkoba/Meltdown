@@ -6,7 +6,6 @@ from tkinter import ttk
 from typing import Any
 
 # Modules
-from .config import config
 from .app import app
 from .args import args
 from .utils import utils
@@ -321,64 +320,6 @@ class Output(tk.Text):
             return
 
         model.stream({"text": text}, tab_id)
-
-    @staticmethod
-    def get_prompt(
-        who: str,
-        show_avatar: bool = True,
-        colon_space: bool = True,
-        put_colons: bool = True,
-        markers: bool = True,
-        generic: bool = False,
-        name_user: str = "",
-        name_ai: str = "",
-    ) -> str:
-        name = ""
-
-        if generic:
-            if who == "user":
-                name = "User"
-            elif who == "ai":
-                name = "AI"
-        else:
-            if who == "user":
-                if name_user:
-                    name = name_user
-            elif who == "ai":
-                if name_ai:
-                    name = name_ai
-
-            if not name:
-                name = getattr(config, f"name_{who}")
-
-        avatar = getattr(config, f"avatar_{who}")
-
-        if markers:
-            marker = Output.marker_space
-        else:
-            marker = " "
-
-        if put_colons:
-            d = utils.delimiter()
-
-            if colon_space:
-                colons = f"{marker}{d}{marker}"
-            else:
-                colons = f"{d}{marker}"
-        else:
-            colons = ""
-
-        if args.avatars and show_avatar and avatar:
-            if name:
-                prompt = f"{avatar}{marker}{name}{colons}"
-            else:
-                prompt = f"{avatar}{colons}"
-        elif name:
-            prompt = f"{name}{colons}"
-        else:
-            prompt = f"Anon{colons}"
-
-        return prompt
 
     @staticmethod
     def remove_markers(text: str) -> str:
@@ -731,7 +672,7 @@ class Output(tk.Text):
     def prompt(self, who: str) -> None:
         from .display import display
 
-        prompt = Output.get_prompt(who)
+        prompt = display.get_prompt(who)
         prepend = ""
 
         if args.item_numbers:

@@ -866,6 +866,10 @@ class Display:
         tab.get_output().prompt(who)
 
         if text:
+            if who == "user":
+                if args.crop_user > 0:
+                    text = text[: args.crop_user].strip()
+
             tab.get_output().insert_text(text)
 
         if file:
@@ -1331,6 +1335,64 @@ class Display:
         self.prompt("user", user_text, tab_id=tab_id)
         self.prompt("ai", text, tab_id=tab_id)
         self.format_text(tab_id)
+
+    def get_prompt(
+        self,
+        who: str,
+        show_avatar: bool = True,
+        colon_space: bool = True,
+        put_colons: bool = True,
+        markers: bool = True,
+        generic: bool = False,
+        name_user: str = "",
+        name_ai: str = "",
+    ) -> str:
+        name = ""
+
+        if generic:
+            if who == "user":
+                name = "User"
+            elif who == "ai":
+                name = "AI"
+        else:
+            if who == "user":
+                if name_user:
+                    name = name_user
+            elif who == "ai":
+                if name_ai:
+                    name = name_ai
+
+            if not name:
+                name = getattr(config, f"name_{who}")
+
+        avatar = getattr(config, f"avatar_{who}")
+
+        if markers:
+            marker = Output.marker_space
+        else:
+            marker = " "
+
+        if put_colons:
+            d = utils.delimiter()
+
+            if colon_space:
+                colons = f"{marker}{d}{marker}"
+            else:
+                colons = f"{d}{marker}"
+        else:
+            colons = ""
+
+        if args.avatars and show_avatar and avatar:
+            if name:
+                prompt = f"{avatar}{marker}{name}{colons}"
+            else:
+                prompt = f"{avatar}{colons}"
+        elif name:
+            prompt = f"{name}{colons}"
+        else:
+            prompt = f"Anon{colons}"
+
+        return prompt
 
 
 display = Display()

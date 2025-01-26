@@ -12,7 +12,6 @@ from .args import args
 from .utils import utils
 from .config import config
 from .session import Conversation
-from .output import Output
 from .display import display
 from .files import files
 from .dialogs import Dialog, Commands
@@ -163,7 +162,7 @@ class Formats:
 
         for i, item in enumerate(items):
             for key in ["user", "ai"]:
-                prompt = Output.get_prompt(
+                prompt = display.get_prompt(
                     key,
                     show_avatar=avatars,
                     put_colons=False,
@@ -220,7 +219,7 @@ class Formats:
 
         for i, item in enumerate(items):
             for key in ["user", "ai"]:
-                prompt = Output.get_prompt(
+                prompt = display.get_prompt(
                     key,
                     show_avatar=avatars,
                     put_colons=False,

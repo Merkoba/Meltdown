@@ -40,7 +40,7 @@ class ArgSpec:
         self.markdown_choices = ["user", "ai", "both", "none"]
         self.list_choices = ["auto", "never", "always"]
         self.effects_info = 'bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"'
-
+        self.zero = "0 to disable"
         self.add_arguments()
 
     def add_argument(self, key: str, info: str, **kwargs: Any) -> None:
@@ -737,7 +737,7 @@ class ArgSpec:
         self.add_argument(
             "auto_unload",
             type=int,
-            info="Auto-unload the model after this number of minutes after last use. 0 to disable",
+            info=f"Auto-unload the model after this number of minutes after last use. {self.zero}",
         )
 
         self.add_argument(
@@ -773,7 +773,7 @@ class ArgSpec:
         self.add_argument(
             "max_tabs",
             type=int,
-            info="Max number of tabs to keep open. 0 to disable",
+            info=f"Max number of tabs to keep open. {self.zero}",
         )
 
         self.add_argument(
@@ -1125,7 +1125,7 @@ class ArgSpec:
         self.add_argument(
             "system_suspend",
             type=int,
-            info="Stop updating the system these minutes after the last stream. 0 disables it",
+            info=f"Stop updating the system these minutes after the last stream. {self.zero}",
         )
 
         self.add_argument(
@@ -1843,6 +1843,12 @@ class ArgSpec:
             "symbol_emphasize_text",
             type=str,
             info="The text to use for the emphasize prompt",
+        )
+
+        self.add_argument(
+            "crop_user",
+            type=int,
+            info=f"Crop long user prompts to these characters. {self.zero}",
         )
 
 

@@ -306,6 +306,7 @@ class Args:
         self.symbol_explain_text = "Please explain."
         self.symbol_emphasize = "!"
         self.symbol_emphasize_text = "Please emphasize the last point."
+        self.crop_user = 0
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -603,6 +604,7 @@ class Args:
             "image_prompt_max",
             "image_model",
             "auto_program",
+            "crop_user",
         ]
 
         for n_item in normals:

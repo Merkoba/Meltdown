@@ -72,7 +72,7 @@ class ItemOps:
 
                     if user_text:
                         text = ""
-                        text += Output.get_prompt("user", put_colons=False)
+                        text += display.get_prompt("user", put_colons=False)
                         text += f": {user_text}"
 
                         if file:
@@ -82,7 +82,7 @@ class ItemOps:
 
                     if ai_text:
                         text = ""
-                        text += Output.get_prompt("ai", put_colons=False)
+                        text += display.get_prompt("ai", put_colons=False)
                         text += f": {ai_text}"
                         texts.append(text)
 

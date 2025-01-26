@@ -1624,7 +1624,7 @@ Type: int
 
 ### system-suspend
 
-Stop updating the system these minutes after the last stream. 0 disables it
+Stop updating the system these minutes after the last stream. 0 to disable
 
 Default: 1
 
@@ -2823,3 +2823,13 @@ The text to use for the emphasize prompt
 Default: "Please emphasize the last point."
 
 Type: str
+
+---
+
+### crop-user
+
+Crop long user prompts to these characters. 0 to disable
+
+Default: 0
+
+Type: int
