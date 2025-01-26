@@ -2833,3 +2833,13 @@ Crop long user prompts to these characters. 0 to disable
 Default: 0
 
 Type: int
+
+---
+
+### explain-snippet-limit
+
+When using the 'Explain' button on snippets, how much of the snippet should be used in the prompt
+
+Default: 250
+
+Type: int
