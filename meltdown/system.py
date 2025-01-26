@@ -162,7 +162,7 @@ class System:
             if app.system_frame_enabled:
                 check = True
 
-                if args.system_suspend >= 1:
+                if (args.system_suspend >= 1) and (not model.streaming):
                     date = model.stream_date
 
                     if not date:

@@ -49,7 +49,6 @@ class Model:
         self.loaded_type = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
-        self.stream_date_local = 0.0
         self.openai_client = None
         self.last_response = ""
 
@@ -528,10 +527,6 @@ class Model:
 
         now = utils.now()
         self.stream_date = now
-
-        if self.loaded_type == "local":
-            self.stream_date_local = now
-
         messages, convo_item = prepared
         self.stream_loading = True
         self.lock.acquire()
