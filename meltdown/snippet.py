@@ -14,6 +14,7 @@ from .args import args
 from .app import app
 from .utils import utils
 from .gestures import Gestures
+from .model import model
 
 
 class SnippetLabel(tk.Label):
@@ -74,6 +75,7 @@ class Snippet(tk.Frame):
         self.header_copy = SnippetButton(self.header, "Copy")
         self.header_select = SnippetButton(self.header, "Select")
         self.header_find = SnippetButton(self.header, "Find")
+        self.header_explain = SnippetButton(self.header, "Explain")
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
@@ -142,6 +144,7 @@ class Snippet(tk.Frame):
         bind_scroll_events(self)
 
         self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
+        self.header_explain.bind("<Button-1>", lambda e: self.explain())
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
         self.text.bind("<Motion>", lambda e: self.on_motion(e))
@@ -205,6 +208,12 @@ class Snippet(tk.Frame):
             return
 
         self.text.tag_remove("sel", "1.0", tk.END)
+
+    def explain(self) -> None:
+        example = self.content[0 : args.explain_snippet_limit]
+        example = example.replace("\n", " ").strip()
+        text = f"Explain this snippet: {example}"
+        model.stream({"text": text}, self.parent.tab_id)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)

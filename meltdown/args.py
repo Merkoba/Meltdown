@@ -307,6 +307,7 @@ class Args:
         self.symbol_emphasize = "!"
         self.symbol_emphasize_text = "Please emphasize the last point."
         self.crop_user = 0
+        self.explain_snippet_limit = 250
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -605,6 +606,7 @@ class Args:
             "image_model",
             "auto_program",
             "crop_user",
+            "explain_snippet_limit",
         ]
 
         for n_item in normals:

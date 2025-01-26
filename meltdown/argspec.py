@@ -1851,5 +1851,11 @@ class ArgSpec:
             info=f"Crop long user prompts to these characters. {self.zero}",
         )
 
+        self.add_argument(
+            "explain_snippet_limit",
+            type=int,
+            info="When using the 'Explain' button on snippets, how much of the snippet should be used in the prompt",
+        )
+
 
 argspec = ArgSpec()
