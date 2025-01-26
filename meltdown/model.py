@@ -654,7 +654,7 @@ class Model:
                     broken = True
                     break
 
-                if not chunk.choices:
+                if (not chunk) or (not chunk.choices):  # type: ignore
                     continue
 
                 delta = chunk.choices[0].delta  # type: ignore

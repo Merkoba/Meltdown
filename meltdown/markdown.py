@@ -85,7 +85,7 @@ class Markdown:
             c = utils.escape_regex(char)
             u = get_u(c, n)
             t = get_t(c, n)
-            return rf"^(?:^|\s)(?P<all>{u}(?P<content>{t}.*?{t}){u})(?:$|\s)"
+            return rf"^(?:^|\s)(?P<all>{u}(?P<content>{t}.*?{t}|{t}){u})(?:$|\s)"
 
         # `this thing` or ` this thing `
         # There can be spaces between the chars
@@ -278,7 +278,9 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_under, "bold")
 
         if self.enabled(who, "italic_asterisk"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_aster, "italic")
+            self.do_format(
+                start_ln, end_ln, who, Markdown.pattern_italic_aster, "italic"
+            )
 
         if self.enabled(who, "italic_underscore"):
             self.do_format(
