@@ -654,6 +654,9 @@ class Model:
                     broken = True
                     break
 
+                if not chunk.choices:
+                    continue
+
                 delta = chunk.choices[0].delta  # type: ignore
 
                 if hasattr(delta, "content"):

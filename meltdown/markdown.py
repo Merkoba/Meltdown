@@ -65,10 +65,10 @@ class Markdown:
             return f"{c}{{{n}}}"
 
         def get_t(c: str, n: int) -> str:
-            return rf"[^\s\{n}{c}]"
+            return rf"[^\s{c}]"
 
         def get_t2(c: str, n: int) -> str:
-            return rf"[^\{n}{c}]"
+            return rf"[^{c}]"
 
         # *this thing* but not *this thing *
         # No spaces between the chars
@@ -76,7 +76,8 @@ class Markdown:
             c = utils.escape_regex(char)
             u = get_u(c, n)
             t = get_t(c, n)
-            return rf"(?P<all>{u}(?P<content>{t}[^\{n}{c}]*{t}|{t}){u})"
+            t2 = get_t2(c, n)
+            return rf"(?P<all>{u}(?P<content>{t}{t2}*{t}|{t}){u})"
 
         # _this thing_ but not_this_thing
         # Chars have to be at the edges
@@ -84,7 +85,7 @@ class Markdown:
             c = utils.escape_regex(char)
             u = get_u(c, n)
             t = get_t(c, n)
-            return rf"(?:^|\s)(?P<all>{u}(?P<content>{t}[^{u}]*{t}|{t}){u})(?:$|\s)"
+            return rf"^(?:^|\s)(?P<all>{u}(?P<content>{t}.*?{t}){u})(?:$|\s)"
 
         # `this thing` or ` this thing `
         # There can be spaces between the chars
@@ -274,10 +275,10 @@ class Markdown:
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_aster, "bold")
 
         if self.enabled(who, "bold_underscore"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_under, "italic")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_under, "bold")
 
         if self.enabled(who, "italic_asterisk"):
-            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_aster, "bold")
+            self.do_format(start_ln, end_ln, who, Markdown.pattern_italic_aster, "italic")
 
         if self.enabled(who, "italic_underscore"):
             self.do_format(
