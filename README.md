@@ -938,6 +938,12 @@ These can be configured through args.
 
 This is a quick way to keep prompting the AI for clearer information.
 
+There's also a `^` symbol that is called `fresh`.
+
+It is used for fresh prompts. The alternative is the `/fresh` command.
+
+What it does is do a prompt without using the history.
+
 ---
 
 ## Keywords <a name="keywords"></a>
