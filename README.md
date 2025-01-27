@@ -938,6 +938,8 @@ These can be configured through args.
 
 This is a quick way to keep prompting the AI for clearer information.
 
+---
+
 There's also a `^` symbol that is called `fresh`.
 
 The alternative is the `/fresh` command.
