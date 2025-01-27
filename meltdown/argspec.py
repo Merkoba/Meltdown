@@ -1447,13 +1447,13 @@ class ArgSpec:
 
         self.add_argument(
             "markdown_join",
-            action="store_true",
-            info="Join multiple lines into a single line separated by a symbol",
+            type=str,
+            info="Join multiple lines into a single line separated by a char",
         )
 
         self.add_argument(
             "markdown_clean",
-            action="store_true",
+            type=str,
             info="Collapse multiple empty lines into one",
         )
 
@@ -1750,7 +1750,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "join_lines_symbol",
+            "join_lines_char",
             type=str,
             info="The symbol used to join the lines",
         )
@@ -1843,6 +1843,12 @@ class ArgSpec:
             "symbol_emphasize_text",
             type=str,
             info="The text to use for the emphasize prompt",
+        )
+
+        self.add_argument(
+            "symbol_fresh",
+            type=int,
+            info="When this is used as the first character of a prompt, the context will not be used on the prompt. This a shortcut to quickly do fresh prompts",
         )
 
         self.add_argument(

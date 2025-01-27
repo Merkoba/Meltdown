@@ -211,6 +211,10 @@ class InputControl:
         text = self.replace_variables(text)
         text = utils.replace_keywords(text)
         text = self.replace_symbols(text)
+        text, fresh = self.check_fresh(text)
+
+        if fresh:
+            no_history = True
 
         if text or file:
             self.clear()
@@ -492,6 +496,16 @@ class InputControl:
             return args.symbol_emphasize_text
 
         return text
+
+    def check_fresh(self, text: str) -> tuple[str, bool]:
+        text = text.strip()
+        clear = False
+
+        if text.startswith(args.symbol_fresh):
+            text = text[1:].strip()
+            clear = True
+
+        return text, clear
 
 
 inputcontrol = InputControl()

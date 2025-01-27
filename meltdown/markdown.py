@@ -703,7 +703,8 @@ class Markdown:
         joined_lines = []
         current: list[str] = []
         inside_snippets = False
-        symbol = args.join_lines_symbol
+        char = args.join_lines_char
+        print(char)
         ticks = "```"
 
         def do_join() -> None:
@@ -711,7 +712,7 @@ class Markdown:
 
             if current:
                 cleaned = [line for line in current if line.strip()]
-                joined = f" {symbol} ".join(cleaned) + "\n"
+                joined = f" {char} ".join(cleaned) + "\n"
                 joined_lines.append(joined)
                 current = []
 

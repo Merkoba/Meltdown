@@ -292,7 +292,7 @@ class Args:
         self.variables: list[str] = []
         self.variable_prefix = "$"
         self.keep_empty_tab = True
-        self.join_lines_symbol = "👾"
+        self.join_lines_char = "👾"
         self.delimiter = ":"
         self.pin_icon = "⭐"
         self.auto_sort_pins = False
@@ -305,6 +305,7 @@ class Args:
         self.symbol_explain = "?"
         self.symbol_explain_text = "Please explain."
         self.symbol_emphasize = "!"
+        self.symbol_fresh = "^"
         self.symbol_emphasize_text = "Please emphasize the last point."
         self.crop_user = 0
         self.explain_sample = 250
@@ -596,7 +597,7 @@ class Args:
             "argfile",
             "max_items",
             "variable_prefix",
-            "join_lines_symbol",
+            "join_lines_char",
             "delimiter",
             "wrap_tabs",
             "pin_icon",
@@ -607,6 +608,7 @@ class Args:
             "auto_program",
             "crop_user",
             "explain_sample",
+            "symbol_fresh",
         ]
 
         for n_item in normals:
