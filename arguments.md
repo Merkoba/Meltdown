@@ -2166,11 +2166,11 @@ Type: str
 
 ### markdown-join
 
-Join multiple lines into a single line separated by a symbol
+Join multiple lines into a single line separated by a char
 
 Default: "none"
 
-Action: store_true
+Type: str
 
 ---
 
@@ -2180,7 +2180,7 @@ Collapse multiple empty lines into one
 
 Default: "none"
 
-Action: store_true
+Type: str
 
 ---
 
@@ -2668,7 +2668,7 @@ Action: store_false
 
 ---
 
-### join-lines-symbol
+### join-lines-char
 
 The symbol used to join the lines
 
@@ -2823,6 +2823,16 @@ The text to use for the emphasize prompt
 Default: "Please emphasize the last point."
 
 Type: str
+
+---
+
+### symbol-fresh
+
+When this is used as the first character of a prompt, the context will not be used on the prompt. This a shortcut to quickly do fresh prompts
+
+Default: "^"
+
+Type: int
 
 ---
 

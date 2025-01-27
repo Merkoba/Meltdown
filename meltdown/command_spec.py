@@ -773,9 +773,10 @@ class CommandSpec:
         self.add_cmd("submit", "Submit the input", lambda a=None: inputcontrol.submit())
 
         self.add_cmd(
-            "cleansubmit",
-            "Submit the input without using history",
-            lambda a=None: inputcontrol.submit(no_history=True),
+            "fresh",
+            "Do a prompt without using the history",
+            lambda a=None: inputcontrol.submit(text=a, no_history=True, mode="fresh"),
+            type=str,
         )
 
         self.add_cmd(

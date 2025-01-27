@@ -189,6 +189,7 @@ class InputControl:
         scroll: bool = True,
         file: str | None = None,
         no_history: bool = False,
+        mode: str = "normal",
     ) -> None:
         from .model import model
         from .display import display
@@ -211,10 +212,23 @@ class InputControl:
         text = self.replace_variables(text)
         text = utils.replace_keywords(text)
         text = self.replace_symbols(text)
-        text, fresh = self.check_fresh(text)
 
-        if fresh:
-            no_history = True
+        if not no_history:
+            text, fresh = self.check_fresh(text)
+
+            if fresh:
+                no_history = True
+
+        if not text:
+            return
+
+        def add_input() -> None:
+            if text and (mode == "normal"):
+                files.add_input(text)
+
+        def add_words() -> None:
+            if text:
+                self.add_words(text)
 
         if text or file:
             self.clear()
@@ -229,13 +243,13 @@ class InputControl:
                 if args.commands:
                     if commands.exec(text):
                         if args.command_history:
-                            files.add_input(text)
+                            add_input()
 
-                        self.add_words(text)
+                        add_words()
                         return
 
-                files.add_input(text)
-                self.add_words(text)
+                add_input()
+                add_words()
 
             if tab.mode == "ignore":
                 return

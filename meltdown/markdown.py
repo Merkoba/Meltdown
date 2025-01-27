@@ -704,7 +704,6 @@ class Markdown:
         current: list[str] = []
         inside_snippets = False
         char = args.join_lines_char
-        print(char)
         ticks = "```"
 
         def do_join() -> None:

@@ -752,9 +752,9 @@ Submit the input
 
 ---
 
-### cleansubmit
+### fresh
 
-Submit the input without using history
+Do a prompt without using the history
 
 ---
 
