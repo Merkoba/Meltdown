@@ -8,7 +8,7 @@ This is a desktop application to interact with `large language models`.
 
 It has hundreds of arguments and commands and many power user features.
 
-It's written 100% in `python` and it uses `tkinter` for the GUI.
+It's written 100% in `python` and uses `tkinter` for the GUI.
 
 ---
 
@@ -405,7 +405,7 @@ This allows you to send actions from the terminal that launched the program.
 
 You can enter a simple text prompt, or send a command if the command prefix is used.
 
-It uses `prompt_toolkit` and it shows autocomplete suggestions with recently used words, or commands.
+It uses `prompt_toolkit` and shows autocomplete suggestions with recently used words, or commands.
 
 You could have the main program displayed on a monitor and control it with the terminal in another monitor for instance.
 
