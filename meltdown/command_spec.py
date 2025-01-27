@@ -1236,5 +1236,23 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "symbolcontinue",
+            "Use the continue symbol",
+            lambda a=None: inputcontrol.submit(text=args.symbol_continue),
+        )
+
+        self.add_cmd(
+            "symbolexplain",
+            "Use the explain symbol",
+            lambda a=None: inputcontrol.submit(text=args.symbol_explain),
+        )
+
+        self.add_cmd(
+            "symbolexpand",
+            "Use the expand symbol",
+            lambda a=None: inputcontrol.submit(text=args.symbol_expand),
+        )
+
 
 command_spec = CommandSpec()

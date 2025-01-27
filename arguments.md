@@ -2786,9 +2786,9 @@ Type: str
 
 ---
 
-### symbol-emphasize
+### symbol-expand
 
-The symbol to use for the emphasize prompt
+The symbol to use for the expand prompt
 
 Default: "!"
 
@@ -2816,11 +2816,11 @@ Type: str
 
 ---
 
-### symbol-emphasize-text
+### symbol-expand-text
 
-The text to use for the emphasize prompt
+The text to use for the expand prompt
 
-Default: "Please emphasize the last point."
+Default: "Please expand on the last point."
 
 Type: str
 

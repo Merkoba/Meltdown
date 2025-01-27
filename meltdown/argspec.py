@@ -1822,9 +1822,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "symbol_emphasize",
+            "symbol_expand",
             type=str,
-            info="The symbol to use for the emphasize prompt",
+            info="The symbol to use for the expand prompt",
         )
 
         self.add_argument(
@@ -1840,9 +1840,9 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "symbol_emphasize_text",
+            "symbol_expand_text",
             type=str,
-            info="The text to use for the emphasize prompt",
+            info="The text to use for the expand prompt",
         )
 
         self.add_argument(

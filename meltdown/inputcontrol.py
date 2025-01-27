@@ -196,7 +196,9 @@ class InputControl:
         from .widgets import widgets
 
         if not text:
-            text = self.input.get().strip()
+            text = self.input.get()
+
+        text = text.strip()
 
         if not tab_id:
             tab_id = display.current_tab
@@ -506,8 +508,8 @@ class InputControl:
         if text == args.symbol_explain:
             return args.symbol_explain_text
 
-        if text == args.symbol_emphasize:
-            return args.symbol_emphasize_text
+        if text == args.symbol_expand:
+            return args.symbol_expand_text
 
         return text
 

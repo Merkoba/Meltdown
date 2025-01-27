@@ -304,9 +304,9 @@ class Args:
         self.symbol_continue_text = "Please continue."
         self.symbol_explain = "?"
         self.symbol_explain_text = "Please explain."
-        self.symbol_emphasize = "!"
+        self.symbol_expand = "!"
         self.symbol_fresh = "^"
-        self.symbol_emphasize_text = "Please emphasize the last point."
+        self.symbol_expand_text = "Please expand on the last point."
         self.crop_user = 0
         self.explain_sample = 250
 

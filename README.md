@@ -930,7 +930,7 @@ And allows closing either just normal tabs or just pins.
 
 There are 3 quick prompt shortcuts to make the AI expand on the topic.
 
-By default these are `>` for `continue`, `?` for `explain`, and `!` to emphasize on the last point.
+By default these are `>` for `continue`, `?` for `explain`, and `!` to expand on the last point.
 
 Basically if you input `>` (only that character), the input will be transformed automatically to `Please continue.`, etc.
 
