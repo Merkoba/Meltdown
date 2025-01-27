@@ -245,6 +245,10 @@ class Book(tk.Frame):
             self.pick_one(id_)
             return
 
+        if keyboard.alt:
+            self.move_to_end(id_)
+            return
+
         self.unpick()
         self.end_tab_drag()
         self.select(id_)

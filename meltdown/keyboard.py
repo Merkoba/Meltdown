@@ -58,6 +58,7 @@ class Keyboard:
         self.block_date = 0.0
         self.ctrl = False
         self.shift = False
+        self.alt = False
         self.ctrl_date = 0.0
         self.double_tap_delay = 0.28
         self.commands: dict[str, list[KbItem]] = {}
@@ -84,6 +85,7 @@ class Keyboard:
 
         is_ctrl = event.keysym == "Control_L" or event.keysym == "Control_R"
         is_shift = event.keysym == "Shift_L" or event.keysym == "Shift_R"
+        is_alt = event.keysym == "Alt_L" or event.keysym == "Alt_R"
         is_esc = event.keysym == "Escape"
         is_entrybox = isinstance(event.widget, EntryBox)
         is_textbox = isinstance(event.widget, TextBox)
@@ -97,6 +99,9 @@ class Keyboard:
 
         if is_ctrl:
             self.ctrl = True
+
+        if is_alt:
+            self.alt = True
 
             if args.taps:
                 time_now = utils.now()
@@ -168,6 +173,8 @@ class Keyboard:
             self.ctrl = False
         elif event.keysym == "Shift_L" or event.keysym == "Shift_R":
             self.shift = False
+        elif event.keysym == "Alt_L" or event.keysym == "Alt_R":
+            self.alt = False
 
     def no_modifiers(self) -> bool:
         return (not self.ctrl) and (not self.shift)
@@ -514,6 +521,7 @@ class Keyboard:
     def reset(self) -> None:
         self.ctrl = False
         self.shift = False
+        self.alt = False
         self.ctrl_date = 0.0
 
     def show_help(

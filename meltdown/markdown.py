@@ -100,6 +100,7 @@ class Markdown:
 
         # Bold with two asterisks
         Markdown.pattern_bold_aster = char_regex_1("*", 2)
+        print(Markdown.pattern_bold_aster)
 
         # Italic with one underscore
         Markdown.pattern_italic_under = char_regex_2("_")
@@ -263,6 +264,8 @@ class Markdown:
             if self.format_snippets(start_ln, end_ln):
                 end_ln = self.next_marker(start_ln)
 
+        # Lists
+
         if self.enabled(who, "ordered"):
             if self.format_lists(start_ln, end_ln, who, "ordered"):
                 end_ln = self.next_marker(start_ln)
@@ -271,11 +274,15 @@ class Markdown:
             if self.format_lists(start_ln, end_ln, who, "unordered"):
                 end_ln = self.next_marker(start_ln)
 
+        # Bold (two chars)
+
         if self.enabled(who, "bold_asterisk"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_aster, "bold")
 
         if self.enabled(who, "bold_underscore"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_bold_under, "bold")
+
+        # Italic (one char)
 
         if self.enabled(who, "italic_asterisk"):
             self.do_format(
@@ -286,6 +293,8 @@ class Markdown:
             self.do_format(
                 start_ln, end_ln, who, Markdown.pattern_italic_under, "italic"
             )
+
+        # ---
 
         if self.enabled(who, "quote"):
             self.do_format(start_ln, end_ln, who, Markdown.pattern_quote, "quote", True)

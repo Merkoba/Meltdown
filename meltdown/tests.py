@@ -263,5 +263,14 @@ class Tests:
         ],
     }
 
+    what_test: Test = {
+        "items": [
+            {
+                "user": "What do test",
+                "ai": "aaa **What You *Can* Do in Python:** aaa",
+            },
+        ],
+    }
+
 
 tests = Tests()
