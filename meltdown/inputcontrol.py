@@ -523,5 +523,16 @@ class InputControl:
 
         return text, clear
 
+    def use_symbol(self, what: str) -> str:
+        if what == "continue":
+            symbol = args.symbol_continue
+        elif what == "explain":
+            symbol = args.symbol_explain
+        elif what == "expand":
+            symbol = args.symbol_expand
+
+        if symbol:
+            self.submit(text=symbol)
+
 
 inputcontrol = InputControl()
