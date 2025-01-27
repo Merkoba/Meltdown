@@ -359,6 +359,28 @@ for only the user, or the ai, or both, or none. This is done through arguments.
 
 ---
 
+## Snippets <a name="snippets"></a>
+
+Triple backticks produce snippets:
+
+![](img/snippets.png)
+
+These get colored depending on the language used.
+
+There are buttons on the top right to do several actions.
+
+`Use` saves a sample of the snippet to the `$snippet` variable which can be later used.
+
+`Explain` directly asks the AI to explain a sample.
+
+`Find` finds text inside the snippet.
+
+`Select` selects all the text in the snipper.
+
+`Copy` copies all the text in the snippet.
+
+---
+
 ## Find <a name="find"></a>
 
 There is a find widget that allows searching for text inside conversations.
