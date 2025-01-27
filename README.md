@@ -351,9 +351,6 @@ The text output is only parsed when needed, at the end of streams.
 It is also able to only format the last line added to the textarea.
 It aims to be as efficient as it can.
 
-Snippets get syntax highlighted depending on the detected mode, for example python code.
-To achieve this, the `Pygments` library is used.
-
 Each kind of markdown can be enabled or disabled for user or ai. For example bold can be enabled
 for only the user, or the ai, or both, or none. This is done through arguments.
 
@@ -367,7 +364,11 @@ Triple backticks produce snippets:
 
 These get colored depending on the language used.
 
-There are buttons on the top right to do several actions.
+To achieve syntax highlighting, the `Pygments` library is used.
+
+---
+
+There are buttons on the top right to do several actions:
 
 `Use` saves a sample of the snippet to the `$snippet` variable which can be later used.
 
