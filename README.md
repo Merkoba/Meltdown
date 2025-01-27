@@ -24,6 +24,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Commands](#commands)
 1. [Tabs](#tabs)
 1. [Markdown](#markdown)
+1. [Snippets](#snippets)
 1. [Find](#find)
 1. [Images](#images)
 1. [Console](#console)
@@ -351,7 +352,7 @@ The text output is only parsed when needed, at the end of streams.
 It is also able to only format the last line added to the textarea.
 It aims to be as efficient as it can.
 
-Each kind of markdown can be enabled or disabled for user or ai. For example bold can be enabled
+Each kind of markdown can be enabled or disabled for `user` or `ai`. For example bold can be enabled
 for only the user, or the ai, or both, or none. This is done through arguments.
 
 ---
