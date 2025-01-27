@@ -944,7 +944,11 @@ The alternative is the `/fresh` command.
 
 What it does is do a prompt without using the history.
 
-For example: `^ what is a book?`
+For example: `^ what is a book?`.
+
+Or: `/fresh what is a book?`.
+
+Those won't use the previous conversation history.
 
 ---
 
