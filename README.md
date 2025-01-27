@@ -370,7 +370,7 @@ To achieve syntax highlighting, the `Pygments` library is used.
 
 There are buttons on the top right to do several actions:
 
-`Use` saves a sample of the snippet to the `$snippet` variable which can be later used.
+`Use` saves a sample of the snippet to the `$snippet` variable which can be used on the input.
 
 `Explain` directly asks the AI to explain a sample.
 
