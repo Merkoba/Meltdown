@@ -17,7 +17,7 @@ tips = {
     "clear_input_button": "Clear the input",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
-    "input_icon": "Write an elaborate input. Middle click to maximize",
+    "write_button": "Write an elaborate input. Middle click to maximize",
     "submit_button": "Submit the input. Middle click to avoid using history",
     "browse_file_button": "Browse for a file to use",
     "open_file_button": "Open the current file",

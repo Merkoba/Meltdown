@@ -33,15 +33,11 @@ class InputControl:
 
         frame_data = widgets.frame_data_input
 
-        self.input_icon = widgetutils.make_label(
-            frame_data,
-            args.input_icon,
-            colons=False,
-            command=lambda e: self.write(),
+        self.write_button = widgetutils.make_button(
+            frame_data, "W", lambda e: self.write()
         )
 
-        self.input_icon.configure(cursor="hand2")
-        ToolTip(self.input_icon, tips["input_icon"])
+        ToolTip(self.write_button, tips["write_button"])
 
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
@@ -91,7 +87,7 @@ class InputControl:
             self.set_variable(variable)
 
     def bind(self) -> None:
-        self.input_icon.bind("<Button-2>", lambda e: self.write(True))
+        self.write_button.bind("<Button-2>", lambda e: self.write(True))
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
     def show_menu(self, event: Any = None) -> None:
@@ -550,10 +546,6 @@ class InputControl:
 
         if symbol:
             self.submit(text=symbol)
-
-    def input_icon_click(self) -> None:
-        app.hide_all()
-        app.show_portrait()
 
 
 inputcontrol = InputControl()

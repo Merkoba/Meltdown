@@ -822,16 +822,6 @@ Action: store_true
 
 ---
 
-### compact-file
-
-Hide the file frame in compact mode
-
-Default: False
-
-Action: store_true
-
----
-
 ### compact-input
 
 Hide the input frame in compact mode
@@ -2853,3 +2843,13 @@ When using the 'Explain' button on snippets, how much of the snippet should be u
 Default: 250
 
 Type: int
+
+---
+
+### show-file
+
+Show the file frame at startup
+
+Default: False
+
+Action: store_true

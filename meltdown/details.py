@@ -81,7 +81,7 @@ class Details:
         self.make_entry(widgets, data, "context")
 
     def add_max_tokens(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "max_tokens", "Max Tokens")
+        self.make_label(widgets, data, "max_tokens", "Tokens")
         self.make_entry(widgets, data, "max_tokens")
 
     def add_threads(self, widgets: Widgets, data: FrameData) -> None:
@@ -89,7 +89,7 @@ class Details:
         self.make_entry(widgets, data, "threads")
 
     def add_gpu_layers(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "gpu_layers", "GPU Layers")
+        self.make_label(widgets, data, "gpu_layers", "GPU")
         self.make_entry(widgets, data, "gpu_layers")
 
     def add_format(self, widgets: Widgets, data: FrameData) -> None:
@@ -103,7 +103,7 @@ class Details:
         self.make_combobox(widgets, data, "format", values, width=13)
 
     def add_temperature(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "temperature", "Temperature")
+        self.make_label(widgets, data, "temperature", "Temp")
         self.make_entry(widgets, data, "temperature")
 
     def add_logits(self, widgets: Widgets, data: FrameData) -> None:
@@ -148,9 +148,9 @@ class Details:
         self.add_history(widgets, data)
         self.add_context(widgets, data)
         self.add_max_tokens(widgets, data)
+        self.add_temperature(widgets, data)
         self.add_threads(widgets, data)
         self.add_gpu_layers(widgets, data)
-        self.add_temperature(widgets, data)
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
