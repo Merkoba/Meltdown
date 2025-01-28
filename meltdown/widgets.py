@@ -392,8 +392,13 @@ class Widgets:
 
         conf_value = config.get(key)
 
-        if (defvalue is not None) and (conf_value != defvalue) and (defvalue != ""):
-            menu.add(text="Reset", command=lambda e: config.reset_one(key))
+        if defvalue is not None:
+            if (conf_value != defvalue) and (defvalue != ""):
+                menu.add(text="Reset", command=lambda e: config.reset_one(key))
+
+            if isinstance(defvalue, (int, float)):
+                menu.add(text="Half", command=lambda e: self.half_number(key))
+                menu.add(text="Double", command=lambda e: self.double_number(key))
 
     def show_menu_items(
         self,
@@ -578,6 +583,39 @@ class Widgets:
         widget.clear()
         widget.focus_set()
         config.update(key)
+
+    def change_number(self, key: str, mode: str) -> None:
+        widget = self.get_widget(key)
+
+        if (not widget) or (not isinstance(widget, EntryBox)):
+            return
+
+        defvalue = config.get_default(key)
+        current = config.get(key)
+
+        if current is None:
+            return
+
+        if current == 0:
+            return
+
+        if mode == "half":
+            num = current / 2
+        else:
+            num = current * 2
+
+        if isinstance(defvalue, int):
+            num = int(num)
+        else:
+            num = round(num, 2)
+
+        config.set(key, num)
+
+    def half_number(self, key: str) -> None:
+        self.change_number(key, "half")
+
+    def double_number(self, key: str) -> None:
+        self.change_number(key, "double")
 
     def find_focused(self) -> bool:
         focused = app.focused()
