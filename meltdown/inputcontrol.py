@@ -32,9 +32,16 @@ class InputControl:
         from .widgets import widgets
 
         frame_data = widgets.frame_data_input
-        self.input_icon = widgetutils.make_label(frame_data, "🫠", colons=False)
+
+        self.input_icon = widgetutils.make_label(
+            frame_data,
+            args.input_icon,
+            colons=False,
+            command=lambda e: self.write(),
+        )
+
         self.input_icon.configure(cursor="hand2")
-        ToolTip(self.input_icon, tips["input"])
+        ToolTip(self.input_icon, tips["input_icon"])
 
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
@@ -69,16 +76,8 @@ class InputControl:
 
         ToolTip(next_button, tips["toggle_file_button"])
 
-        if args.write_button:
-            write_button = widgetutils.make_button(
-                frame_data, "W", lambda: self.write()
-            )
-
-            write_button.set_bind("<Button-2>", lambda e: self.write(True))
-            ToolTip(write_button, tips["write_button"])
-
         submit_button = widgetutils.make_button(
-            frame_data, "S", lambda: self.submit(scroll=False)
+            frame_data, "Ok", lambda: self.submit(scroll=False)
         )
 
         submit_button.set_bind(
@@ -92,7 +91,7 @@ class InputControl:
             self.set_variable(variable)
 
     def bind(self) -> None:
-        self.input_icon.bind("<Button-1>", lambda e: self.input_icon_click())
+        self.input_icon.bind("<Button-2>", lambda e: self.write(True))
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
     def show_menu(self, event: Any = None) -> None:

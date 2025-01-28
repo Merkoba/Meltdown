@@ -309,6 +309,7 @@ class Args:
         self.crop_user = 0
         self.explain_sample = 250
         self.show_file = False
+        self.input_icon = "📝"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -609,6 +610,7 @@ class Args:
             "explain_sample",
             "symbol_fresh",
             "show_file",
+            "input_icon",
         ]
 
         for n_item in normals:

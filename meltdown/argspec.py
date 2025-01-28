@@ -1863,5 +1863,11 @@ class ArgSpec:
             info="Show the file frame at startup",
         )
 
+        self.add_argument(
+            "input_icon",
+            type=str,
+            info="The icon on the left of the input field",
+        )
+
 
 argspec = ArgSpec()

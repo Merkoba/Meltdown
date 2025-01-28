@@ -17,7 +17,7 @@ tips = {
     "clear_input_button": "Clear the input",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
-    "write_button": "Write an elaborate input. Middle click to maximize",
+    "input_icon": "Write an elaborate input. Middle click to maximize",
     "submit_button": "Submit the input. Middle click to avoid using history",
     "browse_file_button": "Browse for a file to use",
     "open_file_button": "Open the current file",
@@ -25,7 +25,7 @@ tips = {
     "user": "Personalize yourself",
     "ai": "Personalize the AI",
     "input": (
-        " Input a message that the AI will respond to."
+        " Write a message that the AI will respond to."
         " Use up/down arrows to cycle input history."
         " You can also use commands here. See /commands"
     ),

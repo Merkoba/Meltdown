@@ -14,6 +14,8 @@ from .entrybox import EntryBox
 from .buttonbox import ButtonBox
 from .framedata import FrameData
 
+Command = Callable[..., Any] | None
+
 
 class WidgetUtils:
     def do_grid(
@@ -92,7 +94,7 @@ class WidgetUtils:
         self,
         parent: tk.Frame,
         text: str,
-        command: Callable[..., Any] | None = None,
+        command: Command = None,
         style: str | None = None,
         width: int | None = None,
     ) -> ButtonBox:
@@ -102,7 +104,7 @@ class WidgetUtils:
         self,
         frame_data: FrameData,
         text: str,
-        command: Callable[..., Any] | None = None,
+        command: Command = None,
         style: str | None = None,
         width: int | None = None,
     ) -> ButtonBox:
@@ -129,6 +131,7 @@ class WidgetUtils:
         pady: tuple[int, int] | None = None,
         ignore_short: bool = False,
         colons: bool = True,
+        command: Command = None,
     ) -> tk.Label:
         text = f"{text}:" if colons else text
 
@@ -140,6 +143,9 @@ class WidgetUtils:
         widget.configure(
             background=app.theme.background_color, foreground=app.theme.foreground_color
         )
+
+        if command:
+            widget.bind("<Button-1>", lambda e: command(e))
 
         if args.show_labels:
             self.do_grid(widget, col=frame_data.col, padx=padx, pady=pady)
