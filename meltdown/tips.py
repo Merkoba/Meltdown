@@ -45,7 +45,7 @@ tips = {
         "\nIts usage might cost money."
         "\nInternet connection is required"
     ),
-    "model_local": "You are using a local model.\nNo network requests are made",
+    "model_local": "You are using a local model.\nInternet is not required",
     # Config
     "model": (
         "Path to a model file. This should be a file that works with"
