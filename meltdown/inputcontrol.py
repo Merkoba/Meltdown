@@ -404,6 +404,7 @@ class InputControl:
             on_right_click=on_right_click,
             value=text,
             start_maximized=maxed,
+            ok_label="Submit",
         )
 
     def input_command(self, text: str | None = None, maxed: bool = False) -> None:

@@ -325,6 +325,7 @@ class Dialog:
         value: str = "",
         start_maximized: bool = False,
         on_right_click: Action | None = None,
+        ok_label: str = "Ok",
     ) -> None:
         from .textbox import TextBox
 
@@ -355,7 +356,7 @@ class Dialog:
 
         dialog.make_button("Max", lambda: do_max())
         dialog.make_button("Cancel", textbox.cancel)
-        dialog.make_button("Ok", textbox.ok)
+        dialog.make_button(ok_label, textbox.ok)
 
         dialog.show()
         dialog.highlight_no_button()
@@ -453,6 +454,7 @@ class Dialog:
         y = (window_height - dialog_height) // 2
         self.root.place(x=x, y=y)
         self.root.focus_set()
+        ToolTip.hide_all()
 
     def hide(self) -> None:
         from .tooltips import ToolTip
