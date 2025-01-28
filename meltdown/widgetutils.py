@@ -71,7 +71,7 @@ class WidgetUtils:
             borderwidth=0, highlightthickness=0, background=app.theme.background_color
         )
 
-        canvas.grid(column=col, row=0, sticky="ew", padx=10)
+        canvas.grid(column=col, row=0, sticky="ew", padx=5)
         return frame, canvas
 
     def make_entry(
