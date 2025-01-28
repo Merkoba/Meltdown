@@ -64,7 +64,7 @@ class Details:
         ToolTip(combo_wid, tips[key])
 
     def add_users(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "user", "User", padx=(0, 0))
+        self.make_label(widgets, data, "user", "User", padx=(0, app.theme.padx))
         self.make_entry(widgets, data, "avatar_user", width=4)
         self.make_entry(widgets, data, "name_user", width=self.width_1)
 
@@ -93,7 +93,7 @@ class Details:
         self.make_entry(widgets, data, "gpu_layers")
 
     def add_format(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "format", "Format", padx=(0, 0))
+        self.make_label(widgets, data, "format", "Format", padx=(0, app.theme.padx))
         values = ["auto"]
 
         if llama_cpp:
