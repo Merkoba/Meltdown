@@ -356,7 +356,7 @@ class Dialog:
 
         dialog.make_button("Max", lambda: do_max())
         dialog.make_button("Cancel", textbox.cancel)
-        dialog.make_button(ok_label, textbox.ok)
+        dialog.make_button(ok_label, textbox.ok, alt_cmd=textbox.ok_alt)
 
         dialog.show()
         dialog.highlight_no_button()
@@ -470,8 +470,18 @@ class Dialog:
         self.root.destroy()
         Dialog.current_dialog = None
 
-    def make_button(self, text: str, command: Action, num_cmds: int = 0) -> None:
+    def make_button(
+        self,
+        text: str,
+        command: Action,
+        num_cmds: int = 0,
+        alt_cmd: Action | None = None,
+    ) -> None:
         button = widgetutils.get_button(self.buttons_frame, text, command)
+
+        if alt_cmd:
+            button.set_bind("<Button-2>", alt_cmd)
+
         num = len(self.buttons)
         div = 3
 

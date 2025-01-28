@@ -381,7 +381,7 @@ class InputControl:
             menu.show(event)
 
         def action(ans: dict[str, Any]) -> None:
-            self.submit(text=ans["text"], scroll=False)
+            self.submit(text=ans["text"], scroll=False, no_history=ans["alt"])
 
         if not text:
             text = self.input.get().strip()

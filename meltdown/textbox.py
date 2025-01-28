@@ -107,6 +107,13 @@ class TextBox(tk.Text):
 
     def ok(self) -> None:
         ans = self.get_ans()
+        ans["alt"] = False
+        self.dialog.hide()
+        self.cmd_ok(ans)
+
+    def ok_alt(self) -> None:
+        ans = self.get_ans()
+        ans["alt"] = True
         self.dialog.hide()
         self.cmd_ok(ans)
 
