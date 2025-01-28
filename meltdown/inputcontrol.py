@@ -77,7 +77,7 @@ class InputControl:
         ToolTip(next_button, tips["toggle_file_button"])
 
         submit_button = widgetutils.make_button(
-            frame_data, "Ok", lambda: self.submit(scroll=False)
+            frame_data, "S", lambda: self.submit(scroll=False)
         )
 
         submit_button.set_bind(
