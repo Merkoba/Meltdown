@@ -100,7 +100,7 @@ class System:
                         )
 
                     if args.system_gpu_ram:
-                        self.gpu_ram = int(float(gpu_data.get("GPU memory use (%)", 0)))
+                        self.gpu_ram = int(float(gpu_data.get("GPU Memory Allocated (VRAM%)", 0)))
 
                         self.set_widget(
                             widgets.gpu_ram, utils.padnum(int(self.gpu_ram)) + "%"
