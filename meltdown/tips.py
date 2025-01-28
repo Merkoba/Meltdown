@@ -39,7 +39,7 @@ tips = {
     "system_gpu_ram": "Current GPU RAM usage",
     "system_gpu_temp": "Current GPU temperature",
     # Model state
-    "model_unloaded": "No model is loaded.\nPick a local or GPT model to start chatting",
+    "model_unloaded": "No model is loaded.\nPick a local or remote model to start chatting",
     "model_remote": (
         "You are using a remote service."
         "\nIts usage might cost money."
@@ -49,7 +49,7 @@ tips = {
     # Config
     "model": (
         "Path to a model file. This should be a file that works with"
-        " llama.cpp, like gguf files for instance. It can also be a specific ChatGPT model."
+        " llama.cpp, like gguf files for instance. It can also be a ChatGPT or Gemini model."
         " Check the main menu on the right to load the available models"
     ),
     "avatar_user": "The avatar of the user (You)",
@@ -104,7 +104,7 @@ tips = {
         " probable tokens when necessary"
     ),
     "top_k": (
-        "(Not applied to GPT) The Top-k parameter limits the model's"
+        "(Only for local models) The Top-k parameter limits the model's"
         " predictions to the top k most probable tokens at each step"
         " of generation. By setting a value for k, you are instructing"
         " the model to consider only the k most likely tokens."

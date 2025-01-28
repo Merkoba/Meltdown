@@ -548,6 +548,7 @@ class Model:
             gen_config["max_completion_tokens"] = config.max_tokens
             del gen_config["seed"]
         else:
+            gen_config["top_k"] = config.top_k
             gen_config["max_tokens"] = config.max_tokens
             del gen_config["model"]
 
