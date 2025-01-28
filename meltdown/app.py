@@ -303,7 +303,7 @@ class App:
         display.update_scroll()
 
     def frame_enabled(self, name: str) -> bool:
-        return getattr(self, f"{name}_frame_enabled")
+        return bool(getattr(self, f"{name}_frame_enabled"))
 
     def hide_frame_cmd(self, name: str) -> None:
         from .display import display

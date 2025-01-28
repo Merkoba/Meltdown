@@ -539,6 +539,8 @@ class InputControl:
         return text, clear
 
     def use_symbol(self, what: str) -> None:
+        symbol = ""
+
         if what == "continue":
             symbol = args.symbol_continue
         elif what == "explain":
