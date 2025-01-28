@@ -65,10 +65,10 @@ class Markdown:
             return f"{c}{{{n}}}"
 
         def get_t(c: str, n: int) -> str:
-            return rf"[^\s{c}]"
+            return rf"(?:(?!{c}{n}|\s).)"
 
         def get_t2(c: str, n: int) -> str:
-            return rf"[^{c}]"
+            return rf"(?:(?!{c}{n}).)"
 
         # *this thing* but not *this thing *
         # No spaces between the chars
