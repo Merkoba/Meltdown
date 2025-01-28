@@ -33,12 +33,6 @@ class InputControl:
 
         frame_data = widgets.frame_data_input
 
-        self.write_button = widgetutils.make_button(
-            frame_data, "W", lambda e: self.write()
-        )
-
-        ToolTip(self.write_button, tips["write_button"])
-
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
         widgets.input = self.input
@@ -71,6 +65,12 @@ class InputControl:
         )
 
         ToolTip(next_button, tips["toggle_file_button"])
+
+        self.write_button = widgetutils.make_button(
+            frame_data, "W", lambda e: self.write()
+        )
+
+        ToolTip(self.write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
             frame_data, "S", lambda: self.submit(scroll=False)

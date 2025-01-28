@@ -101,11 +101,9 @@ class Widgets:
         frame_data_model = widgetutils.make_frame()
         self.model_frame = frame_data_model.frame
 
-        self.model_label = widgetutils.make_label(frame_data_model, "Model")
         self.model = widgetutils.make_entry(frame_data_model)
         frame_data_model.expand()
         self.model.bind_mousewheel()
-        ToolTip(self.model_label, tips["model"])
         ToolTip(self.model, tips["model"])
 
         self.model_icon = widgetutils.make_label(frame_data_model, "", colons=False)
