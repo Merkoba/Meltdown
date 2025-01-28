@@ -65,10 +65,10 @@ class Markdown:
             return f"{c}{{{n}}}"
 
         def get_t(c: str, n: int) -> str:
-            return rf"(?:(?!{c}{n}|\s).)"
+            return rf"(?:(?!{c}{{{n}}}|\s).)"
 
         def get_t2(c: str, n: int) -> str:
-            return rf"(?:(?!{c}{n}).)"
+            return rf"(?:(?!{c}{{{n}}}).)"
 
         # *this thing* but not *this thing *
         # No spaces between the chars
@@ -92,15 +92,14 @@ class Markdown:
         def char_regex_3(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = get_u(c, n)
-            t = get_t2(c, n)
-            return rf"(?P<all>{u}(?P<content>{t}+){u})"
+            t2 = get_t2(c, n)
+            return rf"(?P<all>{u}(?P<content>{t2}+){u})"
 
         # Italic with one asterisk
         Markdown.pattern_italic_aster = char_regex_1("*")
 
         # Bold with two asterisks
         Markdown.pattern_bold_aster = char_regex_1("*", 2)
-        print(Markdown.pattern_bold_aster)
 
         # Italic with one underscore
         Markdown.pattern_italic_under = char_regex_2("_")
