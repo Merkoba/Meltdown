@@ -1432,6 +1432,16 @@ Type: str
 
 ---
 
+### trigger
+
+Convert this exact text to something else. Format is "[trigger] = [value]"
+
+Action: append
+
+Type: str
+
+---
+
 ### task
 
 Define a task to run periodically. Format is "[seconds] [commands] [/now (optional)]
@@ -2660,7 +2670,7 @@ Action: store_false
 
 ### join-lines-char
 
-The symbol used to join the lines
+The character used to join the lines
 
 Default: "👾"
 
@@ -2753,76 +2763,6 @@ Run a program automatically after a response
 Default: False
 
 Action: store_true
-
----
-
-### symbol-continue
-
-The symbol to use for the continue prompt
-
-Default: ">"
-
-Type: str
-
----
-
-### symbol-explain
-
-The symbol to use for the explain prompt
-
-Default: "?"
-
-Type: str
-
----
-
-### symbol-expand
-
-The symbol to use for the expand prompt
-
-Default: "!"
-
-Type: str
-
----
-
-### symbol-continue-text
-
-The text to use for the continue prompt
-
-Default: "Please continue."
-
-Type: str
-
----
-
-### symbol-explain-text
-
-The text to use for the explain prompt
-
-Default: "Please explain."
-
-Type: str
-
----
-
-### symbol-expand-text
-
-The text to use for the expand prompt
-
-Default: "Please expand on the last point."
-
-Type: str
-
----
-
-### symbol-fresh
-
-When this is used as the first character of a prompt, the context will not be used on the prompt. This a shortcut to quickly do fresh prompts
-
-Default: "^"
-
-Type: int
 
 ---
 

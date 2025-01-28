@@ -1007,6 +1007,13 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "trigger",
+            type=str,
+            action="append",
+            info='Convert this exact text to something else. Format is "[trigger] = [value]"',
+        )
+
+        self.add_argument(
             "task",
             type=str,
             action="append",
@@ -1746,7 +1753,7 @@ class ArgSpec:
         self.add_argument(
             "join_lines_char",
             type=str,
-            info="The symbol used to join the lines",
+            info="The character used to join the lines",
         )
 
         self.add_argument(
@@ -1801,48 +1808,6 @@ class ArgSpec:
             "auto_program",
             action="store_true",
             info="Run a program automatically after a response",
-        )
-
-        self.add_argument(
-            "symbol_continue",
-            type=str,
-            info="The symbol to use for the continue prompt",
-        )
-
-        self.add_argument(
-            "symbol_explain",
-            type=str,
-            info="The symbol to use for the explain prompt",
-        )
-
-        self.add_argument(
-            "symbol_expand",
-            type=str,
-            info="The symbol to use for the expand prompt",
-        )
-
-        self.add_argument(
-            "symbol_continue_text",
-            type=str,
-            info="The text to use for the continue prompt",
-        )
-
-        self.add_argument(
-            "symbol_explain_text",
-            type=str,
-            info="The text to use for the explain prompt",
-        )
-
-        self.add_argument(
-            "symbol_expand_text",
-            type=str,
-            info="The text to use for the expand prompt",
-        )
-
-        self.add_argument(
-            "symbol_fresh",
-            type=int,
-            info="When this is used as the first character of a prompt, the context will not be used on the prompt. This a shortcut to quickly do fresh prompts",
         )
 
         self.add_argument(

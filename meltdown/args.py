@@ -80,6 +80,7 @@ class Args:
         self.shift_f12 = ""
         self.input = ""
         self.aliases: list[str] = []
+        self.triggers: list[str] = []
         self.tasks: list[str] = []
         self.max_tab_width = 0
         self.old_tabs_minutes = 30
@@ -299,13 +300,6 @@ class Args:
         self.image_prompt_max = 4000
         self.image_model = "dall-e-3"
         self.auto_program = False
-        self.symbol_continue = ">"
-        self.symbol_continue_text = "Please continue."
-        self.symbol_explain = "?"
-        self.symbol_explain_text = "Please explain."
-        self.symbol_expand = "!"
-        self.symbol_fresh = "^"
-        self.symbol_expand_text = "Please expand on the last point."
         self.crop_user = 0
         self.explain_sample = 250
         self.show_file = False
@@ -321,6 +315,7 @@ class Args:
 
         other_name = [
             ("alias", "aliases"),
+            ("trigger", "triggers"),
             ("task", "tasks"),
             ("custom_prompt", "custom_prompts"),
             ("uselink", "uselinks"),
@@ -607,7 +602,6 @@ class Args:
             "auto_program",
             "crop_user",
             "explain_sample",
-            "symbol_fresh",
             "show_file",
         ]
 

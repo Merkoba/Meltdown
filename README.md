@@ -34,6 +34,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Signals](#signals)
 1. [System](#system)
 1. [Aliases](#aliases)
+1. [Triggers](#triggers)
 1. [Tasks](#tasks)
 1. [Config](#config)
 1. [Args](#args)
@@ -51,7 +52,6 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
 1. [Pins](#pins)
-1. [Symbols](#symbols)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -608,6 +608,28 @@ For example: `--alias mini="/config model gpt-4o-mini & /config temperature 0.1"
 
 ---
 
+## Triggers <a name="triggers"></a>
+
+It's possible to change the input text from a word or phrase to a full longer value.
+
+The text is converted upon submit.
+
+You can register triggers like this:
+
+`--trigger "the thing = Come up with a new theory about The Thing"`
+
+And if you submit exactly "the thing", it will be converted to the full text.
+
+The `=` is needed here because triggers can contain spaces.
+
+A possible trigger you might want could be:
+
+`--trigger "... = Please continue talking"`
+
+This can be a powerful way to interact with the AI.
+
+---
+
 ## Tasks <a name="tasks"></a>
 
 Tasks that run periodically can be registered.
@@ -888,7 +910,7 @@ There are buttons on each side to make scrolling slower or faster.
 
 ## Join Lines <a name="join"></a>
 
-Multiple lines can be joined with a symbol, in case you want a more concise presentation.
+Multiple lines can be joined with a character, in case you want a more concise presentation.
 
 For example:
 
@@ -902,7 +924,7 @@ That would be converted to `Sentence One 👾 Sentence Two 👾 Sentence Three`.
 
 To enable this you can use `--join-lines-user` and `--join-lines-ai`.
 
-To change the symbol, you can use `--join-lines-symbol 😀`
+To change the char, you can use `--join-lines-char 😀`
 
 It ignores triple backtick snippets, it tries to keep those lines intact.
 
@@ -923,34 +945,6 @@ Or using `/pin`, `/unpin`, `/togglepin`.
 This allows finding them easily through the special pin list.
 
 And allows closing either just normal tabs or just pins.
-
----
-
-## Symbols <a name="symbols"></a>
-
-There are 3 quick prompt shortcuts to make the AI expand on the topic.
-
-By default these are `>` for `continue`, `?` for `explain`, and `!` to expand on the last point.
-
-Basically if you input `>` (only that character), the input will be transformed automatically to `Please continue.`, etc.
-
-These can be configured through args.
-
-This is a quick way to keep prompting the AI for clearer information.
-
----
-
-There's also a `^` symbol that is called `fresh`.
-
-The alternative is the `/fresh` command.
-
-What it does is do a prompt without using the history.
-
-For example: `^ what is a book?`.
-
-Or: `/fresh what is a book?`.
-
-Those won't use the previous conversation history.
 
 ---
 

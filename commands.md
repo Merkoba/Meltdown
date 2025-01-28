@@ -1175,21 +1175,3 @@ Say something exactly as it is
 ### program
 
 Use a program with the last AI response
-
----
-
-### symbolcontinue
-
-Use the continue symbol
-
----
-
-### symbolexplain
-
-Use the explain symbol
-
----
-
-### symbolexpand
-
-Use the expand symbol

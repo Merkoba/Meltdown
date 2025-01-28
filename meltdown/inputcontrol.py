@@ -27,6 +27,7 @@ class InputControl:
         self.autocomplete: list[str] = []
         self.last_delete_press = 0.0
         self.variables: dict[str, str] = {}
+        self.triggers: dict[str, str] = {}
 
     def fill(self) -> None:
         from .widgets import widgets
@@ -85,6 +86,9 @@ class InputControl:
 
         for variable in args.variables:
             self.set_variable(variable)
+
+        for trigger in args.triggers:
+            self.set_trigger(trigger)
 
     def bind(self) -> None:
         self.write_button.bind("<Button-2>", lambda e: self.write(True))
@@ -221,15 +225,9 @@ class InputControl:
         if not file:
             file = widgets.file.get().strip()
 
+        text = self.replace_trigger(text)
         text = self.replace_variables(text)
         text = utils.replace_keywords(text)
-        text = self.replace_symbols(text)
-
-        if not no_history:
-            text, fresh = self.check_fresh(text)
-
-            if fresh:
-                no_history = True
 
         if not text:
             return
@@ -512,40 +510,39 @@ class InputControl:
     def is_variable(self, word: str) -> bool:
         return word.startswith(args.variable_prefix)
 
-    def replace_symbols(self, text: str) -> str:
-        if text == args.symbol_continue:
-            return args.symbol_continue_text
+    def set_trigger(self, cmd: str) -> None:
+        from .display import display
 
-        if text == args.symbol_explain:
-            return args.symbol_explain_text
+        def fmt() -> None:
+            display.print("Format: [trigger] = [value]")
 
-        if text == args.symbol_expand:
-            return args.symbol_expand_text
+        if " " not in cmd:
+            fmt()
+            return
+
+        trigger, value = utils.cmd_value(cmd, separator="=")
+
+        if (not trigger) or (not value):
+            fmt()
+            return
+
+        self.do_set_trigger(trigger, value)
+
+    def do_set_trigger(self, name: str, value: str, feedback: bool = True) -> None:
+        from .display import display
+
+        self.triggers[name] = value
+
+        if feedback:
+            v = self.varname(name)
+            display.print(f"Set Trigger: `{v}` is now `{value}`", do_format=True)
+
+    def replace_trigger(self, text: str) -> str:
+        for trigger in self.triggers:
+            if text == trigger:
+                return self.triggers[trigger]
 
         return text
-
-    def check_fresh(self, text: str) -> tuple[str, bool]:
-        text = text.strip()
-        clear = False
-
-        if text.startswith(args.symbol_fresh):
-            text = text[1:].strip()
-            clear = True
-
-        return text, clear
-
-    def use_symbol(self, what: str) -> None:
-        symbol = ""
-
-        if what == "continue":
-            symbol = args.symbol_continue
-        elif what == "explain":
-            symbol = args.symbol_explain
-        elif what == "expand":
-            symbol = args.symbol_expand
-
-        if symbol:
-            self.submit(text=symbol)
 
 
 inputcontrol = InputControl()
