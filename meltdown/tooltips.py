@@ -77,7 +77,7 @@ class ToolTip:
 
         ToolTip.hide_all()
 
-        if (utils.now() - ToolTip.block_date) < 0.5:
+        if (utils.now() - ToolTip.block_date) < 0.15:
             return
 
         self.debouncer = self.widget.after(self.delay, lambda: self.show())

@@ -454,7 +454,6 @@ class Dialog:
         y = (window_height - dialog_height) // 2
         self.root.place(x=x, y=y)
         self.root.focus_set()
-        ToolTip.hide_all()
 
     def hide(self) -> None:
         from .tooltips import ToolTip
