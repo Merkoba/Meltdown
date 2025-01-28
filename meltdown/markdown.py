@@ -87,7 +87,7 @@ class Markdown:
             c = utils.escape_regex(char)
             u = get_u(c, n)
             t = get_t(c, n)
-            return rf"^(?:^|\s)(?P<all>{u}(?P<content>{t}.*?{t}|{t}){u})(?:$|\s)"
+            return rf"(?:^|\s)(?P<all>{u}(?P<content>{t}.*?{t}|{t}){u})(?:$|\s)"
 
         # `this thing` or ` this thing `
         # There can be spaces between the chars
