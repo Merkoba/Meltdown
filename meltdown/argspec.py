@@ -639,12 +639,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "compact_file",
-            action="store_true",
-            info="Hide the file frame in compact mode",
-        )
-
-        self.add_argument(
             "compact_input",
             action="store_true",
             info="Hide the input frame in compact mode",
@@ -1861,6 +1855,12 @@ class ArgSpec:
             "explain_sample",
             type=int,
             info="When using the 'Explain' button on snippets, how much of the snippet should be used in the prompt",
+        )
+
+        self.add_argument(
+            "show_file",
+            action="store_true",
+            info="Show the file frame at startup",
         )
 
 

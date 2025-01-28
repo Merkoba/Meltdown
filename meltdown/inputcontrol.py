@@ -5,6 +5,7 @@ import re
 from typing import Any
 
 # Modules
+from .app import app
 from .tooltips import ToolTip
 from .commands import commands
 from .config import config
@@ -31,13 +32,14 @@ class InputControl:
         from .widgets import widgets
 
         frame_data = widgets.frame_data_input
-        self.input_label = widgetutils.make_label(frame_data, "Input")
+        self.input_icon = widgetutils.make_label(frame_data, "🫠", colons=False)
+        self.input_icon.configure(cursor="hand2")
+        ToolTip(self.input_icon, tips["input"])
 
         self.input = widgetutils.make_entry(frame_data)
         frame_data.expand()
         widgets.input = self.input
         widgets.input_frame = frame_data.frame
-        ToolTip(self.input_label, tips["input"])
         ToolTip(self.input, tips["input"])
 
         clear_button = widgetutils.make_button(frame_data, "x", lambda: self.clear())
@@ -55,16 +57,28 @@ class InputControl:
 
         ToolTip(next_button, tips["next_button"])
 
+        next_button = widgetutils.make_button(
+            frame_data, "R", lambda e: self.show_menu(e)
+        )
+
+        ToolTip(next_button, tips["recent_input_button"])
+
+        next_button = widgetutils.make_button(
+            frame_data, "F", lambda e: app.toggle_frame("file")
+        )
+
+        ToolTip(next_button, tips["toggle_file_button"])
+
         if args.write_button:
             write_button = widgetutils.make_button(
-                frame_data, "Write", lambda: self.write()
+                frame_data, "W", lambda: self.write()
             )
 
             write_button.set_bind("<Button-2>", lambda e: self.write(True))
             ToolTip(write_button, tips["write_button"])
 
         submit_button = widgetutils.make_button(
-            frame_data, "Submit", lambda: self.submit(scroll=False)
+            frame_data, "S", lambda: self.submit(scroll=False)
         )
 
         submit_button.set_bind(
@@ -78,6 +92,7 @@ class InputControl:
             self.set_variable(variable)
 
     def bind(self) -> None:
+        self.input_icon.bind("<Button-1>", lambda e: self.input_icon_click())
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
     def show_menu(self, event: Any = None) -> None:
@@ -533,6 +548,10 @@ class InputControl:
 
         if symbol:
             self.submit(text=symbol)
+
+    def input_icon_click(self) -> None:
+        app.hide_all()
+        app.show_portrait()
 
 
 inputcontrol = InputControl()

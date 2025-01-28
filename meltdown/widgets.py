@@ -632,8 +632,7 @@ class Widgets:
         config.set("model", name)
 
     def model_icon_click(self) -> None:
-        app.hide_all()
-        app.show_portrait()
+        Dialog.show_message(model.icon_text)
 
     def check_move_to_end(self, key: str) -> None:
         if key in ["model", "file"]:

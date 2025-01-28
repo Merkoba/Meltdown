@@ -116,9 +116,15 @@ class App:
             self.intro.extend(uselinks)
 
     def setup(self, time_started: float) -> None:
+        from .args import args
+
         self.time_started = time_started
         self.check_commandoc()
         self.check_compact()
+
+        if not args.show_file:
+            self.hide_frame("file")
+
         self.check_sticky()
 
     def sigint_handler(self, sig: Any, frame: Any) -> None:
@@ -296,6 +302,9 @@ class App:
 
         display.update_scroll()
 
+    def frame_enabled(self, name: str) -> bool:
+        return getattr(self, f"{name}_frame_enabled")
+
     def hide_frame_cmd(self, name: str) -> None:
         from .display import display
 
@@ -338,7 +347,7 @@ class App:
         if not hasattr(self, f"{name}_frame_enabled"):
             return
 
-        if getattr(self, f"{name}_frame_enabled"):
+        if self.frame_enabled(name):
             self.hide_frame(name)
         else:
             self.show_frame(name)
@@ -352,7 +361,6 @@ class App:
             args.compact_details_1,
             args.compact_details_2,
             args.compact_buttons,
-            args.compact_file,
             args.compact_input,
         ]
 
@@ -374,9 +382,6 @@ class App:
             if args.compact_buttons:
                 self.hide_frame("buttons")
 
-            if args.compact_file:
-                self.hide_frame("file")
-
             if args.compact_input:
                 self.hide_frame("input")
         else:
@@ -392,9 +397,7 @@ class App:
         self.show_frame("details_1")
         self.show_frame("details_2")
         self.show_frame("buttons")
-        self.show_frame("file")
         self.show_frame("input")
-
         self.after_compact(False)
 
     def after_compact(self, enabled: bool) -> None:

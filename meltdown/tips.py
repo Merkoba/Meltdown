@@ -17,18 +17,20 @@ tips = {
     "clear_input_button": "Clear the input",
     "prev_button": "Previous item in the input history",
     "next_button": "Next item in the input history",
-    "write_button": "Show a textbox for longer inputs. Middle click to maximize",
-    "submit_button": "Send the prompt to the AI. Middle click to avoid using history",
+    "write_button": "Write an elaborate input. Middle click to maximize",
+    "submit_button": "Submit the input. Middle click to avoid using history",
     "browse_file_button": "Browse for a file to use",
     "open_file_button": "Open the current file",
     "recent_files_button": "Show a list of files used recently",
     "user": "Personalize yourself",
     "ai": "Personalize the AI",
     "input": (
-        " This is a message that the AI will respond to."
+        " Input a message that the AI will respond to."
         " Use up/down arrows to cycle input history."
         " You can also use commands here. See /commands"
     ),
+    "recent_input_button": "Show a list of recent inputs",
+    "toggle_file_button": "Toggle the file frame",
     # System
     "system_cpu": "Current CPU usage",
     "system_ram": "Current RAM usage",
@@ -37,12 +39,13 @@ tips = {
     "system_gpu_ram": "Current GPU RAM usage",
     "system_gpu_temp": "Current GPU temperature",
     # Model state
-    "model_unloaded": "No model is loaded. Pick a local or GPT model to start chatting",
+    "model_unloaded": "No model is loaded.\nPick a local or GPT model to start chatting",
     "model_remote": (
         "You are using a remote service."
-        " Its usage might cost money. Internet connection is required"
+        "\nIts usage might cost money."
+        "\nInternet connection is required"
     ),
-    "model_local": "You are using a local model. No network requests are made",
+    "model_local": "You are using a local model.\nNo network requests are made",
     # Config
     "model": (
         "Path to a model file. This should be a file that works with"

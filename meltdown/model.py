@@ -51,6 +51,7 @@ class Model:
         self.stream_date = 0.0
         self.openai_client = None
         self.last_response = ""
+        self.icon_text = ""
 
         kerr = "Use the model menu to set it."
         self.openai_key_error = f"Error: OpenAI API key not found. {kerr}"
@@ -801,6 +802,7 @@ class Model:
 
         icon = widgets.model_icon
         tooltip = widgets.model_icon_tooltip
+        text = ""
 
         if not self.loaded_model:
             if args.emojis:
@@ -808,8 +810,7 @@ class Model:
             else:
                 text = "Not Loaded"
 
-            icon.configure(text=text)
-            tooltip.set_text(tips["model_unloaded"])
+            self.icon_text = tips["model_unloaded"]
         elif self.model_is_gpt(self.loaded_model) or self.model_is_gemini(
             self.loaded_model
         ):
@@ -818,16 +819,17 @@ class Model:
             else:
                 text = "Remote"
 
-            icon.configure(text=text)
-            tooltip.set_text(tips["model_remote"])
+            self.icon_text = tips["model_remote"]
         else:
             if args.emojis:
                 text = utils.get_emoji("local")
             else:
                 text = "Local"
 
-            icon.configure(text=text)
-            tooltip.set_text(tips["model_local"])
+            self.icon_text = tips["model_local"]
+
+        icon.configure(text=text)
+        tooltip.set_text(self.icon_text)
 
     def set_openai_key(self) -> None:
         from .dialogs import Dialog

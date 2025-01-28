@@ -97,7 +97,6 @@ class Args:
         self.compact_model = False
         self.compact_details_1 = False
         self.compact_details_2 = False
-        self.compact_file = False
         self.compact_buttons = False
         self.compact_input = False
         self.show_intro = True
@@ -309,6 +308,7 @@ class Args:
         self.symbol_expand_text = "Please expand on the last point."
         self.crop_user = 0
         self.explain_sample = 250
+        self.show_file = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -450,7 +450,6 @@ class Args:
             "compact_system",
             "compact_details_1",
             "compact_details_2",
-            "compact_file",
             "compact_buttons",
             "compact_model",
             "compact_input",
@@ -609,6 +608,7 @@ class Args:
             "crop_user",
             "explain_sample",
             "symbol_fresh",
+            "show_file",
         ]
 
         for n_item in normals:
@@ -640,7 +640,6 @@ class Args:
             self.compact_details_2 = True
             self.compact_system = True
             self.compact_buttons = True
-            self.compact_file = True
             self.compact_input = True
             self.show_tabs = False
             self.show_intro = False
