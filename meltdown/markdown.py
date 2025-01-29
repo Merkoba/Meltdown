@@ -253,6 +253,10 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
+        if args.markdown_think and (who == "ai"):
+            if self.replace_think(start_ln, end_ln, who):
+                end_ln = self.next_marker(start_ln)
+
         if self.enabled(who, "clean"):
             if self.clean_lines(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
@@ -775,6 +779,25 @@ class Markdown:
         text = "\n".join(cleaned).strip() + "\n"
         self.insert_first(start_ln, end_ln, text)
         return True
+
+    def replace_think(self, start_ln: int, end_ln: int, who: str) -> bool:
+        lines = self.get_lines(start_ln, end_ln, who)
+        new_lines = []
+
+        for line in lines:
+            if line == "<think>":
+                new_lines.append("**Thinking...**\n")
+            elif line == "</think>":
+                new_lines.append("\n---")
+            else:
+                new_lines.append(line)
+
+        if new_lines:
+            text = "\n".join(new_lines).strip() + "\n"
+            self.insert_first(start_ln, end_ln, text)
+            return True
+
+        return False
 
 
 Markdown.build_patterns()

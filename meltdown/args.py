@@ -163,6 +163,7 @@ class Args:
         self.markdown_separator = "ai"
         self.markdown_join = "none"
         self.markdown_clean = "none"
+        self.markdown_think = True
 
         self.bold_effects = "bold"
         self.italic_effects = "italic_color"
@@ -389,6 +390,7 @@ class Args:
             ("no_keep_empty_tab", "keep_empty_tab"),
             ("no_autoscroll_interrupt", "autoscroll_interrupt"),
             ("no_wrap_menus", "wrap_menus"),
+            ("no_markdown_think", "markdown_think"),
         ]
 
         for r_item in other_name:

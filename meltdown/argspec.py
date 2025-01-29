@@ -1828,5 +1828,11 @@ class ArgSpec:
             info="Show the file frame at startup",
         )
 
+        self.add_argument(
+            "no_markdown_think",
+            action="store_false",
+            info="Don't add think indicators by replacing the <think> tokens",
+        )
+
 
 argspec = ArgSpec()
