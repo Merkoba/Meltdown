@@ -786,9 +786,9 @@ class Markdown:
 
         for line in lines:
             if line == "<think>":
-                new_lines.append("**Thinking...**\n")
+                new_lines.append(f"{args.markdown_think_start}\n")
             elif line == "</think>":
-                new_lines.append("\n---")
+                new_lines.append(f"\n{args.markdown_think_end}")
             else:
                 new_lines.append(line)
 

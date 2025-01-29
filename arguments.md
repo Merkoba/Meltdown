@@ -2801,3 +2801,23 @@ Action: store_true
 Don't add think indicators by replacing the <think> tokens
 
 Action: store_false
+
+---
+
+### markdown-think-start
+
+The text that replaces the <think> token
+
+Default: "**Thinking...**"
+
+Type: str
+
+---
+
+### markdown-think-end
+
+The text that replaces the </think> token
+
+Default: "---"
+
+Type: str

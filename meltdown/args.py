@@ -304,6 +304,8 @@ class Args:
         self.crop_user = 0
         self.explain_sample = 250
         self.show_file = False
+        self.markdown_think_start = "**Thinking...**"
+        self.markdown_think_end = "---"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -605,6 +607,8 @@ class Args:
             "crop_user",
             "explain_sample",
             "show_file",
+            "markdown_think_start",
+            "markdown_think_end",
         ]
 
         for n_item in normals:

@@ -1834,5 +1834,17 @@ class ArgSpec:
             info="Don't add think indicators by replacing the <think> tokens",
         )
 
+        self.add_argument(
+            "markdown_think_start",
+            type=str,
+            info="The text that replaces the <think> token",
+        )
+
+        self.add_argument(
+            "markdown_think_end",
+            type=str,
+            info="The text that replaces the </think> token",
+        )
+
 
 argspec = ArgSpec()
