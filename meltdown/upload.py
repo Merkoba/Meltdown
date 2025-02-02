@@ -57,7 +57,7 @@ class Upload:
 
     def after_upload(self, url: str, password: str, tab_id: str) -> None:
         display.print(
-            f"Uploaded: {url} ({password})",
+            f"🌐 Uploaded: {url} ({password})",
             do_format=True,
             tab_id=tab_id,
         )

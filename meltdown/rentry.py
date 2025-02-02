@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 # Standard
-import ast
 import threading
 import urllib.parse
 from pathlib import Path
