@@ -578,7 +578,7 @@ class Markdown:
                         c_line = line[2:].strip()
                         items.append(f"{marker}{left}{c_line}")
 
-            if len(items) <= 1:
+            if len(items) == 0:
                 len_matches -= 1
                 continue
 

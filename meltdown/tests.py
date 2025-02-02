@@ -272,5 +272,18 @@ class Tests:
         ],
     }
 
+    singlelist_test: Test = {
+        "items": [
+            {
+                "user": "What do test",
+                "ai": "aaaaaaa\n\n* bbbbbbbb\n\ncccccccc",
+            },
+            {
+                "user": "What do test 2",
+                "ai": "aaaaaaa\n\n* bbbbbbbb\n\ncccccccc\n* aaaaaaa\n* bbbbbbbb",
+            },
+        ],
+    }
+
 
 tests = Tests()
