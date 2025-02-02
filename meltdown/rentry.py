@@ -70,8 +70,6 @@ class Rentry:
         if res.status_code != HTTPStatus.FOUND:
             return
 
-        messages = ast.literal_eval(self.get_cookie("messages"))
-        messages = messages.split(",")
         url = urllib.parse.urlparse(res.headers["Location"])
         url = Path(url.path).name
         full_url = f"{config.rentry_site}/{url}"
