@@ -100,9 +100,6 @@ class Keyboard:
         if is_ctrl:
             self.ctrl = True
 
-        if is_alt:
-            self.alt = True
-
             if args.taps:
                 time_now = utils.now()
 
@@ -111,6 +108,10 @@ class Keyboard:
                         self.on_double_ctrl()
 
                 self.ctrl_date = time_now
+
+        if is_alt:
+            self.alt = True
+
         elif is_shift:
             self.shift = True
 
