@@ -1366,33 +1366,30 @@ class Display:
                 name = getattr(config, f"name_{who}")
 
         avatar = getattr(config, f"avatar_{who}")
-
-        if markers:
-            marker = Output.marker_space
-        else:
-            marker = " "
-
-        if put_colons:
-            d = utils.delimiter()
-
-            if colon_space:
-                colons = f"{marker}{d}{marker}"
-            else:
-                colons = f"{d}{marker}"
-        else:
-            colons = ""
+        marker = Output.marker_space
+        d = utils.delimiter()
+        colons = f"{marker}{d}{marker}"
+        prompt = ""
 
         if args.avatars and show_avatar and avatar:
-            if name:
-                prompt = f"{avatar}{marker}{name}{colons}"
-            else:
-                prompt = f"{avatar}{colons}"
+            prompt = f"{avatar}{marker}{name}{colons}"
         elif name:
-            prompt = f"{name}{colons}"
-        else:
-            prompt = f"Anon{colons}"
+            prompt = f"{marker}{name}{colons}"
 
-        return prompt
+        prepend = ""
+
+        if args.item_numbers:
+            number = self.num_user_prompts()
+            prepend = f"({number + 1})"
+
+        if prepend:
+            text = f"{prepend} {prompt}"
+        else:
+            text = prompt
+
+        # Add invisible markers
+        marker = getattr(Output, f"marker_{who}")
+        return f"{marker}{text}"
 
 
 display = Display()

@@ -2184,6 +2184,16 @@ Type: str
 
 ---
 
+### markdown-think
+
+Add effects to think tokens
+
+Default: "ai"
+
+Type: str
+
+---
+
 ### on-shift-middle-click
 
 Commands to run when shift middle clicking the display
@@ -2793,14 +2803,6 @@ Show the file frame at startup
 Default: False
 
 Action: store_true
-
----
-
-### no-markdown-think
-
-Don't add think indicators by replacing the <think> tokens
-
-Action: store_false
 
 ---
 

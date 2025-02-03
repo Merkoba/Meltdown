@@ -606,9 +606,7 @@ class Output(tk.Text):
         self.clean_text()
         self.enable()
 
-        if mode == "all":
-            self.markdown.format_all()
-        elif mode == "last":
+        if mode == "last":
             self.markdown.format_last()
         else:
             self.markdown.format()
@@ -673,22 +671,7 @@ class Output(tk.Text):
         from .display import display
 
         prompt = display.get_prompt(who)
-        prepend = ""
-
-        if args.item_numbers:
-            number = display.num_user_prompts()
-            prepend = f"({number + 1})"
-
-        if prepend:
-            text = f"{prepend} {prompt}"
-        else:
-            text = prompt
-
-        # Add invisible markers
-        marker = getattr(Output, f"marker_{who}")
-        text = f"{marker}{text}"
-
-        self.print(text)
+        self.print(prompt)
         start_index = self.index(f"end - {len(prompt) + 1}c")
         d = utils.delimiter()
         n = len(d) + 2

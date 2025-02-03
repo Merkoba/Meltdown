@@ -206,8 +206,8 @@ class Formats:
     def to_markdown(
         self,
         conversation: Conversation,
-        avatars: bool = False,
-        generic: bool = True,
+        avatars: bool = True,
+        generic: bool = False,
         separate: bool = False,
         files: bool = True,
         mode: str = "all",
@@ -222,14 +222,18 @@ class Formats:
                 prompt = display.get_prompt(
                     key,
                     show_avatar=avatars,
-                    put_colons=False,
                     generic=generic,
                     name_user=name_user,
                     name_ai=name_ai,
                 )
 
-                log += f"**{prompt}**:\n\n"
-                log += f" {getattr(item, key).strip()}\n\n"
+                log += prompt
+                value = getattr(item, key).strip()
+
+                if "```" in value:
+                    log += "\n\n"
+
+                log += f"{value}\n\n"
 
                 if files and (key == "user"):
                     file = item.file
@@ -338,7 +342,7 @@ class Formats:
                 return
 
             display.print(text, tab_id=new_tab)
-            display.format_text(tab_id=new_tab, mode="all")
+            display.format_text(tab_id=new_tab, mode="all", force=True)
             display.to_top(tab_id=new_tab)
 
     def do_copy(self, mode: str) -> None:

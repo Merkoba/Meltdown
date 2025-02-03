@@ -29,6 +29,8 @@ class Config:
         self.say_limit = 2000
         self.recent_label = "--- Recent ---"
         self.rentry_site = "https://rentry.org"
+        self.think_token_start = "<think>"
+        self.think_token_end = "</think>"
 
         self.default_system = (
             "Your name is ((name_ai)).\n"

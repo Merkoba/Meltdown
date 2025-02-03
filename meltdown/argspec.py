@@ -1459,6 +1459,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "markdown_think",
+            type=str,
+            info="Add effects to think tokens",
+        )
+
+        self.add_argument(
             "on_shift_middle_click",
             type=str,
             info="Commands to run when shift middle clicking the display",
@@ -1826,12 +1832,6 @@ class ArgSpec:
             "show_file",
             action="store_true",
             info="Show the file frame at startup",
-        )
-
-        self.add_argument(
-            "no_markdown_think",
-            action="store_false",
-            info="Don't add think indicators by replacing the <think> tokens",
         )
 
         self.add_argument(

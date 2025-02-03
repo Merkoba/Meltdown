@@ -182,12 +182,6 @@ class Markdown:
         self.widget = widget
         self.not_nobody = ["clean", "join", "snippets", "ordered", "unordered"]
 
-    def format_all(self) -> None:
-        start_ln = 1
-        end_ln = self.last_line()
-        self.format_section("nobody", start_ln, end_ln)
-        self.indent_lines()
-
     def format_last(self) -> None:
         start_ln = int(self.widget.index("end-1l").split(".")[0])
         end_ln = self.last_line()
@@ -253,7 +247,7 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        if args.markdown_think and (who == "ai"):
+        if self.enabled(who, "think"):
             if self.replace_think(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
 
@@ -785,9 +779,9 @@ class Markdown:
         new_lines = []
 
         for line in lines:
-            if line == "<think>":
+            if line == config.think_token_start:
                 new_lines.append(f"{args.markdown_think_start}\n")
-            elif line == "</think>":
+            elif line == config.think_token_end:
                 new_lines.append(f"\n{args.markdown_think_end}")
             else:
                 new_lines.append(line)
