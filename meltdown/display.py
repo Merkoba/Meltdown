@@ -521,8 +521,11 @@ class Display:
         tab.get_output().to_bottom()
         tab.get_bottom().hide()
 
-    def copy_output(self) -> None:
-        output = self.get_current_output()
+    def copy_output(self, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
 
         if not output:
             return
@@ -1162,6 +1165,15 @@ class Display:
 
         return text.strip()
 
+    def get_all_text(self, tab_id: str | None = None) -> str:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return ""
+
+        output = tabconvo.tab.get_output()
+        return output.get_text().strip()
+
     def goto_prev_tab(self) -> None:
         if self.prev_tab == "none":
             return
@@ -1374,7 +1386,7 @@ class Display:
         if args.avatars and show_avatar and avatar:
             prompt = f"{avatar}{marker}{name}{colons}"
         elif name:
-            prompt = f"{marker}{name}{colons}"
+            prompt = f"{name}{colons}"
 
         prepend = ""
 
@@ -1388,8 +1400,8 @@ class Display:
             text = prompt
 
         # Add invisible markers
-        marker = getattr(Output, f"marker_{who}")
-        return f"{marker}{text}"
+        umarker = getattr(Output, f"marker_{who}")
+        return f"{umarker}{text}"
 
 
 display = Display()

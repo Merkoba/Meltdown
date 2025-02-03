@@ -93,7 +93,7 @@ class Upload:
             return
 
         if format_ == "markdown":
-            text = formats.get_markdown(tabconvo.convo, mode=mode, name_mode="upload")
+            text = display.get_all_text(tab_id)
         elif format_ == "json":
             text = formats.get_json(tabconvo.convo, mode=mode, name_mode="upload")
         else:

@@ -606,7 +606,9 @@ class Output(tk.Text):
         self.clean_text()
         self.enable()
 
-        if mode == "last":
+        if mode == "all":
+            self.markdown.format_all()
+        elif mode == "last":
             self.markdown.format_last()
         else:
             self.markdown.format()

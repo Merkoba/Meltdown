@@ -58,7 +58,7 @@ class Formats:
         if mode == "upload":
             return args.avatars_in_uploads
 
-        return False
+        return True
 
     def get_separate(self, mode: str) -> bool:
         if mode == "log":
@@ -342,7 +342,7 @@ class Formats:
                 return
 
             display.print(text, tab_id=new_tab)
-            display.format_text(tab_id=new_tab, mode="all", force=True)
+            display.format_text(tab_id=new_tab, mode="view", force=True)
             display.to_top(tab_id=new_tab)
 
     def do_copy(self, mode: str) -> None:

@@ -182,6 +182,12 @@ class Markdown:
         self.widget = widget
         self.not_nobody = ["clean", "join", "snippets", "ordered", "unordered"]
 
+    def format_all(self) -> None:
+        start_ln = 1
+        end_ln = self.last_line()
+        self.format_section("nobody", start_ln, end_ln)
+        self.indent_lines()
+
     def format_last(self) -> None:
         start_ln = int(self.widget.index("end-1l").split(".")[0])
         end_ln = self.last_line()
@@ -642,7 +648,7 @@ class Markdown:
 
         if who in ("user", "ai"):
             _, end_col = self.prompt_cols(start_ln)
-            lines[0] = lines[0][(end_col - 1) :]
+            lines[0] = lines[0][end_col - 1:].strip()
 
         return lines
 
@@ -673,7 +679,8 @@ class Markdown:
 
         start_col = int(start.split(".")[1])
         end_col = start_col + len(end)
-        return start_col, end_col
+        string = self.widget.get(f"{start_ln}.0", f"{start_ln}.{end_col}")
+        return 0, end_col
 
     def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
         _, end_col = self.prompt_cols(start_ln)

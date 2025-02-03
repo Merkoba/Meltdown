@@ -543,15 +543,15 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "avatars_in_logs",
-            action="store_true",
-            info="Show avatars in logs",
+            "no_avatars_in_logs",
+            action="store_false",
+            info="Don't show avatars in logs",
         )
 
         self.add_argument(
-            "avatars_in_uploads",
-            action="store_true",
-            info="Show avatars in uploads",
+            "no_avatars_in_uploads",
+            action="store_false",
+            info="Don't show avatars in uploads",
         )
 
         self.add_argument(

@@ -126,8 +126,8 @@ class Args:
         self.emojis = True
         self.write_button = True
         self.log_feedback = True
-        self.avatars_in_logs = False
-        self.avatars_in_uploads = False
+        self.avatars_in_logs = True
+        self.avatars_in_uploads = True
         self.files_in_logs = True
         self.files_in_uploads = True
         self.generic_names_logs = False
@@ -392,6 +392,8 @@ class Args:
             ("no_keep_empty_tab", "keep_empty_tab"),
             ("no_autoscroll_interrupt", "autoscroll_interrupt"),
             ("no_wrap_menus", "wrap_menus"),
+            ("no_avatars_in_logs", "avatars_in_logs"),
+            ("no_avatars_in_uploads", "avatars_in_uploads"),
         ]
 
         for r_item in other_name:
@@ -512,8 +514,6 @@ class Args:
             "item_numbers",
             "file",
             "image_prompt",
-            "avatars_in_logs",
-            "avatars_in_uploads",
             "durations",
             "separators",
             "markdown",
