@@ -776,6 +776,9 @@ class Book(tk.Frame):
         self.update_tab_columns()
         self.select(id_)
 
+        if self.on_reorder:
+            self.on_reorder()
+
     def move_to_end(self, id_: str) -> None:
         pages = self.picked_or_page(id_)
 
@@ -791,6 +794,9 @@ class Book(tk.Frame):
 
         self.update_tab_columns()
         self.select(id_)
+
+        if self.on_reorder:
+            self.on_reorder()
 
     def move_left(self, page: Page | None = None) -> None:
         if not page:
