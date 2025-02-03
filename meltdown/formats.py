@@ -149,8 +149,8 @@ class Formats:
     def to_text(
         self,
         conversation: Conversation,
-        avatars: bool = False,
-        generic: bool = True,
+        avatars: bool = True,
+        generic: bool = False,
         separate: bool = False,
         files: bool = True,
         mode: str = "all",
@@ -165,13 +165,12 @@ class Formats:
                 prompt = display.get_prompt(
                     key,
                     show_avatar=avatars,
-                    put_colons=False,
                     generic=generic,
                     name_user=name_user,
                     name_ai=name_ai,
                 )
 
-                log += f"{prompt}: "
+                log += prompt
                 log += getattr(item, key) + "\n\n"
 
                 if files and (key == "user"):
