@@ -648,7 +648,7 @@ class Markdown:
 
         if who in ("user", "ai"):
             _, end_col = self.prompt_cols(start_ln)
-            lines[0] = lines[0][end_col - 1 :].strip()
+            lines[0] = lines[0][end_col - 1 :].lstrip()
 
         return lines
 
@@ -783,17 +783,25 @@ class Markdown:
     def replace_think(self, start_ln: int, end_ln: int, who: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
         new_lines = []
+        started = False
+        ended = False
 
         for line in lines:
             if line == config.think_token_start:
                 new_lines.append(f"{args.markdown_think_start}\n")
+                started = True
             elif line == config.think_token_end:
                 new_lines.append(f"\n{args.markdown_think_end}")
+                ended = True
             else:
                 new_lines.append(line)
 
+        if (not started) or (not ended):
+            return False
+
         if new_lines:
-            text = "\n".join(new_lines).strip() + "\n"
+            text = "\n".join(new_lines)
+            text = text.strip() + "\n"
             self.insert_first(start_ln, end_ln, text)
             return True
 
