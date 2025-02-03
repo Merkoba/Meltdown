@@ -2819,3 +2819,13 @@ The text that replaces the </think> token
 Default: "---"
 
 Type: str
+
+---
+
+### reverse-tablist
+
+Reverse the list of tabs when shown
+
+Default: False
+
+Action: store_true

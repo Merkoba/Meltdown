@@ -306,6 +306,7 @@ class Args:
         self.show_file = False
         self.markdown_think_start = "**Thinking...**"
         self.markdown_think_end = "---"
+        self.reverse_tablist = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -609,6 +610,7 @@ class Args:
             "show_file",
             "markdown_think_start",
             "markdown_think_end",
+            "reverse_tablist",
         ]
 
         for n_item in normals:

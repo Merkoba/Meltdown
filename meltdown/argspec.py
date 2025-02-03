@@ -1846,5 +1846,11 @@ class ArgSpec:
             info="The text that replaces the </think> token",
         )
 
+        self.add_argument(
+            "reverse_tablist",
+            action="store_true",
+            info="Reverse the list of tabs when shown",
+        )
+
 
 argspec = ArgSpec()

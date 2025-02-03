@@ -439,7 +439,9 @@ class Display:
 
         selected = 0
 
-        for i, page in enumerate(self.book.pages):
+        items = reversed(self.book.pages) if args.reverse_tablist else self.book.pages
+
+        for i, page in enumerate(items):
             if mode == "pins":
                 if not page.pin:
                     continue
