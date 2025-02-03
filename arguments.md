@@ -662,23 +662,19 @@ Action: store_true
 
 ---
 
-### avatars-in-logs
+### no-avatars-in-logs
 
-Show avatars in logs
+Don't show avatars in logs
 
-Default: False
-
-Action: store_true
+Action: store_false
 
 ---
 
-### avatars-in-uploads
+### no-avatars-in-uploads
 
-Show avatars in uploads
+Don't show avatars in uploads
 
-Default: False
-
-Action: store_true
+Action: store_false
 
 ---
 

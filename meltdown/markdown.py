@@ -648,7 +648,7 @@ class Markdown:
 
         if who in ("user", "ai"):
             _, end_col = self.prompt_cols(start_ln)
-            lines[0] = lines[0][end_col - 1:].strip()
+            lines[0] = lines[0][end_col - 1 :].strip()
 
         return lines
 
@@ -679,7 +679,6 @@ class Markdown:
 
         start_col = int(start.split(".")[1])
         end_col = start_col + len(end)
-        string = self.widget.get(f"{start_ln}.0", f"{start_ln}.{end_col}")
         return 0, end_col
 
     def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
