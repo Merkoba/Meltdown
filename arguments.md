@@ -68,7 +68,7 @@ Action: store_false
 
 ---
 
-### no-files-in-logs
+### no-files-logs
 
 Don't show files in logs
 
@@ -76,11 +76,31 @@ Action: store_false
 
 ---
 
-### no-files-in-uploads
+### no-files-uploads
 
 Don't show files in uploads
 
 Action: store_false
+
+---
+
+### extra-info-logs
+
+Show extra info in logs
+
+Default: False
+
+Action: store_true
+
+---
+
+### extra-info-uploads
+
+Show extra info in uploads
+
+Default: False
+
+Action: store_true
 
 ---
 
@@ -566,7 +586,7 @@ Action: store_false
 
 ---
 
-### no-names-in-logs
+### no-names-logs
 
 Don't use the user names in logs
 
@@ -662,7 +682,7 @@ Action: store_true
 
 ---
 
-### no-avatars-in-logs
+### no-avatars-logs
 
 Don't show avatars in logs
 
@@ -670,7 +690,7 @@ Action: store_false
 
 ---
 
-### no-avatars-in-uploads
+### no-avatars-uploads
 
 Don't show avatars in uploads
 
