@@ -299,4 +299,8 @@ class Snippet(tk.Frame):
     def view_text(self) -> None:
         text = self.content
         text = utils.remove_multiple_lines(text)
-        Dialog.show_message(text)
+
+        def cmd_ok(text: str) -> None:
+            pass
+
+        Dialog.show_textbox("snippet_view", "Raw Text", cmd_ok, value=text)
