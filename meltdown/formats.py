@@ -168,6 +168,7 @@ class Formats:
         log = ""
         name_user, name_ai = self.get_names(name_mode)
         items = self.get_items(conversation, mode)
+        extra_info = self.get_extra_info(name_mode)
 
         for i, item in enumerate(items):
             for key in ["user", "ai"]:
@@ -178,6 +179,9 @@ class Formats:
                     name_user=name_user,
                     name_ai=name_ai,
                 )
+
+                if extra_info and (key == "ai"):
+                    prompt += f" ({item.model})\n\n"
 
                 log += prompt
                 log += getattr(item, key) + "\n\n"
@@ -236,7 +240,7 @@ class Formats:
                     name_ai=name_ai,
                 )
 
-                if extra_info:
+                if extra_info and (key == "ai"):
                     prompt += f" ({item.model})\n\n"
 
                 log += prompt
