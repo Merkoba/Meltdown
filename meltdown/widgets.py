@@ -185,7 +185,7 @@ class Widgets:
         frame_data_buttons.expand()
         ToolTip(self.top_button, tips["top_button"])
 
-        self.more_menu_button = widgetutils.make_button(
+        self.tab_menu_button = self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
             "Tab",
             lambda e: self.show_tab_menu(e),
@@ -357,6 +357,8 @@ class Widgets:
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())
         self.main_menu_button.set_bind("<Button-2>", lambda e: app.show_about())
         self.main_menu_button.set_bind("<Button-3>", lambda e: commands.show_palette())
+        self.tab_menu_button.set_bind("<Button-2>", lambda e: self.show_tab_list(e))
+        self.more_menu_button.set_bind("<Button-2>", lambda e: self.show_upload())
         self.top_button.set_bind("<Button-2>", lambda e: autoscroll.toggle("up"))
         self.top_button.set_bind("<ButtonRelease-3>", lambda e: self.scroll_up())
         self.top_button.set_bind("<Button-4>", lambda e: self.scroll_up())
@@ -710,6 +712,16 @@ class Widgets:
         from .menumanager import menumanager
 
         menumanager.more_menu.show(event)
+
+    def show_tab_list(self, event: Any = None) -> None:
+        from .display import display
+
+        display.show_tab_list(event)
+
+    def show_upload(self) -> None:
+        from .upload import upload
+
+        upload.upload_picker()
 
     def get_dir(self, what: str | None = None, list: str | None = None) -> str | None:
         items = []
