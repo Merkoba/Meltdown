@@ -111,15 +111,27 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_files_in_logs",
+            "no_files_logs",
             action="store_false",
             info="Don't show files in logs",
         )
 
         self.add_argument(
-            "no_files_in_uploads",
+            "no_files_uploads",
             action="store_false",
             info="Don't show files in uploads",
+        )
+
+        self.add_argument(
+            "extra_info_logs",
+            action="store_true",
+            info="Show extra info in logs",
+        )
+
+        self.add_argument(
+            "extra_info_uploads",
+            action="store_true",
+            info="Show extra info in uploads",
         )
 
         self.add_argument(
@@ -483,7 +495,7 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_names_in_logs",
+            "no_names_logs",
             action="store_false",
             info="Don't use the user names in logs",
         )
@@ -543,13 +555,13 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_avatars_in_logs",
+            "no_avatars_logs",
             action="store_false",
             info="Don't show avatars in logs",
         )
 
         self.add_argument(
-            "no_avatars_in_uploads",
+            "no_avatars_uploads",
             action="store_false",
             info="Don't show avatars in uploads",
         )

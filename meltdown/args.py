@@ -126,10 +126,10 @@ class Args:
         self.emojis = True
         self.write_button = True
         self.log_feedback = True
-        self.avatars_in_logs = True
-        self.avatars_in_uploads = True
-        self.files_in_logs = True
-        self.files_in_uploads = True
+        self.avatars_logs = True
+        self.avatars_uploads = True
+        self.files_logs = True
+        self.files_uploads = True
         self.generic_names_logs = False
         self.generic_names_uploads = False
         self.browser = ""
@@ -307,6 +307,8 @@ class Args:
         self.markdown_think_start = "**Thinking...**"
         self.markdown_think_end = "---"
         self.reverse_tablist = False
+        self.extra_info_logs = False
+        self.extra_info_uploads = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -376,8 +378,8 @@ class Args:
             ("no_link_menu", "link_menu"),
             ("no_path_menu", "path_menu"),
             ("no_list_menu", "list_menu"),
-            ("no_files_in_logs", "files_in_logs"),
-            ("no_files_in_uploads", "files_in_uploads"),
+            ("no_files_logs", "files_logs"),
+            ("no_files_uploads", "files_uploads"),
             ("no_tabs_wheel", "tabs_wheel"),
             ("no_display_wheel", "display_wheel"),
             ("no_limit_tokens", "limit_tokens"),
@@ -393,8 +395,8 @@ class Args:
             ("no_keep_empty_tab", "keep_empty_tab"),
             ("no_autoscroll_interrupt", "autoscroll_interrupt"),
             ("no_wrap_menus", "wrap_menus"),
-            ("no_avatars_in_logs", "avatars_in_logs"),
-            ("no_avatars_in_uploads", "avatars_in_uploads"),
+            ("no_avatars_logs", "avatars_logs"),
+            ("no_avatars_uploads", "avatars_uploads"),
         ]
 
         for r_item in other_name:
@@ -611,6 +613,8 @@ class Args:
             "markdown_think_start",
             "markdown_think_end",
             "reverse_tablist",
+            "extra_info_logs",
+            "extra_info_uploads",
         ]
 
         for n_item in normals:

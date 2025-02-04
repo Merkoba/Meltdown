@@ -53,10 +53,10 @@ class Formats:
 
     def get_avatars(self, mode: str) -> bool:
         if mode == "log":
-            return args.avatars_in_logs
+            return args.avatars_logs
 
         if mode == "upload":
-            return args.avatars_in_uploads
+            return args.avatars_uploads
 
         return True
 
@@ -71,10 +71,10 @@ class Formats:
 
     def get_files(self, mode: str) -> bool:
         if mode == "log":
-            return args.files_in_logs
+            return args.files_logs
 
         if mode == "upload":
-            return args.files_in_uploads
+            return args.files_uploads
 
         return True
 
@@ -95,6 +95,15 @@ class Formats:
         return self.to_json(
             conversation, ensure_ascii=ensure_ascii, mode=mode, name_mode=name_mode
         )
+
+    def get_extra_info(self, name_mode: str) -> bool:
+        if name_mode == "log":
+            return args.extra_info_logs
+
+        if name_mode == "upload":
+            return args.extra_info_uploads
+
+        return False
 
     def to_json(
         self,
@@ -215,6 +224,7 @@ class Formats:
         log = ""
         items = self.get_items(conversation, mode)
         name_user, name_ai = self.get_names(name_mode)
+        extra_info = self.get_extra_info(name_mode)
 
         for i, item in enumerate(items):
             for key in ["user", "ai"]:
@@ -226,10 +236,13 @@ class Formats:
                     name_ai=name_ai,
                 )
 
+                if extra_info:
+                    prompt += f" ({item.model})\n\n"
+
                 log += prompt
                 value = getattr(item, key).strip()
 
-                if "```" in value:
+                if "```" in value and (not extra_info):
                     log += "\n\n"
 
                 log += f"{value}\n\n"
@@ -295,7 +308,7 @@ class Formats:
         if not tabconvo:
             return
 
-        text = self.get_text(tabconvo.convo)
+        text = self.get_text(tabconvo.convo, name_mode="log")
         name = display.get_tab_name(tabconvo.tab.tab_id)
 
         if text:
@@ -313,7 +326,7 @@ class Formats:
         if not tabconvo:
             return
 
-        text = self.get_json(tabconvo.convo)
+        text = self.get_json(tabconvo.convo, name_mode="log")
         name = display.get_tab_name(tabconvo.tab.tab_id)
 
         if text:
@@ -331,7 +344,7 @@ class Formats:
         if not tabconvo:
             return
 
-        text = self.get_markdown(tabconvo.convo)
+        text = self.get_markdown(tabconvo.convo, name_mode="log")
         name = display.get_tab_name(tabconvo.tab.tab_id)
 
         if text:
