@@ -559,7 +559,9 @@ class Model:
                     self.release_lock()
                     return
 
-                output = self.openai_client.chat.completions.create(**gen_config)
+                output = self.openai_client.chat.completions.create(
+                    **gen_config, timeout=10
+                )
             except RateLimitError as e:
                 utils.error(e)
                 display.print("Error: Rate limit exceeded.")
@@ -603,10 +605,15 @@ class Model:
             self.release_lock()
             return
 
-        if args.stream:
-            ans = self.process_stream(output, tab_id)
-        else:
-            ans = self.process_instant(output, tab_id)
+        try:
+            if args.stream:
+                ans = self.process_stream(output, tab_id)
+            else:
+                ans = self.process_instant(output, tab_id)
+        except BaseException as e:
+            utils.error(e)
+            self.release_lock()
+            return
 
         res = ans.strip()
         now_2 = utils.now()
