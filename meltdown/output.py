@@ -941,7 +941,7 @@ class Output(tk.Text):
     def on_right_click(self, event: Any, widget: tk.Text | None = None) -> None:
         from .menumanager import menumanager
 
-        if not self.show_word_menu(event, widget, consider_tags=False):
+        if not self.show_word_menu(event, widget):
             menumanager.tab_menu.show(event)
 
     def on_click(self) -> None:

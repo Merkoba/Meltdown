@@ -5,6 +5,7 @@ tab_btns = "Shift click to scroll. Ctrl click to move"
 tips = {
     "main_menu": "Open the main menu",
     "model_menu": "Open the model menu",
+    "tab_menu": "Show the tabs menu",
     "more_menu": "Show more options",
     "load_button": "Load or unload the model",
     "scroller_button": "Scroll this row. Middle click for instant",

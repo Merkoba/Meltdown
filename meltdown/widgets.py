@@ -187,6 +187,15 @@ class Widgets:
 
         self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
+            "Tab",
+            lambda e: self.show_tab_menu(e),
+        )
+
+        ToolTip(self.more_menu_button, tips["tab_menu"])
+        frame_data_buttons.expand()
+
+        self.more_menu_button = widgetutils.make_button(
+            frame_data_buttons,
             "More",
             lambda e: self.show_more_menu(e),
         )
@@ -691,6 +700,11 @@ class Widgets:
         from .menumanager import menumanager
 
         menumanager.model_menu.show(event)
+
+    def show_tab_menu(self, event: Any = None) -> None:
+        from .menumanager import menumanager
+
+        menumanager.tab_menu.show(event)
 
     def show_more_menu(self, event: Any = None) -> None:
         from .menumanager import menumanager
