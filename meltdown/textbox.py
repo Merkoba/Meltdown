@@ -72,7 +72,6 @@ class TextBox(tk.Text):
     def set_binds(self) -> None:
         self.bind("<ButtonRelease-3>", lambda e: self.right_click(e))
         self.bind("<Tab>", lambda e: self.on_tab())
-        self.bind("<Control-v>", lambda e: self.paste())
         self.bind("<Return>", lambda e: self.on_enter())
         self.bind("<Escape>", lambda e: self.dialog.hide())
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
