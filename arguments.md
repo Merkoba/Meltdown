@@ -2849,3 +2849,11 @@ Reverse the list of tabs when shown
 Default: False
 
 Action: store_true
+
+---
+
+### no-current-recent-item
+
+Don't show the current value in recent item lists like when right clicking the input
+
+Action: store_false

@@ -1864,5 +1864,11 @@ class ArgSpec:
             info="Reverse the list of tabs when shown",
         )
 
+        self.add_argument(
+            "no_current_recent_item",
+            action="store_false",
+            info="Don't show the current value in recent item lists like when right clicking the input",
+        )
+
 
 argspec = ArgSpec()

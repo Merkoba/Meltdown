@@ -309,6 +309,7 @@ class Args:
         self.reverse_tablist = False
         self.extra_info_logs = False
         self.extra_info_uploads = False
+        self.current_recent_item = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -397,6 +398,7 @@ class Args:
             ("no_wrap_menus", "wrap_menus"),
             ("no_avatars_logs", "avatars_logs"),
             ("no_avatars_uploads", "avatars_uploads"),
+            ("no_current_recent_item", "current_recent_item"),
         ]
 
         for r_item in other_name:

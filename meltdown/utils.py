@@ -524,7 +524,8 @@ class Utils:
 
         def add_item(item: str) -> None:
             if item == value:
-                return
+                if not args.current_recent_item:
+                    return
 
             text = item
 
