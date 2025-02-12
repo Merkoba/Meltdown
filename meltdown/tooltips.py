@@ -40,7 +40,7 @@ class ToolTip:
     def __init__(self, widget: tk.Widget, text: str, bind: bool = True) -> None:
         self.debouncer = ""
         self.widget = widget
-        self.delay = 600
+        self.delay = args.tooltip_delay
         self.text = clean_string(text)
         self.tooltip: tk.Frame | None = None
         self.current_event: Any = None

@@ -1870,5 +1870,11 @@ class ArgSpec:
             info="Don't show the current value in recent item lists like when right clicking the input",
         )
 
+        self.add_argument(
+            "tooltip_delay",
+            type=int,
+            info="The delay in ms for showing the tooltips",
+        )
+
 
 argspec = ArgSpec()

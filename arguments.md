@@ -2857,3 +2857,13 @@ Action: store_true
 Don't show the current value in recent item lists like when right clicking the input
 
 Action: store_false
+
+---
+
+### tooltip-delay
+
+The delay in ms for showing the tooltips
+
+Default: 600
+
+Type: int
