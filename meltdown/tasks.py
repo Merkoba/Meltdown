@@ -10,7 +10,7 @@ from .utils import utils
 
 class Task:
     prefix = utils.escape_regex(args.command_prefix)
-    pattern = rf"^((?:\d.)?\d+)\s+(.*?)({prefix}now)?$"
+    pattern = rf"^((?P<time>\d+(?:\.\d+)?)(?P<unit>s|m|h|d)?\s+(?P<commands>.*?)(?:\s*(?P<now>{prefix}now))?$)"
 
     def __init__(self, seconds: int, cmds: str, now: bool) -> None:
         self.seconds = seconds
@@ -57,22 +57,31 @@ class Tasks:
                 return
 
             try:
-                seconds = int(match.group(1))
+                time = int(match.group("time"))
             except BaseException as e:
                 utils.error(e)
                 return
 
-            cmds = match.group(2)
+            unit = match.group("unit")
 
-            if match.group(3):
+            if unit == "m":
+                time *= 60
+            elif unit == "h":
+                time *= 60 * 60
+            elif unit == "d":
+                time *= 60 * 60 * 24
+
+            cmds = match.group("commands")
+
+            if match.group("now"):
                 now = True
             else:
                 now = False
 
-            if seconds < 1:
+            if time < 1:
                 continue
 
-            Task(seconds, cmds, now)
+            Task(time, cmds, now)
 
 
 tasks = Tasks()
