@@ -128,8 +128,8 @@ class Display:
         if args.max_tabs > 0:
             if self.num_tabs() >= args.max_tabs:
                 cmds = Commands()
-                cmds.add("Close", lambda a: close.close(force=False))
-                cmds.add("Ok", lambda a: None)
+                cmds.add("Close Some Tabs", lambda a: close.close(force=False))
+                cmds.add("Do Nothing", lambda a: None)
                 Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
                 return
 

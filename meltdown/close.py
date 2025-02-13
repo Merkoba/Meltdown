@@ -83,6 +83,9 @@ class Close:
 
         if not tab_id:
             tab_id = display.book.current()
+            single = False
+        else:
+            single = True
 
         if not tab_id:
             return
@@ -160,8 +163,9 @@ class Close:
         if not cmds:
             return
 
-        cmds.add("Ok", lambda a: action())
-        Dialog.show_dialog("Close tab?", cmds)
+        cmds.add("Ok" if single else "One", lambda a: action())
+        msg = "Close tab?" if single else "Close tabs?"
+        Dialog.show_dialog(msg, cmds)
 
     def close_all(self, force: bool = False, make_empty: bool = True) -> None:
         def action() -> None:
