@@ -644,6 +644,14 @@ If you add `/now` it will run the first one when the program starts.
 
 For example `--task "60 /signal update /now"`
 
+Units can be used, this includes `s`, `m`, `h`, and `d`.
+
+Which mean seconds, minutes, hours, and days.
+
+For example `--task "2h /prompt tell me something about ((noun))"`.
+
+This will run that task every 2 hours.
+
 ---
 
 ## Changing Config <a name="set"></a>
