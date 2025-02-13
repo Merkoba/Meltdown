@@ -557,7 +557,7 @@ class Markdown:
             else:
                 space_2 = "  "
 
-            if mode == "ordered":
+            if (mode == "ordered") and (len(sliced) > 1):
                 n = 1
                 char = args.ordered_char.rstrip()
                 items = []
