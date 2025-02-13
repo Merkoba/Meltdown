@@ -673,6 +673,16 @@ class App:
         from .keyboard import keyboard
         from .args import args
 
+        if what == "overview":
+            p = args.command_prefix
+
+            display.print(
+                f"🛟 Try `{p}commands` or `{p}arguments` or `{p}keyboard`.",
+                do_format=True,
+            )
+
+            return
+
         if what == "commands":
             tab_id = display.make_tab("Commands", mode="ignore")
 

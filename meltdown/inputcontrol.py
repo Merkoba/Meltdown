@@ -544,5 +544,14 @@ class InputControl:
 
         return text
 
+    def prompt_command(self, text: str) -> None:
+        from .display import display
+
+        if not text:
+            return
+
+        if display.new_tab(close_tabs=False):
+            self.submit(text=text)
+
 
 inputcontrol = InputControl()

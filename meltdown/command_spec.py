@@ -287,7 +287,13 @@ class CommandSpec:
 
         self.add_cmd("about", "Show the about window", lambda a=None: app.show_about())
 
-        self.add_cmd("help", "Ask for help", lambda a=None: commands.help())
+        self.add_cmd(
+            "help",
+            "Show the help overview",
+            lambda a=None: app.show_help("overview", a),
+            extra=self.helpcmd,
+            type=str,
+        )
 
         self.add_cmd(
             "commands",
@@ -556,6 +562,13 @@ class CommandSpec:
             "rename",
             "Rename the tab",
             lambda a=None: display.rename_tab(name=a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "prompt",
+            "Make a new tab and use this prompt",
+            lambda a=None: inputcontrol.prompt_command(a),
             type=str,
         )
 

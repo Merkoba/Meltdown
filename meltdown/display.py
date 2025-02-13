@@ -118,7 +118,12 @@ class Display:
         self.book.on_reorder = lambda: self.update_session()
         self.book.on_num_tabs_change = lambda n: self.on_num_tabs_change(n)
 
-    def new_tab(self, name: str | None = None, position: str | None = None) -> None:
+    def new_tab(
+        self,
+        name: str | None = None,
+        position: str | None = None,
+        close_tabs: bool = True,
+    ) -> bool:
         from .close import close
         from .keyboard import keyboard
 
@@ -127,11 +132,14 @@ class Display:
 
         if args.max_tabs > 0:
             if self.num_tabs() >= args.max_tabs:
+                if not close_tabs:
+                    return False
+
                 cmds = Commands()
                 cmds.add("Close Some Tabs", lambda a: close.close(force=False))
                 cmds.add("Do Nothing", lambda a: None)
                 Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
-                return
+                return False
 
         def check_empty(page: Page | None) -> bool:
             if not page:
@@ -154,12 +162,13 @@ class Display:
         ):
             if position == "end":
                 if check_empty(self.book.get_last()):
-                    return
+                    return True
             elif position == "start":
                 if check_empty(self.book.get_first()):
-                    return
+                    return True
 
         self.make_tab(name=name, position=position)
+        return True
 
     def make_tab(
         self,
