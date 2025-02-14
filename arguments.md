@@ -2867,3 +2867,13 @@ The delay in ms for showing the tooltips
 Default: 600
 
 Type: int
+
+---
+
+### notify-duration
+
+How long notifications last
+
+Default: 5000
+
+Type: int

@@ -1033,7 +1033,10 @@ class App:
             self.root.configure(background=bc)
 
     def notify(self, text: str) -> None:
-        os.system(f'notify-send "Meltdown 🫠" "{text}" -t 5000')
+        from .args import args
+
+        d = args.notify_duration
+        os.system(f'notify-send "Meltdown 🫠" "{text}" -t {d}')
 
 
 app = App()

@@ -311,6 +311,7 @@ class Args:
         self.extra_info_uploads = False
         self.current_recent_item = True
         self.tooltip_delay = 600
+        self.notify_duration = 5000
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -619,6 +620,7 @@ class Args:
             "extra_info_logs",
             "extra_info_uploads",
             "tooltip_delay",
+            "notify_duration",
         ]
 
         for n_item in normals:

@@ -1876,5 +1876,11 @@ class ArgSpec:
             info="The delay in ms for showing the tooltips",
         )
 
+        self.add_argument(
+            "notify_duration",
+            type=int,
+            info="How long notifications last",
+        )
+
 
 argspec = ArgSpec()
