@@ -1186,6 +1186,6 @@ Use a program with the last AI response
 
 ---
 
-### awm
+### notify
 
-Show a message popup if you are using AwesomeWM
+Show a notification message using notify-send

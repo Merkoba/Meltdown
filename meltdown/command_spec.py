@@ -1250,9 +1250,9 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "awm",
-            "Show a message popup if you are using AwesomeWM",
-            lambda a=None: app.awm_message(a),
+            "notify",
+            "Show a notification message using notify-send",
+            lambda a=None: app.notify(a),
             type=str,
         )
 

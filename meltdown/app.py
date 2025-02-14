@@ -1032,11 +1032,8 @@ class App:
             bc = abc if abc else self.theme.background_color
             self.root.configure(background=bc)
 
-    # Show a popup message in AwesomeWM
-    def awm_message(self, text: str) -> None:
-        os.system(
-            f'awesome-client \'naughty = require("naughty"); naughty.notify({{ title = "Meltdown 🫠", text = "{text}", timeout = 5 }})\''
-        )
+    def notify(self, text: str) -> None:
+        os.system(f'notify-send "Meltdown 🫠" "{text}" -t 5000')
 
 
 app = App()
