@@ -1249,5 +1249,12 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "awm",
+            "Show a message popup if you are using AwesomeWM",
+            lambda a=None: app.awm_message(a),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

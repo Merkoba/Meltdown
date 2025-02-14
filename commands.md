@@ -224,7 +224,9 @@ Show the about window
 
 ### help
 
-Ask for help
+Show the help overview
+
+You can filter by text
 
 ---
 
@@ -539,6 +541,12 @@ Show the command palette
 ### rename
 
 Rename the tab
+
+---
+
+### prompt
+
+Make a new tab and use this prompt
 
 ---
 
@@ -1175,3 +1183,9 @@ Say something exactly as it is
 ### program
 
 Use a program with the last AI response
+
+---
+
+### awm
+
+Show a message popup if you are using AwesomeWM
