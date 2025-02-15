@@ -218,6 +218,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "closeoldest",
+            "Close oldest tab",
+            lambda a=None: close.close_oldest(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
             "closeempty",
             "Close empty tabs",
             lambda a=None: close.close_empty(force=a),
@@ -569,6 +577,13 @@ class CommandSpec:
             "prompt",
             "Make a new tab and use this prompt",
             lambda a=None: inputcontrol.prompt_command(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "promptforce",
+            "Force a new tab and use this prompt",
+            lambda a=None: inputcontrol.prompt_command(a, True),
             type=str,
         )
 

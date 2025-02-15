@@ -150,6 +150,14 @@ Use 'force' to force
 
 ---
 
+### closeoldest
+
+Close oldest tab
+
+Use 'force' to force
+
+---
+
 ### closeempty
 
 Close empty tabs
@@ -547,6 +555,12 @@ Rename the tab
 ### prompt
 
 Make a new tab and use this prompt
+
+---
+
+### promptforce
+
+Force a new tab and use this prompt
 
 ---
 

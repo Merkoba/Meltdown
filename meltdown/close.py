@@ -33,6 +33,23 @@ class Close:
 
         return old_tabs
 
+    def get_oldest_tab(self) -> Tab | None:
+        ids = display.tab_ids()
+        oldest_tab = None
+        oldest_date = utils.now()
+
+        for tab_id in ids:
+            tabconvo = display.get_tab_convo(tab_id)
+
+            if not tabconvo:
+                continue
+
+            if tabconvo.convo.last_modified < oldest_date:
+                oldest_tab = tabconvo.tab
+                oldest_date = tabconvo.convo.last_modified
+
+        return oldest_tab
+
     def get_empty_tabs(self) -> list[Tab]:
         ids = display.tab_ids()
         empty_tabs = []
@@ -338,6 +355,20 @@ class Close:
 
         n = len(tabs)
         Dialog.show_confirm(f"Close picked tabs ({n}) ?", lambda: action())
+
+    def close_oldest(self, force: bool = False) -> None:
+        tab = self.get_oldest_tab()
+
+        if not tab:
+            return
+
+        def action() -> None:
+            self.close(tab_id=tab.tab_id, force=True, make_empty=True)
+
+        if force:
+            action()
+        else:
+            Dialog.show_confirm("Close oldest tab ?", lambda: action())
 
 
 close = Close()

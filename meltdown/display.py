@@ -123,6 +123,7 @@ class Display:
         name: str | None = None,
         position: str | None = None,
         close_tabs: bool = True,
+        force_close: bool = False,
     ) -> bool:
         from .close import close
         from .keyboard import keyboard
@@ -135,11 +136,14 @@ class Display:
                 if not close_tabs:
                     return False
 
-                cmds = Commands()
-                cmds.add("Close Some Tabs", lambda a: close.close(force=False))
-                cmds.add("Do Nothing", lambda a: None)
-                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
-                return False
+                if force_close:
+                    close.close_oldest()
+                else:
+                    cmds = Commands()
+                    cmds.add("Close Some Tabs", lambda a: close.close(force=False))
+                    cmds.add("Do Nothing", lambda a: None)
+                    Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
+                    return False
 
         def check_empty(page: Page | None) -> bool:
             if not page:
