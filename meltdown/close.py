@@ -164,7 +164,7 @@ class Close:
             return
 
         cmds.add("Ok" if single else "One", lambda a: action())
-        msg = "Close tab?" if single else "Close tabs?"
+        msg = "Close tab ?" if single else "Close tabs ?"
         Dialog.show_dialog(msg, cmds)
 
     def close_all(self, force: bool = False, make_empty: bool = True) -> None:
