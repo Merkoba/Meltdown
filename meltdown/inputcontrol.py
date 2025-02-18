@@ -550,7 +550,12 @@ class InputControl:
         if not text:
             return
 
-        if display.new_tab(close_tabs=False, force_close=force):
+        if force:
+            ans = display.new_tab(force_close=force)
+        else:
+            ans = display.new_tab(close_tabs=False)
+
+        if ans:
             self.submit(text=text)
 
 

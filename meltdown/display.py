@@ -137,7 +137,8 @@ class Display:
                     return False
 
                 if force_close:
-                    close.close_oldest()
+                    close.close_oldest(force=True)
+                    return True
                 else:
                     cmds = Commands()
                     cmds.add("Close Some Tabs", lambda a: close.close(force=False))
