@@ -139,12 +139,12 @@ class Display:
                 if force_close:
                     close.close_oldest(force=True)
                     return True
-                else:
-                    cmds = Commands()
-                    cmds.add("Close Some Tabs", lambda a: close.close(force=False))
-                    cmds.add("Do Nothing", lambda a: None)
-                    Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
-                    return False
+
+                cmds = Commands()
+                cmds.add("Close Some Tabs", lambda a: close.close(force=False))
+                cmds.add("Do Nothing", lambda a: None)
+                Dialog.show_dialog(f"Max tabs reached ({args.max_tabs})", cmds)
+                return False
 
         def check_empty(page: Page | None) -> bool:
             if not page:
