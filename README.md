@@ -791,6 +791,8 @@ For example: `--variable-prefix @`
 
 So you can do: `who is @name?`.
 
+Variables also work in the `model` field.
+
 ---
 
 ## Files <a name="files"></a>
