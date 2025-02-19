@@ -21,6 +21,7 @@ from .tips import tips
 from .utils import utils
 from .files import files
 from .session import Item
+from .variables import variables
 
 # Try Import
 llama_cpp = utils.try_import("llama_cpp")
@@ -98,7 +99,7 @@ class Model:
         if not tab_id:
             tab_id = display.current_tab
 
-        if not config.model:
+        if not self.get_model():
             display.print(
                 "You must configure a model first."
                 " It can be a local model which you can download"
@@ -109,7 +110,7 @@ class Model:
 
             return
 
-        if self.loaded_model == config.model:
+        if self.loaded_model == self.get_model():
             if self.loaded_format == config.format:
                 return
 
@@ -117,24 +118,24 @@ class Model:
             utils.msg("(Load) Slow down!")
             return
 
-        if self.model_is_gpt(config.model):
+        if self.model_is_gpt(self.get_model()):
             self.unload()
             self.load_openai(tab_id, prompt)
             return
 
-        if self.model_is_gemini(config.model):
+        if self.model_is_gemini(self.get_model()):
             self.unload()
             self.load_google(tab_id, prompt)
             return
 
-        model_path = Path(config.model)
+        model_path = Path(self.get_model())
 
         if (not model_path.exists()) or (not model_path.is_file()):
             display.print("Error: Model not found. Check the path.", tab_id=tab_id)
             return
 
         def wrapper() -> None:
-            if not self.load_local(config.model, tab_id):
+            if not self.load_local(self.get_model(), tab_id):
                 return
 
             if prompt:
@@ -185,7 +186,7 @@ class Model:
             now = utils.now()
             self.openai_client = OpenAI(api_key=self.openai_key)
             self.model_loading = False
-            self.loaded_model = config.model
+            self.loaded_model = self.get_model()
             self.loaded_format = "openai"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
@@ -218,7 +219,7 @@ class Model:
             )
 
             self.model_loading = False
-            self.loaded_model = config.model
+            self.loaded_model = self.get_model()
             self.loaded_format = "google"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
@@ -314,7 +315,7 @@ class Model:
                 msg, _ = utils.check_time(text, start_date)
                 display.print(msg)
             elif self.loaded_type == "remote":
-                msg = f"{config.model} is ready to use"
+                msg = f"{self.get_model()} is ready to use"
                 display.print(utils.emoji_text(msg, "remote"))
 
         if args.system_auto_hide:
@@ -535,16 +536,16 @@ class Model:
         gen_config = {
             "messages": messages,
             "stream": args.stream,
-            "model": config.model,
+            "model": self.get_model(),
             "temperature": config.temperature,
             "top_p": config.top_p,
             "seed": config.seed,
             "stop": self.get_stop_list(),
         }
 
-        if self.model_is_gpt(config.model):
+        if self.model_is_gpt(self.get_model()):
             gen_config["max_completion_tokens"] = config.max_tokens
-        elif self.model_is_gemini(config.model):
+        elif self.model_is_gemini(self.get_model()):
             gen_config["max_completion_tokens"] = config.max_tokens
             del gen_config["seed"]
         else:
@@ -552,7 +553,9 @@ class Model:
             gen_config["max_tokens"] = config.max_tokens
             del gen_config["model"]
 
-        if self.model_is_gpt(config.model) or self.model_is_gemini(config.model):
+        if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
+            self.get_model()
+        ):
             try:
                 if not self.openai_client:
                     self.stream_loading = False
@@ -1012,6 +1015,9 @@ class Model:
                 return True
 
         return False
+
+    def get_model(self) -> str:
+        return variables.replace_variables(config.model)
 
 
 model = Model()

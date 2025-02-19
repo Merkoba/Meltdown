@@ -10,6 +10,7 @@ from .args import args
 from .utils import utils
 from .entrybox import EntryBox
 from .textbox import TextBox
+from .variables import variables
 
 
 InputWidget = EntryBox | TextBox | None
@@ -121,10 +122,10 @@ class AutoComplete:
             for key in commands.cmdkeys:
                 if key.startswith(word):
                     self.matches.append(key)
-        elif inputcontrol.is_variable(word):
+        elif variables.is_variable(word):
             word = self.clean(word)
 
-            for key in inputcontrol.variables:
+            for key in variables.variables:
                 if key.startswith(word):
                     self.matches.append(key)
         else:

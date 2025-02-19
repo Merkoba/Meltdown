@@ -30,6 +30,7 @@ from .system_prompt import system_prompt
 from .findmanager import findmanager
 from .formats import formats
 from .menumanager import menumanager
+from .variables import variables
 
 
 class DuplicateCommandError(Exception):
@@ -1148,28 +1149,28 @@ class CommandSpec:
         self.add_cmd(
             "setvar",
             "Set a variable. For example: /setvar x the world. Then use it with $x",
-            lambda a=None: inputcontrol.set_variable(a),
+            lambda a=None: variables.set_variable(a),
             type=str,
         )
 
         self.add_cmd(
             "unsetvar",
             "Unset a variable",
-            lambda a=None: inputcontrol.unset_variable(a),
+            lambda a=None: variables.unset_variable(a),
             type=str,
         )
 
         self.add_cmd(
             "readvar",
             "Read the content of a variable",
-            lambda a=None: inputcontrol.read_variable(a),
+            lambda a=None: variables.read_variable(a),
             type=str,
         )
 
         self.add_cmd(
             "vars",
             "Read all the variables",
-            lambda a=None: inputcontrol.read_variables(),
+            lambda a=None: variables.read_variables(),
         )
 
         self.add_cmd(

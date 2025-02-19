@@ -17,6 +17,7 @@ from .gestures import Gestures
 from .model import model
 from .inputcontrol import inputcontrol
 from .dialogs import Dialog
+from .variables import variables
 
 
 class SnippetLabel(tk.Label):
@@ -226,8 +227,8 @@ class Snippet(tk.Frame):
 
     def sample_variable(self) -> None:
         sample = self.get_sample()
-        inputcontrol.do_set_variable("snippet", sample, feedback=False)
-        v = inputcontrol.varname("snippet")
+        variables.do_set_variable("snippet", sample, feedback=False)
+        v = variables.varname("snippet")
         inputcontrol.set(v)
 
     def on_motion(self, event: Any) -> None:

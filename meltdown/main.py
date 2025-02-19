@@ -23,6 +23,7 @@ from .listener import listener
 from .tasks import tasks
 from .memory import memory
 from .autoscroll import autoscroll
+from .variables import variables
 
 
 def main() -> None:
@@ -63,6 +64,7 @@ def main() -> None:
     widgets.setup()
     keyboard.setup()
     commands.setup()
+    variables.setup()
     inputcontrol.setup()
     app.setup(now)
     system.start()
