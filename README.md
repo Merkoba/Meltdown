@@ -835,7 +835,6 @@ While this has been tested to work, it's still considered experimental.
 
 There are 3 available color themes. `dark`, `light`, and `high contrast`.
 
-
 ### Dark
 
 ![](img/theme_dark.png)
