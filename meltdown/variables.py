@@ -14,13 +14,13 @@ class Variables:
 
     def setup(self) -> None:
         for variable in args.variables:
-            self.set_variable(variable)
+            self.set_variable(variable, False)
 
     def varname(self, name: str) -> str:
         prefix = args.variable_prefix
         return f"{prefix}{name}"
 
-    def set_variable(self, cmd: str) -> None:
+    def set_variable(self, cmd: str, feedback: bool = True) -> None:
         from .display import display
 
         def fmt() -> None:
@@ -36,7 +36,7 @@ class Variables:
             fmt()
             return
 
-        self.do_set_variable(name, value)
+        self.do_set_variable(name, value, feedback)
 
     def do_set_variable(self, name: str, value: str, feedback: bool = True) -> None:
         from .display import display
