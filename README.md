@@ -694,6 +694,33 @@ For example: `--argfile ~/args.json`.
 
 This is a way to launch with different configurations easily.
 
+For example:
+
+```
+{
+    "auto_unload": 60,
+    "aliases": [
+        "gpt /loadconfig gpt",
+        "gem /loadconfig gem",
+        "pro /loadconfig pro",
+        "llama /loadconfig llama",
+        "think /promptforce Tell something interesting you thought about ((noun))...",
+        "listen /notify Listen to this",
+        "talk /listen & /think"
+    ],
+    "custom_prompts": [
+        "In Spanish = Explain ((words)) spanish",
+        "In Japanse = Explain ((words)) japanese"
+    ],
+    "tasks": [
+        "2h /talk"
+    ],
+    "variables": [
+        "meta /media/struct1/models/Meta-Llama-3.1-8B-Instruct-Q5_K_M.gguf"
+    ]
+}
+```
+
 ---
 
 ## Loading <a name="loading"></a>
