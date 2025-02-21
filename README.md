@@ -696,7 +696,7 @@ This is a way to launch with different configurations easily.
 
 For example:
 
-```
+```json
 {
     "auto_unload": 60,
     "aliases": [
