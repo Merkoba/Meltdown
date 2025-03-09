@@ -7,3 +7,4 @@ prompt-toolkit == 3.0.48
 rich == 13.9.4
 requests == 2.32.3
 watchdog == 6.0.0
+q == 2.7

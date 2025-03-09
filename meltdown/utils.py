@@ -18,6 +18,7 @@ from typing import TYPE_CHECKING
 from collections.abc import Callable
 
 # Libraries
+import q as qlib
 from rich.console import Console  # type: ignore
 
 if TYPE_CHECKING:
@@ -43,6 +44,11 @@ class Utils:
             return True
 
         return self.similarity(a, b) >= config.similar_threshold
+
+
+    def q(*args: Any) -> None:
+        qlib.q(args)
+
 
     def most_similar(self, text: str, items: list[str]) -> str | None:
         from .config import config
@@ -86,6 +92,8 @@ class Utils:
 
         if args.errors:
             self.console.print_exception(show_locals=True)
+
+        self.q(error)
 
     def create_error_logger(self) -> None:
         from .paths import paths
