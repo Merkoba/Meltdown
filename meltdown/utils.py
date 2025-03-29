@@ -18,7 +18,7 @@ from typing import TYPE_CHECKING
 from collections.abc import Callable
 
 # Libraries
-import q as qlib
+import q as qlib  # type: ignore
 from rich.console import Console  # type: ignore
 
 if TYPE_CHECKING:
@@ -45,10 +45,8 @@ class Utils:
 
         return self.similarity(a, b) >= config.similar_threshold
 
-
     def q(*args: Any) -> None:
         qlib.q(args)
-
 
     def most_similar(self, text: str, items: list[str]) -> str | None:
         from .config import config
