@@ -718,6 +718,9 @@ class Model:
         return ""
 
     def generate_image(self, prompt: str, tab_id: str | None = None) -> None:
+        if not prompt:
+            return
+
         if not prompt.strip():
             return
 
