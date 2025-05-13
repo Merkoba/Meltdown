@@ -366,6 +366,12 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "middle",
+            "Go to the middle of tabs",
+            lambda a=None: display.select_middle_tab(),
+        )
+
+        self.add_cmd(
             "config",
             "Config menu or view, set, reset a config",
             lambda a=None: config.command(a),
