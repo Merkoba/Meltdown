@@ -1882,5 +1882,11 @@ class ArgSpec:
             info="How long notifications last",
         )
 
+        self.add_argument(
+            "minimal_info",
+            action="store_true",
+            info="Don't show the full info on conversation items",
+        )
+
 
 argspec = ArgSpec()

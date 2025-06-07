@@ -208,7 +208,7 @@ class ItemOps:
             text += utils.no_break(f"Model: {item.model}")
 
         if item.date is not None:
-            text += f"\n\n{utils.to_date(item.date)}\n"
+            text += f"\n\n{utils.to_date(item.date, minimal=args.minimal_info)}\n"
             text += utils.time_ago(item.date, utils.now())
 
         if item.duration is not None:

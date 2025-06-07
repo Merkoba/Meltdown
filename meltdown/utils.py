@@ -128,10 +128,16 @@ class Utils:
         time_now = datetime.now()
         return time_now.strftime("%Y-%m-%d %H:%M:%S")
 
-    def to_date(self, timestamp: float) -> str:
+    def to_date(self, timestamp: float, minimal: bool = False) -> str:
         dt_object = datetime.fromtimestamp(timestamp)
         hour = dt_object.strftime("%I").lstrip("0")
-        return dt_object.strftime(f"%b %d %Y - {hour}:%M %p")
+
+        if minimal:
+            dstr = dt_object.strftime(f"{hour}:%M %p")
+        else:
+            dstr = dt_object.strftime(f"%b %d %Y - {hour}:%M %p")
+
+        return dstr
 
     def sleep(self, seconds: float) -> None:
         time.sleep(seconds)
