@@ -105,7 +105,7 @@ pipx install git+https://github.com/Merkoba/Meltdown#egg=meltdown[llama]
 
 The difference is `#egg=meltdown[llama]` added at the end.
 
-For `amd` you might need some system packages like `glslc` and `vulkan-devel`.
+For `amd` you might need to install some `vulkan` system packages.
 
 ---
 
