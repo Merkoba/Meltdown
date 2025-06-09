@@ -335,6 +335,7 @@ class Display:
 
     def show_header(self, tab_id: str) -> None:
         if not args.show_header:
+            self.print("\n", tab_id=tab_id, modified=False)
             return
 
         tabconvo = self.get_tab_convo(tab_id)
