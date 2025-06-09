@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 import json
+import shutil
 import subprocess
 import threading
 import tkinter as tk
@@ -64,9 +65,24 @@ class System:
     def get_gpu_info(self) -> None:
         # This works with AMD GPUs | rocm-smi must be installed
         if args.system_gpu or args.system_gpu_ram or args.system_gpu_temp:
-            rocm_smi = "/opt/rocm/bin/rocm-smi"
+            # Try to find rocm-smi in PATH first
+            rocm_smi = shutil.which("rocm-smi")
 
-            if not Path(rocm_smi).is_file():
+            # If not found, check common installation locations
+            if not rocm_smi:
+                common_paths = [
+                    "/opt/rocm/bin/rocm-smi",
+                    "/usr/bin/rocm-smi",
+                    "/usr/local/bin/rocm-smi",
+                ]
+
+                for path in common_paths:
+                    if Path(path).is_file():
+                        rocm_smi = path
+                        break
+
+            # If still not found, return early
+            if not rocm_smi or not Path(rocm_smi).is_file():
                 return
 
             cmd = [
