@@ -334,13 +334,13 @@ class Display:
         tabconvo.tab.loaded = True
 
     def show_header(self, tab_id: str) -> None:
-        if not args.show_header:
-            self.print("\n", tab_id=tab_id, modified=False)
-            return
-
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
+            return
+
+        if not args.show_header:
+            self.print("\n", tab_id=tab_id, modified=False)
             return
 
         nice_date = utils.to_date(tabconvo.convo.created)
