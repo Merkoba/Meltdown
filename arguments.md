@@ -2877,3 +2877,43 @@ How long notifications last
 Default: 5000
 
 Type: int
+
+---
+
+### minimal-info
+
+Don't show the full info on conversation items
+
+Default: False
+
+Action: store_true
+
+---
+
+### font-family-serif
+
+Font to use for serif
+
+Default: "serif"
+
+Type: str
+
+---
+
+### font-family-sans
+
+Font to use for sans
+
+Default: "sans-serif"
+
+Type: str
+
+---
+
+### font-family-mono
+
+Font to use for monospace
+
+Default: "monospace"
+
+Type: str

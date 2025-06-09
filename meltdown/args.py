@@ -313,6 +313,9 @@ class Args:
         self.tooltip_delay = 600
         self.notify_duration = 5000
         self.minimal_info = False
+        self.font_family_serif = "serif"
+        self.font_family_sans = "sans-serif"
+        self.font_family_mono = "monospace"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -623,6 +626,9 @@ class Args:
             "tooltip_delay",
             "notify_duration",
             "minimal_info",
+            "font_family_serif",
+            "font_family_sans",
+            "font_family_mono",
         ]
 
         for n_item in normals:

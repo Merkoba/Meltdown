@@ -166,12 +166,14 @@ class Theme:
         self.msgbox_height = 10
 
     def get_font_family(self) -> str:
+        from .args import args
+
         if config.font_family == "monospace":
-            font = self.monospace_family
+            font = args.font_family_mono or self.monospace_family
         elif config.font_family == "serif":
-            font = self.serif_family
+            font = args.font_family_serif or self.serif_family
         else:
-            font = self.font_family
+            font = args.font_family_sans or self.font_family
 
         return font
 

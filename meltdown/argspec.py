@@ -1888,5 +1888,23 @@ class ArgSpec:
             info="Don't show the full info on conversation items",
         )
 
+        self.add_argument(
+            "font_family_serif",
+            type=str,
+            info="Font to use for serif",
+        )
+
+        self.add_argument(
+            "font_family_sans",
+            type=str,
+            info="Font to use for sans",
+        )
+
+        self.add_argument(
+            "font_family_mono",
+            type=str,
+            info="Font to use for monospace",
+        )
+
 
 argspec = ArgSpec()

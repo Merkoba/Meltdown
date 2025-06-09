@@ -298,6 +298,12 @@ Go to the last tab
 
 ---
 
+### middle
+
+Go to the middle of tabs
+
+---
+
 ### config
 
 Config menu or view, set, reset a config
