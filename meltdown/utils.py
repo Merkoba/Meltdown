@@ -370,6 +370,11 @@ class Utils:
         return f"{years:.1f} {word} ago"
 
     def smart_quotes(self, text: str) -> str:
+        text = text.strip()
+
+        if " " not in text:
+            return text
+
         if '"' in text:
             if text.startswith('"') and text.endswith('"'):
                 return text
