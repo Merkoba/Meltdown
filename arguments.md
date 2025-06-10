@@ -2917,3 +2917,63 @@ Font to use for monospace
 Default: "monospace"
 
 Type: str
+
+---
+
+### rentry-site
+
+The Rentry site to use for uploads
+
+Default: "https://rentry.org"
+
+Type: str
+
+---
+
+### harambe-site
+
+The Harambe site to use for uploads
+
+Default: "https://harambe.merkoba.com"
+
+Type: str
+
+---
+
+### harambe-endpoint
+
+The Harambe endpoint to use for uploads
+
+Default: "apiupload"
+
+Type: str
+
+---
+
+### harambe-username
+
+Username for Harambe uploads
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### harambe-password
+
+Password for Harambe uploads
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### upload-service
+
+Default upload service to use directly
+
+Default: [Empty string]
+
+Type: str
