@@ -17,15 +17,17 @@ from .args import args
 Action = Callable[[str, str, str], None]
 
 
-class Rentry:
+class Harambe:
     def __init__(
         self,
         text: str,
+        username: str,
         password: str,
         tab_id: str,
         after_upload: Action,
     ) -> None:
         self.text = text
+        self.username = username
         self.password = password
         self.tab_id = tab_id
         self.after_upload = after_upload
@@ -33,7 +35,7 @@ class Rentry:
 
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
-            "Referer": args.rentry_site,
+            "Referer": args.harambe_site,
             "Sec-Fetch-Dest": "document",
             "Sec-Fetch-Mode": "navigate",
             "Sec-Fetch-Site": "same-origin",
@@ -44,34 +46,40 @@ class Rentry:
         thread.daemon = True
         thread.start()
 
-    def get_cookie(self, cookie_name: str) -> str:
-        return str(self.session.cookies.get(cookie_name, default=""))
-
-    def get_token(self) -> str:
-        return self.get_cookie("csrftoken")
-
     def post(self) -> None:
         self.session = requests.session()
-        self.session.get(args.rentry_site)
+        self.session.get(args.harambe_site)
+        content = self.text.strip() if len(self.text) > 0 else "."
+        url = f"{args.harambe_site}/{args.harambe_endpoint}".strip()
+
+        files = {
+            "pastebin": (None, content),
+            "pastebin_filename": (None, "harambe.txt"),
+            "username": (None, args.harambe_username),
+            "password": (None, args.harambe_password),
+            "title": (None, "Uploaded from Meltdown"),
+            "zip": (None, "off"),
+            "privacy": (None, "public"),
+            "image_magic": (None, "off"),
+            "audio_magic": (None, "off"),
+            "video_magic": (None, "off"),
+            "album_magic": (None, "off"),
+            "gif_magic": (None, "off"),
+        }
 
         res = self.session.post(
-            args.rentry_site,
+            url,
             headers=self.headers,
             timeout=self.timeout,
-
-            data={
-                "csrfmiddlewaretoken": self.get_token(),
-                "text": (self.text if len(self.text) > 0 else "."),
-                "edit_code": self.password,
-            },
-
             allow_redirects=False,
+            files=files,
         )
 
-        if res.status_code != HTTPStatus.FOUND:
+        if res.status_code != HTTPStatus.OK:
+            print(f"Error: {res.status_code} - {res.reason}")
+            print(f"Response content: {res.content}")
             return
 
-        url = urllib.parse.urlparse(res.headers["Location"])
-        url = Path(url.path).name
-        full_url = f"{args.rentry_site}/{url}"
-        self.after_upload(full_url, self.password, self.tab_id)
+        response = res.content.decode("utf-8", errors="ignore")
+        full_url = f"{args.harambe_site}/{response}".strip()
+        self.after_upload(full_url, "", self.tab_id)

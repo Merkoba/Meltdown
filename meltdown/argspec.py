@@ -1906,5 +1906,35 @@ class ArgSpec:
             info="Font to use for monospace",
         )
 
+        self.add_argument(
+            "rentry_site",
+            type=str,
+            info="The Rentry site to use for uploads",
+        )
+
+        self.add_argument(
+            "harambe_site",
+            type=str,
+            info="The Harambe site to use for uploads",
+        )
+
+        self.add_argument(
+            "harambe_endpoint",
+            type=str,
+            info="The Harambe endpoint to use for uploads",
+        )
+
+        self.add_argument(
+            "harambe_username",
+            type=str,
+            info="Username for Harambe uploads",
+        )
+
+        self.add_argument(
+            "harambe_password",
+            type=str,
+            info="Password for Harambe uploads",
+        )
+
 
 argspec = ArgSpec()

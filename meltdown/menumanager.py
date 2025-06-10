@@ -191,7 +191,7 @@ class MoreMenu:
 
         self.menu.separator()
 
-        self.menu.add("Upload", lambda e: upload.upload_picker(), disabled=nomsg)
+        self.menu.add("Upload", lambda e: upload.service_picker(), disabled=nomsg)
 
     def show(self, event: Any = None) -> None:
         self.make()

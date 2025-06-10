@@ -316,6 +316,11 @@ class Args:
         self.font_family_serif = "serif"
         self.font_family_sans = "sans-serif"
         self.font_family_mono = "monospace"
+        self.rentry_site = "https://rentry.org"
+        self.harambe_site = "https://harambe.merkoba.com"
+        self.harambe_endpoint = "apiupload"
+        self.harambe_username = ""
+        self.harambe_password = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -629,6 +634,11 @@ class Args:
             "font_family_serif",
             "font_family_sans",
             "font_family_mono",
+            "rentry_site",
+            "harambe_site",
+            "harambe_endpoint",
+            "harambe_username",
+            "harambe_password",
         ]
 
         for n_item in normals:

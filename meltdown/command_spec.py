@@ -1107,7 +1107,7 @@ class CommandSpec:
         self.add_cmd(
             "upload",
             f"Show the upload format picker menu. {self.upload_info}",
-            lambda a=None: upload.upload_picker(mode=a),
+            lambda a=None: upload.service_picker(mode=a),
             type=str,
         )
 

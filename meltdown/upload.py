@@ -3,8 +3,8 @@ from __future__ import annotations
 # Modules
 from .app import app
 from .utils import utils
-from .config import config
 from .display import display
+from .harambe import Harambe
 from .rentry import Rentry
 from .dialogs import Dialog, Commands
 from .args import args
@@ -12,6 +12,24 @@ from .formats import formats
 
 
 class Upload:
+    service: str = "harambe"
+
+    def service_picker(self, tab_id: str | None = None, mode: str = "") -> None:
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+
+        if (not messages) or ignored:
+            return
+
+        def action(service: str) -> None:
+            self.service = service
+            self.upload_picker(tab_id=tab_id, mode=mode)
+
+        cmds = Commands()
+        cmds.add("Harambe", lambda a: action("harambe"))
+        cmds.add("Rentry", lambda a: action("rentry"))
+        Dialog.show_dialog("Pick upload service", commands=cmds)
+
     def upload_picker(self, tab_id: str | None = None, mode: str = "") -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
@@ -49,15 +67,30 @@ class Upload:
         cmds.add("Last Item", lambda a: action("last"))
         cmds.add("All Of It", lambda a: action("all"))
         fmt = formats.get_name(format_, True)
+        text = "Upload conversation to\n"
+
+        if self.service == "harambe":
+            text += args.harambe_site
+        elif self.service == "rentry":
+            text += args.rentry_site
+        else:
+            return
+
+        text += f"\nFormat: {fmt}"
 
         Dialog.show_dialog(
-            f"Upload conversation to\n{config.rentry_site}\nFormat: {fmt}",
+            text,
             commands=cmds,
         )
 
     def after_upload(self, url: str, password: str, tab_id: str) -> None:
+        if password:
+            m = {url} ({password})
+        else:
+            m = url
+
         display.print(
-            f"🌐 Uploaded: {url} ({password})",
+            f"🌐 Uploaded: {m}",
             do_format=True,
             tab_id=tab_id,
         )
@@ -73,10 +106,18 @@ class Upload:
 
         cmds = Commands()
         cmds.add("Open", lambda a: open_url())
-        cmds.add("Copy All", lambda a: copy_all())
+
+        if password:
+            cmds.add("Copy All", lambda a: copy_all())
+
         cmds.add("Copy URL", lambda a: copy_url())
 
-        Dialog.show_dialog(f"{url} ({password})", commands=cmds)
+        if password:
+            msg = f"{url} ({password})"
+        else:
+            msg = url
+
+        Dialog.show_dialog(msg, commands=cmds)
 
     def do_upload(
         self, tab_id: str | None = None, mode: str = "all", format_: str = "markdown"
@@ -99,20 +140,32 @@ class Upload:
         else:
             text = formats.get_text(tabconvo.convo, mode=mode, name_mode="upload")
 
-        if args.upload_password:
-            password = args.upload_password
-        else:
-            password = utils.random_word()
+        if self.service == "harambe":
+            try:
+                Harambe(
+                    text=text,
+                    tab_id=tab_id,
+                    username=args.harambe_username,
+                    password=args.harambe_password,
+                    after_upload=self.after_upload,
+                )
+            except Exception as e:
+                utils.error(e)
+        elif self.service == "rentry":
+            if args.upload_password:
+                password = args.upload_password
+            else:
+                password = utils.random_word()
 
-        try:
-            Rentry(
-                text=text,
-                password=password,
-                tab_id=tab_id,
-                after_upload=self.after_upload,
-            )
-        except Exception as e:
-            utils.error(e)
+            try:
+                Rentry(
+                    text=text,
+                    tab_id=tab_id,
+                    password=password,
+                    after_upload=self.after_upload,
+                )
+            except Exception as e:
+                utils.error(e)
 
 
 upload = Upload()

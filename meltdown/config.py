@@ -28,7 +28,6 @@ class Config:
         self.split_long_length = 35
         self.say_limit = 2000
         self.recent_label = "--- Recent ---"
-        self.rentry_site = "https://rentry.org"
         self.think_token_start = "<think>"
         self.think_token_end = "</think>"
 
