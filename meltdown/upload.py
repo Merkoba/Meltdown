@@ -28,7 +28,8 @@ class Upload:
         if args.upload_service == "harambe":
             action("harambe")
             return
-        elif args.upload_service == "rentry":
+
+        if args.upload_service == "rentry":
             action("rentry")
             return
 
@@ -79,7 +80,7 @@ class Upload:
         if (not messages) or ignored:
             return
 
-        def procedure():
+        def procedure() -> None:
             if self.service == "harambe":
                 self.privacy_picker(tab_id, mode, format_)
             else:

@@ -2,8 +2,6 @@ from __future__ import annotations
 
 # Standard
 import threading
-import urllib.parse
-from pathlib import Path
 from http import HTTPStatus
 from typing import Callable
 
@@ -49,7 +47,7 @@ class Harambe:
         thread.daemon = True
         thread.start()
 
-    def post(self, format_) -> None:
+    def post(self, format_: str) -> None:
         self.session = requests.session()
         self.session.get(args.harambe_site)
         content = self.text.strip() if len(self.text) > 0 else "."
@@ -85,8 +83,6 @@ class Harambe:
         )
 
         if res.status_code != HTTPStatus.OK:
-            print(f"Error: {res.status_code} - {res.reason}")
-            print(f"Response content: {res.content}")
             return
 
         response = res.content.decode("utf-8", errors="ignore")
