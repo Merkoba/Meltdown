@@ -2977,3 +2977,23 @@ Default upload service to use directly
 Default: [Empty string]
 
 Type: str
+
+---
+
+### upload-format
+
+Default upload format to use directly
+
+Default: [Empty string]
+
+Type: str
+
+---
+
+### upload-privacy
+
+Default upload privacy to use directly (public or private)
+
+Default: [Empty string]
+
+Type: str
