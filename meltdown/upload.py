@@ -35,7 +35,6 @@ class Upload:
             self.service = srv
             self.upload_picker(tab_id=tab_id, mode=mode)
 
-
         if self.service:
             action(self.service)
             return
