@@ -322,6 +322,8 @@ class Args:
         self.harambe_username = ""
         self.harambe_password = ""
         self.upload_service = ""
+        self.upload_format = ""
+        self.upload_privacy = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -641,6 +643,8 @@ class Args:
             "harambe_username",
             "harambe_password",
             "upload_service",
+            "upload_format",
+            "upload_privacy",
         ]
 
         for n_item in normals:

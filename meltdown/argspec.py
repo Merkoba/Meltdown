@@ -1942,5 +1942,17 @@ class ArgSpec:
             info="Default upload service to use directly",
         )
 
+        self.add_argument(
+            "upload_format",
+            type=str,
+            info="Default upload format to use directly",
+        )
+
+        self.add_argument(
+            "upload_privacy",
+            type=str,
+            info="Default upload privacy to use directly (public or private)",
+        )
+
 
 argspec = ArgSpec()
