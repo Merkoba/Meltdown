@@ -30,6 +30,23 @@ class Upload:
         cmds.add("Rentry", lambda a: action("rentry"))
         Dialog.show_dialog("Pick upload service", commands=cmds)
 
+    def privacy_picker(
+        self, tab_id: str | None = None, mode: str = "", format_: str = "text"
+    ) -> None:
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+
+        if (not messages) or ignored:
+            return
+
+        def action(priv: bool) -> None:
+            self.do_upload(tab_id=tab_id, mode=mode, format_=format_, public=priv)
+
+        cmds = Commands()
+        cmds.add("Public", lambda a: action(True))
+        cmds.add("Private", lambda a: action(False))
+        Dialog.show_dialog("Pick privacy", commands=cmds)
+
     def upload_picker(self, tab_id: str | None = None, mode: str = "") -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
@@ -55,13 +72,19 @@ class Upload:
         if (not messages) or ignored:
             return
 
+        def procedure():
+            if self.service == "harambe":
+                self.privacy_picker(tab_id, mode, format_)
+            else:
+                self.do_upload(tab_id, mode, format_=format_)
+
         if mode in ["last", "all"]:
-            self.do_upload(tab_id, mode, format_=format_)
+            procedure()
             return
 
         def action(mode: str) -> None:
             Dialog.hide_all()
-            self.do_upload(tab_id, mode, format_=format_)
+            procedure()
 
         cmds = Commands()
         cmds.add("Last Item", lambda a: action("last"))
@@ -85,7 +108,7 @@ class Upload:
 
     def after_upload(self, url: str, password: str, tab_id: str) -> None:
         if password:
-            m = {url} ({password})
+            m = f"{url}({password})"
         else:
             m = url
 
@@ -120,7 +143,11 @@ class Upload:
         Dialog.show_dialog(msg, commands=cmds)
 
     def do_upload(
-        self, tab_id: str | None = None, mode: str = "all", format_: str = "markdown"
+        self,
+        tab_id: str | None = None,
+        mode: str = "all",
+        format_: str = "markdown",
+        public: bool = False,
     ) -> None:
         if not tab_id:
             tab_id = display.current_tab
@@ -148,6 +175,7 @@ class Upload:
                     username=args.harambe_username,
                     password=args.harambe_password,
                     after_upload=self.after_upload,
+                    public=public,
                     format_=format_,
                 )
             except Exception as e:

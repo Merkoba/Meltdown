@@ -26,12 +26,14 @@ class Harambe:
         tab_id: str,
         after_upload: Action,
         format_: str = "text",
+        public: bool = False,
     ) -> None:
         self.text = text
         self.username = username
         self.password = password
         self.tab_id = tab_id
         self.after_upload = after_upload
+        self.public = public
         self.timeout = 10
 
         self.headers = {
@@ -66,7 +68,7 @@ class Harambe:
             "password": (None, args.harambe_password),
             "title": (None, "Uploaded from Meltdown"),
             "zip": (None, "off"),
-            "privacy": (None, "public"),
+            "privacy": (None, "public" if self.public else "private"),
             "image_magic": (None, "off"),
             "audio_magic": (None, "off"),
             "video_magic": (None, "off"),

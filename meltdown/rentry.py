@@ -58,13 +58,11 @@ class Rentry:
             args.rentry_site,
             headers=self.headers,
             timeout=self.timeout,
-
             data={
                 "csrfmiddlewaretoken": self.get_token(),
                 "text": (self.text if len(self.text) > 0 else "."),
                 "edit_code": self.password,
             },
-
             allow_redirects=False,
         )
 
