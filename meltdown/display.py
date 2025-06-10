@@ -1380,7 +1380,6 @@ class Display:
         generic: bool = False,
         name_user: str = "",
         name_ai: str = "",
-        spacing: str = True,
     ) -> str:
         name = ""
 
@@ -1422,13 +1421,9 @@ class Display:
         else:
             text = prompt
 
-
-        if spacing:
-            # Add invisible markers
-            umarker = getattr(Output, f"marker_{who}")
-            return f"{umarker}{text}"
-        else:
-            return text
+        # Add invisible markers
+        umarker = getattr(Output, f"marker_{who}")
+        return f"{umarker}{text}"
 
 
 display = Display()

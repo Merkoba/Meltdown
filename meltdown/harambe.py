@@ -25,6 +25,7 @@ class Harambe:
         password: str,
         tab_id: str,
         after_upload: Action,
+        format_: str = "text",
     ) -> None:
         self.text = text
         self.username = username
@@ -42,19 +43,25 @@ class Harambe:
             "Sec-Fetch-User": "?1",
         }
 
-        thread = threading.Thread(target=lambda: self.post())
+        thread = threading.Thread(target=lambda: self.post(format_))
         thread.daemon = True
         thread.start()
 
-    def post(self) -> None:
+    def post(self, format_) -> None:
         self.session = requests.session()
         self.session.get(args.harambe_site)
         content = self.text.strip() if len(self.text) > 0 else "."
         url = f"{args.harambe_site}/{args.harambe_endpoint}".strip()
+        ext = "txt"
+
+        if format_ == "markdown":
+            ext = "md"
+        elif format_ == "json":
+            ext = "json"
 
         files = {
             "pastebin": (None, content),
-            "pastebin_filename": (None, "harambe.txt"),
+            "pastebin_filename": (None, f"harambe.{ext}"),
             "username": (None, args.harambe_username),
             "password": (None, args.harambe_password),
             "title": (None, "Uploaded from Meltdown"),

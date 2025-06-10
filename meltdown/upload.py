@@ -148,6 +148,7 @@ class Upload:
                     username=args.harambe_username,
                     password=args.harambe_password,
                     after_upload=self.after_upload,
+                    format_=format_,
                 )
             except Exception as e:
                 utils.error(e)
