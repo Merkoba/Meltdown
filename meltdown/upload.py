@@ -164,9 +164,9 @@ class Upload:
         cmds.add("Copy URL", lambda a: copy_url())
 
         if password:
-            msg = f"{url} ({password})"
+            msg = f"Uploaded ({password})"
         else:
-            msg = url
+            msg = "Uploaded"
 
         Dialog.show_dialog(msg, commands=cmds)
 
