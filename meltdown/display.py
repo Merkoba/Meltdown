@@ -340,7 +340,6 @@ class Display:
             return
 
         if not args.show_header:
-            self.print("\n", tab_id=tab_id, modified=False)
             return
 
         nice_date = utils.to_date(tabconvo.convo.created)
