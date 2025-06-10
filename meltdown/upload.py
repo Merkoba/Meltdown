@@ -25,6 +25,13 @@ class Upload:
             self.service = service
             self.upload_picker(tab_id=tab_id, mode=mode)
 
+        if args.upload_service == "harambe":
+            action("harambe")
+            return
+        elif args.upload_service == "rentry":
+            action("rentry")
+            return
+
         cmds = Commands()
         cmds.add("Harambe", lambda a: action("harambe"))
         cmds.add("Rentry", lambda a: action("rentry"))

@@ -1936,5 +1936,11 @@ class ArgSpec:
             info="Password for Harambe uploads",
         )
 
+        self.add_argument(
+            "upload_service",
+            type=str,
+            info="Default upload service to use directly",
+        )
+
 
 argspec = ArgSpec()
