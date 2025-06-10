@@ -64,7 +64,7 @@ class Harambe:
             "pastebin_filename": (None, f"harambe.{ext}"),
             "username": (None, args.harambe_username),
             "password": (None, args.harambe_password),
-            "title": (None, "Uploaded from Meltdown"),
+            "title": (None, "Meltdown Upload"),
             "zip": (None, "off"),
             "privacy": (None, "public" if self.public else "private"),
             "image_magic": (None, "off"),
