@@ -29,12 +29,12 @@ class Upload:
             return
 
         self.full = full
+        self.service = service
 
         def action(srv: str) -> None:
             self.service = srv
             self.upload_picker(tab_id=tab_id, mode=mode)
 
-        self.service = service
 
         if self.service:
             action(self.service)
