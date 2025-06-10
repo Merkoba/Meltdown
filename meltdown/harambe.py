@@ -81,5 +81,5 @@ class Harambe:
             return
 
         response = res.content.decode("utf-8", errors="ignore")
-        full_url = f"{args.harambe_site}/{response}".strip()
+        full_url = f"{args.harambe_site}/post/{response}".strip()
         self.after_upload(full_url, "", self.tab_id)

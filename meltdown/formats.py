@@ -178,6 +178,7 @@ class Formats:
                     generic=generic,
                     name_user=name_user,
                     name_ai=name_ai,
+                    spacing=False,
                 )
 
                 if extra_info and (key == "ai"):
