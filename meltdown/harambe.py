@@ -60,18 +60,12 @@ class Harambe:
             ext = "json"
 
         files = {
+            "title": (None, "Meltdown Upload"),
             "pastebin": (None, content),
             "pastebin_filename": (None, f"harambe.{ext}"),
             "username": (None, args.harambe_username),
             "password": (None, args.harambe_password),
-            "title": (None, "Meltdown Upload"),
-            "zip": (None, "off"),
             "privacy": (None, "public" if self.public else "private"),
-            "image_magic": (None, "off"),
-            "audio_magic": (None, "off"),
-            "video_magic": (None, "off"),
-            "album_magic": (None, "off"),
-            "gif_magic": (None, "off"),
         }
 
         res = self.session.post(
