@@ -13,25 +13,39 @@ from .formats import formats
 
 class Upload:
     service: str = "harambe"
+    full: bool = False
 
-    def service_picker(self, tab_id: str | None = None, mode: str = "") -> None:
+    def service_picker(
+        self,
+        tab_id: str | None = None,
+        mode: str = "",
+        full: bool = False,
+        service: str = "",
+    ) -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
 
         if (not messages) or ignored:
             return
 
-        def action(service: str) -> None:
-            self.service = service
+        self.full = full
+
+        def action(srv: str) -> None:
+            self.service = srv
             self.upload_picker(tab_id=tab_id, mode=mode)
 
-        if args.upload_service == "harambe":
-            action("harambe")
+        if service:
+            action(service)
             return
 
-        if args.upload_service == "rentry":
-            action("rentry")
-            return
+        if not self.full:
+            if args.upload_service == "harambe":
+                action("harambe")
+                return
+
+            if args.upload_service == "rentry":
+                action("rentry")
+                return
 
         cmds = Commands()
         cmds.add("Harambe", lambda a: action("harambe"))
@@ -50,13 +64,14 @@ class Upload:
         def action(priv: bool) -> None:
             self.do_upload(tab_id=tab_id, mode=mode, format_=format_, public=priv)
 
-        if args.upload_privacy == "public":
-            action(True)
-            return
+        if not self.full:
+            if args.upload_privacy == "public":
+                action(True)
+                return
 
-        if args.upload_privacy == "private":
-            action(False)
-            return
+            if args.upload_privacy == "private":
+                action(False)
+                return
 
         cmds = Commands()
         cmds.add("Public", lambda a: action(True))
@@ -73,17 +88,18 @@ class Upload:
         def action(fmt: str) -> None:
             self.upload(tab_id=tab_id, mode=mode, format_=fmt)
 
-        if args.upload_format == "text":
-            action("text")
-            return
+        if not self.full:
+            if args.upload_format == "text":
+                action("text")
+                return
 
-        if args.upload_format == "json":
-            action("json")
-            return
+            if args.upload_format == "json":
+                action("json")
+                return
 
-        if args.upload_format == "markdown":
-            action("markdown")
-            return
+            if args.upload_format == "markdown":
+                action("markdown")
+                return
 
         cmds = Commands()
         cmds.add("Text", lambda a: action("text"))

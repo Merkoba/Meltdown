@@ -1106,8 +1106,29 @@ class CommandSpec:
 
         self.add_cmd(
             "upload",
-            f"Show the upload format picker menu. {self.upload_info}",
+            f"Start an upload. {self.upload_info}",
             lambda a=None: upload.service_picker(mode=a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "uploadfull",
+            f"Start a full upload process. {self.upload_info}",
+            lambda a=None: upload.service_picker(mode=a, full=True),
+            type=str,
+        )
+
+        self.add_cmd(
+            "uploadharambe",
+            f"Start a Harambe upload. {self.upload_info}",
+            lambda a=None: upload.service_picker(mode=a, service="harambe"),
+            type=str,
+        )
+
+        self.add_cmd(
+            "uploadrentry",
+            f"Start a Rentry upload. {self.upload_info}",
+            lambda a=None: upload.service_picker(mode=a, service="rentry"),
             type=str,
         )
 

@@ -1058,7 +1058,25 @@ Show the info dialog
 
 ### upload
 
-Show the upload format picker menu. Optional 'all' or 'last' argument
+Start an upload. Optional 'all' or 'last' argument
+
+---
+
+### uploadfull
+
+Start a full upload process. Optional 'all' or 'last' argument
+
+---
+
+### uploadharambe
+
+Start a Harambe upload. Optional 'all' or 'last' argument
+
+---
+
+### uploadrentry
+
+Start a Rentry upload. Optional 'all' or 'last' argument
 
 ---
 
