@@ -57,7 +57,7 @@ class Tasks:
                 return
 
             try:
-                time = int(match.group("time"))
+                time = float(match.group("time"))
             except BaseException as e:
                 utils.error(e)
                 return
@@ -81,7 +81,7 @@ class Tasks:
             if time < 1:
                 continue
 
-            Task(time, cmds, now)
+            Task(int(time), cmds, now)
 
 
 tasks = Tasks()
