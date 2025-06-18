@@ -206,6 +206,14 @@ Use 'force' to force
 
 ---
 
+### closehalf
+
+Close the first half of the tabs
+
+Use 'force' to force
+
+---
+
 ### refresh
 
 Refresh the conversation

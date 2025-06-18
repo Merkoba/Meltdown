@@ -65,6 +65,29 @@ class Close:
 
         return empty_tabs
 
+    def get_half_tabs(self) -> list[Tab]:
+        ids = display.tab_ids()
+        half_tabs: list[Tab] = []
+        num_tabs = len(ids)
+
+        if num_tabs <= 1:
+            return half_tabs
+
+        half_index = num_tabs // 2
+
+        for i, tab_id in enumerate(ids):
+            if i >= half_index:
+                continue
+
+            tabconvo = display.get_tab_convo(tab_id)
+
+            if not tabconvo:
+                continue
+
+            half_tabs.append(tabconvo.tab)
+
+        return half_tabs
+
     def get_left_tabs(self, tab_id: str) -> list[str]:
         tab_ids = display.tab_ids()
         index = display.index(tab_id)
@@ -369,6 +392,22 @@ class Close:
             action()
         else:
             Dialog.show_confirm("Close oldest tab ?", lambda: action())
+
+    def close_half(self, force: bool = False) -> None:
+        tabs = self.get_half_tabs()
+
+        if not tabs:
+            return
+
+        def action() -> None:
+            for tab in tabs:
+                self.close(tab_id=tab.tab_id, force=True, make_empty=True)
+
+        if force:
+            action()
+        else:
+            n = len(tabs)
+            Dialog.show_confirm(f"Close half of the tabs ({n}) ?", lambda: action())
 
 
 close = Close()

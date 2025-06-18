@@ -275,6 +275,14 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "closehalf",
+            "Close the first half of the tabs",
+            lambda a=None: close.close_half(force=a),
+            extra=self.force,
+            type="force",
+        )
+
+        self.add_cmd(
             "refresh",
             "Refresh the conversation",
             lambda a=None: display.refresh(),
