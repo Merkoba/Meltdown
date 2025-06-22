@@ -80,7 +80,7 @@ class Snippet(tk.Frame):
         self.header_find = SnippetButton(self.header, "Find")
         self.header_explain = SnippetButton(self.header, "Explain")
         self.header_view = SnippetButton(self.header, "View")
-        self.header_sample = SnippetButton(self.header, "Use")
+        self.header_use = SnippetButton(self.header, "Use")
 
         self.header.pack(side=tk.TOP, fill=tk.X)
         self.text = tk.Text(self, wrap="none", state="normal")
@@ -150,7 +150,7 @@ class Snippet(tk.Frame):
 
         self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_explain.bind("<Button-1>", lambda e: self.explain())
-        self.header_sample.bind("<Button-1>", lambda e: self.sample_variable())
+        self.header_use.bind("<Button-1>", lambda e: self.use_variable())
         self.header_view.bind("<Button-1>", lambda e: self.view_text())
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
         self.header_find.bind("<Button-1>", lambda e: self.find())
@@ -225,7 +225,7 @@ class Snippet(tk.Frame):
         text = f"Explain this snippet: {sample}"
         model.stream({"text": text}, self.parent.tab_id)
 
-    def sample_variable(self) -> None:
+    def use_variable(self) -> None:
         sample = self.get_sample()
         variables.do_set_variable("snippet", sample, feedback=False)
         v = variables.varname("snippet")
