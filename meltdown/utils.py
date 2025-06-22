@@ -460,6 +460,14 @@ class Utils:
     def remove_multiple_spaces(self, text: str) -> str:
         return " ".join(text.split())
 
+    def remove_multiple_spaces_last(self, text: str) -> str:
+        parts = text.rsplit(" ", 1)
+
+        if len(parts) == 2:
+            return f"{parts[0].rstrip()} {parts[1].strip()}"
+
+        return text.strip()
+
     def bullet_points(self, text: str) -> str:
         char = "•"
         return f"{char} {text}"

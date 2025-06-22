@@ -475,5 +475,15 @@ class InputControl:
         if ans:
             self.submit(text=text)
 
+    def clean_insert(self, text: str, right_space: bool = True) -> None:
+        current = self.input.get()
+        new_text = f"{current} {text}"
+        new_text = utils.remove_multiple_spaces_last(new_text)
+
+        if right_space:
+            new_text += " "
+
+        self.set(new_text)
+
 
 inputcontrol = InputControl()

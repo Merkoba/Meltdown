@@ -12,6 +12,10 @@ class Variables:
     def __init__(self) -> None:
         self.variables: dict[str, str] = {}
 
+        self.quoted_variables: list[str] = [
+            "snippet",  # Snippet variable is often used in code blocks
+        ]
+
     def setup(self) -> None:
         for variable in args.variables:
             self.set_variable(variable, False)
@@ -86,7 +90,12 @@ class Variables:
             if key not in self.variables:
                 return name
 
-            return self.variables[key]
+            new_text = self.variables[key]
+
+            if key in self.quoted_variables:
+                new_text = f"`{new_text}`"
+
+            return new_text
 
         prefix = re.escape(args.variable_prefix)
         pattern = re.compile(rf"(^|\s)({prefix}\w+)")

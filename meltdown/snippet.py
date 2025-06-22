@@ -229,7 +229,7 @@ class Snippet(tk.Frame):
         sample = self.get_sample()
         variables.do_set_variable("snippet", sample, feedback=False)
         v = variables.varname("snippet")
-        inputcontrol.set(v)
+        inputcontrol.clean_insert(v)
 
     def on_motion(self, event: Any) -> None:
         current_index = self.text.index(tk.CURRENT)

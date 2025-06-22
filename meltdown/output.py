@@ -220,6 +220,10 @@ class Output(tk.Text):
         Output.custom_prompt(args.explain_prompt)
 
     @staticmethod
+    def elaborate_words() -> None:
+        Output.custom_prompt(args.elaborate_prompt)
+
+    @staticmethod
     def get_selected() -> str:
         output = Output.current_output()
 

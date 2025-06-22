@@ -399,6 +399,7 @@ class WordMenu:
 
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
+        self.menu.add(text="Elaborate", command=lambda e: Output.elaborate_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
         self.menu.add(text="Use", command=lambda e: Output.use_words())
@@ -488,6 +489,7 @@ class LinkMenu:
         self.menu.separator()
         self.menu.add(text="Copy", command=lambda e: Output.copy_words())
         self.menu.add(text="Explain", command=lambda e: Output.explain_words())
+        self.menu.add(text="Elaborate", command=lambda e: Output.elaborate_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
         self.menu.add(text="Use", command=lambda e: Output.use_words())
