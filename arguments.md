@@ -1680,7 +1680,7 @@ Type: str
 
 What text to use for the explain prompt
 
-Default: "What is ((words))?"
+Default: "Explain ((words))"
 
 Type: str
 
