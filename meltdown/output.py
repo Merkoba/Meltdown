@@ -133,7 +133,16 @@ class Output(tk.Text):
 
     @staticmethod
     def get_words() -> str:
-        return Output.words.strip().strip(":")
+        words = Output.words.strip()
+
+        if (
+            (words.startswith('"') and words.endswith('"'))
+            or (words.startswith("'") and words.endswith("'"))
+            or (words.startswith("`") and words.endswith("`"))
+        ):
+            words = words[1:-1]
+
+        return words.rstrip(":,.;!?")
 
     @staticmethod
     def get_url() -> str:
