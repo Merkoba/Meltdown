@@ -133,7 +133,7 @@ class Output(tk.Text):
 
     @staticmethod
     def get_words() -> str:
-        return Output.words.strip()
+        return Output.words.strip().strip(":")
 
     @staticmethod
     def get_url() -> str:
@@ -229,7 +229,7 @@ class Output(tk.Text):
         words = Output.get_words()
 
         def action(s: str) -> None:
-            text = f"`{words}` -> {s}"
+            text = f"`{words}` > {s}"
             Output.custom_prompt(text)
 
         Dialog.show_input(words, lambda s: action(s))
