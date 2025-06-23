@@ -226,12 +226,13 @@ class Output(tk.Text):
 
     @staticmethod
     def prompt_words() -> None:
+        words = Output.get_words()
+
         def action(s: str) -> None:
-            words = Output.get_words()
-            text = f"{s}: {words}"
+            text = f"`{words}` -> {s}"
             Output.custom_prompt(text)
 
-        Dialog.show_input("Prompt this", lambda s: action(s))
+        Dialog.show_input(words, lambda s: action(s))
 
     @staticmethod
     def get_selected() -> str:

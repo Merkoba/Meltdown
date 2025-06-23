@@ -174,7 +174,7 @@ class Dialog:
             dialog.entry.bind("<Return>", lambda e: dialog.enter())
             dialog.entry.bind("<Escape>", lambda e: dialog.hide())
             dialog.entry.bind("<Button-3>", lambda e: on_right_click(e))
-            dialog.entry.pack(padx=3, pady=3)
+            dialog.entry.pack(padx=3, pady=3, expand=True, fill=tk.X)
 
         # ------
 
