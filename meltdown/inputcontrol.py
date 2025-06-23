@@ -479,7 +479,12 @@ class InputControl:
         current = self.input.get()
 
         if not current:
-            self.set(text)
+            new_text = text
+
+            if right_space:
+                new_text += " "
+
+            self.set(new_text)
             return
 
         new_text = f"{current} {text}"
