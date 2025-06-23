@@ -369,10 +369,10 @@ class Utils:
         word = self.singular_or_plural(years, "year", "years")
         return f"{years:.1f} {word} ago"
 
-    def smart_quotes(self, text: str) -> str:
+    def smart_quotes(self, text: str, force: bool = False) -> str:
         text = text.strip()
 
-        if " " not in text:
+        if (not force) and (" " not in text):
             return text
 
         if '"' in text:

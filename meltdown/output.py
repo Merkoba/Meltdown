@@ -220,7 +220,7 @@ class Output(tk.Text):
         if not words:
             return
 
-        quoted = utils.smart_quotes(words)
+        quoted = utils.smart_quotes(words, force=True)
         text = utils.replace_keywords(text, words=quoted)
         tab_id = output.tab_id
         model.stream({"text": text}, tab_id)
