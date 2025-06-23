@@ -14,6 +14,7 @@ from .autoscroll import autoscroll
 from .filecontrol import filecontrol
 from .inputcontrol import inputcontrol
 from .itemops import itemops
+from .dialogs import Dialog
 
 
 class Output(tk.Text):
@@ -222,6 +223,15 @@ class Output(tk.Text):
     @staticmethod
     def elaborate_words() -> None:
         Output.custom_prompt(args.elaborate_prompt)
+
+    @staticmethod
+    def prompt_words() -> None:
+        def action(s: str) -> None:
+            words = Output.get_words()
+            text = f"{s}: {words}"
+            Output.custom_prompt(text)
+
+        Dialog.show_input("Prompt this", lambda s: action(s))
 
     @staticmethod
     def get_selected() -> str:
