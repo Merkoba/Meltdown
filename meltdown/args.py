@@ -236,8 +236,8 @@ class Args:
         self.durations = False
         self.separators = False
         self.help_prompt = "I need help!"
-        self.explain_prompt = "Explain ((words))?"
-        self.elaborate_prompt = "Elaborate on ((words))?"
+        self.explain_prompt = "Explain ((words))"
+        self.elaborate_prompt = "Elaborate on ((words))"
         self.new_prompt = "Tell me about ((words))"
         self.summarize_prompt = "Summarize this, without addressing me"
         self.custom_prompts: list[str] = []
