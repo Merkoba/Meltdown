@@ -477,6 +477,11 @@ class InputControl:
 
     def clean_insert(self, text: str, right_space: bool = True) -> None:
         current = self.input.get()
+
+        if not current:
+            self.set(text)
+            return
+
         new_text = f"{current} {text}"
         new_text = utils.remove_multiple_spaces_last(new_text)
 
