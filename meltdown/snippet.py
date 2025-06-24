@@ -18,6 +18,7 @@ from .model import model
 from .inputcontrol import inputcontrol
 from .dialogs import Dialog
 from .variables import variables
+from .shell import shell
 
 
 class SnippetLabel(tk.Label):
@@ -79,6 +80,7 @@ class Snippet(tk.Frame):
         self.header_select = SnippetButton(self.header, "Select")
         self.header_find = SnippetButton(self.header, "Find")
         self.header_explain = SnippetButton(self.header, "Explain")
+        self.header_run = SnippetButton(self.header, "Run")
         self.header_view = SnippetButton(self.header, "View")
         self.header_use = SnippetButton(self.header, "Use")
 
@@ -150,6 +152,7 @@ class Snippet(tk.Frame):
 
         self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_explain.bind("<Button-1>", lambda e: self.explain())
+        self.header_run.bind("<Button-1>", lambda e: self.run_command())
         self.header_use.bind("<Button-1>", lambda e: self.use_variable())
         self.header_view.bind("<Button-1>", lambda e: self.view_text())
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
@@ -225,6 +228,10 @@ class Snippet(tk.Frame):
         text = f"Explain this snippet: {sample}"
         model.stream({"text": text}, self.parent.tab_id)
 
+    def run_command(self) -> None:
+        text = self.get_text()
+        shell.run(text)
+
     def use_variable(self) -> None:
         sample = self.get_sample()
         variables.do_set_variable("snippet", sample, feedback=False)
@@ -237,6 +244,9 @@ class Snippet(tk.Frame):
         Output.words = self.text.get(
             f"{current_index} wordstart", f"{current_index} wordend"
         )
+
+    def get_text(self) -> str:
+        return self.text.get("1.0", tk.END).strip()
 
     def get_selected_text(self) -> str:
         try:
