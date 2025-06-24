@@ -1424,5 +1424,16 @@ class Display:
         umarker = getattr(Output, f"marker_{who}")
         return f"{umarker}{text}"
 
+    def filter_text(self, tab_id: str | None = None, text: str = "") -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        output.filter_text(text)
+
 
 display = Display()

@@ -1235,3 +1235,9 @@ Use a program with the last AI response
 ### notify
 
 Show a notification message using notify-send
+
+---
+
+### filter
+
+Filter the conversation by a specific text

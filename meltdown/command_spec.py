@@ -1307,5 +1307,12 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "filter",
+            "Filter the conversation by a specific text",
+            lambda a=None: display.filter_text(None, a),
+            type=str,
+        )
+
 
 command_spec = CommandSpec()

@@ -118,7 +118,9 @@ class Close:
     ) -> None:
         from .keyboard import keyboard
 
-        if display.num_tabs() == 0:
+        num_tabs = display.num_tabs()
+
+        if num_tabs == 0:
             return
 
         if not tab_id:
@@ -184,6 +186,9 @@ class Close:
 
         if full and old_tabs:
             cmds.add("Old", lambda a: self.close_old())
+
+        if full and (num_tabs > 1):
+            cmds.add("Half", lambda a: self.close_half())
 
         if full and self.get_pin_tabs():
             cmds.add("Normal", lambda a: self.close_normal())

@@ -1315,3 +1315,18 @@ class Output(tk.Text):
             if line.startswith(Output.marker_ai):
                 self.delete_line(len(lines) - i)
                 break
+
+    def filter_text(self, text: str) -> None:
+        from .display import display
+
+        display.refresh(self.tab_id)
+
+        if not text:
+            return
+
+        text = text.strip().lower()
+        all_text = self.get("1.0", "end-1c")
+        lines = all_text.split("\n")
+        filtered_lines = [line for line in lines if text in line.lower()]
+        filtered_text = "\n".join(filtered_lines)
+        self.set_text(filtered_text)
