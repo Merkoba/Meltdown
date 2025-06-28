@@ -2997,3 +2997,13 @@ Default upload privacy to use directly (public or private)
 Default: [Empty string]
 
 Type: str
+
+---
+
+### say-user-message
+
+Default message to use when saying something as the user
+
+Default: "Say this"
+
+Type: str

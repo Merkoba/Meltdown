@@ -1357,7 +1357,7 @@ class Display:
         if not tabconvo:
             return
 
-        self.prompt("user", "Say this", tab_id=tab_id)
+        self.prompt("user", args.say_user_message, tab_id=tab_id)
         self.prompt("ai", text, tab_id=tab_id)
         self.format_text(tab_id)
 

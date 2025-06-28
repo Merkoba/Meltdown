@@ -1954,5 +1954,11 @@ class ArgSpec:
             info="Default upload privacy to use directly (public or private)",
         )
 
+        self.add_argument(
+            "say_user_message",
+            type=str,
+            info="Default message to use when saying something as the user",
+        )
+
 
 argspec = ArgSpec()
