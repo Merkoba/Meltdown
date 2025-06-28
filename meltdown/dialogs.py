@@ -203,19 +203,7 @@ class Dialog:
 
             dialog.msgbox.pack(padx=3, pady=3)
 
-        # ------
-
-        dialog.commands = commands or None
-
-        if commands:
-            for cmd in commands.items:
-                cmd.build(dialog)
-
-        if commands:
-            if dialog.entry:
-                dialog.highlight_no_button()
-            else:
-                dialog.highlight_last_button()
+        dialog.build_commands(dialog, commands)
 
         dialog.show()
         app.update()
@@ -326,6 +314,7 @@ class Dialog:
         start_maximized: bool = False,
         on_right_click: Action | None = None,
         ok_label: str = "Ok",
+        commands: Commands | None = None,
     ) -> None:
         from .textbox import TextBox
 
@@ -357,6 +346,7 @@ class Dialog:
         dialog.make_button("Max", lambda: do_max())
         dialog.make_button("Cancel", textbox.cancel)
         dialog.make_button(ok_label, textbox.ok, alt_cmd=textbox.ok_alt)
+        dialog.build_commands(dialog, commands)
 
         dialog.show()
         dialog.highlight_no_button()
@@ -556,3 +546,16 @@ class Dialog:
 
     def focus(self) -> None:
         self.root.focus_set()
+
+    def build_commands(self, dialog: Dialog, commands: Commands | None) -> None:
+        dialog.commands = commands or None
+
+        if commands:
+            for cmd in commands.items:
+                cmd.build(dialog)
+
+        if commands:
+            if dialog.entry:
+                dialog.highlight_no_button()
+            else:
+                dialog.highlight_last_button()

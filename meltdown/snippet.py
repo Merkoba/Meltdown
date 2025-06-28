@@ -18,7 +18,7 @@ from .model import model
 from .inputcontrol import inputcontrol
 from .dialogs import Dialog
 from .variables import variables
-from .shell import shell
+from .run import run
 
 
 class SnippetLabel(tk.Label):
@@ -80,7 +80,8 @@ class Snippet(tk.Frame):
         self.header_select = SnippetButton(self.header, "Select")
         self.header_find = SnippetButton(self.header, "Find")
         self.header_explain = SnippetButton(self.header, "Explain")
-        self.header_run = SnippetButton(self.header, "Run")
+        self.header_run_python = SnippetButton(self.header, "Python")
+        self.header_run_shell = SnippetButton(self.header, "Shell")
         self.header_view = SnippetButton(self.header, "View")
         self.header_use = SnippetButton(self.header, "Use")
 
@@ -152,7 +153,8 @@ class Snippet(tk.Frame):
 
         self.header_copy.bind("<Button-1>", lambda e: self.copy_all())
         self.header_explain.bind("<Button-1>", lambda e: self.explain())
-        self.header_run.bind("<Button-1>", lambda e: self.run_command())
+        self.header_run_shell.bind("<Button-1>", lambda e: self.run_shell())
+        self.header_run_python.bind("<Button-1>", lambda e: self.run_python())
         self.header_use.bind("<Button-1>", lambda e: self.use_variable())
         self.header_view.bind("<Button-1>", lambda e: self.view_text())
         self.header_select.bind("<Button-1>", lambda e: self.select_all())
