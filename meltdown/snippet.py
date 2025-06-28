@@ -230,9 +230,13 @@ class Snippet(tk.Frame):
         text = f"Explain this snippet: {sample}"
         model.stream({"text": text}, self.parent.tab_id)
 
-    def run_command(self) -> None:
+    def run_shell(self) -> None:
         text = self.get_text()
-        shell.run(text)
+        run.run_shell(text)
+
+    def run_python(self) -> None:
+        text = self.get_text()
+        run.run_python(text)
 
     def use_variable(self) -> None:
         sample = self.get_sample()

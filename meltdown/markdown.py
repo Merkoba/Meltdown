@@ -120,7 +120,7 @@ class Markdown:
         # possibility of catastrophically backtracking in case
         # the stuff AFTER it fails to match (such as the closing
         # 3x backticks).
-        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.#]*)\n(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
+        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.# ]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
         Markdown.pattern_uselink = char_regex_1(uselink)
@@ -433,6 +433,7 @@ class Markdown:
         from .snippet import Snippet
 
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
+        num_lines = end_ln - start_ln
         matches = []
 
         for match_ in re.finditer(
@@ -442,18 +443,29 @@ class Markdown:
 
             content_start = match_.start(2)
             line_1 = self.get_line_number(text, content_start)
-            start_line = f"{start_ln + line_1}.0"
+
+            if num_lines == 1:
+                start_line = f"{start_ln}.0"
+            else:
+                start_line = f"{start_ln + line_1}.0"
 
             content_end = match_.end(2)
             line_2 = self.get_line_number(text, content_end)
-            end_line = f"{start_ln + line_2 - 1}.0"
+
+            if line_1 == line_2:
+                end_line = start_line
+            else:
+                end_line = f"{start_ln + line_2 - 1}.0"
 
             matches.append((start_line, end_line, language))
 
         for start_line, end_line, language in reversed(matches):
-            snippet_text = self.widget.get(
-                f"{start_line} linestart", f"{end_line} lineend"
-            )
+            if num_lines == 1:
+                snippet_text = language
+            else:
+                snippet_text = self.widget.get(
+                    f"{start_line} linestart", f"{end_line} lineend"
+                )
 
             content_above = self.widget.get(
                 f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
@@ -466,11 +478,16 @@ class Markdown:
             if content_below:
                 self.widget.insert(f"{end_line} +1 lines lineend", "\n")
 
-            snippet = Snippet(self.widget, snippet_text, language)
-            numchars = 3
+            lang = "" if num_lines == 1 else language
+            snippet = Snippet(self.widget, snippet_text, lang)
+            numticks = 3
+            numchars = numticks
 
             if language:
-                numchars += len(language)
+                if num_lines == 1:
+                    numchars += len(snippet_text) + numticks
+                else:
+                    numchars += len(language)
 
             if len(content_above) > numchars:
                 end_of_line_above = f"{start_line} -1 lines lineend"
@@ -483,6 +500,30 @@ class Markdown:
                 )
 
                 self.widget.window_create(f"{start_line} +1 lines", window=snippet)
+            elif num_lines == 1:
+                start_of_line_above = f"{start_line} -1 lines linestart"
+                end_of_line_above = f"{start_line} lineend"
+                right_bit = f"{end_of_line_above} -{numchars} chars"
+
+                line_above = self.widget.get(
+                    start_of_line_above, end_of_line_above
+                ).strip()
+
+                if line_above:
+                    self.widget.delete(
+                        right_bit,
+                        end_of_line_above,
+                    )
+
+                    self.widget.insert(end_of_line_above, "\n\n")
+                    self.widget.window_create(f"{start_line} +2 lines", window=snippet)
+                else:
+                    self.widget.delete(
+                        f"{start_line} -1 lines linestart",
+                        f"{end_line} lineend",
+                    )
+
+                    self.widget.window_create(f"{start_line} -1 lines", window=snippet)
             else:
                 start_of_line_above = f"{start_line} -2 lines linestart"
                 end_of_line_above = f"{start_line} -2 lines lineend"
@@ -656,7 +697,7 @@ class Markdown:
         return text.count("\n", 0, index)
 
     def next_marker(self, start_ln: int) -> int:
-        markers = self.widget.get_markers(True)
+        markers = self.widget.get_markers(True, append=False)
 
         for i, marker in enumerate(markers):
             if marker["line"] == start_ln:

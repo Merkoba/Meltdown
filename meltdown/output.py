@@ -923,7 +923,9 @@ class Output(tk.Text):
     def find_text(self, query: str) -> str:
         return self.search(query, "1.0", tk.END, regexp=True, nocase=True)
 
-    def get_markers(self, force_all: bool = False) -> list[dict[str, Any]]:
+    def get_markers(
+        self, force_all: bool = False, append: bool = True
+    ) -> list[dict[str, Any]]:
         markers = []
         lines = self.get_text().split("\n")
         number_user = 0
@@ -939,7 +941,9 @@ class Output(tk.Text):
                     if number_user in self.checked_markers_user:
                         continue
 
-                self.checked_markers_user.append(number_user)
+                if append:
+                    self.checked_markers_user.append(number_user)
+
                 markers.append({"who": "user", "line": start_ln})
             elif line.startswith(Output.marker_ai):
                 number_ai += 1
@@ -948,7 +952,9 @@ class Output(tk.Text):
                     if number_ai in self.checked_markers_ai:
                         continue
 
-                self.checked_markers_ai.append(number_ai)
+                if append:
+                    self.checked_markers_ai.append(number_ai)
+
                 markers.append({"who": "ai", "line": start_ln})
 
         return markers

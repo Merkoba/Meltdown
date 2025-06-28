@@ -1357,15 +1357,7 @@ class Display:
         if not tabconvo:
             return
 
-        user_text = "Say this"
-        log_dict: dict[str, Any] = {}
-        log_dict["user"] = user_text
-        log_dict["ai"] = text[: config.say_limit].strip()
-        log_dict["date"] = utils.now()
-        log_dict["model"] = "Say"
-
-        tabconvo.convo.add(log_dict)
-        self.prompt("user", user_text, tab_id=tab_id)
+        self.prompt("user", "Say this", tab_id=tab_id)
         self.prompt("ai", text, tab_id=tab_id)
         self.format_text(tab_id)
 

@@ -72,6 +72,10 @@ class Tests:
                 + "```python\na = 123\nprint('Hello, World!')\nx = 6\n```",
             },
             {
+                "user": "Snippet Test 5",
+                "ai": "```arrocado brokas```",
+            },
+            {
                 "user": "URL Test",
                 "ai": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n"
                 + "Here are some urls https://aa.com and http://cc.com\nftp://44.com",
