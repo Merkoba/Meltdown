@@ -568,11 +568,11 @@ class Output(tk.Text):
         self.yview_moveto(1.0)
 
     def last_characters(self, n: int) -> str:
-        text = self.get("1.0", "end-1c")
+        text = self.get("1.0", "end - 1c")
         return text[-n:] if text else ""
 
     def text_length(self) -> int:
-        return len(self.get("1.0", "end-1c"))
+        return len(self.get("1.0", "end - 1c"))
 
     def select_all(self) -> None:
         self.tag_add("sel", "1.0", tk.END)
@@ -587,10 +587,10 @@ class Output(tk.Text):
             pass
 
     def get_text(self) -> str:
-        return self.get("1.0", "end-1c").strip()
+        return self.get("1.0", "end - 1c").strip()
 
     def get_fraction(self, num_lines: int = 1) -> float:
-        lines = self.count("1.0", "end-1c lineend", "displaylines")
+        lines = self.count("1.0", "end - 1c lineend", "displaylines")
 
         if not lines:
             return 0.0
@@ -706,8 +706,8 @@ class Output(tk.Text):
 
     def print(self, text: str) -> None:
         left = ""
-        last_line_index = self.index("end-2l")
-        elements = self.dump(last_line_index, "end-1c", window=True)
+        last_line_index = self.index("end - 2l")
+        elements = self.dump(last_line_index, "end - 1c", window=True)
         widget_above = False
 
         for element in elements:
@@ -1107,8 +1107,8 @@ class Output(tk.Text):
             separator = Output.marker_separator
 
         self.print(separator)
-        last_line = self.index("end-1c").split(".")[0]
-        self.tag_add("separator", f"{last_line}.0", "end-1c")
+        last_line = self.index("end - 1c").split(".")[0]
+        self.tag_add("separator", f"{last_line}.0", "end - 1c")
 
     def select_lines(self, start_ln: int, end_ln: int) -> None:
         self.tag_add("sel", f"{start_ln}.0", f"{end_ln}.end")
@@ -1220,7 +1220,7 @@ class Output(tk.Text):
         autoscroll.stop(check=True)
 
     def get_num_lines(self) -> int:
-        return int(self.index("end-1c").split(".")[0])
+        return int(self.index("end - 1c").split(".")[0])
 
     def get_num_chars(self) -> int:
         return len(self.get_text())
@@ -1291,7 +1291,7 @@ class Output(tk.Text):
     # Remove lines with only whitespace
     # They mess with the markdown regex
     def clean_text(self) -> None:
-        text = self.get("1.0", "end-1c")
+        text = self.get("1.0", "end - 1c")
         lines = text.split("\n")
         cleaned_lines = []
 
@@ -1331,7 +1331,7 @@ class Output(tk.Text):
             return
 
         text = text.strip().lower()
-        all_text = self.get("1.0", "end-1c")
+        all_text = self.get("1.0", "end - 1c")
         lines = all_text.split("\n")
         filtered_lines = [line for line in lines if text in line.lower()]
         filtered_text = "\n".join(filtered_lines)

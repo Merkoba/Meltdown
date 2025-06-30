@@ -754,5 +754,17 @@ class Widgets:
         ToolTip.hide_all()
         display.scroll_down(disable_autoscroll=True)
 
+    def window(self, widget: Any, start_line: int, snippet: Any) -> None:
+        # Get current line count
+        last_line = int(widget.index("end - 1c").split(".")[0])
+
+        if start_line > last_line:
+            # Add necessary newlines
+            newlines_needed = start_line - last_line
+            widget.insert("end", "\n" * newlines_needed)
+
+        # Now insert the window at the position
+        widget.window_create(f"{start_line}.0", window=snippet)
+
 
 widgets: Widgets = Widgets()

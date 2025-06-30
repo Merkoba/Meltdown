@@ -124,7 +124,7 @@ class Snippet(tk.Frame):
 
         self.parent = parent
 
-        num_lines = int(self.text.index("end-1c").split(".")[0])
+        num_lines = int(self.text.index("end - 1c").split(".")[0])
         self.text.configure(height=num_lines)
 
         self.configure(background=app.theme.snippet_background)
@@ -283,8 +283,8 @@ class Snippet(tk.Frame):
         for text in tokens:
             self.text.insert(tk.END, text[1], str(text[0]))
 
-        last_line_index = self.text.index("end-1c linestart")
-        last_line_text = self.text.get(last_line_index, "end-1c")
+        last_line_index = self.text.index("end - 1c linestart")
+        last_line_text = self.text.get(last_line_index, "end - 1c")
 
         if not last_line_text.strip():
             self.text.delete(last_line_index, "end")

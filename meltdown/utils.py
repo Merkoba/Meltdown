@@ -693,20 +693,5 @@ class Utils:
         self.last_dprint = now
         self.msg(full_text)
 
-    def insert_window(self, widget: Any, start_line: int, snippet: Any) -> None:
-        # Get current line count
-        last_line = int(widget.index("end-1c").split(".")[0])
-
-        # If we need more lines, add them
-        needed_line = int(start_line) + 2
-
-        if needed_line > last_line:
-            # Add necessary newlines
-            newlines_needed = needed_line - last_line
-            widget.insert("end", "\n" * newlines_needed)
-
-        # Now insert the window at the position
-        widget.window_create(f"{start_line}.0 +2 lines", window=snippet)
-
 
 utils = Utils()

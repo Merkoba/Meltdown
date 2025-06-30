@@ -10,6 +10,15 @@ from .args import args
 from .config import config
 from .output import Output
 from .utils import utils
+from .widgets import widgets
+
+
+@dataclass
+class SnippetMatch:
+    start_line: str
+    end_line: str
+    language: str
+    line_num: int
 
 
 @dataclass
@@ -189,7 +198,7 @@ class Markdown:
         self.indent_lines()
 
     def format_last(self) -> None:
-        start_ln = int(self.widget.index("end-1l").split(".")[0])
+        start_ln = int(self.widget.index("end - 1l").split(".")[0])
         end_ln = self.last_line()
         self.format_section("nobody", start_ln, end_ln)
         self.indent_lines()
@@ -266,12 +275,10 @@ class Markdown:
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "snippets"):
-            utils.dprint("snippet1", start_ln, end_ln)
             snip_done, _ = self.format_snippets(start_ln, end_ln)
 
             if snip_done:
                 end_ln = self.next_marker(start_ln)
-                utils.dprint("snippet2", end_ln)
 
         # Lists
 
@@ -438,23 +445,22 @@ class Markdown:
 
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         num_lines = end_ln - start_ln
-        line_num = start_ln
+        line_num = 1  # Assign later
         matches = []
 
         for match_ in re.finditer(
             Markdown.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
         ):
+            line_num = start_ln
             language = match_.group(1)
 
             content_start = match_.start(2)
             line_1 = self.get_line_number(text, content_start)
 
-            if num_lines == 1:
-                start_line = f"{line_num}.0"
-            else:
+            if num_lines > 1:
                 line_num = start_ln + line_1
-                start_line = f"{line_num}.0"
 
+            start_line = f"{line_num}.0"
             content_end = match_.end(2)
             line_2 = self.get_line_number(text, content_end)
 
@@ -463,72 +469,77 @@ class Markdown:
             else:
                 end_line = f"{start_ln + line_2 - 1}.0"
 
-            matches.append((start_line, end_line, language))
+            match = SnippetMatch(start_line, end_line, language, line_num)
+            matches.append(match)
 
-        for start_line, end_line, language in reversed(matches):
+        for match in reversed(matches):
             if num_lines == 1:
-                snippet_text = language
+                snippet_text = match.language
             else:
                 snippet_text = self.widget.get(
-                    f"{start_line} linestart", f"{end_line} lineend"
+                    f"{match.start_line} linestart", f"{match.end_line} lineend"
                 )
 
             content_above = self.widget.get(
-                f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
+                f"{match.start_line} - 1 lines linestart",
+                f"{match.start_line} - 1 lines lineend",
             ).strip()
 
             content_below = self.widget.get(
-                f"{end_line} +2 lines linestart", f"{end_line} +2 lines lineend"
+                f"{match.end_line} + 2 lines linestart",
+                f"{match.end_line} + 2 lines lineend",
             ).strip()
 
             if content_below:
-                self.widget.insert(f"{end_line} +1 lines lineend", "\n")
+                self.widget.insert(f"{match.end_line} +1 lines lineend", "\n")
 
-            lang = "" if num_lines == 1 else language
+            lang = "" if num_lines == 1 else match.language
             snippet = Snippet(self.widget, snippet_text, lang)
             numticks = 3
             numchars = numticks
 
-            if language:
+            if match.language:
                 if num_lines == 1:
                     numchars += len(snippet_text) + numticks
                 else:
-                    numchars += len(language)
+                    numchars += len(match.language)
 
             if len(content_above) > numchars:
-                end_of_line_above = f"{start_line} -1 lines lineend"
+                end_of_line_above = f"{match.start_line} - 1 lines lineend"
                 right_bit = f"{end_of_line_above} -{numchars} chars"
                 self.widget.delete(right_bit, end_of_line_above)
                 self.widget.insert(end_of_line_above, "\n")
 
                 self.widget.delete(
-                    f"{start_line} +1 lines", f"{end_line} +2 lines lineend"
+                    f"{match.start_line} + 1 lines",
+                    f"{match.end_line} + 2 lines lineend",
                 )
 
-                self.widget.window_create(f"{start_line} +1 lines", window=snippet)
+                widgets.window(self.widget, match.line_num + 1, snippet)
             elif num_lines == 1:
                 line_above = self.widget.get(
-                    f"{start_line} linestart", f"{start_line} lineend"
+                    f"{match.start_line} linestart", f"{match.start_line} lineend"
                 ).rstrip()
+
                 line_above = line_above[:-numchars].rstrip() + "\n"
 
                 if line_above:
                     self.widget.delete(
-                        f"{start_line} linestart", f"{start_line} lineend"
+                        f"{match.start_line} linestart", f"{match.start_line} lineend"
                     )
 
-                    self.widget.insert(f"{start_line} linestart", line_above)
-                    utils.insert_window(self.widget, line_num, snippet)
+                    self.widget.insert(f"{match.start_line} linestart", line_above)
+                    widgets.window(self.widget, match.line_num + 2, snippet)
                 else:
                     self.widget.delete(
-                        f"{start_line} -1 lines linestart",
-                        f"{end_line} lineend",
+                        f"{match.start_line} - 1 lines linestart",
+                        f"{match.end_line} lineend",
                     )
 
-                    self.widget.window_create(f"{start_line} -1 lines", window=snippet)
+                    widgets.window(self.widget, match.line_num - 1, snippet)
             else:
-                start_of_line_above = f"{start_line} -2 lines linestart"
-                end_of_line_above = f"{start_line} -2 lines lineend"
+                start_of_line_above = f"{match.start_line} - 2 lines linestart"
+                end_of_line_above = f"{match.start_line} - 2 lines lineend"
 
                 line_above = self.widget.get(
                     start_of_line_above, end_of_line_above
@@ -538,17 +549,18 @@ class Markdown:
                     self.widget.insert(end_of_line_above, "\n")
 
                     self.widget.delete(
-                        f"{start_line} linestart", f"{end_line} +2 lines lineend"
+                        f"{match.start_line} linestart",
+                        f"{match.end_line} +2 lines lineend",
                     )
 
-                    self.widget.window_create(start_line, window=snippet)
+                    widgets.window(self.widget, match.line_num, snippet)
                 else:
                     self.widget.delete(
-                        f"{start_line} -1 lines linestart",
-                        f"{end_line} +1 lines lineend",
+                        f"{match.start_line} - 1 lines linestart",
+                        f"{match.end_line} +1 lines lineend",
                     )
 
-                    self.widget.window_create(f"{start_line} -1 lines", window=snippet)
+                    widgets.window(self.widget, match.line_num - 1, snippet)
 
             self.widget.snippets.append(snippet)
 
@@ -653,7 +665,8 @@ class Markdown:
                 self.widget.insert(f"{start_line} +1 lines", txt)
             else:
                 content_above = self.widget.get(
-                    f"{start_line} -1 lines linestart", f"{start_line} -1 lines lineend"
+                    f"{start_line} - 1 lines linestart",
+                    f"{start_line} - 1 lines lineend",
                 ).strip()
 
                 if content_above:
