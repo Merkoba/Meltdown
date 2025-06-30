@@ -32,6 +32,8 @@ class Utils:
         self.nouns: list[str] = []
         self.protocols = ("https://", "http://")
         self.clipboard_timeout = 3
+        self.dprint_texts: list[str] = []
+        self.last_dprint = 0
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -674,6 +676,37 @@ class Utils:
                 return url
 
         return f"{self.protocols[1]}{url}"
+
+    def dprint(self, what: str, *args: Any) -> None:
+        if what not in self.dprint_texts:
+            self.dprint_texts.append(what)
+
+        now = self.now_int()
+        text = ", ".join(str(a) for a in args)
+        full_text = ""
+
+        if (now - self.last_dprint) > 2:
+            full_text = "-------------\n"
+
+        index = self.dprint_texts.index(what) + 1
+        full_text += f"{index} -> {text}\n"
+        self.last_dprint = now
+        self.msg(full_text)
+
+    def insert_window(self, widget: Any, start_line: int, snippet: Any) -> None:
+        # Get current line count
+        last_line = int(widget.index("end-1c").split(".")[0])
+
+        # If we need more lines, add them
+        needed_line = int(start_line) + 2
+
+        if needed_line > last_line:
+            # Add necessary newlines
+            newlines_needed = needed_line - last_line
+            widget.insert("end", "\n" * newlines_needed)
+
+        # Now insert the window at the position
+        widget.window_create(f"{start_line}.0 +2 lines", window=snippet)
 
 
 utils = Utils()

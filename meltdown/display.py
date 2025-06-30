@@ -1357,8 +1357,18 @@ class Display:
         if not tabconvo:
             return
 
-        self.prompt("user", args.say_user_message, tab_id=tab_id)
-        self.prompt("ai", text, tab_id=tab_id)
+        user_text = args.say_user_message
+        ai_text = text[: config.say_limit].strip()
+
+        log_dict: dict[str, Any] = {}
+        log_dict["user"] = user_text
+        log_dict["ai"] = ai_text
+        log_dict["date"] = utils.now()
+        log_dict["model"] = "Say"
+        tabconvo.convo.add(log_dict)
+
+        self.prompt("user", user_text, tab_id=tab_id)
+        self.prompt("ai", ai_text, tab_id=tab_id)
         self.format_text(tab_id)
 
     def get_prompt(

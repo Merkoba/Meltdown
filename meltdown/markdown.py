@@ -266,8 +266,12 @@ class Markdown:
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "snippets"):
-            if self.format_snippets(start_ln, end_ln):
+            utils.dprint("snippet1", start_ln, end_ln)
+            snip_done, _ = self.format_snippets(start_ln, end_ln)
+
+            if snip_done:
                 end_ln = self.next_marker(start_ln)
+                utils.dprint("snippet2", end_ln)
 
         # Lists
 
@@ -429,11 +433,12 @@ class Markdown:
                         f"{index_item.start} + {len(index_item.content)}c",
                     )
 
-    def format_snippets(self, start_ln: int, end_ln: int) -> bool:
+    def format_snippets(self, start_ln: int, end_ln: int) -> tuple[bool, int]:
         from .snippet import Snippet
 
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         num_lines = end_ln - start_ln
+        line_num = start_ln
         matches = []
 
         for match_ in re.finditer(
@@ -445,9 +450,10 @@ class Markdown:
             line_1 = self.get_line_number(text, content_start)
 
             if num_lines == 1:
-                start_line = f"{start_ln}.0"
+                start_line = f"{line_num}.0"
             else:
-                start_line = f"{start_ln + line_1}.0"
+                line_num = start_ln + line_1
+                start_line = f"{line_num}.0"
 
             content_end = match_.end(2)
             line_2 = self.get_line_number(text, content_end)
@@ -501,22 +507,18 @@ class Markdown:
 
                 self.widget.window_create(f"{start_line} +1 lines", window=snippet)
             elif num_lines == 1:
-                start_of_line_above = f"{start_line} -1 lines linestart"
-                end_of_line_above = f"{start_line} lineend"
-                right_bit = f"{end_of_line_above} -{numchars} chars"
-
                 line_above = self.widget.get(
-                    start_of_line_above, end_of_line_above
-                ).strip()
+                    f"{start_line} linestart", f"{start_line} lineend"
+                ).rstrip()
+                line_above = line_above[:-numchars].rstrip() + "\n"
 
                 if line_above:
                     self.widget.delete(
-                        right_bit,
-                        end_of_line_above,
+                        f"{start_line} linestart", f"{start_line} lineend"
                     )
 
-                    self.widget.insert(end_of_line_above, "\n\n")
-                    self.widget.window_create(f"{start_line} +2 lines", window=snippet)
+                    self.widget.insert(f"{start_line} linestart", line_above)
+                    utils.insert_window(self.widget, line_num, snippet)
                 else:
                     self.widget.delete(
                         f"{start_line} -1 lines linestart",
@@ -550,7 +552,7 @@ class Markdown:
 
             self.widget.snippets.append(snippet)
 
-        return len(matches) > 0
+        return len(matches) > 0, num_lines
 
     def format_lists(self, start_ln: int, end_ln: int, who: str, mode: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)

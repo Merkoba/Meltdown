@@ -76,6 +76,10 @@ class Tests:
                 "ai": "```arrocado brokas```",
             },
             {
+                "user": "Snippet Test 6",
+                "ai": "```crotcas catum```",
+            },
+            {
                 "user": "URL Test",
                 "ai": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n"
                 + "Here are some urls https://aa.com and http://cc.com\nftp://44.com",
