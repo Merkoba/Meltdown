@@ -71,7 +71,7 @@ class Snippet(tk.Frame):
         self.header.configure(background=app.theme.snippet_header_background)
 
         if language:
-            header_text = f"Language: {language}"
+            header_text = f"Lang: {language}"
         else:
             header_text = "Plain Text"
 

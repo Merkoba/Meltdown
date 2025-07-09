@@ -35,7 +35,13 @@ class Run:
 
     @staticmethod
     def run_python(command: str) -> None:
-        cmds = ["python", "-c", command]
+        try:
+            subprocess.run(["python3", "--version"], check=True)
+            pcmd = "python3"
+        except FileNotFoundError:
+            pcmd = "python"
+            
+        cmds = [pcmd, "-c", command]
         result = subprocess.run(cmds, capture_output=True, text=True, check=False)
         message = result.stdout if result.returncode == 0 else result.stderr
         message = message.strip()
