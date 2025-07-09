@@ -330,7 +330,6 @@ class Theme:
         )
 
         style.configure("Normal.TCombobox", borderwidth=self.combobox_border_width)
-
         style.configure("Normal.TCombobox.Listbox", padding=0)
         style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
         app.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
@@ -342,7 +341,6 @@ class Theme:
         )
 
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
-
         style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
 
         style.configure("Normal.TEntry", fieldbackground=self.entry_background)
