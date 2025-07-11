@@ -102,11 +102,16 @@ class Upload:
                 action("markdown")
                 return
 
-        cmds = Commands()
-        cmds.add("Text", lambda a: action("text"))
-        cmds.add("JSON", lambda a: action("json"))
-        cmds.add("Markdown", lambda a: action("markdown"))
-        Dialog.show_dialog("Pick upload format", commands=cmds)
+        text = display.get_selected_text(tab_id)
+
+        if text:
+            action("text")
+        else:
+            cmds = Commands()
+            cmds.add("Text", lambda a: action("text"))
+            cmds.add("JSON", lambda a: action("json"))
+            cmds.add("Markdown", lambda a: action("markdown"))
+            Dialog.show_dialog("Pick upload format", commands=cmds)
 
     def upload(
         self, tab_id: str | None = None, mode: str = "", format_: str = "markdown"
@@ -117,23 +122,31 @@ class Upload:
         if (not messages) or ignored:
             return
 
-        def procedure() -> None:
+        def procedure(fmt: str = "") -> None:
+            fmt = fmt or format_
+
             if self.service == "harambe":
-                self.privacy_picker(tab_id, mode, format_)
+                self.privacy_picker(tab_id, mode, fmt)
             else:
-                self.do_upload(tab_id, mode, format_=format_)
+                self.do_upload(tab_id, mode, format_=fmt)
 
         if mode in ["last", "all"]:
             procedure()
             return
 
-        def action(mode: str) -> None:
+        def action() -> None:
             Dialog.hide_all()
             procedure()
 
+        text = display.get_selected_text(tab_id)
+
+        if text:
+            procedure("text")
+            return
+
         cmds = Commands()
-        cmds.add("Last Item", lambda a: action("last"))
-        cmds.add("All Of It", lambda a: action("all"))
+        cmds.add("Last Item", lambda a: action())
+        cmds.add("All Of It", lambda a: action())
         fmt = formats.get_name(format_, True)
         text = "Upload conversation to\n"
 
@@ -205,12 +218,17 @@ class Upload:
         if not tabconvo.convo.items:
             return
 
-        if format_ == "markdown":
-            text = formats.get_markdown(tabconvo.convo, mode=mode, name_mode="upload")
-        elif format_ == "json":
-            text = formats.get_json(tabconvo.convo, mode=mode, name_mode="upload")
-        else:
-            text = formats.get_text(tabconvo.convo, mode=mode, name_mode="upload")
+        text = display.get_selected_text()
+
+        if not text:
+            if format_ == "markdown":
+                text = formats.get_markdown(
+                    tabconvo.convo, mode=mode, name_mode="upload"
+                )
+            elif format_ == "json":
+                text = formats.get_json(tabconvo.convo, mode=mode, name_mode="upload")
+            else:
+                text = formats.get_text(tabconvo.convo, mode=mode, name_mode="upload")
 
         if self.service == "harambe":
             try:

@@ -88,7 +88,10 @@ class Console:
 
         while True:
             try:
-                text = self.session.prompt("Input: ")
+                if self.session:
+                    text = self.session.prompt("Input: ")
+                else:
+                    text = "none"
             except KeyboardInterrupt:
                 app.destroy()
                 return

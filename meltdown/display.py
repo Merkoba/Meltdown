@@ -1186,6 +1186,16 @@ class Display:
 
         return text.strip()
 
+    def get_selected_text(self, tab_id: str | None = None) -> str:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return ""
+
+        output = tabconvo.tab.get_output()
+        text = output.get_selected()
+        return text.strip()
+
     def get_all_text(self, tab_id: str | None = None) -> str:
         tabconvo = self.get_tab_convo(tab_id)
 

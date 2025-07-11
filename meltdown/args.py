@@ -753,6 +753,8 @@ class Args:
         else:
             filter_lower = filter_text.lower()
 
+        first_item = True
+
         for key in argspec.arguments:
             if key == "string_arg":
                 continue
@@ -765,7 +767,11 @@ class Args:
                     if filter_lower not in info.lower():
                         continue
 
-            text += sep
+            if not first_item:
+                text += sep
+            else:
+                first_item = False
+
             name = key.replace("_", "-")
             text += f"### {name}"
 

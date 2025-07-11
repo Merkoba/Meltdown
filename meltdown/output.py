@@ -214,7 +214,11 @@ class Output(tk.Text):
         if not output:
             return
 
-        words = Output.get_words()
+        words = output.get_selected_text()
+
+        if not words:
+            words = Output.get_words()
+
         output.deselect_all()
 
         if not words:
