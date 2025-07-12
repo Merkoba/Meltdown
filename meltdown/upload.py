@@ -49,8 +49,8 @@ class Upload:
                 return
 
         cmds = Commands()
-        cmds.add("Harambe", lambda a: action("harambe"))
         cmds.add("Rentry", lambda a: action("rentry"))
+        cmds.add("Harambe", lambda a: action("harambe"))
         Dialog.show_dialog("Pick upload service", commands=cmds)
 
     def privacy_picker(
@@ -108,9 +108,9 @@ class Upload:
             action("text")
         else:
             cmds = Commands()
-            cmds.add("Text", lambda a: action("text"))
-            cmds.add("JSON", lambda a: action("json"))
             cmds.add("Markdown", lambda a: action("markdown"))
+            cmds.add("JSON", lambda a: action("json"))
+            cmds.add("Text", lambda a: action("text"))
             Dialog.show_dialog("Pick upload format", commands=cmds)
 
     def upload(
