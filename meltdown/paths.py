@@ -26,6 +26,7 @@ class Paths:
         self.logs: Path
         self.openai_key: Path
         self.google_key: Path
+        self.anthropic_key: Path
         self.errors: Path
         self.nouns: Path
 
@@ -83,6 +84,7 @@ class Paths:
 
         self.openai_key = Path(self.data_dir, "openai_key.txt")
         self.google_key = Path(self.data_dir, "google_key.txt")
+        self.anthropic_key = Path(self.data_dir, "anthropic_key.txt")
         self.errors = Path(self.data_dir, "errors")
 
         # Assets

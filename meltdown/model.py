@@ -11,6 +11,7 @@ from collections.abc import Generator
 import requests  # type: ignore
 from openai import OpenAI, RateLimitError  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
+from anthropic import Anthropic  # type: ignore
 
 # Modules
 from .app import app
@@ -57,6 +58,7 @@ class Model:
         kerr = "Use the model menu to set it."
         self.openai_key_error = f"Error: OpenAI API key not found. {kerr}"
         self.google_key_error = f"Error: Google API key not found. {kerr}"
+        self.anthropic_key_error = f"Error: Anthropic API key not found. {kerr}"
 
         self.gpts: list[tuple[str, str]] = [
             ("gpt-4o", "GPT 4o"),
@@ -70,8 +72,15 @@ class Model:
             ("gemini-1.5-flash-8b", "Gemini 1.5 Flash 8b"),
         ]
 
+        self.claudes: list[tuple[str, str]] = [
+            ("claude-opus-4", "Claude 4 Opus"),
+            ("claude-4-sonnet", "Claude 4 Sonnet"),
+            ("claude-3-7-sonnet", "Claude 3.7 Sonnet"),
+        ]
+
         self.openai_key = ""
         self.google_key = ""
+        self.anthropic_key = ""
 
     def setup(self) -> None:
         self.update_icon()
@@ -94,6 +103,9 @@ class Model:
 
     def model_is_gemini(self, name: str) -> bool:
         return name.startswith("gemini-")
+
+    def model_is_claude(self, name: str) -> bool:
+        return name.startswith("claude-")
 
     def load(self, prompt: PromptArg | None = None, tab_id: str | None = None) -> None:
         if not tab_id:
@@ -126,6 +138,11 @@ class Model:
         if self.model_is_gemini(self.get_model()):
             self.unload()
             self.load_google(tab_id, prompt)
+            return
+
+        if self.model_is_claude(self.get_model()):
+            self.unload()
+            self.load_anthropic(tab_id, prompt)
             return
 
         model_path = Path(self.get_model())
@@ -171,6 +188,14 @@ class Model:
             self.google_key = files.read(paths.google_key)
         except BaseException:
             self.google_key = ""
+
+    def read_anthropic_key(self) -> None:
+        from .paths import paths
+
+        try:
+            self.anthropic_key = files.read(paths.anthropic_key)
+        except BaseException:
+            self.anthropic_key = ""
 
     def load_openai(
         self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
@@ -229,6 +254,34 @@ class Model:
         except BaseException as e:
             utils.error(e)
             display.print("Error: Google failed to load.")
+            self.clear_model()
+
+        return True
+
+    def load_anthropic(
+        self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
+    ) -> bool:
+        self.read_anthropic_key()
+
+        if not self.anthropic_key:
+            display.print(self.anthropic_key_error)
+            self.clear_model()
+            return False
+
+        try:
+            now = utils.now()
+            self.anthropic_client = Anthropic(api_key=self.anthropic_key)
+            self.model_loading = False
+            self.loaded_model = self.get_model()
+            self.loaded_format = "anthropic"
+            self.loaded_type = "remote"
+            self.after_load(now, quiet=quiet)
+
+            if prompt:
+                self.stream(prompt, tab_id)
+        except BaseException as e:
+            utils.error(e)
+            display.print("Error: Anthropic failed to load.")
             self.clear_model()
 
         return True
@@ -548,6 +601,10 @@ class Model:
         elif self.model_is_gemini(self.get_model()):
             gen_config["max_completion_tokens"] = config.max_tokens
             del gen_config["seed"]
+        elif self.model_is_claude(self.get_model()):
+            gen_config["max_tokens"] = config.max_tokens
+            del gen_config["seed"]
+            del gen_config["stop"]
         else:
             gen_config["top_k"] = config.top_k
             gen_config["max_tokens"] = config.max_tokens
@@ -576,6 +633,36 @@ class Model:
 
                 display.print(
                     "Error: GPT model failed to stream."
+                    " You might not have access to this particular model,"
+                    " not enough credits, invalid API key,"
+                    " or there is no internet connection."
+                )
+
+                self.stream_loading = False
+                self.release_lock()
+                return
+        elif self.model_is_claude(self.get_model()):
+            try:
+                if not self.anthropic_client:
+                    self.stream_loading = False
+                    self.release_lock()
+                    return
+
+                output = self.anthropic_client.messages.create(
+                    **gen_config,
+                    timeout=10,
+                )
+            except RateLimitError as e:
+                utils.error(e)
+                display.print("Error: Rate limit exceeded.")
+                self.stream_loading = False
+                self.release_lock()
+                return
+            except BaseException as e:
+                utils.error(e)
+
+                display.print(
+                    "Error: Anthropic model failed to stream."
                     " You might not have access to this particular model,"
                     " not enough credits, invalid API key,"
                     " or there is no internet connection."
@@ -825,8 +912,10 @@ class Model:
                 text = "Not Loaded"
 
             self.icon_text = tips["model_unloaded"]
-        elif self.model_is_gpt(self.loaded_model) or self.model_is_gemini(
-            self.loaded_model
+        elif (
+            self.model_is_gpt(self.loaded_model)
+            or self.model_is_gemini(self.loaded_model)
+            or self.model_is_claude(self.loaded_model)
         ):
             if args.emojis:
                 text = utils.get_emoji("remote")
@@ -889,6 +978,29 @@ class Model:
             lambda text: action(text),
             mode="password",
             value=self.google_key,
+        )
+
+    def set_anthropic_key(self) -> None:
+        from .dialogs import Dialog
+        from .paths import paths
+
+        def action(key: str) -> None:
+            path = Path(paths.anthropic_key)
+
+            if (not path.exists()) or not (path.is_file()):
+                path.parent.mkdir(parents=True, exist_ok=True)
+                Path.touch(paths.anthropic_key, exist_ok=True)
+
+            files.write(path, key)
+            self.read_anthropic_key()
+
+        self.read_anthropic_key()
+
+        Dialog.show_input(
+            "Anthropic API Key",
+            lambda text: action(text),
+            mode="password",
+            value=self.anthropic_key,
         )
 
     def check_dot(self, text: str) -> str:

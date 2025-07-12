@@ -17,6 +17,7 @@ class MenuManager:
         self.model_menu: Any = None
         self.openai_menu: Any = None
         self.google_menu: Any = None
+        self.anthropic_menu: Any = None
         self.more_menu: Any = None
         self.tab_menu: Any = None
         self.font_menu: Any = None
@@ -109,6 +110,7 @@ class ModelMenu:
 
         self.menu.add("OpenAI", lambda e: self.parent.openai_menu.show())
         self.menu.add("Google", lambda e: self.parent.google_menu.show())
+        self.menu.add("Anthropic", lambda e: self.parent.anthropic_menu.show())
 
     def show(self, event: Any = None) -> None:
         if event:
@@ -154,6 +156,30 @@ class GoogleMenu:
         for gemini in model.geminis:
             self.menu.add(
                 gemini[1], lambda e, gemini=gemini: widgets.use_gemini(gemini[0])
+            )
+
+    def show(self, event: Any = None) -> None:
+        if event:
+            self.menu.show(event)
+        else:
+            widget = MenuManager.get_model_button()
+            self.menu.show(widget=widget)
+
+
+class AnthropicMenu:
+    def __init__(self, parent: MenuManager) -> None:
+        from .model import model
+        from .widgets import widgets
+
+        self.parent = parent
+        self.menu = Menu()
+
+        self.menu.add("API Key", lambda e: model.set_anthropic_key())
+        self.menu.separator()
+
+        for claude in model.claudes:
+            self.menu.add(
+                claude[1], lambda e, claude=claude: widgets.use_claude(claude[0])
             )
 
     def show(self, event: Any = None) -> None:
@@ -550,6 +576,7 @@ menumanager.main_menu = MainMenu(menumanager)
 menumanager.model_menu = ModelMenu(menumanager)
 menumanager.openai_menu = OpenAIMenu(menumanager)
 menumanager.google_menu = GoogleMenu(menumanager)
+menumanager.anthropic_menu = AnthropicMenu(menumanager)
 menumanager.more_menu = MoreMenu(menumanager)
 menumanager.tab_menu = TabMenu(menumanager)
 menumanager.font_menu = FontMenu(menumanager)

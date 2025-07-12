@@ -678,6 +678,9 @@ class Widgets:
     def use_gemini(self, name: str) -> None:
         config.set("model", name)
 
+    def use_claude(self, name: str) -> None:
+        config.set("model", name)
+
     def model_icon_click(self) -> None:
         Dialog.show_message(model.icon_text)
 
