@@ -81,13 +81,19 @@ class Markdown:
             u = get_u(c, n)
             return rf"(?:(?!{u}).)"
 
-        # *this thing* but not *this thing *
+        # *this thing* but not *this thing * and not math operations like 2*3
         # No spaces between the chars
         def char_regex_1(char: str, n: int = 1) -> str:
             c = utils.escape_regex(char)
             u = get_u(c, n)
             t = get_t(c, n)
             t2 = get_t2(c, n)
+
+            if char == "*":
+                # Special case for asterisk to avoid matching math operations
+                return rf"(?P<all>(?<!\d){u}(?P<content>{t}{t2}*{t}|{t}){u}(?!\d))"
+
+            # Original pattern for other characters
             return rf"(?P<all>{u}(?P<content>{t}{t2}*{t}|{t}){u})"
 
         # _this thing_ but not_this_thing
