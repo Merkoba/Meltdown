@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 # This is used to create a tag in the git repo
 # You probably don't want to run this
