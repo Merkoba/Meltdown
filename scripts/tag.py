@@ -3,7 +3,6 @@
 # This is used to create a tag in the git repo
 # You probably don't want to run this
 
-# pacman: python-gitpython
 import os
 import git
 import json
