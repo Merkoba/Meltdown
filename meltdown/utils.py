@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import os
 import re
 import time
 import random
@@ -692,6 +693,18 @@ class Utils:
         full_text += f"{index} -> {text}\n"
         self.last_dprint = now
         self.msg(full_text)
+
+    def get_shell(self) -> str:
+        env = os.environ.get("SHELL", "/bin/bash")
+
+        if "fish" in env:
+            shell = "fish"
+        elif "zsh" in env:
+            shell = "zsh"
+        else:
+            shell = "bash"
+
+        return shell
 
 
 utils = Utils()

@@ -3,13 +3,15 @@ import subprocess
 from typing import Any
 
 # Modules
+from .utils import utils
 from .dialogs import Dialog, Commands
 
 
 class Run:
     @staticmethod
     def run_shell(command: str, shell: bool = True) -> None:
-        cmds = ["fish", "-c", command]
+        user_shell = utils.get_shell()
+        cmds = [user_shell, "-c", command]
         result = subprocess.run(cmds, capture_output=True, text=True, check=False)
         message = result.stdout if result.returncode == 0 else result.stderr
         message = message.strip()
