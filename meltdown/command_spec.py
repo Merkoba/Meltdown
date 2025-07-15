@@ -1089,6 +1089,12 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "describe",
+            "The describe prompt",
+            lambda a=None: app.describe(),
+        )
+
+        self.add_cmd(
             "theme",
             "Show the theme menu",
             lambda a=None: app.pick_theme(),

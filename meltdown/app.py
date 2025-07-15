@@ -931,14 +931,14 @@ class App:
 
         Dialog.show_dialog("Information", cmds)
 
+    def get_name(self) -> str:
+        from .config import config
+
+        return config.name_ai if config.name_ai else "Your Friend"
+
     def show_portrait(self) -> None:
         from .args import args
-        from .config import config
         from .dialogs import Dialog, Commands
-        from .model import model
-        from .display import display
-
-        name = config.name_ai if config.name_ai else "Your Friend"
 
         if args.portrait:
             image_path = Path(args.portrait)
@@ -948,20 +948,26 @@ class App:
         if not image_path.exists():
             return
 
-        def describe() -> None:
-            tab_id = display.current_tab
-
-            if not display.tab_is_empty(tab_id):
-                tab_id = display.make_tab()
-
-            prompt = {"text": f"Hello {name}. Please describe yourself."}
-            model.stream(prompt, tab_id=tab_id)
-
         cmds = Commands()
-        cmds.add("Describe", lambda a: describe())
+        cmds.add("Describe", lambda a: self.describe())
         cmds.add("Ok", lambda a: None)
 
-        Dialog.show_dialog(name, image=image_path, image_width=350, commands=cmds)
+        Dialog.show_dialog(
+            self.get_name(), image=image_path, image_width=350, commands=cmds
+        )
+
+    def describe(self) -> None:
+        from .display import display
+        from .model import model
+
+        tab_id = display.current_tab
+
+        if not display.tab_is_empty(tab_id):
+            tab_id = display.make_tab()
+
+        name = self.get_name()
+        prompt = {"text": f"Hello {name}. Please describe yourself."}
+        model.stream(prompt, tab_id=tab_id)
 
     def check_response_file(self) -> None:
         from .args import args
