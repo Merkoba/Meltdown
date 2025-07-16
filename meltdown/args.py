@@ -884,7 +884,7 @@ class Args:
         try:
             arg = getattr(self, name)
         except AttributeError:
-            display.print(f"Invalid name: {name}")
+            display.print(f"Invalid argument: {name}")
             return
 
         if arg is None:
