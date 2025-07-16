@@ -880,7 +880,12 @@ class Args:
             return
 
         value = utils.empty_string(value)
-        arg = getattr(self, name)
+
+        try:
+            arg = getattr(self, name)
+        except AttributeError:
+            display.print(f"Invalid name: {name}")
+            return
 
         if arg is None:
             display.print("Invalid argument.")
