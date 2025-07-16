@@ -1320,5 +1320,11 @@ class CommandSpec:
             type=str,
         )
 
+        self.add_cmd(
+            "randomconfig",
+            "Randomize some config settings",
+            lambda a=None: config.randomize(),
+        )
+
 
 command_spec = CommandSpec()

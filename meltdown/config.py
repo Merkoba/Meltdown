@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 import json
+import random
 from typing import Any
 from collections.abc import Callable
 from tkinter import filedialog
@@ -560,6 +561,19 @@ class Config:
 
         paths.configs.mkdir(parents=True, exist_ok=True)
         app.open_generic(str(paths.configs))
+
+    def randomize(self) -> None:
+        temp = random.uniform(0.0, 1.0)
+        temp = round(temp, 2)
+        top_p = random.uniform(0.0, 1.0)
+        top_p = round(top_p, 2)
+        top_k = random.randint(0, 100)
+        seed = random.randint(0, 10000)
+
+        self.set("temperature", temp, prints=False)
+        self.set("top_p", top_p, prints=False)
+        self.set("top_k", top_k, prints=False)
+        self.set("seed", seed, prints=False)
 
 
 config = Config()
