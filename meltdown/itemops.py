@@ -207,6 +207,9 @@ class ItemOps:
         if item.model:
             text += utils.no_break(f"Model: {item.model}")
 
+        if item.format:
+            text += f"\nFormat: {item.format}"
+
         if item.date is not None:
             text += f"\n\n{utils.to_date(item.date, minimal=args.minimal_info)}\n"
             text += utils.time_ago(item.date, utils.now())

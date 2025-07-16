@@ -481,6 +481,7 @@ class Model:
         log_dict["temperature"] = config.temperature
         log_dict["top_k"] = config.top_k
         log_dict["top_p"] = config.top_p
+        log_dict["format"] = config.format
 
         # Temporary
         log_dict["ai"] = "Empty"
@@ -876,6 +877,7 @@ class Model:
             log_dict["temperature"] = config.temperature
             log_dict["top_k"] = config.top_k
             log_dict["top_p"] = config.top_p
+            log_dict["format"] = config.format
             log_dict["file"] = ""
 
             tabconvo.convo.add(log_dict)
