@@ -1,4 +1,4 @@
-## An interface for llama.cpp, ChatGPT, and Gemini
+## An interface for llama.cpp, ChatGPT, Gemini, and Claude
 
 <img src="meltdown/image.jpg" width="380">
 
