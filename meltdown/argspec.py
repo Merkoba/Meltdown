@@ -1477,6 +1477,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "markdown_roles",
+            type=str,
+            info="Add effects to role tokens",
+        )
+
+        self.add_argument(
             "on_shift_middle_click",
             type=str,
             info="Commands to run when shift middle clicking the display",

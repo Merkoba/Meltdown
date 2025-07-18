@@ -272,6 +272,10 @@ class Markdown:
             if self.replace_think(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
 
+        if self.enabled(who, "roles"):
+            if self.replace_roles(start_ln, end_ln, who):
+                end_ln = self.next_marker(start_ln)
+
         if self.enabled(who, "clean"):
             if self.clean_lines(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
@@ -864,6 +868,30 @@ class Markdown:
         if new_lines:
             text = "\n".join(new_lines)
             text = text.strip() + "\n"
+            self.insert_first(start_ln, end_ln, text)
+            return True
+
+        return False
+
+    def replace_roles(self, start_ln: int, end_ln: int, who: str) -> bool:
+        lines = self.get_lines(start_ln, end_ln, who)
+        new_lines = []
+        user_text = args.role_user_text
+        assistant_text = args.role_assistant_text
+        system_text = args.role_system_text
+
+        for line in lines:
+            if line.startswith(config.role_user_token):
+                new_lines.append(user_text)
+            elif line.startswith(config.role_assistant_token):
+                new_lines.append(assistant_text)
+            elif line.startswith(config.role_system_token):
+                new_lines.append(system_text)
+            else:
+                new_lines.append(line)
+
+        if new_lines:
+            text = "\n".join(new_lines).strip() + "\n"
             self.insert_first(start_ln, end_ln, text)
             return True
 

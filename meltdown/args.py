@@ -164,6 +164,7 @@ class Args:
         self.markdown_join = "none"
         self.markdown_clean = "none"
         self.markdown_think = "ai"
+        self.markdown_roles = "ai"
 
         self.bold_effects = "bold"
         self.italic_effects = "italic_color"
@@ -307,6 +308,9 @@ class Args:
         self.show_file = False
         self.markdown_think_start = "**Thinking...**"
         self.markdown_think_end = "---"
+        self.role_user_text = "**User:**"
+        self.role_assistant_text = "**Assistant:**"
+        self.role_system_text = ""
         self.reverse_tablist = False
         self.extra_info_logs = False
         self.extra_info_uploads = False
@@ -555,6 +559,7 @@ class Args:
             "markdown_join",
             "markdown_clean",
             "markdown_think",
+            "markdown_roles",
             "help_prompt",
             "explain_prompt",
             "new_prompt",

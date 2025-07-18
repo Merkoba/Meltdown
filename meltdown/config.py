@@ -31,6 +31,9 @@ class Config:
         self.recent_label = "--- Recent ---"
         self.think_token_start = "<think>"
         self.think_token_end = "</think>"
+        self.role_user_token = "<|user|>"
+        self.role_assistant_token = "<|assistant|>"
+        self.role_system_token = "</|system|>"
 
         self.default_system = (
             "Your name is ((name_ai)).\n"
