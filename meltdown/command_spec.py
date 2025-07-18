@@ -754,13 +754,21 @@ class CommandSpec:
         )
 
         self.add_cmd(
-            "openai", "Show the GPT menu", lambda a=None: menumanager.openai_menu.show()
+            "openai",
+            "Show the OpenAI menu",
+            lambda a=None: menumanager.openai_menu.show(),
         )
 
         self.add_cmd(
             "google",
-            "Show the Gemini menu",
+            "Show the Google menu",
             lambda a=None: menumanager.google_menu.show(),
+        )
+
+        self.add_cmd(
+            "anthropic",
+            "Show the Anthropic menu",
+            lambda a=None: menumanager.anthropic_menu.show(),
         )
 
         self.add_cmd(
@@ -773,6 +781,12 @@ class CommandSpec:
             "googlekey",
             "Set the Google API key",
             lambda a=None: model.set_google_key(),
+        )
+
+        self.add_cmd(
+            "anthropickey",
+            "Set the Anthropic API key",
+            lambda a=None: model.set_anthropic_key(),
         )
 
         self.add_cmd(

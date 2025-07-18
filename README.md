@@ -18,6 +18,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Models](#models)
 1. [ChatGPT](#chatgpt)
 1. [Gemini](#gemini)
+1. [Claude](#claude)
 1. [Paths](#paths)
 1. [Profiles](#profiles)
 1. [Input](#input)
@@ -208,6 +209,20 @@ You must first set the API key for it to work.
 This can be done using the model menu.
 
 Or using the `googlekey` command.
+
+Then pick a model using the model menu or writing the name directly.
+
+---
+
+## Claude <a name="gemini"></a>
+
+Claude from Anthropic is supported.
+
+You must first set the API key for it to work.
+
+This can be done using the model menu.
+
+Or using the `anthropickey` command.
 
 Then pick a model using the model menu or writing the name directly.
 

@@ -724,13 +724,19 @@ Show the font menu
 
 ### openai
 
-Show the GPT menu
+Show the OpenAI menu
 
 ---
 
 ### google
 
-Show the Gemini menu
+Show the Google menu
+
+---
+
+### anthropic
+
+Show the Anthropic menu
 
 ---
 
@@ -743,6 +749,12 @@ Set the OpenAI API key
 ### googlekey
 
 Set the Google API key
+
+---
+
+### anthropickey
+
+Set the Anthropic API key
 
 ---
 
