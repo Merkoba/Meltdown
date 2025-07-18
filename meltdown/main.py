@@ -24,6 +24,7 @@ from .tasks import tasks
 from .memory import memory
 from .autoscroll import autoscroll
 from .variables import variables
+from .run import run
 
 
 def main() -> None:
@@ -66,6 +67,7 @@ def main() -> None:
     commands.setup()
     variables.setup()
     inputcontrol.setup()
+    run.setup()
     app.setup(now)
     system.start()
     console.start()

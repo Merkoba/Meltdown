@@ -1040,6 +1040,12 @@ Show the AI's portrait
 
 ---
 
+### describe
+
+The describe prompt
+
+---
+
 ### theme
 
 Show the theme menu
@@ -1241,3 +1247,15 @@ Show a notification message using notify-send
 ### filter
 
 Filter the conversation by a specific text
+
+---
+
+### randomconfig
+
+Randomize some config settings
+
+---
+
+### script
+
+Use a registered script using the current conversation

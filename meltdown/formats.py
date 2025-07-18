@@ -262,6 +262,16 @@ class Formats:
 
         return log.strip()
 
+    def get_raw(self, conversation: Conversation) -> str:
+        items = self.get_items(conversation, "all")
+        text = ""
+
+        for item in items:
+            text += f"{item.user}\n\n"
+            text += f"Answer: {item.ai}\n\n"
+
+        return text.strip()
+
     def do_open(
         self, mode: str, cmd: str | None = None, text: str | None = None
     ) -> None:
@@ -273,7 +283,7 @@ class Formats:
             elif mode == "markdown":
                 cmd = args.program_markdown or args.program
 
-        tabconvo = display.get_tab_convo(None)
+        tabconvo = display.get_tab_convo()
 
         if not tabconvo:
             return
@@ -447,6 +457,36 @@ class Formats:
             ext = "md"
 
         return ext
+
+    def to_tempfile(self, tab_id: str | None = None, mode: str = "raw") -> Path | None:
+        tabconvo = display.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return None
+
+        if not tabconvo.convo.items:
+            return None
+
+        if mode == "raw":
+            text = self.get_raw(tabconvo.convo)
+            ext = "txt"
+        elif mode == "text":
+            text = self.get_text(tabconvo.convo)
+            ext = "txt"
+        elif mode == "json":
+            text = self.get_json(tabconvo.convo)
+            ext = "json"
+        elif mode == "markdown":
+            text = self.get_markdown(tabconvo.convo)
+            ext = "md"
+        else:
+            return None
+
+        tmpdir = tempfile.gettempdir()
+        name = f"mlt_conv_{utils.now_int()}.{ext}"
+        path = Path(tmpdir, name)
+        files.write(path, text)
+        return path
 
 
 formats = Formats()

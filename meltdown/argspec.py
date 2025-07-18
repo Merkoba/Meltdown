@@ -1966,5 +1966,12 @@ class ArgSpec:
             info="Default message to use when saying something as the user",
         )
 
+        self.add_argument(
+            "script",
+            type=str,
+            action="append",
+            info='Define a script to run on the active conversation. Format is "[name] [path to script]"',
+        )
+
 
 argspec = ArgSpec()

@@ -1,10 +1,6 @@
 # Arguments
 
-Here are all the available command line arguments:
-
----
-
-### version
+Here are all the available command line arguments:### version
 
 Check the version of the program
 
@@ -2210,6 +2206,16 @@ Type: str
 
 ---
 
+### markdown-roles
+
+Add effects to role tokens
+
+Default: "ai"
+
+Type: str
+
+---
+
 ### on-shift-middle-click
 
 Commands to run when shift middle clicking the display
@@ -3005,5 +3011,15 @@ Type: str
 Default message to use when saying something as the user
 
 Default: "Say this"
+
+Type: str
+
+---
+
+### script
+
+Define a script to run on the active conversation. Format is "[name] [path to script]"
+
+Action: append
 
 Type: str

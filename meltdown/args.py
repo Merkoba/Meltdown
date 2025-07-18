@@ -80,6 +80,7 @@ class Args:
         self.shift_f12 = ""
         self.input = ""
         self.aliases: list[str] = []
+        self.scripts: list[str] = []
         self.triggers: list[str] = []
         self.tasks: list[str] = []
         self.max_tab_width = 0
@@ -342,6 +343,7 @@ class Args:
 
         other_name = [
             ("alias", "aliases"),
+            ("script", "scripts"),
             ("trigger", "triggers"),
             ("task", "tasks"),
             ("custom_prompt", "custom_prompts"),

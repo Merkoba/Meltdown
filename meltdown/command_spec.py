@@ -31,6 +31,7 @@ from .findmanager import findmanager
 from .formats import formats
 from .menumanager import menumanager
 from .variables import variables
+from .run import run
 
 
 class DuplicateCommandError(Exception):
@@ -1324,6 +1325,13 @@ class CommandSpec:
             "randomconfig",
             "Randomize some config settings",
             lambda a=None: config.randomize(),
+        )
+
+        self.add_cmd(
+            "script",
+            "Use a registered script using the current conversation",
+            lambda a=None: run.run_script(a),
+            type=str,
         )
 
 
