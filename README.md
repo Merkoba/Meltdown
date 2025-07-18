@@ -214,7 +214,7 @@ Then pick a model using the model menu or writing the name directly.
 
 ---
 
-## Claude <a name="gemini"></a>
+## Claude <a name="claude"></a>
 
 Claude from Anthropic is supported.
 
