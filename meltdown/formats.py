@@ -15,6 +15,7 @@ from .session import Conversation
 from .display import display
 from .files import files
 from .dialogs import Dialog, Commands
+from .output import Output
 
 
 class Formats:
@@ -179,6 +180,11 @@ class Formats:
                     name_user=name_user,
                     name_ai=name_ai,
                 )
+
+                marker = Output.get_marker(key)
+
+                if prompt.startswith(marker):
+                    prompt = prompt[len(marker) :]
 
                 if extra_info and (key == "ai"):
                     prompt += f" ({item.model})\n\n"

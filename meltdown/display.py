@@ -1433,7 +1433,7 @@ class Display:
             text = prompt
 
         # Add invisible markers
-        umarker = getattr(Output, f"marker_{who}")
+        umarker = Output.get_marker(who)
         return f"{umarker}{text}"
 
     def filter_text(self, tab_id: str | None = None, text: str = "") -> None:

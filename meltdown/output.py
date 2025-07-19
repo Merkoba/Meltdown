@@ -356,6 +356,10 @@ class Output(tk.Text):
         text = text.replace(Output.marker_separator, "")
         return text.replace(Output.marker_space, "")
 
+    @staticmethod
+    def get_marker(key: str) -> str:
+        return str(getattr(Output, f"marker_{key}"))
+
     def __init__(self, parent: tk.Frame, tab_id: str) -> None:
         from .snippet import Snippet
 
