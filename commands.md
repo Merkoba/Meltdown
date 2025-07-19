@@ -1112,6 +1112,12 @@ Upload markdown to a hosting service. Optional 'all' or 'last' argument
 
 ---
 
+### uploadraw
+
+Upload raw to a hosting service. Optional 'all' or 'last' argument
+
+---
+
 ### uploadjson
 
 Upload json to a hosting service. Optional 'all' or 'last' argument

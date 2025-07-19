@@ -2988,7 +2988,7 @@ Type: str
 
 ### upload-format
 
-Default upload format to use directly
+Default upload format to use directly [text, json, markdown, raw]
 
 Default: [Empty string]
 
@@ -3021,5 +3021,15 @@ Type: str
 Define a script to run on the active conversation. Format is "[name] [path to script]"
 
 Action: append
+
+Type: str
+
+---
+
+### script-format
+
+What format to use for script temp files [text, json, markdown, raw]
+
+Default: "text"
 
 Type: str
