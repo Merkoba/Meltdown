@@ -21,7 +21,8 @@ class Script:
             utils.msg(f"Script '{self.name}' has no path defined.")
             return
 
-        tempfile = formats.to_tempfile()
+        mode = args.script_format
+        tempfile = formats.to_tempfile(mode)
 
         utils.msg(
             f"Running script '{self.name}' with path '{self.path}' and tempfile '{tempfile}'."

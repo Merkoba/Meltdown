@@ -262,13 +262,15 @@ class Formats:
 
         return log.strip()
 
-    def get_raw(self, conversation: Conversation) -> str:
+    def get_raw(
+        self, conversation: Conversation, mode: str = "all", name_mode: str = "normal"
+    ) -> str:
         items = self.get_items(conversation, "all")
         text = ""
 
         for item in items:
             text += f"{item.user}\n\n"
-            text += f"Answer: {item.ai}\n\n"
+            text += f"{item.ai}\n\n"
 
         return text.strip()
 
@@ -467,10 +469,7 @@ class Formats:
         if not tabconvo.convo.items:
             return None
 
-        if mode == "raw":
-            text = self.get_raw(tabconvo.convo)
-            ext = "txt"
-        elif mode == "text":
+        if mode == "text":
             text = self.get_text(tabconvo.convo)
             ext = "txt"
         elif mode == "json":
@@ -479,6 +478,9 @@ class Formats:
         elif mode == "markdown":
             text = self.get_markdown(tabconvo.convo)
             ext = "md"
+        elif mode == "raw":
+            text = self.get_raw(tabconvo.convo)
+            ext = "txt"
         else:
             return None
 

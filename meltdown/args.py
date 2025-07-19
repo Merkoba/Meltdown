@@ -331,6 +331,7 @@ class Args:
         self.upload_format = ""
         self.upload_privacy = ""
         self.say_user_message = "Say this"
+        self.script_format = "text"
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -655,6 +656,7 @@ class Args:
             "upload_format",
             "upload_privacy",
             "say_user_message",
+            "script_format",
         ]
 
         for n_item in normals:

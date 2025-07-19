@@ -41,6 +41,7 @@ class ArgSpec:
         self.list_choices = ["auto", "never", "always"]
         self.effects_info = 'bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"'
         self.zero = "0 to disable"
+        self.formats = "[text, json, markdown, raw]"
         self.add_arguments()
 
     def add_argument(self, key: str, info: str, **kwargs: Any) -> None:
@@ -1951,7 +1952,7 @@ class ArgSpec:
         self.add_argument(
             "upload_format",
             type=str,
-            info="Default upload format to use directly",
+            info=f"Default upload format to use directly {self.formats}",
         )
 
         self.add_argument(
@@ -1971,6 +1972,12 @@ class ArgSpec:
             type=str,
             action="append",
             info='Define a script to run on the active conversation. Format is "[name] [path to script]"',
+        )
+
+        self.add_argument(
+            "script_format",
+            type=str,
+            info=f"What format to use for script temp files {self.formats}",
         )
 
 

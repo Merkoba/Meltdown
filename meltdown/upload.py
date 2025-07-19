@@ -102,12 +102,17 @@ class Upload:
                 action("markdown")
                 return
 
+            if args.upload_format == "raw":
+                action("raw")
+                return
+
         text = display.get_selected_text(tab_id)
 
         if text:
             action("text")
         else:
             cmds = Commands()
+            cmds.add("Raw", lambda a: action("raw"))
             cmds.add("Markdown", lambda a: action("markdown"))
             cmds.add("JSON", lambda a: action("json"))
             cmds.add("Text", lambda a: action("text"))
@@ -227,6 +232,8 @@ class Upload:
                 )
             elif format_ == "json":
                 text = formats.get_json(tabconvo.convo, mode=mode, name_mode="upload")
+            elif format_ == "raw":
+                text = formats.get_raw(tabconvo.convo, mode=mode, name_mode="upload")
             else:
                 text = formats.get_text(tabconvo.convo, mode=mode, name_mode="upload")
 

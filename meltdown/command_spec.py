@@ -1169,6 +1169,13 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "uploadraw",
+            f"Upload raw to a hosting service. {self.upload_info}",
+            lambda a=None: upload.upload(mode=a, format_="raw"),
+            type=str,
+        )
+
+        self.add_cmd(
             "uploadjson",
             f"Upload json to a hosting service. {self.upload_info}",
             lambda a=None: upload.upload(mode=a, format_="json"),

@@ -879,18 +879,22 @@ class Markdown:
         user_text = args.role_user_text
         assistant_text = args.role_assistant_text
         system_text = args.role_system_text
+        changed = False
 
         for line in lines:
             if line.startswith(config.role_user_token):
                 new_lines.append(user_text)
+                changed = True
             elif line.startswith(config.role_assistant_token):
                 new_lines.append(assistant_text)
+                changed = True
             elif line.startswith(config.role_system_token):
                 new_lines.append(system_text)
+                changed = True
             else:
                 new_lines.append(line)
 
-        if new_lines:
+        if changed and new_lines:
             text = "\n".join(new_lines).strip() + "\n"
             self.insert_first(start_ln, end_ln, text)
             return True
