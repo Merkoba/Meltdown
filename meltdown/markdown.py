@@ -172,7 +172,7 @@ class Markdown:
 
         # Word URL like [Click here](https://example.com)
         Markdown.pattern_link = (
-            r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>[^\)]+)\)(?:$|\s))"
+            r"(?:^|\s)(?P<all>\[(?P<content>[^\]]+)\]\((?P<url>[^\)]+)\))(?:$|\s)"
         )
 
     @staticmethod
