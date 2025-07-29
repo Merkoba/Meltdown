@@ -851,19 +851,39 @@ class Markdown:
         new_lines = []
         started = False
         ended = False
+        content = False
+        no_think = False
+        start = args.markdown_think_start
+        end = args.markdown_think_end
+        start_index = 0
+        end_index = 0
 
-        for line in lines:
+        for i, line in enumerate(lines):
             if line == config.think_token_start:
-                new_lines.append(f"{args.markdown_think_start}\n")
+                new_lines.append(f"{start}\n")
+                start_index = i
                 started = True
             elif line == config.think_token_end:
-                new_lines.append(f"\n{args.markdown_think_end}")
+                if started and (not content):
+                    no_think = True
+
+                new_lines.append(f"\n{end}")
+                end_index = i
                 ended = True
             else:
+                if started and (not ended) and line.strip():
+                    content = True
+
                 new_lines.append(line)
 
         if (not started) or (not ended):
             return False
+
+        if no_think:
+            new_lines = [
+                line for i, line in enumerate(new_lines)
+                if i != start_index and i != end_index
+            ]
 
         if new_lines:
             text = "\n".join(new_lines)
