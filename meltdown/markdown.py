@@ -881,7 +881,8 @@ class Markdown:
 
         if no_think:
             new_lines = [
-                line for i, line in enumerate(new_lines)
+                line
+                for i, line in enumerate(new_lines)
                 if i != start_index and i != end_index
             ]
 

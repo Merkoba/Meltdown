@@ -1359,13 +1359,13 @@ class CommandSpec:
         self.add_cmd(
             "enabletasks",
             "Enable automatic tasks",
-            lambda a=None:tasks.enable(),
+            lambda a=None: tasks.enable(),
         )
 
         self.add_cmd(
             "disabletasks",
             "Disable automatic tasks",
-            lambda a=None:tasks.disable(),
+            lambda a=None: tasks.disable(),
         )
 
 
