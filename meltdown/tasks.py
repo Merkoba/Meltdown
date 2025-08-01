@@ -6,6 +6,7 @@ import threading
 from .args import args
 from .commands import commands
 from .utils import utils
+from .display import display
 
 
 class Task:
@@ -98,9 +99,11 @@ class Tasks:
             Task(int(time), cmds, now)
 
     def enable(self) -> None:
+        display.print("Automatic tasks resumed.")
         Tasks.enabled.set()
 
     def disable(self) -> None:
+        display.print("Automatic tasks paused.")
         Tasks.enabled.clear()
 
 
