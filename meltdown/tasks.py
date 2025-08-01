@@ -61,7 +61,24 @@ class Tasks:
     enabled = threading.Event()
     enabled.set()
 
+    @staticmethod
+    def enable(feedback: bool = True) -> None:
+        if feedback:
+            display.print("Automatic tasks resumed.")
+
+        Tasks.enabled.set()
+
+    @staticmethod
+    def disable(feedback: bool = True) -> None:
+        if feedback:
+            display.print("Automatic tasks paused.")
+
+        Tasks.enabled.clear()
+
     def start_all(self) -> None:
+        if not args.start_tasks:
+            Tasks.disable(False)
+
         for task in args.tasks:
             if not task:
                 continue
@@ -97,14 +114,6 @@ class Tasks:
                 continue
 
             Task(int(time), cmds, now)
-
-    def enable(self) -> None:
-        display.print("Automatic tasks resumed.")
-        Tasks.enabled.set()
-
-    def disable(self) -> None:
-        display.print("Automatic tasks paused.")
-        Tasks.enabled.clear()
 
 
 tasks = Tasks()

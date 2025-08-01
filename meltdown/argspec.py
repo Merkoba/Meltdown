@@ -1980,5 +1980,11 @@ class ArgSpec:
             info=f"What format to use for script temp files {self.formats}",
         )
 
+        self.add_argument(
+            "no_start_tasks",
+            action="store_false",
+            info="Don't start tasks automatically",
+        )
+
 
 argspec = ArgSpec()

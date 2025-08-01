@@ -146,6 +146,7 @@ class Args:
         self.unordered_char = "•"
         self.ordered_spacing = "auto"
         self.unordered_spacing = "auto"
+        self.start_tasks = True
 
         self.markdown = "both"
         self.markdown_snippets = "ai"
@@ -422,6 +423,7 @@ class Args:
             ("no_avatars_logs", "avatars_logs"),
             ("no_avatars_uploads", "avatars_uploads"),
             ("no_current_recent_item", "current_recent_item"),
+            ("no_start_tasks", "start_tasks"),
         ]
 
         for r_item in other_name:
