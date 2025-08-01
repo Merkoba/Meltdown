@@ -1277,3 +1277,15 @@ Randomize some config settings
 ### script
 
 Use a registered script using the current conversation
+
+---
+
+### enabletasks
+
+Enable automatic tasks
+
+---
+
+### disabletasks
+
+Disable automatic tasks

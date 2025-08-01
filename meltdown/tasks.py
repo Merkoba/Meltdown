@@ -35,17 +35,31 @@ class Task:
         utils.sleep(1)
 
         while True:
+            Tasks.enabled.wait()
+
             if not self.first:
                 if self.now:
                     self.run()
 
                 self.first = True
 
-            utils.sleep(self.seconds)
-            self.run()
+            slept = 0
+
+            while slept < self.seconds:
+                if not Tasks.enabled.is_set():
+                    break
+
+                utils.sleep(1)
+                slept += 1
+
+            if Tasks.enabled.is_set():
+                self.run()
 
 
 class Tasks:
+    enabled = threading.Event()
+    enabled.set()
+
     def start_all(self) -> None:
         for task in args.tasks:
             if not task:
@@ -82,6 +96,12 @@ class Tasks:
                 continue
 
             Task(int(time), cmds, now)
+
+    def enable(self) -> None:
+        Tasks.enabled.set()
+
+    def disable(self) -> None:
+        Tasks.enabled.clear()
 
 
 tasks = Tasks()

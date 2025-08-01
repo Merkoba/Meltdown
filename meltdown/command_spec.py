@@ -32,6 +32,7 @@ from .formats import formats
 from .menumanager import menumanager
 from .variables import variables
 from .run import run
+from .tasks import tasks
 
 
 class DuplicateCommandError(Exception):
@@ -1353,6 +1354,18 @@ class CommandSpec:
             "Use a registered script using the current conversation",
             lambda a=None: run.run_script(a),
             type=str,
+        )
+
+        self.add_cmd(
+            "enabletasks",
+            "Enable automatic tasks",
+            lambda a=None:tasks.enable(),
+        )
+
+        self.add_cmd(
+            "disabletasks",
+            "Disable automatic tasks",
+            lambda a=None:tasks.disable(),
         )
 
 
