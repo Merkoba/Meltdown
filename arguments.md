@@ -3033,3 +3033,11 @@ What format to use for script temp files [text, json, markdown, raw]
 Default: "text"
 
 Type: str
+
+---
+
+### no-start-tasks
+
+Don't start tasks automatically
+
+Action: store_false

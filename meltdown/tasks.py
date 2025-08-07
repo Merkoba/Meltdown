@@ -63,15 +63,21 @@ class Tasks:
 
     @staticmethod
     def enable(feedback: bool = True) -> None:
+        if Tasks.enabled.is_set():
+            return
+
         if feedback:
-            display.print("Automatic tasks resumed.")
+            display.print("On: Automatic tasks resumed.")
 
         Tasks.enabled.set()
 
     @staticmethod
     def disable(feedback: bool = True) -> None:
+        if not Tasks.enabled.is_set():
+            return
+
         if feedback:
-            display.print("Automatic tasks paused.")
+            display.print("Off: Automatic tasks paused.")
 
         Tasks.enabled.clear()
 
