@@ -7,6 +7,7 @@ from .args import args
 from .commands import commands
 from .utils import utils
 from .display import display
+from .model import model
 
 
 class Task:
@@ -54,6 +55,11 @@ class Task:
                 slept += 1
 
             if Tasks.enabled.is_set():
+                if args.task_debounce:
+                    if model.streaming:
+                        utils.sleep(args.task_debounce_delay)
+                        continue
+
                 self.run()
 
 

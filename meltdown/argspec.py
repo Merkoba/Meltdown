@@ -1986,5 +1986,17 @@ class ArgSpec:
             info="Don't start tasks automatically",
         )
 
+        self.add_argument(
+            "no_task_debounce",
+            action="store_false",
+            info="Don't debounce tasks when streaming",
+        )
+
+        self.add_argument(
+            "task_debounce_delay",
+            type=int,
+            info="The delay of the task debouncer",
+        )
+
 
 argspec = ArgSpec()

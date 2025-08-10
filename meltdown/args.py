@@ -333,6 +333,8 @@ class Args:
         self.upload_privacy = ""
         self.say_user_message = "Say this"
         self.script_format = "text"
+        self.task_debounce = True
+        self.task_debounce_delay = 5
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -424,6 +426,7 @@ class Args:
             ("no_avatars_uploads", "avatars_uploads"),
             ("no_current_recent_item", "current_recent_item"),
             ("no_start_tasks", "start_tasks"),
+            ("no_task_debounce", "task_debounce"),
         ]
 
         for r_item in other_name:
@@ -659,6 +662,7 @@ class Args:
             "upload_privacy",
             "say_user_message",
             "script_format",
+            "task_debounce_delay",
         ]
 
         for n_item in normals:

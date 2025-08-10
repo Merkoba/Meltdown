@@ -3041,3 +3041,21 @@ Type: str
 Don't start tasks automatically
 
 Action: store_false
+
+---
+
+### no-task-debounce
+
+Don't debounce tasks when streaming
+
+Action: store_false
+
+---
+
+### task-debounce-delay
+
+The delay of the task debouncer
+
+Default: 5
+
+Type: int
