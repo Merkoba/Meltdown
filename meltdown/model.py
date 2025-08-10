@@ -21,6 +21,7 @@ from .config import config
 from .display import display
 from .tips import tips
 from .utils import utils
+from .search import search
 from .files import files
 from .session import Item
 from .variables import variables
@@ -89,13 +90,13 @@ class Model:
                 "type": "function",
                 "function": {
                     "name": "web_search",
-                    "description": "Search the internet for current information, recent events, news, or any information that might not be in the training data. Use this when the user asks about recent events, current information, specific facts that need verification, or anything happening after the model's training cutoff date.",
+                    "description": "Search the internet for current information, recent events, news, facts, or any information that might not be in the training data. This tool searches multiple sources including DuckDuckGo, Wikipedia, and Google to find accurate, up-to-date information. Use this when the user asks about: recent events, current information, specific facts that need verification, geographical information (like capitals of countries), current statistics, news, or anything happening after the model's training cutoff date. The tool returns structured search results with titles, URLs, and content snippets that provide comprehensive and factual information.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "query": {
                                 "type": "string",
-                                "description": "The search query to use. Should be specific and keyword-focused for best results.",
+                                "description": "The search query to use. Should be specific and keyword-focused for best results. For factual questions like 'capital of Zimbabwe', use clear, direct queries. Include relevant keywords that would help find the information the user is looking for.",
                             }
                         },
                         "required": ["query"],
@@ -681,16 +682,23 @@ class Model:
 
                 # Add tools for Claude if search is enabled
                 if config.search == "yes":
-                    # Convert tools to Anthropic format
+                    # Convert tools to Anthropic format using list comprehension
                     anthropic_tools = []
-
                     for tool in self.tools:
-                        if tool["type"] == "function":
-                            anthropic_tools.append({
-                                "name": tool["function"]["name"],
-                                "description": tool["function"]["description"],
-                                "input_schema": tool["function"]["parameters"]
-                            })
+                        if isinstance(tool, dict) and tool.get("type") == "function":
+                            function_data = tool.get("function", {})
+                            if isinstance(function_data, dict):
+                                anthropic_tools.append(
+                                    {
+                                        "name": function_data.get("name", ""),
+                                        "description": function_data.get(
+                                            "description", ""
+                                        ),
+                                        "input_schema": function_data.get(
+                                            "parameters", {}
+                                        ),
+                                    }
+                                )
 
                     gen_config["tools"] = anthropic_tools
 
@@ -773,6 +781,10 @@ class Model:
         output: Generator[ChatCompletionChunk, None, None],  # type: ignore
         tab_id: str,
     ) -> str:
+        # Check if this is a Claude response (different structure)
+        if self.model_is_claude(self.get_model()):
+            return self.process_claude_stream(output, tab_id)
+
         broken = False
         first_content = False
         token_printed = False
@@ -815,7 +827,9 @@ class Model:
                             # For tool calls without index, use "0" as default key
                             str_index = "0"
 
-                        has_tool_calls = True  # Set this whenever we process any tool call
+                        has_tool_calls = (
+                            True  # Set this whenever we process any tool call
+                        )
 
                         # Initialize tool call entry if not exists
                         if str_index not in tool_calls_buffer:
@@ -826,15 +840,21 @@ class Model:
                             }
 
                         # Update tool call data
-                        if hasattr(tool_call, 'id') and tool_call.id:
+                        if hasattr(tool_call, "id") and tool_call.id:
                             tool_calls_buffer[str_index]["id"] = tool_call.id
 
                         if hasattr(tool_call, "function") and tool_call.function:
-                            if hasattr(tool_call.function, 'name') and tool_call.function.name:
-                                tool_calls_buffer[str_index]["function"][
-                                    "name"
-                                ] = tool_call.function.name
-                            if hasattr(tool_call.function, 'arguments') and tool_call.function.arguments:
+                            if (
+                                hasattr(tool_call.function, "name")
+                                and tool_call.function.name
+                            ):
+                                tool_calls_buffer[str_index]["function"]["name"] = (
+                                    tool_call.function.name
+                                )
+                            if (
+                                hasattr(tool_call.function, "arguments")
+                                and tool_call.function.arguments
+                            ):
                                 tool_calls_buffer[str_index]["function"][
                                     "arguments"
                                 ] += tool_call.function.arguments
@@ -889,6 +909,131 @@ class Model:
 
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
+        except BaseException as e:
+            utils.error(e)
+
+        if not broken:
+            print_buffer()
+
+        return "".join(tokens)
+
+    def process_claude_stream(self, output, tab_id: str) -> str:
+        """Handle Claude/Anthropic streaming responses which have a different format"""
+        broken = False
+        first_content = False
+        token_printed = False
+        last_token = " "
+        buffer_date = 0.0
+        tokens: list[str] = []
+        buffer: list[str] = []
+        tool_calls_buffer = {}
+        has_tool_calls = False
+
+        def print_buffer() -> None:
+            if not len(buffer):
+                return
+            display.insert("".join(buffer), tab_id=tab_id)
+            buffer.clear()
+
+        try:
+            for chunk in output:
+                if self.stop_stream_thread.is_set():
+                    broken = True
+                    break
+
+                if not chunk:
+                    continue
+
+                # Claude streaming format
+                if hasattr(chunk, "type"):
+                    if chunk.type == "content_block_start":
+                        if hasattr(chunk, "content_block") and chunk.content_block:
+                            if hasattr(chunk.content_block, "type"):
+                                if chunk.content_block.type == "tool_use":
+                                    # Handle tool use start
+                                    has_tool_calls = True
+                                    tool_id = getattr(
+                                        chunk.content_block, "id", "unknown"
+                                    )
+                                    tool_name = getattr(chunk.content_block, "name", "")
+
+                                    tool_calls_buffer[tool_id] = {
+                                        "id": tool_id,
+                                        "type": "function",
+                                        "function": {
+                                            "name": tool_name,
+                                            "arguments": "",
+                                        },
+                                    }
+
+                    elif chunk.type == "content_block_delta":
+                        if hasattr(chunk, "delta") and chunk.delta:
+                            if hasattr(chunk.delta, "type"):
+                                if chunk.delta.type == "text_delta":
+                                    # Regular text content
+                                    token = getattr(chunk.delta, "text", "")
+                                    if token:
+                                        if not first_content:
+                                            display.remove_last_ai(tab_id)
+                                            display.prompt("ai", tab_id=tab_id)
+                                            first_content = True
+
+                                        if token == "\n":
+                                            if not token_printed:
+                                                continue
+                                        elif token == " ":
+                                            if last_token == " ":
+                                                continue
+
+                                        last_token = token
+
+                                        if not token_printed:
+                                            token = token.lstrip()
+                                            token_printed = True
+
+                                        tokens.append(token)
+                                        buffer.append(token)
+                                        now = utils.now()
+
+                                        if (now - buffer_date) >= args.delay:
+                                            print_buffer()
+                                            buffer_date = now
+
+                                elif chunk.delta.type == "input_json_delta":
+                                    # Tool arguments being streamed
+                                    partial_json = getattr(
+                                        chunk.delta, "partial_json", ""
+                                    )
+
+                                    if partial_json:
+                                        # Find the corresponding tool call and update arguments
+                                        for tool_data in tool_calls_buffer.values():
+                                            tool_data["function"]["arguments"] += (
+                                                partial_json
+                                            )
+
+            # Process any complete tool calls
+            if tool_calls_buffer and has_tool_calls:
+                if not broken:
+                    print_buffer()  # Clear any remaining content first
+
+                # If we only have tool calls and no content, show a message
+                if not first_content:
+                    display.remove_last_ai(tab_id)
+                    display.prompt("ai", text="Using tools...", tab_id=tab_id)
+
+                # Execute tool calls and get model's response
+                tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
+
+                if tool_response:
+                    # Replace the "Using tools..." message with the actual response
+                    if not first_content:
+                        display.remove_last_ai(tab_id)
+                        display.prompt("ai", tab_id=tab_id)
+
+                    tokens.append(tool_response)
+                    display.insert(tool_response, tab_id=tab_id)
+
         except BaseException as e:
             utils.error(e)
 
@@ -1360,10 +1505,11 @@ class Model:
 
     def web_search(self, query: str) -> str:
         try:
-            result = utils.google_search(query)
-            return result
+            return search.web_search(query)
         except Exception as e:
-            return f"Error performing web search: {e}"
+            error_msg = f"Error performing web search: {e}"
+            utils.error(errors_msg)
+            return error_msg
 
     def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
         try:
@@ -1388,9 +1534,19 @@ class Model:
                 # Parse arguments and execute function
                 try:
                     fn_args = json.loads(fn_args_str) if fn_args_str else {}
+
+                    if args.verbose:
+                        print(f"Executing tool: {fn_name}")
+                        print(f"Tool arguments: {fn_args}")
+
                     result = toolfunc(**fn_args)
 
-                    # Add tool message for the model
+                    if args.verbose:
+                        print(f"Tool result length: {len(str(result))}")
+                        print(f"Tool result preview: {str(result)[:500]}...")
+                        print(f"Tool result (full): {str(result)}")
+
+                    # Add tool message for the model with more context
                     tool_messages.append(
                         {
                             "tool_call_id": tool_call_id,
@@ -1408,7 +1564,7 @@ class Model:
                         }
                     )
 
-                except json.JSONDecodeError as e:
+                except json.JSONDecodeError:
                     continue
                 except Exception as e:
                     # Add error message for the model
@@ -1429,7 +1585,7 @@ class Model:
             if not tabconvo or not tabconvo.convo.items:
                 return ""
 
-            # Reconstruct the conversation with tool calls
+            # Reconstruct the conversation with tool calls - simplified approach
             messages: list[dict[str, Any]] = []
 
             # Add system message if exists
@@ -1437,17 +1593,65 @@ class Model:
                 system = utils.replace_keywords(config.system)
                 messages.append({"role": "system", "content": system})
 
-            # Add the last user message
+            # Add the current user message (the one that triggered the tool call)
             last_item = tabconvo.convo.items[-1]
             user_content = getattr(last_item, "user", "")
             if user_content:
                 messages.append({"role": "user", "content": user_content})
 
             # Add assistant message with tool calls
-            messages.append({"role": "assistant", "tool_calls": tool_calls})
+            if self.model_is_claude(self.get_model()):
+                # Claude uses a different format for tool calls
+                assistant_content = []
+                for tool_call in tool_calls:
+                    assistant_content.append(
+                        {
+                            "type": "tool_use",
+                            "id": tool_call["id"],
+                            "name": tool_call["function"]["name"],
+                            "input": json.loads(tool_call["function"]["arguments"])
+                            if tool_call["function"]["arguments"]
+                            else {},
+                        }
+                    )
 
-            # Add tool messages
-            messages.extend(tool_messages)
+                messages.append({"role": "assistant", "content": assistant_content})
+
+                # Add tool results in Claude format
+                for tool_msg in tool_messages:
+                    messages.append(
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "tool_result",
+                                    "tool_use_id": tool_msg["tool_call_id"],
+                                    "content": tool_msg["content"],
+                                }
+                            ],
+                        }
+                    )
+            else:
+                # OpenAI format
+                messages.append({"role": "assistant", "tool_calls": tool_calls})
+                messages.extend(tool_messages)
+
+            # Add instruction to use the search results with more context
+            original_question = user_content if user_content else "the user's question"
+
+            messages.append(
+                {
+                    "role": "user",
+                    "content": f'Based on the web search results provided above, please provide a comprehensive and detailed answer to this question: "{original_question}"\n\nUse the specific information, facts, and details from the search results to give an accurate, informative, and up-to-date response. Include relevant details, dates, numbers, and context from the search results in your answer.',
+                }
+            )
+
+            if args.verbose:
+                print(f"Final messages being sent to model:")
+                for i, msg in enumerate(messages):
+                    print(
+                        f"Message {i}: {msg['role']} - {str(msg['content'])[:200]}..."
+                    )
 
             # Make another API call to get the final response
             gen_config = {
@@ -1458,20 +1662,41 @@ class Model:
                 "top_p": config.top_p,
             }
 
-            if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
-                self.get_model()
-            ):
-                gen_config["max_completion_tokens"] = config.max_tokens
-            else:
+            if self.model_is_claude(self.get_model()):
+                # Use Anthropic client for Claude models
                 gen_config["max_tokens"] = config.max_tokens
 
-            if not self.openai_client:
-                return ""
+                # Remove unsupported parameters for Anthropic
+                del gen_config[
+                    "model"
+                ]  # Anthropic uses the model from the client initialization
 
-            response = self.openai_client.chat.completions.create(**gen_config)
+                if not hasattr(self, "anthropic_client") or not self.anthropic_client:
+                    return "\n\nError: Anthropic client not available"
 
-            if response.choices and response.choices[0].message.content:
-                return "\n\n" + response.choices[0].message.content
+                response = self.anthropic_client.messages.create(**gen_config)
+
+                if response.content and len(response.content) > 0:
+                    return "\n\n" + response.content[0].text
+            else:
+                # Use OpenAI-compatible client for GPT and Gemini models
+                if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
+                    self.get_model()
+                ):
+                    gen_config["max_completion_tokens"] = config.max_tokens
+                    if not self.model_is_gemini(self.get_model()):
+                        gen_config["seed"] = config.seed
+                else:
+                    gen_config["max_tokens"] = config.max_tokens
+                    gen_config["seed"] = config.seed
+
+                if not self.openai_client:
+                    return ""
+
+                response = self.openai_client.chat.completions.create(**gen_config)
+
+                if response.choices and response.choices[0].message.content:
+                    return "\n\n" + response.choices[0].message.content
 
             return ""  # noqa: TRY300
 
