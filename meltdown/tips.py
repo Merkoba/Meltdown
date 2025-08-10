@@ -125,6 +125,7 @@ tips = {
         " On image mode, the model is able to analyse image paths you give it"
     ),
     "file": "The URL or path to a file",
+    "search": "Enable the search tool, which means the AI might do web searches to get information. This might incur slower and more expensive responses",
     # Find
     "find_next_i": f"Find next match (case insensitive). {middleprev}",
     "find_next": f"Find next match (case sensitive). {middleprev}",

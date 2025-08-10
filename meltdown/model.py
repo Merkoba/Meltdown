@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import json
 import base64
 import threading
 from pathlib import Path
@@ -34,6 +35,7 @@ if llama_cpp:
 
 
 PromptArg = dict[str, Any]
+ToolCallsBuffer = dict[str, dict[str, Any]]
 
 
 class Model:
@@ -81,6 +83,31 @@ class Model:
         self.openai_key = ""
         self.google_key = ""
         self.anthropic_key = ""
+
+        self.tools = [
+            {
+                "type": "function",
+                "function": {
+                    "name": "google_search",
+                    "description": "Use this tool to search Google for real-time information, current events, or answers to questions that are likely not in the model's training data.",
+                    "parameters": {
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "The precise search query string to use for the Google search. Should be specific and keyword-focused.",
+                            }
+                        },
+                        "required": ["query"],
+                    },
+                },
+            }
+        ]
+
+        # Map tool names to actual callable functions
+        self.toolfuncs = {
+            "google_search": self.google_search,
+        }
 
     def setup(self) -> None:
         self.update_icon()
@@ -620,6 +647,9 @@ class Model:
                     self.release_lock()
                     return
 
+                if config.search == "yes":
+                    gen_config["tools"] = self.tools
+
                 output = self.openai_client.chat.completions.create(
                     **gen_config, timeout=10
                 )
@@ -735,6 +765,7 @@ class Model:
         buffer_date = 0.0
         tokens: list[str] = []
         buffer: list[str] = []
+        tool_calls_buffer: ToolCallsBuffer = {}
 
         def print_buffer() -> None:
             if not len(buffer):
@@ -753,8 +784,46 @@ class Model:
                     continue
 
                 delta = chunk.choices[0].delta  # type: ignore
+                token = None
 
-                if hasattr(delta, "content"):
+                if hasattr(delta, "tool_calls") and delta.tool_calls:
+                    # Handle tool calls - accumulate them as they stream in
+                    for tool_call in delta.tool_calls:
+                        if hasattr(tool_call, "index") and tool_call.index is not None:
+                            index = tool_call.index
+
+                            # Initialize tool call entry if not exists
+                            # Convert index to string to ensure consistent dictionary key type
+                            str_index = str(index)
+                            if str_index not in tool_calls_buffer:
+                                tool_calls_buffer[str_index] = {
+                                    "id": "",
+                                    "type": "function",
+                                    "function": {"name": "", "arguments": ""},
+                                }
+
+                            # Update tool call data
+                            if tool_call.id:
+                                str_index = str(index)
+                                tool_calls_buffer[str_index]["id"] = tool_call.id
+
+                            if hasattr(tool_call, "function") and tool_call.function:
+                                if tool_call.function.name:
+                                    # Make sure index is treated as a string key
+                                    str_index = str(index)
+                                    if "function" in tool_calls_buffer[str_index]:
+                                        tool_calls_buffer[str_index]["function"][
+                                            "name"
+                                        ] = tool_call.function.name
+                                if tool_call.function.arguments:
+                                    # Make sure index is treated as a string key
+                                    str_index = str(index)
+                                    if "function" in tool_calls_buffer[str_index]:
+                                        tool_calls_buffer[str_index]["function"][
+                                            "arguments"
+                                        ] += tool_call.function.arguments
+
+                elif hasattr(delta, "content") and delta.content:
                     if not first_content:
                         display.remove_last_ai(tab_id)
                         display.prompt("ai", tab_id=tab_id)
@@ -762,6 +831,7 @@ class Model:
 
                     token = delta.content
 
+                if token:
                     if token == "\n":
                         if not token_printed:
                             continue
@@ -771,18 +841,29 @@ class Model:
 
                     last_token = token
 
-                    if token is not None:
-                        if not token_printed:
-                            token = token.lstrip()
-                            token_printed = True
+                    if not token_printed:
+                        token = token.lstrip()
+                        token_printed = True
 
-                        tokens.append(token)
-                        buffer.append(token)
-                        now = utils.now()
+                    tokens.append(token)
+                    buffer.append(token)
+                    now = utils.now()
 
-                        if (now - buffer_date) >= args.delay:
-                            print_buffer()
-                            buffer_date = now
+                    if (now - buffer_date) >= args.delay:
+                        print_buffer()
+                        buffer_date = now
+
+            # Process any complete tool calls
+            if tool_calls_buffer:
+                if not broken:
+                    print_buffer()  # Clear any remaining content first
+
+                # Execute tool calls and get model's response
+                tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
+                if tool_response:
+                    tokens.append(tool_response)
+                    display.insert(tool_response, tab_id=tab_id)
+
         except BaseException as e:
             utils.error(e)
 
@@ -793,13 +874,129 @@ class Model:
 
     def process_instant(self, output: ChatCompletion, tab_id: str) -> str:
         try:
-            response = output.choices[0].message.content.strip()
+            message = output.choices[0].message
+
+            # Check if there are tool calls
+            if hasattr(message, "tool_calls") and message.tool_calls:
+                # Handle tool calls
+                tool_messages = []
+                tool_calls = []
+
+                for tool_call in message.tool_calls:
+                    fn_name = tool_call.function.name
+                    fn_args_str = tool_call.function.arguments
+                    tool_call_id = tool_call.id
+
+                    # Get the function to execute
+                    toolfunc = self.toolfuncs.get(fn_name)
+                    if not toolfunc:
+                        continue
+
+                    try:
+                        fn_args = json.loads(fn_args_str) if fn_args_str else {}
+                        result = toolfunc(**fn_args)
+
+                        tool_messages.append(
+                            {
+                                "tool_call_id": tool_call_id,
+                                "role": "tool",
+                                "name": fn_name,
+                                "content": str(result),
+                            }
+                        )
+
+                        tool_calls.append(tool_call)
+
+                    except Exception as e:
+                        tool_messages.append(
+                            {
+                                "tool_call_id": tool_call_id,
+                                "role": "tool",
+                                "name": fn_name,
+                                "content": f"Error executing function: {e}",
+                            }
+                        )
+
+                if tool_messages:
+                    # Get conversation context and make follow-up call
+                    tabconvo = display.get_tab_convo(tab_id)
+                    if tabconvo and tabconvo.convo.items:
+                        messages: list[dict[str, Any]] = []
+
+                        # Add system message if exists
+                        if config.system:
+                            system = utils.replace_keywords(config.system)
+                            messages.append({"role": "system", "content": system})
+
+                        # Add the last user message
+                        last_item = tabconvo.convo.items[-1]
+                        user_content = getattr(last_item, "user", "")
+                        if user_content:
+                            messages.append({"role": "user", "content": user_content})
+
+                        # Add assistant message with tool calls
+                        messages.append(
+                            {
+                                "role": "assistant",
+                                "tool_calls": [
+                                    {
+                                        "id": tc.id,
+                                        "type": "function",
+                                        "function": {
+                                            "name": tc.function.name,
+                                            "arguments": tc.function.arguments,
+                                        },
+                                    }
+                                    for tc in tool_calls
+                                ],
+                            }
+                        )
+
+                        # Add tool messages
+                        messages.extend(tool_messages)
+
+                        # Make follow-up API call
+                        gen_config = {
+                            "messages": messages,
+                            "stream": False,
+                            "model": self.get_model(),
+                            "temperature": config.temperature,
+                            "top_p": config.top_p,
+                        }
+
+                        if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
+                            self.get_model()
+                        ):
+                            gen_config["max_completion_tokens"] = config.max_tokens
+                        else:
+                            gen_config["max_tokens"] = config.max_tokens
+
+                        if self.openai_client:
+                            follow_up = self.openai_client.chat.completions.create(
+                                **gen_config
+                            )
+                            if (
+                                follow_up.choices
+                                and follow_up.choices[0].message.content
+                            ):
+                                response = follow_up.choices[0].message.content.strip()
+
+                                display.remove_last_ai(tab_id)
+                                display.prompt("ai", tab_id=tab_id)
+                                display.insert(response, tab_id=tab_id)
+                                return str(response)
+
+                return ""
+
+            # Normal response without tool calls
+            response = message.content.strip()
 
             if response:
                 display.remove_last_ai(tab_id)
                 display.prompt("ai", tab_id=tab_id)
                 display.insert(response, tab_id=tab_id)
                 return str(response)
+
         except BaseException as e:
             utils.error(e)
 
@@ -1135,6 +1332,122 @@ class Model:
 
     def get_model(self) -> str:
         return variables.replace_variables(config.model)
+
+    def google_search(self, query: str) -> str:
+        return utils.google_search(query)
+
+    def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
+        try:
+            # Convert buffer to list of complete tool calls
+            tool_calls = []
+            tool_messages = []
+
+            for tool_call_data in tool_calls_buffer.values():
+                if not tool_call_data["function"]["name"]:
+                    continue
+
+                fn_name = tool_call_data["function"]["name"]
+                fn_args_str = tool_call_data["function"]["arguments"]
+                tool_call_id = tool_call_data["id"]
+
+                # Get the function to execute
+                toolfunc = self.toolfuncs.get(fn_name)
+                if not toolfunc:
+                    continue
+
+                # Parse arguments and execute function
+                try:
+                    fn_args = json.loads(fn_args_str) if fn_args_str else {}
+                    result = toolfunc(**fn_args)
+
+                    # Add tool message for the model
+                    tool_messages.append(
+                        {
+                            "tool_call_id": tool_call_id,
+                            "role": "tool",
+                            "name": fn_name,
+                            "content": str(result),
+                        }
+                    )
+
+                    tool_calls.append(
+                        {
+                            "id": tool_call_id,
+                            "type": "function",
+                            "function": {"name": fn_name, "arguments": fn_args_str},
+                        }
+                    )
+
+                except json.JSONDecodeError:
+                    continue
+                except Exception as e:
+                    # Add error message for the model
+                    tool_messages.append(
+                        {
+                            "tool_call_id": tool_call_id,
+                            "role": "tool",
+                            "name": fn_name,
+                            "content": f"Error executing function: {e}",
+                        }
+                    )
+
+            if not tool_messages:
+                return ""
+
+            # Get the original messages from the conversation
+            tabconvo = display.get_tab_convo(tab_id)
+            if not tabconvo or not tabconvo.convo.items:
+                return ""
+
+            # Reconstruct the conversation with tool calls
+            messages: list[dict[str, Any]] = []
+
+            # Add system message if exists
+            if config.system:
+                system = utils.replace_keywords(config.system)
+                messages.append({"role": "system", "content": system})
+
+            # Add the last user message
+            last_item = tabconvo.convo.items[-1]
+            user_content = getattr(last_item, "user", "")
+            if user_content:
+                messages.append({"role": "user", "content": user_content})
+
+            # Add assistant message with tool calls
+            messages.append({"role": "assistant", "tool_calls": tool_calls})
+
+            # Add tool messages
+            messages.extend(tool_messages)
+
+            # Make another API call to get the final response
+            gen_config = {
+                "messages": messages,
+                "stream": False,  # Use non-streaming for tool response
+                "model": self.get_model(),
+                "temperature": config.temperature,
+                "top_p": config.top_p,
+            }
+
+            if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
+                self.get_model()
+            ):
+                gen_config["max_completion_tokens"] = config.max_tokens
+            else:
+                gen_config["max_tokens"] = config.max_tokens
+
+            if not self.openai_client:
+                return ""
+
+            response = self.openai_client.chat.completions.create(**gen_config)
+
+            if response.choices and response.choices[0].message.content:
+                return "\n\n" + response.choices[0].message.content
+
+            return ""  # noqa: TRY300
+
+        except Exception as e:
+            utils.error(e)
+            return f"\n\nError handling tool calls: {e}"
 
 
 model = Model()

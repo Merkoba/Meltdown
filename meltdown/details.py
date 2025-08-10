@@ -25,6 +25,7 @@ if TYPE_CHECKING:
 class Details:
     def __init__(self) -> None:
         self.width_1 = 10
+        self.width_2 = 7
 
     def make_label(
         self,
@@ -92,8 +93,12 @@ class Details:
         self.make_label(widgets, data, "gpu_layers", "GPU")
         self.make_entry(widgets, data, "gpu_layers")
 
+    def add_search(self, widgets: Widgets, data: FrameData) -> None:
+        self.make_label(widgets, data, "search", "Search", padx=(0, app.theme.padx))
+        self.make_combobox(widgets, data, "search", ["yes", "no"], width=self.width_2)
+
     def add_format(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "format", "Format", padx=(0, app.theme.padx))
+        self.make_label(widgets, data, "format", "Format")
         values = ["auto"]
 
         if llama_cpp:
@@ -136,7 +141,7 @@ class Details:
 
     def add_mlock(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "mlock", "M-Lock")
-        self.make_combobox(widgets, data, "mlock", ["yes", "no"], width=7)
+        self.make_combobox(widgets, data, "mlock", ["yes", "no"], width=self.width_2)
 
     def add_items(self) -> None:
         from .framedata import FrameData
@@ -154,6 +159,7 @@ class Details:
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
+        self.add_search(widgets, data)
         self.add_format(widgets, data)
         self.add_before(widgets, data)
         self.add_after(widgets, data)

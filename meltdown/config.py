@@ -61,6 +61,7 @@ class Config:
         self.default_font_family = "sans-serif"
         self.default_threads = 6
         self.default_mlock = "yes"
+        self.default_search = "no"
         self.default_theme = "dark"
         self.default_gpu_layers = 33
         self.default_stop = "<|im_start|> ;; <|im_end|>"
@@ -85,6 +86,7 @@ class Config:
         self.font_family = self.default_font_family
         self.threads = self.default_threads
         self.mlock = self.default_mlock
+        self.search = self.default_search
         self.theme = self.default_theme
         self.gpu_layers = self.default_gpu_layers
         self.context = self.default_context

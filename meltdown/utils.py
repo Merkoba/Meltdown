@@ -20,6 +20,7 @@ from collections.abc import Callable
 
 # Libraries
 import q as qlib  # type: ignore
+import requests  # type: ignore
 from rich.console import Console  # type: ignore
 
 if TYPE_CHECKING:
@@ -705,6 +706,125 @@ class Utils:
             shell = "bash"
 
         return shell
+
+    def google_search(self, query: str) -> str:
+        try:
+            # Prepare search URL and parameters
+            search_url = "https://www.google.com/search"
+            params = {
+                "q": query,
+                "num": 5,  # Number of results to return
+            }
+
+            # Headers to mimic a real browser request
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+                "Accept-Language": "en-US,en;q=0.5",
+                "Accept-Encoding": "gzip, deflate",
+                "Connection": "keep-alive",
+            }
+
+            # Make the search request
+            response = requests.get(
+                search_url, params=params, headers=headers, timeout=10
+            )
+            response.raise_for_status()
+
+            # Parse the HTML response to extract search results
+            html_content = response.text
+
+            # Simple HTML parsing to extract search results
+            # Look for div elements that contain search result information
+            results = []
+
+            # Split by common result dividers and extract relevant information
+            lines = html_content.split("\n")
+            current_result = {}
+
+            for ln in lines:
+                line = ln.strip()
+
+                # Look for title links (h3 tags with links)
+                if "<h3" in line and "href=" in line:
+                    # Extract URL
+                    start_url = line.find('href="') + 6
+                    end_url = line.find('"', start_url)
+                    if start_url > 5 and end_url > start_url:
+                        url = line[start_url:end_url]
+                        if url.startswith("/url?q="):
+                            url = url[7:]  # Remove /url?q= prefix
+                            url = url.split("&")[0]  # Remove additional parameters
+                        current_result["url"] = url
+
+                    # Extract title (remove HTML tags)
+                    title_start = line.find(">")
+                    title_end = line.rfind("<")
+                    if title_start > 0 and title_end > title_start:
+                        title = line[title_start + 1 : title_end]
+                        # Clean up HTML entities and tags
+                        title = (
+                            title.replace("&amp;", "&")
+                            .replace("&lt;", "<")
+                            .replace("&gt;", ">")
+                        )
+                        title = title.replace("<b>", "").replace("</b>", "")
+                        if title and len(title) > 3:
+                            current_result["title"] = title
+
+                # Look for snippet text
+                elif (
+                    'class="' in line
+                    and ("snippet" in line or "st" in line)
+                    and len(line) > 50
+                ):
+                    # Extract snippet text (remove HTML tags)
+                    snippet = line
+                    # Remove common HTML tags
+                    import re
+
+                    snippet = re.sub(r"<[^>]+>", "", snippet)
+                    snippet = (
+                        snippet.replace("&amp;", "&")
+                        .replace("&lt;", "<")
+                        .replace("&gt;", ">")
+                    )
+                    snippet = snippet.strip()
+
+                    if snippet and len(snippet) > 20 and len(snippet) < 300:
+                        current_result["snippet"] = snippet
+
+                        # If we have both title and snippet, save this result
+                        if "title" in current_result and "url" in current_result:
+                            results.append(current_result.copy())
+                            current_result = {}
+
+                            # Stop after getting enough results
+                            if len(results) >= 5:
+                                break
+
+            # If we didn't get good results with the above method, try a simpler approach
+            if len(results) == 0:
+                # Fallback: just return a summary that we performed the search
+                return f"Performed Google search for '{query}'. Found search results page, but unable to parse specific results due to HTML structure. The search was successful and returned a results page."
+
+            # Format results for the AI model
+            formatted_results = f"Google search results for '{query}':\n\n"
+
+            for i, result in enumerate(results[:5], 1):
+                formatted_results += f"{i}. {result.get('title', 'No title')}\n"
+                if "url" in result:
+                    formatted_results += f"   URL: {result['url']}\n"
+                if "snippet" in result:
+                    formatted_results += f"   {result['snippet']}\n"
+                formatted_results += "\n"
+
+            return formatted_results.strip()
+
+        except requests.exceptions.RequestException as e:
+            return f"Error performing Google search: Network error - {e}"
+        except Exception as e:
+            return f"Error performing Google search: {e}"
 
 
 utils = Utils()
