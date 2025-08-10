@@ -39,6 +39,7 @@ select = [
 
 ignore = [
     "PLW0108",
+    "TRY300",
 ]
 
 exclude = [

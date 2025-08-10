@@ -20,7 +20,6 @@ from collections.abc import Callable
 
 # Libraries
 import q as qlib  # type: ignore
-import requests  # type: ignore
 from rich.console import Console  # type: ignore
 
 if TYPE_CHECKING:

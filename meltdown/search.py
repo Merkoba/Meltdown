@@ -1,10 +1,8 @@
 from __future__ import annotations
 
 # Standard
-import json
-import requests
-import urllib.parse
-from bs4 import BeautifulSoup
+import requests  # type: ignore
+from bs4 import BeautifulSoup  # type: ignore
 
 
 class Search:
@@ -90,11 +88,10 @@ class Search:
 
             if result_parts:
                 return f"Search results for '{query}':\n\n" + "\n".join(result_parts)
-            else:
-                # Try alternative DuckDuckGo search
-                return self.ddg_search(query)
 
-        except Exception as e:
+            return self.ddg_search(query)
+
+        except Exception:
             return ""  # Will trigger fallback
 
     def ddg_search(self, query: str) -> str:
@@ -134,8 +131,9 @@ class Search:
                     sentences = text.split(".")
                     meaningful_sentences = []
 
-                    for sentence in sentences:
-                        sentence = sentence.strip()
+                    for sntnce in sentences:
+                        sentence = sntnce.strip()
+
                         if 20 < len(sentence) < 200 and len(sentence.split()) > 3:
                             meaningful_sentences.append(sentence)
 
@@ -151,7 +149,7 @@ class Search:
                     formatted_results += f"{i}. {result}\n\n"
                 return formatted_results.strip()
 
-            return ""  # Will trigger Google fallback
+            return ""
 
         except Exception:
             return ""  # Will trigger Google fallback
@@ -263,8 +261,9 @@ class Search:
 
             query_words = [word.lower() for word in query.split() if len(word) > 2]
 
-            for sentence in sentences:
-                sentence = sentence.strip()
+            for sntnce in sentences:
+                sentence = sntnce.strip()
+
                 if 30 < len(sentence) < 300:
                     sentence_lower = sentence.lower()
                     # Check if sentence contains query terms

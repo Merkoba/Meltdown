@@ -12,7 +12,7 @@ from collections.abc import Generator
 import requests  # type: ignore
 from openai import OpenAI, RateLimitError  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
-from anthropic import Anthropic  # type: ignore
+from anthropic import Anthropic, MessageStream  # type: ignore
 
 # Modules
 from .app import app
@@ -917,7 +917,7 @@ class Model:
 
         return "".join(tokens)
 
-    def process_claude_stream(self, output, tab_id: str) -> str:
+    def process_claude_stream(self, output: MessageStream, tab_id: str) -> str:
         """Handle Claude/Anthropic streaming responses which have a different format"""
         broken = False
         first_content = False
@@ -1008,9 +1008,18 @@ class Model:
                                     if partial_json:
                                         # Find the corresponding tool call and update arguments
                                         for tool_data in tool_calls_buffer.values():
-                                            tool_data["function"]["arguments"] += (
-                                                partial_json
-                                            )
+                                            if isinstance(
+                                                tool_data.get("function"), dict
+                                            ):
+                                                func_data = tool_data["function"]
+                                                if isinstance(
+                                                    func_data, dict
+                                                ) and isinstance(
+                                                    func_data.get("arguments"), str
+                                                ):
+                                                    func_data["arguments"] += (
+                                                        partial_json
+                                                    )
 
             # Process any complete tool calls
             if tool_calls_buffer and has_tool_calls:
@@ -1508,7 +1517,7 @@ class Model:
             return search.web_search(query)
         except Exception as e:
             error_msg = f"Error performing web search: {e}"
-            utils.error(errors_msg)
+            utils.error(error_msg)
             return error_msg
 
     def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
@@ -1534,17 +1543,7 @@ class Model:
                 # Parse arguments and execute function
                 try:
                     fn_args = json.loads(fn_args_str) if fn_args_str else {}
-
-                    if args.verbose:
-                        print(f"Executing tool: {fn_name}")
-                        print(f"Tool arguments: {fn_args}")
-
                     result = toolfunc(**fn_args)
-
-                    if args.verbose:
-                        print(f"Tool result length: {len(str(result))}")
-                        print(f"Tool result preview: {str(result)[:500]}...")
-                        print(f"Tool result (full): {str(result)}")
 
                     # Add tool message for the model with more context
                     tool_messages.append(
@@ -1602,24 +1601,23 @@ class Model:
             # Add assistant message with tool calls
             if self.model_is_claude(self.get_model()):
                 # Claude uses a different format for tool calls
-                assistant_content = []
-                for tool_call in tool_calls:
-                    assistant_content.append(
-                        {
-                            "type": "tool_use",
-                            "id": tool_call["id"],
-                            "name": tool_call["function"]["name"],
-                            "input": json.loads(tool_call["function"]["arguments"])
-                            if tool_call["function"]["arguments"]
-                            else {},
-                        }
-                    )
+                assistant_content = [
+                    {
+                        "type": "tool_use",
+                        "id": tool_call["id"],
+                        "name": tool_call["function"]["name"],
+                        "input": json.loads(tool_call["function"]["arguments"])
+                        if tool_call["function"]["arguments"]
+                        else {},
+                    }
+                    for tool_call in tool_calls
+                ]
 
                 messages.append({"role": "assistant", "content": assistant_content})
 
                 # Add tool results in Claude format
-                for tool_msg in tool_messages:
-                    messages.append(
+                messages.extend(
+                    [
                         {
                             "role": "user",
                             "content": [
@@ -1630,7 +1628,9 @@ class Model:
                                 }
                             ],
                         }
-                    )
+                        for tool_msg in tool_messages
+                    ]
+                )
             else:
                 # OpenAI format
                 messages.append({"role": "assistant", "tool_calls": tool_calls})
@@ -1645,13 +1645,6 @@ class Model:
                     "content": f'Based on the web search results provided above, please provide a comprehensive and detailed answer to this question: "{original_question}"\n\nUse the specific information, facts, and details from the search results to give an accurate, informative, and up-to-date response. Include relevant details, dates, numbers, and context from the search results in your answer.',
                 }
             )
-
-            if args.verbose:
-                print(f"Final messages being sent to model:")
-                for i, msg in enumerate(messages):
-                    print(
-                        f"Message {i}: {msg['role']} - {str(msg['content'])[:200]}..."
-                    )
 
             # Make another API call to get the final response
             gen_config = {
@@ -1677,7 +1670,7 @@ class Model:
                 response = self.anthropic_client.messages.create(**gen_config)
 
                 if response.content and len(response.content) > 0:
-                    return "\n\n" + response.content[0].text
+                    return f"\n\n{response.content[0].text}"
             else:
                 # Use OpenAI-compatible client for GPT and Gemini models
                 if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
@@ -1698,7 +1691,7 @@ class Model:
                 if response.choices and response.choices[0].message.content:
                     return "\n\n" + response.choices[0].message.content
 
-            return ""  # noqa: TRY300
+            return ""
 
         except Exception as e:
             utils.error(e)
