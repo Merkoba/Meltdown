@@ -684,9 +684,11 @@ class Model:
                 if config.search == "yes":
                     # Convert tools to Anthropic format using list comprehension
                     anthropic_tools = []
+
                     for tool in self.tools:
                         if isinstance(tool, dict) and tool.get("type") == "function":
                             function_data = tool.get("function", {})
+
                             if isinstance(function_data, dict):
                                 anthropic_tools.append(
                                     {
@@ -918,7 +920,6 @@ class Model:
         return "".join(tokens)
 
     def process_claude_stream(self, output: MessageStream, tab_id: str) -> str:
-        """Handle Claude/Anthropic streaming responses which have a different format"""
         broken = False
         first_content = False
         token_printed = False
@@ -932,6 +933,7 @@ class Model:
         def print_buffer() -> None:
             if not len(buffer):
                 return
+
             display.insert("".join(buffer), tab_id=tab_id)
             buffer.clear()
 
@@ -952,9 +954,11 @@ class Model:
                                 if chunk.content_block.type == "tool_use":
                                     # Handle tool use start
                                     has_tool_calls = True
+
                                     tool_id = getattr(
                                         chunk.content_block, "id", "unknown"
                                     )
+
                                     tool_name = getattr(chunk.content_block, "name", "")
 
                                     tool_calls_buffer[tool_id] = {
@@ -972,6 +976,7 @@ class Model:
                                 if chunk.delta.type == "text_delta":
                                     # Regular text content
                                     token = getattr(chunk.delta, "text", "")
+
                                     if token:
                                         if not first_content:
                                             display.remove_last_ai(tab_id)
@@ -1012,6 +1017,7 @@ class Model:
                                                 tool_data.get("function"), dict
                                             ):
                                                 func_data = tool_data["function"]
+
                                                 if isinstance(
                                                     func_data, dict
                                                 ) and isinstance(
@@ -1068,6 +1074,7 @@ class Model:
 
                     # Get the function to execute
                     toolfunc = self.toolfuncs.get(fn_name)
+
                     if not toolfunc:
                         continue
 
@@ -1099,6 +1106,7 @@ class Model:
                 if tool_messages:
                     # Get conversation context and make follow-up call
                     tabconvo = display.get_tab_convo(tab_id)
+
                     if tabconvo and tabconvo.convo.items:
                         messages: list[dict[str, Any]] = []
 
@@ -1110,6 +1118,7 @@ class Model:
                         # Add the last user message
                         last_item = tabconvo.convo.items[-1]
                         user_content = getattr(last_item, "user", "")
+
                         if user_content:
                             messages.append({"role": "user", "content": user_content})
 
@@ -1154,6 +1163,7 @@ class Model:
                             follow_up = self.openai_client.chat.completions.create(
                                 **gen_config
                             )
+
                             if (
                                 follow_up.choices
                                 and follow_up.choices[0].message.content
