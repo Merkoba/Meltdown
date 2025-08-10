@@ -88,14 +88,14 @@ class Model:
             {
                 "type": "function",
                 "function": {
-                    "name": "google_search",
-                    "description": "Use this tool to search Google for real-time information, current events, or answers to questions that are likely not in the model's training data.",
+                    "name": "web_search",
+                    "description": "Search the internet for current information, recent events, news, or any information that might not be in the training data. Use this when the user asks about recent events, current information, specific facts that need verification, or anything happening after the model's training cutoff date.",
                     "parameters": {
                         "type": "object",
                         "properties": {
                             "query": {
                                 "type": "string",
-                                "description": "The precise search query string to use for the Google search. Should be specific and keyword-focused.",
+                                "description": "The search query to use. Should be specific and keyword-focused for best results.",
                             }
                         },
                         "required": ["query"],
@@ -106,7 +106,7 @@ class Model:
 
         # Map tool names to actual callable functions
         self.toolfuncs = {
-            "google_search": self.google_search,
+            "web_search": self.web_search,
         }
 
     def setup(self) -> None:
@@ -679,6 +679,21 @@ class Model:
                     self.release_lock()
                     return
 
+                # Add tools for Claude if search is enabled
+                if config.search == "yes":
+                    # Convert tools to Anthropic format
+                    anthropic_tools = []
+
+                    for tool in self.tools:
+                        if tool["type"] == "function":
+                            anthropic_tools.append({
+                                "name": tool["function"]["name"],
+                                "description": tool["function"]["description"],
+                                "input_schema": tool["function"]["parameters"]
+                            })
+
+                    gen_config["tools"] = anthropic_tools
+
                 output = self.anthropic_client.messages.create(
                     **gen_config,
                     timeout=10,
@@ -766,6 +781,7 @@ class Model:
         tokens: list[str] = []
         buffer: list[str] = []
         tool_calls_buffer: ToolCallsBuffer = {}
+        has_tool_calls = False
 
         def print_buffer() -> None:
             if not len(buffer):
@@ -789,40 +805,39 @@ class Model:
                 if hasattr(delta, "tool_calls") and delta.tool_calls:
                     # Handle tool calls - accumulate them as they stream in
                     for tool_call in delta.tool_calls:
-                        if hasattr(tool_call, "index") and tool_call.index is not None:
-                            index = tool_call.index
+                        # Check if tool call has index - handle both cases
+                        index = getattr(tool_call, "index", None)
 
-                            # Initialize tool call entry if not exists
-                            # Convert index to string to ensure consistent dictionary key type
+                        # Use index if available, otherwise use "0" as default
+                        if index is not None:
                             str_index = str(index)
-                            if str_index not in tool_calls_buffer:
-                                tool_calls_buffer[str_index] = {
-                                    "id": "",
-                                    "type": "function",
-                                    "function": {"name": "", "arguments": ""},
-                                }
+                        else:
+                            # For tool calls without index, use "0" as default key
+                            str_index = "0"
 
-                            # Update tool call data
-                            if tool_call.id:
-                                str_index = str(index)
-                                tool_calls_buffer[str_index]["id"] = tool_call.id
+                        has_tool_calls = True  # Set this whenever we process any tool call
 
-                            if hasattr(tool_call, "function") and tool_call.function:
-                                if tool_call.function.name:
-                                    # Make sure index is treated as a string key
-                                    str_index = str(index)
-                                    if "function" in tool_calls_buffer[str_index]:
-                                        tool_calls_buffer[str_index]["function"][
-                                            "name"
-                                        ] = tool_call.function.name
-                                if tool_call.function.arguments:
-                                    # Make sure index is treated as a string key
-                                    str_index = str(index)
-                                    if "function" in tool_calls_buffer[str_index]:
-                                        tool_calls_buffer[str_index]["function"][
-                                            "arguments"
-                                        ] += tool_call.function.arguments
+                        # Initialize tool call entry if not exists
+                        if str_index not in tool_calls_buffer:
+                            tool_calls_buffer[str_index] = {
+                                "id": "",
+                                "type": "function",
+                                "function": {"name": "", "arguments": ""},
+                            }
 
+                        # Update tool call data
+                        if hasattr(tool_call, 'id') and tool_call.id:
+                            tool_calls_buffer[str_index]["id"] = tool_call.id
+
+                        if hasattr(tool_call, "function") and tool_call.function:
+                            if hasattr(tool_call.function, 'name') and tool_call.function.name:
+                                tool_calls_buffer[str_index]["function"][
+                                    "name"
+                                ] = tool_call.function.name
+                            if hasattr(tool_call.function, 'arguments') and tool_call.function.arguments:
+                                tool_calls_buffer[str_index]["function"][
+                                    "arguments"
+                                ] += tool_call.function.arguments
                 elif hasattr(delta, "content") and delta.content:
                     if not first_content:
                         display.remove_last_ai(tab_id)
@@ -854,16 +869,26 @@ class Model:
                         buffer_date = now
 
             # Process any complete tool calls
-            if tool_calls_buffer:
+            if tool_calls_buffer and has_tool_calls:
                 if not broken:
                     print_buffer()  # Clear any remaining content first
 
+                # If we only have tool calls and no content, show a message
+                if not first_content:
+                    display.remove_last_ai(tab_id)
+                    display.prompt("ai", text="Using tools...", tab_id=tab_id)
+
                 # Execute tool calls and get model's response
                 tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
+
                 if tool_response:
+                    # Replace the "Using tools..." message with the actual response
+                    if not first_content:
+                        display.remove_last_ai(tab_id)
+                        display.prompt("ai", tab_id=tab_id)
+
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
-
         except BaseException as e:
             utils.error(e)
 
@@ -1333,8 +1358,12 @@ class Model:
     def get_model(self) -> str:
         return variables.replace_variables(config.model)
 
-    def google_search(self, query: str) -> str:
-        return utils.google_search(query)
+    def web_search(self, query: str) -> str:
+        try:
+            result = utils.google_search(query)
+            return result
+        except Exception as e:
+            return f"Error performing web search: {e}"
 
     def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
         try:
@@ -1352,6 +1381,7 @@ class Model:
 
                 # Get the function to execute
                 toolfunc = self.toolfuncs.get(fn_name)
+
                 if not toolfunc:
                     continue
 
@@ -1378,7 +1408,7 @@ class Model:
                         }
                     )
 
-                except json.JSONDecodeError:
+                except json.JSONDecodeError as e:
                     continue
                 except Exception as e:
                     # Add error message for the model

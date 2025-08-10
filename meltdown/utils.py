@@ -709,8 +709,11 @@ class Utils:
 
     def google_search(self, query: str) -> str:
         try:
+            msg("Doing a Google Search")
+
             # Prepare search URL and parameters
             search_url = "https://www.google.com/search"
+
             params = {
                 "q": query,
                 "num": 5,  # Number of results to return
@@ -729,6 +732,7 @@ class Utils:
             response = requests.get(
                 search_url, params=params, headers=headers, timeout=10
             )
+
             response.raise_for_status()
 
             # Parse the HTML response to extract search results
@@ -750,25 +754,32 @@ class Utils:
                     # Extract URL
                     start_url = line.find('href="') + 6
                     end_url = line.find('"', start_url)
+
                     if start_url > 5 and end_url > start_url:
                         url = line[start_url:end_url]
+
                         if url.startswith("/url?q="):
                             url = url[7:]  # Remove /url?q= prefix
                             url = url.split("&")[0]  # Remove additional parameters
+
                         current_result["url"] = url
 
                     # Extract title (remove HTML tags)
                     title_start = line.find(">")
                     title_end = line.rfind("<")
+
                     if title_start > 0 and title_end > title_start:
                         title = line[title_start + 1 : title_end]
+
                         # Clean up HTML entities and tags
                         title = (
                             title.replace("&amp;", "&")
                             .replace("&lt;", "<")
                             .replace("&gt;", ">")
                         )
+
                         title = title.replace("<b>", "").replace("</b>", "")
+
                         if title and len(title) > 3:
                             current_result["title"] = title
 
@@ -784,11 +795,13 @@ class Utils:
                     import re
 
                     snippet = re.sub(r"<[^>]+>", "", snippet)
+
                     snippet = (
                         snippet.replace("&amp;", "&")
                         .replace("&lt;", "<")
                         .replace("&gt;", ">")
                     )
+
                     snippet = snippet.strip()
 
                     if snippet and len(snippet) > 20 and len(snippet) < 300:
@@ -813,10 +826,12 @@ class Utils:
 
             for i, result in enumerate(results[:5], 1):
                 formatted_results += f"{i}. {result.get('title', 'No title')}\n"
+
                 if "url" in result:
                     formatted_results += f"   URL: {result['url']}\n"
                 if "snippet" in result:
                     formatted_results += f"   {result['snippet']}\n"
+
                 formatted_results += "\n"
 
             return formatted_results.strip()
