@@ -34,7 +34,6 @@ class Args:
         self.taps_command = ""
         self.wrap_tabs = False
         self.wrap_menus = True
-        self.stream = True
         self.maximize = False
         self.show_tabs = True
         self.allow_empty = True
@@ -363,7 +362,6 @@ class Args:
             ("no_temp", "system_temp"),
             ("no_keyboard", "keyboard"),
             ("no_tabs", "show_tabs"),
-            ("no_stream", "stream"),
             ("no_taps", "taps"),
             ("no_empty", "allow_empty"),
             ("no_bottom_autohide", "bottom_autohide"),

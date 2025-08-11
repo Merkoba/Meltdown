@@ -292,12 +292,6 @@ class ArgSpec:
         )
 
         self.add_argument(
-            "no_stream",
-            action="store_false",
-            info="Don't stream responses",
-        )
-
-        self.add_argument(
             "no_empty",
             action="store_false",
             info="Don't save empty conversations",

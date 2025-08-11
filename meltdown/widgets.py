@@ -73,6 +73,8 @@ class Widgets:
         self.gpu_layers: EntryBox
         self.search_label: tk.Label
         self.search: ttk.Combobox
+        self.stream_label: tk.Label
+        self.stream: ttk.Combobox
         self.format_label: tk.Label
         self.format: ttk.Combobox
         self.temperature_label: tk.Label
@@ -355,6 +357,7 @@ class Widgets:
         setup_combobox("mode")
         setup_combobox("logits")
         setup_combobox("search")
+        setup_combobox("stream")
 
     def setup_binds(self) -> None:
         self.model_icon.bind("<Button-1>", lambda e: self.model_icon_click())

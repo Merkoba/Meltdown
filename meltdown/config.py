@@ -62,6 +62,7 @@ class Config:
         self.default_threads = 6
         self.default_mlock = "yes"
         self.default_search = "no"
+        self.default_stream = "yes"
         self.default_theme = "dark"
         self.default_gpu_layers = 33
         self.default_stop = "<|im_start|> ;; <|im_end|>"
@@ -87,6 +88,7 @@ class Config:
         self.threads = self.default_threads
         self.mlock = self.default_mlock
         self.search = self.default_search
+        self.stream = self.default_stream
         self.theme = self.default_theme
         self.gpu_layers = self.default_gpu_layers
         self.context = self.default_context

@@ -617,7 +617,7 @@ class Model:
 
         gen_config = {
             "messages": messages,
-            "stream": args.stream,
+            "stream": config.stream == "yes",
             "model": self.get_model(),
             "temperature": config.temperature,
             "top_p": config.top_p,
@@ -750,7 +750,7 @@ class Model:
             return
 
         try:
-            if args.stream:
+            if config.stream == "yes":
                 ans = self.process_stream(output, tab_id)
             else:
                 ans = self.process_instant(output, tab_id)

@@ -97,6 +97,10 @@ class Details:
         self.make_label(widgets, data, "search", "Search", padx=(0, app.theme.padx))
         self.make_combobox(widgets, data, "search", ["yes", "no"], width=self.width_2)
 
+    def add_stream(self, widgets: Widgets, data: FrameData) -> None:
+        self.make_label(widgets, data, "stream", "Stream", padx=(0, app.theme.padx))
+        self.make_combobox(widgets, data, "stream", ["yes", "no"], width=self.width_2)
+
     def add_format(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "format", "Format")
         values = ["auto"]
@@ -159,6 +163,7 @@ class Details:
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
+        self.add_stream(widgets, data)
         self.add_search(widgets, data)
         self.add_format(widgets, data)
         self.add_before(widgets, data)

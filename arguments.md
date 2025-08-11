@@ -310,14 +310,6 @@ Action: store_false
 
 ---
 
-### no-stream
-
-Don't stream responses
-
-Action: store_false
-
----
-
 ### no-empty
 
 Don't save empty conversations
