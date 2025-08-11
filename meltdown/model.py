@@ -921,9 +921,11 @@ class Model:
                     try:
                         if isinstance(fn_args_raw, str):
                             fn_args_raw_str = fn_args_raw.strip()
+
                             exec_args = (
                                 json.loads(fn_args_raw_str) if fn_args_raw_str else {}
                             )
+
                             args_str_for_assistant = fn_args_raw_str or "{}"
                         elif isinstance(fn_args_raw, dict):
                             exec_args = fn_args_raw
@@ -997,7 +999,9 @@ class Model:
                         messages.append(
                             {"role": "assistant", "tool_calls": assistant_tool_calls}
                         )
+
                         messages.extend(tool_messages)
+
                         original_question = (
                             user_content if user_content else "the user's question"
                         )
