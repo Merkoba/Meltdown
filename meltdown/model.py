@@ -783,10 +783,6 @@ class Model:
         output: Generator[ChatCompletionChunk, None, None],  # type: ignore
         tab_id: str,
     ) -> str:
-        # Check if this is a Claude response (different structure)
-        if self.model_is_claude(self.get_model()):
-            return self.process_claude_stream(output, tab_id)
-
         broken = False
         first_content = False
         token_printed = False
@@ -817,23 +813,18 @@ class Model:
                 token = None
 
                 if hasattr(delta, "tool_calls") and delta.tool_calls:
-                    # Handle tool calls - accumulate them as they stream in
                     for tool_call in delta.tool_calls:
-                        # Check if tool call has index - handle both cases
                         index = getattr(tool_call, "index", None)
 
-                        # Use index if available, otherwise use "0" as default
                         if index is not None:
                             str_index = str(index)
                         else:
-                            # For tool calls without index, use "0" as default key
                             str_index = "0"
 
                         has_tool_calls = (
-                            True  # Set this whenever we process any tool call
+                            True
                         )
 
-                        # Initialize tool call entry if not exists
                         if str_index not in tool_calls_buffer:
                             tool_calls_buffer[str_index] = {
                                 "id": "",
@@ -841,7 +832,6 @@ class Model:
                                 "function": {"name": "", "arguments": ""},
                             }
 
-                        # Update tool call data
                         if hasattr(tool_call, "id") and tool_call.id:
                             tool_calls_buffer[str_index]["id"] = tool_call.id
 
@@ -890,165 +880,23 @@ class Model:
                         print_buffer()
                         buffer_date = now
 
-            # Process any complete tool calls
             if tool_calls_buffer and has_tool_calls:
                 if not broken:
-                    print_buffer()  # Clear any remaining content first
+                    print_buffer()
 
-                # If we only have tool calls and no content, show a message
                 if not first_content:
                     display.remove_last_ai(tab_id)
                     display.prompt("ai", text="Using tools...", tab_id=tab_id)
 
-                # Execute tool calls and get model's response
                 tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
 
                 if tool_response:
-                    # Replace the "Using tools..." message with the actual response
                     if not first_content:
                         display.remove_last_ai(tab_id)
                         display.prompt("ai", tab_id=tab_id)
 
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
-        except BaseException as e:
-            utils.error(e)
-
-        if not broken:
-            print_buffer()
-
-        return "".join(tokens)
-
-    def process_claude_stream(self, output: MessageStream, tab_id: str) -> str:
-        broken = False
-        first_content = False
-        token_printed = False
-        last_token = " "
-        buffer_date = 0.0
-        tokens: list[str] = []
-        buffer: list[str] = []
-        tool_calls_buffer = {}
-        has_tool_calls = False
-
-        def print_buffer() -> None:
-            if not len(buffer):
-                return
-
-            display.insert("".join(buffer), tab_id=tab_id)
-            buffer.clear()
-
-        try:
-            for chunk in output:
-                if self.stop_stream_thread.is_set():
-                    broken = True
-                    break
-
-                if not chunk:
-                    continue
-
-                # Claude streaming format
-                if hasattr(chunk, "type"):
-                    if chunk.type == "content_block_start":
-                        if hasattr(chunk, "content_block") and chunk.content_block:
-                            if hasattr(chunk.content_block, "type"):
-                                if chunk.content_block.type == "tool_use":
-                                    # Handle tool use start
-                                    has_tool_calls = True
-
-                                    tool_id = getattr(
-                                        chunk.content_block, "id", "unknown"
-                                    )
-
-                                    tool_name = getattr(chunk.content_block, "name", "")
-
-                                    tool_calls_buffer[tool_id] = {
-                                        "id": tool_id,
-                                        "type": "function",
-                                        "function": {
-                                            "name": tool_name,
-                                            "arguments": "",
-                                        },
-                                    }
-
-                    elif chunk.type == "content_block_delta":
-                        if hasattr(chunk, "delta") and chunk.delta:
-                            if hasattr(chunk.delta, "type"):
-                                if chunk.delta.type == "text_delta":
-                                    # Regular text content
-                                    token = getattr(chunk.delta, "text", "")
-
-                                    if token:
-                                        if not first_content:
-                                            display.remove_last_ai(tab_id)
-                                            display.prompt("ai", tab_id=tab_id)
-                                            first_content = True
-
-                                        if token == "\n":
-                                            if not token_printed:
-                                                continue
-                                        elif token == " ":
-                                            if last_token == " ":
-                                                continue
-
-                                        last_token = token
-
-                                        if not token_printed:
-                                            token = token.lstrip()
-                                            token_printed = True
-
-                                        tokens.append(token)
-                                        buffer.append(token)
-                                        now = utils.now()
-
-                                        if (now - buffer_date) >= args.delay:
-                                            print_buffer()
-                                            buffer_date = now
-
-                                elif chunk.delta.type == "input_json_delta":
-                                    # Tool arguments being streamed
-                                    partial_json = getattr(
-                                        chunk.delta, "partial_json", ""
-                                    )
-
-                                    if partial_json:
-                                        # Find the corresponding tool call and update arguments
-                                        for tool_data in tool_calls_buffer.values():
-                                            if isinstance(
-                                                tool_data.get("function"), dict
-                                            ):
-                                                func_data = tool_data["function"]
-
-                                                if isinstance(
-                                                    func_data, dict
-                                                ) and isinstance(
-                                                    func_data.get("arguments"), str
-                                                ):
-                                                    func_data["arguments"] += (
-                                                        partial_json
-                                                    )
-
-            # Process any complete tool calls
-            if tool_calls_buffer and has_tool_calls:
-                if not broken:
-                    print_buffer()  # Clear any remaining content first
-
-                # If we only have tool calls and no content, show a message
-                if not first_content:
-                    display.remove_last_ai(tab_id)
-                    display.prompt("ai", text="Using tools...", tab_id=tab_id)
-
-                # Execute tool calls and get model's response
-                tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
-
-                if tool_response:
-                    # Replace the "Using tools..." message with the actual response
-                    if not first_content:
-                        display.remove_last_ai(tab_id)
-                        display.prompt("ai", tab_id=tab_id)
-
-                    tokens.append(tool_response)
-                    display.insert(tool_response, tab_id=tab_id)
-
         except BaseException as e:
             utils.error(e)
 
@@ -1061,9 +909,7 @@ class Model:
         try:
             message = output.choices[0].message
 
-            # Check if there are tool calls
             if hasattr(message, "tool_calls") and message.tool_calls:
-                # Handle tool calls
                 tool_messages = []
                 tool_calls = []
 
@@ -1071,8 +917,6 @@ class Model:
                     fn_name = tool_call.function.name
                     fn_args_str = tool_call.function.arguments
                     tool_call_id = tool_call.id
-
-                    # Get the function to execute
                     toolfunc = self.toolfuncs.get(fn_name)
 
                     if not toolfunc:
@@ -1104,25 +948,21 @@ class Model:
                         )
 
                 if tool_messages:
-                    # Get conversation context and make follow-up call
                     tabconvo = display.get_tab_convo(tab_id)
 
                     if tabconvo and tabconvo.convo.items:
                         messages: list[dict[str, Any]] = []
 
-                        # Add system message if exists
                         if config.system:
                             system = utils.replace_keywords(config.system)
                             messages.append({"role": "system", "content": system})
 
-                        # Add the last user message
                         last_item = tabconvo.convo.items[-1]
                         user_content = getattr(last_item, "user", "")
 
                         if user_content:
                             messages.append({"role": "user", "content": user_content})
 
-                        # Add assistant message with tool calls
                         messages.append(
                             {
                                 "role": "assistant",
@@ -1140,10 +980,8 @@ class Model:
                             }
                         )
 
-                        # Add tool messages
                         messages.extend(tool_messages)
 
-                        # Make follow-up API call
                         gen_config = {
                             "messages": messages,
                             "stream": False,
@@ -1177,7 +1015,6 @@ class Model:
 
                 return ""
 
-            # Normal response without tool calls
             response = message.content.strip()
 
             if response:
