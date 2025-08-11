@@ -641,6 +641,7 @@ class Model:
 
         if config.search == "yes":
             gen_config["tools"] = self.tools
+            gen_config["tool_choice"] = "auto"
 
         if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
             self.get_model()
@@ -907,20 +908,57 @@ class Model:
 
             if hasattr(message, "tool_calls") and message.tool_calls:
                 tool_messages = []
-                tool_calls = []
+                assistant_tool_calls = []
 
                 for tool_call in message.tool_calls:
-                    fn_name = tool_call.function.name
-                    fn_args_str = tool_call.function.arguments
-                    tool_call_id = tool_call.id
+                    fn_name = getattr(tool_call.function, "name", "")
+                    fn_args_raw = getattr(tool_call.function, "arguments", None)
+                    tool_call_id = getattr(tool_call, "id", "")
                     toolfunc = self.toolfuncs.get(fn_name)
+                    exec_args: dict[str, Any] = {}
+                    args_str_for_assistant = "{}"
+
+                    try:
+                        if isinstance(fn_args_raw, str):
+                            fn_args_raw_str = fn_args_raw.strip()
+                            exec_args = (
+                                json.loads(fn_args_raw_str) if fn_args_raw_str else {}
+                            )
+                            args_str_for_assistant = fn_args_raw_str or "{}"
+                        elif isinstance(fn_args_raw, dict):
+                            exec_args = fn_args_raw
+                            args_str_for_assistant = json.dumps(fn_args_raw)
+                        else:
+                            exec_args = {}
+                            args_str_for_assistant = "{}"
+                    except Exception:
+                        exec_args = {}
+
+                        try:
+                            args_str_for_assistant = (
+                                fn_args_raw
+                                if isinstance(fn_args_raw, str)
+                                else json.dumps({})
+                            )
+                        except Exception:
+                            args_str_for_assistant = "{}"
+
+                    assistant_tool_calls.append(
+                        {
+                            "id": tool_call_id,
+                            "type": "function",
+                            "function": {
+                                "name": fn_name,
+                                "arguments": args_str_for_assistant,
+                            },
+                        }
+                    )
 
                     if not toolfunc:
                         continue
 
                     try:
-                        fn_args = json.loads(fn_args_str) if fn_args_str else {}
-                        result = toolfunc(**fn_args)
+                        result = toolfunc(**exec_args)
 
                         tool_messages.append(
                             {
@@ -930,9 +968,6 @@ class Model:
                                 "content": str(result),
                             }
                         )
-
-                        tool_calls.append(tool_call)
-
                     except Exception as e:
                         tool_messages.append(
                             {
@@ -960,23 +995,24 @@ class Model:
                             messages.append({"role": "user", "content": user_content})
 
                         messages.append(
-                            {
-                                "role": "assistant",
-                                "tool_calls": [
-                                    {
-                                        "id": tc.id,
-                                        "type": "function",
-                                        "function": {
-                                            "name": tc.function.name,
-                                            "arguments": tc.function.arguments,
-                                        },
-                                    }
-                                    for tc in tool_calls
-                                ],
-                            }
+                            {"role": "assistant", "tool_calls": assistant_tool_calls}
+                        )
+                        messages.extend(tool_messages)
+                        original_question = (
+                            user_content if user_content else "the user's question"
                         )
 
-                        messages.extend(tool_messages)
+                        messages.append(
+                            {
+                                "role": "user",
+                                "content": (
+                                    f"Based on the web search results provided above, please provide a comprehensive and detailed "
+                                    f'answer to this question: "{original_question}"\n\nUse the specific information, facts, '
+                                    f"and details from the search results to give an accurate, informative, and up-to-date response. "
+                                    f"Include relevant details, dates, numbers, and context from the search results in your answer."
+                                ),
+                            }
+                        )
 
                         gen_config = {
                             "messages": messages,
@@ -990,6 +1026,10 @@ class Model:
                             self.get_model()
                         ):
                             gen_config["max_completion_tokens"] = config.max_tokens
+
+                            if config.search == "yes":
+                                gen_config["tools"] = self.tools
+                                gen_config["tool_choice"] = "none"
                         else:
                             gen_config["max_tokens"] = config.max_tokens
                             gen_config["top_k"] = config.top_k
@@ -1001,7 +1041,9 @@ class Model:
                             )
                         elif self.model:
                             local_gen_config = gen_config.copy()
-                            del local_gen_config["model"]
+
+                            if "model" in local_gen_config:
+                                del local_gen_config["model"]
 
                             follow_up = self.model.create_chat_completion_openai_v1(
                                 **local_gen_config
