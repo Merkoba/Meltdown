@@ -362,6 +362,8 @@ class Model:
             self.model = Llama(
                 model_path=model,
                 n_ctx=config.context,
+                n_batch=config.batch_size,
+                n_ubatch=config.ubatch_size,
                 n_threads=config.threads,
                 n_gpu_layers=config.gpu_layers,
                 use_mlock=mlock,

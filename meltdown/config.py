@@ -69,6 +69,8 @@ class Config:
         self.default_mode = "text"
         self.default_theme = "dark"
         self.default_logits = "normal"
+        self.default_batch_size = 512
+        self.default_ubatch_size = 512
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -98,6 +100,8 @@ class Config:
         self.mode = self.default_mode
         self.theme = self.default_theme
         self.logits = self.default_logits
+        self.batch_size = self.default_batch_size
+        self.ubatch_size = self.default_ubatch_size
 
         self.locals = [
             "theme",
@@ -127,6 +131,8 @@ class Config:
             "format",
             "mode",
             "logits",
+            "batch_size",
+            "ubatch_size",
         ]
 
         self.path_keys = [

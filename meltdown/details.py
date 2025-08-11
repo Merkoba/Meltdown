@@ -93,6 +93,14 @@ class Details:
         self.make_label(widgets, data, "gpu_layers", "GPU")
         self.make_entry(widgets, data, "gpu_layers")
 
+    def add_batch_size(self, widgets: Widgets, data: FrameData) -> None:
+        self.make_label(widgets, data, "batch_size", "n-batch")
+        self.make_entry(widgets, data, "batch_size")
+
+    def add_ubatch_size(self, widgets: Widgets, data: FrameData) -> None:
+        self.make_label(widgets, data, "ubatch_size", "u-batch")
+        self.make_entry(widgets, data, "ubatch_size")
+
     def add_search(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "search", "Search", padx=(0, app.theme.padx))
         self.make_combobox(widgets, data, "search", ["yes", "no"], width=self.width_2)
@@ -160,6 +168,8 @@ class Details:
         self.add_temperature(widgets, data)
         self.add_threads(widgets, data)
         self.add_gpu_layers(widgets, data)
+        self.add_batch_size(widgets, data)
+        self.add_ubatch_size(widgets, data)
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
