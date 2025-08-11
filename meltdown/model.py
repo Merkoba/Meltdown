@@ -12,7 +12,7 @@ from collections.abc import Generator
 import requests  # type: ignore
 from openai import OpenAI, RateLimitError  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
-from anthropic import Anthropic, MessageStream  # type: ignore
+from anthropic import Anthropic  # type: ignore
 
 # Modules
 from .app import app
@@ -639,6 +639,9 @@ class Model:
             gen_config["max_tokens"] = config.max_tokens
             del gen_config["model"]
 
+        if config.search == "yes":
+            gen_config["tools"] = self.tools
+
         if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
             self.get_model()
         ):
@@ -647,9 +650,6 @@ class Model:
                     self.stream_loading = False
                     self.release_lock()
                     return
-
-                if config.search == "yes":
-                    gen_config["tools"] = self.tools
 
                 output = self.openai_client.chat.completions.create(
                     **gen_config, timeout=10
@@ -680,9 +680,7 @@ class Model:
                     self.release_lock()
                     return
 
-                # Add tools for Claude if search is enabled
                 if config.search == "yes":
-                    # Convert tools to Anthropic format using list comprehension
                     anthropic_tools = []
 
                     for tool in self.tools:
@@ -821,9 +819,7 @@ class Model:
                         else:
                             str_index = "0"
 
-                        has_tool_calls = (
-                            True
-                        )
+                        has_tool_calls = True
 
                         if str_index not in tool_calls_buffer:
                             tool_calls_buffer[str_index] = {
@@ -996,22 +992,29 @@ class Model:
                             gen_config["max_completion_tokens"] = config.max_tokens
                         else:
                             gen_config["max_tokens"] = config.max_tokens
+                            gen_config["top_k"] = config.top_k
+                            gen_config["seed"] = config.seed
 
                         if self.openai_client:
                             follow_up = self.openai_client.chat.completions.create(
                                 **gen_config
                             )
+                        elif self.model:
+                            local_gen_config = gen_config.copy()
+                            del local_gen_config["model"]
 
-                            if (
-                                follow_up.choices
-                                and follow_up.choices[0].message.content
-                            ):
-                                response = follow_up.choices[0].message.content.strip()
+                            follow_up = self.model.create_chat_completion_openai_v1(
+                                **local_gen_config
+                            )
+                        else:
+                            return ""
 
-                                display.remove_last_ai(tab_id)
-                                display.prompt("ai", tab_id=tab_id)
-                                display.insert(response, tab_id=tab_id)
-                                return str(response)
+                        if follow_up.choices and follow_up.choices[0].message.content:
+                            response = follow_up.choices[0].message.content.strip()
+                            display.remove_last_ai(tab_id)
+                            display.prompt("ai", tab_id=tab_id)
+                            display.insert(response, tab_id=tab_id)
+                            return str(response)
 
                 return ""
 
@@ -1519,7 +1522,7 @@ class Model:
                 if response.content and len(response.content) > 0:
                     return f"\n\n{response.content[0].text}"
             else:
-                # Use OpenAI-compatible client for GPT and Gemini models
+                # Use OpenAI-compatible client for GPT and Gemini models, or local model
                 if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
                     self.get_model()
                 ):
@@ -1527,13 +1530,25 @@ class Model:
                     if not self.model_is_gemini(self.get_model()):
                         gen_config["seed"] = config.seed
                 else:
+                    # Local model configuration
                     gen_config["max_tokens"] = config.max_tokens
+                    gen_config["top_k"] = config.top_k
                     gen_config["seed"] = config.seed
 
-                if not self.openai_client:
-                    return ""
-
-                response = self.openai_client.chat.completions.create(**gen_config)
+                # Choose the right client/model
+                if self.openai_client:
+                    # Remote models (GPT, Gemini)
+                    response = self.openai_client.chat.completions.create(**gen_config)
+                elif self.model:
+                    # Local models
+                    # Remove model parameter for local models
+                    local_gen_config = gen_config.copy()
+                    del local_gen_config["model"]
+                    response = self.model.create_chat_completion_openai_v1(
+                        **local_gen_config
+                    )
+                else:
+                    return "\n\nError: No model available"
 
                 if response.choices and response.choices[0].message.content:
                     return "\n\n" + response.choices[0].message.content
