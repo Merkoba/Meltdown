@@ -12,7 +12,6 @@ from collections.abc import Generator
 import requests  # type: ignore
 from openai import OpenAI, RateLimitError  # type: ignore
 from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
-from anthropic import Anthropic  # type: ignore
 
 # Modules
 from .app import app
@@ -298,7 +297,6 @@ class Model:
 
         try:
             now = utils.now()
-            self.anthropic_client = Anthropic(api_key=self.anthropic_key)
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "anthropic"
@@ -636,6 +634,9 @@ class Model:
             gen_config["max_tokens"] = config.max_tokens
             del gen_config["seed"]
             del gen_config["stop"]
+
+            if config.search == "yes":
+                gen_config["stream"] = False
         else:
             gen_config["top_k"] = config.top_k
             gen_config["max_tokens"] = config.max_tokens
@@ -643,11 +644,13 @@ class Model:
 
         if config.search == "yes":
             gen_config["tools"] = self.tools
-            gen_config["tool_choice"] = "auto"
 
-        if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
-            self.get_model()
-        ):
+            if not self.model_is_claude(self.get_model()):
+                gen_config["tool_choice"] = "auto"
+
+        if self.model_is_gpt(self.get_model()) or \
+            self.model_is_gemini(self.get_model()) or \
+            self.model_is_claude(self.get_model()):
             try:
                 if not self.openai_client:
                     self.stream_loading = False
@@ -668,58 +671,6 @@ class Model:
 
                 display.print(
                     "Error: GPT model failed to stream."
-                    " You might not have access to this particular model,"
-                    " not enough credits, invalid API key,"
-                    " or there is no internet connection."
-                )
-
-                self.stream_loading = False
-                self.release_lock()
-                return
-        elif self.model_is_claude(self.get_model()):
-            try:
-                if not self.anthropic_client:
-                    self.stream_loading = False
-                    self.release_lock()
-                    return
-
-                if config.search == "yes":
-                    anthropic_tools = []
-
-                    for tool in self.tools:
-                        if isinstance(tool, dict) and tool.get("type") == "function":
-                            function_data = tool.get("function", {})
-
-                            if isinstance(function_data, dict):
-                                anthropic_tools.append(
-                                    {
-                                        "name": function_data.get("name", ""),
-                                        "description": function_data.get(
-                                            "description", ""
-                                        ),
-                                        "input_schema": function_data.get(
-                                            "parameters", {}
-                                        ),
-                                    }
-                                )
-
-                    gen_config["tools"] = anthropic_tools
-
-                output = self.anthropic_client.messages.create(
-                    **gen_config,
-                    timeout=10,
-                )
-            except RateLimitError as e:
-                utils.error(e)
-                display.print("Error: Rate limit exceeded.")
-                self.stream_loading = False
-                self.release_lock()
-                return
-            except BaseException as e:
-                utils.error(e)
-
-                display.print(
-                    "Error: Anthropic model failed to stream."
                     " You might not have access to this particular model,"
                     " not enough credits, invalid API key,"
                     " or there is no internet connection."
@@ -807,57 +758,64 @@ class Model:
                     broken = True
                     break
 
-                if (not chunk) or (not chunk.choices):  # type: ignore
+                if not chunk:
                     continue
 
-                delta = chunk.choices[0].delta  # type: ignore
                 token = None
+                utils.q(998)
 
-                if hasattr(delta, "tool_calls") and delta.tool_calls:
-                    for tool_call in delta.tool_calls:
-                        index = getattr(tool_call, "index", None)
+                if hasattr(chunk, "choices") and chunk.choices:
+                    delta = chunk.choices[0].delta  # type: ignore
+                    token = None
+                    utils.q(1111111111)
+                    if hasattr(delta, "tool_calls") and delta.tool_calls:
+                        utils.q(22222222)
+                        for tool_call in delta.tool_calls:
+                            index = getattr(tool_call, "index", None)
 
-                        if index is not None:
-                            str_index = str(index)
-                        else:
-                            str_index = "0"
+                            if index is not None:
+                                str_index = str(index)
+                            else:
+                                str_index = "0"
 
-                        has_tool_calls = True
+                            has_tool_calls = True
 
-                        if str_index not in tool_calls_buffer:
-                            tool_calls_buffer[str_index] = {
-                                "id": "",
-                                "type": "function",
-                                "function": {"name": "", "arguments": ""},
-                            }
+                            if str_index not in tool_calls_buffer:
+                                tool_calls_buffer[str_index] = {
+                                    "id": "",
+                                    "type": "function",
+                                    "function": {"name": "", "arguments": ""},
+                                }
 
-                        if hasattr(tool_call, "id") and tool_call.id:
-                            tool_calls_buffer[str_index]["id"] = tool_call.id
+                            if hasattr(tool_call, "id") and tool_call.id:
+                                tool_calls_buffer[str_index]["id"] = tool_call.id
 
-                        if hasattr(tool_call, "function") and tool_call.function:
-                            if (
-                                hasattr(tool_call.function, "name")
-                                and tool_call.function.name
-                            ):
-                                tool_calls_buffer[str_index]["function"]["name"] = (
-                                    tool_call.function.name
-                                )
-                            if (
-                                hasattr(tool_call.function, "arguments")
-                                and tool_call.function.arguments
-                            ):
-                                tool_calls_buffer[str_index]["function"][
-                                    "arguments"
-                                ] += tool_call.function.arguments
-                elif hasattr(delta, "content") and delta.content:
+                            if hasattr(tool_call, "function") and tool_call.function:
+                                if (
+                                    hasattr(tool_call.function, "name")
+                                    and tool_call.function.name
+                                ):
+                                    tool_calls_buffer[str_index]["function"]["name"] = (
+                                        tool_call.function.name
+                                    )
+                                if (
+                                    hasattr(tool_call.function, "arguments")
+                                    and tool_call.function.arguments
+                                ):
+                                    tool_calls_buffer[str_index]["function"][
+                                        "arguments"
+                                    ] += tool_call.function.arguments
+                    elif hasattr(delta, "content") and delta.content:
+                        token = delta.content
+                else:
+                    continue
+
+                if token:
                     if not first_content:
                         display.remove_last_ai(tab_id)
                         display.prompt("ai", tab_id=tab_id)
                         first_content = True
 
-                    token = delta.content
-
-                if token:
                     if token == "\n":
                         if not token_printed:
                             continue
@@ -1028,9 +986,9 @@ class Model:
                             "top_p": config.top_p,
                         }
 
-                        if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
-                            self.get_model()
-                        ):
+                        if self.model_is_gpt(self.get_model()) or \
+                            self.model_is_gemini(self.get_model()) or \
+                            self.model_is_claude(self.get_model()):
                             gen_config["max_completion_tokens"] = config.max_tokens
 
                             if config.search == "yes":
@@ -1420,7 +1378,6 @@ class Model:
 
     def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
         try:
-            # Convert buffer to list of complete tool calls
             tool_calls = []
             tool_messages = []
 
@@ -1432,18 +1389,15 @@ class Model:
                 fn_args_str = tool_call_data["function"]["arguments"]
                 tool_call_id = tool_call_data["id"]
 
-                # Get the function to execute
                 toolfunc = self.toolfuncs.get(fn_name)
 
                 if not toolfunc:
                     continue
 
-                # Parse arguments and execute function
                 try:
                     fn_args = json.loads(fn_args_str) if fn_args_str else {}
                     result = toolfunc(**fn_args)
 
-                    # Add tool message for the model with more context
                     tool_messages.append(
                         {
                             "tool_call_id": tool_call_id,
@@ -1464,7 +1418,6 @@ class Model:
                 except json.JSONDecodeError:
                     continue
                 except Exception as e:
-                    # Add error message for the model
                     tool_messages.append(
                         {
                             "tool_call_id": tool_call_id,
@@ -1477,64 +1430,24 @@ class Model:
             if not tool_messages:
                 return ""
 
-            # Get the original messages from the conversation
             tabconvo = display.get_tab_convo(tab_id)
             if not tabconvo or not tabconvo.convo.items:
                 return ""
 
-            # Reconstruct the conversation with tool calls - simplified approach
             messages: list[dict[str, Any]] = []
 
-            # Add system message if exists
             if config.system:
                 system = utils.replace_keywords(config.system)
                 messages.append({"role": "system", "content": system})
 
-            # Add the current user message (the one that triggered the tool call)
             last_item = tabconvo.convo.items[-1]
             user_content = getattr(last_item, "user", "")
+
             if user_content:
                 messages.append({"role": "user", "content": user_content})
 
-            # Add assistant message with tool calls
-            if self.model_is_claude(self.get_model()):
-                # Claude uses a different format for tool calls
-                assistant_content = [
-                    {
-                        "type": "tool_use",
-                        "id": tool_call["id"],
-                        "name": tool_call["function"]["name"],
-                        "input": json.loads(tool_call["function"]["arguments"])
-                        if tool_call["function"]["arguments"]
-                        else {},
-                    }
-                    for tool_call in tool_calls
-                ]
-
-                messages.append({"role": "assistant", "content": assistant_content})
-
-                # Add tool results in Claude format
-                messages.extend(
-                    [
-                        {
-                            "role": "user",
-                            "content": [
-                                {
-                                    "type": "tool_result",
-                                    "tool_use_id": tool_msg["tool_call_id"],
-                                    "content": tool_msg["content"],
-                                }
-                            ],
-                        }
-                        for tool_msg in tool_messages
-                    ]
-                )
-            else:
-                # OpenAI format
-                messages.append({"role": "assistant", "tool_calls": tool_calls})
-                messages.extend(tool_messages)
-
-            # Add instruction to use the search results with more context
+            messages.append({"role": "assistant", "tool_calls": tool_calls})
+            messages.extend(tool_messages)
             original_question = user_content if user_content else "the user's question"
 
             messages.append(
@@ -1544,62 +1457,39 @@ class Model:
                 }
             )
 
-            # Make another API call to get the final response
             gen_config = {
                 "messages": messages,
-                "stream": False,  # Use non-streaming for tool response
+                "stream": False,
                 "model": self.get_model(),
                 "temperature": config.temperature,
                 "top_p": config.top_p,
             }
 
-            if self.model_is_claude(self.get_model()):
-                # Use Anthropic client for Claude models
-                gen_config["max_tokens"] = config.max_tokens
+            if self.model_is_gpt(self.get_model()) or \
+                self.model_is_gemini(self.get_model()) or \
+                self.model_is_claude(self.get_model()):
+                gen_config["max_completion_tokens"] = config.max_tokens
 
-                # Remove unsupported parameters for Anthropic
-                del gen_config[
-                    "model"
-                ]  # Anthropic uses the model from the client initialization
-
-                if not hasattr(self, "anthropic_client") or not self.anthropic_client:
-                    return "\n\nError: Anthropic client not available"
-
-                response = self.anthropic_client.messages.create(**gen_config)
-
-                if response.content and len(response.content) > 0:
-                    return f"\n\n{response.content[0].text}"
-            else:
-                # Use OpenAI-compatible client for GPT and Gemini models, or local model
-                if self.model_is_gpt(self.get_model()) or self.model_is_gemini(
-                    self.get_model()
-                ):
-                    gen_config["max_completion_tokens"] = config.max_tokens
-                    if not self.model_is_gemini(self.get_model()):
-                        gen_config["seed"] = config.seed
-                else:
-                    # Local model configuration
-                    gen_config["max_tokens"] = config.max_tokens
-                    gen_config["top_k"] = config.top_k
+                if not self.model_is_gemini(self.get_model()):
                     gen_config["seed"] = config.seed
+            else:
+                gen_config["max_tokens"] = config.max_tokens
+                gen_config["top_k"] = config.top_k
+                gen_config["seed"] = config.seed
 
-                # Choose the right client/model
-                if self.openai_client:
-                    # Remote models (GPT, Gemini)
-                    response = self.openai_client.chat.completions.create(**gen_config)
-                elif self.model:
-                    # Local models
-                    # Remove model parameter for local models
-                    local_gen_config = gen_config.copy()
-                    del local_gen_config["model"]
-                    response = self.model.create_chat_completion_openai_v1(
-                        **local_gen_config
-                    )
-                else:
-                    return "\n\nError: No model available"
+            if self.openai_client:
+                response = self.openai_client.chat.completions.create(**gen_config)
+            elif self.model:
+                local_gen_config = gen_config.copy()
+                del local_gen_config["model"]
+                response = self.model.create_chat_completion_openai_v1(
+                    **local_gen_config
+                )
+            else:
+                return "\n\nError: No model available"
 
-                if response.choices and response.choices[0].message.content:
-                    return "\n\n" + response.choices[0].message.content
+            if response.choices and response.choices[0].message.content:
+                return "\n\n" + response.choices[0].message.content
 
             return ""
 
