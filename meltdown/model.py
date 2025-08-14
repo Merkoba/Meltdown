@@ -288,18 +288,24 @@ class Model:
     def load_anthropic(
         self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
     ) -> bool:
-        self.read_anthropic_key()
+        self.read_google_key()
 
-        if not self.anthropic_key:
-            display.print(self.anthropic_key_error)
+        if not self.google_key:
+            display.print(self.google_key_error)
             self.clear_model()
             return False
 
         try:
             now = utils.now()
+
+            self.openai_client = OpenAI(
+                api_key=self.anthropic_key,
+                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
+            )
+
             self.model_loading = False
             self.loaded_model = self.get_model()
-            self.loaded_format = "anthropic"
+            self.loaded_format = "google"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
 
@@ -307,7 +313,7 @@ class Model:
                 self.stream(prompt, tab_id)
         except BaseException as e:
             utils.error(e)
-            display.print("Error: Anthropic failed to load.")
+            display.print("Error: Google failed to load.")
             self.clear_model()
 
         return True
@@ -631,12 +637,7 @@ class Model:
             gen_config["max_completion_tokens"] = config.max_tokens
             del gen_config["seed"]
         elif self.model_is_claude(self.get_model()):
-            gen_config["max_tokens"] = config.max_tokens
-            del gen_config["seed"]
-            del gen_config["stop"]
-
-            if config.search == "yes":
-                gen_config["stream"] = False
+            pass
         else:
             gen_config["top_k"] = config.top_k
             gen_config["max_tokens"] = config.max_tokens
