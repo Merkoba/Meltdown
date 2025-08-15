@@ -52,7 +52,6 @@ class Model:
         self.loaded_type = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
-        self.openai_client = None
         self.last_response = ""
         self.icon_text = ""
 
@@ -609,53 +608,11 @@ class Model:
         messages, convo_item = prepared
         self.stream_loading = True
         self.lock.acquire()
+        gen_config = self.get_gen_config(messages)
 
-        gen_config = {
-            "messages": messages,
-            "stream": config.stream == "yes",
-            "model": self.get_model(),
-            "temperature": config.temperature,
-            "top_p": config.top_p,
-            "seed": config.seed,
-            "stop": self.get_stop_list(),
-        }
-
-        if self.model_is_gpt(self.get_model()):
-            gen_config["max_completion_tokens"] = config.max_tokens
-        elif self.model_is_gemini(self.get_model()):
-            gen_config["max_completion_tokens"] = config.max_tokens
-            del gen_config["seed"]
-        elif self.model_is_claude(self.get_model()):
-            pass
-        else:
-            gen_config["top_k"] = config.top_k
-            gen_config["max_tokens"] = config.max_tokens
-            del gen_config["model"]
-
-        if config.search == "yes":
-            gen_config["tools"] = self.tools
-
-            if not self.model_is_claude(self.get_model()):
-                gen_config["tool_choice"] = "auto"
-
-        if self.model_is_gpt(self.get_model()) or \
-            self.model_is_gemini(self.get_model()) or \
-            self.model_is_claude(self.get_model()):
+        if self.is_remote_model():
             try:
-                if not self.openai_client:
-                    self.stream_loading = False
-                    self.release_lock()
-                    return
-
-                output = self.openai_client.chat.completions.create(
-                    **gen_config, timeout=10
-                )
-            except RateLimitError as e:
-                utils.error(e)
-                display.print("Error: Rate limit exceeded.")
-                self.stream_loading = False
-                self.release_lock()
-                return
+                completion(**gen_config, timeout=10)
             except BaseException as e:
                 utils.error(e)
 
@@ -968,31 +925,10 @@ class Model:
                             }
                         )
 
-                        gen_config = {
-                            "messages": messages,
-                            "stream": False,
-                            "model": self.get_model(),
-                            "temperature": config.temperature,
-                            "top_p": config.top_p,
-                        }
+                        gen_config = self.get_gen_config(messages)
 
-                        if self.model_is_gpt(self.get_model()) or \
-                            self.model_is_gemini(self.get_model()) or \
-                            self.model_is_claude(self.get_model()):
-                            gen_config["max_completion_tokens"] = config.max_tokens
-
-                            if config.search == "yes":
-                                gen_config["tools"] = self.tools
-                                gen_config["tool_choice"] = "none"
-                        else:
-                            gen_config["max_tokens"] = config.max_tokens
-                            gen_config["top_k"] = config.top_k
-                            gen_config["seed"] = config.seed
-
-                        if self.openai_client:
-                            follow_up = self.openai_client.chat.completions.create(
-                                **gen_config
-                            )
+                        if self.is_remote_model():
+                            follow_up = completion(**gen_config, timeout=10)
                         elif self.model:
                             local_gen_config = gen_config.copy()
 
@@ -1447,28 +1383,10 @@ class Model:
                 }
             )
 
-            gen_config = {
-                "messages": messages,
-                "stream": False,
-                "model": self.get_model(),
-                "temperature": config.temperature,
-                "top_p": config.top_p,
-            }
+            gen_config = self.get_gen_config(messages)
 
-            if self.model_is_gpt(self.get_model()) or \
-                self.model_is_gemini(self.get_model()) or \
-                self.model_is_claude(self.get_model()):
-                gen_config["max_completion_tokens"] = config.max_tokens
-
-                if not self.model_is_gemini(self.get_model()):
-                    gen_config["seed"] = config.seed
-            else:
-                gen_config["max_tokens"] = config.max_tokens
-                gen_config["top_k"] = config.top_k
-                gen_config["seed"] = config.seed
-
-            if self.openai_client:
-                response = self.openai_client.chat.completions.create(**gen_config)
+            if self.is_remote_model():
+                response = completion(**gen_config, timeout=10)
             elif self.model:
                 local_gen_config = gen_config.copy()
                 del local_gen_config["model"]
@@ -1487,6 +1405,46 @@ class Model:
         except Exception as e:
             utils.error(e)
             return f"\n\nError handling tool calls: {e}"
+
+    def is_remote_model(self) -> bool:
+        return self.model_is_gpt(self.get_model()) or \
+               self.model_is_gemini(self.get_model()) or \
+               self.model_is_claude(self.get_model())
+
+    def get_gen_config(self, messages: list[dict[str, Any]]) -> dict[str, Any]:
+        gen_config = {
+            "messages": messages,
+            "stream": config.stream == "yes",
+            "temperature": config.temperature,
+            "top_p": config.top_p,
+            "seed": config.seed,
+            "stop": self.get_stop_list(),
+        }
+
+        if self.is_remote_model():
+            gen_config["model"] = f"{self.loaded_format}/{self.get_model()}"
+        else:
+            gen_config["model"] = self.get_model()
+
+        if self.model_is_gpt(self.get_model()):
+            gen_config["max_completion_tokens"] = config.max_tokens
+        elif self.model_is_gemini(self.get_model()):
+            gen_config["max_completion_tokens"] = config.max_tokens
+            del gen_config["seed"]
+        elif self.model_is_claude(self.get_model()):
+            pass
+        else:
+            gen_config["top_k"] = config.top_k
+            gen_config["max_tokens"] = config.max_tokens
+            del gen_config["model"]
+
+        if config.search == "yes":
+            gen_config["tools"] = self.tools
+
+            if not self.model_is_claude(self.get_model()):
+                gen_config["tool_choice"] = "auto"
+
+        return gen_config
 
 
 model = Model()
