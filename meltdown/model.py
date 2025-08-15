@@ -11,6 +11,7 @@ from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
+import litellm  # type: ignore
 from litellm import completion  # type: ignore
 
 # Modules
@@ -24,6 +25,8 @@ from .search import search
 from .files import files
 from .session import Item
 from .variables import variables
+
+litellm.drop_params = True
 
 # Try Import
 llama_cpp = utils.try_import("llama_cpp")
@@ -716,14 +719,12 @@ class Model:
                     continue
 
                 token = None
-                utils.q(998)
 
                 if hasattr(chunk, "choices") and chunk.choices:
                     delta = chunk.choices[0].delta  # type: ignore
                     token = None
-                    utils.q(1111111111)
+
                     if hasattr(delta, "tool_calls") and delta.tool_calls:
-                        utils.q(22222222)
                         for tool_call in delta.tool_calls:
                             index = getattr(tool_call, "index", None)
 
@@ -1391,6 +1392,7 @@ class Model:
             )
 
             gen_config = self.get_gen_config(messages)
+            gen_config["stream"] = False
 
             if self.is_remote_model():
                 response = completion(**gen_config, timeout=10)
@@ -1426,30 +1428,14 @@ class Model:
             "top_p": config.top_p,
             "seed": config.seed,
             "stop": self.get_stop_list(),
+            "tools": self.tools,
+            "tool_choice": "auto",
         }
 
         if self.is_remote_model():
             gen_config["model"] = f"{self.loaded_provider}/{self.get_model()}"
         else:
             gen_config["model"] = self.get_model()
-
-        if self.model_is_gpt(self.get_model()):
-            gen_config["max_completion_tokens"] = config.max_tokens
-        elif self.model_is_gemini(self.get_model()):
-            gen_config["max_completion_tokens"] = config.max_tokens
-            del gen_config["seed"]
-        elif self.model_is_claude(self.get_model()):
-            pass
-        else:
-            gen_config["top_k"] = config.top_k
-            gen_config["max_tokens"] = config.max_tokens
-            del gen_config["model"]
-
-        if config.search == "yes":
-            gen_config["tools"] = self.tools
-
-            if not self.model_is_claude(self.get_model()):
-                gen_config["tool_choice"] = "auto"
 
         return gen_config
 
