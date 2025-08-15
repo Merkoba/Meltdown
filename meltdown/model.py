@@ -10,8 +10,7 @@ from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
-from openai import OpenAI, RateLimitError  # type: ignore
-from openai.types.chat.chat_completion import ChatCompletion  # type: ignore
+from litellm import completion  # type: ignore
 
 # Modules
 from .app import app
@@ -236,7 +235,7 @@ class Model:
 
         try:
             now = utils.now()
-            self.openai_client = OpenAI(api_key=self.openai_key)
+            os.environ["OPENAI_API_KEY"] = self.openai_key
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "openai"
@@ -264,12 +263,7 @@ class Model:
 
         try:
             now = utils.now()
-
-            self.openai_client = OpenAI(
-                api_key=self.google_key,
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-            )
-
+            os.environ["GOOGLE_API_KEY"] = self.google_key
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "google"
@@ -288,24 +282,19 @@ class Model:
     def load_anthropic(
         self, tab_id: str, prompt: PromptArg | None = None, quiet: bool = False
     ) -> bool:
-        self.read_google_key()
+        self.read_anthropic_key()
 
-        if not self.google_key:
-            display.print(self.google_key_error)
+        if not self.anthropic_key:
+            display.print(self.anthropic_key_error)
             self.clear_model()
             return False
 
         try:
             now = utils.now()
-
-            self.openai_client = OpenAI(
-                api_key=self.anthropic_key,
-                base_url="https://generativelanguage.googleapis.com/v1beta/openai/",
-            )
-
+            os.environ["ANTHROPIC_API_KEY"] = self.anthropic_key
             self.model_loading = False
             self.loaded_model = self.get_model()
-            self.loaded_format = "google"
+            self.loaded_format = "anthropic"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
 
@@ -313,7 +302,7 @@ class Model:
                 self.stream(prompt, tab_id)
         except BaseException as e:
             utils.error(e)
-            display.print("Error: Google failed to load.")
+            display.print("Error: Anthropic failed to load.")
             self.clear_model()
 
         return True
@@ -1483,6 +1472,7 @@ class Model:
             elif self.model:
                 local_gen_config = gen_config.copy()
                 del local_gen_config["model"]
+
                 response = self.model.create_chat_completion_openai_v1(
                     **local_gen_config
                 )
