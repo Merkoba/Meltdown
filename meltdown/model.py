@@ -7,13 +7,14 @@ import base64
 import threading
 from pathlib import Path
 from typing import Any
-from collections.abc import Generator
 
 # Libraries
 import requests  # type: ignore
 import litellm  # type: ignore
-from litellm import completion, ChatCompletion, ChatCompletionChunk
+from litellm import completion
 from litellm import image_generation
+from litellm.types.utils import ModelResponse  # type: ignore
+from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper  # type: ignore
 
 # Modules
 from .app import app
@@ -33,9 +34,11 @@ litellm.drop_params = True
 llama_cpp = utils.try_import("llama_cpp")
 
 if llama_cpp:
-    Llama = llama_cpp.Llama
-    ChatCompletionChunk = llama_cpp.ChatCompletionChunk
+    LlamaCPP = llama_cpp.Llama
     Llava15ChatHandler = llama_cpp.llama_chat_format.Llava15ChatHandler
+else:
+    LlamaCPP = None
+    Llava15ChatHandler = None
 
 
 PromptArg = dict[str, Any]
@@ -50,7 +53,7 @@ class Model:
         self.stream_thread = threading.Thread()
         self.streaming = False
         self.stream_loading = False
-        self.model: Llama | None = None  # type: ignore
+        self.model: LlamaCPP | None = None  # type: ignore
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
@@ -347,7 +350,15 @@ class Model:
                     self.model_loading = False
                     return False
 
-                chat_handler = Llava15ChatHandler(clip_model_path=str(mmproj))
+                if Llava15ChatHandler:
+                    chat_handler = Llava15ChatHandler(clip_model_path=str(mmproj))
+                else:
+                    self.model_loading = False
+                    return False
+
+            if not LlamaCPP:
+                self.model_loading = False
+                return False
 
             fmt = config.format if (chat_format != "auto") else None
             name = Path(model).name
@@ -361,7 +372,7 @@ class Model:
             app.update()
             self.lock.acquire()
 
-            self.model = Llama(
+            self.model = LlamaCPP(
                 model_path=model,
                 n_ctx=config.context,
                 n_batch=config.batch_size,
@@ -620,6 +631,7 @@ class Model:
         self.stream_loading = True
         self.lock.acquire()
         gen_config = self.get_gen_config(messages)
+        output: ModelResponse | CustomStreamWrapper | Any | None = None
 
         if self.is_remote_model():
             try:
@@ -628,7 +640,7 @@ class Model:
                 utils.error(e)
 
                 display.print(
-                    "Error: GPT model failed to stream."
+                    "Error: Remote model failed to stream."
                     " You might not have access to this particular model,"
                     " not enough credits, invalid API key,"
                     " or there is no internet connection."
@@ -644,7 +656,11 @@ class Model:
                 return
 
             try:
-                output = self.model.create_chat_completion_openai_v1(**gen_config)
+                output = litellm.completion(
+                    model=f"openai/{self.get_model()}",
+                    api_base="http://0.0.0.0:8080",
+                    api_key="-",
+                )
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
@@ -658,6 +674,10 @@ class Model:
             return
 
         if self.stop_stream_thread.is_set():
+            self.release_lock()
+            return
+
+        if not output:
             self.release_lock()
             return
 
@@ -690,7 +710,7 @@ class Model:
 
     def process_stream(
         self,
-        output: Generator[ChatCompletionChunk, None, None],
+        output: ModelResponse | CustomStreamWrapper,
         tab_id: str,
     ) -> str:
         broken = False
@@ -720,10 +740,10 @@ class Model:
                     continue
 
                 token = None
+                choices = getattr(chunk, "choices", None)
 
-                if hasattr(chunk, "choices") and chunk.choices:
-                    delta = chunk.choices[0].delta
-                    token = None
+                if choices:
+                    delta = choices[0].delta
 
                     if hasattr(delta, "tool_calls") and delta.tool_calls:
                         for tool_call in delta.tool_calls:
@@ -818,9 +838,16 @@ class Model:
 
         return "".join(tokens)
 
-    def process_instant(self, output: ChatCompletion, tab_id: str) -> str:
+    def process_instant(
+        self, output: ModelResponse | Any | CustomStreamWrapper, tab_id: str
+    ) -> str:
         try:
-            message = output.choices[0].message
+            choices = getattr(output, "choices", None)
+
+            if not choices or not choices[0]:
+                return ""
+
+            message = choices[0].message
 
             if hasattr(message, "tool_calls") and message.tool_calls:
                 tool_messages = []
@@ -950,8 +977,13 @@ class Model:
                         else:
                             return ""
 
-                        if follow_up.choices and follow_up.choices[0].message.content:
-                            response = follow_up.choices[0].message.content.strip()
+                        choices = getattr(follow_up, "choices", None)
+
+                        if not choices or not choices[0]:
+                            return ""
+
+                        if choices and choices[0].message.content:
+                            response = choices[0].message.content.strip()
                             display.remove_last_ai(tab_id)
                             display.prompt("ai", tab_id=tab_id)
                             display.insert(response, tab_id=tab_id)
@@ -1013,6 +1045,9 @@ class Model:
                 size=args.image_size,
                 model=args.image_model,
             )
+
+            if (not response) or (not response.data) or (not response.data[0]):
+                return
 
             url = response.data[0].url
 
@@ -1407,9 +1442,14 @@ class Model:
             else:
                 return "\n\nError: No model available"
 
-            content = response.choices[0].message.content
+            choices = getattr(response, "choices", None)
 
-            if response.choices and content:
+            if not choices or not choices[0]:
+                return "\n\nError: No choices in response"
+
+            content = choices[0].message.content
+
+            if choices and content:
                 return f"\n\n{content}"
 
             return ""

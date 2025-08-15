@@ -56,7 +56,7 @@ class Listener:
 
         handler = FileChangeHandler(path)
         observer = Observer()
-        observer.schedule(handler, path.parent, recursive=False)
+        observer.schedule(handler, str(path.parent), recursive=False)
 
         thread = threading.Thread(target=observer.start)
         thread.daemon = True
