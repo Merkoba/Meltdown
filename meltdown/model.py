@@ -656,11 +656,8 @@ class Model:
                 return
 
             try:
-                output = litellm.completion(
-                    model=f"openai/{self.get_model()}",
-                    api_base="http://0.0.0.0:8080",
-                    api_key="-",
-                )
+                output = self.model.create_chat_completion_openai_v1(**gen_config)
+
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
