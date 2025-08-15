@@ -12,7 +12,8 @@ from collections.abc import Generator
 # Libraries
 import requests  # type: ignore
 import litellm  # type: ignore
-from litellm import completion  # type: ignore
+from litellm import completion, ChatCompletion, ChatCompletionChunk
+from litellm import image_generation
 
 # Modules
 from .app import app
@@ -689,7 +690,7 @@ class Model:
 
     def process_stream(
         self,
-        output: Generator[ChatCompletionChunk, None, None],  # type: ignore
+        output: Generator[ChatCompletionChunk, None, None],
         tab_id: str,
     ) -> str:
         broken = False
@@ -721,7 +722,7 @@ class Model:
                 token = None
 
                 if hasattr(chunk, "choices") and chunk.choices:
-                    delta = chunk.choices[0].delta  # type: ignore
+                    delta = chunk.choices[0].delta
                     token = None
 
                     if hasattr(delta, "tool_calls") and delta.tool_calls:
@@ -1406,8 +1407,10 @@ class Model:
             else:
                 return "\n\nError: No model available"
 
-            if response.choices and response.choices[0].message.content:
-                return "\n\n" + response.choices[0].message.content
+            content = response.choices[0].message.content
+
+            if response.choices and content:
+                return f"\n\n{content}"
 
             return ""
 
@@ -1416,9 +1419,11 @@ class Model:
             return f"\n\nError handling tool calls: {e}"
 
     def is_remote_model(self) -> bool:
-        return self.model_is_gpt(self.get_model()) or \
-               self.model_is_gemini(self.get_model()) or \
-               self.model_is_claude(self.get_model())
+        return (
+            self.model_is_gpt(self.get_model())
+            or self.model_is_gemini(self.get_model())
+            or self.model_is_claude(self.get_model())
+        )
 
     def get_gen_config(self, messages: list[dict[str, Any]]) -> dict[str, Any]:
         gen_config = {
