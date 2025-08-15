@@ -3051,3 +3051,11 @@ The delay of the task debouncer
 Default: 5
 
 Type: int
+
+---
+
+### no-rich-console
+
+Don't use the rich console
+
+Action: store_false
