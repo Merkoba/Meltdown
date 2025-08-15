@@ -1470,9 +1470,11 @@ class Model:
             "top_p": config.top_p,
             "seed": config.seed,
             "stop": self.get_stop_list(),
-            "tools": self.tools,
-            "tool_choice": "auto",
         }
+
+        if config.search == "yes":
+            gen_config["tools"] = self.tools
+            gen_config["tool_choice"] = "auto"
 
         if self.is_remote_model():
             gen_config["model"] = f"{self.loaded_provider}/{self.get_model()}"
