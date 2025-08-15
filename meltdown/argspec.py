@@ -1992,5 +1992,11 @@ class ArgSpec:
             info="The delay of the task debouncer",
         )
 
+        self.add_argument(
+            "no_rich_console",
+            action="store_false",
+            info="Don't use the rich console",
+        )
+
 
 argspec = ArgSpec()

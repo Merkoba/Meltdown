@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import os
 import json
 import base64
 import threading
@@ -49,6 +50,7 @@ class Model:
         self.model_loading = False
         self.loaded_model = ""
         self.loaded_format = ""
+        self.loaded_provider = ""
         self.loaded_type = ""
         self.load_thread = threading.Thread()
         self.stream_date = 0.0
@@ -195,6 +197,7 @@ class Model:
         self.loaded_type = ""
         self.model_loading = False
         self.loaded_format = ""
+        self.loaded_provider = ""
         self.stream_date = 0.0
         self.update_icon()
 
@@ -238,6 +241,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "openai"
+            self.loaded_provider = "openai"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
 
@@ -266,6 +270,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "google"
+            self.loaded_provider = "gemini"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
 
@@ -294,6 +299,7 @@ class Model:
             self.model_loading = False
             self.loaded_model = self.get_model()
             self.loaded_format = "anthropic"
+            self.loaded_provider = "anthropic"
             self.loaded_type = "remote"
             self.after_load(now, quiet=quiet)
 
@@ -374,6 +380,7 @@ class Model:
         self.model_loading = False
         self.loaded_model = model
         self.loaded_format = chat_format
+        self.loaded_provider = "local"
         self.loaded_type = "local"
         self.after_load(now, quiet=quiet)
         self.release_lock()
@@ -612,7 +619,7 @@ class Model:
 
         if self.is_remote_model():
             try:
-                completion(**gen_config, timeout=10)
+                output = completion(**gen_config, timeout=10)
             except BaseException as e:
                 utils.error(e)
 
@@ -998,7 +1005,7 @@ class Model:
             time_start = utils.now()
             self.lock.acquire()
 
-            response = self.openai_client.images.generate(  # type: ignore
+            response = image_generation(
                 n=1,
                 prompt=prompt,
                 size=args.image_size,
@@ -1422,7 +1429,7 @@ class Model:
         }
 
         if self.is_remote_model():
-            gen_config["model"] = f"{self.loaded_format}/{self.get_model()}"
+            gen_config["model"] = f"{self.loaded_provider}/{self.get_model()}"
         else:
             gen_config["model"] = self.get_model()
 

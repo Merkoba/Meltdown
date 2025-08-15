@@ -334,6 +334,7 @@ class Args:
         self.script_format = "text"
         self.task_debounce = True
         self.task_debounce_delay = 5
+        self.rich_console = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -425,6 +426,7 @@ class Args:
             ("no_current_recent_item", "current_recent_item"),
             ("no_start_tasks", "start_tasks"),
             ("no_task_debounce", "task_debounce"),
+            ("no_rich_console", "rich_console"),
         ]
 
         for r_item in other_name:

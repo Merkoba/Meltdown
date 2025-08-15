@@ -72,7 +72,12 @@ class Utils:
         return "".join(escaped_chars)
 
     def msg(self, text: str) -> None:
-        self.console.print(text)
+        from .args import args
+
+        if args.rich_console:
+            self.console.print(text)
+        else:
+            print(text)  # noqa: T201
 
     def error(self, error: str | BaseException) -> None:
         from .args import args
@@ -92,7 +97,10 @@ class Utils:
                 self.error_logger.error(errmsg)
 
         if args.errors:
-            self.console.print_exception(show_locals=True)
+            if args.rich_console:
+                self.console.print_exception(show_locals=True)
+            else:
+                print(errmsg)  # noqa: T201
 
         self.q(error)
 
