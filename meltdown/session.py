@@ -139,7 +139,7 @@ class Conversation:
         self.pin = value
         session.save()
 
-    def print(self) -> None:
+    def print(self, replay: bool = False) -> None:
         if not self.items:
             return
 
@@ -160,9 +160,17 @@ class Conversation:
                 file=item.file,
             )
 
+            if replay:
+                display.format_text(tab.tab_id)
+
             display.prompt("ai", item.ai, tab_id=tab.tab_id, to_bottom=False)
 
-        display.format_text(tab.tab_id)
+            if replay:
+                display.format_text(tab.tab_id)
+
+        if not replay:
+            display.format_text(tab.tab_id)
+
         display.enable_auto_bottom(tab.tab_id)
         display.check_scroll_buttons(tab.tab_id)
 

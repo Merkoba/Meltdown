@@ -220,6 +220,12 @@ Refresh the conversation
 
 ---
 
+### replay
+
+Replay the conversation, one message at a time, mainly to debug
+
+---
+
 ### new
 
 Make a new tab. Optional argument for the name

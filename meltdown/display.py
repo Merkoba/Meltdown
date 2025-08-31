@@ -1132,6 +1132,15 @@ class Display:
         self.reset_tab(tabconvo.tab)
         tabconvo.convo.print()
 
+    def replay(self, tab_id: str | None = None) -> None:
+        tabconvo = self.get_tab_convo(tab_id)
+
+        if not tabconvo:
+            return
+
+        self.reset_tab(tabconvo.tab)
+        tabconvo.convo.print(True)
+
     def get_tab_convo(self, tab_id: str | None = None) -> TabConvo | None:
         from .session import session
 

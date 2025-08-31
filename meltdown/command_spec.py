@@ -291,6 +291,12 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "replay",
+            "Replay the conversation, one message at a time, mainly to debug",
+            lambda a=None: display.replay(),
+        )
+
+        self.add_cmd(
             "new",
             "Make a new tab. Optional argument for the name",
             lambda a=None: display.new_tab(name=a),
