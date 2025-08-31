@@ -77,6 +77,8 @@ class TextBox(tk.Text):
         self.bind("<Control-KeyPress-a>", lambda e: self.select_all())
         self.bind("<Left>", lambda e: self.on_left())
         self.bind("<Right>", lambda e: self.on_right())
+        self.bind("<Prior>", lambda e: self.on_page_up())  # PageUp
+        self.bind("<Next>", lambda e: self.on_page_down())  # PageDown
 
     def get_selected_text(self, widget: tk.Text | None = None) -> str:
         if not widget:
@@ -217,6 +219,18 @@ class TextBox(tk.Text):
             return "break"
 
         return ""
+
+    def on_page_up(self) -> str:
+        self.yview_scroll(-1, "pages")
+        self.mark_set(tk.INSERT, self.index("@0,0"))
+        self.see(tk.INSERT)
+        return "break"
+
+    def on_page_down(self) -> str:
+        self.yview_scroll(1, "pages")
+        self.mark_set(tk.INSERT, self.index(f"@0,{self.winfo_height()}"))
+        self.see(tk.INSERT)
+        return "break"
 
     def on_right(self) -> str:
         from .keyboard import keyboard
