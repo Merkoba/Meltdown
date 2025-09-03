@@ -235,7 +235,7 @@ class Markdown:
 
             start_ln = item["line"]
 
-            if i < len(markers) - 1:
+            if i < (len(markers) - 1):
                 end_ln = int(markers[i + 1]["line"] - 1)
             else:
                 end_ln = self.last_line()
@@ -288,7 +288,7 @@ class Markdown:
             snip_done, _ = self.format_snippets(start_ln, end_ln)
 
             if snip_done:
-                end_ln = self.next_marker(start_ln)
+                end_ln = self.next_marker(start_ln) - 1
 
         # Lists
 
@@ -560,14 +560,14 @@ class Markdown:
 
                     self.widget.delete(
                         f"{match.start_line} linestart",
-                        f"{match.end_line} +2 lines lineend",
+                        f"{match.end_line} + 2 lines lineend",
                     )
 
                     widgets.window(self.widget, match.line_num, snippet)
                 else:
                     self.widget.delete(
                         f"{match.start_line} - 1 lines linestart",
-                        f"{match.end_line} +1 lines lineend",
+                        f"{match.end_line} + 1 lines lineend",
                     )
 
                     widgets.window(self.widget, match.line_num - 1, snippet)
