@@ -335,6 +335,7 @@ class Args:
         self.task_debounce = True
         self.task_debounce_delay = 5
         self.rich_console = True
+        self.debug = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -663,6 +664,7 @@ class Args:
             "say_user_message",
             "script_format",
             "task_debounce_delay",
+            "debug",
         ]
 
         for n_item in normals:

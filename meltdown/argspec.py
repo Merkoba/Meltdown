@@ -1998,5 +1998,11 @@ class ArgSpec:
             info="Don't use the rich console",
         )
 
+        self.add_argument(
+            "debug",
+            action="store_true",
+            info="Print extra information",
+        )
+
 
 argspec = ArgSpec()

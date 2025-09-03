@@ -434,8 +434,17 @@ class Markdown:
                 tag2 = f"{tag}_{url_id}"
 
             for index_item in sorted_indices:
-                self.widget.delete(index_item.start, index_item.end)
-                self.widget.insert(index_item.start, index_item.content)
+                self.widget_delete(
+                    "do_format",
+                    index_item.start,
+                    index_item.end,
+                )
+
+                self.widget_insert(
+                    "do_format",
+                    index_item.start,
+                    index_item.content,
+                )
 
                 self.widget.tag_add(
                     tag,
@@ -501,7 +510,11 @@ class Markdown:
             ).strip()
 
             if content_below:
-                self.widget.insert(f"{match.end_line} +1 lines lineend", "\n")
+                self.widget_insert(
+                    "snippets",
+                    f"{match.end_line} +1 lines lineend",
+                    "\n"
+                )
 
             lang = "" if num_lines == 1 else match.language
             snippet = Snippet(self.widget, snippet_text, lang)
@@ -517,10 +530,21 @@ class Markdown:
             if len(content_above) > numchars:
                 end_of_line_above = f"{match.start_line} - 1 lines lineend"
                 right_bit = f"{end_of_line_above} -{numchars} chars"
-                self.widget.delete(right_bit, end_of_line_above)
-                self.widget.insert(end_of_line_above, "\n")
 
-                self.widget.delete(
+                self.widget_delete(
+                    "snippets",
+                    right_bit,
+                    end_of_line_above,
+                )
+
+                self.widget_insert(
+                    "snippets",
+                    end_of_line_above,
+                    "\n",
+                )
+
+                self.widget_delete(
+                    "snippets",
                     f"{match.start_line} + 1 lines",
                     f"{match.end_line} + 2 lines lineend",
                 )
@@ -534,14 +558,22 @@ class Markdown:
                 line_above = line_above[:-numchars].rstrip() + "\n"
 
                 if line_above:
-                    self.widget.delete(
-                        f"{match.start_line} linestart", f"{match.start_line} lineend"
+                    self.widget_delete(
+                        "snippets",
+                        f"{match.start_line} linestart",
+                        f"{match.start_line} lineend",
                     )
 
-                    self.widget.insert(f"{match.start_line} linestart", line_above)
+                    self.widget_insert(
+                        "snippets",
+                        f"{match.start_line} linestart",
+                        line_above,
+                    )
+
                     widgets.window(self.widget, match.line_num + 2, snippet)
                 else:
-                    self.widget.delete(
+                    self.widget_delete(
+                        "snippets",
                         f"{match.start_line} - 1 lines linestart",
                         f"{match.end_line} lineend",
                     )
@@ -556,16 +588,22 @@ class Markdown:
                 ).strip()
 
                 if line_above:
-                    self.widget.insert(end_of_line_above, "\n")
+                    self.widget_insert(
+                        "snippets",
+                        end_of_line_above,
+                        "\n",
+                    )
 
-                    self.widget.delete(
+                    self.widget_delete(
+                        "snippets",
                         f"{match.start_line} linestart",
                         f"{match.end_line} + 2 lines lineend",
                     )
 
                     widgets.window(self.widget, match.line_num, snippet)
                 else:
-                    self.widget.delete(
+                    self.widget_delete(
+                        "snippets",
                         f"{match.start_line} - 1 lines linestart",
                         f"{match.end_line} + 1 lines lineend",
                     )
@@ -660,11 +698,23 @@ class Markdown:
                 end_of_line_above = f"{start_line} lineend"
                 chars = len(lines[0])
                 right_bit = f"{end_of_line_above} -{chars} chars"
-                self.widget.delete(right_bit, end_of_line_above)
-                self.widget.insert(end_of_line_above, "\n\n\n")
 
-                self.widget.delete(
-                    f"{start_line} +1 lines", f"{end_line} +3 lines lineend"
+                self.widget_delete(
+                    "lists",
+                    right_bit,
+                    end_of_line_above,
+                )
+
+                self.widget_insert(
+                    "lists",
+                    end_of_line_above,
+                    "\n\n\n",
+                )
+
+                self.widget_delete(
+                    "lists",
+                    f"{start_line} +1 lines",
+                    f"{end_line} +3 lines lineend",
                 )
 
                 txt = f"\n{txt}"
@@ -672,7 +722,11 @@ class Markdown:
                 if content_below:
                     txt += "\n"
 
-                self.widget.insert(f"{start_line} +1 lines", txt)
+                self.widget_insert(
+                    "lists",
+                    f"{start_line} +1 lines",
+                    txt,
+                )
             else:
                 content_above = self.widget.get(
                     f"{start_line} - 1 lines linestart",
@@ -685,8 +739,17 @@ class Markdown:
                 if content_below:
                     txt += "\n"
 
-                self.widget.delete(f"{start_line} linestart", f"{end_line} lineend")
-                self.widget.insert(start_line, txt)
+                self.widget_delete(
+                    "lists",
+                    f"{start_line} linestart",
+                    f"{end_line} lineend",
+                )
+
+                self.widget_insert(
+                    "lists",
+                    start_line,
+                    txt,
+                )
 
         return len_matches > 0
 
@@ -699,8 +762,17 @@ class Markdown:
                 matches.append(i)
 
         for i in reversed(matches):
-            self.widget.delete(f"{start_ln + i}.0", f"{start_ln + i}.end")
-            self.widget.insert(f"{start_ln + i}.0", Markdown.separator)
+            self.widget_delete(
+                "separators",
+                f"{start_ln + i}.0",
+                f"{start_ln + i}.end",
+            )
+
+            self.widget_insert(
+                "separators",
+                f"{start_ln + i}.0",
+                Markdown.separator,
+            )
 
             self.widget.tag_add(
                 "separator",
@@ -749,8 +821,18 @@ class Markdown:
 
     def insert_first(self, start_ln: int, end_ln: int, text: str) -> None:
         _, end_col = self.prompt_cols(start_ln)
-        self.widget.delete(f"{start_ln}.{end_col}", f"{end_ln}.end")
-        self.widget.insert(f"{start_ln}.{end_col + 1}", text)
+
+        self.widget_delete(
+            "first",
+            f"{start_ln}.{end_col}",
+            f"{end_ln}.end",
+        )
+
+        self.widget_insert(
+            "first",
+            f"{start_ln}.{end_col + 1}",
+            text,
+        )
 
     def indent_lines(self) -> None:
         lines = self.widget.get("1.0", "end").split("\n")
@@ -921,6 +1003,18 @@ class Markdown:
             return True
 
         return False
+
+    def widget_insert(self, where: str, *all_args: Any) -> None:
+        if args.debug:
+            print(f"Widget Insert: {where}")
+
+        self.widget.insert(*all_args)
+
+    def widget_delete(self, where: str, *all_args: Any) -> None:
+        if args.debug:
+            print(f"Widget Delete: {where}")
+
+        self.widget.delete(*all_args)
 
 
 Markdown.build_patterns()
