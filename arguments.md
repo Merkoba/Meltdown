@@ -3059,3 +3059,13 @@ Type: int
 Don't use the rich console
 
 Action: store_false
+
+---
+
+### debug
+
+Print extra information
+
+Default: False
+
+Action: store_true
