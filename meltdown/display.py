@@ -249,7 +249,7 @@ class Display:
 
         self.tab_number += 1
 
-        if save:
+        if save and (mode != "ignore"):
             session.save()
 
         return tab_id
