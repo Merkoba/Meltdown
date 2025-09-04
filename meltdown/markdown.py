@@ -1006,13 +1006,13 @@ class Markdown:
 
     def widget_insert(self, where: str, *all_args: Any) -> None:
         if args.debug:
-            print(f"Widget Insert: {where}")
+            print(f"Markdown Insert: {where}")
 
         self.widget.insert(*all_args)
 
     def widget_delete(self, where: str, *all_args: Any) -> None:
         if args.debug:
-            print(f"Widget Delete: {where}")
+            print(f"Markdown Delete: {where}")
 
         self.widget.delete(*all_args)
 

@@ -1344,3 +1344,7 @@ class Output(tk.Text):
         filtered_lines = [line for line in lines if text in line.lower()]
         filtered_text = "\n".join(filtered_lines)
         self.set_text(filtered_text)
+
+    def count_snippets(self) -> None:
+        widgets = self.window_names()
+        return len(widgets)

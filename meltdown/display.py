@@ -200,7 +200,9 @@ class Display:
         name = self.prepare_name(name)
 
         if not conversation_id:
-            conv_id = "ignore" if mode == "ignore" else ""
+            now = int(utils.now())
+            n = len(self.tabs)
+            conv_id = f"ignore_{now}_{n}" if mode == "ignore" else ""
             conversation = session.add(name, conv_id=conv_id, position=position)
             conversation_id = conversation.id
 
@@ -674,7 +676,9 @@ class Display:
         if not tab:
             return
 
-        session.remove(tab.conversation_id)
+        if tab.mode != "ignore":
+            session.remove(tab.conversation_id)
+
         del self.tabs[tab_id]
 
     def check_scroll_buttons(self, tab_id: str | None = None) -> None:
@@ -1455,6 +1459,19 @@ class Display:
             return
 
         output.filter_text(text)
+
+    def count_snippets(self, tab_id: str | None = None) -> None:
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        num = output.count_snippets()
+        msg = f"Snippets: {num}"
+        Dialog.show_message(msg)
 
 
 display = Display()

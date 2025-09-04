@@ -1374,5 +1374,11 @@ class CommandSpec:
             lambda a=None: tasks.disable(),
         )
 
+        self.add_cmd(
+            "snippets",
+            "Print the number of snippets",
+            lambda a=None: display.count_snippets(),
+        )
+
 
 command_spec = CommandSpec()
