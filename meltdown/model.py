@@ -727,11 +727,10 @@ class Model:
             display.insert("".join(buffer), tab_id=tab_id)
             buffer.clear()
 
-
-        def is_whitespace_only(token):
+        def is_whitespace_only(token: str) -> bool:
             return (token != "\n") and (not token.strip())
 
-        def add_token_advanced(tokens, new_token):
+        def add_token(new_token: str) -> None:
             if (new_token == "\n") and (len(tokens) >= 2):
                 if (tokens[-2] == "\n") and is_whitespace_only(tokens[-1]):
                     tokens.pop()

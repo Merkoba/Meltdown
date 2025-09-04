@@ -775,4 +775,5 @@ class Widgets:
         # Now insert the window at the position
         widget.window_create(f"{start_line}.0", window=win)
 
+
 widgets: Widgets = Widgets()

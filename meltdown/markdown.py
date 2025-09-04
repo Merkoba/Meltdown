@@ -280,9 +280,6 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        if self.enabled(who, "clean_empty_lines"):
-            self.clean_empty_lines(start_ln, end_ln, who)
-
         if self.enabled(who, "think"):
             if self.replace_think(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
@@ -526,9 +523,7 @@ class Markdown:
 
             if content_below:
                 self.widget_insert(
-                    "snippets",
-                    f"{match.end_line} +1 lines lineend",
-                    "\n"
+                    "snippets", f"{match.end_line} +1 lines lineend", "\n"
                 )
 
             lang = "" if num_lines == 1 else match.language
@@ -923,22 +918,6 @@ class Markdown:
         self.insert_first(start_ln, end_ln, text)
         return True
 
-    def clean_empty_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
-        lines = self.get_lines(start_ln, end_ln, who)
-        cleaned = []
-
-        for line in lines:
-            stripped = line.strip()
-
-            if stripped == "":
-                cleaned.append("")
-            else:
-                cleaned.append(stripped)
-
-        text = "\n".join(cleaned).strip() + "\n"
-        self.insert_first(start_ln, end_ln, text)
-        return True
-
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
         lines = [line.strip() for line in lines]
@@ -1037,15 +1016,9 @@ class Markdown:
         return False
 
     def widget_insert(self, where: str, *all_args: Any) -> None:
-        if args.debug:
-            print(f"Markdown Insert: {where}")
-
         self.widget.insert(*all_args)
 
     def widget_delete(self, where: str, *all_args: Any) -> None:
-        if args.debug:
-            print(f"Markdown Delete: {where}")
-
         self.widget.delete(*all_args)
 
 

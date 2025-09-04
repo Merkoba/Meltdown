@@ -1345,6 +1345,6 @@ class Output(tk.Text):
         filtered_text = "\n".join(filtered_lines)
         self.set_text(filtered_text)
 
-    def count_snippets(self) -> None:
+    def count_snippets(self) -> int:
         widgets = self.window_names()
         return len(widgets)
