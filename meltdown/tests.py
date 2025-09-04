@@ -9,6 +9,10 @@ class Tests:
     @staticmethod
     def get(name: str) -> Any:
         test_name = f"{name}_test"
+
+        if not hasattr(Tests, test_name):
+            return None
+
         obj = getattr(Tests, test_name)
         obj["id"] = "ignore"
         obj["name"] = test_name.replace("_", " ").title()
@@ -291,6 +295,158 @@ class Tests:
                 "ai": "aaaaaaa\n\n* bbbbbbbb\n\ncccccccc\n* aaaaaaa\n* bbbbbbbb",
             },
         ],
+    }
+
+    snippet_test: Test = {
+        "items": [
+            {
+                "user": """good morning i need to adapt this reflect algorithm which changes the rotation when the laser hits the surface of a circle area
+
+however it's not working correctly for all angles
+
+  App.safe_zone_reflect = (laser) => {
+    let deg = App.get_direction(laser)
+    let side = App.get_safe_zone_side(laser, App.safe_zone)
+    let new_rotation
+
+    if ([`top`, `bottom`].includes(side)) {
+      new_rotation = App.reflect_angle_horizontal(deg)
+    }
+    else if ([`left`, `right`].includes(side)) {
+      new_rotation = App.reflect_angle_vertical(deg)
+    }
+    else {
+      new_rotation = laser.rotation + 180
+    }
+
+    laser.rotation = new_rotation
+    laser.calc_velocities()
+    laser.x += laser.vx * BOUNCE_PUSH
+    laser.y += laser.vy * BOUNCE_PUSH
+    App.safe_zone.charge_date = Date.now()
+  }
+
+  App.reflect_angle_horizontal = (heading) => {
+    let reflected = 360 - heading
+    return (reflected + 180) % 360
+  }
+
+  App.reflect_angle_vertical = (heading) => {
+    let reflected = 360 - heading
+    return reflected % 360
+  }
+
+i need the rotation to always be inverted in a minimum amount towards the outside of the circle because if it enters at any moment the laser disappears on the next tick.""",
+                "ai": """The issue is that you're treating a circle like a rectangle with sides. For circular reflection, you need to reflect based on the normal vector at the collision point, not arbitrary "sides".
+
+Here's the corrected approach:
+
+```javascript
+App.safe_zone_reflect = (laser) => {
+  // Get the collision point and circle center
+  let collision_point = { x: laser.x, y: laser.y }
+  let center = { x: App.safe_zone.x, y: App.safe_zone.y }
+
+  // Calculate the normal vector at collision point
+  let normal_x = collision_point.x - center.x
+  let normal_y = collision_point.y - center.y
+
+  // Normalize the normal vector
+  let normal_length = Math.sqrt(normal_x * normal_x + normal_y * normal_y)
+  normal_x /= normal_length
+  normal_y /= normal_length
+
+  // Get current velocity components
+  let speed = Math.sqrt(laser.vx * laser.vx + laser.vy * laser.vy)
+  let vel_x = laser.vx
+  let vel_y = laser.vy
+
+  // Reflect velocity: v' = v - 2(v·n)n
+  let dot_product = vel_x * normal_x + vel_y * normal_y
+  let reflected_vx = vel_x - 2 * dot_product * normal_x
+  let reflected_vy = vel_y - 2 * dot_product * normal_y
+
+  // Convert back to rotation
+  let new_rotation = Math.atan2(reflected_vy, reflected_vx) * (180 / Math.PI)
+  if (new_rotation < 0) new_rotation += 360
+
+  // Ensure the laser moves away from center (safety check)
+  let away_angle = Math.atan2(normal_y, normal_x) * (180 / Math.PI)
+  if (away_angle < 0) away_angle += 360
+
+  // Check if reflection is pointing inward, if so, use outward direction
+  let angle_diff = Math.abs(new_rotation - away_angle)
+  if (angle_diff > 90 && angle_diff < 270) {
+    new_rotation = away_angle
+  }
+
+  laser.rotation = new_rotation
+  laser.calc_velocities()
+
+  // Push laser outside the circle
+  laser.x += normal_x * BOUNCE_PUSH
+  laser.y += normal_y * BOUNCE_PUSH
+
+  App.safe_zone.charge_date = Date.now()
+}
+```
+
+This properly reflects off the circular surface and ensures the laser always moves away from the circle center.""",
+            },
+            {
+                "user": "you didn't use 'speed' , why",
+                "ai": """You're right, I calculated `speed` but didn't use it. That was an oversight - I should have used it to maintain the original speed magnitude after reflection.
+
+Here's the corrected version:
+
+```javascript
+App.safe_zone_reflect = (laser) => {
+  // Get the collision point and circle center
+  let collision_point = { x: laser.x, y: laser.y }
+  let center = { x: App.safe_zone.x, y: App.safe_zone.y }
+
+  // Calculate the normal vector at collision point
+  let normal_x = collision_point.x - center.x
+  let normal_y = collision_point.y - center.y
+
+  // Normalize the normal vector
+  let normal_length = Math.sqrt(normal_x * normal_x + normal_y * normal_y)
+  normal_x /= normal_length
+  normal_y /= normal_length
+
+  // Get current velocity components and speed
+  let speed = Math.sqrt(laser.vx * laser.vx + laser.vy * laser.vy)
+  let vel_x = laser.vx
+  let vel_y = laser.vy
+
+  // Reflect velocity: v' = v - 2(v·n)n
+  let dot_product = vel_x * normal_x + vel_y * normal_y
+  let reflected_vx = vel_x - 2 * dot_product * normal_x
+  let reflected_vy = vel_y - 2 * dot_product * normal_y
+
+  // Normalize and apply original speed
+  let reflected_length = Math.sqrt(reflected_vx * reflected_vx + reflected_vy * reflected_vy)
+  reflected_vx = (reflected_vx / reflected_length) * speed
+  reflected_vy = (reflected_vy / reflected_length) * speed
+
+  // Convert back to rotation
+  let new_rotation = Math.atan2(reflected_vy, reflected_vx) * (180 / Math.PI)
+  if (new_rotation < 0) new_rotation += 360
+
+  laser.rotation = new_rotation
+  laser.calc_velocities()
+
+  // Push laser outside the circle
+  laser.x += normal_x * BOUNCE_PUSH
+  laser.y += normal_y * BOUNCE_PUSH
+
+  App.safe_zone.charge_date = Date.now()
+}
+```
+
+Now the reflected velocity maintains the original speed magnitude.""",
+            }
+        ]
     }
 
 

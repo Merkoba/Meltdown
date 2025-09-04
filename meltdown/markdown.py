@@ -268,6 +268,8 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
+        self.clean_empty_lines(start_ln, end_ln, who)
+
         if self.enabled(who, "think"):
             if self.replace_think(start_ln, end_ln, who):
                 end_ln = self.next_marker(start_ln)
@@ -905,6 +907,13 @@ class Markdown:
 
         text = "\n".join(joined_lines).strip() + "\n"
         self.insert_first(start_ln, end_ln, text)
+        return True
+
+    def clean_empty_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
+        lines = self.get_lines(start_ln, end_ln, who)
+        text = "\n".join(lines)
+        cleaned_text = re.sub(r"\n\s*\n", "\n\n", text)
+        self.insert_first(start_ln, end_ln, cleaned_text)
         return True
 
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
