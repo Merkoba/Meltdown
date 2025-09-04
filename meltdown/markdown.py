@@ -195,7 +195,15 @@ class Markdown:
 
     def __init__(self, widget: Output) -> None:
         self.widget = widget
-        self.not_nobody = ["clean", "join", "snippets", "ordered", "unordered"]
+
+        self.not_nobody = [
+            "clean_empty_lines",
+            "clean",
+            "join",
+            "snippets",
+            "ordered",
+            "unordered",
+        ]
 
     def format_all(self) -> None:
         start_ln = 1
@@ -251,7 +259,12 @@ class Markdown:
         if who == "nobody":
             return what not in self.not_nobody
 
-        arg = getattr(args, f"markdown_{what}")
+        name = f"markdown_{what}"
+
+        if not hasattr(args, name):
+            return True
+
+        arg = getattr(args, name)
 
         if arg == "none":
             return False
@@ -268,7 +281,8 @@ class Markdown:
         return False
 
     def format_section(self, who: str, start_ln: int, end_ln: int) -> None:
-        self.clean_empty_lines(start_ln, end_ln, who)
+        if self.enabled(who, "clean_empty_lines"):
+            self.clean_empty_lines(start_ln, end_ln, who)
 
         if self.enabled(who, "think"):
             if self.replace_think(start_ln, end_ln, who):
@@ -786,8 +800,9 @@ class Markdown:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
 
-        if who in ("user", "ai"):
-            _, end_col = self.prompt_cols(start_ln)
+        _, end_col = self.prompt_cols(start_ln)
+
+        if end_col:
             lines[0] = lines[0][end_col - 1 :].lstrip()
 
         return lines
@@ -911,9 +926,18 @@ class Markdown:
 
     def clean_empty_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
         lines = self.get_lines(start_ln, end_ln, who)
-        text = "\n".join(lines)
-        cleaned_text = re.sub(r"\n\s*\n", "\n\n", text)
-        self.insert_first(start_ln, end_ln, cleaned_text)
+        cleaned = []
+
+        for line in lines:
+            stripped = line.strip()
+
+            if stripped == "":
+                cleaned.append("")
+            else:
+                cleaned.append(stripped)
+
+        text = "\n".join(cleaned).strip() + "\n"
+        self.insert_first(start_ln, end_ln, text)
         return True
 
     def clean_lines(self, start_ln: int, end_ln: int, who: str) -> bool:
