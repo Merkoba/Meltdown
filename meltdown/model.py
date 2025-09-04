@@ -727,6 +727,21 @@ class Model:
             display.insert("".join(buffer), tab_id=tab_id)
             buffer.clear()
 
+
+        def is_whitespace_only(token):
+            return (token != "\n") and (not token.strip())
+
+        def add_token_advanced(tokens, new_token):
+            if (new_token == "\n") and (len(tokens) >= 2):
+                if (tokens[-2] == "\n") and is_whitespace_only(tokens[-1]):
+                    tokens.pop()
+
+            if (new_token == "\n") and (len(tokens) >= 2):
+                if (tokens[-1] == "\n") and (tokens[-2] == "\n"):
+                    return
+
+            tokens.append(new_token)
+
         try:
             for chunk in output:
                 if self.stop_stream_thread.is_set():
@@ -802,7 +817,7 @@ class Model:
                         token = token.lstrip()
                         token_printed = True
 
-                    tokens.append(token)
+                    add_token(token)
                     buffer.append(token)
                     now = utils.now()
 
@@ -989,6 +1004,7 @@ class Model:
                 return ""
 
             response = message.content.strip()
+            response = utils.clean_lines(response)
 
             if response:
                 display.remove_last_ai(tab_id)

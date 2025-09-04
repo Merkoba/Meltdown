@@ -653,6 +653,7 @@ class Display:
         if not tab:
             return
 
+        text = utils.clean_lines(text)
         tab.get_output().insert_text(text)
         tab.modified = True
 
@@ -898,6 +899,7 @@ class Display:
                 if args.crop_user > 0:
                     text = text[: args.crop_user].strip()
 
+            text = utils.clean_lines(text)
             tab.get_output().insert_text(text)
 
         if file:

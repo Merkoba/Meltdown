@@ -714,5 +714,8 @@ class Utils:
 
         return shell
 
+    def clean_lines(self, s) -> str:
+        return re.sub(r"\n[\s\n]*\n", "\n\n", s)
+
 
 utils = Utils()

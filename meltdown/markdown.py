@@ -197,7 +197,6 @@ class Markdown:
         self.widget = widget
 
         self.not_nobody = [
-            "clean_empty_lines",
             "clean",
             "join",
             "snippets",
@@ -799,11 +798,11 @@ class Markdown:
     def get_lines(self, start_ln: int, end_ln: int, who: str) -> list[str]:
         text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
         lines = text.split("\n")
-
         _, end_col = self.prompt_cols(start_ln)
 
-        if end_col:
-            lines[0] = lines[0][end_col - 1 :].lstrip()
+        if who in ("user", "ai"):
+            line = lines[0][end_col - 1 :].lstrip()
+            lines[0] = line
 
         return lines
 
