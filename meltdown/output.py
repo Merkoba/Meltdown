@@ -227,7 +227,7 @@ class Output(tk.Text):
         quoted = utils.smart_quotes(words, force=True)
         text = utils.replace_keywords(text, words=quoted)
         tab_id = output.tab_id
-        model.stream({"text": text}, tab_id)
+        model.prompt(text, tab_id)
 
     @staticmethod
     def explain_words() -> None:
@@ -347,7 +347,7 @@ class Output(tk.Text):
         if not tab_id:
             return
 
-        model.stream({"text": text}, tab_id)
+        model.prompt(text, tab_id)
 
     @staticmethod
     def remove_markers(text: str) -> str:
@@ -1294,7 +1294,7 @@ class Output(tk.Text):
         if not text:
             return
 
-        model.stream({"text": text}, self.tab_id)
+        model.prompt(text, self.tab_id)
 
     # Remove lines with only whitespace
     # They mess with the markdown regex

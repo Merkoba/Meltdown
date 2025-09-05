@@ -258,8 +258,7 @@ class Commands:
         from .model import model
 
         text = utils.replace_keywords(args.help_prompt)
-        prompt = {"text": text}
-        model.stream(prompt)
+        model.prompt(text)
 
     def show_help(
         self, tab_id: str | None = None, filter_text: str | None = None

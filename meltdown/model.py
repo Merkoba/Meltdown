@@ -1498,5 +1498,8 @@ class Model:
 
         return gen_config
 
+    def prompt(self, text: str, tab_id: str | None = None) -> None:
+        self.stream({"text": text}, tab_id=tab_id)
+
 
 model = Model()

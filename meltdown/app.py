@@ -966,8 +966,8 @@ class App:
             tab_id = display.make_tab()
 
         name = self.get_name()
-        prompt = {"text": f"Hello {name}. Please describe yourself."}
-        model.stream(prompt, tab_id=tab_id)
+        text = f"Hello {name}. Please describe yourself."
+        model.prompt(text, tab_id=tab_id)
 
     def check_response_file(self) -> None:
         from .args import args

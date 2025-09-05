@@ -228,7 +228,7 @@ class Snippet(tk.Frame):
     def explain(self) -> None:
         sample = self.get_sample()
         text = f"Explain this snippet: {sample}"
-        model.stream({"text": text}, self.parent.tab_id)
+        model.prompt(text, self.parent.tab_id)
 
     def run_shell(self) -> None:
         text = self.get_text()

@@ -111,6 +111,18 @@ class CommandSpec:
         )
 
         self.add_cmd(
+            "like",
+            "Send a like prompt",
+            lambda a=None: display.react_like(),
+        )
+
+        self.add_cmd(
+            "dislike",
+            "Send a dislike prompt",
+            lambda a=None: display.react_dislike(),
+        )
+
+        self.add_cmd(
             "cancelexit",
             "Cancel the exit if you had set a delay",
             lambda a=None: app.cancel_exit(True),

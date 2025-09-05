@@ -336,6 +336,8 @@ class Args:
         self.task_debounce_delay = 5
         self.rich_console = True
         self.debug = False
+        self.like_prompt = "I liked your last response :)"
+        self.dislike_prompt = "I disliked your last response :("
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)

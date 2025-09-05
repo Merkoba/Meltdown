@@ -1475,5 +1475,31 @@ class Display:
         msg = f"Snippets: {num}"
         Dialog.show_message(msg)
 
+    def react_like(self, tab_id: str | None = None) -> None:
+        from .model import model
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        model.prompt(args.like_prompt, tab_id=tab_id)
+
+    def react_dislike(self, tab_id: str | None = None) -> None:
+        from .model import model
+
+        if not tab_id:
+            tab_id = self.current_tab
+
+        output = self.get_output(tab_id)
+
+        if not output:
+            return
+
+        model.prompt(args.dislike_prompt, tab_id=tab_id)
+
 
 display = Display()

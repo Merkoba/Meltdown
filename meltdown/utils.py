@@ -425,8 +425,7 @@ class Utils:
 
         noun = self.random_noun()
         text = f"Tell me about: {noun}"
-        prompt = {"text": text}
-        model.stream(prompt)
+        model.prompt(text)
 
     def remove_multiple_lines(self, text: str) -> str:
         pattern = re.compile(r"\n{3,}")
