@@ -28,6 +28,18 @@ Optional delay in seconds
 
 ---
 
+### like
+
+Send a like prompt
+
+---
+
+### dislike
+
+Send a dislike prompt
+
+---
+
 ### cancelexit
 
 Cancel the exit if you had set a delay
@@ -1295,3 +1307,9 @@ Enable automatic tasks
 ### disabletasks
 
 Disable automatic tasks
+
+---
+
+### snippets
+
+Print the number of snippets
