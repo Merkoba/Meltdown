@@ -25,6 +25,7 @@ from .memory import memory
 from .autoscroll import autoscroll
 from .variables import variables
 from .run import run
+from .lockets import lockets
 
 
 def main() -> None:
@@ -67,6 +68,7 @@ def main() -> None:
     commands.setup()
     variables.setup()
     inputcontrol.setup()
+    lockets.setup()
     run.setup()
     app.setup(now)
     system.start()

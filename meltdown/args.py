@@ -338,6 +338,7 @@ class Args:
         self.debug = False
         self.like_prompt = "I liked your last response :)"
         self.dislike_prompt = "I disliked your last response :("
+        self.lockets: list[str] = []
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -356,6 +357,7 @@ class Args:
             ("custom_prompt", "custom_prompts"),
             ("uselink", "uselinks"),
             ("var", "variables"),
+            ("locket", "lockets"),
             ("no_tooltips", "tooltips"),
             ("no_scrollbars", "scrollbars"),
             ("no_colors", "colors"),

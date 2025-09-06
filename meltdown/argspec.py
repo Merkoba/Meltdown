@@ -2004,5 +2004,12 @@ class ArgSpec:
             info="Print extra information",
         )
 
+        self.add_argument(
+            "locket",
+            type=str,
+            action="append",
+            info='Add a command to use as a locket. Format is "[name] [command]"',
+        )
+
 
 argspec = ArgSpec()
