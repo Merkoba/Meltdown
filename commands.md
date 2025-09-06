@@ -1313,3 +1313,9 @@ Disable automatic tasks
 ### snippets
 
 Print the number of snippets
+
+---
+
+### locket
+
+Ask about a locket

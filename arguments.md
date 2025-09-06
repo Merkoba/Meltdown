@@ -3069,3 +3069,13 @@ Print extra information
 Default: False
 
 Action: store_true
+
+---
+
+### locket
+
+Add a command to use as a locket. Format is "[name] [command]"
+
+Action: append
+
+Type: str
