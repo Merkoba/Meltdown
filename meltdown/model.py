@@ -432,7 +432,9 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
-    def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
+    def stream(
+        self, prompt: PromptArg, tab_id: str | None = None
+    ) -> None:
         if self.is_loading():
             utils.msg("(Stream) Slow down!")
             return
@@ -462,7 +464,7 @@ class Model:
             self.load(prompt, tab_id)
             return
 
-        def wrapper(prompt: dict[str, str], tab_id: str) -> None:
+        def wrapper(prompt: PromptArg, tab_id: str) -> None:
             self.stop_stream_thread.clear()
             self.streaming = True
             app.do_checks()
@@ -475,12 +477,13 @@ class Model:
         self.stream_thread.start()
 
     def prepare_stream(
-        self, prompt: dict[str, str], tab_id: str
+        self, prompt: PromptArg, tab_id: str,
     ) -> tuple[list[dict[str, str]], Item] | None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
         no_history = prompt.get("no_history", False)
+        internal = prompt.get("internal", None)
 
         if prompt_file:
             prompt_file = files.clean_path(prompt_file)
@@ -526,6 +529,7 @@ class Model:
         log_dict["top_k"] = config.top_k
         log_dict["top_p"] = config.top_p
         log_dict["format"] = config.format
+        log_dict["internal"] = internal
 
         # Temporary
         log_dict["ai"] = "Empty"
@@ -598,7 +602,12 @@ class Model:
             content_items.append({"type": "text", "text": prompt_text})
             messages.append({"role": "user", "content": content_items})
         else:
-            messages.append({"role": "user", "content": prompt_text})
+            ptext = prompt_text
+
+            if internal:
+                ptext = f"{internal}\n{ptext}"
+
+            messages.append({"role": "user", "content": ptext})
 
         o_text = prompt_user if prompt_user else original_text
 
@@ -606,7 +615,11 @@ class Model:
             prompt_user = prompt_text
 
         display.prompt(
-            "user", text=prompt_user, tab_id=tab_id, original=o_text, file=original_file
+            "user",
+            text=prompt_user,
+            tab_id=tab_id,
+            original=o_text,
+            file=original_file,
         )
 
         display.prompt("ai", text=args.thinking_text, tab_id=tab_id)
@@ -614,7 +627,7 @@ class Model:
         display.stream_started(tab_id)
         return messages, convo_item
 
-    def do_stream(self, prompt: dict[str, str], tab_id: str) -> None:
+    def do_stream(self, prompt: PromptArg, tab_id: str) -> None:
         prepared = self.prepare_stream(prompt, tab_id)
 
         if not prepared:

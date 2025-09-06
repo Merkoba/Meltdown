@@ -33,6 +33,7 @@ from .menumanager import menumanager
 from .variables import variables
 from .run import run
 from .tasks import tasks
+from .lockets import lockets
 
 
 class DuplicateCommandError(Exception):
@@ -1390,6 +1391,13 @@ class CommandSpec:
             "snippets",
             "Print the number of snippets",
             lambda a=None: display.count_snippets(),
+        )
+
+        self.add_cmd(
+            "locket",
+            "Ask about a locket",
+            lambda a=None: lockets.ask(a),
+            type=str,
         )
 
 

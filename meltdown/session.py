@@ -38,6 +38,7 @@ class Item:
             top_k=data.get("top_k", None),
             top_p=data.get("top_p", None),
             format_=data.get("format", None),
+            internal=data.get("internal", None)
         )
 
     def __init__(
@@ -55,6 +56,7 @@ class Item:
         top_k: int | None,
         top_p: float | None,
         format_: str | None,
+        internal: str | None,
     ) -> None:
         self.date = date
         self.duration = duration
@@ -69,6 +71,7 @@ class Item:
         self.top_k = top_k
         self.top_p = top_p
         self.format = format_
+        self.internal = internal
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -85,6 +88,7 @@ class Item:
             "top_k": self.top_k,
             "top_p": self.top_p,
             "format": self.format,
+            "internal": self.internal,
         }
 
 

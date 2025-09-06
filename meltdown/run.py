@@ -128,5 +128,15 @@ class Run:
 
         script.run()
 
+    def shell_cmd(self, command: str, shell: bool = True) -> (bool, str):
+        user_shell = utils.get_shell()
+        cmds = [user_shell, "-c", command]
+        result = subprocess.run(cmds, capture_output=True, text=True, check=False)
+
+        if result.returncode != 0:
+            return False, result.stderr
+
+        return True, result.stdout.strip()
+
 
 run = Run()
