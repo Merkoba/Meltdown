@@ -142,16 +142,9 @@ class InputControl:
         if not inputs:
             return
 
-        if self.history_index == -1:
-            self.history_index = 0
-        else:
-            if self.history_index == len(inputs) - 1:
-                self.clear()
-                return
-
-            self.history_index = (self.history_index + 1) % len(inputs)
-
-        self.apply_history(inputs)
+        if self.history_index < len(inputs) - 1:
+            self.history_index += 1
+            self.apply_history(inputs)
 
     def history_down(self) -> None:
         inputs = self.get_history_list(no_multi=True)
@@ -159,16 +152,11 @@ class InputControl:
         if not inputs:
             return
 
-        if self.history_index == -1:
-            self.history_index = len(inputs) - 1
-        else:
-            if self.history_index == 0:
-                self.clear()
-                return
-
-            self.history_index = (self.history_index - 1) % len(inputs)
-
-        self.apply_history(inputs)
+        if self.history_index > 0:
+            self.history_index -= 1
+            self.apply_history(inputs)
+        elif self.history_index == 0:
+            self.clear()
 
     def set(self, text: str) -> None:
         self.input.set_text(text)
