@@ -59,6 +59,7 @@ class Lockets:
 I am going to ask a specific question about it.
 Don't include the data in your response, only provide a reponse that can answer my question in some way, without revealing the data.
 Like some sort of subtle guessing game where the data is considered sensitive.
+But no need to be overly cryptic or verbose.
 Use the following data to answer the prompt: {result}"""
 
         model.stream({"text": text, "internal": internal})
