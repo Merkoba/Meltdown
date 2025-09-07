@@ -128,7 +128,7 @@ class Run:
 
         script.run()
 
-    def shell_cmd(self, command: str, shell: bool = True) -> (bool, str):
+    def shell_cmd(self, command: str) -> tuple[bool, str]:
         user_shell = utils.get_shell()
         cmds = [user_shell, "-c", command]
         result = subprocess.run(cmds, capture_output=True, text=True, check=False)
