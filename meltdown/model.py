@@ -432,9 +432,7 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
-    def stream(
-        self, prompt: PromptArg, tab_id: str | None = None
-    ) -> None:
+    def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
         if self.is_loading():
             utils.msg("(Stream) Slow down!")
             return
@@ -477,7 +475,9 @@ class Model:
         self.stream_thread.start()
 
     def prepare_stream(
-        self, prompt: PromptArg, tab_id: str,
+        self,
+        prompt: PromptArg,
+        tab_id: str,
     ) -> tuple[list[dict[str, str]], Item] | None:
         prompt_text = prompt.get("text", "").strip()
         prompt_file = prompt.get("file", "").strip()

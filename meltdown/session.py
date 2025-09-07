@@ -38,7 +38,7 @@ class Item:
             top_k=data.get("top_k", None),
             top_p=data.get("top_p", None),
             format_=data.get("format", None),
-            internal=data.get("internal", None)
+            internal=data.get("internal", None),
         )
 
     def __init__(

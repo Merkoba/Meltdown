@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-#standard
+# standard
 from dataclasses import dataclass
 
 # Modules
@@ -10,17 +10,17 @@ from .model import model
 from .display import display
 from .run import run
 
+
 @dataclass
 class Locket:
     name: str
     cmd: str
     data: str
 
-class Lockets:
-    lockets: list[Locket] = []
 
-    def __init__(self):
-        self.lockets: list[Locket]
+class Lockets:
+    def __init__(self) -> None:
+        self.lockets: list[Locket] = []
 
     def setup(self) -> None:
         for locket in args.lockets:
