@@ -53,6 +53,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Autoscroll](#autoscroll)
 1. [JoinLines](#join)
 1. [Pins](#pins)
+1. [Lockets](#lockets)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
