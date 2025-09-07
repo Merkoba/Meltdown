@@ -1007,6 +1007,28 @@ There are some keywords that you can use in commands, the input, or system promp
 
 ---
 
+## Lockets
+
+Sometimes you might need to access some data but don't feel comfortable having it printed anywhere or even visible for a couple of seconds. This can be for several reasons revolving around privacy and personal security.
+
+You might want to have a way to have the computer/AI have a peek at this data and respond with the neccessary safe information you request it.
+
+Lockets are registered at startup through arguments.
+
+For example `--locket name some command`.
+
+Multiple lockets can be registered.
+
+Then the `/locket` command can be used like:
+
+`/locket date what is the week day?`
+
+`/locket joe what ice cream does he like?`
+
+These can be using commands that fetch date or profile information.
+
+---
+
 ### ((name_user))
 
 Name of the user.
@@ -1061,3 +1083,5 @@ There are 3 scrollable panels at the top, which can be scrolled by clicking the 
 or by using the mousewheel.
 
 Middle clicking the panel arrows scrolls instantly to that side.
+
+There are `/like` and `/dislike` commands.
