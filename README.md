@@ -1012,7 +1012,7 @@ There are some keywords that you can use in commands, the input, or system promp
 
 Sometimes you might need to access some data but don't feel comfortable having it printed anywhere or even visible for a couple of seconds. This can be for several reasons revolving around privacy and personal security.
 
-You might want to have a way to have the computer/AI have a peek at this data and respond with the neccessary safe information you request it.
+You might want to have a way to have the computer/AI have a peek at this data and respond with the neccessary safe information you request.
 
 Lockets are registered at startup through arguments.
 
