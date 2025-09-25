@@ -135,7 +135,7 @@ class Markdown:
         # possibility of catastrophically backtracking in case
         # the stuff AFTER it fails to match (such as the closing
         # 3x backticks).
-        Markdown.pattern_snippets = rf"\s*{tick}{{3}}([-\w.# ]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!{tick}{{3}}){tick}{{1,2}})*))\2(?:{tick}{{3}}|$)\s*$"
+        Markdown.pattern_snippets = rf"^{tick}{{3}}([-\w.# ]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!^{tick}{{3}}){tick}{{1,2}}|(?!{tick}{{3}}[^{tick}]){tick}{{3}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
         Markdown.pattern_uselink = char_regex_1(uselink)
@@ -297,7 +297,7 @@ class Markdown:
                 end_ln = self.next_marker(start_ln)
 
         if self.enabled(who, "snippets"):
-            snip_done, _ = self.format_snippets(start_ln, end_ln)
+            snip_done, _ = self.format_snippets(start_ln, end_ln, who)
 
             if snip_done:
                 end_ln = self.next_marker(start_ln) - 1
@@ -471,29 +471,30 @@ class Markdown:
                         f"{index_item.start} + {len(index_item.content)}c",
                     )
 
-    def format_snippets(self, start_ln: int, end_ln: int) -> tuple[bool, int]:
+    def format_snippets(self, start_ln: int, end_ln: int, who: str) -> tuple[bool, int]:
         from .snippet import Snippet
 
-        text = self.widget.get(f"{start_ln}.0", f"{end_ln}.end")
+        clines = self.get_lines(start_ln, end_ln, who)
+        ctext = "\n".join(clines)
         num_lines = end_ln - start_ln
         line_num = 1  # Assign later
         matches = []
 
         for match_ in re.finditer(
-            Markdown.pattern_snippets, text, flags=re.MULTILINE | re.DOTALL
+            Markdown.pattern_snippets, ctext, flags=re.MULTILINE | re.DOTALL
         ):
             line_num = start_ln
             language = match_.group(1)
 
             content_start = match_.start(2)
-            line_1 = self.get_line_number(text, content_start)
+            line_1 = self.get_line_number(ctext, content_start)
 
             if num_lines > 1:
                 line_num = start_ln + line_1
 
             start_line = f"{line_num}.0"
             content_end = match_.end(2)
-            line_2 = self.get_line_number(text, content_end)
+            line_2 = self.get_line_number(ctext, content_end)
 
             if line_1 == line_2:
                 end_line = start_line
