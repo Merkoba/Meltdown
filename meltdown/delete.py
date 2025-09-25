@@ -25,7 +25,7 @@ class Delete:
         if not tabconvo.convo.items:
             return
 
-        if tabconvo.convo.id == "ignore":
+        if tabconvo.convo.id.startswith("ignore"):
             return
 
         if (mode == "above") or (mode == "below") or (mode == "others"):

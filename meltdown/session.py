@@ -430,7 +430,7 @@ class Session:
 
     def to_json(self) -> str:
         def check(conversation: Conversation) -> bool:
-            if conversation.id == "ignore":
+            if conversation.id.startswith("ignore"):
                 return False
 
             if not args.allow_empty:

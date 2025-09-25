@@ -571,7 +571,7 @@ class Display:
         if not tabconvo:
             return
 
-        if tabconvo.convo.id == "ignore":
+        if tabconvo.convo.id.startswith("ignore"):
             return
 
         if not tabconvo.convo.items:
@@ -1097,7 +1097,7 @@ class Display:
         if not tabconvo:
             return False
 
-        return tabconvo.convo.id == "ignore"
+        return tabconvo.convo.id.startswith("ignore")
 
     def enable_auto_bottom(self, tab_id: str) -> None:
         tab = self.get_tab(tab_id)

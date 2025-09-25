@@ -109,7 +109,7 @@ class FindManager:
             if not conversation:
                 return False
 
-            if conversation.id == "ignore":
+            if conversation.id.startswith("ignore"):
                 return False
 
             for item in conversation.items:
