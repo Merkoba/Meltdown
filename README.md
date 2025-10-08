@@ -1002,12 +1002,6 @@ And allows closing either just normal tabs or just pins.
 
 ---
 
-## Keywords <a name="keywords"></a>
-
-There are some keywords that you can use in commands, the input, or system prompt.
-
----
-
 ## Lockets
 
 Sometimes you might need to access some data but don't feel comfortable having it printed anywhere or even visible for a couple of seconds. This can be for several reasons revolving around privacy and personal security.
@@ -1027,6 +1021,12 @@ Then the `/locket` command can be used like:
 `/locket joe what ice cream does he like?`
 
 These can be using commands that fetch date or profile information.
+
+---
+
+## Keywords <a name="keywords"></a>
+
+There are some keywords that you can use in commands, the input, or system prompt.
 
 ---
 
