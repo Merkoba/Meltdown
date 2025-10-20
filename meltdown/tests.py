@@ -310,14 +310,5 @@ def debug_print(var_name, value):
         ]
     }
 
-    snippet2_test: Test = {
-        "items": [
-            {
-                "user": "Snippet Test",
-                "ai": "```\n/tab 2 & /sleep 0.5 & /select\n```"
-            },
-        ]
-    }
-
 
 tests = Tests()

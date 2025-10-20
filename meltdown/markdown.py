@@ -199,7 +199,6 @@ class Markdown:
         self.not_nobody = [
             "clean",
             "join",
-            "snippets",
             "ordered",
             "unordered",
         ]
