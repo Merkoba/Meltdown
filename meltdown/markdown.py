@@ -477,151 +477,111 @@ class Markdown:
         clines = self.get_lines(start_ln, end_ln, who)
         ctext = "\n".join(clines)
         num_lines = end_ln - start_ln
-        line_num = 1  # Assign later
         matches = []
 
         for match_ in re.finditer(
             Markdown.pattern_snippets, ctext, flags=re.MULTILINE | re.DOTALL
         ):
-            line_num = start_ln
             language = match_.group(1)
+            content = match_.group(2)
 
-            content_start = match_.start(2)
-            line_1 = self.get_line_number(ctext, content_start)
+            # Determine whether this is an inline fenced snippet like ```something here```
+            # In that case, group(1) was mistakenly captured as the language; treat it as content.
+            try:
+                open_ticks_end = match_.start(0) + 3  # position right after opening ```
+                # Next character after the "language" capture
+                after_lang_idx = open_ticks_end + (len(language) if language else 0)
+                next_char = ctext[after_lang_idx : after_lang_idx + 1]
+                is_inline_snippet = next_char != "\n"
+            except Exception:
+                is_inline_snippet = False
 
-            if num_lines > 1:
-                line_num = start_ln + line_1
+            if is_inline_snippet:
+                # Swap: group(1) is actually the inline content and no language is specified
+                content = language or ""
+                language = ""
 
-            start_line = f"{line_num}.0"
-            content_end = match_.end(2)
-            line_2 = self.get_line_number(ctext, content_end)
+            full_match_start_idx = match_.start(0)
+            full_match_end_idx = match_.end(0)
 
-            if line_1 == line_2:
-                end_line = start_line
+            # Determine the real start and end line numbers in the widget
+            start_line_num_in_ctext = self.get_line_number(ctext, full_match_start_idx)
+            real_start_line = start_ln + start_line_num_in_ctext - 1
+
+            end_line_num_in_ctext = self.get_line_number(ctext, full_match_end_idx)
+            real_end_line = start_ln + end_line_num_in_ctext - 1
+
+            # Determine the character indices for deletion
+            # For multi-line, we delete whole lines. For single-line, we use char indices.
+            if real_start_line != real_end_line:
+                # Multi-line block
+                start_index = f"{real_start_line}.0"
+                end_index = f"{real_end_line}.end"
             else:
-                end_line = f"{start_ln + line_2 - 1}.0"
+                # Single-line block
+                start_char_index = full_match_start_idx - ctext.rfind('\n', 0, full_match_start_idx) - 1
+                end_char_index = full_match_end_idx - ctext.rfind('\n', 0, full_match_end_idx) - 1
+                start_index = f"{real_start_line}.{start_char_index}"
+                end_index = f"{real_end_line}.{end_char_index}"
 
-            match = SnippetMatch(start_line, end_line, language, line_num)
+            match = SnippetMatch(start_index, end_index, language, real_start_line)
+            match.content = content
             matches.append(match)
 
+        # Iterate in reverse to avoid messing up indices
         for match in reversed(matches):
-            if num_lines == 1:
-                snippet_text = match.language
+
+            # Check for any non-whitespace characters before the start of our match on the same line
+            # If present, ensure there is exactly ONE blank line separating text and the snippet widget
+            line_start_index = match.start_line.split('.')[0]
+            text_before = self.widget.get(f"{line_start_index}.0", match.start_line).strip()
+            is_inline_start = bool(text_before)
+
+            # Now, delete the ENTIRE ```...``` block
+            self.widget_delete("snippets", match.start_line, match.end_line)
+
+            # If the snippet was inline (same line start/end), capture and move trailing text
+            start_line_num = int(match.start_line.split('.')[0])
+            end_line_num = int(match.end_line.split('.')[0])
+            same_line = start_line_num == end_line_num
+
+            trailing_text = ""
+            if same_line:
+                trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
+                if trailing_text:
+                    # Delete trailing text from the original line; we'll re-insert it after the widget
+                    self.widget_delete("snippets", match.end_line, f"{end_line_num}.end")
+
+            # Determine where to insert the widget
+            insertion_line = match.line_num
+            if is_inline_start:
+                # Ensure a blank line between the text line and the snippet widget
+                # Create exactly one empty line after the current line
+                self.widget_insert("snippets", f"{insertion_line}.end", "\n")
+                insertion_line += 2  # widget goes two lines below the original text line
             else:
-                snippet_text = self.widget.get(
-                    f"{match.start_line} linestart", f"{match.end_line} lineend"
-                )
+                # Ensure exactly one empty line ABOVE the widget
+                above_idx = insertion_line - 1
+                if above_idx >= 1:
+                    above_line = self.widget.get(f"{above_idx}.0", f"{above_idx}.end")
+                    if above_line.strip() != "":
+                        self.widget_insert("snippets", f"{above_idx}.end", "\n")
+                        insertion_line += 1
 
-            content_above = self.widget.get(
-                f"{match.start_line} - 1 lines linestart",
-                f"{match.start_line} - 1 lines lineend",
-            ).strip()
-
-            content_below = self.widget.get(
-                f"{match.end_line} + 2 lines linestart",
-                f"{match.end_line} + 2 lines lineend",
-            ).strip()
-
-            if content_below:
-                self.widget_insert(
-                    "snippets", f"{match.end_line} +1 lines lineend", "\n"
-                )
-
-            lang = "" if num_lines == 1 else match.language
-            snippet = Snippet(self.widget, snippet_text, lang)
-            numticks = 3
-            numchars = numticks
-
-            if match.language:
-                if num_lines == 1:
-                    numchars += len(snippet_text) + numticks
-                else:
-                    numchars += len(match.language)
-
-            if len(content_above) > numchars:
-                end_of_line_above = f"{match.start_line} - 1 lines lineend"
-                right_bit = f"{end_of_line_above} -{numchars} chars"
-
-                self.widget_delete(
-                    "snippets",
-                    right_bit,
-                    end_of_line_above,
-                )
-
-                self.widget_insert(
-                    "snippets",
-                    end_of_line_above,
-                    "\n",
-                )
-
-                self.widget_delete(
-                    "snippets",
-                    f"{match.start_line} + 1 lines",
-                    f"{match.end_line} + 2 lines lineend",
-                )
-
-                widgets.window(self.widget, match.line_num + 1, snippet)
-            elif num_lines == 1:
-                line_above = self.widget.get(
-                    f"{match.start_line} linestart", f"{match.start_line} lineend"
-                ).rstrip()
-
-                line_above = line_above[:-numchars].rstrip() + "\n"
-
-                if line_above:
-                    self.widget_delete(
-                        "snippets",
-                        f"{match.start_line} linestart",
-                        f"{match.start_line} lineend",
-                    )
-
-                    self.widget_insert(
-                        "snippets",
-                        f"{match.start_line} linestart",
-                        line_above,
-                    )
-
-                    widgets.window(self.widget, match.line_num + 2, snippet)
-                else:
-                    self.widget_delete(
-                        "snippets",
-                        f"{match.start_line} - 1 lines linestart",
-                        f"{match.end_line} lineend",
-                    )
-
-                    widgets.window(self.widget, match.line_num - 1, snippet)
-            else:
-                start_of_line_above = f"{match.start_line} - 2 lines linestart"
-                end_of_line_above = f"{match.start_line} - 2 lines lineend"
-
-                line_above = self.widget.get(
-                    start_of_line_above, end_of_line_above
-                ).strip()
-
-                if line_above:
-                    self.widget_insert(
-                        "snippets",
-                        end_of_line_above,
-                        "\n",
-                    )
-
-                    self.widget_delete(
-                        "snippets",
-                        f"{match.start_line} linestart",
-                        f"{match.end_line} + 2 lines lineend",
-                    )
-
-                    widgets.window(self.widget, match.line_num, snippet)
-                else:
-                    self.widget_delete(
-                        "snippets",
-                        f"{match.start_line} - 1 lines linestart",
-                        f"{match.end_line} + 1 lines lineend",
-                    )
-
-                    widgets.window(self.widget, match.line_num - 1, snippet)
-
+            # Create and insert the snippet widget
+            snippet = Snippet(self.widget, match.content, match.language)
+            widgets.window(self.widget, insertion_line, snippet)
             self.widget.snippets.append(snippet)
+
+            # Ensure exactly one empty line AFTER the widget
+            after_idx = insertion_line + 1
+            after_line = self.widget.get(f"{after_idx}.0", f"{after_idx}.end")
+            if after_line.strip() != "":
+                self.widget_insert("snippets", f"{after_idx}.0", "\n")
+
+            # If there was trailing text in an inline snippet, put it after the blank line
+            if same_line and trailing_text.strip():
+                self.widget_insert("snippets", f"{insertion_line + 2}.0", trailing_text)
 
         return len(matches) > 0, num_lines
 
