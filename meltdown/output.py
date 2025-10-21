@@ -118,7 +118,10 @@ class Output(tk.Text):
         url = Output.get_url()
 
         if url:
-            app.open_url(url)
+            if url.startswith(("http://", "https://")):
+                app.open_url(url)
+            else:
+                app.open_generic(url)
 
     @staticmethod
     def repeat_prompt(no_history: bool = False) -> None:
