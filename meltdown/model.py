@@ -63,6 +63,10 @@ class Model:
         self.stream_date = 0.0
         self.last_response = ""
         self.icon_text = ""
+        self.stream_timeout = 20
+        self.tools_timeout = 20
+        self.read_file_timeout = 10
+        self.stop_stream_timeout = 5
 
         kerr = "Use the model menu to set it."
         self.openai_key_error = f"Error: OpenAI API key not found. {kerr}"
@@ -427,7 +431,7 @@ class Model:
 
         if self.stream_thread and self.stream_thread.is_alive():
             self.stop_stream_thread.set()
-            self.stream_thread.join(timeout=3)
+            self.stream_thread.join(timeout=self.stop_stream_timeout)
 
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
@@ -648,7 +652,7 @@ class Model:
 
         if self.is_remote_model():
             try:
-                output = completion(**gen_config, timeout=10)
+                output = completion(**gen_config, timeout=self.stream_timeout)
             except BaseException as e:
                 utils.error(e)
 
@@ -988,7 +992,7 @@ class Model:
                         gen_config = self.get_gen_config(messages)
 
                         if self.is_remote_model():
-                            follow_up = completion(**gen_config, timeout=10)
+                            follow_up = completion(**gen_config, timeout=self.tools_timeout)
                         elif self.model:
                             local_gen_config = gen_config.copy()
 
@@ -1263,7 +1267,7 @@ class Model:
 
         if utils.is_url(path):
             try:
-                response = requests.get(path, timeout=5)
+                response = requests.get(path, timeout=self.read_file_timeout)
 
                 if response.status_code == 200:
                     text = str(response.text)
@@ -1456,7 +1460,7 @@ class Model:
             gen_config["stream"] = False
 
             if self.is_remote_model():
-                response = completion(**gen_config, timeout=10)
+                response = completion(**gen_config, timeout=self.tools_timeout)
             elif self.model:
                 local_gen_config = gen_config.copy()
                 del local_gen_config["model"]
