@@ -91,8 +91,8 @@ class ModelControl:
         files.remove_model(m)
         self.show_context(event)
 
-    def show_recent(self, target: tk.Widget | None = None) -> None:
-        self.show_context(only_items=True, target=target)
+    def show_recent(self, event: Any, target: tk.Widget | None = None) -> None:
+        self.show_context(event, only_items=True, target=target)
 
     def browse(self) -> None:
         from .widgets import widgets
