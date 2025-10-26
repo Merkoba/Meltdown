@@ -19,6 +19,7 @@ class SnippetMatch:
     end_line: str
     language: str
     line_num: int
+    content: str = ""
 
 
 @dataclass
@@ -518,30 +519,39 @@ class Markdown:
                 end_index = f"{real_end_line}.end"
             else:
                 # Single-line block
-                start_char_index = full_match_start_idx - ctext.rfind('\n', 0, full_match_start_idx) - 1
-                end_char_index = full_match_end_idx - ctext.rfind('\n', 0, full_match_end_idx) - 1
+                start_char_index = (
+                    full_match_start_idx
+                    - ctext.rfind("\n", 0, full_match_start_idx)
+                    - 1
+                )
+                end_char_index = (
+                    full_match_end_idx - ctext.rfind("\n", 0, full_match_end_idx) - 1
+                )
                 start_index = f"{real_start_line}.{start_char_index}"
                 end_index = f"{real_end_line}.{end_char_index}"
 
-            match = SnippetMatch(start_index, end_index, language, real_start_line)
-            match.content = content
+            match = SnippetMatch(
+                start_index, end_index, language, real_start_line, content
+            )
+
             matches.append(match)
 
         # Iterate in reverse to avoid messing up indices
         for match in reversed(matches):
-
             # Check for any non-whitespace characters before the start of our match on the same line
             # If present, ensure there is exactly ONE blank line separating text and the snippet widget
-            line_start_index = match.start_line.split('.')[0]
-            text_before = self.widget.get(f"{line_start_index}.0", match.start_line).strip()
+            line_start_index = match.start_line.split(".")[0]
+            text_before = self.widget.get(
+                f"{line_start_index}.0", match.start_line
+            ).strip()
             is_inline_start = bool(text_before)
 
             # Now, delete the ENTIRE ```...``` block
             self.widget_delete("snippets", match.start_line, match.end_line)
 
             # If the snippet was inline (same line start/end), capture and move trailing text
-            start_line_num = int(match.start_line.split('.')[0])
-            end_line_num = int(match.end_line.split('.')[0])
+            start_line_num = int(match.start_line.split(".")[0])
+            end_line_num = int(match.end_line.split(".")[0])
             same_line = start_line_num == end_line_num
 
             trailing_text = ""
@@ -549,7 +559,9 @@ class Markdown:
                 trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
                 if trailing_text:
                     # Delete trailing text from the original line; we'll re-insert it after the widget
-                    self.widget_delete("snippets", match.end_line, f"{end_line_num}.end")
+                    self.widget_delete(
+                        "snippets", match.end_line, f"{end_line_num}.end"
+                    )
 
             # Determine where to insert the widget
             insertion_line = match.line_num
@@ -557,7 +569,9 @@ class Markdown:
                 # Ensure a blank line between the text line and the snippet widget
                 # Create exactly one empty line after the current line
                 self.widget_insert("snippets", f"{insertion_line}.end", "\n")
-                insertion_line += 2  # widget goes two lines below the original text line
+                insertion_line += (
+                    2  # widget goes two lines below the original text line
+                )
             else:
                 # Ensure exactly one empty line ABOVE the widget
                 above_idx = insertion_line - 1

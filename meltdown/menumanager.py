@@ -101,7 +101,9 @@ class ModelMenu:
 
         self.menu.add(
             "Recent",
-            lambda e: modelcontrol.show_recent(e, target=MenuManager.get_model_button()),
+            lambda e: modelcontrol.show_recent(
+                e, target=MenuManager.get_model_button()
+            ),
         )
 
         self.menu.add("Browse", lambda e: modelcontrol.browse())

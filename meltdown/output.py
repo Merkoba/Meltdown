@@ -22,7 +22,7 @@ class Output(tk.Text):
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     marker_separator = "\u200d\u200d\u200d"
-    marker_space = "\u00A0"
+    marker_space = "\u00a0"
     clicked_who = ""
     words = ""
     url = ""
@@ -359,9 +359,7 @@ class Output(tk.Text):
         text = text.replace(Output.marker_user, "")
         text = text.replace(Output.marker_ai, "")
         text = text.replace(Output.marker_separator, "")
-        text = text.replace(Output.marker_space, " ")
-
-        return text
+        return text.replace(Output.marker_space, " ")
 
     @staticmethod
     def get_marker(key: str) -> str:
