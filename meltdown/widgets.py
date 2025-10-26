@@ -134,7 +134,6 @@ class Widgets:
 
         ToolTip(self.mode, tips["mode"])
 
-
         self.main_menu_button = widgetutils.make_button(
             frame_data_model, "Menu", lambda e: self.show_main_menu(e)
         )
