@@ -165,11 +165,19 @@ class Theme:
         self.msgbox_width = 34
         self.msgbox_height = 10
 
+    def get_monospace_family(self) -> str:
+        import sys
+
+        if sys.platform == "darwin":
+            return "Menlo"
+
+        return self.monospace_family
+
     def get_font_family(self) -> str:
         from .args import args
 
         if config.font_family == "monospace":
-            font = args.font_family_mono or self.monospace_family
+            font = args.font_family_mono or self.get_monospace_family()
         elif config.font_family == "serif":
             font = args.font_family_serif or self.serif_family
         else:
@@ -202,7 +210,7 @@ class Theme:
         outfont = self.get_output_font()
 
         if font_family == "monospace":
-            ff = self.monospace_family
+            ff = self.get_monospace_family()
         else:
             ff = outfont[0]
 
@@ -213,7 +221,7 @@ class Theme:
         return config.font_size + (4 - num)
 
     def get_separator_font(self) -> tuple[str, int]:
-        ff = self.monospace_family
+        ff = self.get_monospace_family()
         return (ff, config.font_size)
 
     def font(self, name: str = "font") -> tuple[str, int, str]:
