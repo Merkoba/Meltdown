@@ -76,18 +76,22 @@ class Model:
         self.gpts: list[tuple[str, str]] = [
             ("gpt-4o", "GPT 4o"),
             ("gpt-4o-mini", "GPT 4o Mini"),
+            ("gpt-4-turbo", "GPT 4 Turbo"),
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
         ]
 
         self.geminis: list[tuple[str, str]] = [
             ("gemini-2.5-pro", "Gemini 2.5 Pro"),
             ("gemini-2.5-flash", "Gemini 2.5 Flash"),
+            ("gemini-2.0-pro", "Gemini 2.0 Pro"),
+            ("gemini-2.0-flash", "Gemini 2.0 Flash"),
         ]
 
         self.claudes: list[tuple[str, str]] = [
-            ("claude-opus-4", "Claude 4 Opus"),
+            ("claude-4-5-sonnet", "Claude 4.5 Sonnet"),
             ("claude-4-sonnet", "Claude 4 Sonnet"),
             ("claude-3-7-sonnet", "Claude 3.7 Sonnet"),
+            ("claude-opus-4", "Claude 4 Opus"),
         ]
 
         self.openai_key = ""
