@@ -112,7 +112,7 @@ class Theme:
         self.menu_disabled_foreground = "#3D4555"
         self.menu_border = "#959595"
         self.menu_border_width = 3
-        self.menu_canvas_background = "#6A7B83"
+        self.menu_canvas_background = "white"
         self.menu_wrap_length = 480
 
         self.tab_normal_background = "#2B303B"

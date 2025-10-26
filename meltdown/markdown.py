@@ -505,10 +505,10 @@ class Markdown:
 
             # Determine the real start and end line numbers in the widget
             start_line_num_in_ctext = self.get_line_number(ctext, full_match_start_idx)
-            real_start_line = start_ln + start_line_num_in_ctext - 1
+            real_start_line = start_ln + start_line_num_in_ctext
 
             end_line_num_in_ctext = self.get_line_number(ctext, full_match_end_idx)
-            real_end_line = start_ln + end_line_num_in_ctext - 1
+            real_end_line = start_ln + end_line_num_in_ctext
 
             # Determine the character indices for deletion
             # For multi-line, we delete whole lines. For single-line, we use char indices.
