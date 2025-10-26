@@ -183,6 +183,7 @@ class Output(tk.Text):
             return
 
         text = Output.get_words()
+        text = Output.remove_markers(text)
         output.deselect_all()
         utils.copy(text, command=True)
 
@@ -205,6 +206,7 @@ class Output(tk.Text):
             return
 
         text = Output.get_selected()
+        text = Output.remove_markers(text)
         output.deselect_all()
         utils.copy(text, command=True)
 
@@ -357,7 +359,9 @@ class Output(tk.Text):
         text = text.replace(Output.marker_user, "")
         text = text.replace(Output.marker_ai, "")
         text = text.replace(Output.marker_separator, "")
-        return text.replace(Output.marker_space, "")
+        text = text.replace(Output.marker_space, " ")
+
+        return text
 
     @staticmethod
     def get_marker(key: str) -> str:
