@@ -207,6 +207,15 @@ class Widgets:
         ToolTip(self.more_menu_button, tips["tab_menu"])
         frame_data_buttons.expand()
 
+        self.save_button = widgetutils.make_button(
+            frame_data_buttons,
+            "Save",
+            lambda: logs.to_text(),
+        )
+
+        ToolTip(self.save_button, "Save log as text")
+        frame_data_buttons.expand()
+
         self.more_menu_button = widgetutils.make_button(
             frame_data_buttons,
             "More",
