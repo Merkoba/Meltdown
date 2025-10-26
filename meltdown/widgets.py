@@ -106,13 +106,13 @@ class Widgets:
         frame_data_model = widgetutils.make_frame()
         self.model_frame = frame_data_model.frame
 
-        self.recent_button = widgetutils.make_button(
+        self.model_menu_button = widgetutils.make_button(
             frame_data_model,
-            "R",
-            lambda e: modelcontrol.show_recent(e, target=self.model),
+            "Model",
+            lambda e: self.show_model_menu(e),
         )
 
-        ToolTip(self.recent_button, "Show recent models")
+        ToolTip(self.model_menu_button, tips["model_menu"])
 
         self.model = widgetutils.make_entry(frame_data_model)
         frame_data_model.expand()
@@ -139,14 +139,6 @@ class Widgets:
         )
 
         ToolTip(self.load_button, tips["load_button"])
-
-        self.model_menu_button = widgetutils.make_button(
-            frame_data_model,
-            "Model",
-            lambda e: self.show_model_menu(e),
-        )
-
-        ToolTip(self.model_menu_button, tips["model_menu"])
 
         self.main_menu_button = widgetutils.make_button(
             frame_data_model, "Menu", lambda e: self.show_main_menu(e)
