@@ -22,7 +22,7 @@ class Output(tk.Text):
     marker_user = "\u200b\u200b\u200b"
     marker_ai = "\u200c\u200c\u200c"
     marker_separator = "\u200d\u200d\u200d"
-    marker_space = " "
+    marker_space = "\u00A0"
     clicked_who = ""
     words = ""
     url = ""
