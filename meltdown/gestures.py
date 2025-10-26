@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from typing import Any
@@ -11,12 +13,15 @@ from .menus import Menu
 
 class Gestures:
     def __init__(
-        self, widget: tk.Widget, text: tk.Text, on_right_click: Callable[..., Any]
+        self,
+        widget: tk.Widget,
+        text: tk.Text,
+        on_right_click: Callable[..., Any],
     ) -> None:
         self.on_right_click = on_right_click
         self.text = text
 
-        def bind_events(wid: tk.Widget) -> None:
+        def bind_events(wid: tk.Widget | tk.Toplevel) -> None:
             self.bind(wid)
 
             for child in wid.winfo_children():
@@ -24,7 +29,7 @@ class Gestures:
 
         bind_events(widget)
 
-    def bind(self, widget: tk.Widget) -> None:
+    def bind(self, widget: tk.Widget | tk.Toplevel) -> None:
         widget.bind("<ButtonPress-3>", lambda e: self.start_drag(e))
         widget.bind("<B3-Motion>", lambda e: self.on_drag(e))
         widget.bind("<ButtonRelease-3>", lambda e: self.on_drag_end(e))

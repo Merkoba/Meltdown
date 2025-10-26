@@ -706,7 +706,7 @@ class Book(tk.Frame):
             self.on_reorder()
 
     def bind_recursive(
-        self, what: str, action: Callable[..., Any], widget: tk.Widget
+        self, what: str, action: Callable[..., Any], widget: tk.Widget | tk.Toplevel
     ) -> None:
         widget.bind(what, lambda e: action(e))
 

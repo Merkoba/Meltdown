@@ -218,7 +218,7 @@ class Menu:
         self.elements: dict[int, dict[str, Any]] = {}
         self.separators: list[SeparatorBox] = []
 
-        def bind_mouse(parent: tk.Widget) -> None:
+        def bind_mouse(parent: tk.Widget | tk.Toplevel) -> None:
             for child in parent.winfo_children():
                 child.bind("<Motion>", lambda e: on_motion(e))
                 child.bind("<B1-Motion>", lambda e: on_motion(e))

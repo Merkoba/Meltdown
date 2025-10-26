@@ -425,7 +425,7 @@ class Dialog:
         self.buttons_frame = tk.Frame(self.container, background=background)
         self.buttons_frame.grid(row=3, column=0)
 
-        def bind(widget: tk.Widget) -> None:
+        def bind(widget: tk.Widget | tk.Toplevel) -> None:
             widget.bind("<Escape>", lambda e: self.hide())
             widget.bind("<ButtonPress-1>", lambda e: Menu.hide_all())
 

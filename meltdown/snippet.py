@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Standard
 import tkinter as tk
 from tkinter import ttk
@@ -137,7 +139,7 @@ class Snippet(tk.Frame):
         self.setup_bindings()
 
     def setup_bindings(self) -> None:
-        def bind_scroll_events(widget: tk.Widget) -> None:
+        def bind_scroll_events(widget: tk.Widget | tk.Toplevel) -> None:
             widget.bind("<Button-1>", lambda e: self.on_click())
             widget.bind("<Button-4>", lambda e: self.scroll_up())
             widget.bind("<Button-5>", lambda e: self.scroll_down())
