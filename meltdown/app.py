@@ -833,13 +833,11 @@ class App:
         if model.loaded_model:
             if not self.loaded:
                 self.loaded = True
-                widgets.model_menu_button.set_text("Unload")
                 widgets.model_menu_button.set_style("active")
                 self.update()
                 widgets.model.move_to_end()
         elif self.loaded:
             self.loaded = False
-            widgets.model_menu_button.set_text("Model")
             widgets.model_menu_button.set_style("normal")
             self.update()
             widgets.model.move_to_end()
