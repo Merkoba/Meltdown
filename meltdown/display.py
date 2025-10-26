@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
+import sys
 from typing import Any, TYPE_CHECKING
 from dataclasses import dataclass
 
@@ -1430,9 +1431,10 @@ class Display:
         d = utils.delimiter()
         colons = f"{marker}{d}{marker}"
         prompt = ""
+        display_space = " " if sys.platform == "darwin" else marker
 
         if args.avatars and show_avatar and avatar:
-            prompt = f"{avatar}{marker}{name}{colons}"
+            prompt = f"{avatar}{display_space}{name}{colons}"
         elif name:
             prompt = f"{name}{colons}"
 

@@ -23,6 +23,7 @@ from .commands import commands
 from .framedata import FrameData
 from .tips import tips
 from .files import files
+from .logs import logs
 from .utils import utils
 from .model import model
 from .autoscroll import autoscroll
@@ -104,6 +105,14 @@ class Widgets:
         app.main_frame.grid_columnconfigure(FrameData.frame_number, weight=1)
         frame_data_model = widgetutils.make_frame()
         self.model_frame = frame_data_model.frame
+
+        self.recent_button = widgetutils.make_button(
+            frame_data_model,
+            "R",
+            lambda e: modelcontrol.show_recent(e, target=self.model),
+        )
+
+        ToolTip(self.recent_button, "Show recent models")
 
         self.model = widgetutils.make_entry(frame_data_model)
         frame_data_model.expand()
