@@ -134,11 +134,6 @@ class Widgets:
 
         ToolTip(self.mode, tips["mode"])
 
-        self.load_button = widgetutils.make_button(
-            frame_data_model, "Load", lambda: self.load_or_unload()
-        )
-
-        ToolTip(self.load_button, tips["load_button"])
 
         self.main_menu_button = widgetutils.make_button(
             frame_data_model, "Menu", lambda e: self.show_main_menu(e)
@@ -514,17 +509,6 @@ class Widgets:
     def disable_stop_button(self) -> None:
         if app.exists():
             self.stop_button.set_style("disabled")
-
-    def enable_load_button(self) -> None:
-        if app.exists():
-            if model.loaded_model:
-                self.load_button.set_style("active")
-            else:
-                self.load_button.set_style("normal")
-
-    def disable_load_button(self) -> None:
-        if app.exists():
-            self.load_button.set_style("disabled")
 
     def enable_close_button(self) -> None:
         if app.exists():

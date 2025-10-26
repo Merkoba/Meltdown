@@ -7,7 +7,6 @@ tips = {
     "model_menu": "Open the model menu",
     "tab_menu": "Show the tabs menu\nMiddle click to show the tab list",
     "more_menu": "Show more options\nMiddle click to upload",
-    "load_button": "Load or unload the model",
     "scroller_button": "Scroll this row. Middle click for instant",
     "stop_button": "Stop generating the current response",
     "new_button": "Make a new tab. Middle click to insert at the start",

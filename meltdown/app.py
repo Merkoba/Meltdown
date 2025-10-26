@@ -833,14 +833,14 @@ class App:
         if model.loaded_model:
             if not self.loaded:
                 self.loaded = True
-                widgets.load_button.set_text("Unload")
-                widgets.load_button.set_style("active")
+                widgets.model_menu_button.set_text("Unload")
+                widgets.model_menu_button.set_style("active")
                 self.update()
                 widgets.model.move_to_end()
         elif self.loaded:
             self.loaded = False
-            widgets.load_button.set_text("Load")
-            widgets.load_button.set_style("normal")
+            widgets.model_menu_button.set_text("Model")
+            widgets.model_menu_button.set_style("normal")
             self.update()
             widgets.model.move_to_end()
 
@@ -862,11 +862,9 @@ class App:
             if model.model_loading or (model_empty and (not model.loaded_model)):
                 if not self.loading:
                     self.loading = True
-                    widgets.disable_load_button()
                     widgets.disable_format_select()
             elif self.loading:
                 self.loading = False
-                widgets.enable_load_button()
                 widgets.enable_format_select()
 
             if display.num_tabs_open <= 1:

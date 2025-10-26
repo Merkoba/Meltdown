@@ -99,6 +99,19 @@ class ModelMenu:
         self.parent = parent
         self.menu = Menu()
 
+    def make(self) -> None:
+        from .model import model
+        from .widgets import widgets
+
+        # rebuild menu each time to reflect current load state
+        self.menu.clear()
+
+        # Dynamic Load/Unload entry at the top
+        label = "Unload" if model.loaded_model else "Load"
+        self.menu.add(label, lambda e: widgets.load_or_unload())
+        self.menu.separator()
+
+        # Existing items
         self.menu.add(
             "Recent",
             lambda e: modelcontrol.show_recent(
@@ -115,6 +128,8 @@ class ModelMenu:
         self.menu.add("Anthropic", lambda e: self.parent.anthropic_menu.show())
 
     def show(self, event: Any = None) -> None:
+        self.make()
+
         if event:
             self.menu.show(event)
         else:
