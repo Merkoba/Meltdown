@@ -55,7 +55,7 @@ class InputControl:
         ToolTip(next_button, tips["next_button"])
 
         next_button = widgetutils.make_button(
-            frame_data, "R", lambda e: self.show_menu(e)
+            frame_data, "R", lambda e: self.show_menu(e, only_items=True)
         )
 
         ToolTip(next_button, tips["recent_input_button"])
@@ -90,7 +90,7 @@ class InputControl:
         self.write_button.bind("<Button-2>", lambda e: self.write(True))
         self.input.bind("<Button-3>", lambda e: self.show_menu(e))
 
-    def show_menu(self, event: Any = None) -> None:
+    def show_menu(self, event: Any = None, only_items: bool = False) -> None:
         from .widgets import widgets
 
         def action(text: str) -> None:
@@ -101,7 +101,7 @@ class InputControl:
 
         def forget(text: str) -> None:
             files.remove_input(text)
-            self.show_menu(event)
+            self.show_menu(event, only_items=only_items)
 
         widgets.show_menu_items(
             "input",
@@ -109,6 +109,7 @@ class InputControl:
             lambda s: action(s),
             event,
             alt_cmd=lambda s: forget(s),
+            only_items=only_items,
         )
 
     def focus(self) -> None:
