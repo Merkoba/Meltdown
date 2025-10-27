@@ -2011,5 +2011,11 @@ class ArgSpec:
             info='Add a command to use as a locket. Format is "[name] [command]"',
         )
 
+        self.add_argument(
+            "no_log_references",
+            action="store_false",
+            info="Don't add model reference numbers to AI responses in the logs",
+        )
+
 
 argspec = ArgSpec()

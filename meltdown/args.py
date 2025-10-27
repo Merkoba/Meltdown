@@ -339,6 +339,7 @@ class Args:
         self.like_prompt = "I liked your last response :)"
         self.dislike_prompt = "I disliked your last response :("
         self.lockets: list[str] = []
+        self.log_references = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -432,6 +433,7 @@ class Args:
             ("no_start_tasks", "start_tasks"),
             ("no_task_debounce", "task_debounce"),
             ("no_rich_console", "rich_console"),
+            ("no_log_references", "log_references"),
         ]
 
         for r_item in other_name:

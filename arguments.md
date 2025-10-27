@@ -3079,3 +3079,11 @@ Add a command to use as a locket. Format is "[name] [command]"
 Action: append
 
 Type: str
+
+---
+
+### no-log-references
+
+Don't add model reference numbers to AI responses in the logs
+
+Action: store_false

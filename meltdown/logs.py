@@ -335,11 +335,10 @@ class Logs:
         # Determine model/reference behavior up-front
         models = self.get_models(conversation)
         multi_models = len(models) > 1
-        log_refs = getattr(args, "log_references", True)
 
         header_labels: list[str] | None = None
 
-        if multi_models and log_refs:
+        if multi_models and args.log_references:
             # Build both header labels and body once using the same mapping
             header_labels, ref_map = self.build_model_refs(conversation)
             text = self.build_body_with_refs(conversation, ref_map=ref_map)
@@ -356,7 +355,7 @@ class Logs:
         full_text += f"Created: {date_created}\n"
 
         if models:
-            if multi_models and log_refs:
+            if multi_models and args.log_references:
                 # header_labels computed above in the branch
                 if header_labels is None:
                     header_labels, _ = self.build_model_refs(conversation)
@@ -382,10 +381,9 @@ class Logs:
         # Determine model/reference behavior up-front
         models = self.get_models(conversation)
         multi_models = len(models) > 1
-        log_refs = getattr(args, "log_references", True)
         header_labels: list[str] | None = None
 
-        if multi_models and log_refs:
+        if multi_models and args.log_references:
             # Build both header labels and body once using the same mapping
             header_labels, ref_map = self.build_model_refs(conversation)
             text = self.build_body_with_refs(conversation, ref_map=ref_map)
@@ -403,7 +401,7 @@ class Logs:
         full_text += f"**Created:** {date_created}\n"
 
         if models:
-            if multi_models and log_refs:
+            if multi_models and args.log_references:
                 if header_labels is None:
                     header_labels, _ = self.build_model_refs(conversation)
                 full_text += f"**Models:** {', '.join(header_labels)}\n"
