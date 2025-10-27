@@ -205,6 +205,23 @@ class Logs:
 
         return formats.get_json(conversation, name_mode="log")
 
+    def get_models(self, conversation: Conversation) -> list[str]:
+        """Return unique model names used in the conversation, preserving order."""
+        models: list[str] = []
+        seen: set[str] = set()
+
+        # Safeguard if conversation or items are missing
+        if not conversation or not getattr(conversation, "items", None):
+            return models
+
+        for it in conversation.items:
+            m = getattr(it, "model", None)
+            if m and (m not in seen):
+                models.append(m)
+                seen.add(m)
+
+        return models
+
     def to_text(
         self,
         save_all: bool = False,
@@ -225,11 +242,17 @@ class Logs:
         if not text:
             return ""
 
+        # Get unique models used in this conversation
+        models = self.get_models(conversation)
+
         full_text = ""
         full_text += f"Name: {conversation.name}\n"
 
         date_created = utils.to_date(conversation.created)
         full_text += f"Created: {date_created}\n"
+
+        if models:
+            full_text += f"Models: {', '.join(models)}\n"
 
         date_saved = utils.to_date(utils.now())
         full_text += f"Saved: {date_saved}"
@@ -251,11 +274,17 @@ class Logs:
         if not text:
             return ""
 
+        # Get unique models used in this conversation
+        models = self.get_models(conversation)
+
         full_text = ""
         full_text += f"# {conversation.name}\n\n"
 
         date_created = utils.to_date(conversation.created)
         full_text += f"**Created:** {date_created}\n"
+
+        if models:
+            full_text += f"**Models:** {', '.join(models)}\n"
 
         date_saved = utils.to_date(utils.now())
         full_text += f"**Saved:** {date_saved}"
