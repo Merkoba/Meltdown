@@ -112,6 +112,7 @@ class Widgets:
             lambda e: self.show_model_menu(e),
         )
 
+        self.model_menu_button.set_bind("<Button-2>", lambda e: model.unload(True))
         ToolTip(self.model_menu_button, tips["model_menu"])
 
         self.model = widgetutils.make_entry(frame_data_model)
