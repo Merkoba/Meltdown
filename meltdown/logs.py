@@ -20,7 +20,7 @@ from .memory import memory
 
 
 class Logs:
-    def __init__(self):
+    def __init__(self) -> None:
         self.separator = "---"
 
     def menu(self) -> None:
@@ -225,7 +225,9 @@ class Logs:
 
         return models
 
-    def build_model_refs(self, conversation: Conversation) -> tuple[list[str], dict[str, int]]:
+    def build_model_refs(
+        self, conversation: Conversation
+    ) -> tuple[list[str], dict[str, int]]:
         """Return header label list and a mapping model->index (1-based)."""
         models = self.get_models(conversation)
         ref_map: dict[str, int] = {m: i + 1 for i, m in enumerate(models)}
@@ -240,11 +242,10 @@ class Logs:
             s = s[:-1].rstrip()
         return s
 
-    def build_body_with_refs(self, conversation: Conversation, mode: str, ref_map: dict[str, int]) -> str:
-        """Construct body text for logs including per-AI model references.
-
-        mode is either 'text' or 'markdown' (formatting is the same here).
-        """
+    def build_body_with_refs(
+        self, conversation: Conversation, ref_map: dict[str, int]
+    ) -> str:
+        """Construct body text for logs including per-AI model references."""
         # Use display prompts for consistent labels (no colons/spaces), then add our own
         user_label = self.normalize_label(
             display.get_prompt("user", put_colons=False, colon_space=False)
@@ -331,21 +332,22 @@ class Logs:
         if not conversation.items:
             return ""
 
-        # Build base content using existing formatter
-        text = formats.get_text(conversation, name_mode="log")
-
-        if not text:
-            return ""
-
-        # Get unique models used in this conversation
+        # Determine model/reference behavior up-front
         models = self.get_models(conversation)
         multi_models = len(models) > 1
         log_refs = getattr(args, "log_references", True)
 
-        # If multiple models and references enabled, rebuild body to include refs
+        header_labels: list[str] | None = None
+
         if multi_models and log_refs:
-            _, ref_map = self.build_model_refs(conversation)
-            text = self.build_body_with_refs(conversation, mode="text", ref_map=ref_map)
+            # Build both header labels and body once using the same mapping
+            header_labels, ref_map = self.build_model_refs(conversation)
+            text = self.build_body_with_refs(conversation, ref_map=ref_map)
+        else:
+            # Build base content using existing formatter
+            text = formats.get_text(conversation, name_mode="log")
+            if not text:
+                return ""
 
         full_text = ""
         full_text += f"Name: {conversation.name}\n"
@@ -355,7 +357,9 @@ class Logs:
 
         if models:
             if multi_models and log_refs:
-                header_labels, _ = self.build_model_refs(conversation)
+                # header_labels computed above in the branch
+                if header_labels is None:
+                    header_labels, _ = self.build_model_refs(conversation)
                 full_text += f"Models: {', '.join(header_labels)}\n"
             else:
                 full_text += f"Models: {', '.join(models)}\n"
@@ -375,21 +379,22 @@ class Logs:
         if not conversation.items:
             return ""
 
-        # Build base content using existing formatter
-        text = formats.get_markdown(conversation, name_mode="log")
-
-        if not text:
-            return ""
-
-        # Get unique models used in this conversation
+        # Determine model/reference behavior up-front
         models = self.get_models(conversation)
         multi_models = len(models) > 1
         log_refs = getattr(args, "log_references", True)
+        header_labels: list[str] | None = None
 
-        # If multiple models and references enabled, rebuild body to include refs
         if multi_models and log_refs:
-            _, ref_map = self.build_model_refs(conversation)
-            text = self.build_body_with_refs(conversation, mode="markdown", ref_map=ref_map)
+            # Build both header labels and body once using the same mapping
+            header_labels, ref_map = self.build_model_refs(conversation)
+            text = self.build_body_with_refs(conversation, ref_map=ref_map)
+        else:
+            # Build base content using existing formatter
+            text = formats.get_markdown(conversation, name_mode="log")
+
+            if not text:
+                return ""
 
         full_text = ""
         full_text += f"# {conversation.name}\n\n"
@@ -399,7 +404,8 @@ class Logs:
 
         if models:
             if multi_models and log_refs:
-                header_labels, _ = self.build_model_refs(conversation)
+                if header_labels is None:
+                    header_labels, _ = self.build_model_refs(conversation)
                 full_text += f"**Models:** {', '.join(header_labels)}\n"
             else:
                 full_text += f"**Models:** {', '.join(models)}\n"
