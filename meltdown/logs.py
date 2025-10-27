@@ -20,6 +20,9 @@ from .memory import memory
 
 
 class Logs:
+    def __init__(self):
+        self.separator = "---"
+
     def menu(self) -> None:
         cmds = Commands()
         cmds.add("Open", lambda a: self.open_directory())
@@ -145,12 +148,12 @@ class Logs:
                 contents.append(self.get_content(mode, conversation))
 
             if mode == "text":
-                content = "\n\n---\n\n".join(contents)
+                content = f"\n\n{self.separator}\n\n".join(contents)
             elif mode == "json":
                 cont = "[\n" + ",\n".join(contents) + "\n]"
                 content = json.dumps(json.loads(cont), indent=4)
             elif mode == "markdown":
-                content = "\n\n---\n\n".join(contents)
+                content = f"\n\n{self.separator}\n\n".join(contents)
             else:
                 content = ""
 
@@ -222,6 +225,97 @@ class Logs:
 
         return models
 
+    def build_model_refs(self, conversation: Conversation) -> tuple[list[str], dict[str, int]]:
+        """Return header label list and a mapping model->index (1-based)."""
+        models = self.get_models(conversation)
+        ref_map: dict[str, int] = {m: i + 1 for i, m in enumerate(models)}
+        # Use full model strings for logs (less ambiguous)
+        header_labels = [f"{m} ({ref_map[m]})" for m in models]
+        return header_labels, ref_map
+
+    def normalize_label(self, label: str) -> str:
+        """Strip spaces and a possible trailing colon from a label."""
+        s = label.strip()
+        if s.endswith(":"):
+            s = s[:-1].rstrip()
+        return s
+
+    def build_body_with_refs(self, conversation: Conversation, mode: str, ref_map: dict[str, int]) -> str:
+        """Construct body text for logs including per-AI model references.
+
+        mode is either 'text' or 'markdown' (formatting is the same here).
+        """
+        # Use display prompts for consistent labels (no colons/spaces), then add our own
+        user_label = self.normalize_label(
+            display.get_prompt("user", put_colons=False, colon_space=False)
+        )
+
+        ai_label_base = self.normalize_label(
+            display.get_prompt("ai", put_colons=False, colon_space=False)
+        )
+
+        blocks: list[str] = []
+
+        for it in conversation.items:
+            item_lines: list[str] = []
+
+            # User message
+            if getattr(it, "user", None):
+                utext = it.user.rstrip() if isinstance(it.user, str) else it.user
+                item_lines.append(f"{user_label}: {utext}")
+
+                file = getattr(it, "file", None)
+                if file:
+                    # single blank line before file path only if there is previous content
+                    if item_lines:
+                        item_lines.append("")
+                    item_lines.append(f"File: {file}")
+
+            # AI message with model reference (use AI alias + (n))
+            if getattr(it, "ai", None):
+                model_name = getattr(it, "model", None)
+                ref_num = ref_map.get(model_name or "", None)
+
+                if ref_num is not None:
+                    ai_label = f"{ai_label_base} ({ref_num})"
+                else:
+                    ai_label = ai_label_base
+
+                atext = it.ai.rstrip() if isinstance(it.ai, str) else it.ai
+
+                # Add a blank line if there was user content before this
+                if item_lines:
+                    item_lines.append("")
+
+                item_lines.append(f"{ai_label}: {atext}")
+
+            # Commit this item's block
+            # Remove any leading/trailing empties inside the block
+            while item_lines and (item_lines[0] == ""):
+                item_lines.pop(0)
+
+            while item_lines and (item_lines[-1] == ""):
+                item_lines.pop()
+
+            if item_lines:
+                # Collapse any accidental multiple blank lines inside the block
+                collapsed: list[str] = []
+                prev_blank = False
+
+                for ln in item_lines:
+                    if ln == "":
+                        if not prev_blank:
+                            collapsed.append(ln)
+                        prev_blank = True
+                    else:
+                        collapsed.append(ln)
+                        prev_blank = False
+
+                blocks.append("\n".join(collapsed))
+
+        # Join items with the separator
+        return f"\n\n{self.separator}\n\n".join(blocks)
+
     def to_text(
         self,
         save_all: bool = False,
@@ -237,6 +331,7 @@ class Logs:
         if not conversation.items:
             return ""
 
+        # Build base content using existing formatter
         text = formats.get_text(conversation, name_mode="log")
 
         if not text:
@@ -244,6 +339,13 @@ class Logs:
 
         # Get unique models used in this conversation
         models = self.get_models(conversation)
+        multi_models = len(models) > 1
+        log_refs = getattr(args, "log_references", True)
+
+        # If multiple models and references enabled, rebuild body to include refs
+        if multi_models and log_refs:
+            _, ref_map = self.build_model_refs(conversation)
+            text = self.build_body_with_refs(conversation, mode="text", ref_map=ref_map)
 
         full_text = ""
         full_text += f"Name: {conversation.name}\n"
@@ -252,12 +354,16 @@ class Logs:
         full_text += f"Created: {date_created}\n"
 
         if models:
-            full_text += f"Models: {', '.join(models)}\n"
+            if multi_models and log_refs:
+                header_labels, _ = self.build_model_refs(conversation)
+                full_text += f"Models: {', '.join(header_labels)}\n"
+            else:
+                full_text += f"Models: {', '.join(models)}\n"
 
         date_saved = utils.to_date(utils.now())
         full_text += f"Saved: {date_saved}"
 
-        full_text += "\n\n---\n\n"
+        full_text += f"\n\n{self.separator}\n\n"
         full_text += text
 
         return full_text
@@ -269,6 +375,7 @@ class Logs:
         if not conversation.items:
             return ""
 
+        # Build base content using existing formatter
         text = formats.get_markdown(conversation, name_mode="log")
 
         if not text:
@@ -276,6 +383,13 @@ class Logs:
 
         # Get unique models used in this conversation
         models = self.get_models(conversation)
+        multi_models = len(models) > 1
+        log_refs = getattr(args, "log_references", True)
+
+        # If multiple models and references enabled, rebuild body to include refs
+        if multi_models and log_refs:
+            _, ref_map = self.build_model_refs(conversation)
+            text = self.build_body_with_refs(conversation, mode="markdown", ref_map=ref_map)
 
         full_text = ""
         full_text += f"# {conversation.name}\n\n"
@@ -284,12 +398,16 @@ class Logs:
         full_text += f"**Created:** {date_created}\n"
 
         if models:
-            full_text += f"**Models:** {', '.join(models)}\n"
+            if multi_models and log_refs:
+                header_labels, _ = self.build_model_refs(conversation)
+                full_text += f"**Models:** {', '.join(header_labels)}\n"
+            else:
+                full_text += f"**Models:** {', '.join(models)}\n"
 
         date_saved = utils.to_date(utils.now())
         full_text += f"**Saved:** {date_saved}"
 
-        full_text += "\n\n---\n\n"
+        full_text += f"\n\n{self.separator}\n\n"
         full_text += text
 
         return full_text
