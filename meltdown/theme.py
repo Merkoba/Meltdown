@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import sys
 from tkinter import ttk
 
 # Modules
@@ -166,12 +167,22 @@ class Theme:
         self.msgbox_height = 10
 
     def get_monospace_family(self) -> str:
-        import sys
-
         if sys.platform == "darwin":
             return "Menlo"
 
         return self.monospace_family
+
+    def get_serif_family(self) -> str:
+        if sys.platform == "darwin":
+            return "Times New Roman"
+
+        return self.serif_family
+
+    def get_sans_family(self) -> str:
+        if sys.platform == "darwin":
+            return "Helvetica"
+
+        return self.font_family
 
     def get_font_family(self) -> str:
         from .args import args
@@ -179,9 +190,9 @@ class Theme:
         if config.font_family == "monospace":
             font = args.font_family_mono or self.get_monospace_family()
         elif config.font_family == "serif":
-            font = args.font_family_serif or self.serif_family
+            font = args.font_family_serif or self.get_serif_family()
         else:
-            font = args.font_family_sans or self.font_family
+            font = args.font_family_sans or self.get_sans_family()
 
         return font
 
