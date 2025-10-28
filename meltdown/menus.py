@@ -110,6 +110,7 @@ class Menu:
             borderwidth=0,
             highlightthickness=0,
             background=app.theme.menu_canvas_background,
+            highlightbackground=app.theme.menu_canvas_background,
         )
 
         self.container = tk.Frame(
