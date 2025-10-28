@@ -351,16 +351,20 @@ class Theme:
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
 
+
+        # Ensure input fields always use entry_background, not dialog/menu backgrounds
         style.configure("Normal.TEntry", fieldbackground=self.entry_background)
         style.configure("Normal.TEntry", foreground=self.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=self.entry_border_width)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor=self.entry_insert)
+        style.configure("Normal.TEntry", background=self.entry_background)
+        style.configure("Normal.TEntry", highlightbackground=self.entry_background)
+        style.configure("Normal.TEntry", highlightcolor=self.entry_background)
 
         style.configure(
             "Normal.TEntry", selectbackground=self.entry_selection_background
         )
-
         style.configure(
             "Normal.TEntry", selectforeground=self.entry_selection_foreground
         )
