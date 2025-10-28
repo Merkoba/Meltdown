@@ -1431,7 +1431,7 @@ class Display:
         d = utils.delimiter()
         colons = f"{marker}{d}{marker}"
         prompt = ""
-        display_space = " " if sys.platform == "darwin" else marker
+        display_space = "\u00a0" if sys.platform == "darwin" else marker
 
         if args.avatars and show_avatar and avatar:
             prompt = f"{avatar}{display_space}{name}{colons}"
