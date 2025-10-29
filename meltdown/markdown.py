@@ -148,8 +148,12 @@ class Markdown:
 
         # Unix paths like /home/user/file.txt or ~/Applications/My App/file.txt
         # Matches paths starting with / or ~/ allowing spaces in path components
+        # Avoid matching single-segment chat-style commands like "/about" by
+        # rejecting a lone alphabetical segment (e.g., /about, /help) when it
+        # is followed by whitespace or end-of-line. Real paths with multiple
+        # segments (e.g., /etc/hosts) or tilde paths (~/folder) still match.
         # Stops at line end or double space
-        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?!\/[A-Za-z]+(?=\s|$))(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
 
         # Header with one hash
         Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
