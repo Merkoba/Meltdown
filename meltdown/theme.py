@@ -405,6 +405,10 @@ class Theme:
                 ("readonly", self.entry_foreground),
                 ("!focus", self.entry_foreground),
             ],
+            readonlybackground=[
+                ("!focus", self.entry_background),
+                ("focus", self.entry_background),
+            ],
         )
 
         style.map(
@@ -447,6 +451,10 @@ class Theme:
                 ("readonly", self.entry_foreground),
                 ("!focus", self.entry_foreground),
             ],
+            readonlybackground=[
+                ("!focus", self.entry_background),
+                ("focus", self.entry_background),
+            ],
         )
 
         # Dialog Entry - keep white background
@@ -480,6 +488,10 @@ class Theme:
                 ("readonly", self.entry_foreground_dialog),
                 ("!focus", self.entry_foreground_dialog),
             ],
+            readonlybackground=[
+                ("!focus", self.entry_background_dialog),
+                ("focus", self.entry_background_dialog),
+            ],
         )
 
         style.configure(
@@ -541,3 +553,49 @@ class Theme:
             troughcolor=[("disabled", self.scrollbar_dialog_1)],
             borderwidth=[("disabled", 0)],
         )
+
+        # macOS-specific fixes for Tk styling issues
+        if sys.platform == "darwin":
+            # Force dark entry backgrounds on macOS (macOS Tk has platform-specific overrides)
+            app.root.option_add("*Entry.background", self.entry_background)
+            app.root.option_add("*TEntry.background", self.entry_background)
+
+            # Configure Combobox for macOS - it often ignores styling
+            style.configure("TCombobox", fieldbackground=self.combobox_background)
+            style.configure("TCombobox", background=self.combobox_background)
+
+            style.map(
+                "TCombobox",
+                fieldbackground=[
+                    ("active", self.combobox_background),
+                    ("disabled", self.combobox_background),
+                    ("focus", self.combobox_background),
+                    ("readonly", self.combobox_background),
+                    ("!focus", self.combobox_background),
+                ],
+                background=[
+                    ("active", self.combobox_background),
+                    ("disabled", self.combobox_background),
+                    ("focus", self.combobox_background),
+                    ("readonly", self.combobox_background),
+                    ("!focus", self.combobox_background),
+                ],
+            )
+
+            # Force menu highlighting on macOS
+            app.root.option_add("*Menu.background", self.menu_background)
+            app.root.option_add("*Menu.foreground", self.menu_foreground)
+            app.root.option_add("*Menu.activeBackground", self.menu_hover_background)
+            app.root.option_add("*Menu.activeForeground", self.menu_hover_foreground)
+            app.root.option_add("*Menu.disabledForeground", self.menu_disabled_foreground)
+
+            # Force listbox and button highlight on macOS
+            app.root.option_add("*Listbox.background", self.menu_background)
+            app.root.option_add("*Listbox.foreground", self.menu_foreground)
+            app.root.option_add("*Listbox.selectBackground", self.menu_hover_background)
+            app.root.option_add("*Listbox.selectForeground", self.menu_hover_foreground)
+
+            # Ensure Button active state shows highlight
+            app.root.option_add("*Button.activeBackground", self.menu_hover_background)
+            app.root.option_add("*Button.activeForeground", self.menu_hover_foreground)
+            app.root.option_add("*Button.highlightColor", self.menu_hover_background)

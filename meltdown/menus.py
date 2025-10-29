@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 # Standard
+import sys
 import tkinter as tk
 from tkinter import ttk
 from typing import Any
@@ -112,6 +113,13 @@ class Menu:
             background=app.theme.menu_canvas_background,
             highlightbackground=app.theme.menu_canvas_background,
         )
+
+        # macOS fix: Ensure canvas background is rendered correctly
+        if sys.platform == "darwin":
+            self.canvas.configure(
+                background=app.theme.menu_background,
+                highlightbackground=app.theme.menu_background,
+            )
 
         self.container = tk.Frame(
             self.canvas,
