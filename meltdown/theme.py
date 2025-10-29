@@ -380,6 +380,12 @@ class Theme:
             "Normal.TEntry", selectforeground=self.entry_selection_foreground
         )
 
+        style.map(
+            "Normal.TEntry",
+            fieldbackground=[("readonly", self.entry_background), ("disabled", self.entry_background)],
+            background=[("readonly", self.entry_background), ("disabled", self.entry_background)],
+        )
+
         style.configure("Dialog.TEntry", fieldbackground=self.entry_background_dialog)
         style.configure("Dialog.TEntry", foreground=self.entry_foreground_dialog)
         style.configure("Dialog.TEntry", borderwidth=self.entry_border_width_dialog)
@@ -392,6 +398,12 @@ class Theme:
 
         style.configure(
             "Dialog.TEntry", selectforeground=self.entry_selection_foreground_dialog
+        )
+
+        style.map(
+            "Dialog.TEntry",
+            fieldbackground=[("readonly", self.entry_background_dialog), ("disabled", self.entry_background_dialog)],
+            background=[("readonly", self.entry_background_dialog), ("disabled", self.entry_background_dialog)],
         )
 
         style.configure(
