@@ -66,11 +66,12 @@ class Theme:
         self.entry_width_small = 6
         self.entry_border_width = 0
 
-        self.entry_background_dialog = "white"
-        self.entry_foreground_dialog = "black"
-        self.entry_insert_dialog = "black"
-        self.entry_selection_background_dialog = "#494D62"
-        self.entry_selection_foreground_dialog = "white"
+        # Dialog entries follow dark style as well
+        self.entry_background_dialog = "#2B303B"
+        self.entry_foreground_dialog = "white"
+        self.entry_insert_dialog = "white"
+        self.entry_selection_background_dialog = "#C3C3C3"
+        self.entry_selection_foreground_dialog = "black"
         self.entry_border_width_dialog = 0
 
         self.separator_color = "#2B303B"
@@ -102,7 +103,9 @@ class Theme:
 
         self.smaller_font = 1
 
-        self.highlight_background = "#3D4555"
+        # Unified highlight used by menus/dialogs/hover states
+        # Use the same blue as menu hover to ensure visibility and contrast
+        self.highlight_background = "#6693C3"
         self.highlight_foreground = "white"
 
         self.menu_background = "white"
@@ -353,6 +356,33 @@ class Theme:
         style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
         app.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
 
+        # Ensure visible hover/active highlights in classic Tk widgets used for menus/listboxes.
+        # This avoids platform-specific branches by setting option database values globally.
+        # Menus (classic Tk "Menu")
+        app.root.option_add("*Menu.activeBackground", self.menu_hover_background)
+        app.root.option_add("*Menu.activeForeground", self.menu_hover_foreground)
+
+        # Listbox (used by some dropdowns/popups)
+        app.root.option_add("*Listbox.selectBackground", self.highlight_background)
+        app.root.option_add("*Listbox.selectForeground", self.highlight_foreground)
+
+        # Combobox dropdown Listbox specifically
+        app.root.option_add(
+            "*TCombobox*Listbox.selectBackground", self.highlight_background
+        )
+
+        app.root.option_add(
+            "*TCombobox*Listbox.selectForeground", self.highlight_foreground
+        )
+
+        # Ensure classic Tk Entry widgets follow our dark entry styling (not white)
+        app.root.option_add("*Entry.background", self.entry_background)
+        app.root.option_add("*Entry.foreground", self.entry_foreground)
+        app.root.option_add("*Entry.insertBackground", self.entry_insert)
+        app.root.option_add("*Entry.selectBackground", self.entry_selection_background)
+
+        app.root.option_add("*Entry.selectForeground", self.entry_selection_foreground)
+
         style.map(
             "Disabled.TCombobox",
             fieldbackground=[("readonly", self.combobox_background)],
@@ -372,6 +402,7 @@ class Theme:
         style.configure(
             "Normal.TEntry", selectbackground=self.entry_selection_background
         )
+
         style.configure(
             "Normal.TEntry", selectforeground=self.entry_selection_foreground
         )
