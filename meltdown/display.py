@@ -2,7 +2,6 @@ from __future__ import annotations
 
 # Standard
 import tkinter as tk
-import sys
 from typing import Any, TYPE_CHECKING
 from dataclasses import dataclass
 

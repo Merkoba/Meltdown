@@ -362,7 +362,6 @@ class Theme:
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
 
-
         # Normal Entry - keep dark background
         style.configure("Normal.TEntry", fieldbackground=self.entry_background)
         style.configure("Normal.TEntry", foreground=self.entry_foreground)
