@@ -146,8 +146,10 @@ class Markdown:
             rf"(?:(?<=\s)|^)(?P<all>(?P<content>({protocols})([^\s]+?)))(?=\s|$)"
         )
 
-        # Unix paths like /home/user/file.txt
-        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>(\/|~\/)[^\s\/]+\/[^\s\/]+[^\s]*))(?=\s|$)"
+        # Unix paths like /home/user/file.txt or ~/Applications/My App/file.txt
+        # Matches paths starting with / or ~/ allowing spaces in path components
+        # Stops at line end or double space
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
 
         # Header with one hash
         Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
