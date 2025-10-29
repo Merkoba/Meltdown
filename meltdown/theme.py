@@ -66,10 +66,10 @@ class Theme:
         self.entry_width_small = 6
         self.entry_border_width = 0
 
-        # Dialog entries follow dark style as well
-        self.entry_background_dialog = "#2B303B"
-        self.entry_foreground_dialog = "white"
-        self.entry_insert_dialog = "white"
+        # Dialog entries use light style (white background, black text)
+        self.entry_background_dialog = "white"
+        self.entry_foreground_dialog = "black"
+        self.entry_insert_dialog = "black"
         self.entry_selection_background_dialog = "#C3C3C3"
         self.entry_selection_foreground_dialog = "black"
         self.entry_border_width_dialog = 0

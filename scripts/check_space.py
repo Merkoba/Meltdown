@@ -54,6 +54,7 @@ class CompoundGroupFormatter:
             "except",
             "finally:",
         )
+
         return any(stripped.startswith(s) for s in starters)
 
     def starts_header_prefix(self, line: str) -> bool:
