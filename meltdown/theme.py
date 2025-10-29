@@ -587,7 +587,9 @@ class Theme:
             app.root.option_add("*Menu.foreground", self.menu_foreground)
             app.root.option_add("*Menu.activeBackground", self.menu_hover_background)
             app.root.option_add("*Menu.activeForeground", self.menu_hover_foreground)
-            app.root.option_add("*Menu.disabledForeground", self.menu_disabled_foreground)
+            app.root.option_add(
+                "*Menu.disabledForeground", self.menu_disabled_foreground
+            )
 
             # Force listbox and button highlight on macOS
             app.root.option_add("*Listbox.background", self.menu_background)
