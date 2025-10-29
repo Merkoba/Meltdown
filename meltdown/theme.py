@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 # Standard
-import sys
 from tkinter import ttk
 
 # Modules
@@ -66,12 +65,11 @@ class Theme:
         self.entry_width_small = 6
         self.entry_border_width = 0
 
-        # Dialog entries follow dark style as well
-        self.entry_background_dialog = "#2B303B"
-        self.entry_foreground_dialog = "white"
-        self.entry_insert_dialog = "white"
-        self.entry_selection_background_dialog = "#C3C3C3"
-        self.entry_selection_foreground_dialog = "black"
+        self.entry_background_dialog = "white"
+        self.entry_foreground_dialog = "black"
+        self.entry_insert_dialog = "black"
+        self.entry_selection_background_dialog = "#494D62"
+        self.entry_selection_foreground_dialog = "white"
         self.entry_border_width_dialog = 0
 
         self.separator_color = "#2B303B"
@@ -103,9 +101,7 @@ class Theme:
 
         self.smaller_font = 1
 
-        # Unified highlight used by menus/dialogs/hover states
-        # Use the same blue as menu hover to ensure visibility and contrast
-        self.highlight_background = "#6693C3"
+        self.highlight_background = "#3D4555"
         self.highlight_foreground = "white"
 
         self.menu_background = "white"
@@ -113,10 +109,10 @@ class Theme:
         self.menu_hover_background = "#6693C3"
         self.menu_hover_foreground = "white"
         self.menu_disabled_background = "#E0E0E0"
-        self.menu_disabled_foreground = "#7a7a7a"
+        self.menu_disabled_foreground = "#3D4555"
         self.menu_border = "#959595"
         self.menu_border_width = 3
-        self.menu_canvas_background = "white"
+        self.menu_canvas_background = "#6A7B83"
         self.menu_wrap_length = 480
 
         self.tab_normal_background = "#2B303B"
@@ -169,33 +165,15 @@ class Theme:
         self.msgbox_width = 34
         self.msgbox_height = 10
 
-    def get_monospace_family(self) -> str:
-        if sys.platform == "darwin":
-            return "Menlo"
-
-        return self.monospace_family
-
-    def get_serif_family(self) -> str:
-        if sys.platform == "darwin":
-            return "Times New Roman"
-
-        return self.serif_family
-
-    def get_sans_family(self) -> str:
-        if sys.platform == "darwin":
-            return "Helvetica"
-
-        return self.font_family
-
     def get_font_family(self) -> str:
         from .args import args
 
         if config.font_family == "monospace":
-            font = args.font_family_mono or self.get_monospace_family()
+            font = args.font_family_mono or self.monospace_family
         elif config.font_family == "serif":
-            font = args.font_family_serif or self.get_serif_family()
+            font = args.font_family_serif or self.serif_family
         else:
-            font = args.font_family_sans or self.get_sans_family()
+            font = args.font_family_sans or self.font_family
 
         return font
 
@@ -224,7 +202,7 @@ class Theme:
         outfont = self.get_output_font()
 
         if font_family == "monospace":
-            ff = self.get_monospace_family()
+            ff = self.monospace_family
         else:
             ff = outfont[0]
 
@@ -235,7 +213,7 @@ class Theme:
         return config.font_size + (4 - num)
 
     def get_separator_font(self) -> tuple[str, int]:
-        ff = self.get_monospace_family()
+        ff = self.monospace_family
         return (ff, config.font_size)
 
     def font(self, name: str = "font") -> tuple[str, int, str]:
@@ -356,33 +334,6 @@ class Theme:
         style.configure("Normal.TCombobox", padding=[4, 0, 0, 0])
         app.root.option_add("*TCombobox*Listbox.font", ("sans-serif", 13))
 
-        # Ensure visible hover/active highlights in classic Tk widgets used for menus/listboxes.
-        # This avoids platform-specific branches by setting option database values globally.
-        # Menus (classic Tk "Menu")
-        app.root.option_add("*Menu.activeBackground", self.menu_hover_background)
-        app.root.option_add("*Menu.activeForeground", self.menu_hover_foreground)
-
-        # Listbox (used by some dropdowns/popups)
-        app.root.option_add("*Listbox.selectBackground", self.highlight_background)
-        app.root.option_add("*Listbox.selectForeground", self.highlight_foreground)
-
-        # Combobox dropdown Listbox specifically
-        app.root.option_add(
-            "*TCombobox*Listbox.selectBackground", self.highlight_background
-        )
-
-        app.root.option_add(
-            "*TCombobox*Listbox.selectForeground", self.highlight_foreground
-        )
-
-        # Ensure classic Tk Entry widgets follow our dark entry styling (not white)
-        app.root.option_add("*Entry.background", self.entry_background)
-        app.root.option_add("*Entry.foreground", self.entry_foreground)
-        app.root.option_add("*Entry.insertBackground", self.entry_insert)
-        app.root.option_add("*Entry.selectBackground", self.entry_selection_background)
-
-        app.root.option_add("*Entry.selectForeground", self.entry_selection_foreground)
-
         style.map(
             "Disabled.TCombobox",
             fieldbackground=[("readonly", self.combobox_background)],
@@ -392,7 +343,6 @@ class Theme:
         style.configure("Disabled.TCombobox", padding=[4, 2, 0, 2])
         style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
 
-        # Normal Entry - keep dark background
         style.configure("Normal.TEntry", fieldbackground=self.entry_background)
         style.configure("Normal.TEntry", foreground=self.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=self.entry_border_width)
@@ -407,25 +357,6 @@ class Theme:
             "Normal.TEntry", selectforeground=self.entry_selection_foreground
         )
 
-        style.map(
-            "Normal.TEntry",
-            fieldbackground=[
-                ("active", self.entry_background),
-                ("disabled", self.entry_background),
-                ("focus", self.entry_background),
-                ("readonly", self.entry_background),
-                ("!focus", self.entry_background),
-            ],
-            foreground=[
-                ("active", self.entry_foreground),
-                ("disabled", self.entry_foreground),
-                ("focus", self.entry_foreground),
-                ("readonly", self.entry_foreground),
-                ("!focus", self.entry_foreground),
-            ],
-        )
-
-        # Dialog Entry - keep white background
         style.configure("Dialog.TEntry", fieldbackground=self.entry_background_dialog)
         style.configure("Dialog.TEntry", foreground=self.entry_foreground_dialog)
         style.configure("Dialog.TEntry", borderwidth=self.entry_border_width_dialog)
@@ -438,24 +369,6 @@ class Theme:
 
         style.configure(
             "Dialog.TEntry", selectforeground=self.entry_selection_foreground_dialog
-        )
-
-        style.map(
-            "Dialog.TEntry",
-            fieldbackground=[
-                ("active", self.entry_background_dialog),
-                ("disabled", self.entry_background_dialog),
-                ("focus", self.entry_background_dialog),
-                ("readonly", self.entry_background_dialog),
-                ("!focus", self.entry_background_dialog),
-            ],
-            foreground=[
-                ("active", self.entry_foreground_dialog),
-                ("disabled", self.entry_foreground_dialog),
-                ("focus", self.entry_foreground_dialog),
-                ("readonly", self.entry_foreground_dialog),
-                ("!focus", self.entry_foreground_dialog),
-            ],
         )
 
         style.configure(
