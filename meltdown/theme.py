@@ -106,11 +106,11 @@ class Theme:
         self.highlight_foreground = "white"
 
         self.menu_background = "white"
-        self.menu_foreground = "black"
+        self.menu_foreground = "#1a1a1a"
         self.menu_hover_background = "#6693C3"
         self.menu_hover_foreground = "white"
         self.menu_disabled_background = "#E0E0E0"
-        self.menu_disabled_foreground = "#3D4555"
+        self.menu_disabled_foreground = "#7a7a7a"
         self.menu_border = "#959595"
         self.menu_border_width = 3
         self.menu_canvas_background = "white"
@@ -363,15 +363,12 @@ class Theme:
         style.configure("Disabled.TCombobox", borderwidth=self.combobox_border_width)
 
 
-        # Ensure input fields always use entry_background, not dialog/menu backgrounds
+        # Normal Entry - keep dark background
         style.configure("Normal.TEntry", fieldbackground=self.entry_background)
         style.configure("Normal.TEntry", foreground=self.entry_foreground)
         style.configure("Normal.TEntry", borderwidth=self.entry_border_width)
         style.configure("Normal.TEntry", padding=[4, 0, 0, 0])
         style.configure("Normal.TEntry", insertcolor=self.entry_insert)
-        style.configure("Normal.TEntry", background=self.entry_background)
-        style.configure("Normal.TEntry", highlightbackground=self.entry_background)
-        style.configure("Normal.TEntry", highlightcolor=self.entry_background)
 
         style.configure(
             "Normal.TEntry", selectbackground=self.entry_selection_background
@@ -382,10 +379,15 @@ class Theme:
 
         style.map(
             "Normal.TEntry",
-            fieldbackground=[("readonly", self.entry_background), ("disabled", self.entry_background)],
-            background=[("readonly", self.entry_background), ("disabled", self.entry_background)],
+            fieldbackground=[
+                ("readonly", self.entry_background),
+                ("disabled", self.entry_background),
+                ("!readonly", self.entry_background),
+                ("!disabled", self.entry_background),
+            ],
         )
 
+        # Dialog Entry - keep white background
         style.configure("Dialog.TEntry", fieldbackground=self.entry_background_dialog)
         style.configure("Dialog.TEntry", foreground=self.entry_foreground_dialog)
         style.configure("Dialog.TEntry", borderwidth=self.entry_border_width_dialog)
@@ -402,8 +404,12 @@ class Theme:
 
         style.map(
             "Dialog.TEntry",
-            fieldbackground=[("readonly", self.entry_background_dialog), ("disabled", self.entry_background_dialog)],
-            background=[("readonly", self.entry_background_dialog), ("disabled", self.entry_background_dialog)],
+            fieldbackground=[
+                ("readonly", self.entry_background_dialog),
+                ("disabled", self.entry_background_dialog),
+                ("!readonly", self.entry_background_dialog),
+                ("!disabled", self.entry_background_dialog),
+            ],
         )
 
         style.configure(
