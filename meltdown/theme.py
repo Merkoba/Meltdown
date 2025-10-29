@@ -389,7 +389,8 @@ class Theme:
         style.configure("TEntry", borderwidth=self.entry_border_width)
         style.configure("TEntry", insertcolor=self.entry_insert)
 
-        style.map("TEntry",
+        style.map(
+            "TEntry",
             fieldbackground=[
                 ("active", self.entry_background),
                 ("disabled", self.entry_background),
