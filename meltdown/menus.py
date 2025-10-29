@@ -107,7 +107,11 @@ class Menu:
         self.root = tk.Frame(app.main_frame, background=app.theme.menu_border)
 
         # macOS fix: Use menu_background for canvas to prevent white bleed-through
-        canvas_bg = app.theme.menu_background if sys.platform == "darwin" else app.theme.menu_canvas_background
+        canvas_bg = (
+            app.theme.menu_background
+            if sys.platform == "darwin"
+            else app.theme.menu_canvas_background
+        )
 
         self.canvas = tk.Canvas(
             self.root,
