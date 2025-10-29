@@ -410,12 +410,18 @@ class Theme:
         style.map(
             "Normal.TEntry",
             fieldbackground=[
-                ("readonly", self.entry_background),
+                ("active", self.entry_background),
                 ("disabled", self.entry_background),
+                ("focus", self.entry_background),
+                ("readonly", self.entry_background),
+                ("!focus", self.entry_background),
             ],
             foreground=[
-                ("readonly", self.entry_foreground),
+                ("active", self.entry_foreground),
                 ("disabled", self.entry_foreground),
+                ("focus", self.entry_foreground),
+                ("readonly", self.entry_foreground),
+                ("!focus", self.entry_foreground),
             ],
         )
 
@@ -437,10 +443,18 @@ class Theme:
         style.map(
             "Dialog.TEntry",
             fieldbackground=[
-                ("readonly", self.entry_background_dialog),
+                ("active", self.entry_background_dialog),
                 ("disabled", self.entry_background_dialog),
-                ("!readonly", self.entry_background_dialog),
-                ("!disabled", self.entry_background_dialog),
+                ("focus", self.entry_background_dialog),
+                ("readonly", self.entry_background_dialog),
+                ("!focus", self.entry_background_dialog),
+            ],
+            foreground=[
+                ("active", self.entry_foreground_dialog),
+                ("disabled", self.entry_foreground_dialog),
+                ("focus", self.entry_foreground_dialog),
+                ("readonly", self.entry_foreground_dialog),
+                ("!focus", self.entry_foreground_dialog),
             ],
         )
 
