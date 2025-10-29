@@ -88,9 +88,9 @@ class Theme:
 
         self.dialog_background = "white"
         self.dialog_foreground = "black"
-        self.dialog_border = "#959595"
+        self.dialog_border = "white"
         self.dialog_border_width = 3
-        self.dialog_top_frame = "#C6C6C6"
+        self.dialog_top_frame = "#F5F5F5"
 
         self.snippet_background = "#3D4555"
         self.snippet_foreground = "white"
@@ -382,6 +382,29 @@ class Theme:
         app.root.option_add("*Entry.selectBackground", self.entry_selection_background)
 
         app.root.option_add("*Entry.selectForeground", self.entry_selection_foreground)
+
+        # Configure default TEntry style to ensure all TTK entries use dark styling
+        style.configure("TEntry", fieldbackground=self.entry_background)
+        style.configure("TEntry", foreground=self.entry_foreground)
+        style.configure("TEntry", borderwidth=self.entry_border_width)
+        style.configure("TEntry", insertcolor=self.entry_insert)
+
+        style.map("TEntry",
+            fieldbackground=[
+                ("active", self.entry_background),
+                ("disabled", self.entry_background),
+                ("focus", self.entry_background),
+                ("readonly", self.entry_background),
+                ("!focus", self.entry_background),
+            ],
+            foreground=[
+                ("active", self.entry_foreground),
+                ("disabled", self.entry_foreground),
+                ("focus", self.entry_foreground),
+                ("readonly", self.entry_foreground),
+                ("!focus", self.entry_foreground),
+            ],
+        )
 
         style.map(
             "Disabled.TCombobox",
