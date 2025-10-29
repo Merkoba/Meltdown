@@ -106,7 +106,7 @@ class Theme:
         self.highlight_foreground = "white"
 
         self.menu_background = "white"
-        self.menu_foreground = "#1a1a1a"
+        self.menu_foreground = "black"
         self.menu_hover_background = "#6693C3"
         self.menu_hover_foreground = "white"
         self.menu_disabled_background = "#E0E0E0"
@@ -381,8 +381,10 @@ class Theme:
             fieldbackground=[
                 ("readonly", self.entry_background),
                 ("disabled", self.entry_background),
-                ("!readonly", self.entry_background),
-                ("!disabled", self.entry_background),
+            ],
+            foreground=[
+                ("readonly", self.entry_foreground),
+                ("disabled", self.entry_foreground),
             ],
         )
 
