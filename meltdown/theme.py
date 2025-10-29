@@ -380,8 +380,9 @@ class Theme:
         app.root.option_add("*Entry.foreground", self.entry_foreground)
         app.root.option_add("*Entry.insertBackground", self.entry_insert)
         app.root.option_add("*Entry.selectBackground", self.entry_selection_background)
-
         app.root.option_add("*Entry.selectForeground", self.entry_selection_foreground)
+        app.root.option_add("*Entry.relief", "flat")
+        app.root.option_add("*Entry.borderWidth", self.entry_border_width)
 
         # Configure default TEntry style to ensure all TTK entries use dark styling
         style.configure("TEntry", fieldbackground=self.entry_background)
@@ -556,11 +557,7 @@ class Theme:
 
         # macOS-specific fixes for Tk styling issues
         if sys.platform == "darwin":
-            # Force dark entry backgrounds on macOS (macOS Tk has platform-specific overrides)
-            app.root.option_add("*Entry.background", self.entry_background)
-            app.root.option_add("*TEntry.background", self.entry_background)
-
-            # Configure Combobox for macOS - it often ignores styling
+            # Combobox on macOS needs explicit styling on TCombobox (not just Normal.TCombobox)
             style.configure("TCombobox", fieldbackground=self.combobox_background)
             style.configure("TCombobox", background=self.combobox_background)
 
@@ -581,23 +578,3 @@ class Theme:
                     ("!focus", self.combobox_background),
                 ],
             )
-
-            # Force menu highlighting on macOS
-            app.root.option_add("*Menu.background", self.menu_background)
-            app.root.option_add("*Menu.foreground", self.menu_foreground)
-            app.root.option_add("*Menu.activeBackground", self.menu_hover_background)
-            app.root.option_add("*Menu.activeForeground", self.menu_hover_foreground)
-            app.root.option_add(
-                "*Menu.disabledForeground", self.menu_disabled_foreground
-            )
-
-            # Force listbox and button highlight on macOS
-            app.root.option_add("*Listbox.background", self.menu_background)
-            app.root.option_add("*Listbox.foreground", self.menu_foreground)
-            app.root.option_add("*Listbox.selectBackground", self.menu_hover_background)
-            app.root.option_add("*Listbox.selectForeground", self.menu_hover_foreground)
-
-            # Ensure Button active state shows highlight
-            app.root.option_add("*Button.activeBackground", self.menu_hover_background)
-            app.root.option_add("*Button.activeForeground", self.menu_hover_foreground)
-            app.root.option_add("*Button.highlightColor", self.menu_hover_background)
