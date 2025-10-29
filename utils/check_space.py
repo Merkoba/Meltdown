@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-# This is supposed to separate logical compounds with empty lines above and below
+# This is supposed to separate logical compounds of python code with empty lines above and below
 # But it's not working correctly yet since it inserts at wrong places
 
 import sys
