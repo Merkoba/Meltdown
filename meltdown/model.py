@@ -142,7 +142,7 @@ class Model:
     def stream_finish(self, tab_id: str) -> None:
         """Notify the UI that the current stream is finished (success or failure)."""
         try:
-            display.stream_ended(tab_id)
+            display.stream_ended()
         except BaseException as e:
             utils.error(e)
 

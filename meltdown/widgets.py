@@ -432,12 +432,14 @@ class Widgets:
                 if wraw is not None:
                     try:
                         if isinstance(defvalue, int):
-                            wv = int(wraw)
-                            if wv != defvalue:
+                            wvi = int(wraw)
+
+                            if wvi != defvalue:
                                 show_reset = True
                         elif isinstance(defvalue, float):
-                            wv = float(wraw)
-                            if wv != defvalue:
+                            wvf = float(wraw)
+
+                            if wvf != defvalue:
                                 show_reset = True
                         elif isinstance(defvalue, bool):
                             if utils.is_bool_true(wraw):
