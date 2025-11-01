@@ -678,6 +678,10 @@ class Model:
             except BaseException as e:
                 utils.error(e)
 
+                self.stream_loading = False
+                # Remove the 'Thinking...' placeholder first to avoid extra spacing
+                self.end_thinking(tab_id)
+
                 display.print(
                     "Error: Remote model failed to stream."
                     " You might not have access to this particular model,"
@@ -685,17 +689,14 @@ class Model:
                     " or there is no internet connection."
                 )
 
-                self.stream_loading = False
-                # Avoid leaving a dangling 'Thinking...'
-                self.end_thinking(tab_id, "< Error: request failed >")
                 self.stream_finish(tab_id)
                 self.release_lock()
                 return
         else:
             if not self.model:
                 self.stream_loading = False
-                # Avoid leaving a dangling 'Thinking...'
-                self.end_thinking(tab_id, "< Error: model not available >")
+                # Remove 'Thinking...' before any error display to keep spacing tight
+                self.end_thinking(tab_id)
                 self.stream_finish(tab_id)
                 self.release_lock()
                 return
@@ -706,8 +707,8 @@ class Model:
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
-                # Avoid leaving a dangling 'Thinking...'
-                self.end_thinking(tab_id, "< Error: request failed >")
+                # Remove 'Thinking...' before any error display to keep spacing tight
+                self.end_thinking(tab_id)
                 self.stream_finish(tab_id)
                 self.release_lock()
                 return
