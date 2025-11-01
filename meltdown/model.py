@@ -127,6 +127,25 @@ class Model:
         self.update_icon()
         self.start_auto_unload()
 
+    def end_thinking(self, tab_id: str, msg: str | None = None) -> None:
+        """Safely remove the last AI placeholder (e.g. "Thinking...") and optionally replace it.
+
+        Prevents leaving the UI stuck when a request errors, times out, or yields no content.
+        """
+        try:
+            display.remove_last_ai(tab_id)
+            if msg:
+                display.prompt("ai", text=msg, tab_id=tab_id)
+        except BaseException as e:
+            utils.error(e)
+
+    def stream_finish(self, tab_id: str) -> None:
+        """Notify the UI that the current stream is finished (success or failure)."""
+        try:
+            display.stream_finished(tab_id)
+        except BaseException as e:
+            utils.error(e)
+
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
             return
@@ -667,11 +686,17 @@ class Model:
                 )
 
                 self.stream_loading = False
+                # Avoid leaving a dangling 'Thinking...'
+                self.end_thinking(tab_id, "< Error: request failed >")
+                self.stream_finish(tab_id)
                 self.release_lock()
                 return
         else:
             if not self.model:
                 self.stream_loading = False
+                # Avoid leaving a dangling 'Thinking...'
+                self.end_thinking(tab_id, "< Error: model not available >")
+                self.stream_finish(tab_id)
                 self.release_lock()
                 return
 
@@ -681,20 +706,30 @@ class Model:
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
+                # Avoid leaving a dangling 'Thinking...'
+                self.end_thinking(tab_id, "< Error: request failed >")
+                self.stream_finish(tab_id)
                 self.release_lock()
                 return
 
         self.stream_loading = False
 
         if self.stream_date != now:
+            # Newer stream started; don't touch placeholders nor finish here.
             self.release_lock()
             return
 
         if self.stop_stream_thread.is_set():
+            # Interrupted; clear placeholder and finish
+            self.end_thinking(tab_id, "< Interrupted >")
+            self.stream_finish(tab_id)
             self.release_lock()
             return
 
         if not output:
+            # No output; clear placeholder and finish to avoid stuck UI
+            self.end_thinking(tab_id, "< No response >")
+            self.stream_finish(tab_id)
             self.release_lock()
             return
 
@@ -705,6 +740,9 @@ class Model:
                 ans = self.process_instant(output, tab_id)
         except BaseException as e:
             utils.error(e)
+            # Error while processing; clear placeholder and finish
+            self.end_thinking(tab_id, "< Error: request failed >")
+            self.stream_finish(tab_id)
             self.release_lock()
             return
 
@@ -721,8 +759,14 @@ class Model:
             if args.durations:
                 word = utils.singular_or_plural(duration, "second", "seconds")
                 display.print(f"Duration: {duration:.2f} {word}", tab_id=tab_id)
+        else:
+            # Empty response; clear placeholder and finish
+            self.end_thinking(tab_id, "< No response >")
+            self.stream_finish(tab_id)
 
         self.stream_date = now_2
+        # Normal successful finish
+        self.stream_finish(tab_id)
         self.release_lock()
 
     def process_stream(
@@ -735,6 +779,7 @@ class Model:
         token_printed = False
         last_token = " "
         buffer_date = 0.0
+        last_activity = utils.now()
         tokens: list[str] = []
         buffer: list[str] = []
         tool_calls_buffer: ToolCallsBuffer = {}
@@ -768,6 +813,11 @@ class Model:
                     break
 
                 if not chunk:
+                    # Inactivity guard: if nothing is coming through for too long, break.
+                    now_chk = utils.now()
+                    if (now_chk - last_activity) >= self.stream_timeout:
+                        broken = True
+                        break
                     continue
 
                 token = None
@@ -839,6 +889,7 @@ class Model:
                     add_token(token)
                     buffer.append(token)
                     now = utils.now()
+                    last_activity = now
 
                     if (now - buffer_date) >= args.delay:
                         print_buffer()
@@ -1081,16 +1132,22 @@ class Model:
             )
 
             if (not response) or (not response.data) or (not response.data[0]):
+                # Clear stuck placeholder if nothing returned
+                self.end_thinking(tab_id, "< Error generating the image >")
                 return
 
             url = response.data[0].url
 
             if not url:
+                # Clear stuck placeholder if nothing returned
+                self.end_thinking(tab_id, "< Error generating the image >")
                 return
 
             tabconvo = display.get_tab_convo(tab_id)
 
             if not tabconvo:
+                # Clear placeholder if tab is gone to avoid lingering loader
+                self.end_thinking(tab_id, "< Cancelled >")
                 return
 
             time_end = utils.now()
@@ -1121,6 +1178,8 @@ class Model:
         except BaseException as e:
             display.print("Error generating the image.")
             utils.error(e)
+            # Replace any pending 'Generating...' so the UI doesn't get stuck
+            self.end_thinking(tab_id, "< Error generating the image >")
 
         self.release_lock()
 
