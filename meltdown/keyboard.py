@@ -390,19 +390,19 @@ class Keyboard:
         self.register(
             "<Up>",
             lambda: self.up_arrow(),
-            on_ctrl=lambda: run_command("top"),
+            on_ctrl=lambda: run_command("scrollup"),
             on_shift=lambda: run_command("context"),
             help="History up",
             shift_help="Show context",
-            ctrl_help="Scroll to top",
+            ctrl_help="Scroll up",
         )
 
         self.register(
             "<Down>",
             lambda: self.down_arrow(),
-            on_ctrl=lambda: run_command("bottom"),
+            on_ctrl=lambda: run_command("scrolldown"),
             help="History down",
-            ctrl_help="Scroll to bottom",
+            ctrl_help="Scroll down",
         )
 
         self.register(
