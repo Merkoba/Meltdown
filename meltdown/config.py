@@ -491,11 +491,12 @@ class Config:
 
         default = self.get_default(key)
 
-        if getattr(self, key) == default:
-            return
+        # Always ensure the widget shows the default, even if config already equals it
+        if getattr(self, key) != default:
+            self.set(key, default, on_change=on_change)
 
-        self.set(key, default, on_change=on_change)
-        widgets.fill_widget(key, getattr(self, key), focus=focus)
+        # Fill widget regardless so the UI reflects the default immediately
+        widgets.fill_widget(key, default, focus=focus)
 
     def on_font_change(self, key: str) -> None:
         from .display import display

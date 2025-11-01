@@ -415,7 +415,49 @@ class Widgets:
         conf_value = config.get(key)
 
         if defvalue is not None:
-            if (conf_value != defvalue) and (defvalue != ""):
+            # Decide Reset visibility considering both config value and current widget value
+            show_reset = False
+
+            # Consider stored config value
+            if conf_value != defvalue:
+                show_reset = True
+
+            # Consider live widget value (if different but not yet saved to config)
+            if isinstance(widget, Gettable):
+                try:
+                    wraw: Any = widget.get()
+                except BaseException:
+                    wraw = None
+
+                if wraw is not None:
+                    try:
+                        if isinstance(defvalue, int):
+                            wv = int(wraw)
+                            if wv != defvalue:
+                                show_reset = True
+                        elif isinstance(defvalue, float):
+                            wv = float(wraw)
+                            if wv != defvalue:
+                                show_reset = True
+                        elif isinstance(defvalue, bool):
+                            if utils.is_bool_true(wraw):
+                                if True != defvalue:
+                                    show_reset = True
+                            elif utils.is_bool_false(wraw):
+                                if False != defvalue:
+                                    show_reset = True
+                            else:
+                                # Unparsable vs bool default -> treat as different
+                                show_reset = True
+                        # String/default fallback
+                        elif str(wraw) != str(defvalue):
+                            show_reset = True
+                    except BaseException:
+                        # Parsing failed (e.g., empty when expecting int) -> treat as different
+                        show_reset = True
+
+            # Keep prior empty-string default guard
+            if (defvalue != "") and show_reset:
                 menu.add(text="Reset", command=lambda e: config.reset_one(key))
 
             if isinstance(defvalue, (int, float)):
