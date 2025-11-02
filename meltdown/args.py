@@ -241,7 +241,7 @@ class Args:
         self.explain_prompt = "Explain ((words))"
         self.elaborate_prompt = "Elaborate on ((words))"
         self.new_prompt = "Tell me about ((words))"
-        self.summarize_prompt = "Summarize this, without addressing me"
+        self.summarize_prompt = "Summarize this, without addressing me. Take into account the whole text, not just the last part."
         self.custom_prompts: list[str] = []
         self.on_shift_middle_click = ""
         self.on_ctrl_middle_click = ""
