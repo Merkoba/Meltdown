@@ -196,7 +196,10 @@ class Dialog:
 
             dialog.msgbox.configure(background=app.theme.textbox_background)
             dialog.msgbox.configure(foreground=app.theme.textbox_foreground)
-            dialog.msgbox.configure(borderwidth=0, highlightthickness=0)
+            dialog.msgbox.configure(borderwidth=0)
+            dialog.msgbox.configure(highlightthickness=app.theme.textbox_border_width)
+            dialog.msgbox.configure(highlightbackground=app.theme.textbox_border_color)
+            dialog.msgbox.configure(highlightcolor=app.theme.textbox_border_focus_color)
             dialog.msgbox.configure(yscrollcommand=mbox_scrollbar_y.set)
             mbox_scrollbar_y.configure(command=dialog.msgbox.yview)
             mbox_scrollbar_y.pack(side=tk.RIGHT, fill=tk.Y)

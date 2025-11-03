@@ -66,6 +66,13 @@ class LightTheme(Theme):
         self.entry_selection_background = "#677577"
         self.entry_selection_foreground = "white"
 
+        self.dialog_border = "#6A7B83"
+        self.dialog_border_width = 4
+
+        self.textbox_border_width = 2
+        self.textbox_border_color = "#6A7B83"
+        self.textbox_border_focus_color = "#44B3A1"
+
         self.tooltip_background = "#2B303B"
         self.tooltip_foreground = "white"
 

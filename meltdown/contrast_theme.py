@@ -57,7 +57,7 @@ class ContrastTheme(Theme):
         self.dialog_background = "black"
         self.dialog_foreground = "white"
         self.dialog_border = "white"
-        self.dialog_border_width = 3
+        self.dialog_border_width = 4
         self.dialog_top_frame = "black"
 
         self.snippet_background = "black"
@@ -83,5 +83,8 @@ class ContrastTheme(Theme):
         self.textbox_background = "black"
         self.textbox_foreground = "white"
         self.textbox_insert = "white"
+        self.textbox_border_width = 2
+        self.textbox_border_color = "white"
+        self.textbox_border_focus_color = "#1ae6e6"
 
         self.effect_color = "#1d99ff"

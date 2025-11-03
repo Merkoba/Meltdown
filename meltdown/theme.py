@@ -88,8 +88,8 @@ class Theme:
 
         self.dialog_background = "white"
         self.dialog_foreground = "black"
-        self.dialog_border = "white"
-        self.dialog_border_width = 3
+        self.dialog_border = "#4cc2af"
+        self.dialog_border_width = 4
         self.dialog_top_frame = "#F5F5F5"
 
         self.snippet_background = "#3D4555"
@@ -159,6 +159,9 @@ class Theme:
         self.textbox_background = "white"
         self.textbox_foreground = "black"
         self.textbox_insert = "black"
+        self.textbox_border_width = 2
+        self.textbox_border_color = "#6a7b83"
+        self.textbox_border_focus_color = "#4cc2af"
         self.textbox_width = 38
         self.textbox_height = 7
 

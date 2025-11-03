@@ -28,10 +28,13 @@ class TextBox(tk.Text):
         super().__init__(dialog.top_frame, undo=False)
         self.configure(font=app.theme.font("textbox"))
         self.configure(width=app.theme.textbox_width, height=app.theme.textbox_height)
-        self.configure(highlightthickness=0)
         self.configure(background=app.theme.textbox_background)
         self.configure(foreground=app.theme.textbox_foreground)
         self.configure(insertbackground=app.theme.textbox_insert)
+        self.configure(borderwidth=0)
+        self.configure(highlightthickness=app.theme.textbox_border_width)
+        self.configure(highlightbackground=app.theme.textbox_border_color)
+        self.configure(highlightcolor=app.theme.textbox_border_focus_color)
 
         scrollbar_y = ttk.Scrollbar(
             dialog.top_frame, orient=tk.VERTICAL, style="Dialog.Vertical.TScrollbar"
