@@ -51,6 +51,7 @@ class Model:
         self.lock = threading.Lock()
         self.stop_stream_thread = threading.Event()
         self.stream_thread = threading.Thread()
+        self.stop_waiter: threading.Thread | None = None
         self.streaming = False
         self.stream_loading = False
         self.model: LlamaCPP | None = None  # type: ignore
@@ -150,7 +151,7 @@ class Model:
         if self.model_loading:
             return
 
-        self.stop_stream()
+        self.stop_stream(wait=True)
 
         if self.loaded_model and announce:
             msg = "Model unloaded"
@@ -447,16 +448,51 @@ class Model:
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading
 
-    def stop_stream(self) -> None:
-        if self.stop_stream_thread.is_set():
+    def stop_stream(self, wait: bool = False) -> None:
+        thread = (
+            self.stream_thread
+            if self.stream_thread and self.stream_thread.is_alive()
+            else None
+        )
+
+        if wait and self.stop_waiter and self.stop_waiter.is_alive():
+            self.stop_waiter.join(timeout=self.stop_stream_timeout)
+
+            if self.stop_waiter.is_alive():
+                utils.msg("Stream thread did not finish within the timeout.")
+            else:
+                self.stop_waiter = None
+
             return
 
-        if self.stream_thread and self.stream_thread.is_alive():
-            self.stop_stream_thread.set()
-            self.stream_thread.join(timeout=self.stop_stream_timeout)
+        if not thread:
+            return
+
+        if self.stop_stream_thread.is_set() and not wait:
+            return
+
+        self.stop_stream_thread.set()
+
+        def finalize() -> None:
+            thread.join(timeout=self.stop_stream_timeout)
+            finished = not thread.is_alive()
 
             if args.model_feedback and (not args.quiet):
-                display.print("< Interrupted >")
+                text = "< Interrupted >" if finished else "< Interrupting... >"
+                display.print(text)
+
+            if not finished:
+                utils.msg("Stream thread did not finish within the timeout.")
+
+            self.stop_waiter = None
+
+        if wait:
+            finalize()
+        else:
+            stopper = threading.Thread(target=finalize)
+            stopper.daemon = True
+            self.stop_waiter = stopper
+            stopper.start()
 
     def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
         if self.is_loading():
@@ -495,7 +531,7 @@ class Model:
             self.do_stream(prompt, tab_id)
             self.streaming = False
 
-        self.stop_stream()
+        self.stop_stream(wait=True)
         self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
@@ -1110,7 +1146,7 @@ class Model:
             self.do_generate_image(prompt, tab_id)
             self.streaming = False
 
-        self.stop_stream()
+        self.stop_stream(wait=True)
         self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
