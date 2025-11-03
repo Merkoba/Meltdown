@@ -49,8 +49,8 @@ class Upload:
                 return
 
         cmds = Commands()
-        cmds.add("Rentry", lambda a: action("rentry"))
         cmds.add("Harambe", lambda a: action("harambe"))
+        cmds.add("Rentry", lambda a: action("rentry"))
         Dialog.show_dialog("Pick upload service", commands=cmds)
 
     def privacy_picker(
