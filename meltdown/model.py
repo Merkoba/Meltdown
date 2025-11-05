@@ -51,7 +51,6 @@ class Model:
         self.lock = threading.Lock()
         self.stop_stream_thread = threading.Event()
         self.stream_thread = threading.Thread()
-        self.stop_waiter: threading.Thread | None = None
         self.streaming = False
         self.stream_loading = False
         self.model: LlamaCPP | None = None  # type: ignore
@@ -77,22 +76,18 @@ class Model:
         self.gpts: list[tuple[str, str]] = [
             ("gpt-4o", "GPT 4o"),
             ("gpt-4o-mini", "GPT 4o Mini"),
-            ("gpt-4-turbo", "GPT 4 Turbo"),
             ("gpt-3.5-turbo", "GPT 3.5 Turbo"),
         ]
 
         self.geminis: list[tuple[str, str]] = [
             ("gemini-2.5-pro", "Gemini 2.5 Pro"),
             ("gemini-2.5-flash", "Gemini 2.5 Flash"),
-            ("gemini-2.0-pro", "Gemini 2.0 Pro"),
-            ("gemini-2.0-flash", "Gemini 2.0 Flash"),
         ]
 
         self.claudes: list[tuple[str, str]] = [
-            ("claude-4-5-sonnet", "Claude 4.5 Sonnet"),
+            ("claude-opus-4", "Claude 4 Opus"),
             ("claude-4-sonnet", "Claude 4 Sonnet"),
             ("claude-3-7-sonnet", "Claude 3.7 Sonnet"),
-            ("claude-opus-4", "Claude 4 Opus"),
         ]
 
         self.openai_key = ""
@@ -128,30 +123,11 @@ class Model:
         self.update_icon()
         self.start_auto_unload()
 
-    def end_thinking(self, tab_id: str, msg: str | None = None) -> None:
-        """Safely remove the last AI placeholder (e.g. "Thinking...") and optionally replace it.
-
-        Prevents leaving the UI stuck when a request errors, times out, or yields no content.
-        """
-        try:
-            display.remove_last_ai(tab_id)
-            if msg:
-                display.prompt("ai", text=msg, tab_id=tab_id)
-        except BaseException as e:
-            utils.error(e)
-
-    def stream_finish(self, tab_id: str) -> None:
-        """Notify the UI that the current stream is finished (success or failure)."""
-        try:
-            display.stream_ended()
-        except BaseException as e:
-            utils.error(e)
-
     def unload(self, announce: bool = False) -> None:
         if self.model_loading:
             return
 
-        self.stop_stream(wait=True)
+        self.stop_stream()
 
         if self.loaded_model and announce:
             msg = "Model unloaded"
@@ -448,51 +424,16 @@ class Model:
     def is_loading(self) -> bool:
         return self.model_loading or self.stream_loading
 
-    def stop_stream(self, wait: bool = False) -> None:
-        thread = (
-            self.stream_thread
-            if self.stream_thread and self.stream_thread.is_alive()
-            else None
-        )
-
-        if wait and self.stop_waiter and self.stop_waiter.is_alive():
-            self.stop_waiter.join(timeout=self.stop_stream_timeout)
-
-            if self.stop_waiter.is_alive():
-                utils.msg("Stream thread did not finish within the timeout.")
-            else:
-                self.stop_waiter = None
-
+    def stop_stream(self) -> None:
+        if self.stop_stream_thread.is_set():
             return
 
-        if not thread:
-            return
-
-        if self.stop_stream_thread.is_set() and not wait:
-            return
-
-        self.stop_stream_thread.set()
-
-        def finalize() -> None:
-            thread.join(timeout=self.stop_stream_timeout)
-            finished = not thread.is_alive()
+        if self.stream_thread and self.stream_thread.is_alive():
+            self.stop_stream_thread.set()
+            self.stream_thread.join(timeout=self.stop_stream_timeout)
 
             if args.model_feedback and (not args.quiet):
-                text = "< Interrupted >" if finished else "< Interrupting... >"
-                display.print(text)
-
-            if not finished:
-                utils.msg("Stream thread did not finish within the timeout.")
-
-            self.stop_waiter = None
-
-        if wait:
-            finalize()
-        else:
-            stopper = threading.Thread(target=finalize)
-            stopper.daemon = True
-            self.stop_waiter = stopper
-            stopper.start()
+                display.print("< Interrupted >")
 
     def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
         if self.is_loading():
@@ -531,7 +472,7 @@ class Model:
             self.do_stream(prompt, tab_id)
             self.streaming = False
 
-        self.stop_stream(wait=True)
+        self.stop_stream()
         self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
@@ -714,10 +655,6 @@ class Model:
             except BaseException as e:
                 utils.error(e)
 
-                self.stream_loading = False
-                # Remove the 'Thinking...' placeholder first to avoid extra spacing
-                self.end_thinking(tab_id)
-
                 display.print(
                     "Error: Remote model failed to stream."
                     " You might not have access to this particular model,"
@@ -725,15 +662,12 @@ class Model:
                     " or there is no internet connection."
                 )
 
-                self.stream_finish(tab_id)
+                self.stream_loading = False
                 self.release_lock()
                 return
         else:
             if not self.model:
                 self.stream_loading = False
-                # Remove 'Thinking...' before any error display to keep spacing tight
-                self.end_thinking(tab_id)
-                self.stream_finish(tab_id)
                 self.release_lock()
                 return
 
@@ -743,30 +677,20 @@ class Model:
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
-                # Remove 'Thinking...' before any error display to keep spacing tight
-                self.end_thinking(tab_id)
-                self.stream_finish(tab_id)
                 self.release_lock()
                 return
 
         self.stream_loading = False
 
         if self.stream_date != now:
-            # Newer stream started; don't touch placeholders nor finish here.
             self.release_lock()
             return
 
         if self.stop_stream_thread.is_set():
-            # Interrupted; clear placeholder and finish
-            self.end_thinking(tab_id, "< Interrupted >")
-            self.stream_finish(tab_id)
             self.release_lock()
             return
 
         if not output:
-            # No output; clear placeholder and finish to avoid stuck UI
-            self.end_thinking(tab_id, "< No response >")
-            self.stream_finish(tab_id)
             self.release_lock()
             return
 
@@ -777,9 +701,6 @@ class Model:
                 ans = self.process_instant(output, tab_id)
         except BaseException as e:
             utils.error(e)
-            # Error while processing; clear placeholder and finish
-            self.end_thinking(tab_id, "< Error: request failed >")
-            self.stream_finish(tab_id)
             self.release_lock()
             return
 
@@ -796,14 +717,8 @@ class Model:
             if args.durations:
                 word = utils.singular_or_plural(duration, "second", "seconds")
                 display.print(f"Duration: {duration:.2f} {word}", tab_id=tab_id)
-        else:
-            # Empty response; clear placeholder and finish
-            self.end_thinking(tab_id, "< No response >")
-            self.stream_finish(tab_id)
 
         self.stream_date = now_2
-        # Normal successful finish
-        self.stream_finish(tab_id)
         self.release_lock()
 
     def process_stream(
@@ -816,7 +731,6 @@ class Model:
         token_printed = False
         last_token = " "
         buffer_date = 0.0
-        last_activity = utils.now()
         tokens: list[str] = []
         buffer: list[str] = []
         tool_calls_buffer: ToolCallsBuffer = {}
@@ -850,11 +764,6 @@ class Model:
                     break
 
                 if not chunk:
-                    # Inactivity guard: if nothing is coming through for too long, break.
-                    now_chk = utils.now()
-                    if (now_chk - last_activity) >= self.stream_timeout:
-                        broken = True
-                        break
                     continue
 
                 token = None
@@ -926,7 +835,6 @@ class Model:
                     add_token(token)
                     buffer.append(token)
                     now = utils.now()
-                    last_activity = now
 
                     if (now - buffer_date) >= args.delay:
                         print_buffer()
@@ -1083,9 +991,7 @@ class Model:
                         gen_config = self.get_gen_config(messages)
 
                         if self.is_remote_model():
-                            follow_up = completion(
-                                **gen_config, timeout=self.tools_timeout
-                            )
+                            follow_up = completion(**gen_config, timeout=self.tools_timeout)
                         elif self.model:
                             local_gen_config = gen_config.copy()
 
@@ -1146,7 +1052,7 @@ class Model:
             self.do_generate_image(prompt, tab_id)
             self.streaming = False
 
-        self.stop_stream(wait=True)
+        self.stop_stream()
         self.stream_thread = threading.Thread(target=lambda: wrapper(prompt, tab_id))
         self.stream_thread.daemon = True
         self.stream_thread.start()
@@ -1169,22 +1075,16 @@ class Model:
             )
 
             if (not response) or (not response.data) or (not response.data[0]):
-                # Clear stuck placeholder if nothing returned
-                self.end_thinking(tab_id, "< Error generating the image >")
                 return
 
             url = response.data[0].url
 
             if not url:
-                # Clear stuck placeholder if nothing returned
-                self.end_thinking(tab_id, "< Error generating the image >")
                 return
 
             tabconvo = display.get_tab_convo(tab_id)
 
             if not tabconvo:
-                # Clear placeholder if tab is gone to avoid lingering loader
-                self.end_thinking(tab_id, "< Cancelled >")
                 return
 
             time_end = utils.now()
@@ -1215,8 +1115,6 @@ class Model:
         except BaseException as e:
             display.print("Error generating the image.")
             utils.error(e)
-            # Replace any pending 'Generating...' so the UI doesn't get stuck
-            self.end_thinking(tab_id, "< Error generating the image >")
 
         self.release_lock()
 
