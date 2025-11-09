@@ -136,7 +136,12 @@ class Markdown:
         # possibility of catastrophically backtracking in case
         # the stuff AFTER it fails to match (such as the closing
         # 3x backticks).
-        Markdown.pattern_snippets = rf"^{tick}{{3}}([-\w.# ]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!^{tick}{{3}}){tick}{{1,2}}|(?!{tick}{{3}}[^{tick}]){tick}{{3}})*))\2(?:{tick}{{3}}|$)\s*$"
+        # Allow a broader set of characters right after the opening fence so inline
+        # snippets like ```:create-pier %qyt``` are matched. We treat that segment
+        # as either a language (when followed by a newline) or as inline content
+        # (when immediately followed by the closing fence). Restrict only backticks
+        # and newlines here to avoid breaking fence detection.
+        Markdown.pattern_snippets = rf"^{tick}{{3}}([^`\n]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!^{tick}{{3}}){tick}{{1,2}}|(?!{tick}{{3}}[^{tick}]){tick}{{3}})*))\2(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
         Markdown.pattern_uselink = char_regex_1(uselink)
