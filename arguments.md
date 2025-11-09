@@ -1994,7 +1994,7 @@ Type: str
 
 The instruction to tell the AI to summarize a conversation
 
-Default: "Summarize this, without addressing me"
+Default: "Summarize this, without addressing me. Take into account the whole text, not just the last part."
 
 Type: str
 
@@ -2399,6 +2399,16 @@ Type: str
 Effects to apply to highlight text. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
 
 Default: "color"
+
+Type: str
+
+---
+
+### highlight-2-effects
+
+Effects to apply to highlighted text through the Highlight action. bold, italic, color, underline, monospace. Separated by _, for example: "bold_color"
+
+Default: "background"
 
 Type: str
 

@@ -52,7 +52,7 @@ Shift: Scroll down more
 
 History up
 
-Ctrl: Scroll to top
+Ctrl: Scroll up
 
 Shift: Show context
 
@@ -62,7 +62,7 @@ Shift: Show context
 
 History down
 
-Ctrl: Scroll to bottom
+Ctrl: Scroll down
 
 ---
 
