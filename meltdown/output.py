@@ -135,17 +135,20 @@ class Output(tk.Text):
         itemops.action("repeat", tab_id=tab_id, number=arg, no_history=no_history)
 
     @staticmethod
-    def get_words() -> str:
+    def get_words(clean: bool = False) -> str:
         words = Output.words.strip()
 
-        if (
-            (words.startswith('"') and words.endswith('"'))
-            or (words.startswith("'") and words.endswith("'"))
-            or (words.startswith("`") and words.endswith("`"))
-        ):
-            words = words[1:-1]
+        if clean:
+            if (
+                (words.startswith('"') and words.endswith('"'))
+                or (words.startswith("'") and words.endswith("'"))
+                or (words.startswith("`") and words.endswith("`"))
+            ):
+                words = words[1:-1]
 
-        return words.rstrip(":,.;!?")
+            words = words.rstrip(":,.;!?")
+
+        return words
 
     @staticmethod
     def get_url() -> str:
@@ -328,6 +331,16 @@ class Output(tk.Text):
 
         quoted = utils.smart_quotes(words)
         app.search_text(quoted)
+
+    @staticmethod
+    def highlight_words() -> None:
+        words = Output.get_words(False)
+        output = Output.current_output()
+
+        if not output:
+            return
+
+        output.highlight_text(words)
 
     @staticmethod
     def new_tab() -> None:
@@ -991,6 +1004,7 @@ class Output(tk.Text):
         app.hide_all()
         self.deselect_all()
         self.reset_drag()
+        self.remove_highlights()
         self.display.unpick()
 
     def on_middle_click(self, ctrl: bool = False, shift: bool = False) -> str:
@@ -1174,6 +1188,7 @@ class Output(tk.Text):
         self.add_effects("header_1", app.theme.get_header_size(1))
         self.add_effects("header_2", app.theme.get_header_size(2))
         self.add_effects("header_3", app.theme.get_header_size(3))
+        self.add_effects("highlight_2")
 
         self.tag_configure("separator", font=app.theme.get_separator_font())
 
@@ -1205,6 +1220,10 @@ class Output(tk.Text):
 
         if "color" in effects:
             self.tag_configure(tag, foreground=app.theme.effect_color)
+
+        if "background" in effects:
+            self.tag_configure(tag, background=app.theme.find_match_background)
+            self.tag_configure(tag, foreground=app.theme.find_match_foreground)
 
         if "underline" in effects:
             self.tag_configure(tag, underline=True)
@@ -1353,3 +1372,9 @@ class Output(tk.Text):
     def count_snippets(self) -> int:
         widgets = self.window_names()
         return len(widgets)
+
+    def remove_highlights(self) -> None:
+        self.tag_remove("highlight_2", "1.0", "end")
+
+    def highlight_text(self, words: str) -> None:
+        self.markdown.highlight_text(words)

@@ -445,6 +445,7 @@ class WordMenu:
         self.menu.add(text="Elaborate", command=lambda e: Output.elaborate_words())
         self.menu.add(text="Prompt", command=lambda e: Output.prompt_words())
         self.menu.add(text="Search", command=lambda e: Output.search_words())
+        self.menu.add(text="Highlight", command=lambda e: Output.highlight_words())
         self.menu.add(text="New", command=lambda e: Output.new_tab())
         self.menu.add(text="Use", command=lambda e: Output.use_words())
 

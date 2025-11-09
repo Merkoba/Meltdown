@@ -1595,6 +1595,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "highlight_2_effects",
+            type=str,
+            info=f"Effects to apply to highlighted text through the Highlight action. {self.effects_info}",
+        )
+
+        self.add_argument(
             "quote_effects",
             type=str,
             info=f"Effects to apply to quote text. {self.effects_info}",

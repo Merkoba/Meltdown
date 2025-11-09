@@ -991,7 +991,9 @@ class Model:
                         gen_config = self.get_gen_config(messages)
 
                         if self.is_remote_model():
-                            follow_up = completion(**gen_config, timeout=self.tools_timeout)
+                            follow_up = completion(
+                                **gen_config, timeout=self.tools_timeout
+                            )
                         elif self.model:
                             local_gen_config = gen_config.copy()
 

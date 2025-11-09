@@ -367,6 +367,15 @@ class Markdown:
         if self.enabled(who, "separator"):
             self.format_separators(start_ln, end_ln, who)
 
+    def highlight_text(self, text_to_find: str) -> None:
+        pattern = rf"(?P<all>(?P<content>{re.escape(text_to_find)}))"
+        start_ln = 1
+        end_ln = self.last_line()
+
+        self.do_format(
+            start_ln, end_ln, "nobody", pattern, "highlight_2", no_replace=True
+        )
+
     def do_format(
         self,
         start_ln: int,
