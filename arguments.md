@@ -3097,3 +3097,23 @@ Type: str
 Don't add model reference numbers to AI responses in the logs
 
 Action: store_false
+
+---
+
+### case-insensitive-highlights
+
+Consider all cases when doing word highlights
+
+Default: False
+
+Action: store_true
+
+---
+
+### bound-highlights
+
+Make highlights work with boundaries
+
+Default: False
+
+Action: store_true
