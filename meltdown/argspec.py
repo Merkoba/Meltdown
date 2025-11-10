@@ -2023,5 +2023,17 @@ class ArgSpec:
             info="Don't add model reference numbers to AI responses in the logs",
         )
 
+        self.add_argument(
+            "case_insensitive_highlights",
+            action="store_true",
+            info="Consider all cases when doing word highlights",
+        )
+
+        self.add_argument(
+            "bound_highlights",
+            action="store_true",
+            info="Make highlights work with boundaries",
+        )
+
 
 argspec = ArgSpec()

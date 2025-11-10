@@ -372,8 +372,18 @@ class Markdown:
         if self.enabled(who, "separator"):
             self.format_separators(start_ln, end_ln, who)
 
-    def highlight_text(self, text_to_find: str) -> None:
-        pattern = rf"(?P<all>(?P<content>{re.escape(text_to_find)}))"
+    def highlight_text(self, text: str) -> None:
+        if args.case_insensitive_highlights:
+            flag = "(?i)"
+        else:
+            flag = ""
+
+        if args.bound_highlights:
+            bound = r"(?:\s|^|$)"
+        else:
+            bound = ""
+
+        pattern = rf"{flag}(?P<all>{bound}(?P<content>{re.escape(text)}){bound})"
         start_ln = 1
         end_ln = self.last_line()
 

@@ -341,6 +341,8 @@ class Args:
         self.dislike_prompt = "I disliked your last response :("
         self.lockets: list[str] = []
         self.log_references = True
+        self.case_insensitive_highlights = False
+        self.bound_highlights = False
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -672,6 +674,8 @@ class Args:
             "say_user_message",
             "script_format",
             "task_debounce_delay",
+            "case_insensitive_highlights",
+            "bound_highlights",
             "debug",
         ]
 
