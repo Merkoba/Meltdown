@@ -673,7 +673,6 @@ class Model:
 
             try:
                 output = self.model.create_chat_completion_openai_v1(**gen_config)
-
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
@@ -1028,7 +1027,6 @@ class Model:
                 display.prompt("ai", tab_id=tab_id)
                 display.insert(response, tab_id=tab_id)
                 return str(response)
-
         except BaseException as e:
             utils.error(e)
 
@@ -1414,7 +1412,6 @@ class Model:
                             "function": {"name": fn_name, "arguments": fn_args_str},
                         }
                     )
-
                 except json.JSONDecodeError:
                     continue
                 except Exception as e:
@@ -1483,7 +1480,6 @@ class Model:
                 return f"\n\n{content}"
 
             return ""
-
         except Exception as e:
             utils.error(e)
             return f"\n\nError handling tool calls: {e}"

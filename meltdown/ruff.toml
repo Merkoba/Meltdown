@@ -35,6 +35,7 @@ select = [
     "SIM210",
     "PLR5501",
     "PLR1711",
+    "E303",
 ]
 
 ignore = [

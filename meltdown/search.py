@@ -90,7 +90,6 @@ class Search:
                 return f"Search results for '{query}':\n\n" + "\n".join(result_parts)
 
             return self.ddg_search(query)
-
         except Exception:
             return ""  # Will trigger fallback
 
@@ -150,7 +149,6 @@ class Search:
                 return formatted_results.strip()
 
             return ""
-
         except Exception:
             return ""  # Will trigger Google fallback
 
@@ -382,7 +380,6 @@ class Search:
                             return result
 
             return ""
-
         except Exception:
             return ""
 
