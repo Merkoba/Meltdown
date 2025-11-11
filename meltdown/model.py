@@ -13,6 +13,7 @@ import requests  # type: ignore
 import litellm  # type: ignore
 from litellm import completion
 from litellm import image_generation
+from litellm.exceptions import InternalServerError  # type: ignore
 from litellm.types.utils import ModelResponse  # type: ignore
 from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper  # type: ignore
 
@@ -856,6 +857,15 @@ class Model:
 
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
+        except InternalServerError as e:
+            utils.error(e)
+
+            display.print(
+                "\nError: The model is overloaded. Please try again later.",
+                tab_id=tab_id,
+            )
+
+            broken = True
         except BaseException as e:
             utils.error(e)
 
