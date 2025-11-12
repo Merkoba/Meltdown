@@ -157,8 +157,10 @@ class Markdown:
         # rejecting a lone alphabetical segment (e.g., /about, /help) when it
         # is followed by whitespace or end-of-line. Real paths with multiple
         # segments (e.g., /etc/hosts) or tilde paths (~/folder) still match.
+        # It also avoids matching chan-style board references like /g/ or /m/
+        # when they are followed by text on the same line.
         # Stops at line end or double space
-        Markdown.pattern_path = r"(?:(?<=\s)|^)(?!\/[A-Za-z]+(?=\s|$))(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?!\/[A-Za-z]{1,4}\/(?=\s|$))(?!\/[A-Za-z]+(?=\s|$))(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
 
         # Header with one hash
         Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"

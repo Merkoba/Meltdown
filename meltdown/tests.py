@@ -310,5 +310,14 @@ def debug_print(var_name, value):
         ]
     }
 
+    slash_test: Test = {
+        "items": [
+            {
+                "user": """Slash test""",
+                "ai": """/m/ slash test""",
+            },
+        ]
+    }
+
 
 tests = Tests()
