@@ -337,7 +337,7 @@ class Widgets:
 
             widget.bind("<<ComboboxSelected>>", lambda e: config.update(key))
 
-        setup_entrybox("input", "Ask something to the AI")
+        setup_entrybox("input", args.input_placeholder)
         setup_entrybox("avatar_user", "")
         setup_entrybox("name_user", "Name")
         setup_entrybox("avatar_ai", "")

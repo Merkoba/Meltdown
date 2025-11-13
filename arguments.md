@@ -3117,3 +3117,21 @@ Make highlights work with boundaries
 Default: False
 
 Action: store_true
+
+---
+
+### input-placeholder
+
+Ask something to the AI
+
+Default: "Ask something to the AI"
+
+Type: str
+
+---
+
+### no-tooltip-count
+
+Don't show the number of items on the tab tooltips
+
+Action: store_false

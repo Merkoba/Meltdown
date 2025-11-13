@@ -213,7 +213,7 @@ class Display:
         tooltip = ""
 
         if convo and convo.items:
-            tooltip = convo.items[0].ai
+            tooltip = self.make_tooltip(convo.items[0].ai, len(convo.items))
 
         if convo:
             pin = convo.pin
@@ -1260,7 +1260,18 @@ class Display:
     def unpick(self) -> None:
         self.book.unpick()
 
-    def update_tooltip(self, tab_id: str) -> None:
+    def make_tooltip(self, text: str, num_items: int) -> str:
+        parts = []
+
+        if args.tooltip_count:
+            parts.append(f"({num_items})")
+
+        text = text.strip().lstrip("<think>").strip()
+        parts.append(text)
+        sparts = [str(x) for x in parts]
+        return " ".join(sparts).strip()
+
+    def update_tooltip(self, tab_id: str, text: str = "") -> None:
         tabconvo = self.get_tab_convo(tab_id)
 
         if not tabconvo:
@@ -1269,8 +1280,13 @@ class Display:
         if not tabconvo.convo.items:
             return
 
-        item = tabconvo.convo.items[0]
-        self.book.update_tooltip(tab_id, item.ai)
+        if not text:
+            item = tabconvo.convo.items[0]
+            text = item.ai.strip()
+
+        num_items = len(tabconvo.convo.items)
+        tooltip = self.make_tooltip(text, num_items)
+        self.book.update_tooltip(tab_id, tooltip)
 
     def clear_last_ai(self, tab_id: str) -> None:
         tabconvo = self.get_tab_convo(tab_id)
@@ -1395,6 +1411,7 @@ class Display:
         self.prompt("user", user_text, tab_id=tab_id)
         self.prompt("ai", ai_text, tab_id=tab_id)
         self.format_text(tab_id)
+        self.update_tooltip(tab_id, ai_text)
 
     def get_prompt(
         self,

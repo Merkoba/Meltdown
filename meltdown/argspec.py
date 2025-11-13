@@ -2035,5 +2035,17 @@ class ArgSpec:
             info="Make highlights work with boundaries",
         )
 
+        self.add_argument(
+            "input_placeholder",
+            type=str,
+            info="Ask something to the AI",
+        )
+
+        self.add_argument(
+            "no_tooltip_count",
+            action="store_false",
+            info="Don't show the number of items on the tab tooltips",
+        )
+
 
 argspec = ArgSpec()

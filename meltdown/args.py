@@ -343,6 +343,8 @@ class Args:
         self.log_references = True
         self.case_insensitive_highlights = False
         self.bound_highlights = False
+        self.input_placeholder = "Ask something to the AI"
+        self.tooltip_count = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -437,12 +439,14 @@ class Args:
             ("no_task_debounce", "task_debounce"),
             ("no_rich_console", "rich_console"),
             ("no_log_references", "log_references"),
+            ("no_tooltip_count", "tooltip_count"),
         ]
 
         for r_item in other_name:
             ap.get_value(*r_item)
 
         normals = [
+            "debug",
             "maximize",
             "width",
             "height",
@@ -676,7 +680,7 @@ class Args:
             "task_debounce_delay",
             "case_insensitive_highlights",
             "bound_highlights",
-            "debug",
+            "input_placeholder",
         ]
 
         for n_item in normals:
