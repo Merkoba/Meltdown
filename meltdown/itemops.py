@@ -57,7 +57,12 @@ class ItemOps:
 
         if mode == "repeat":
             if user_text:
-                prompt = {"text": user_text, "file": file, "no_history": no_history}
+                prompt = {
+                    "text": user_text,
+                    "file": file,
+                    "no_history": no_history,
+                    "history_cutoff": index,
+                }
                 model.stream(prompt, tabconvo.tab.tab_id)
         elif mode == "copy":
             text = ""

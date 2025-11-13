@@ -487,6 +487,7 @@ class Model:
         prompt_file = prompt.get("file", "").strip()
         prompt_user = prompt.get("user", "").strip()
         no_history = prompt.get("no_history", False)
+        history_cutoff = prompt.get("history_cutoff", -1)
         internal = prompt.get("internal", None)
 
         if prompt_file:
@@ -546,7 +547,10 @@ class Model:
             messages.append({"role": "system", "content": system})
 
         if tabconvo.convo.items and config.history and (not no_history):
-            for item in tabconvo.convo.items[-abs(config.history) :]:
+            for tci, item in enumerate(tabconvo.convo.items[-abs(config.history) :]):
+                if (history_cutoff >= 0) and (tci >= history_cutoff):
+                    break
+
                 user_value = getattr(item, "user", "")
                 ai_value = getattr(item, "ai", "")
 
