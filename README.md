@@ -936,7 +936,7 @@ There are arguments you can use to define which panels get removed in compact mo
 
 The output window can be auto scrolled.
 
-That means it will scroll slowly downards or upwards.
+That means it will scroll slowly downwards or upwards.
 
 So you can read text without manual intervention.
 
