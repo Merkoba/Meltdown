@@ -1027,7 +1027,7 @@ These can be using commands that fetch date or profile information.
 
 ## Repeat <a name="repeat"></a>
 
-On the item right click menu there are some Repeat options.
+On the item right click menu there are some `Repeat` options.
 
 This is a way to re-run the prompt, with or without history.
 
