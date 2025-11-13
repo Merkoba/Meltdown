@@ -420,7 +420,13 @@ class ItemMenu:
         self.menu.add(text="Repeat Prompt", command=lambda e: Output.repeat_prompt())
 
         self.menu.add(
-            text="Repeat (No History)", command=lambda e: Output.repeat_prompt(True)
+            text="Repeat (No History)",
+            command=lambda e: Output.repeat_prompt("no_history"),
+        )
+
+        self.menu.add(
+            text="Repeat (All History)",
+            command=lambda e: Output.repeat_prompt("all_history"),
         )
 
     def show(self, event: Any = None) -> None:

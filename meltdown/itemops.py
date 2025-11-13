@@ -21,7 +21,7 @@ class ItemOps:
         mode: str,
         number: str,
         tab_id: str | None = None,
-        no_history: bool = False,
+        history_mode: str = "normal",
         who: str = "both",
     ) -> None:
         from .model import model
@@ -54,6 +54,8 @@ class ItemOps:
         file = item.file
 
         both_text = f"User: {user_text}\n\nAI: {ai_text}"
+        no_history = history_mode == "no_history"
+        history_cutoff = index if history_mode == "normal" else -1
 
         if mode == "repeat":
             if user_text:
@@ -61,7 +63,7 @@ class ItemOps:
                     "text": user_text,
                     "file": file,
                     "no_history": no_history,
-                    "history_cutoff": index,
+                    "history_cutoff": history_cutoff,
                 }
                 model.stream(prompt, tabconvo.tab.tab_id)
         elif mode == "copy":
@@ -112,11 +114,11 @@ class ItemOps:
         elif mode == "info":
             self.do_show_info(item)
 
-    def repeat(self, number: str, no_history: bool = False) -> None:
+    def repeat(self, number: str, history_mode: str = "normal") -> None:
         if not number:
             number = "last"
 
-        self.action("repeat", number, no_history=no_history)
+        self.action("repeat", number, history_mode=history_mode)
 
     def copy(self, number: str) -> None:
         if not number:

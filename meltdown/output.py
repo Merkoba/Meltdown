@@ -124,7 +124,7 @@ class Output(tk.Text):
                 app.open_generic(url)
 
     @staticmethod
-    def repeat_prompt(no_history: bool = False) -> None:
+    def repeat_prompt(history_mode: str = "normal") -> None:
         output = Output.current_output()
 
         if not output:
@@ -132,7 +132,7 @@ class Output(tk.Text):
 
         tab_id = output.tab_id
         arg = str(Output.clicked_number)
-        itemops.action("repeat", tab_id=tab_id, number=arg, no_history=no_history)
+        itemops.action("repeat", tab_id=tab_id, number=arg, history_mode=history_mode)
 
     @staticmethod
     def get_words(clean: bool = False) -> str:

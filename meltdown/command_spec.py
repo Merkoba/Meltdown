@@ -1070,7 +1070,7 @@ class CommandSpec:
 
         self.add_cmd(
             "repeat",
-            "Repeat the specified prompt",
+            "Repeat the specified prompt (considering history up to that point)",
             lambda a=None: itemops.repeat(number=a),
             type=str,
             arg_req=True,
@@ -1079,7 +1079,14 @@ class CommandSpec:
         self.add_cmd(
             "repeatclean",
             "Repeat the specified prompt (without history)",
-            lambda a=None: itemops.repeat(number=a, no_history=True),
+            lambda a=None: itemops.repeat(number=a, history_mode="no_history"),
+            type=str,
+        )
+
+        self.add_cmd(
+            "repeatfull",
+            "Repeat the specified prompt (with all the history)",
+            lambda a=None: itemops.repeat(number=a, history_mode="all_history"),
             type=str,
         )
 
