@@ -54,6 +54,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [JoinLines](#join)
 1. [Pins](#pins)
 1. [Lockets](#lockets)
+1. [Repeat](#repeat)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
 
@@ -1002,7 +1003,7 @@ And allows closing either just normal tabs or just pins.
 
 ---
 
-## Lockets
+## Lockets <a name="lockets"></a>
 
 Sometimes you might need to access some data but don't feel comfortable having it printed anywhere or even visible for a couple of seconds. This can be for several reasons revolving around privacy and personal security.
 
@@ -1021,6 +1022,18 @@ Then the `/locket` command can be used like:
 `/locket joe what ice cream does he like?`
 
 These can be using commands that fetch date or profile information.
+
+---
+
+## Repeat <a name="repeat"></a>
+
+On the item right click menu there are `Repeat` and `Repeat (No History)` options.
+
+This is a way to re-run the prompt, with or without history.
+
+This is a smart command that cuts off history up to that point when making the prompt.
+
+This can be a way to check how different models might have answered to the same input.
 
 ---
 
