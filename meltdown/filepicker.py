@@ -20,7 +20,7 @@ class FilePicker:
 
         ToolTip.hide_all()
         browser = FilePicker(app.root, title=title, initial_dir=initdir)
-        return str(browser.show())
+        return str(browser.show() or "")
 
     def __init__(
         self, parent: Any, title: str = "Select File", initial_dir: Path | None = None

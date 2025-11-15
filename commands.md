@@ -1024,13 +1024,19 @@ Make auto-scroll slower
 
 ### repeat
 
-Repeat the specified prompt
+Repeat the specified prompt (considering history up to that point)
 
 ---
 
 ### repeatclean
 
 Repeat the specified prompt (without history)
+
+---
+
+### repeatfull
+
+Repeat the specified prompt (with all the history)
 
 ---
 
