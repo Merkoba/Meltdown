@@ -10,8 +10,8 @@ from .config import config
 
 class Theme:
     def __init__(self) -> None:
-        self.width = 800
-        self.height = 880
+        self.width = 880
+        self.height = 900
 
         self.serif_family = "serif"
         self.font_family = "sans-serif"
@@ -376,43 +376,6 @@ class Theme:
 
         app.root.option_add(
             "*TCombobox*Listbox.selectForeground", self.highlight_foreground
-        )
-
-        # Ensure classic Tk Entry widgets follow our dark entry styling (not white)
-        app.root.option_add("*Entry.background", self.entry_background)
-        app.root.option_add("*Entry.foreground", self.entry_foreground)
-        app.root.option_add("*Entry.insertBackground", self.entry_insert)
-        app.root.option_add("*Entry.selectBackground", self.entry_selection_background)
-        app.root.option_add("*Entry.selectForeground", self.entry_selection_foreground)
-        app.root.option_add("*Entry.relief", "flat")
-        app.root.option_add("*Entry.borderWidth", self.entry_border_width)
-
-        # Configure default TEntry style to ensure all TTK entries use dark styling
-        style.configure("TEntry", fieldbackground=self.entry_background)
-        style.configure("TEntry", foreground=self.entry_foreground)
-        style.configure("TEntry", borderwidth=self.entry_border_width)
-        style.configure("TEntry", insertcolor=self.entry_insert)
-
-        style.map(
-            "TEntry",
-            fieldbackground=[
-                ("active", self.entry_background),
-                ("disabled", self.entry_background),
-                ("focus", self.entry_background),
-                ("readonly", self.entry_background),
-                ("!focus", self.entry_background),
-            ],
-            foreground=[
-                ("active", self.entry_foreground),
-                ("disabled", self.entry_foreground),
-                ("focus", self.entry_foreground),
-                ("readonly", self.entry_foreground),
-                ("!focus", self.entry_foreground),
-            ],
-            readonlybackground=[
-                ("!focus", self.entry_background),
-                ("focus", self.entry_background),
-            ],
         )
 
         style.map(

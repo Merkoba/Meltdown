@@ -2,7 +2,6 @@ from __future__ import annotations
 
 # Standard
 from typing import Any
-from tkinter import filedialog
 
 # Modules
 from .app import app
@@ -11,6 +10,7 @@ from .entrybox import EntryBox
 from .widgetutils import widgetutils
 from .tips import tips
 from .files import files
+from .filepicker import FilePicker
 
 
 class FileControl:
@@ -54,7 +54,8 @@ class FileControl:
     def browse(self) -> None:
         from .widgets import widgets
 
-        file = filedialog.askopenfilename(initialdir=widgets.get_dir(None, "files"))
+        initial_dir = widgets.get_dir(None, "files")
+        file = FilePicker.create("Load File", initial_dir)
 
         if file:
             self.set(file)

@@ -3,7 +3,6 @@ from __future__ import annotations
 # Standard
 import tkinter as tk
 from typing import Any
-from tkinter import filedialog
 
 # Modules
 from .app import app
@@ -11,6 +10,7 @@ from .config import config
 from .model import model
 from .entrybox import EntryBox
 from .files import files
+from .filepicker import FilePicker
 
 
 class ModelControl:
@@ -100,7 +100,8 @@ class ModelControl:
         if model.model_loading:
             return
 
-        file = filedialog.askopenfilename(initialdir=widgets.get_dir("model", "models"))
+        initial_dir = widgets.get_dir("model", "models")
+        file = FilePicker.create("Select Model", initial_dir)
 
         if file:
             self.set(file)

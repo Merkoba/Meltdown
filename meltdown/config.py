@@ -5,12 +5,12 @@ import json
 import random
 from typing import Any
 from collections.abc import Callable
-from tkinter import filedialog
 from pathlib import Path
 
 # Modules
 from .utils import utils
 from .memory import memory
+from .filepicker import FilePicker
 
 
 class Config:
@@ -223,11 +223,8 @@ class Config:
         if name:
             file_path = str(Path(paths.configs, f"{name}.json"))
         else:
-            file_path = filedialog.asksaveasfilename(
-                initialdir=paths.configs,
-                defaultextension=".json",
-                filetypes=[("Config Files", "*.json")],
-            )
+            initial_dir = paths.configs
+            file_path = FilePicker.create("Save Config", initial_dir)
 
         if not file_path:
             return
@@ -257,9 +254,8 @@ class Config:
             fname = files.full_name(name)
             path = Path(paths.configs, fname)
         else:
-            file_path = filedialog.askopenfilename(
-                initialdir=paths.configs,
-            )
+            initial_dir = paths.configs
+            file_path = FilePicker.create("Load State", initial_dir)
 
             if not file_path:
                 return

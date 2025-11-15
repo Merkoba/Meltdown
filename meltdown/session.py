@@ -3,7 +3,6 @@ from __future__ import annotations
 # Standard
 import json
 from typing import Any
-from tkinter import filedialog
 from pathlib import Path
 from collections import OrderedDict
 
@@ -19,6 +18,7 @@ from .files import files
 from .close import close
 from .tests import tests
 from .memory import memory
+from .filepicker import FilePicker
 
 
 class Item:
@@ -356,11 +356,8 @@ class Session:
         if name:
             file_path = str(Path(paths.sessions, f"{name}.json"))
         else:
-            file_path = filedialog.asksaveasfilename(
-                initialdir=paths.sessions,
-                defaultextension=".json",
-                filetypes=[("Session Files", "*.json")],
-            )
+            initial_dir = paths.sessions
+            file_path = FilePicker.create("Save Session", initial_dir)
 
         if not file_path:
             return
@@ -384,9 +381,8 @@ class Session:
             fname = files.full_name(name)
             path = Path(paths.sessions, fname)
         else:
-            file_path = filedialog.askopenfilename(
-                initialdir=paths.sessions,
-            )
+            initial_dir = paths.sessions
+            file_path = FilePicker.create("Load Session", initial_dir)
 
             if not file_path:
                 return
