@@ -865,7 +865,7 @@ class Model:
             utils.error(e)
 
             display.print(
-                "\nError: The model is overloaded. Please try again later.",
+                "Error: The model is overloaded. Please try again later.",
                 tab_id=tab_id,
             )
 

@@ -160,7 +160,10 @@ class Markdown:
         # It also avoids matching chan-style board references like /g/ or /m/
         # when they are followed by text on the same line.
         # Stops at line end or double space
-        Markdown.pattern_path = r"(?:(?<=\s)|^)(?!\/[A-Za-z]{1,4}\/(?=\s|$))(?!\/[A-Za-z]+(?=\s|$))(?P<all>(?P<content>(?:\/|~\/)(?:[^\s\/]| (?![\s\/]))+(?:\/(?:[^\s\/]| (?![\s\/]))+)*))(?=\s|$)"
+        # Disallow a space immediately after any path separator so patterns like
+        # "/ stuff" (from phrases such as "asdf / stuff") are NOT treated as paths.
+        # Still allow single spaces inside components (e.g., "/My App/file.txt").
+        Markdown.pattern_path = r"(?:(?<=\s)|^)(?!\/[A-Za-z]{1,4}\/(?=\s|$))(?!\/[A-Za-z]+(?=\s|$))(?P<all>(?P<content>(?:\/|~\/)[^\s\/](?:[^\s\/]| (?![\s\/]))*(?:\/[^\s\/](?:[^\s\/]| (?![\s\/]))*)*))(?=\s|$)"
 
         # Header with one hash
         Markdown.pattern_header_1 = rf"^(?P<all>{hash_}{{1}}\s+(?P<content>.*))$"
