@@ -1956,6 +1956,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "upload_title",
+            type=str,
+            info="Default upload title to use directly",
+        )
+
+        self.add_argument(
             "upload_privacy",
             type=str,
             info="Default upload privacy to use directly (public or private)",

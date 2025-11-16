@@ -25,6 +25,7 @@ class Harambe:
         after_upload: Action,
         format_: str = "text",
         public: bool = False,
+        title: str = "",
     ) -> None:
         self.text = text
         self.username = username
@@ -33,6 +34,7 @@ class Harambe:
         self.after_upload = after_upload
         self.public = public
         self.timeout = 10
+        self.title = "Meltdown Upload"
 
         self.headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/117.0",
@@ -43,11 +45,12 @@ class Harambe:
             "Sec-Fetch-User": "?1",
         }
 
-        thread = threading.Thread(target=lambda: self.post(format_))
+        thread = threading.Thread(target=lambda: self.post(format_, title))
         thread.daemon = True
         thread.start()
 
-    def post(self, format_: str) -> None:
+    def post(self, format_: str, title: str = "") -> None:
+        title = title or self.title
         self.session = requests.session()
         self.session.get(args.harambe_site)
         content = self.text.strip() if len(self.text) > 0 else "."
@@ -60,7 +63,7 @@ class Harambe:
             ext = "json"
 
         files = {
-            "title": (None, "Meltdown Upload"),
+            "title": (None, title),
             "pastebin": (None, content),
             "pastebin_filename": (None, f"harambe.{ext}"),
             "username": (None, args.harambe_username),

@@ -345,6 +345,7 @@ class Args:
         self.bound_highlights = False
         self.input_placeholder = "Ask something to the AI"
         self.tooltip_count = True
+        self.upload_title = ""
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -674,6 +675,7 @@ class Args:
             "harambe_password",
             "upload_service",
             "upload_format",
+            "upload_title",
             "upload_privacy",
             "say_user_message",
             "script_format",

@@ -54,7 +54,11 @@ class Upload:
         Dialog.show_dialog("Pick upload service", commands=cmds)
 
     def privacy_picker(
-        self, tab_id: str | None = None, mode: str = "", format_: str = "text"
+        self,
+        tab_id: str | None = None,
+        mode: str = "",
+        format_: str = "text",
+        title: str = "",
     ) -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
@@ -63,7 +67,9 @@ class Upload:
             return
 
         def action(priv: bool) -> None:
-            self.do_upload(tab_id=tab_id, mode=mode, format_=format_, public=priv)
+            self.do_upload(
+                tab_id=tab_id, mode=mode, format_=format_, public=priv, title=title
+            )
 
         if not self.full:
             if args.upload_privacy == "public":
@@ -87,7 +93,7 @@ class Upload:
             return
 
         def action(fmt: str) -> None:
-            self.upload(tab_id=tab_id, mode=mode, format_=fmt)
+            self.title_picker(tab_id=tab_id, mode=mode, fmt=fmt)
 
         if not self.full:
             if args.upload_format == "text":
@@ -118,8 +124,37 @@ class Upload:
             cmds.add("Text", lambda a: action("text"))
             Dialog.show_dialog("Pick upload format", commands=cmds)
 
+    def title_picker(
+        self, tab_id: str | None = None, mode: str = "", fmt: str = ""
+    ) -> None:
+        messages = display.has_messages()
+        ignored = display.is_ignored()
+
+        if (not messages) or ignored:
+            return
+
+        def action(title: str) -> None:
+            self.upload(tab_id=tab_id, mode=mode, format_=fmt, title=title)
+
+        if self.service not in ["harambe"]:
+            action("")
+            return
+
+        if args.upload_title:
+            action(args.upload_title)
+            return
+
+        Dialog.show_input(
+            "Title",
+            lambda text: action(text),
+        )
+
     def upload(
-        self, tab_id: str | None = None, mode: str = "", format_: str = "markdown"
+        self,
+        tab_id: str | None = None,
+        mode: str = "",
+        format_: str = "markdown",
+        title: str = "",
     ) -> None:
         messages = display.has_messages()
         ignored = display.is_ignored()
@@ -131,9 +166,9 @@ class Upload:
             fmt = fmt or format_
 
             if self.service == "harambe":
-                self.privacy_picker(tab_id, mode, fmt)
+                self.privacy_picker(tab_id, mode, fmt, title)
             else:
-                self.do_upload(tab_id, mode, format_=fmt)
+                self.do_upload(tab_id, mode, format_=fmt, title=title)
 
         if mode in ["last", "all"]:
             procedure()
@@ -211,6 +246,7 @@ class Upload:
         mode: str = "all",
         format_: str = "markdown",
         public: bool = False,
+        title: str = "",
     ) -> None:
         if not tab_id:
             tab_id = display.current_tab
@@ -247,6 +283,7 @@ class Upload:
                     after_upload=self.after_upload,
                     public=public,
                     format_=format_,
+                    title=title,
                 )
             except Exception as e:
                 utils.error(e)
