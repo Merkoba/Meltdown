@@ -2998,6 +2998,16 @@ Type: str
 
 ---
 
+### upload-title
+
+Default upload title to use directly
+
+Default: [Empty string]
+
+Type: str
+
+---
+
 ### upload-privacy
 
 Default upload privacy to use directly (public or private)
