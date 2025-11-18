@@ -15,6 +15,7 @@ from litellm import completion
 from litellm import image_generation
 from litellm.exceptions import InternalServerError  # type: ignore
 from litellm.exceptions import NotFoundError
+from litellm.exceptions import RateLimitError
 from litellm.types.utils import ModelResponse  # type: ignore
 from litellm.litellm_core_utils.streaming_handler import CustomStreamWrapper  # type: ignore
 
@@ -876,6 +877,15 @@ class Model:
 
             display.print(
                 "Error: The model was not found. Check the path.",
+                tab_id=tab_id,
+            )
+
+            broken = True
+        except RateLimitError as e:
+            utils.error(e)
+
+            display.print(
+                "Error: Rate Limit or Quota exceeded.",
                 tab_id=tab_id,
             )
 
