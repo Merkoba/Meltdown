@@ -549,10 +549,12 @@ class Model:
             messages.append({"role": "system", "content": system})
 
         if tabconvo.convo.items and config.history and (not no_history):
-            for tci, item in enumerate(tabconvo.convo.items[-abs(config.history) :]):
-                if (history_cutoff >= 0) and (tci >= history_cutoff):
-                    break
+            history_items = tabconvo.convo.items
 
+            if history_cutoff >= 0:
+                history_items = history_items[:history_cutoff]
+
+            for item in history_items[-abs(config.history) :]:
                 user_value = getattr(item, "user", "")
                 ai_value = getattr(item, "ai", "")
 

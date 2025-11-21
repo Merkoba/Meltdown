@@ -65,6 +65,7 @@ class ItemOps:
                     "no_history": no_history,
                     "history_cutoff": history_cutoff,
                 }
+
                 model.stream(prompt, tabconvo.tab.tab_id)
         elif mode == "copy":
             text = ""
