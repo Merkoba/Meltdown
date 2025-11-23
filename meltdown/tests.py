@@ -84,6 +84,17 @@ class Tests:
                 "ai": "```crotcas catum```",
             },
             {
+                "user": """Snippet Test 7""",
+                "ai": """Test
+
+            ```js
+            some line
+            another line
+            ```
+
+more text""",
+            },
+            {
                 "user": "URL Test",
                 "ai": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n"
                 + "Here are some urls https://aa.com and http://cc.com\nftp://44.com",

@@ -2,6 +2,7 @@ from __future__ import annotations
 
 # Standard
 import re
+from bisect import bisect_left
 from typing import Any, ClassVar
 from dataclasses import dataclass
 
@@ -141,7 +142,8 @@ class Markdown:
         # as either a language (when followed by a newline) or as inline content
         # (when immediately followed by the closing fence). Restrict only backticks
         # and newlines here to avoid breaking fence detection.
-        Markdown.pattern_snippets = rf"^{tick}{{3}}([^`\n]*)(?:\n|{tick}{{3}})(?=((?:[^{tick}]+|(?!^{tick}{{3}}){tick}{{1,2}}|(?!{tick}{{3}}[^{tick}]){tick}{{3}})*))\2(?:{tick}{{3}}|$)\s*$"
+        # Allow optional leading whitespace before closing backticks to support indented fences.
+        Markdown.pattern_snippets = rf"^\s*{tick}{{3}}([^`\n]*)(?:\n|{tick}{{3}})(?=((?:(?![ \t]*{tick}{{3}})[^{tick}\n]+|\n|(?!^\s*{tick}{{3}}){tick}{{1,2}}|(?!{tick}{{3}}[^{tick}]){tick}{{3}})*))\2\s*(?:{tick}{{3}}|$)\s*$"
 
         # Uselink with the special chars
         Markdown.pattern_uselink = char_regex_1(uselink)
@@ -514,16 +516,37 @@ class Markdown:
         num_lines = end_ln - start_ln
         matches = []
 
+        # Find all fence positions (both opening and closing)
+        # We need to track complete fence blocks to properly detect nesting
+        fence_ranges = []
+
+        for fence_match in re.finditer(r"^\s*```", ctext, flags=re.MULTILINE):
+            fence_pos = fence_match.start()
+            fence_ranges.append(fence_pos)
+
+        def inside_outer_fence(match_start: int) -> bool:
+            # Count how many fence opening positions come before this match
+            idx = bisect_left(fence_ranges, match_start)
+            # If there's an odd number of fence positions before this match,
+            # then we're inside a fence pair (between opening and closing)
+            return (idx % 2) == 1
+
         for match_ in re.finditer(
             Markdown.pattern_snippets, ctext, flags=re.MULTILINE | re.DOTALL
         ):
+            if inside_outer_fence(match_.start(0)):
+                continue
+
             language = match_.group(1)
             content = match_.group(2)
 
             # Determine whether this is an inline fenced snippet like ```something here```
             # In that case, group(1) was mistakenly captured as the language; treat it as content.
             try:
-                open_ticks_end = match_.start(0) + 3  # position right after opening ```
+                match_str = match_.group(0)
+                ticks_start_rel = match_str.find("```")
+                open_ticks_end = match_.start(0) + ticks_start_rel + 3
+
                 # Next character after the "language" capture
                 after_lang_idx = open_ticks_end + (len(language) if language else 0)
                 next_char = ctext[after_lang_idx : after_lang_idx + 1]
@@ -535,6 +558,11 @@ class Markdown:
                 # Swap: group(1) is actually the inline content and no language is specified
                 content = language or ""
                 language = ""
+            else:
+                language = language.strip()
+
+                if not language:
+                    language = "text"
 
             full_match_start_idx = match_.start(0)
             full_match_end_idx = match_.end(0)
