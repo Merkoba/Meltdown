@@ -587,9 +587,11 @@ class Markdown:
                     - ctext.rfind("\n", 0, full_match_start_idx)
                     - 1
                 )
+
                 end_char_index = (
                     full_match_end_idx - ctext.rfind("\n", 0, full_match_end_idx) - 1
                 )
+
                 start_index = f"{real_start_line}.{start_char_index}"
                 end_index = f"{real_end_line}.{end_char_index}"
 
@@ -604,9 +606,11 @@ class Markdown:
             # Check for any non-whitespace characters before the start of our match on the same line
             # If present, ensure there is exactly ONE blank line separating text and the snippet widget
             line_start_index = match.start_line.split(".")[0]
+
             text_before = self.widget.get(
                 f"{line_start_index}.0", match.start_line
             ).strip()
+
             is_inline_start = bool(text_before)
 
             # Now, delete the ENTIRE ```...``` block
@@ -620,6 +624,7 @@ class Markdown:
             trailing_text = ""
             if same_line:
                 trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
+
                 if trailing_text:
                     # Delete trailing text from the original line; we'll re-insert it after the widget
                     self.widget_delete(
@@ -628,18 +633,22 @@ class Markdown:
 
             # Determine where to insert the widget
             insertion_line = match.line_num
+
             if is_inline_start:
                 # Ensure a blank line between the text line and the snippet widget
                 # Create exactly one empty line after the current line
                 self.widget_insert("snippets", f"{insertion_line}.end", "\n")
+
                 insertion_line += (
                     2  # widget goes two lines below the original text line
                 )
             else:
                 # Ensure exactly one empty line ABOVE the widget
                 above_idx = insertion_line - 1
+
                 if above_idx >= 1:
                     above_line = self.widget.get(f"{above_idx}.0", f"{above_idx}.end")
+
                     if above_line.strip() != "":
                         self.widget_insert("snippets", f"{above_idx}.end", "\n")
                         insertion_line += 1
@@ -652,6 +661,7 @@ class Markdown:
             # Ensure exactly one empty line AFTER the widget
             after_idx = insertion_line + 1
             after_line = self.widget.get(f"{after_idx}.0", f"{after_idx}.end")
+
             if after_line.strip() != "":
                 self.widget_insert("snippets", f"{after_idx}.0", "\n")
 
