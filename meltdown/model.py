@@ -1538,14 +1538,20 @@ class Model:
             "stop": self.get_stop_list(),
         }
 
+        model = self.get_model()
+
+        if self.model_is_gpt(model):
+            del gen_config["stop"]
+            del gen_config["top_p"]
+
         if config.search == "yes":
             gen_config["tools"] = self.tools
             gen_config["tool_choice"] = "auto"
 
         if self.is_remote_model():
-            gen_config["model"] = f"{self.loaded_provider}/{self.get_model()}"
+            gen_config["model"] = f"{self.loaded_provider}/{model}"
         else:
-            gen_config["model"] = self.get_model()
+            gen_config["model"] = model
 
         return gen_config
 
