@@ -866,6 +866,11 @@ class Model:
 
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
+                else:
+                    display.insert(
+                        "\nError: Tool call failed or returned no response.",
+                        tab_id=tab_id,
+                    )
         except InternalServerError as e:
             utils.error(e)
 
