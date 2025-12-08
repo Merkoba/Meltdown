@@ -96,7 +96,7 @@ more text""",
             },
             {
                 "user": """Snippet Test 8""",
-                "ai": "```bash\nwhile true; do echo \"Hello, World!\"; sleep 1; done\n```",
+                "ai": '```bash\nwhile true; do echo "Hello, World!"; sleep 1; done\n```',
             },
             {
                 "user": "URL Test",

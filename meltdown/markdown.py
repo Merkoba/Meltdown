@@ -605,7 +605,11 @@ class Markdown:
             # --- 1. SAFE START INDEX CALCULATION ---
             # Instead of trusting ctext indices, find the actual backticks in the widget line.
             # This protects "ai: " or other prefixes from being deleted.
-            line_content = self.widget.get(f"{match.start_line.split('.')[0]}.0", f"{match.start_line.split('.')[0]}.end")
+            line_content = self.widget.get(
+                f"{match.start_line.split('.')[0]}.0",
+                f"{match.start_line.split('.')[0]}.end",
+            )
+
             tick_index = line_content.find("```")
 
             if tick_index != -1:
