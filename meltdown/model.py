@@ -100,6 +100,7 @@ class Model:
 
         self.tools = [
             {
+                "name": "web_search",
                 "type": "function",
                 "function": {
                     "name": "web_search",
