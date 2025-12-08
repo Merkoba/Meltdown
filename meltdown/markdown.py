@@ -620,8 +620,8 @@ class Markdown:
             start_line_num = int(match.start_line.split(".")[0])
             end_line_num = int(match.end_line.split(".")[0])
             same_line = start_line_num == end_line_num
-
             trailing_text = ""
+
             if same_line:
                 trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
 
