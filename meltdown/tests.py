@@ -95,6 +95,10 @@ class Tests:
 more text""",
             },
             {
+                "user": """Snippet Test 8""",
+                "ai": "```bash\nwhile true; do echo \"Hello, World!\"; sleep 1; done\n```",
+            },
+            {
                 "user": "URL Test",
                 "ai": "Here are some urls https://aa.com and http://cc.com and ftp://44.com\n"
                 + "Here are some urls https://aa.com and http://cc.com\nftp://44.com",

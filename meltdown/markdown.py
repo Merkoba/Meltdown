@@ -601,54 +601,57 @@ class Markdown:
 
             matches.append(match)
 
-        # Iterate in reverse to avoid messing up indices
         for match in reversed(matches):
-            # Check for any non-whitespace characters before the start of our match on the same line
-            # If present, ensure there is exactly ONE blank line separating text and the snippet widget
-            line_start_index = match.start_line.split(".")[0]
+            # --- 1. SAFE START INDEX CALCULATION ---
+            # Instead of trusting ctext indices, find the actual backticks in the widget line.
+            # This protects "ai: " or other prefixes from being deleted.
+            line_content = self.widget.get(f"{match.start_line.split('.')[0]}.0", f"{match.start_line.split('.')[0]}.end")
+            tick_index = line_content.find("```")
 
-            text_before = self.widget.get(
-                f"{line_start_index}.0", match.start_line
-            ).strip()
+            if tick_index != -1:
+                # Use the actual position of backticks in the widget
+                actual_start_index = f"{match.start_line.split('.')[0]}.{tick_index}"
+            else:
+                # Fallback (unlikely)
+                actual_start_index = match.start_line
 
+            # --- 2. CHECK FOR INLINE CONTENT ---
+            # Check if there is text before the backticks on this specific line
+            text_before = line_content[:tick_index].strip() if tick_index != -1 else ""
+
+            # It is inline if there is text before the backticks (like "ai: ")
             is_inline_start = bool(text_before)
 
-            # Now, delete the ENTIRE ```...``` block
-            self.widget_delete("snippets", match.start_line, match.end_line)
-
-            # If the snippet was inline (same line start/end), capture and move trailing text
-            start_line_num = int(match.start_line.split(".")[0])
+            # --- 3. CAPTURE TRAILING TEXT (Universal) ---
             end_line_num = int(match.end_line.split(".")[0])
-            same_line = start_line_num == end_line_num
-            trailing_text = ""
+            trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
 
-            if same_line:
-                trailing_text = self.widget.get(match.end_line, f"{end_line_num}.end")
+            if trailing_text:
+                self.widget_delete("snippets", match.end_line, f"{end_line_num}.end")
 
-                if trailing_text:
-                    # Delete trailing text from the original line; we'll re-insert it after the widget
-                    self.widget_delete(
-                        "snippets", match.end_line, f"{end_line_num}.end"
-                    )
+            # --- 4. DELETE THE SNIPPET ---
+            # Delete from the SAFE start index (after "ai: ") to the end of the block
+            self.widget_delete("snippets", actual_start_index, match.end_line)
 
-            # Determine where to insert the widget
+            # --- 5. INSERT WIDGET WITH PROPER SPACING ---
             insertion_line = match.line_num
 
             if is_inline_start:
-                # Ensure a blank line between the text line and the snippet widget
-                # Create exactly one empty line after the current line
-                self.widget_insert("snippets", f"{insertion_line}.end", "\n")
+                # Case: "ai: ```python..."
+                # We want:
+                # 1. ai:        (preserved line)
+                # 2.            (blank line)
+                # 3. [Widget]
 
-                insertion_line += (
-                    2  # widget goes two lines below the original text line
-                )
+                # Insert TWO newlines at the end of the preserved prompt line
+                self.widget_insert("snippets", f"{insertion_line}.end", "\n\n")
+                insertion_line += 2
             else:
+                # Case: Code block starts on its own line
                 # Ensure exactly one empty line ABOVE the widget
                 above_idx = insertion_line - 1
-
                 if above_idx >= 1:
                     above_line = self.widget.get(f"{above_idx}.0", f"{above_idx}.end")
-
                     if above_line.strip() != "":
                         self.widget_insert("snippets", f"{above_idx}.end", "\n")
                         insertion_line += 1
@@ -665,8 +668,8 @@ class Markdown:
             if after_line.strip() != "":
                 self.widget_insert("snippets", f"{after_idx}.0", "\n")
 
-            # If there was trailing text in an inline snippet, put it after the blank line
-            if same_line and trailing_text.strip():
+            # Re-insert trailing text if any
+            if trailing_text:
                 self.widget_insert("snippets", f"{insertion_line + 2}.0", trailing_text)
 
         return len(matches) > 0, num_lines
