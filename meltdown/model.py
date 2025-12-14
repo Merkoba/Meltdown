@@ -67,7 +67,7 @@ class Model:
         self.stream_date = 0.0
         self.last_response = ""
         self.icon_text = ""
-        self.stream_timeout = 20
+        self.stream_timeout = 180
         self.tools_timeout = 20
         self.read_file_timeout = 10
         self.stop_stream_timeout = 5
