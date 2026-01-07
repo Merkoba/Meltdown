@@ -6,7 +6,7 @@ import json
 import base64
 import threading
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 # Libraries
 import requests  # type: ignore
@@ -107,28 +107,28 @@ class Model:
                     "operation": {
                         "type": "string",
                         "enum": ["create", "view", "str_replace", "list"],
-                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files)"
+                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files)",
                     },
                     "file_path": {
                         "type": "string",
-                        "description": "Path to the file in /memories directory (e.g., 'notes.txt', 'projects/todo.md')"
+                        "description": "Path to the file in /memories directory (e.g., 'notes.txt', 'projects/todo.md')",
                     },
                     "content": {
                         "type": "string",
-                        "description": "Content to write when creating a file"
+                        "description": "Content to write when creating a file",
                     },
                     "old_str": {
                         "type": "string",
-                        "description": "String to replace when using str_replace operation"
+                        "description": "String to replace when using str_replace operation",
                     },
                     "new_str": {
                         "type": "string",
-                        "description": "Replacement string for str_replace operation"
-                    }
+                        "description": "Replacement string for str_replace operation",
+                    },
                 },
-                "required": ["operation"]
+                "required": ["operation"],
             },
-            "cache_control": {"type": "ephemeral"}
+            "cache_control": {"type": "ephemeral"},
         }
 
         self.tools = [
@@ -153,7 +153,7 @@ class Model:
         ]
 
         # Map tool names to actual callable functions
-        self.toolfuncs = {
+        self.toolfuncs: dict[str, Callable[..., Any]] = {
             "web_search": self.web_search,
             "memory_20250818": self.handle_memory_tool,
         }
@@ -596,7 +596,7 @@ class Model:
                 memory_block = {
                     "role": "system",
                     "content": f"Current memory files status: {json.dumps(memories, indent=2)}",
-                    "cache_control": {"type": "ephemeral"}
+                    "cache_control": {"type": "ephemeral"},
                 }
 
                 messages.append(memory_block)
@@ -1040,6 +1040,7 @@ class Model:
                         continue
 
                     try:
+                        # toolfunc is guaranteed to be callable here due to the check above
                         result = toolfunc(**exec_args)
 
                         tool_messages.append(
@@ -1477,21 +1478,31 @@ class Model:
     def get_model(self) -> str:
         return variables.replace_variables(config.model)
 
-    def handle_memory_tool(self, operation: str, file_path: str = "", content: str = "", old_str: str = "", new_str: str = "") -> dict[str, Any]:
+    def handle_memory_tool(
+        self,
+        operation: str,
+        file_path: str = "",
+        content: str = "",
+        old_str: str = "",
+        new_str: str = "",
+    ) -> dict[str, Any]:
         """Handle memory tool operations and return results"""
         try:
             if operation == "create":
                 return self.memory_create_file(file_path, content)
-            elif operation == "view":
+
+            if operation == "view":
                 return self.memory_view_file(file_path)
-            elif operation == "str_replace":
+
+            if operation == "str_replace":
                 return self.memory_str_replace(file_path, old_str, new_str)
-            elif operation == "list":
+
+            if operation == "list":
                 return self.memory_list_files()
-            else:
-                return {"error": f"Unknown operation: {operation}"}
-        except Exception as e:
-            return {"error": f"Operation failed: {str(e)}"}
+
+            return {"error": "Unknown memory operation"}
+        except Exception:
+            return {"error": "Memory tool failed"}
 
     def memory_create_file(self, file_path: str, content: str) -> dict[str, Any]:
         from .paths import paths
@@ -1506,7 +1517,7 @@ class Model:
             return {"error": "Access denied: Cannot access files outside /memories"}
 
         full_path.parent.mkdir(parents=True, exist_ok=True)
-        full_path.write_text(content, encoding='utf-8')
+        full_path.write_text(content, encoding="utf-8")
         return {"success": f"Created file: /memories/{file_path}", "content": content}
 
     def memory_view_file(self, file_path: str) -> dict[str, Any]:
@@ -1518,15 +1529,17 @@ class Model:
         full_path = paths.memories / file_path
 
         if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
-             return {"error": "Access denied: Cannot access files outside /memories"}
+            return {"error": "Access denied: Cannot access files outside /memories"}
 
         if not full_path.exists():
             return {"error": f"File not found: /memories/{file_path}"}
 
-        content = full_path.read_text(encoding='utf-8')
+        content = full_path.read_text(encoding="utf-8")
         return {"success": f"Read file: /memories/{file_path}", "content": content}
 
-    def memory_str_replace(self, file_path: str, old_str: str, new_str: str) -> dict[str, Any]:
+    def memory_str_replace(
+        self, file_path: str, old_str: str, new_str: str
+    ) -> dict[str, Any]:
         from .paths import paths
 
         if not file_path:
@@ -1538,24 +1551,24 @@ class Model:
         full_path = paths.memories / file_path
 
         if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
-             return {"error": "Access denied: Cannot access files outside /memories"}
+            return {"error": "Access denied: Cannot access files outside /memories"}
 
         if not full_path.exists():
             return {"error": f"File not found: /memories/{file_path}"}
 
-        content = full_path.read_text(encoding='utf-8')
+        content = full_path.read_text(encoding="utf-8")
 
         if old_str not in content:
             return {"error": f"String not found in file: '{old_str}'"}
 
         new_content = content.replace(old_str, new_str)
-        full_path.write_text(new_content, encoding='utf-8')
+        full_path.write_text(new_content, encoding="utf-8")
 
         return {
             "success": f"Replaced string in: /memories/{file_path}",
             "old_str": old_str,
             "new_str": new_str,
-            "updated_content": new_content
+            "updated_content": new_content,
         }
 
     def memory_list_files(self) -> dict[str, Any]:
@@ -1567,10 +1580,12 @@ class Model:
             if file_path.is_file():
                 relative_path = file_path.relative_to(paths.memories)
 
-                files.append({
-                    "path": str(relative_path),
-                    "size": file_path.stat().st_size,
-                })
+                files.append(
+                    {
+                        "path": str(relative_path),
+                        "size": file_path.stat().st_size,
+                    }
+                )
 
         return {"success": f"Found {len(files)} files", "files": files}
 
@@ -1601,6 +1616,8 @@ class Model:
 
                 try:
                     fn_args = json.loads(fn_args_str) if fn_args_str else {}
+
+                    # toolfunc is guaranteed to be callable here due to the check above
                     result = toolfunc(**fn_args)
 
                     tool_messages.append(
@@ -1652,7 +1669,7 @@ class Model:
                     memory_block = {
                         "role": "user",
                         "content": f"Current memory files status: {json.dumps(memories, indent=2)}",
-                        "cache_control": {"type": "ephemeral"}
+                        "cache_control": {"type": "ephemeral"},
                     }
 
                     messages.append(memory_block)
@@ -1670,7 +1687,9 @@ class Model:
             original_question = user_content if user_content else "the user's question"
 
             # Determine follow-up prompt based on tools used
-            has_web_search = any(tc["function"]["name"] == "web_search" for tc in tool_calls)
+            has_web_search = any(
+                tc["function"]["name"] == "web_search" for tc in tool_calls
+            )
 
             if has_web_search:
                 follow_up_prompt = (
@@ -1680,9 +1699,7 @@ class Model:
                     f"Include relevant details, dates, numbers, and context from the search results in your answer."
                 )
             else:
-                 follow_up_prompt = (
-                    f"Here are the results from the tool execution. Please use them to answer the user's request: \"{original_question}\""
-                )
+                follow_up_prompt = f'Here are the results from the tool execution. Please use them to answer the user\'s request: "{original_question}"'
 
             messages.append(
                 {
@@ -1764,10 +1781,16 @@ class Model:
                     gen_config["tool_choice"] = "auto"
 
                 # Check if memory tool is already added
-                has_memory = any(t.get("name") == "memory_20250818" for t in gen_config.get("tools", []))
+                tools_list = gen_config.get("tools", [])
+
+                if not isinstance(tools_list, list):
+                    tools_list = []
+                    gen_config["tools"] = tools_list
+
+                has_memory = any(t.get("name") == "memory_20250818" for t in tools_list)
 
                 if not has_memory:
-                    gen_config["tools"].append(self.memory_tool_def)
+                    tools_list.append(self.memory_tool_def)
 
         return gen_config
 
