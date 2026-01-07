@@ -98,10 +98,6 @@ class Model:
         self.google_key = ""
         self.anthropic_key = ""
 
-        # Memory Tool Configuration
-        self.memories_path = Path("./memories")
-        self.memories_path.mkdir(exist_ok=True)
-
         self.memory_tool_def = {
             "name": "memory_20250818",
             "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, and str_replace operations on text files.",
@@ -163,6 +159,11 @@ class Model:
         }
 
     def setup(self) -> None:
+        from .paths import paths
+
+        # Memory Tool Configuration
+        paths.memories.mkdir(exist_ok=True)
+
         self.update_icon()
         self.start_auto_unload()
 
@@ -1493,26 +1494,30 @@ class Model:
             return {"error": f"Operation failed: {str(e)}"}
 
     def memory_create_file(self, file_path: str, content: str) -> dict[str, Any]:
+        from .paths import paths
+
         if not file_path:
             return {"error": "file_path is required for create operation"}
 
-        full_path = self.memories_path / file_path
+        full_path = paths.memories / file_path
 
         # Security check to prevent directory traversal
-        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
-             return {"error": "Access denied: Cannot access files outside /memories"}
+        if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
+            return {"error": "Access denied: Cannot access files outside /memories"}
 
         full_path.parent.mkdir(parents=True, exist_ok=True)
         full_path.write_text(content, encoding='utf-8')
         return {"success": f"Created file: /memories/{file_path}", "content": content}
 
     def memory_view_file(self, file_path: str) -> dict[str, Any]:
+        from .paths import paths
+
         if not file_path:
             return {"error": "file_path is required for view operation"}
 
-        full_path = self.memories_path / file_path
+        full_path = paths.memories / file_path
 
-        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
+        if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
              return {"error": "Access denied: Cannot access files outside /memories"}
 
         if not full_path.exists():
@@ -1522,15 +1527,17 @@ class Model:
         return {"success": f"Read file: /memories/{file_path}", "content": content}
 
     def memory_str_replace(self, file_path: str, old_str: str, new_str: str) -> dict[str, Any]:
+        from .paths import paths
+
         if not file_path:
             return {"error": "file_path is required for str_replace operation"}
 
         if not old_str:
             return {"error": "old_str is required for str_replace operation"}
 
-        full_path = self.memories_path / file_path
+        full_path = paths.memories / file_path
 
-        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
+        if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
              return {"error": "Access denied: Cannot access files outside /memories"}
 
         if not full_path.exists():
@@ -1552,11 +1559,13 @@ class Model:
         }
 
     def memory_list_files(self) -> dict[str, Any]:
+        from .paths import paths
+
         files = []
 
-        for file_path in self.memories_path.rglob("*"):
+        for file_path in paths.memories.rglob("*"):
             if file_path.is_file():
-                relative_path = file_path.relative_to(self.memories_path)
+                relative_path = file_path.relative_to(paths.memories)
 
                 files.append({
                     "path": str(relative_path),
@@ -1585,7 +1594,6 @@ class Model:
                 fn_name = tool_call_data["function"]["name"]
                 fn_args_str = tool_call_data["function"]["arguments"]
                 tool_call_id = tool_call_data["id"]
-
                 toolfunc = self.toolfuncs.get(fn_name)
 
                 if not toolfunc:

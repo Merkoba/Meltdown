@@ -105,6 +105,10 @@ class Details:
         self.make_label(widgets, data, "search", "Search", padx=(0, app.theme.padx))
         self.make_combobox(widgets, data, "search", ["yes", "no"], width=self.width_2)
 
+    def add_memory(self, widgets: Widgets, data: FrameData) -> None:
+        self.make_label(widgets, data, "memory", "Memory", padx=(0, app.theme.padx))
+        self.make_combobox(widgets, data, "memory", ["yes", "no"], width=self.width_2)
+
     def add_stream(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "stream", "Stream", padx=(0, app.theme.padx))
         self.make_combobox(widgets, data, "stream", ["yes", "no"], width=self.width_2)
@@ -175,6 +179,7 @@ class Details:
         data = FrameData(widgets.scroller_details_2)
         self.add_stream(widgets, data)
         self.add_search(widgets, data)
+        self.add_memory(widgets, data)
         self.add_format(widgets, data)
         self.add_before(widgets, data)
         self.add_after(widgets, data)

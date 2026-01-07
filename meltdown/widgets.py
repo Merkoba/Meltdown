@@ -74,6 +74,8 @@ class Widgets:
         self.gpu_layers: EntryBox
         self.search_label: tk.Label
         self.search: ttk.Combobox
+        self.memory_label: tk.Label
+        self.memory: ttk.Combobox
         self.stream_label: tk.Label
         self.stream: ttk.Combobox
         self.format_label: tk.Label
@@ -362,6 +364,7 @@ class Widgets:
         setup_combobox("mode")
         setup_combobox("logits")
         setup_combobox("search")
+        setup_combobox("memory")
         setup_combobox("stream")
 
     def setup_binds(self) -> None:

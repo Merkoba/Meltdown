@@ -29,6 +29,7 @@ class Paths:
         self.anthropic_key: Path
         self.errors: Path
         self.nouns: Path
+        self.memories: Path
 
     def error(self, what: str) -> None:
         utils.msg(f"Error: Can't find or create the '{what}' directory.")
@@ -76,6 +77,7 @@ class Paths:
         self.models = Path(self.data_dir, "models.json")
         self.systems = Path(self.data_dir, "systems.json")
         self.memory = Path(self.data_dir, "memory.json")
+        self.memories = Path(self.data_dir, "memories")
 
         if args.logs_dir:
             self.logs = Path(args.logs_dir)

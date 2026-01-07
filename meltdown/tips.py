@@ -125,6 +125,7 @@ tips = {
     ),
     "file": "The URL or path to a file",
     "search": "Enable the search tool, which means the AI might do web searches to get information. This might incur slower and more expensive responses",
+    "memory": "Enable or disable memory tools to allow persistence",
     "stream": "Enable response streaming instead of waiting for the full response",
     "batch_size": "Batch size for prompt processing. Higher values can speed up initial prompt evaluation but use more memory",
     "ubatch_size": "Physical batch size for token generation. Higher values can improve generation speed but use more memory",
