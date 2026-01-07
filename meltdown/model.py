@@ -589,7 +589,7 @@ class Model:
             system = utils.replace_keywords(config.system)
             messages.append({"role": "system", "content": system})
 
-        if self.model_is_claude(self.loaded_model):
+        if config.memory and self.model_is_claude(self.loaded_model):
             try:
                 memories = self.memory_list_files()
 
@@ -1645,7 +1645,7 @@ class Model:
                 system = utils.replace_keywords(config.system)
                 messages.append({"role": "system", "content": system})
 
-            if self.model_is_claude(self.loaded_model):
+            if config.memory and self.model_is_claude(self.loaded_model):
                 try:
                     memories = self.memory_list_files()
 
@@ -1758,15 +1758,16 @@ class Model:
                 "anthropic-beta": "context-management-2025-06-27"
             }
 
-            if "tools" not in gen_config:
-                gen_config["tools"] = []
-                gen_config["tool_choice"] = "auto"
+            if config.memory:
+                if "tools" not in gen_config:
+                    gen_config["tools"] = []
+                    gen_config["tool_choice"] = "auto"
 
-            # Check if memory tool is already added
-            has_memory = any(t.get("name") == "memory_20250818" for t in gen_config.get("tools", []))
+                # Check if memory tool is already added
+                has_memory = any(t.get("name") == "memory_20250818" for t in gen_config.get("tools", []))
 
-            if not has_memory:
-                gen_config["tools"].append(self.memory_tool_def)
+                if not has_memory:
+                    gen_config["tools"].append(self.memory_tool_def)
 
         return gen_config
 
