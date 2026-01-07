@@ -100,14 +100,14 @@ class Model:
 
         self.memory_tool_def = {
             "name": "memory_20250818",
-            "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, and str_replace operations on text files.",
+            "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, append, and str_replace operations on text files.",
             "input_schema": {
                 "type": "object",
                 "properties": {
                     "operation": {
                         "type": "string",
-                        "enum": ["create", "view", "str_replace", "list"],
-                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files)",
+                        "enum": ["create", "view", "str_replace", "list", "append"],
+                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files), append (add to end of file)",
                     },
                     "file_path": {
                         "type": "string",
@@ -1494,6 +1494,9 @@ class Model:
             if operation == "view":
                 return self.memory_view_file(file_path)
 
+            if operation == "append":
+                return self.memory_append_file(file_path, content)
+
             if operation == "str_replace":
                 return self.memory_str_replace(file_path, old_str, new_str)
 
@@ -1536,6 +1539,31 @@ class Model:
 
         content = full_path.read_text(encoding="utf-8")
         return {"success": f"Read file: /memories/{file_path}", "content": content}
+
+    def memory_append_file(self, file_path: str, content: str) -> dict[str, Any]:
+        from .paths import paths
+
+        if not file_path:
+            return {"error": "file_path is required for append operation"}
+
+        if not content:
+            return {"error": "content is required for append operation"}
+
+        full_path = paths.memories / file_path
+
+        if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
+            return {"error": "Access denied: Cannot access files outside /memories"}
+
+        if not full_path.exists():
+            return {"error": f"File not found: /memories/{file_path}"}
+
+        with full_path.open("a", encoding="utf-8") as f:
+            f.write(content)
+
+        return {
+            "success": f"Appended to file: /memories/{file_path}",
+            "content": content,
+        }
 
     def memory_str_replace(
         self, file_path: str, old_str: str, new_str: str
