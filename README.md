@@ -57,6 +57,8 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Repeat](#repeat)
 1. [Keywords](#keywords)
 1. [Tips](#tips)
+1. [Search](#search)
+1. [Memory](#memory)
 
 ### Docs
 
@@ -1099,3 +1101,21 @@ or by using the mousewheel.
 Middle clicking the panel arrows scrolls instantly to that side.
 
 There are `/like` and `/dislike` commands.
+
+---
+
+## Search <a name="search"></a>
+
+This is a tool that when enabled allows the AI to use their search engine to find information.
+
+This might not work on all models.
+
+---
+
+## Memory <a name="memory"></a>
+
+This is a tool that allows the AI to read and write files to store information.
+
+Right now only Claude supports this.
+
+The AI might need to be instructed directly to use this tool.
