@@ -98,6 +98,43 @@ class Model:
         self.google_key = ""
         self.anthropic_key = ""
 
+        # Memory Tool Configuration
+        self.memories_path = Path("./memories")
+        self.memories_path.mkdir(exist_ok=True)
+
+        self.memory_tool_def = {
+            "name": "memory_20250818",
+            "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, and str_replace operations on text files.",
+            "input_schema": {
+                "type": "object",
+                "properties": {
+                    "operation": {
+                        "type": "string",
+                        "enum": ["create", "view", "str_replace", "list"],
+                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files)"
+                    },
+                    "file_path": {
+                        "type": "string",
+                        "description": "Path to the file in /memories directory (e.g., 'notes.txt', 'projects/todo.md')"
+                    },
+                    "content": {
+                        "type": "string",
+                        "description": "Content to write when creating a file"
+                    },
+                    "old_str": {
+                        "type": "string",
+                        "description": "String to replace when using str_replace operation"
+                    },
+                    "new_str": {
+                        "type": "string",
+                        "description": "Replacement string for str_replace operation"
+                    }
+                },
+                "required": ["operation"]
+            },
+            "cache_control": {"type": "ephemeral"}
+        }
+
         self.tools = [
             {
                 "name": "web_search",
@@ -122,6 +159,7 @@ class Model:
         # Map tool names to actual callable functions
         self.toolfuncs = {
             "web_search": self.web_search,
+            "memory_20250818": self.handle_memory_tool,
         }
 
     def setup(self) -> None:
@@ -549,6 +587,20 @@ class Model:
         if config.system:
             system = utils.replace_keywords(config.system)
             messages.append({"role": "system", "content": system})
+
+        if self.model_is_claude(self.loaded_model):
+            try:
+                memories = self.memory_list_files()
+
+                memory_block = {
+                    "role": "system",
+                    "content": f"Current memory files status: {json.dumps(memories, indent=2)}",
+                    "cache_control": {"type": "ephemeral"}
+                }
+
+                messages.append(memory_block)
+            except Exception:
+                pass
 
         if tabconvo.convo.items and config.history and (not no_history):
             history_items = tabconvo.convo.items
@@ -1424,6 +1476,95 @@ class Model:
     def get_model(self) -> str:
         return variables.replace_variables(config.model)
 
+    def handle_memory_tool(self, operation: str, file_path: str = "", content: str = "", old_str: str = "", new_str: str = "") -> dict[str, Any]:
+        """Handle memory tool operations and return results"""
+        try:
+            if operation == "create":
+                return self.memory_create_file(file_path, content)
+            elif operation == "view":
+                return self.memory_view_file(file_path)
+            elif operation == "str_replace":
+                return self.memory_str_replace(file_path, old_str, new_str)
+            elif operation == "list":
+                return self.memory_list_files()
+            else:
+                return {"error": f"Unknown operation: {operation}"}
+        except Exception as e:
+            return {"error": f"Operation failed: {str(e)}"}
+
+    def memory_create_file(self, file_path: str, content: str) -> dict[str, Any]:
+        if not file_path:
+            return {"error": "file_path is required for create operation"}
+
+        full_path = self.memories_path / file_path
+
+        # Security check to prevent directory traversal
+        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
+             return {"error": "Access denied: Cannot access files outside /memories"}
+
+        full_path.parent.mkdir(parents=True, exist_ok=True)
+        full_path.write_text(content, encoding='utf-8')
+        return {"success": f"Created file: /memories/{file_path}", "content": content}
+
+    def memory_view_file(self, file_path: str) -> dict[str, Any]:
+        if not file_path:
+            return {"error": "file_path is required for view operation"}
+
+        full_path = self.memories_path / file_path
+
+        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
+             return {"error": "Access denied: Cannot access files outside /memories"}
+
+        if not full_path.exists():
+            return {"error": f"File not found: /memories/{file_path}"}
+
+        content = full_path.read_text(encoding='utf-8')
+        return {"success": f"Read file: /memories/{file_path}", "content": content}
+
+    def memory_str_replace(self, file_path: str, old_str: str, new_str: str) -> dict[str, Any]:
+        if not file_path:
+            return {"error": "file_path is required for str_replace operation"}
+
+        if not old_str:
+            return {"error": "old_str is required for str_replace operation"}
+
+        full_path = self.memories_path / file_path
+
+        if not str(full_path.resolve()).startswith(str(self.memories_path.resolve())):
+             return {"error": "Access denied: Cannot access files outside /memories"}
+
+        if not full_path.exists():
+            return {"error": f"File not found: /memories/{file_path}"}
+
+        content = full_path.read_text(encoding='utf-8')
+
+        if old_str not in content:
+            return {"error": f"String not found in file: '{old_str}'"}
+
+        new_content = content.replace(old_str, new_str)
+        full_path.write_text(new_content, encoding='utf-8')
+
+        return {
+            "success": f"Replaced string in: /memories/{file_path}",
+            "old_str": old_str,
+            "new_str": new_str,
+            "updated_content": new_content
+        }
+
+    def memory_list_files(self) -> dict[str, Any]:
+        files = []
+
+        for file_path in self.memories_path.rglob("*"):
+            if file_path.is_file():
+                relative_path = file_path.relative_to(self.memories_path)
+
+                files.append({
+                    "path": str(relative_path),
+                    "size": file_path.stat().st_size,
+                })
+
+        return {"success": f"Found {len(files)} files", "files": files}
+
     def web_search(self, query: str) -> str:
         try:
             return search.web_search(query)
@@ -1486,6 +1627,7 @@ class Model:
                 return ""
 
             tabconvo = display.get_tab_convo(tab_id)
+
             if not tabconvo or not tabconvo.convo.items:
                 return ""
 
@@ -1494,6 +1636,20 @@ class Model:
             if config.system:
                 system = utils.replace_keywords(config.system)
                 messages.append({"role": "system", "content": system})
+
+            if self.model_is_claude(self.loaded_model):
+                try:
+                    memories = self.memory_list_files()
+
+                    memory_block = {
+                        "role": "user",
+                        "content": f"Current memory files status: {json.dumps(memories, indent=2)}",
+                        "cache_control": {"type": "ephemeral"}
+                    }
+
+                    messages.append(memory_block)
+                except Exception:
+                    pass
 
             last_item = tabconvo.convo.items[-1]
             user_content = getattr(last_item, "user", "")
@@ -1505,10 +1661,25 @@ class Model:
             messages.extend(tool_messages)
             original_question = user_content if user_content else "the user's question"
 
+            # Determine follow-up prompt based on tools used
+            has_web_search = any(tc["function"]["name"] == "web_search" for tc in tool_calls)
+
+            if has_web_search:
+                follow_up_prompt = (
+                    f"Based on the web search results provided above, please provide a comprehensive and detailed "
+                    f'answer to this question: "{original_question}"\n\nUse the specific information, facts, '
+                    f"and details from the search results to give an accurate, informative, and up-to-date response. "
+                    f"Include relevant details, dates, numbers, and context from the search results in your answer."
+                )
+            else:
+                 follow_up_prompt = (
+                    f"Here are the results from the tool execution. Please use them to answer the user's request: \"{original_question}\""
+                )
+
             messages.append(
                 {
                     "role": "user",
-                    "content": f'Based on the web search results provided above, please provide a comprehensive and detailed answer to this question: "{original_question}"\n\nUse the specific information, facts, and details from the search results to give an accurate, informative, and up-to-date response. Include relevant details, dates, numbers, and context from the search results in your answer.',
+                    "content": follow_up_prompt,
                 }
             )
 
@@ -1573,6 +1744,21 @@ class Model:
             gen_config["model"] = f"{self.loaded_provider}/{model}"
         else:
             gen_config["model"] = model
+
+        if self.model_is_claude(model):
+            gen_config["extra_headers"] = {
+                "anthropic-beta": "context-management-2025-06-27"
+            }
+
+            if "tools" not in gen_config:
+                gen_config["tools"] = []
+                gen_config["tool_choice"] = "auto"
+
+            # Check if memory tool is already added
+            has_memory = any(t.get("name") == "memory_20250818" for t in gen_config.get("tools", []))
+
+            if not has_memory:
+                gen_config["tools"].append(self.memory_tool_def)
 
         return gen_config
 
