@@ -1653,6 +1653,114 @@ class Model:
             utils.error(error_msg)
             return error_msg
 
+    def parse_tool_arguments(self, raw_args: Any) -> dict[str, Any]:
+        if isinstance(raw_args, dict):
+            return raw_args
+
+        if isinstance(raw_args, str):
+            raw_str = raw_args.strip()
+
+            if not raw_str:
+                return {}
+
+            try:
+                return json.loads(raw_str)
+            except Exception:
+                return {}
+
+        return {}
+
+    def describe_memory_operation(self, args: dict[str, Any]) -> str:
+        op = str(args.get("operation", "")).strip().lower()
+        file_path = str(args.get("file_path", "")).strip()
+        memory_path = f"/memories/{file_path}" if file_path else "a memory file"
+
+        if op == "list":
+            return "Memory: listing files"
+
+        if op == "create":
+            return f"Memory: creating {file_path}"
+
+        if op == "view":
+            return f"Memory: reading {file_path}"
+
+        if op == "append":
+            return f"Memory: appending to {file_path}"
+
+        if op == "str_replace":
+            return f"Memory: editing {file_path}"
+
+        if op == "delete":
+            return f"Memory: deleting {file_path}"
+
+        if op:
+            return f"Memory: running '{op}' on {file_path}"
+
+        return "Using Memory tool"
+
+    def describe_tool_details(self, name: str, args: dict[str, Any]) -> str:
+        if not name:
+            return ""
+
+        if name == "memory_20250818":
+            return self.describe_memory_operation(args)
+
+        if name == "web_search":
+            query = str(args.get("query", "")).strip()
+
+            if query:
+                return f'Using Search tool: searching for "{query}"'
+
+            return "Using Search tool: running a web query"
+
+        pretty_name = name.replace("_", " ").title()
+        return f"Using {pretty_name} tool"
+
+    def format_tool_descriptions(self, descriptions: list[str]) -> str:
+        if not descriptions:
+            return "Using tools..."
+
+        if len(descriptions) == 1:
+            return descriptions[0]
+
+        return "; ".join(descriptions)
+
+    def describe_tool_calls_from_buffer(
+        self, tool_calls_buffer: ToolCallsBuffer
+    ) -> str:
+        descriptions = []
+
+        for tool_call_data in tool_calls_buffer.values():
+            function_block = tool_call_data.get("function", {})
+            name = function_block.get("name", "")
+            args_str = function_block.get("arguments", "")
+            args = self.parse_tool_arguments(args_str)
+            desc = self.describe_tool_details(name, args)
+
+            if desc:
+                descriptions.append(desc)
+
+        return self.format_tool_descriptions(descriptions)
+
+    def describe_tool_calls_from_message(self, tool_calls: list[Any]) -> str:
+        descriptions = []
+
+        for tool_call in tool_calls:
+            fn = getattr(tool_call, "function", None)
+
+            if not fn:
+                continue
+
+            name = getattr(fn, "name", "")
+            raw_args = getattr(fn, "arguments", None)
+            args = self.parse_tool_arguments(raw_args)
+            desc = self.describe_tool_details(name, args)
+
+            if desc:
+                descriptions.append(desc)
+
+        return self.format_tool_descriptions(descriptions)
+
     def handle_tool_calls(self, tool_calls_buffer: ToolCallsBuffer, tab_id: str) -> str:
         try:
             tool_calls = []
