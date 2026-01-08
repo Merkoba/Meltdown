@@ -100,14 +100,14 @@ class Model:
 
         self.memory_tool_def = {
             "name": "memory_20250818",
-            "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, append, and str_replace operations on text files.",
+            "description": "Manage a virtual /memories directory for persistent storage across conversations. Supports create, view, append, str_replace, and delete operations on text files.",
             "input_schema": {
                 "type": "object",
                 "properties": {
                     "operation": {
                         "type": "string",
-                        "enum": ["create", "view", "str_replace", "list", "append"],
-                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files), append (add to end of file)",
+                        "enum": ["create", "view", "str_replace", "list", "append", "delete"],
+                        "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files), append (add to end of file), delete (remove file)",
                     },
                     "file_path": {
                         "type": "string",
@@ -1503,6 +1503,9 @@ class Model:
             if operation == "list":
                 return self.memory_list_files()
 
+            if operation == "delete":
+                return self.memory_delete_file(file_path)
+
             return {"error": "Unknown memory operation"}
         except Exception as e:
             return {"error": f"Memory tool failed: {e}"}
@@ -1616,6 +1619,26 @@ class Model:
                 )
 
         return {"success": f"Found {len(files)} files", "files": files}
+
+    def memory_delete_file(self, file_path: str) -> dict[str, Any]:
+        from .paths import paths
+
+        if not file_path:
+            return {"error": "file_path is required for delete operation"}
+
+        full_path = paths.memories / file_path
+
+        if not str(full_path.resolve()).startswith(str(paths.memories.resolve())):
+            return {"error": "Access denied: Cannot access files outside /memories"}
+
+        if not full_path.exists():
+            return {"error": f"File not found: /memories/{file_path}"}
+
+        try:
+            full_path.unlink()
+            return {"success": f"Deleted file: /memories/{file_path}"}
+        except Exception as e:
+            return {"error": f"Failed to delete file: {e}"}
 
     def web_search(self, query: str) -> str:
         try:

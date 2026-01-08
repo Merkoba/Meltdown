@@ -174,6 +174,8 @@ class Details:
         self.add_gpu_layers(widgets, data)
         self.add_batch_size(widgets, data)
         self.add_ubatch_size(widgets, data)
+        self.add_top_p(widgets, data)
+        self.add_top_k(widgets, data)
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
@@ -181,11 +183,9 @@ class Details:
         self.add_search(widgets, data)
         self.add_memory(widgets, data)
         self.add_format(widgets, data)
+        self.add_seed(widgets, data)
         self.add_before(widgets, data)
         self.add_after(widgets, data)
-        self.add_seed(widgets, data)
-        self.add_top_p(widgets, data)
-        self.add_top_k(widgets, data)
         self.add_stop(widgets, data)
         self.add_mlock(widgets, data)
         self.add_logits(widgets, data)
