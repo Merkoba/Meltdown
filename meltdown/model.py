@@ -589,7 +589,7 @@ class Model:
             system = utils.replace_keywords(config.system)
             messages.append({"role": "system", "content": system})
 
-        if config.memory and self.model_is_claude(self.loaded_model):
+        if (config.memory == "yes") and self.model_is_claude(self.loaded_model):
             try:
                 memories = self.memory_list_files()
 
@@ -1504,8 +1504,8 @@ class Model:
                 return self.memory_list_files()
 
             return {"error": "Unknown memory operation"}
-        except Exception:
-            return {"error": "Memory tool failed"}
+        except Exception as e:
+            return {"error": f"Memory tool failed: {e}"}
 
     def memory_create_file(self, file_path: str, content: str) -> dict[str, Any]:
         from .paths import paths
@@ -1537,7 +1537,7 @@ class Model:
         if not full_path.exists():
             return {"error": f"File not found: /memories/{file_path}"}
 
-        content = full_path.read_text(encoding="utf-8")
+        content = full_path.read_text(encoding="utf-8", errors="replace")
         return {"success": f"Read file: /memories/{file_path}", "content": content}
 
     def memory_append_file(self, file_path: str, content: str) -> dict[str, Any]:
@@ -1690,7 +1690,7 @@ class Model:
                 system = utils.replace_keywords(config.system)
                 messages.append({"role": "system", "content": system})
 
-            if config.memory and self.model_is_claude(self.loaded_model):
+            if (config.memory == "yes") and self.model_is_claude(self.loaded_model):
                 try:
                     memories = self.memory_list_files()
 
@@ -1790,7 +1790,7 @@ class Model:
             del gen_config["top_p"]
 
         if config.search == "yes":
-            gen_config["tools"] = self.tools
+            gen_config["tools"] = list(self.tools)
             gen_config["tool_choice"] = "auto"
 
         if self.is_remote_model():
@@ -1803,7 +1803,7 @@ class Model:
                 "anthropic-beta": "context-management-2025-06-27"
             }
 
-            if config.memory:
+            if (config.memory == "yes"):
                 if "tools" not in gen_config:
                     gen_config["tools"] = []
                     gen_config["tool_choice"] = "auto"
