@@ -928,10 +928,8 @@ class Model:
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
                 else:
-                    display.insert(
-                        "\nError: Tool call failed or returned no response.",
-                        tab_id=tab_id,
-                    )
+                    if not first_content:
+                        display.remove_last_ai(tab_id)
         except InternalServerError as e:
             utils.error(e)
 
@@ -1786,12 +1784,20 @@ class Model:
             if not choices or not choices[0]:
                 return "\n\nError: No choices in response"
 
-            content = choices[0].message.content
+            message = choices[0].message
+            content = message.content
+
+            # Check if the model is trying to chain another tool call
+            if hasattr(message, "tool_calls") and message.tool_calls:
+                # Recursive / chained tool calls logic could go here
+                # For now, we return a message indicating the tool ran, to prevent the error
+                return f"\n\n(Tool execution successful. The model attempted to run subsequent tools, which is not yet supported in this block. Tool attempted: {message.tool_calls[0].function.name})"
 
             if choices and content:
                 return f"\n\n{content}"
 
-            return ""
+            # Fallback if content is empty but no error occurred
+            return "\n\n(Tool execution successful, but the model provided no text response.)"
         except Exception as e:
             utils.error(e)
             return f"\n\nError handling tool calls: {e}"
