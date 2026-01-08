@@ -106,7 +106,14 @@ class Model:
                 "properties": {
                     "operation": {
                         "type": "string",
-                        "enum": ["create", "view", "str_replace", "list", "append", "delete"],
+                        "enum": [
+                            "create",
+                            "view",
+                            "str_replace",
+                            "list",
+                            "append",
+                            "delete",
+                        ],
                         "description": "The operation to perform: create (new file), view (read file), str_replace (edit file), list (show all files), append (add to end of file), delete (remove file)",
                     },
                     "file_path": {
@@ -1826,7 +1833,7 @@ class Model:
                 "anthropic-beta": "context-management-2025-06-27"
             }
 
-            if (config.memory == "yes"):
+            if config.memory == "yes":
                 if "tools" not in gen_config:
                     gen_config["tools"] = []
                     gen_config["tool_choice"] = "auto"
