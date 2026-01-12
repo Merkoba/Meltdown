@@ -1325,3 +1325,9 @@ Print the number of snippets
 ### locket
 
 Ask about a locket
+
+---
+
+### next
+
+Save a prompt for later

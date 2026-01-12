@@ -59,6 +59,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Tips](#tips)
 1. [Search](#search)
 1. [Memory](#memory)
+1. [Next](#next)
 
 ### Docs
 
