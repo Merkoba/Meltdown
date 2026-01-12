@@ -915,8 +915,13 @@ class Model:
                     print_buffer()
 
                 if not first_content:
+                    desc = self.describe_tool_calls_from_buffer(tool_calls_buffer)
+
+                    if not desc:
+                        desc = "Using tools..."
+
                     display.remove_last_ai(tab_id)
-                    display.prompt("ai", text="Using tools...", tab_id=tab_id)
+                    display.prompt("ai", text=desc, tab_id=tab_id)
 
                 tool_response = self.handle_tool_calls(tool_calls_buffer, tab_id)
 
@@ -927,9 +932,8 @@ class Model:
 
                     tokens.append(tool_response)
                     display.insert(tool_response, tab_id=tab_id)
-                else:
-                    if not first_content:
-                        display.remove_last_ai(tab_id)
+                elif not first_content:
+                    display.remove_last_ai(tab_id)
         except InternalServerError as e:
             utils.error(e)
 
@@ -1673,7 +1677,6 @@ class Model:
     def describe_memory_operation(self, args: dict[str, Any]) -> str:
         op = str(args.get("operation", "")).strip().lower()
         file_path = str(args.get("file_path", "")).strip()
-        memory_path = f"/memories/{file_path}" if file_path else "a memory file"
 
         if op == "list":
             return "Memory: listing files"
