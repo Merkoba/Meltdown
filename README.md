@@ -1119,3 +1119,21 @@ This is a tool that allows the AI to read and write files to store information.
 Right now only Claude supports this.
 
 The AI might need to be instructed directly to use this tool.
+
+---
+
+## Next <a name="next"></a>
+
+Save prompts for later with `/next some prompt`.
+
+For when you have an idea but you can't use it right now because it would interrupt an operation.
+
+`/next what is speed of a falcon?`
+
+Then when you are ready to use it just do `/next`.
+
+The input is then filled with the prompt.
+
+Any amount of items can be saved at once.
+
+They get removed when used.

@@ -34,6 +34,7 @@ from .variables import variables
 from .run import run
 from .tasks import tasks
 from .lockets import lockets
+from .next import next_fns
 
 
 class DuplicateCommandError(Exception):
@@ -1404,6 +1405,13 @@ class CommandSpec:
             "locket",
             "Ask about a locket",
             lambda a=None: lockets.ask(a),
+            type=str,
+        )
+
+        self.add_cmd(
+            "next",
+            "Save a prompt for later",
+            lambda a=None: next_fns.action(a),
             type=str,
         )
 
