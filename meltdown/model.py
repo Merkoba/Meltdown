@@ -1657,7 +1657,7 @@ class Model:
             utils.error(error_msg)
             return error_msg
 
-    def parse_tool_arguments(self, raw_args: Any) -> dict[str, Any]:
+    def parse_tool_arguments(self, raw_args: Any) -> Any:
         if isinstance(raw_args, dict):
             return raw_args
 
