@@ -151,6 +151,18 @@ more text""",
                 "user": "Bullets",
                 "ai": "Hello\n- Uno\n- Dos\n- Tres\n44444",
             },
+            {
+                "user": """Glue Test""",
+                "ai": """1. **Glazed Walnuts:**
+	* In a small skillet, combine honey, water, and salt. Bring to a simmer over medium heat.
+	* Add the walnuts to the skillet, stirring to coat them evenly with the honey mixture. Cook for 2-3 minutes, or until the nuts are glazed and golden.
+	* Transfer the walnuts to a parchment-lined baking sheet, using a spoon to spread them out in a single layer. Allow them to cool.
+2. **Assembly:**
+	* Spoon some of the reserved poaching liquid into the bottom of each serving dish.
+	* Place a poached pear upright in each dish.
+	* Top each pear with a generous amount of gingerbread crumble and glazed walnuts.
+	* Serve immediately, and enjoy the symphony of flavors and textures in this glue-inspired dessert.""",
+            },
         ],
     }
 

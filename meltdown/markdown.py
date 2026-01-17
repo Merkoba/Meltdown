@@ -181,12 +181,14 @@ class Markdown:
 
         # Bullet list (ordered)
         Markdown.pattern_list_ordered = (
-            r"(^|(?<=\n\n)) *\d+[.)] [^\n]+(?:\n{1,2}[ \t]*\d+[.)] [^\n]+)*"
+            r"(^|(?<=\n\n))[ \t]*\d+[.)] [^\n]+"
+            r"(?:\n{1,2}(?:[ \t]*\d+[.)] [^\n]+|[ \t]*[*-] [^\n]+))*"
         )
 
         # Bullet list (unordered)
         Markdown.pattern_list_unordered = (
-            r"(^|(?<=\n\n)) *[*-] [^\n]+(?:\n{1,2}[ \t]*[*-] [^\n]+)*"
+            r"(^|(?<=\n\n))[ \t]*[*-] [^\n]+"
+            r"(?:\n{1,2}(?:[ \t]*[*-] [^\n]+|[ \t]*\d+[.)] [^\n]+))*"
         )
 
         # Word URL like [Click here](https://example.com)
@@ -708,8 +710,6 @@ class Markdown:
             sliced = lines[line_1:line_end]
             sliced = [line.strip() for line in sliced]
             spacing_mode = getattr(args, f"{mode}_spacing")
-            marker = getattr(self, f"marker_indent_{mode}")
-
             if spacing_mode == "never":
                 spaced = False
             elif spacing_mode == "always":
@@ -724,26 +724,21 @@ class Markdown:
             else:
                 space_2 = "  "
 
-            if (mode == "ordered") and (len(sliced) > 1):
-                n = 1
-                char = args.ordered_char.rstrip()
-                items = []
+            ord_char = args.ordered_char.rstrip()
+            un_char = args.unordered_char.rstrip()
+            items = []
+            n = 1
 
-                for line in sliced:
-                    if re.match(r"^\d+", line):
-                        left = f"{space_1}{n}{char}{space_2}"
-                        c_line = re.sub(r"^\d+[.)]", "", line).strip()
-                        items.append(f"{marker}{left}{c_line}")
-                        n += 1
-            else:
-                char = args.unordered_char.rstrip()
-                items = []
-
-                for line in sliced:
-                    if line.startswith(("*", "-")):
-                        left = f"{space_1}{char}{space_2}"
-                        c_line = line[2:].strip()
-                        items.append(f"{marker}{left}{c_line}")
+            for line in sliced:
+                if re.match(r"^\d+[.)]", line):
+                    left = f"{space_1}{n}{ord_char}{space_2}"
+                    c_line = re.sub(r"^\d+[.)]\s*", "", line).strip()
+                    items.append(f"{self.marker_indent_ordered}{left}{c_line}")
+                    n += 1
+                elif line.startswith(("*", "-")):
+                    left = f"{space_1}{un_char}{space_2}"
+                    c_line = re.sub(r"^[*-]\s*", "", line).strip()
+                    items.append(f"{self.marker_indent_unordered}{left}{c_line}")
 
             if len(items) == 0:
                 len_matches -= 1

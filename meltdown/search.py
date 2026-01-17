@@ -318,7 +318,7 @@ class Search:
                             f"\n\nSource: {data['content_urls']['desktop']['page']}"
                         )
 
-                    return result
+                    return result or ""
 
             # Try search API if direct lookup fails
             search_api_url = "https://en.wikipedia.org/w/api.php"
@@ -363,7 +363,7 @@ class Search:
                             ):
                                 result += f"\n\nSource: {summary_data['content_urls']['desktop']['page']}"
 
-                            return result
+                            return result or ""
 
                     # Fallback to snippet if summary fails
                     snippet = best_match.get("snippet", "")
