@@ -592,10 +592,10 @@ class Widgets:
             self.top_button.set_style("disabled")
 
     def enable_widget(self, widget: ttk.Widget) -> None:
-        widget.state(["!disabled"])
+        widget.state(["!disabled"])  # type: ignore
 
     def disable_widget(self, widget: ttk.Widget) -> None:
-        widget.state(["disabled"])
+        widget.state(["disabled"])  # type: ignore
 
     def stop_stream(self) -> None:
         from .display import display

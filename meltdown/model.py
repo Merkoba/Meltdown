@@ -743,7 +743,7 @@ class Model:
                 return
 
             try:
-                output = self.model.create_chat_completion_openai_v1(**gen_config)
+                output = self.model.create_chat_completion_openai_v1(**gen_config)  # type: ignore[attr-defined]
             except BaseException as e:
                 utils.error(e)
                 self.stream_loading = False
@@ -1120,7 +1120,7 @@ class Model:
                             if "model" in local_gen_config:
                                 del local_gen_config["model"]
 
-                            follow_up = self.model.create_chat_completion_openai_v1(
+                            follow_up = self.model.create_chat_completion_openai_v1(  # type: ignore[attr-defined]
                                 **local_gen_config
                             )
                         else:
@@ -1414,8 +1414,8 @@ class Model:
         try:
             max_tokens = int(config.max_tokens * config.token_limit)
             encoded = text.encode("utf-8")
-            tokens = self.model.tokenize(encoded)
-            bytes = self.model.detokenize(tokens[:max_tokens])
+            tokens = self.model.tokenize(encoded)  # type: ignore[attr-defined]
+            bytes = self.model.detokenize(tokens[:max_tokens])  # type: ignore[attr-defined]
             return str(bytes.decode("utf-8")).strip()
         except BaseException as e:
             utils.error(e)
@@ -1884,7 +1884,7 @@ class Model:
                 local_gen_config = gen_config.copy()
                 del local_gen_config["model"]
 
-                response = self.model.create_chat_completion_openai_v1(
+                response = self.model.create_chat_completion_openai_v1(  # type: ignore[attr-defined]
                     **local_gen_config
                 )
             else:
