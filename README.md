@@ -60,6 +60,7 @@ It's written 100% in `python` and uses `tkinter` for the GUI.
 1. [Search](#search)
 1. [Memory](#memory)
 1. [Next](#next)
+1. [Browser](#browser)
 
 ### Docs
 
@@ -1138,3 +1139,13 @@ The input is then filled with the prompt.
 Any amount of items can be saved at once.
 
 They get removed when used.
+
+---
+
+## Browser <a name="browser"></a>
+
+There's a custom-made file picker to browse and pick files and dirs.
+
+It allows keyboard shortcuts like Backspace, Arrows, typeahead, Enter.
+
+![](img/browser.png)
