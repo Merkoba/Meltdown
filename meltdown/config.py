@@ -540,7 +540,7 @@ class Config:
             if current_value == "":
                 current_value = "[Empty]"
 
-            display.print(f"`{name}`: {current_value}", do_format=True)
+            display.print(f"Config: `{name}` is `{current_value}`", do_format=True)
             return
 
         value = value.strip()
