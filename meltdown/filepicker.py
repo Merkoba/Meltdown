@@ -137,7 +137,7 @@ class FilePicker:
 
             for item in ppath.iterdir():
                 item_path = ppath / item
-                s_item = str(item)
+                s_item = item.name
 
                 if Path(item_path).is_dir():
                     # Show hidden directories but mark them differently
