@@ -84,18 +84,6 @@ class Widgets:
         self.temperature: EntryBox
         self.seed_label: tk.Label
         self.seed: EntryBox
-        self.top_p_label: tk.Label
-        self.top_p: EntryBox
-        self.top_k_label: tk.Label
-        self.top_k: EntryBox
-        self.before_label: tk.Label
-        self.before: EntryBox
-        self.after_label: tk.Label
-        self.after: EntryBox
-        self.stop_label: tk.Label
-        self.stop: EntryBox
-        self.mlock_label: tk.Label
-        self.mlock: ttk.Combobox
 
         self.scroller_system: tk.Frame
         self.scroller_details_1: tk.Frame
@@ -349,20 +337,13 @@ class Widgets:
         setup_entrybox("max_tokens", "Int")
         setup_entrybox("temperature", "Float")
         setup_entrybox("seed", "Int")
-        setup_entrybox("top_k", "Int")
-        setup_entrybox("top_p", "Float")
         setup_entrybox("model", "Local path or model name")
-        setup_entrybox("before", "Text")
-        setup_entrybox("after", "Text")
-        setup_entrybox("stop", "Text")
         setup_entrybox("file", "Path to a remote or local file")
         setup_entrybox("threads", "Int")
         setup_entrybox("gpu_layers", "Int")
 
         setup_combobox("format")
-        setup_combobox("mlock")
         setup_combobox("mode")
-        setup_combobox("logits")
         setup_combobox("search")
         setup_combobox("memory")
         setup_combobox("stream")

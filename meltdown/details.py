@@ -93,14 +93,6 @@ class Details:
         self.make_label(widgets, data, "gpu_layers", "GPU")
         self.make_entry(widgets, data, "gpu_layers")
 
-    def add_batch_size(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "batch_size", "n-batch")
-        self.make_entry(widgets, data, "batch_size")
-
-    def add_ubatch_size(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "ubatch_size", "u-batch")
-        self.make_entry(widgets, data, "ubatch_size")
-
     def add_search(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "search", "Search", padx=(0, app.theme.padx))
         self.make_combobox(widgets, data, "search", ["yes", "no"], width=self.width_2)
@@ -127,37 +119,9 @@ class Details:
         self.make_label(widgets, data, "temperature", "Temp")
         self.make_entry(widgets, data, "temperature")
 
-    def add_logits(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "logits", "Logits")
-        self.make_combobox(widgets, data, "logits", ["normal", "all"], width=8)
-
     def add_seed(self, widgets: Widgets, data: FrameData) -> None:
         self.make_label(widgets, data, "seed", "Seed")
         self.make_entry(widgets, data, "seed")
-
-    def add_top_p(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "top_p", "Top P")
-        self.make_entry(widgets, data, "top_p")
-
-    def add_top_k(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "top_k", "Top K")
-        self.make_entry(widgets, data, "top_k")
-
-    def add_before(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "before", "Before")
-        self.make_entry(widgets, data, "before", width=self.width_1)
-
-    def add_after(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "after", "After")
-        self.make_entry(widgets, data, "after", width=self.width_1)
-
-    def add_stop(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "stop", "Stop")
-        self.make_entry(widgets, data, "stop", width=self.width_1)
-
-    def add_mlock(self, widgets: Widgets, data: FrameData) -> None:
-        self.make_label(widgets, data, "mlock", "M-Lock")
-        self.make_combobox(widgets, data, "mlock", ["yes", "no"], width=self.width_2)
 
     def add_items(self) -> None:
         from .framedata import FrameData
@@ -170,12 +134,6 @@ class Details:
         self.add_context(widgets, data)
         self.add_max_tokens(widgets, data)
         self.add_temperature(widgets, data)
-        self.add_threads(widgets, data)
-        self.add_gpu_layers(widgets, data)
-        self.add_batch_size(widgets, data)
-        self.add_ubatch_size(widgets, data)
-        self.add_top_p(widgets, data)
-        self.add_top_k(widgets, data)
 
         # Details 2 Items
         data = FrameData(widgets.scroller_details_2)
@@ -184,11 +142,8 @@ class Details:
         self.add_memory(widgets, data)
         self.add_format(widgets, data)
         self.add_seed(widgets, data)
-        self.add_before(widgets, data)
-        self.add_after(widgets, data)
-        self.add_stop(widgets, data)
-        self.add_mlock(widgets, data)
-        self.add_logits(widgets, data)
+        self.add_threads(widgets, data)
+        self.add_gpu_layers(widgets, data)
 
 
 details = Details()
