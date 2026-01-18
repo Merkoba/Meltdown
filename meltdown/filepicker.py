@@ -99,6 +99,8 @@ class FilePicker:
         self.tree.bind("<Button-1>", self.on_single_click)
         self.tree.bind("<Double-Button-1>", self.on_double_click)
         self.tree.bind("<KeyPress>", self.on_key_press)
+        self.tree.bind("<Return>", self.on_double_click)
+        self.tree.bind("<BackSpace>", self.on_backspace)
 
         # Buttons
         button_frame = ttk.Frame(self.dialog)
@@ -116,6 +118,9 @@ class FilePicker:
         # Clear existing items
         for citem in self.tree.get_children():
             self.tree.delete(citem)
+
+        self.last_key = None
+        self.current_match_index = -1
 
         ppath = Path(path)
 
@@ -159,6 +164,19 @@ class FilePicker:
         except Exception as e:
             self.tree.insert("", "end", text=f"❌ Error: {e}")
 
+        children = self.tree.get_children()
+
+        if children:
+            first_item = children[0]
+            self.tree.selection_set(first_item)
+            self.tree.focus(first_item)
+            self.tree.see(first_item)
+            values = self.tree.item(first_item, "values")
+
+            if values:
+                self.selected_path = values[0]
+                self.path_var.set(self.selected_path)
+
     def on_single_click(self, event: Any) -> None:
         # Get the item that was clicked
         item = self.tree.identify("item", event.x, event.y)  # type: ignore
@@ -173,8 +191,12 @@ class FilePicker:
                 self.path_var.set(self.selected_path)
 
     def on_double_click(self, event: Any) -> None:
-        # Get the item that was clicked
-        item = self.tree.identify("item", event.x, event.y)  # type: ignore
+        item = None
+
+        if getattr(event, "keysym", "") == "Return":
+            item = self.tree.focus()
+        else:
+            item = self.tree.identify("item", event.x, event.y)  # type: ignore
 
         if item:
             self.tree.selection_set(item)
@@ -250,6 +272,7 @@ class FilePicker:
         self.current_match_index = (self.current_match_index + 1) % len(matching_items)
         selected_item = matching_items[self.current_match_index]
         self.tree.selection_set(selected_item)
+        self.tree.focus(selected_item)
         self.tree.see(selected_item)
 
         # Update selected path for consistency (but not for "..")
@@ -261,3 +284,22 @@ class FilePicker:
             if values:
                 self.selected_path = values[0]
                 self.path_var.set(self.selected_path)
+
+    def on_backspace(self, event: Any) -> None:
+        parent_path = None
+
+        for child_id in self.tree.get_children():
+            item_tags = self.tree.item(child_id, "tags")
+
+            if "parent" in item_tags:
+                values = self.tree.item(child_id, "values")
+
+                if values:
+                    parent_path = values[0]
+
+                break
+
+        if parent_path:
+            self.selected_path = parent_path
+            self.path_var.set(self.selected_path)
+            self.populate_tree(self.selected_path)
