@@ -583,6 +583,7 @@ class Model:
         log_dict["temperature"] = config.temperature
         log_dict["top_k"] = config.top_k
         log_dict["top_p"] = config.top_p
+        log_dict["repetition_penalty"] = config.repetition_penalty
         log_dict["format"] = config.format
         log_dict["internal"] = internal
 
@@ -1227,6 +1228,7 @@ class Model:
             log_dict["max_tokens"] = config.max_tokens
             log_dict["temperature"] = config.temperature
             log_dict["top_k"] = config.top_k
+            log_dict["repetition_penalty"] = config.repetition_penalty
             log_dict["top_p"] = config.top_p
             log_dict["format"] = config.format
             log_dict["file"] = ""
@@ -1926,6 +1928,7 @@ class Model:
             "stream": config.stream == "yes",
             "temperature": config.temperature,
             "top_p": config.top_p,
+            "repetition_penalty": config.repetition_penalty,
             "seed": config.seed,
             "stop": self.get_stop_list(),
         }
