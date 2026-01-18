@@ -1104,6 +1104,8 @@ Middle clicking the panel arrows scrolls instantly to that side.
 
 There are `/like` and `/dislike` commands.
 
+Not all available configs are displayed in the interface. Check [config.py](meltdown/config.py) to see what you can manually configure with the `/config` command.
+
 ---
 
 ## Search <a name="search"></a>
