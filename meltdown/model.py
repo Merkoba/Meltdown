@@ -486,6 +486,8 @@ class Model:
             if args.model_feedback and (not args.quiet):
                 display.print("< Interrupted >")
 
+            app.on_stop_requested()
+
     def stream(self, prompt: PromptArg, tab_id: str | None = None) -> None:
         if self.is_loading():
             utils.msg("(Stream) Slow down!")

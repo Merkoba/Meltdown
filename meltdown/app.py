@@ -43,6 +43,7 @@ class App:
         self.exit_delay = 100
         self.exit_after: str = ""
         self.streaming = False
+        self.stop_requested = False
         self.loading = False
         self.loaded = False
         self.checks_delay = 200
@@ -845,9 +846,11 @@ class App:
         if model.streaming:
             if not self.streaming:
                 self.streaming = True
+                self.stop_requested = False
                 widgets.enable_stop_button()
         elif self.streaming:
             self.streaming = False
+            self.stop_requested = False
             widgets.disable_stop_button()
             display.stream_ended()
             commands.after_stream()
@@ -880,6 +883,15 @@ class App:
             elif not self.clear_enabled:
                 self.clear_enabled = True
                 widgets.enable_clear_button()
+
+    def on_stop_requested(self) -> None:
+        if self.stop_requested:
+            return
+
+        from .widgets import widgets
+
+        self.stop_requested = True
+        widgets.disable_stop_button()
 
     def start_checks(self) -> None:
         self.do_checks()
