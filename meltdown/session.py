@@ -35,10 +35,9 @@ class Item:
             history=data.get("history", None),
             max_tokens=data.get("max_tokens", None),
             temperature=data.get("temperature", None),
-            top_k=data.get("top_k", None),
-            top_p=data.get("top_p", None),
             format_=data.get("format", None),
             internal=data.get("internal", None),
+            tokens_per_second=data.get("tokens_per_second", None),
         )
 
     def __init__(
@@ -53,10 +52,9 @@ class Item:
         history: int | None,
         max_tokens: int | None,
         temperature: float | None,
-        top_k: int | None,
-        top_p: float | None,
         format_: str | None,
         internal: str | None,
+        tokens_per_second: str | None,
     ) -> None:
         self.date = date
         self.duration = duration
@@ -68,10 +66,9 @@ class Item:
         self.history = history
         self.max_tokens = max_tokens
         self.temperature = temperature
-        self.top_k = top_k
-        self.top_p = top_p
         self.format = format_
         self.internal = internal
+        self.tokens_per_second = tokens_per_second
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -85,10 +82,9 @@ class Item:
             "history": self.history,
             "max_tokens": self.max_tokens,
             "temperature": self.temperature,
-            "top_k": self.top_k,
-            "top_p": self.top_p,
             "format": self.format,
             "internal": self.internal,
+            "tokens_per_second": self.tokens_per_second,
         }
 
 

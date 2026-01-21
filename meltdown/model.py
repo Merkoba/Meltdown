@@ -583,15 +583,13 @@ class Model:
         log_dict["history"] = config.history
         log_dict["max_tokens"] = config.max_tokens
         log_dict["temperature"] = config.temperature
-        log_dict["top_k"] = config.top_k
-        log_dict["top_p"] = config.top_p
-        log_dict["repetition_penalty"] = config.repetition_penalty
         log_dict["format"] = config.format
         log_dict["internal"] = internal
 
         # Temporary
         log_dict["ai"] = "Empty"
         log_dict["duration"] = 0
+        log_dict["tokens_per_second"] = 0
 
         messages: list[dict[str, Any]] = []
 
@@ -784,6 +782,15 @@ class Model:
             duration = now_2 - now
             convo_item.ai = res
             convo_item.duration = duration
+
+            tokens_per_second = self.calculate_tokens_per_second(res, duration)
+
+            if tokens_per_second is not None:
+                try:
+                    convo_item.tokens_per_second = tokens_per_second
+                except Exception:
+                    pass
+
             tabconvo.convo.update()
             self.last_response = res
 
@@ -1229,9 +1236,6 @@ class Model:
             log_dict["history"] = config.history
             log_dict["max_tokens"] = config.max_tokens
             log_dict["temperature"] = config.temperature
-            log_dict["top_k"] = config.top_k
-            log_dict["repetition_penalty"] = config.repetition_penalty
-            log_dict["top_p"] = config.top_p
             log_dict["format"] = config.format
             log_dict["file"] = ""
 
@@ -1404,6 +1408,46 @@ class Model:
                 utils.error(e)
 
         return text
+
+    def calculate_tokens_per_second(self, text: str, duration: float) -> float | None:
+        if (not text) or (duration <= 0):
+            return None
+
+        tokens = self.count_tokens(text)
+
+        if not tokens:
+            return None
+
+        try:
+            return round(tokens / duration, 2)
+        except BaseException:
+            return None
+
+    def count_tokens(self, text: str) -> int | None:
+        if not text:
+            return None
+
+        if self.model:
+            try:
+                token_ids = self.model.tokenize(text.encode("utf-8"))  # type: ignore[attr-defined]
+
+                return len(token_ids)
+            except BaseException:
+                pass
+
+        try:
+            import tiktoken
+
+            model_name = self.loaded_model if self.loaded_model else "gpt-3.5-turbo"
+            encoder = tiktoken.encoding_for_model(model_name)
+            return len(encoder.encode(text))
+        except BaseException:
+            pass
+
+        try:
+            return len(text.split())
+        except BaseException:
+            return None
 
     def limit_tokens(self, text: str) -> str:
         if not args.limit_tokens:
@@ -1930,7 +1974,6 @@ class Model:
             "stream": config.stream == "yes",
             "temperature": config.temperature,
             "top_p": config.top_p,
-            "repetition_penalty": config.repetition_penalty,
             "seed": config.seed,
             "stop": self.get_stop_list(),
         }

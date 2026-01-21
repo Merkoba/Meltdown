@@ -72,7 +72,6 @@ class Config:
         self.default_logits = "normal"
         self.default_batch_size = 512
         self.default_ubatch_size = 512
-        self.default_repetition_penalty = 1.0
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -105,7 +104,6 @@ class Config:
         self.logits = self.default_logits
         self.batch_size = self.default_batch_size
         self.ubatch_size = self.default_ubatch_size
-        self.repetition_penalty = self.default_repetition_penalty
 
         self.locals = [
             "theme",

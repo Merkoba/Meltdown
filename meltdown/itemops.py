@@ -250,11 +250,8 @@ class ItemOps:
         if item.temperature is not None:
             text += f"\nTemperature: {item.temperature}"
 
-        if item.top_k is not None:
-            text += f"\nTop K: {item.top_k}"
-
-        if item.top_p is not None:
-            text += f"\nTop P: {item.top_p}"
+        if item.tokens_per_second is not None:
+            text += f"\nTPS: {item.tokens_per_second}"
 
         Dialog.show_msgbox("Information", text)
 
