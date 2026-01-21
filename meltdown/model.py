@@ -786,7 +786,11 @@ class Model:
             tps_duration = duration
 
             if start_gen > 0:
-                tps_duration = now_2 - start_gen
+                stream_duration = now_2 - start_gen
+
+                # Avoid huge TPS numbers from buffered chunks
+                if stream_duration > 0.2:
+                    tps_duration = stream_duration
 
             tokens_per_second = self.calculate_tokens_per_second(res, tps_duration)
 
