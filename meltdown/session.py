@@ -54,7 +54,7 @@ class Item:
         temperature: float | None,
         format_: str | None,
         internal: str | None,
-        tokens_per_second: str | None,
+        tokens_per_second: float | None,
     ) -> None:
         self.date = date
         self.duration = duration

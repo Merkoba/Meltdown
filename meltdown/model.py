@@ -11,6 +11,7 @@ from typing import Any, Callable
 # Libraries
 import requests  # type: ignore
 import litellm  # type: ignore
+import tiktoken  # type: ignore
 from litellm import completion
 from litellm import image_generation
 from litellm.exceptions import Timeout  # type: ignore
@@ -1145,7 +1146,7 @@ class Model:
                                 **local_gen_config
                             )
                         else:
-                            return ""
+                            return "", 0.0
 
                         choices = getattr(follow_up, "choices", None)
 
@@ -1447,8 +1448,6 @@ class Model:
                 pass
 
         try:
-            import tiktoken
-
             model_name = self.loaded_model if self.loaded_model else "gpt-3.5-turbo"
             encoder = tiktoken.encoding_for_model(model_name)
             return len(encoder.encode(text))
