@@ -767,9 +767,9 @@ class Model:
 
         try:
             if config.stream == "yes":
-                ans = self.process_stream(output, tab_id)
+                ans, start_gen = self.process_stream(output, tab_id)
             else:
-                ans = self.process_instant(output, tab_id)
+                ans, start_gen = self.process_instant(output, tab_id)
         except BaseException as e:
             utils.error(e)
             self.release_lock()
@@ -783,7 +783,12 @@ class Model:
             convo_item.ai = res
             convo_item.duration = duration
 
-            tokens_per_second = self.calculate_tokens_per_second(res, duration)
+            tps_duration = duration
+
+            if start_gen > 0:
+                tps_duration = now_2 - start_gen
+
+            tokens_per_second = self.calculate_tokens_per_second(res, tps_duration)
 
             if tokens_per_second is not None:
                 try:
@@ -805,9 +810,10 @@ class Model:
         self,
         output: ModelResponse | CustomStreamWrapper,
         tab_id: str,
-    ) -> str:
+    ) -> tuple[str, float]:
         broken = False
         first_content = False
+        first_token_time = 0.0
         token_printed = False
         last_token = " "
         buffer_date = 0.0
@@ -898,6 +904,7 @@ class Model:
                         display.remove_last_ai(tab_id)
                         display.prompt("ai", tab_id=tab_id)
                         first_content = True
+                        first_token_time = utils.now()
 
                     if token == "\n":
                         if not token_printed:
@@ -992,16 +999,16 @@ class Model:
         if not broken:
             print_buffer()
 
-        return "".join(tokens)
+        return "".join(tokens), first_token_time
 
     def process_instant(
         self, output: ModelResponse | Any | CustomStreamWrapper, tab_id: str
-    ) -> str:
+    ) -> tuple[str, float]:
         try:
             choices = getattr(output, "choices", None)
 
             if not choices or not choices[0]:
-                return ""
+                return "", 0.0
 
             message = choices[0].message
 
@@ -1139,16 +1146,16 @@ class Model:
                         choices = getattr(follow_up, "choices", None)
 
                         if not choices or not choices[0]:
-                            return ""
+                            return "", 0.0
 
                         if choices and choices[0].message.content:
                             response = choices[0].message.content.strip()
                             display.remove_last_ai(tab_id)
                             display.prompt("ai", tab_id=tab_id)
                             display.insert(response, tab_id=tab_id)
-                            return str(response)
+                            return str(response), 0.0
 
-                return ""
+                return "", 0.0
 
             response = message.content.strip()
             response = utils.clean_lines(response)
@@ -1157,11 +1164,11 @@ class Model:
                 display.remove_last_ai(tab_id)
                 display.prompt("ai", tab_id=tab_id)
                 display.insert(response, tab_id=tab_id)
-                return str(response)
+                return str(response), 0.0
         except BaseException as e:
             utils.error(e)
 
-        return ""
+        return "", 0.0
 
     def generate_image(self, prompt: str | None, tab_id: str | None = None) -> None:
         if not prompt:
