@@ -448,6 +448,12 @@ class ArgSpec:
         )
 
         self.add_argument(
+            "no_auto_scroll",
+            action="store_false",
+            info="Don't scroll to the bottom as new text arrives",
+        )
+
+        self.add_argument(
             "no_fill_prompt",
             action="store_false",
             info="Don't fill the text input prompt in some cases when empty",

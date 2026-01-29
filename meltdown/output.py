@@ -570,11 +570,13 @@ class Output(tk.Text):
         self.insert("1.0", str(text))
         self.disable()
 
-    def insert_text(self, text: str) -> None:
+    def insert_text(self, text: str, to_bottom: bool = True) -> None:
         self.enable()
         self.insert(tk.END, text)
         self.disable()
-        self.to_bottom(True)
+
+        if to_bottom:
+            self.to_bottom(True)
 
     def reset(self) -> None:
         self.set_text("")
@@ -640,7 +642,7 @@ class Output(tk.Text):
     def get_tab(self) -> Any:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self, mode: str = "normal", force: bool = False) -> None:
+    def format_text(self, mode: str = "normal", force: bool = False, to_bottom: bool = True) -> None:
         tab = self.get_tab()
 
         if not tab:
@@ -665,7 +667,9 @@ class Output(tk.Text):
 
         self.disable()
         self.update_idletasks()
-        self.to_bottom(True)
+
+        if to_bottom:
+            self.to_bottom(True)
 
     def update_font(self) -> None:
         self.set_font()

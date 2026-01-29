@@ -641,7 +641,7 @@ class Display:
         if do_format:
             self.format_text(tab_id, mode="last")
 
-    def insert(self, text: str, tab_id: str | None = None) -> None:
+    def insert(self, text: str, tab_id: str | None = None, to_bottom: bool = True) -> None:
         if not app.exists():
             return
 
@@ -654,7 +654,7 @@ class Display:
             return
 
         text = utils.clean_lines(text)
-        tab.get_output().insert_text(text)
+        tab.get_output().insert_text(text, to_bottom=to_bottom)
         tab.modified = True
 
     def get_tab_name(self, tab_id: str | None = None) -> str:
@@ -954,7 +954,7 @@ class Display:
         return not bool(tabconvo.convo.items)
 
     def format_text(
-        self, tab_id: str | None = None, mode: str = "normal", force: bool = False
+        self, tab_id: str | None = None, mode: str = "normal", force: bool = False, to_bottom: bool = True
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
@@ -964,7 +964,7 @@ class Display:
         if not tab:
             return
 
-        tab.get_output().format_text(mode=mode, force=force)
+        tab.get_output().format_text(mode=mode, force=force, to_bottom=to_bottom)
 
     def select_first_tab(self) -> None:
         self.book.select_first()
@@ -1021,7 +1021,7 @@ class Display:
         app.border_effect_off()
         self.book.remove_highlights()
         self.clear_tab_streaming()
-        self.format_text(self.tab_streaming)
+        self.format_text(self.tab_streaming, to_bottom=args.auto_scroll)
         self.update_tooltip(self.tab_streaming)
 
         if args.auto_program:

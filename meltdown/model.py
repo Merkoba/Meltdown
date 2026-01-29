@@ -698,7 +698,12 @@ class Model:
             file=original_file,
         )
 
-        display.prompt("ai", text=args.thinking_text, tab_id=tab_id)
+        display.prompt(
+            "ai",
+            text=args.thinking_text,
+            tab_id=tab_id,
+        )
+
         convo_item = tabconvo.convo.add(log_dict)
         display.stream_started(tab_id)
         return messages, convo_item
@@ -783,7 +788,6 @@ class Model:
             duration = now_2 - now
             convo_item.ai = res
             convo_item.duration = duration
-
             tps_duration = duration
 
             if start_gen > 0:
@@ -831,7 +835,12 @@ class Model:
             if not len(buffer):
                 return
 
-            display.insert("".join(buffer), tab_id=tab_id)
+            display.insert(
+                "".join(buffer),
+                tab_id=tab_id,
+                to_bottom=args.auto_scroll,
+            )
+
             buffer.clear()
 
         def is_whitespace_only(token: str) -> bool:
@@ -953,7 +962,12 @@ class Model:
                         display.prompt("ai", tab_id=tab_id)
 
                     tokens.append(tool_response)
-                    display.insert(tool_response, tab_id=tab_id)
+
+                    display.insert(
+                        tool_response,
+                        tab_id=tab_id,
+                        to_bottom=args.auto_scroll,
+                    )
                 elif not first_content:
                     display.remove_last_ai(tab_id)
         except InternalServerError as e:

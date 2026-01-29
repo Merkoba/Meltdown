@@ -346,6 +346,7 @@ class Args:
         self.input_placeholder = "Ask something to the AI"
         self.tooltip_count = True
         self.upload_title = ""
+        self.auto_scroll = True
 
     def parse(self) -> None:
         ap = ArgParser(app.manifest["title"], argspec.arguments, self)
@@ -441,6 +442,7 @@ class Args:
             ("no_rich_console", "rich_console"),
             ("no_log_references", "log_references"),
             ("no_tooltip_count", "tooltip_count"),
+            ("no_auto_scroll", "auto_scroll"),
         ]
 
         for r_item in other_name:
