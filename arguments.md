@@ -518,6 +518,14 @@ Action: store_false
 
 ---
 
+### no-auto-scroll
+
+Don't scroll to the bottom as new text arrives
+
+Action: store_false
+
+---
+
 ### no-fill-prompt
 
 Don't fill the text input prompt in some cases when empty
