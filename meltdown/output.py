@@ -642,7 +642,9 @@ class Output(tk.Text):
     def get_tab(self) -> Any:
         return self.display.get_tab(self.tab_id)
 
-    def format_text(self, mode: str = "normal", force: bool = False, to_bottom: bool = True) -> None:
+    def format_text(
+        self, mode: str = "normal", force: bool = False, to_bottom: bool = True
+    ) -> None:
         tab = self.get_tab()
 
         if not tab:

@@ -641,7 +641,9 @@ class Display:
         if do_format:
             self.format_text(tab_id, mode="last")
 
-    def insert(self, text: str, tab_id: str | None = None, to_bottom: bool = True) -> None:
+    def insert(
+        self, text: str, tab_id: str | None = None, to_bottom: bool = True
+    ) -> None:
         if not app.exists():
             return
 
@@ -954,7 +956,11 @@ class Display:
         return not bool(tabconvo.convo.items)
 
     def format_text(
-        self, tab_id: str | None = None, mode: str = "normal", force: bool = False, to_bottom: bool = True
+        self,
+        tab_id: str | None = None,
+        mode: str = "normal",
+        force: bool = False,
+        to_bottom: bool = True,
     ) -> None:
         if not tab_id:
             tab_id = self.current_tab
