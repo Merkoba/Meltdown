@@ -434,6 +434,8 @@ class Model:
                 n_ubatch=config.ubatch_size,
                 n_threads=config.threads,
                 n_gpu_layers=config.gpu_layers,
+                main_gpu=config.main_gpu,
+                tensor_split=self.tensor_split(),
                 use_mlock=mlock,
                 chat_format=fmt,
                 chat_handler=chat_handler,
@@ -2043,6 +2045,12 @@ class Model:
 
     def prompt(self, text: str, tab_id: str | None = None) -> None:
         self.stream({"text": text}, tab_id=tab_id)
+
+    def tensor_split(self) -> list[float] | None:
+        if config.num_gpus <= 0:
+            return None
+
+        return [1.0] * config.num_gpus
 
 
 model = Model()

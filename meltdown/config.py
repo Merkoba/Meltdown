@@ -72,6 +72,8 @@ class Config:
         self.default_logits = "normal"
         self.default_batch_size = 512
         self.default_ubatch_size = 512
+        self.default_num_gpus = 0
+        self.default_main_gpu = 0
 
         self.model = self.default_model
         self.name_user = self.default_name_user
@@ -104,6 +106,8 @@ class Config:
         self.logits = self.default_logits
         self.batch_size = self.default_batch_size
         self.ubatch_size = self.default_ubatch_size
+        self.num_gpus = self.default_num_gpus
+        self.main_gpu = self.default_main_gpu
 
         self.locals = [
             "theme",
@@ -135,6 +139,8 @@ class Config:
             "logits",
             "batch_size",
             "ubatch_size",
+            "num_gpus",
+            "main_gpu",
         ]
 
         self.path_keys = [
