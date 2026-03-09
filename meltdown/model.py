@@ -1201,7 +1201,13 @@ class Model:
         if not tab_id:
             tab_id = display.current_tab
 
-        if not self.load_openai(tab_id, quiet=True):
+        if self.model_is_gemini(args.image_model):
+            if not self.load_google(tab_id, quiet=True):
+                return
+        elif self.model_is_claude(args.image_model):
+            if not self.load_anthropic(tab_id, quiet=True):
+                return
+        elif not self.load_openai(tab_id, quiet=True):
             return
 
         def wrapper(prompt: str, tab_id: str) -> None:
@@ -1233,12 +1239,14 @@ class Model:
                 model=args.image_model,
             )
 
-            if (not response) or (not response.data) or (not response.data[0]):
+            if not response or not response.data or not response.data[0]:
                 return
 
-            url = response.data[0].url
+            img_obj = response.data[0]
+            url = getattr(img_obj, "url", None)
+            b64_json = getattr(img_obj, "b64_json", None)
 
-            if not url:
+            if not url and not b64_json:
                 return
 
             tabconvo = display.get_tab_convo(tab_id)
@@ -1249,7 +1257,11 @@ class Model:
             time_end = utils.now()
             time_diff = time_end - time_start
             link_text = utils.time_in("Image generated", time_start, time_end)
-            link = f"[{link_text}]({url})"
+
+            if url:
+                link = f"[{link_text}]({url})"
+            else:
+                link = f"![{link_text}](data:image/png;base64,{b64_json})"
 
             display.remove_last_ai(tab_id)
             display.prompt("ai", text=link, tab_id=tab_id)
