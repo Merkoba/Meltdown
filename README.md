@@ -1011,7 +1011,7 @@ And allows closing either just normal tabs or just pins.
 
 Sometimes you might need to access some data but don't feel comfortable having it printed anywhere or even visible for a couple of seconds. This can be for several reasons revolving around privacy and personal security.
 
-You might want to have a way to have the computer/AI have a peek at this data and respond with the neccessary safe information you request.
+You might want to have a way to have the computer/AI have a peek at this data and respond with the necessary safe information you request.
 
 Lockets are registered at startup through arguments.
 
