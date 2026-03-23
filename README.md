@@ -1132,7 +1132,7 @@ Save prompts for later with `/next some prompt`.
 
 For when you have an idea but you can't use it right now because it would interrupt an operation.
 
-`/next what is speed of a falcon?`
+`/next what is the speed of a falcon?`
 
 Then when you are ready to use it just do `/next`.
 
