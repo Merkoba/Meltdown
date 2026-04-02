@@ -478,10 +478,6 @@ class Utils:
 
         return text.strip()
 
-    def bullet_points(self, text: str) -> str:
-        char = "•"
-        return f"{char} {text}"
-
     def replace_linebreaks(self, text: str) -> str:
         text = " ".join(text.split("\n"))
         return self.remove_multiple_spaces(text)
@@ -567,7 +563,7 @@ class Utils:
             if short:
                 text = self.shorten_path(text)
 
-            text = self.bullet_points(text[: args.list_item_width])
+            text = text[: args.list_item_width]
             text = self.replace_linebreaks(text)
 
             menu.add(
