@@ -148,6 +148,8 @@ To add local model support run `scripts/add_llama.sh`.
 
 There's a `scripts/add_llama_amd.sh` to install with `Vulkan` support for `AMD`.
 
+Or maybe you want `scripts/add_llama_amd_rocm.sh` for `rocm`.
+
 Pick one of those for local model support.
 
 The `llama.cpp` library is defined in `llama_reqs.txt`.
