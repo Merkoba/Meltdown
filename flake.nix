@@ -12,9 +12,25 @@
         pkgs = import nixpkgs {inherit system;};
         pythonPackages = pkgs.python3Packages;
 
-        # Standard dependencies
-        dependencies = with pythonPackages; [
-          q
+        # The 'q' package is missing from nixpkgs, so we build it inline from PyPI
+        q-debug = pythonPackages.buildPythonPackage rec {
+          pname = "q";
+          version = "2.7";
+          pyproject = true;
+          build-system = [
+            pythonPackages.setuptools
+          ];
+          src = pythonPackages.fetchPypi {
+            inherit pname version;
+            sha256 = "8e0b792f6658ab9e1133b5ea17af1b530530e60124cf9743bc0fa051b8c64f4e";
+          };
+          doCheck = false;
+        };
+
+        # Standard dependencies mapped directly from requirements.txt
+        dependencies = [
+          q-debug
+        ] ++ (with pythonPackages; [
           psutil
           appdirs
           pygments
@@ -26,15 +42,18 @@
           gitpython
           beautifulsoup4
           litellm
-        ];
+        ]);
 
-        # Standard CPU llama dependency
+        # Standard CPU llama dependency mapped from llama_reqs.txt
         llamaDependencies = with pythonPackages; [
           llama-cpp-python
         ];
 
         # AMD/Vulkan llama dependency override
         llamaCppPythonVulkan = pythonPackages.llama-cpp-python.overrideAttrs (oldAttrs: {
+          nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [
+            pkgs.shaderc # Provides the missing glslc compiler for Vulkan shaders
+          ];
           buildInputs = (oldAttrs.buildInputs or []) ++ [
             pkgs.vulkan-headers
             pkgs.vulkan-loader
@@ -111,6 +130,7 @@
           };
 
           amd = pkgs.mkShell {
+            nativeBuildInputs = [ pkgs.shaderc ];
             buildInputs = [
               (pkgs.python3.withPackages (ps: dependencies ++ [ llamaCppPythonVulkan ]))
               pkgs.vulkan-headers

@@ -162,6 +162,18 @@ To run the program, use `run.sh` in the root dir.
 
 ---
 
+### Using the Flake
+
+Try it:
+
+`nix run` or `nix run .#amd`
+
+Install it:
+
+`nix build` or `nix build .#amd`
+
+---
+
 Read more about [`llama-cpp-python`](https://github.com/abetlen/llama-cpp-python).
 
 This is the library used to interface with `llama.cpp`.

@@ -9,23 +9,23 @@ description = "Powerful AI Interface"
 readme = "README.md"
 requires-python = ">=3.8"
 dependencies = [
-    "q==2.7",
-    "psutil==6.1.1",
-    "appdirs==1.4.4",
-    "Pygments==2.19.1",
-    "pillow==11.1.0",
-    "prompt-toolkit==3.0.48",
-    "rich==13.9.4",
-    "requests==2.32.3",
-    "watchdog==6.0.0",
-    "GitPython==3.1.44",
-    "beautifulsoup4==4.13.4",
-    "litellm==1.75.6"
+    "q>=2.7",
+    "psutil>=6.1.1",
+    "appdirs>=1.4.4",
+    "Pygments>=2.19.1",
+    "pillow>=11.1.0",
+    "prompt-toolkit>=3.0.48",
+    "rich>=13.9.4",
+    "requests>=2.32.3",
+    "watchdog>=6.0.0",
+    "GitPython>=3.1.44",
+    "beautifulsoup4>=4.13.4",
+    "litellm>=1.75.6"
 ]
 
 [project.optional-dependencies]
 llama = [
-    "llama_cpp_python==0.3.19"
+    "llama_cpp_python>=0.3.16"
 ]
 
 [project.scripts]
