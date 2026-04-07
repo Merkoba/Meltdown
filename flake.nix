@@ -1,11 +1,9 @@
 {
   description = "A Nix flake to run and install Meltdown";
-
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
   };
-
   outputs = {self, nixpkgs, flake-utils}:
     flake-utils.lib.eachDefaultSystem (system:
       let
@@ -49,7 +47,8 @@
         ]);
 
         # Standard CPU llama dependency mapped from llama_reqs.txt
-        llamaDependencies = with pythonPackages; [
+        llamaDependencies = with pythonPackages;
+        [
           llama-cpp-python
         ];
 
@@ -68,13 +67,11 @@
             export CMAKE_ARGS="-DGGML_VULKAN=on"
           '';
         });
-
         # Helper function to build the application
-        mkMeltdown = {extraDeps ? [], isVulkan ? false}: pythonPackages.buildPythonApplication {
+        mkMeltdown = {extraDeps ?
+        [], isVulkan ? false}: pythonPackages.buildPythonApplication {
           pname = "meltdown";
           version = "396.0.0";
-
-          # Use the modern pyproject build system
           pyproject = true;
 
           build-system = [
@@ -113,9 +110,10 @@
           '' + (
             if isVulkan then
               ''
-              # Inject Vulkan loader path into the executable
+              # Inject Vulkan loader and rocm-smi paths into the executable
               wrapProgram $out/bin/$PROGRAM_NAME \
-                --prefix LD_LIBRARY_PATH : "${pkgs.vulkan-loader}/lib"
+                --prefix LD_LIBRARY_PATH : "${pkgs.vulkan-loader}/lib" \
+                --prefix PATH : "${pkgs.lib.makeBinPath [ pkgs.rocmPackages.rocm-smi ]}"
               ''
             else
               ""
@@ -124,7 +122,8 @@
 
       in {
         packages = {
-          default = mkMeltdown {extraDeps = llamaDependencies; isVulkan = false;};
+          default = mkMeltdown {extraDeps = llamaDependencies;
+          isVulkan = false;};
           amd = mkMeltdown {extraDeps = [ llamaCppPythonVulkan ]; isVulkan = true;};
         };
 
@@ -137,11 +136,14 @@
 
           amd = pkgs.mkShell {
             nativeBuildInputs = [ pkgs.shaderc ];
+
             buildInputs = [
               (pkgs.python3.withPackages (ps: dependencies ++ [ llamaCppPythonVulkan ]))
               pkgs.vulkan-headers
               pkgs.vulkan-loader
+              pkgs.rocmPackages.rocm-smi
             ];
+
             shellHook = ''
               export LD_LIBRARY_PATH="${pkgs.vulkan-loader}/lib:$LD_LIBRARY_PATH"
             '';
