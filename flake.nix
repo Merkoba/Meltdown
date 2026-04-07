@@ -42,6 +42,7 @@
           gitpython
           beautifulsoup4
           litellm
+          tkinter # Added Tkinter support here
         ]);
 
         # Standard CPU llama dependency mapped from llama_reqs.txt
