@@ -17,13 +17,16 @@
           pname = "q";
           version = "2.7";
           pyproject = true;
+
           build-system = [
             pythonPackages.setuptools
           ];
+
           src = pythonPackages.fetchPypi {
             inherit pname version;
             sha256 = "8e0b792f6658ab9e1133b5ea17af1b530530e60124cf9743bc0fa051b8c64f4e";
           };
+
           doCheck = false;
         };
 
@@ -67,7 +70,7 @@
         # Helper function to build the application
         mkMeltdown = {extraDeps ? [], isVulkan ? false}: pythonPackages.buildPythonApplication {
           pname = "meltdown";
-          version = "1.0.0";
+          version = "396.0.0";
 
           # Use the modern pyproject build system
           pyproject = true;
@@ -76,7 +79,6 @@
           ];
 
           src = ./.;
-
           propagatedBuildInputs = dependencies ++ extraDeps;
 
           nativeBuildInputs = [ pkgs.jq ] ++ (

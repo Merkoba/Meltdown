@@ -170,7 +170,7 @@ class Model:
         from .paths import paths
 
         # Memory Tool Configuration
-        paths.memories.mkdir(exist_ok=True)
+        paths.memories.mkdir(parents=True, exist_ok=True)
 
         self.update_icon()
         self.start_auto_unload()
