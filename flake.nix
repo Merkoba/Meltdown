@@ -6,13 +6,13 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = { self, nixpkgs, flake-utils }:
+  outputs = {self, nixpkgs, flake-utils}:
     flake-utils.lib.eachDefaultSystem (system:
       let
-        pkgs = import nixpkgs { inherit system; };
+        pkgs = import nixpkgs {inherit system;};
         pythonPackages = pkgs.python3Packages;
 
-        # Standard dependencies mapped directly from requirements.txt
+        # Standard dependencies
         dependencies = with pythonPackages; [
           q
           psutil
@@ -28,13 +28,12 @@
           litellm
         ];
 
-        # Standard CPU llama dependency mapped from llama_reqs.txt
+        # Standard CPU llama dependency
         llamaDependencies = with pythonPackages; [
           llama-cpp-python
         ];
 
         # AMD/Vulkan llama dependency override
-        # This replaces the need for your add_llama_amd.sh script
         llamaCppPythonVulkan = pythonPackages.llama-cpp-python.overrideAttrs (oldAttrs: {
           buildInputs = (oldAttrs.buildInputs or []) ++ [
             pkgs.vulkan-headers
@@ -46,18 +45,26 @@
         });
 
         # Helper function to build the application
-        mkMeltdown = { extraDeps ? [], isVulkan ? false }: pythonPackages.buildPythonApplication {
+        mkMeltdown = {extraDeps ? [], isVulkan ? false}: pythonPackages.buildPythonApplication {
           pname = "meltdown";
-          version = "1.0.0"; # Make sure this matches manifest.json
-          src = ./.;
-          propagatedBuildInputs = dependencies ++ extraDeps;
-          nativeBuildInputs = [ pkgs.jq ] ++ (if isVulkan then [ pkgs.makeWrapper ] else []);
+          version = "1.0.0";
 
-          postPatch = ''
-            # Prevent setup.py from writing directly to ~/.local
-            substituteInPlace setup.py \
-              --replace-fail "_post_install()" "print('Skipped custom post-install for Nix build')"
-          '';
+          # Use the modern pyproject build system
+          pyproject = true;
+          build-system = [
+            pythonPackages.hatchling
+          ];
+
+          src = ./.;
+
+          propagatedBuildInputs = dependencies ++ extraDeps;
+
+          nativeBuildInputs = [ pkgs.jq ] ++ (
+            if isVulkan then
+              [ pkgs.makeWrapper ]
+            else
+              []
+          );
 
           postInstall = ''
             PROGRAM_NAME=$(jq -r '.program' meltdown/manifest.json)
@@ -78,17 +85,22 @@
             Type=Application
             Categories=Utility;
             EOF
-          '' + (if isVulkan then ''
-            # Inject Vulkan loader path into the executable
-            wrapProgram $out/bin/$PROGRAM_NAME \
-              --prefix LD_LIBRARY_PATH : "${pkgs.vulkan-loader}/lib"
-          '' else "");
+          '' + (
+            if isVulkan then
+              ''
+              # Inject Vulkan loader path into the executable
+              wrapProgram $out/bin/$PROGRAM_NAME \
+                --prefix LD_LIBRARY_PATH : "${pkgs.vulkan-loader}/lib"
+              ''
+            else
+              ""
+          );
         };
 
       in {
         packages = {
-          default = mkMeltdown { extraDeps = llamaDependencies; isVulkan = false; };
-          amd = mkMeltdown { extraDeps = [ llamaCppPythonVulkan ]; isVulkan = true; };
+          default = mkMeltdown {extraDeps = llamaDependencies; isVulkan = false;};
+          amd = mkMeltdown {extraDeps = [ llamaCppPythonVulkan ]; isVulkan = true;};
         };
 
         devShells = {
