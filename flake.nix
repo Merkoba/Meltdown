@@ -1,5 +1,5 @@
 {
-  description = "A Nix flake for the Meltdown Python application";
+  description = "A Nix flake to run and install Meltdown";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -58,10 +58,12 @@
           nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [
             pkgs.shaderc # Provides the missing glslc compiler for Vulkan shaders
           ];
+
           buildInputs = (oldAttrs.buildInputs or []) ++ [
             pkgs.vulkan-headers
             pkgs.vulkan-loader
           ];
+
           preBuild = (oldAttrs.preBuild or "") + ''
             export CMAKE_ARGS="-DGGML_VULKAN=on"
           '';
@@ -74,6 +76,7 @@
 
           # Use the modern pyproject build system
           pyproject = true;
+
           build-system = [
             pythonPackages.hatchling
           ];

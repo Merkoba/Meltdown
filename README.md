@@ -170,7 +170,9 @@ Try it:
 
 Install it:
 
-`nix build` or `nix build .#amd`
+`nix profile install` or `nix profile install .#amd`
+
+Or install properly in your system through your config files.
 
 ---
 
