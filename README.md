@@ -945,7 +945,7 @@ Then restores the normal color when the stream is done.
 
 There is a compact mode which hides some widgets from the window.
 
-This can be useful if you want a less distracted interface.
+This can be useful if you want a less distracting interface.
 
 To toggle compact mode you can use the `main menu`, or `f8`, or `/compact`, or `--compact`.
 
