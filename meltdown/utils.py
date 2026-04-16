@@ -200,11 +200,10 @@ class Utils:
             app.exec("pbcopy", text, timeout=timeout)
         elif system == "windows":
             app.exec("clip", text, timeout=timeout)
-        else:
-            if self.get_linux_display() == "wayland" and shutil.which("wl-copy"):
-                app.exec("wl-copy", text, timeout=timeout)
-            elif shutil.which("xclip"):
-                app.exec("xclip -sel clip -f", text, timeout=timeout)
+        elif self.get_linux_display() == "wayland" and shutil.which("wl-copy"):
+            app.exec("wl-copy", text, timeout=timeout)
+        elif shutil.which("xclip"):
+            app.exec("xclip -sel clip -f", text, timeout=timeout)
 
     def paste(self, widget: tk.Widget) -> None:
         from .entrybox import EntryBox
@@ -234,7 +233,8 @@ class Utils:
 
         if self.get_linux_display() == "wayland" and shutil.which("wl-paste"):
             return app.exec("wl-paste", timeout=timeout)[0]
-        elif shutil.which("xclip"):
+
+        if shutil.which("xclip"):
             return app.exec("xclip -o -sel clip", timeout=timeout)[0]
 
         return ""
