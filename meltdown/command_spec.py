@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 # Standard
 from typing import Any
 from collections.abc import Callable

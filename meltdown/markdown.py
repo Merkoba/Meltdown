@@ -439,9 +439,6 @@ class Markdown:
 
                 search_col = 0
 
-                if tag == "header_3":
-                    pass
-
                 for _ in range(999):
                     start = self.widget.search(
                         all_,

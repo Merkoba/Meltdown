@@ -130,7 +130,7 @@
         devShells = {
           default = pkgs.mkShell {
             buildInputs = [
-              (pkgs.python3.withPackages (ps: dependencies ++ llamaDependencies))
+              (pkgs.python3.withPackages (ps: dependencies ++ llamaDependencies ++ [ ps.ruff ps.mypy ]))
             ];
           };
 
@@ -138,7 +138,7 @@
             nativeBuildInputs = [ pkgs.shaderc ];
 
             buildInputs = [
-              (pkgs.python3.withPackages (ps: dependencies ++ [ llamaCppPythonVulkan ]))
+              (pkgs.python3.withPackages (ps: dependencies ++ [ llamaCppPythonVulkan ps.ruff ps.mypy ]))
               pkgs.vulkan-headers
               pkgs.vulkan-loader
               pkgs.rocmPackages.rocm-smi

@@ -56,7 +56,7 @@ class Scrollers:
         canvas = getattr(widgets, f"scroller_canvas_{name}")
         scroll_pos_left = canvas.xview()[0]
 
-        if scroll_pos_left == 0.0:
+        if scroll_pos_left <= 0.0:
             return
 
         canvas.xview_scroll(-widgets.canvas_scroll, "units")
@@ -68,7 +68,7 @@ class Scrollers:
         canvas = getattr(widgets, f"scroller_canvas_{name}")
         scroll_pos_right = canvas.xview()[1]
 
-        if scroll_pos_right == 1.0:
+        if scroll_pos_right >= 1.0:
             return
 
         canvas.xview_scroll(widgets.canvas_scroll, "units")
@@ -100,12 +100,12 @@ class Scrollers:
         left = getattr(widgets, f"scroller_button_left_{name}")
         right = getattr(widgets, f"scroller_button_right_{name}")
 
-        if scroll_pos_left == 0:
+        if scroll_pos_left <= 0.0:
             left.set_style("disabled")
         else:
             left.set_style("alt")
 
-        if scroll_pos_right == 1.0:
+        if scroll_pos_right >= 1.0:
             right.set_style("disabled")
         else:
             right.set_style("alt")

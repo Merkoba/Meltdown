@@ -103,7 +103,7 @@ class Conversation:
         self.last_modified = last_modified
         self.pin = pin
 
-        if created == 0.0:
+        if created <= 0.0:
             self.created = utils.now()
         else:
             self.created = created

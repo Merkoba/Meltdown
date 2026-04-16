@@ -188,7 +188,7 @@ class Snippet(tk.Frame):
 
     def overflowed(self) -> bool:
         pos = self.scrollbar.get()
-        return pos[0] != 0.0 or pos[1] != 1.0
+        return pos[0] > 0.0 or pos[1] < 1.0
 
     def scroll_left(self) -> str:
         if not self.overflowed():
