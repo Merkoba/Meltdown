@@ -21,7 +21,7 @@ from collections.abc import Callable
 
 # Libraries
 import q as qlib  # type: ignore
-from rich.console import Console  # type: ignore
+from rich.console import Console
 
 if TYPE_CHECKING:
     from .menus import Menu

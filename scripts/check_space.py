@@ -8,6 +8,7 @@ import tokenize
 import io
 import re
 from pathlib import Path
+from typing import Any
 
 
 class CompoundGroupFormatter:
@@ -25,7 +26,7 @@ class CompoundGroupFormatter:
             for kw in ("else:", "elif ", "except:", "except ", "finally:")
         )
 
-    def is_closing_bracket_only(self, line: str) -> bool:
+    def is_closing_bracket_only(self, line: str) -> Any:
         """Check if line is only closing brackets."""
         stripped = line.strip()
         return stripped and all(c in ")}],:;" for c in stripped)

@@ -131,6 +131,7 @@
           default = pkgs.mkShell {
             buildInputs = [
               (pkgs.python3.withPackages (ps: dependencies ++ llamaDependencies ++ [ ps.ruff ps.mypy ]))
+              pkgs.pyright
             ];
           };
 
@@ -142,6 +143,7 @@
               pkgs.vulkan-headers
               pkgs.vulkan-loader
               pkgs.rocmPackages.rocm-smi
+              pkgs.pyright
             ];
 
             shellHook = ''

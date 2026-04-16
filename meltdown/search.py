@@ -2,7 +2,7 @@ from __future__ import annotations
 
 # Standard
 import requests  # type: ignore
-from bs4 import BeautifulSoup  # type: ignore
+from bs4 import BeautifulSoup
 
 
 class Search:

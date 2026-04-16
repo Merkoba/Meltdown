@@ -6,8 +6,8 @@ from typing import Any
 from pathlib import Path
 
 # Libraries
-from watchdog.observers import Observer  # type: ignore
-from watchdog.events import FileSystemEventHandler  # type: ignore
+from watchdog.observers import Observer
+from watchdog.events import FileSystemEventHandler
 
 # Modules
 from .args import args
@@ -17,7 +17,7 @@ from .files import files
 from .inputcontrol import inputcontrol
 
 
-class FileChangeHandler(FileSystemEventHandler):  # type: ignore
+class FileChangeHandler(FileSystemEventHandler):
     def __init__(self, path: Path) -> None:
         self.path = path
 

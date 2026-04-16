@@ -16,7 +16,7 @@ from typing import Any
 
 # Libraries
 import psutil  # type: ignore
-from rich.console import Console  # type: ignore
+from rich.console import Console
 
 # Modules
 from .theme import Theme

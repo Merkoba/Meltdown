@@ -5,7 +5,7 @@ import tkinter as tk
 from tkinter import ttk
 from typing import Any
 from collections.abc import Callable
-from PIL import Image, ImageTk  # type: ignore
+from PIL import Image, ImageTk
 from pathlib import Path
 
 # Modules
