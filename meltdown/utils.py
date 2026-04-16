@@ -3,6 +3,7 @@ from __future__ import annotations
 # Standard
 import os
 import re
+import shutil
 import time
 import random
 import string
@@ -35,6 +36,26 @@ class Utils:
         self.clipboard_timeout = 3
         self.dprint_texts: list[str] = []
         self.last_dprint = 0
+
+    def get_linux_display(self) -> str:
+        # XDG_SESSION_TYPE is a modern and reliable way to check.
+        session_type = os.environ.get("XDG_SESSION_TYPE")
+
+        if session_type == "wayland":
+            return "wayland"
+        if session_type == "x11":
+            return "xorg"
+
+        # WAYLAND_DISPLAY is another strong indicator for Wayland.
+        if os.environ.get("WAYLAND_DISPLAY"):
+            return "wayland"
+
+        # If DISPLAY is set, it's very likely Xorg.
+        if os.environ.get("DISPLAY"):
+            return "xorg"
+
+        # Default if nothing is found, as Xorg was the long-time default.
+        return "xorg"
 
     def similarity(self, a: str, b: str) -> float:
         matcher = SequenceMatcher(None, a, b)
@@ -180,7 +201,10 @@ class Utils:
         elif system == "windows":
             app.exec("clip", text, timeout=timeout)
         else:
-            app.exec("xclip -sel clip -f", text, timeout=timeout)
+            if self.get_linux_display() == "wayland" and shutil.which("wl-copy"):
+                app.exec("wl-copy", text, timeout=timeout)
+            elif shutil.which("xclip"):
+                app.exec("xclip -sel clip -f", text, timeout=timeout)
 
     def paste(self, widget: tk.Widget) -> None:
         from .entrybox import EntryBox
@@ -208,7 +232,12 @@ class Utils:
         if system == "windows":
             return app.exec("powershell.exe Get-Clipboard", timeout=timeout)[0]
 
-        return app.exec("xclip -o -sel clip", timeout=timeout)[0]
+        if self.get_linux_display() == "wayland" and shutil.which("wl-paste"):
+            return app.exec("wl-paste", timeout=timeout)[0]
+        elif shutil.which("xclip"):
+            return app.exec("xclip -o -sel clip", timeout=timeout)[0]
+
+        return ""
 
     def padnum(self, num: int) -> str:
         return str(num).zfill(3)
